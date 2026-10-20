@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { affectedFrom, ciJobsFrom, readWorkspace } from './affected.mjs'
+import { affectedFrom, ciJobsFrom, readWorkspace, verifyWorkspacesFrom } from './affected.mjs'
 
 const ws = readWorkspace()
 const of = (...files) => affectedFrom(ws, files)
@@ -83,7 +83,7 @@ test('CI: root config, the lockfile, root scripts, ci.yml and unknown files run 
   assert.deepEqual(ci('README.md', 'package.json'), ALL)
 })
 
-test('CI: .github (but ci.yml) and root Markdown run only the checks job', () => {
+test('CI: .github (but ci.yml) and root Markdown run only the root checks', () => {
   assert.deepEqual(ci('.github/pull_request_template.md', '.github/CODEOWNERS', '.github/workflows/other.yml'), NONE)
   assert.deepEqual(ci('README.md', 'CONTRIBUTING.md', 'docs/upgrade-guides/x.md', 'apps/promo/src/a.tsx'), NONE)
 })
@@ -106,7 +106,35 @@ test('CI: Storybook config and its suites run Storybook and what follows it', ()
   for (const file of ['.storybook/main.ts', 'tests/storybook/a11y.spec.ts', 'playwright.config.ts']) assert.deepEqual(ci(file), { ...NONE, storybook: true }, file)
 })
 
-test('CI: no changed files run only the checks job; one unknown file among known ones runs everything', () => {
+test('CI: no changed files run only the root checks; one unknown file among known ones runs everything', () => {
   assert.deepEqual(ci(), NONE)
   assert.deepEqual(ci('README.md', 'scripts/new.mjs'), ALL)
+})
+
+const verified = (...files) => verifyWorkspacesFrom(ws, files)
+const everyWorkspace = ws.map((p) => p.name)
+
+test('CI matrix: a docs content change verifies docs alone', () => {
+  assert.deepEqual(verified('apps/docs/content/docs/index.mdx'), ['docs'])
+})
+
+test('CI matrix: a change in a leaf package verifies that package alone', () => {
+  assert.deepEqual(verified('packages/cli/src/index.ts'), ['@youj/cli'])
+})
+
+test('CI matrix: a core change verifies core and everything built on it', () => {
+  const names = verified('packages/core/src/index.ts')
+  for (const name of ['@youj/core', '@youj/motion', '@youj/react', 'docs']) assert.ok(names.includes(name), name)
+  assert.ok(!names.includes('@youj/cli'))
+  assert.ok(!names.includes('@youj/miniatures'))
+})
+
+test('CI matrix: root config, the lockfile, a root script and ci.yml verify every workspace', () => {
+  for (const file of ['package.json', 'pnpm-lock.yaml', 'biome.json', 'scripts/check-imports.mjs', '.github/workflows/ci.yml'])
+    assert.deepEqual([...verified(file)].sort(), [...everyWorkspace].sort(), file)
+})
+
+test('CI matrix: Markdown, other workflows and the changesets verify no workspace', () => {
+  assert.deepEqual(verified('README.md', '.changeset/a.md', '.github/CODEOWNERS', '.github/workflows/codeql.yml'), [])
+  assert.deepEqual(verified(), [])
 })

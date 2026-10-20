@@ -5,7 +5,8 @@
 //   node scripts/affected.mjs --base <sha>            changed files = git diff --name-only <sha> HEAD
 //   git diff --name-only a b | node scripts/affected.mjs --stdin
 //   add --json for the whole result, or --field packages|all|mcp|ignored|files to print one value
-//   add --ci for the CI jobs a change needs (ciJobsFrom below), as key=value lines for $GITHUB_OUTPUT
+//   add --ci for the CI jobs a change needs (ciJobsFrom below) and the workspaces whose verify to run
+//   (verifyWorkspacesFrom below, a JSON array), as key=value lines for $GITHUB_OUTPUT
 //
 // Rules (affectedFrom below):
 // - a file under packages/<dir> or apps/<dir> belongs to that package, and its dependents are affected;
@@ -98,14 +99,14 @@ export function affectedFrom(workspace, files) {
   }
 }
 
-// Which CI jobs a pull request can affect (.github/workflows/ci.yml reads this in its `changes` job). `checks` always
+// Which CI jobs a pull request can affect (.github/workflows/ci.yml reads this in its `changes` job). `root-checks` always
 // runs. A file that matches no rule below means every job: when unsure, run the job.
 //   packages  the consumer smoke test (packs and installs the packages)
 //   storybook the Storybook build, its play() tests, visual regression and axe
 //   docs      the docs build and its out/ scans
 const DOCS_ONLY_IN_DOCS = /^apps\/docs\/(content|app|test|tests|scripts)\/|^apps\/docs\/public\/(?!blocks\/)|^apps\/docs\/[^/]+$/
 const CI_RULES = [
-  // Only the checks job: nothing here is built or rendered by another job.
+  // Only the root checks: nothing here is built or rendered by another job.
   [/^\.github\/workflows\/ci\.yml$/, { packages: true, storybook: true, docs: true }],
   [/^\.github\//, {}],
   [/^(\.claude|docs|exports)\//, {}],
@@ -131,6 +132,16 @@ export function ciJobsFrom(files) {
   return jobs
 }
 
+/**
+ * The workspaces the CI matrix verifies on a pull request: the ones that own a changed file plus their dependents
+ * (affectedFrom), or every workspace when the change is to the CI workflow itself (affectedFrom ignores .github).
+ * @param {{ name: string, dir: string, deps: string[] }[]} workspace @param {string[]} files repo-relative paths
+ */
+export function verifyWorkspacesFrom(workspace, files) {
+  if (files.includes('.github/workflows/ci.yml')) return workspace.map((p) => p.name)
+  return affectedFrom(workspace, files).packages
+}
+
 function main() {
   const args = process.argv.slice(2)
   const value = (flag) => (args.includes(flag) ? args[args.indexOf(flag) + 1] : undefined)
@@ -144,6 +155,7 @@ function main() {
   const files = names.split('\n').filter(Boolean)
   if (args.includes('--ci')) {
     for (const [job, needed] of Object.entries(ciJobsFrom(files))) console.log(`${job}=${needed}`)
+    console.log(`workspaces=${JSON.stringify(verifyWorkspacesFrom(readWorkspace(), files))}`)
     return
   }
   const result = affectedFrom(readWorkspace(), files)
