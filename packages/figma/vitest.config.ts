@@ -30,6 +30,9 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: ['test/**/*.test.ts'],
+    setupFiles: ['test/setup.ts'],
+    // A build allocates a node tree of tens of thousands of objects; a larger young generation spares most of the collections.
+    execArgv: ['--max-semi-space-size=64'],
     // The kit renders all 511 icons with React before the first assertion.
     testTimeout: 60_000,
     hookTimeout: 60_000,

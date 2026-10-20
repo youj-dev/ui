@@ -10,7 +10,7 @@ What typically drifts here. The root [Principles](../../CONTRIBUTING.md#principl
 - **Parity:** `test/parity.test.ts` compares the kit with the code. A component or block you add either gets drawn or is listed in `parity-baseline.json`. The baseline only shrinks and the totals (`ceiling`) cannot go up on their own: draw it, or ask a maintainer before raising the ceiling.
 - Target ES2017 and avoid browser globals Figma lacks (`test/syntax.test.ts`). Use the async Figma API forms.
 - Fail per step, never per build: a step that fails leaves a notice and the build goes on.
-- Cover new steps and components with the fake (`test/fake-figma.ts`) and `integrity.test.ts`. Only real Figma confirms some behavior, so check the manual list before a release.
+- Cover new steps and components with the fake (`test/fake-figma.ts`), `integrity.test.ts` and `failures.test.ts`. Only real Figma confirms some behavior, so check the manual list before a release.
 - The plugin is private. It is not published.
 
 ## Layout
@@ -25,7 +25,7 @@ manifest.json    the plugin manifest you import into Figma
 
 ## Adding a step or a component
 
-- **A step:** add it to `src/plugin/steps.ts` so it runs on its own and fails on its own (see "Fail per step, never per build"), and cover it in `test/integrity.test.ts`.
+- **A step:** add it to `src/plugin/steps.ts` so it runs on its own and fails on its own (see "Fail per step, never per build"), and cover it in `test/integrity.test.ts` and its failure in `test/failures.test.ts`.
 - **A component:** draw it under `src/plugin/components/` and check it against the Figma fake in `test/`.
 
 ## Commands
@@ -52,6 +52,6 @@ These are the constraints that the download path and a full review of the plugin
 ### Tests
 
 - `test/fake-figma.ts` enforces Figma's rules: fonts loaded before text layout setters, `cornerRadius` not a bindable field, BASELINE alignment only on horizontal auto layout, `findAll` descending into instances, and injected failures for each fallback path.
-- `test/integrity.test.ts` builds on Professional and Starter drafts, twice each, and checks every page, component set, variable binding and text node.
+- `test/integrity.test.ts` builds on Professional and Starter drafts, twice each, and checks every page, component set, variable binding and text node (`test/integrity.ts`). `test/failures.test.ts` runs the same check after injected failures.
 
 Only real Figma can confirm these, so check them by hand in the desktop app before a release: the panel painting during a build, the exact wording of Figma's cap errors, build time on a large file, and that Figma stays responsive.
