@@ -119,6 +119,10 @@ jobs:
         run: pnpm dlx playwright@1.56.1 install chromium-headless-shell
       - name: Build the workspace dependencies
         run: pnpm -F "${{ matrix.workspace }}^..." --if-present build
+      # The docs tests read generated/ (props, registry, samples), which `generate` writes from the packages.
+      - name: Generate the docs data
+        if: matrix.workspace == 'docs'
+        run: pnpm -F docs generate
       - name: Verify ${{ matrix.workspace }}
         run: pnpm -F "${{ matrix.workspace }}" verify
 
