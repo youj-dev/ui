@@ -16,6 +16,36 @@ env:
   NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
+  # What can this change affect? scripts/affected.mjs --ci maps the changed files to the jobs below. A push to main
+  # runs everything, so main stays fully tested; a pull request skips the jobs its files can't reach. A file the
+  # script doesn't know, any change under packages/, the root config, the lockfile, a root script and this file
+  # all mean every job. `checks` always runs. Skipped jobs report "skipped", which is not a failure.
+  changes:
+    name: Changed areas
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      packages: ${{ steps.areas.outputs.packages }}
+      storybook: ${{ steps.areas.outputs.storybook }}
+      docs: ${{ steps.areas.outputs.docs }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0 # the base commit must be there to diff against
+      - id: areas
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            # Checked out at the PR's merge commit, so base..HEAD is exactly what the PR changes. If the script
+            # fails for any reason, run everything.
+            node scripts/affected.mjs --base "$BASE" --ci >> "$GITHUB_OUTPUT" || printf 'packages=true\nstorybook=true\ndocs=true\n' >> "$GITHUB_OUTPUT"
+          else
+            printf 'packages=true\nstorybook=true\ndocs=true\n' >> "$GITHUB_OUTPUT"
+          fi
+          cat "$GITHUB_OUTPUT"
+
   checks:
     name: Checks, tests and package builds
     runs-on: ubuntu-latest
@@ -66,6 +96,8 @@ jobs:
   # UI the peer ranges allow and once on the newest.
   smoke:
     name: Consumer smoke test (${{ matrix.name }})
+    needs: changes
+    if: needs.changes.outputs.packages == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -90,6 +122,8 @@ jobs:
 
   storybook:
     name: Storybook build
+    needs: changes
+    if: needs.changes.outputs.storybook == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -113,6 +147,8 @@ jobs:
 
   docs:
     name: Docs build
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -238,3 +274,21 @@ jobs:
           name: perf-results
           path: perf-results.json
           retention-days: 30
+
+  # The one job to mark as required in the branch protection or ruleset (and no other): it always runs, waits for
+  # every job above and fails if any of them failed or was cancelled. A job skipped by `changes` is fine, so a
+  # pull request that skips Storybook, visual and the rest can still merge. Requiring the individual jobs instead
+  # would not work: a job whose matrix or name changes drops out of the required list silently.
+  ci-result:
+    name: CI result
+    needs: [changes, checks, smoke, storybook, docs, visual, a11y, perf]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fail if a job failed or was cancelled (skipped is fine)
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "job results: $RESULTS"
+          case " $RESULTS " in *" failure "* | *" cancelled "*) exit 1 ;; esac
