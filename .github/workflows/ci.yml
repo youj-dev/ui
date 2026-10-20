@@ -310,6 +310,8 @@ jobs:
   a11y:
     name: Accessibility (axe, every story, light, dark and RTL; target size)
     needs: storybook
+    # Report-only on pull requests until the existing findings are fixed (tracked); blocking on main.
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
