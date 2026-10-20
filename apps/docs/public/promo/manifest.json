@@ -456,42 +456,42 @@
         {
           "src": "/promo/loop-entrances-sm.av1.webm",
           "type": "video/webm; codecs=\"av01.0.04M.08\"",
-          "bytes": 171634,
+          "bytes": 177065,
           "media": "(max-width: 640px)"
         },
         {
           "src": "/promo/loop-entrances-sm.webm",
           "type": "video/webm; codecs=\"vp9\"",
-          "bytes": 242915,
+          "bytes": 241509,
           "media": "(max-width: 640px)"
         },
         {
           "src": "/promo/loop-entrances-sm.mp4",
           "type": "video/mp4; codecs=\"avc1.640028\"",
-          "bytes": 278960,
+          "bytes": 277957,
           "media": "(max-width: 640px)"
         },
         {
           "src": "/promo/loop-entrances.av1.webm",
           "type": "video/webm; codecs=\"av01.0.05M.08\"",
-          "bytes": 328777
+          "bytes": 329831
         },
         {
           "src": "/promo/loop-entrances.webm",
           "type": "video/webm; codecs=\"vp9\"",
-          "bytes": 465309
+          "bytes": 466301
         },
         {
           "src": "/promo/loop-entrances.mp4",
           "type": "video/mp4; codecs=\"avc1.640032\"",
-          "bytes": 518310
+          "bytes": 518291
         }
       ],
       "poster": {
         "src": "/promo/loop-entrances.jpg",
         "width": 1280,
         "height": 720,
-        "bytes": 58241,
+        "bytes": 57872,
         "srcset": {
           "avif": "/promo/loop-entrances-sm.avif 854w, /promo/loop-entrances.avif 1280w",
           "webp": "/promo/loop-entrances-sm.webp 854w, /promo/loop-entrances.webp 1280w",
