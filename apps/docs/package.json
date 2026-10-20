@@ -39,7 +39,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^5.9.2",
     "@youj/core": "workspace:*",
     "@youj/icons": "workspace:*",
     "@youj/illustrations": "workspace:*",
@@ -48,30 +48,30 @@
     "@youj/motion": "workspace:*",
     "@youj/react": "workspace:*",
     "@youj/sound": "workspace:*",
-    "@tanstack/react-virtual": "^3.14.13",
+    "@tanstack/react-virtual": "^3.14.21",
     "date-fns": "^4.4.0",
-    "fumadocs-core": "16.15.14",
-    "fumadocs-mdx": "15.4.5",
-    "fumadocs-ui": "16.15.14",
-    "lucide-react": "^1.48.0",
+    "fumadocs-core": "16.17.5",
+    "fumadocs-mdx": "15.4.7",
+    "fumadocs-ui": "16.17.5",
+    "lucide-react": "^1.59.0",
     "motion": "^13.4.4",
-    "next": "16.3.8",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "react-hook-form": "^7.89.0",
-    "recharts": "3.8.0",
-    "zod": "^4.6.5"
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-hook-form": "^7.90.0",
+    "recharts": "3.10.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
-    "@types/node": "^26.6.3",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "cf": "1.0.0-beta.5",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.30",
     "tailwindcss": "^4.3.3",
     "typescript": "~5.9.3",
-    "wrangler": "^4.144.0"
+    "wrangler": "^4.151.1"
   }
 }

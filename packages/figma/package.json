@@ -23,12 +23,12 @@
     "verify": "pnpm typecheck && pnpm test"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.139.0",
+    "@figma/plugin-typings": "^1.142.0",
     "@youj/core": "workspace:*",
     "@youj/icons": "workspace:*",
     "@youj/illustrations": "workspace:*",
     "@youj/react": "workspace:*",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }
