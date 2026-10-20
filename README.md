@@ -110,7 +110,7 @@ Bug reports, fixes and language packs are welcome. Read [CONTRIBUTING.md](CONTRI
 <details>
 <summary><strong>Develop locally</strong></summary>
 
-You need Node.js 22.18 or later and pnpm 10.
+You need Node.js 22.22 or later and pnpm 10.
 
 ```bash
 pnpm install

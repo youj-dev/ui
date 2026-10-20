@@ -19,7 +19,7 @@ These apply to every package and app. Each area's guide (the map below) adds wha
 
 ## Set up
 
-You need Node.js 22.18 or newer (`nvm use` reads `.nvmrc`) and pnpm 10 (`corepack enable` installs the version `packageManager` pins).
+You need Node.js 22.22 or newer (`nvm use` reads `.nvmrc`) and pnpm 10 (`corepack enable` installs the version `packageManager` pins).
 
 ```bash
 pnpm install

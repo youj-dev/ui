@@ -54,4 +54,4 @@ Promo videos and their posters are served from `https://media.youj.dev` (overrid
 3. Leave the install command on its default; pnpm installs the whole workspace from inside `apps/docs`.
 4. The build command comes from `vercel.json` (`pnpm generate && next build`). It doesn't run the page-weight or JS budgets; `pnpm -F docs build` does.
 5. Optionally set `NEXT_PUBLIC_SITE_URL` to the public domain if it isn't the Vercel production domain.
-6. Node.js 22.18 or later (`engines` in `package.json`): the build scripts are TypeScript, run directly by Node.
+6. Node.js 22.22 or later (`engines` in `package.json`): the build scripts are TypeScript, run directly by Node.

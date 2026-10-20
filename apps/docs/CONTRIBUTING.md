@@ -17,7 +17,7 @@ What typically drifts here. The root [Principles](../../CONTRIBUTING.md#principl
 
 ## Set up and run
 
-Node 22.18 or later and pnpm (the build scripts are TypeScript that Node runs directly).
+Node 22.22 or later and pnpm (the build scripts are TypeScript that Node runs directly).
 
 ```bash
 pnpm install

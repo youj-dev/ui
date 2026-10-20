@@ -9,7 +9,7 @@ pnpm install
 pnpm -F docs dev        # generate, then next dev at http://localhost:3100
 ```
 
-Node 22.18 or later. The first start runs `pnpm generate`, so it takes a moment.
+Node 22.22 or later. The first start runs `pnpm generate`, so it takes a moment.
 
 ## Where things are
 
