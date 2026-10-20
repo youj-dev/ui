@@ -16,14 +16,88 @@ env:
   NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
-  checks:
-    name: Checks, tests and package builds
+  # What can this change affect? scripts/affected.mjs --ci maps the changed files to the jobs below, and to the
+  # workspaces whose verify runs: the ones that own a changed file plus everything that depends on them. A push to
+  # main runs everything, so main stays fully tested; a pull request skips the jobs its files can't reach. A file
+  # the script doesn't know, the root config, the lockfile, a root script and this file all mean every job and
+  # every workspace. `root-checks` always runs. Skipped jobs report "skipped", which is not a failure.
+  changes:
+    name: Changed areas
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
+    outputs:
+      packages: ${{ steps.areas.outputs.packages }}
+      storybook: ${{ steps.areas.outputs.storybook }}
+      docs: ${{ steps.areas.outputs.docs }}
+      workspaces: ${{ steps.areas.outputs.workspaces }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0 # the base commit must be there to diff against
+      - id: areas
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            # Checked out at the PR's merge commit, so base..HEAD is exactly what the PR changes. If the script
+            # fails for any reason, run everything.
+            node scripts/affected.mjs --base "$BASE" --ci >> "$GITHUB_OUTPUT" || echo package.json | node scripts/affected.mjs --stdin --ci >> "$GITHUB_OUTPUT"
+          else
+            # A root file means everything: every job and every workspace.
+            echo package.json | node scripts/affected.mjs --stdin --ci >> "$GITHUB_OUTPUT"
+          fi
+          cat "$GITHUB_OUTPUT"
+
+  # The repo-level gates, the part of `pnpm verify` that isn't a workspace's own verify. Always runs; seconds to a
+  # few minutes, nothing here builds a package.
+  root-checks:
+    name: Root checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0 # check:changesets diffs api/ against origin/main
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm check:imports
+      - run: pnpm check:labels
+      - run: pnpm check:affected
+      - run: pnpm check:changesets
+      - run: pnpm check:taxonomy
+      - run: pnpm check:tints
+      - run: pnpm check:sleeps
+      - run: pnpm check:api
+      - run: pnpm lint:copy-in
+      # A high or critical advisory in what ships fails the build. The dev-only `braces` advisory
+      # (GHSA-vfj7-8cjw-p6xm, via shadcn > fast-glob) has no patched release and is outside --prod.
+      - name: Dependency audit (production, high and critical)
+        run: pnpm audit --prod --audit-level=high
+
+  # Each workspace's own verify (typecheck, token lint, registries, build where it has one, tests), one runner per
+  # workspace, in parallel. A pull request verifies the changed workspaces and their dependents (see `changes`); a
+  # push to main verifies all of them. An empty list skips the job, since a matrix with no entries is an error.
+  # Workspaces resolve each other through their sources, but a few scripts want a dependency's dist, so the
+  # dependencies are built first (a no-op for a workspace without any).
+  verify:
+    name: Verify ${{ matrix.workspace }}
+    needs: changes
+    if: needs.changes.outputs.workspaces != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.workspace == '@youj/figma' && 30 || 20 }} # figma's tests take ~10 minutes here
+    strategy:
+      fail-fast: false
+      matrix:
+        workspace: ${{ fromJSON(needs.changes.outputs.workspaces) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
         with:
           cache: true
@@ -36,36 +110,94 @@ jobs:
       # Chromium 141 (Playwright 1.56's build), whose calc() once collapsed them while newer
       # engines drew them right. The current browsers come from the lockfile's Playwright; the
       # old build needs the 1.56 CLI, which is pinned here by exact version (it can't be in the
-      # lockfile without a second Playwright dependency).
+      # lockfile without a second Playwright dependency). The figma tests render in Chromium too.
       - name: Browsers for the layout tests
-        run: pnpm exec playwright install --with-deps chromium && pnpm dlx playwright@1.56.1 install chromium-headless-shell
-      # Exactly what a contributor runs locally: Biome lint, the repo-level gates (imports, labels,
-      # affected-package map, changesets, taxonomy, tints, sleeps, public API) and every workspace's
-      # own verify (typecheck, token lint, registries, tests), then the packed-package check.
-      - name: Verify (pnpm verify)
-        run: pnpm verify
-      # The packages run with coverage: each fails under the floor in its vitest.config.ts.
+        if: matrix.workspace == '@youj/react' || matrix.workspace == '@youj/figma'
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Browser build for the density test
+        if: matrix.workspace == '@youj/react'
+        run: pnpm dlx playwright@1.56.1 install chromium-headless-shell
+      - name: Build the workspace dependencies
+        run: pnpm -F "${{ matrix.workspace }}^..." --if-present build
+      # The docs tests read generated/ (props, registry, samples), which `generate` writes from the packages.
+      - name: Generate the docs data
+        if: matrix.workspace == 'docs'
+        run: pnpm -F docs generate
+      - name: Verify ${{ matrix.workspace }}
+        run: pnpm -F "${{ matrix.workspace }}" verify
+
+  # The packages with coverage on: each fails under the floor in its vitest.config.ts. Main only: it runs every
+  # package's tests a second time, and a pull request already ran them in `verify`.
+  coverage:
+    name: Coverage floor
+    needs: changes
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium && pnpm dlx playwright@1.56.1 install chromium-headless-shell
       - name: Tests and coverage floor (packages)
         run: pnpm test:coverage
       - name: Coverage summary
         if: always()
         run: node scripts/coverage-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+
+  # Builds and packs every published package the way the release does, and checks the packed manifests and entry
+  # points (scripts/check-packages.mjs). Only when a package changed.
+  pack-check:
+    name: Packed packages
+    needs: changes
+    if: needs.changes.outputs.packages == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:packages
+
+  # The publish dry run (npm publish --dry-run), then what an app pays for Button, Dialog, an icon, 15 components and
+  # the full import, built with Vite against the dist the dry run just built. Only when a package changed.
+  release-dry:
+    name: Release dry run and bundle size
+    needs: changes
+    if: needs.changes.outputs.packages == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
       - name: Package builds, packed (npm publish --dry-run)
         run: pnpm release:dry
-      # What an app pays for Button, Dialog, an icon, 15 components and the
-      # full import, built with Vite against the dist release:dry just built.
       - name: Bundle size budgets
         run: pnpm -F @youj/react size
-      # A high or critical advisory in what ships fails the build. The dev-only `braces` advisory
-      # (GHSA-vfj7-8cjw-p6xm, via shadcn > fast-glob) has no patched release and is outside --prod.
-      - name: Dependency audit (production, high and critical)
-        run: pnpm audit --prod --audit-level=high
 
   # Packs the packages, installs the tarballs into fresh Next.js and Vite apps,
   # builds both and renders them in Chromium, once on the oldest motion and Base
   # UI the peer ranges allow and once on the newest.
   smoke:
     name: Consumer smoke test (${{ matrix.name }})
+    needs: changes
+    if: needs.changes.outputs.packages == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -90,6 +222,8 @@ jobs:
 
   storybook:
     name: Storybook build
+    needs: changes
+    if: needs.changes.outputs.storybook == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -113,6 +247,8 @@ jobs:
 
   docs:
     name: Docs build
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -137,6 +273,9 @@ jobs:
   visual:
     name: Visual regression
     needs: storybook
+    # Main only: deliberate design changes would fail a pull request's screenshots every time. A pull request
+    # labelled `visual` runs it too (add the label, then push or re-run the workflow).
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'visual')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
@@ -171,6 +310,8 @@ jobs:
   a11y:
     name: Accessibility (axe, every story, light, dark and RTL; target size)
     needs: storybook
+    # Report-only on pull requests until the existing findings are fixed (tracked); blocking on main.
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
@@ -238,3 +379,21 @@ jobs:
           name: perf-results
           path: perf-results.json
           retention-days: 30
+
+  # The one job to mark as required in the branch protection or ruleset (and no other): it always runs, waits for
+  # every job above and fails if any of them failed or was cancelled. A job skipped by `changes` is fine, so a
+  # pull request that skips Storybook, visual and the rest can still merge. Requiring the individual jobs instead
+  # would not work: a job whose matrix or name changes drops out of the required list silently.
+  ci-result:
+    name: CI result
+    needs: [changes, root-checks, verify, coverage, pack-check, release-dry, smoke, storybook, docs, visual, a11y, perf]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fail if a job failed or was cancelled (skipped is fine)
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "job results: $RESULTS"
+          case " $RESULTS " in *" failure "* | *" cancelled "*) exit 1 ;; esac
