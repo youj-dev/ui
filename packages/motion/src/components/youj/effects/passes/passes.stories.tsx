@@ -149,10 +149,18 @@ export const CancelMidRun: Story = {
   }, // In Chromium: cancel part way, then let a run finish; both leave the card's markup and the page's animations as they were.
   play: async ({ canvasElement }) => {
     const card = canvasElement.querySelector('form')!
-    const markup = card.outerHTML
+    const button = (name: string) => [...canvasElement.querySelectorAll('button')].find((b) => b.textContent === name)!
+    // The run starts on mount and hides the card's parts from its first frame, so the card as it was is read after a
+    // cancel, once nothing of the run is left on it.
     await waitFor(() => expect(canvasElement.querySelector('[data-yj-passes]')).not.toBeNull())
-    const cancel = [...canvasElement.querySelectorAll('button')].find((b) => b.textContent === 'Cancel')!
-    cancel.click()
+    button('Cancel').click()
+    await expect(canvasElement.querySelector('[data-yj-passes]')).toBeNull()
+    await expect(document.getAnimations()).toHaveLength(0)
+    await expect(card.matches('[style], :has([style])')).toBe(false)
+    const markup = card.outerHTML
+    button('Play again').click()
+    await waitFor(() => expect(canvasElement.querySelector('[data-yj-passes]')).not.toBeNull())
+    button('Cancel').click()
     await expect(canvasElement.querySelector('[data-yj-passes]')).toBeNull()
     await expect(document.getAnimations()).toHaveLength(0)
     await expect(card.outerHTML).toBe(markup)
