@@ -150,8 +150,10 @@ One-time setup:
 
 1. Own the `@youj` organisation on npmjs.com.
 2. Name the copyright holder: `node scripts/set-license-holder.mjs "<Legal Name>"` sets the root and every package's LICENSE and the packages' `author`; `--check` confirms it.
-3. Create an npm automation or granular token that can publish to both.
-4. For GitHub Actions, store it as the `NPM_TOKEN` secret of a `release` environment (Settings → Environments, with yourself as required reviewer). The repository must be public for provenance.
+3. On npmjs.com, give each package a trusted publisher (the package's Settings → Trusted Publisher → GitHub Actions): organization `youj-dev`, repository `ui`, workflow `release.yml`, environment `release`, allowed action publish. The Release workflow then publishes with no token and signs provenance.
+4. In GitHub, the `release` environment (Settings → Environments) has the maintainer as required reviewer and allows only `main`.
+
+A brand-new package has no trusted publisher yet: its first version goes out from a maintainer's machine with a short-lived granular token (`NODE_AUTH_TOKEN=<token> pnpm release --to npm`), which is then deleted.
 
 Then release:
 

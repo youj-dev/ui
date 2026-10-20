@@ -56,7 +56,9 @@ const userconfig = join(work, '.npmrc')
 const scopes = ['@youj']
 writeFileSync(
   userconfig,
-  [...scopes].map((scope) => `${scope}:registry=${registry}\n`).join('') + `${registry.replace(/^https?:/, '')}:_authToken=\${NODE_AUTH_TOKEN}\n`,
+  [...scopes].map((scope) => `${scope}:registry=${registry}\n`).join('') +
+    // Without a token (npm trusted publishing in Actions), npm authenticates with the workflow's OIDC identity.
+    (process.env.NODE_AUTH_TOKEN ? `${registry.replace(/^https?:/, '')}:_authToken=\${NODE_AUTH_TOKEN}\n` : ''),
 )
 const npm = (args, options = {}) =>
   execFileSync('npm', [...args, '--registry', registry, '--userconfig', userconfig], {
