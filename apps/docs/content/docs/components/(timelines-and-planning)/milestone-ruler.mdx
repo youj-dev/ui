@@ -1,0 +1,119 @@
+---
+title: Milestone Ruler
+description: "Put a year of milestones on a ruler of fine ticks, with today marked and a callout for the one you point at."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="milestone-ruler/demo" height={260} />
+
+A made-up app's 2026, seen on 13 October. Shipped milestones are solid, upcoming ones hollow and the one at risk amber; the two that land a day apart share a pin with their count. Hover anywhere along the ruler and the nearest pin answers.
+
+</Story>
+
+<Story id="quarter" label="A quarter, controlled">
+
+<ComponentPreview name="milestone-ruler/quarter" height={300} />
+
+`start` and `end` set any span of days (here one quarter, each month still cut in four), `tone` colors the pins, and `value` with `onValueChange` lets your app own which milestone is picked.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="milestone-ruler" noImport />
+
+Use a milestone ruler for when things land across a long span: a product's year of releases, a quarter's launch plan, a grant's reporting dates. It answers "what's next, what slipped, how far along are we" at a glance and keeps one line of detail a hover away. For the order of steps in one flow use a [Stage Rail](/docs/components/stage-rail); for events and durations within one incident, a [Severity Timeline](/docs/components/severity-timeline). The [Roadmap timeline](/docs/blocks/timelines-and-steps#roadmap-timeline) card is built on it.
+
+```tsx
+import { MilestoneRuler, type Milestone } from '@youj/react'
+
+const milestones: Milestone[] = [
+  { id: 'v1-5', date: '2026-06-04', title: 'Version 1.5', description: 'New editor', major: true },
+  { id: 'sso', date: '2026-10-28', title: 'SSO and audit log', status: 'at-risk' },
+  { id: 'v2', date: '2026-11-26', title: 'Version 2', description: 'Rebuilt sync engine', major: true },
+]
+
+<MilestoneRuler milestones={milestones} today={today} label="Roadmap 2026" />
+```
+
+A milestone's `date` is a day: a date-only string such as `"2026-11-26"` is that calendar day in every time zone, and a `Date` or a time in ms counts by its local date. Without `start` and `end` the ruler spans January 1 to December 31 of today's year. `status` is `done`, `upcoming` or `at-risk`; left out, it is done before `today` and upcoming from it on. Pass `today` from your server so the page hydrates with the same marks; without it the ruler waits for the browser's clock. `major` draws a taller pin.
+
+Milestones closer than about ten pixels share one pin with their count, so the grouping follows the space the ruler has. A picked milestone (`value`, or the next one from today by default) keeps its callout shown; hovering or focusing another shows that one until the pointer or focus leaves. `formatDate` writes the days your way.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="milestones, start, end, today, value, tone…">
+
+### Props
+
+<PropsTable name="MilestoneRuler" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `milestone-ruler`, `milestone-ruler-callout-zone`, `milestone-ruler-callout`, `milestone-ruler-caret`, `milestone-ruler-plot`, `milestone-ruler-ticks`, `milestone-ruler-tick`, `milestone-ruler-today`, `milestone-ruler-pins`, `milestone-ruler-pin`, `milestone-ruler-dot`, `milestone-ruler-count`, `milestone-ruler-axis`, `milestone-ruler-month` and `milestone-ruler-empty`. A pin has `data-status` (`done`, `upcoming` or `at-risk`), `data-yj-major`, `data-yj-shown` while its callout is up and `data-yj-count` when it holds several milestones; a tick has `data-yj-major` at a month's start. The pins' color is `--milestone-ruler-tone`, and the count's ink `--milestone-ruler-ink`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Rise, callout, stretch · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Rise', note: 'the pins grow up from the ruler left to right when a third of it scrolls into view', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Callout', note: 'the callout glides to the pin under the pointer or focus, its caret staying on the pin', duration: 'fast', ease: 'standard' },
+    { moment: 'Stretch', note: 'the ticks within about 40px of the pointer stretch toward it, most at the pointer', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place: the pins stand, the callout jumps and the ticks don't stretch."
+/>
+
+#### Reduced motion
+
+The pins are drawn standing, the callout moves at once and the ticks keep their length.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A horizontal `listbox` (your `label`, or the labels' "Milestones") described by a summary: how many milestones, and how many are done.
+- Every pin is an `option` named with its title, day and status ("SSO and audit log, Oct 28, At risk"), and described by its one-line description; a shared pin names each of its milestones. The picked one is `aria-selected`.
+- One tab stop. Left and Right walk the pins (mirrored in RTL), Home and End go to the ends, and selection follows focus. A click or tap anywhere on the ruler picks the nearest pin.
+- The callout, ticks, today mark and month names are decorative; the options say the same in words. Status is a word and a solid, hollow or warning-toned dot, never color alone.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

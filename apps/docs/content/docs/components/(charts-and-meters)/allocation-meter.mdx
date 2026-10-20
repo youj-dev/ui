@@ -1,0 +1,117 @@
+---
+title: Allocation Meter
+description: "Split a fixed total across categories and move amounts between them, such as budget envelopes."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="allocation-meter/demo" height={320} />
+
+Five budget envelopes with spending and rollover, where you can move money from one to another.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="allocation-meter" noImport />
+
+Use an allocation meter for a budget split into pots that each have their own limit: groceries, eating out, transport. Each envelope is a column of cells holding what's left, draining from the top as money is spent. Money rolled over from last period sits on top, hatched, and goes first; an envelope spent past empty turns its base the danger tone and drips under it, one drop for each tenth it's over, up to three. Money moves by dragging one envelope onto another, or from the keyboard. The [Budget block](/docs/blocks/rankings-and-breakdowns) builds a month's budget around it. For spend against one limit with policy lines, use an [Limit Meter](/docs/components/limit-meter); for how full several resources are, a [Segmented Meter](/docs/components/segmented-meter).
+
+```tsx
+import { useState } from 'react'
+import { AllocationMeter, type Envelope } from '@youj/react'
+
+export function Budget() {
+  const [envelopes, setEnvelopes] = useState<Envelope[]>([
+    { id: 'groceries', name: 'Groceries', budget: 520, spent: 402, rollover: 40 },
+    { id: 'eating', name: 'Eating out', budget: 220, spent: 252 },
+    { id: 'fun', name: 'Fun', budget: 160, spent: 71 },
+  ])
+  const move = (from: string, to: string, amount: number) =>
+    setEnvelopes((list) => list.map((e) => (e.id === from ? { ...e, budget: e.budget - amount } : e.id === to ? { ...e, budget: e.budget + amount } : e)))
+
+  return <AllocationMeter envelopes={envelopes} onMove={move} step={10} />
+}
+```
+
+An envelope is its `name`, this period's `budget`, what's been `spent`, and any `rollover` carried in; what's left is the budget plus the rollover, less the spending. `icon` puts a glyph beside the name, and `tone` sets its color (the chart colors in turn by default). An envelope under 15% turns the warning tone, and one past empty the danger tone. Under the rack, a readout names the envelope in focus or under the pointer and what it has left, beside the rollover and overspent swatches; `legend={false}` leaves that row out.
+
+The meter is controlled. Give `onMove` and money can move: it's called with the source's `id`, the target's `id` and the amount, and you update the budgets. Without it the meter is read-only. `step` is what one drag or one Up press carries (10 by default), and a move never takes more than the source has left. `segments` is the cells per envelope (16), and `format` the `Intl.NumberFormat` options for the amounts (whole US dollars by default).
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="envelopes, onMove, step… (9)">
+
+### Props
+
+<PropsTable name="AllocationMeter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `allocation-meter` (with `data-carrying`), `allocation-meter-envelope` (with `data-state`: `ok`, `low` or `over`, and `data-source` and `data-target` while money is in hand), `allocation-meter-value`, `allocation-meter-track`, `allocation-meter-cell` (with `data-state` and `data-rollover`), `allocation-meter-base`, `allocation-meter-spill`, `allocation-meter-label`, `allocation-meter-ghost`, `allocation-meter-carry`, `allocation-meter-packet`, and under the rack `allocation-meter-rack`, `allocation-meter-footer`, `allocation-meter-readout` and `allocation-meter-legend`. An envelope's color is `--envelope-tone`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pick up, drop, relight… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Pick up', note: 'the cells the amount would take dim in the source, and a ghost of the cells it would add rings the target', duration: 'fast', ease: 'standard' },
+    { moment: 'Drop', note: 'a chip carries the amount across in a low arc', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Relight', note: 'both columns relight from their old edge, one cell at a time', duration: 'deliberate', ease: 'standard' },
+    { moment: 'Overspend', note: 'the drops under the base draw out one after another', duration: 'base', ease: 'enter' },
+  ]}
+  reduced="Cells light at once, no chip travels and the drops appear in place."
+/>
+
+#### Reduced motion
+
+Cells light and darken at once, the chip doesn't travel on a drop, and an overspent envelope's drops appear in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The rack is a group named by `label` (default: the labels' "Envelopes"), and with `onMove` described by how to move money from the keyboard.
+- Each envelope is a button named by what it has left, of what, and any rollover ("Groceries, $158 left of $560, $40 rolled over"), or by how far over it is ("Eating out, $32 over").
+- The envelopes are one tab stop. Left and right move between them (mirrored in RTL), Home and End go to the ends. Space or Enter picks money up; then the arrows choose where it goes, Up and Down change the amount by `step`, Enter moves it and Escape cancels. Moving focus out of the rack cancels too.
+- Every step is announced in a polite live region: what's picked up, where it would go, what moved and a cancel.
+- Its words come from the labels (`envelopes`, `envelopeLeft`, `envelopeOver`, `envelopeOf`, `envelopeRollover`, `envelopeRolloverTag`, `envelopeOverspentTag`, `envelopeHint`, `envelopePickedUp`, `envelopeTarget`, `envelopeMoved` and `envelopeMoveCancelled`), translated by the language packs.
+
+</ReferenceRow>

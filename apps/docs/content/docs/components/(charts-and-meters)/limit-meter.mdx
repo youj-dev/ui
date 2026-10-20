@@ -1,0 +1,113 @@
+---
+title: Limit Meter
+description: "Show a value against a limit, with the remaining amount and policy thresholds, such as spending."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="limit-meter/demo" height={300} />
+
+A card limit of 1,240 spent against 2,000 with a freeze line at 1,800, and buttons to charge, raise the limit or reset.
+
+- The caret under the ruler points up at the spend, with a hairline across the ruler above it. Marker names sit over the ruler, pushed apart when two are close.
+- Ticks already spent are lit in `tone` (default `success`).
+- The stretch still to go before a marker takes the marker's tone: the runway to it.
+- Ticks past the last marker are dim.
+- Spending past a marker turns those ticks to its tone, and spending past the limit turns the headline to "Over limit" with the overage in danger.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="limit-meter" noImport />
+
+Use an limit meter for a budget: what is left, large, with the spent and the limit as a quiet readout under it, over a ruler from zero to the limit. An index caret under the ruler points at the spend, and named lines mark the policies that act on it, so "how far until the card freezes" reads off the ruler.
+
+```tsx
+import { LimitMeter } from '@youj/react'
+
+<LimitMeter
+  spent={1240}
+  limit={2000}
+  format={{ style: 'currency', currency: 'EUR' }}
+  markers={[{ value: 1800, label: 'freeze', tone: 'warning' }]}
+  label="Card limit"
+/>
+```
+
+The ruler has 50 minor intervals with a major tick every 10 (`ticks`, `majorEvery`), and zero, the middle and the limit labeled under it. The remainder's decimals are set quieter than its whole part, whatever the locale's currency format. For a unit Intl has none for (GB, kcal), pass `formatValue` instead of `format`: a function that writes every amount and the scale.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="spent, limit, markers… (9)">
+
+### Props
+
+<PropsTable name="LimitMeter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `limit-meter`, `limit-meter-header`, `limit-meter-label`, `limit-meter-remaining`, `limit-meter-fraction`, `limit-meter-summary`, `limit-meter-stat`, `limit-meter-scale`, `limit-meter-flags`, `limit-meter-flag`, `limit-meter-ruler`, `limit-meter-tick` (with `data-major` and `data-zone`: `spent`, `runway` or `idle`), `limit-meter-marker`, `limit-meter-spent` (the hairline at the spend), `limit-meter-caret` and `limit-meter-axis`. The root has `data-state` (`within` or `over`).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, each tick, new spend or limit · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'when it scrolls into view the spend sweeps up from zero at a constant rate: the caret rides the front and the ticks light as it passes', duration: 'deliberate' },
+    { moment: 'Each tick', note: 'fades to its zone’s tone', duration: 'fast', ease: 'standard' },
+    { moment: 'New spend or limit', note: 'sweeps on from where the caret is; markers glide to their new place', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Drawn at its value; a new spend or limit is drawn in place."
+/>
+
+#### Reduced motion
+
+The ruler, the caret and the ticks are drawn at the value, with no sweep.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels and assistive technology">
+
+### Accessibility
+
+- It's a `meter` (Base UI Meter) whose value is the spend and whose maximum is the limit. Name it with `label`; without one it's named by the visible "Remaining", which reads "Over limit" once the spend passes the limit.
+- Its value text says it all: "€1,240.00 spent of €2,000.00, €760.00 left, freeze at €1,800.00". Every word comes from `labels` (`allowanceValueText`, `allowanceOverText`, `allowanceMarkerAt`, …), translated in all 14 language packs.
+- The ruler is hidden from assistive tech. It runs from the inline start, so right to left in RTL.
+
+</ReferenceRow>

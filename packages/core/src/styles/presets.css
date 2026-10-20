@@ -1,0 +1,385 @@
+/* Youj motion presets for Base UI, and for anything else that follows its
+ * lifecycle: mount with [data-starting-style], drop it a frame later, set
+ * [data-ending-style] on close and unmount once transitions finish.
+ *
+ * - Every duration is a youj token multiplied by --yj-motion (1 = motion,
+ *   0 = reduced), so the Speed control, prefers-reduced-motion and
+ *   <YoujProvider reducedMotion="always"> all reach them. A zero duration
+ *   also tells Base UI there is nothing to wait for, so it unmounts at once.
+ *   Portaled overlays need `{...useYoujScope()}` on their Portal to inherit
+ *   a provider's settings.
+ * - Transitions (not keyframes) so a reversal mid-flight starts from where
+ *   the element is.
+ * - Presets animate `transform` and leave the individual `translate` / `scale`
+ *   properties to layout utilities, e.g. shadcn's -translate-x-1/2 centering.
+ * - [data-instant] is Base UI asking for no animation (keyboard opens,
+ *   Escape closes, moving between grouped tooltips or menubar menus). */
+
+/* ── Durations ─────────────────────────────────────────────────────────────
+ * transition-duration from a token, scaled by Speed, zero when reduced.
+ * For bespoke transitions: `transition-transform yj-duration-fast ease-standard`. */
+
+@utility yj-duration-instant {
+  transition-duration: calc(var(--yj-duration-instant) * var(--yj-motion, 1));
+}
+@utility yj-duration-fast {
+  transition-duration: calc(var(--yj-duration-fast) * var(--yj-motion, 1));
+}
+@utility yj-duration-base {
+  transition-duration: calc(var(--yj-duration-base) * var(--yj-motion, 1));
+}
+@utility yj-duration-slow {
+  transition-duration: calc(var(--yj-duration-slow) * var(--yj-motion, 1));
+}
+@utility yj-duration-deliberate {
+  transition-duration: calc(var(--yj-duration-deliberate) * var(--yj-motion, 1));
+}
+
+/* ── Fade ──────────────────────────────────────────────────────────────────
+ * Opacity only: tab panels, item indicators, scroll arrows. */
+
+@utility yj-fade {
+  transition: opacity calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+  &[data-instant] {
+    transition-duration: 0s;
+  }
+}
+
+/* ── Pop ───────────────────────────────────────────────────────────────────
+ * Popover, Menu, Select, Combobox, Context Menu, Preview Card: grows out of
+ * the anchor point Base UI writes to --transform-origin and gets out of the
+ * way faster than it arrived. Entrances (here, in Tooltip and in Dialog) land
+ * their transform on the CSS spring (--ease-spring over --yj-duration-spring),
+ * while the opacity is done on the fast token: visible at once, and settling
+ * like the JS springs do. Exits (here, in Tooltip and
+ * in Dialog) cover half the entry's travel and decelerate: an accelerating
+ * curve spends the first frames of an 80-140ms close barely moving, which
+ * reads as lag. Sheets travel off-screen, so they keep ease-exit. */
+
+@utility yj-pop {
+  --yj-pop-in: calc(var(--yj-duration-fast) * var(--yj-motion, 1));
+  transform-origin: var(--transform-origin, center);
+  transition:
+    opacity var(--yj-pop-in) var(--ease-enter),
+    transform calc(var(--yj-duration-spring) * var(--yj-motion, 1)) var(--ease-spring);
+
+  &[data-starting-style] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  &[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.98);
+    transition-duration: calc(var(--yj-duration-instant) * var(--yj-motion, 1));
+    transition-timing-function: var(--ease-standard);
+  }
+  &[data-instant] {
+    transition-duration: 0s;
+  }
+}
+
+/* ── Tooltip ───────────────────────────────────────────────────────────────
+ * Smaller and quicker than a pop, and it arrives from its trigger: a few px
+ * of travel away from the side it sits on. */
+
+@utility yj-tooltip {
+  --yj-tip-in: calc(var(--yj-duration-fast) * var(--yj-motion, 1));
+  --yj-tip-x: 0px;
+  --yj-tip-y: 0px;
+  transform-origin: var(--transform-origin, center);
+  transition:
+    opacity var(--yj-tip-in) var(--ease-enter),
+    transform calc(var(--yj-duration-spring) * var(--yj-motion, 1)) var(--ease-spring);
+
+  &[data-side='top'] {
+    --yj-tip-y: 3px;
+  }
+  &[data-side='bottom'] {
+    --yj-tip-y: -3px;
+  }
+  &[data-side='left'],
+  &[data-side='inline-start'] {
+    --yj-tip-x: 3px;
+  }
+  &[data-side='right'],
+  &[data-side='inline-end'] {
+    --yj-tip-x: -3px;
+  }
+  &[data-side='inline-start']:dir(rtl) {
+    --yj-tip-x: -3px;
+  }
+  &[data-side='inline-end']:dir(rtl) {
+    --yj-tip-x: 3px;
+  }
+  &[data-starting-style] {
+    opacity: 0;
+    transform: translate(var(--yj-tip-x), var(--yj-tip-y)) scale(0.97);
+  }
+  &[data-ending-style] {
+    opacity: 0;
+    transform: translate(calc(var(--yj-tip-x) / 2), calc(var(--yj-tip-y) / 2)) scale(0.98);
+    transition-duration: calc(var(--yj-duration-instant) * var(--yj-motion, 1));
+    transition-timing-function: var(--ease-standard);
+  }
+  &[data-instant] {
+    transition-duration: 0s;
+  }
+}
+
+/* ── Dialog ────────────────────────────────────────────────────────────────
+ * Dialog and Alert Dialog popups: rises a few px while scaling up, so it has
+ * weight without travelling. A parent with a nested dialog open recedes one
+ * step per level (--nested-dialogs), peeking out below the child, and dims
+ * under a wash (::after) rather than by opacity: fading would let the page
+ * show through and take its text below 4.5:1. The wash is a shade, black at
+ * 12%, which keeps every text colour on the popup above 4.5:1 in both themes
+ * while its surface visibly steps back; retune it with --yj-dialog-dim. The
+ * popup must be positioned (Base UI popups are); the wash covers a 1px border. */
+
+@utility yj-dialog {
+  --yj-dialog-in: calc(var(--yj-duration-base) * var(--yj-motion, 1));
+  transition:
+    opacity var(--yj-dialog-in) var(--ease-enter),
+    transform calc(var(--yj-duration-spring) * var(--yj-motion, 1)) var(--ease-spring);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: var(--yj-dialog-dim, color-mix(in oklab, var(--yj-shade) 12%, transparent));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard);
+  }
+  &[data-starting-style] {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  &[data-ending-style] {
+    opacity: 0;
+    transform: translateY(3px) scale(0.98);
+    transition-duration: calc(var(--yj-duration-fast) * var(--yj-motion, 1));
+    transition-timing-function: var(--ease-standard);
+  }
+  &[data-nested-dialog-open] {
+    transform: translateY(calc(var(--nested-dialogs, 1) * 0.875rem)) scale(calc(1 - var(--nested-dialogs, 1) * 0.06));
+    transition-duration: var(--yj-dialog-in);
+    transition-timing-function: var(--ease-standard);
+  }
+  &[data-nested-dialog-open]::after {
+    opacity: 1;
+  }
+}
+
+/* ── Backdrop ──────────────────────────────────────────────────────────────
+ * Dialog, Alert Dialog, Drawer, Menu and Select backdrops. Bring your own
+ * colour (e.g. bg-canvas); this only fades it. It thins out as a drawer
+ * is swiped away (--drawer-swipe-progress) and tracks the finger exactly. */
+
+@utility yj-backdrop {
+  opacity: calc(1 - var(--drawer-swipe-progress, 0));
+  transition: opacity calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+  &[data-ending-style] {
+    transition-duration: calc(var(--yj-duration-fast) * var(--drawer-swipe-strength, 1) * var(--yj-motion, 1));
+  }
+  &[data-swiping] {
+    transition-duration: 0s;
+  }
+}
+
+/* ── Sheet ─────────────────────────────────────────────────────────────────
+ * A panel anchored to one edge: Dialog-based sheets and Base UI Drawer. It
+ * slides fully off its edge, decelerating in and accelerating away. With
+ * Drawer it follows the finger (--drawer-swipe-movement-*), and a flick
+ * leaves faster (--drawer-swipe-strength). `start` / `end` flip under RTL.
+ * A panel inset from its edge (a floating sheet) sets --yj-sheet-gap to that
+ * inset, so it travels past the gap too and leaves no sliver behind. */
+
+@utility yj-sheet-top {
+  --yj-sheet-hidden: translateY(calc(-100% - var(--yj-sheet-gap, 0px)));
+  --yj-sheet-rest: translateY(var(--drawer-swipe-movement-y, 0px));
+  @apply yj-sheet-base;
+}
+@utility yj-sheet-bottom {
+  --yj-sheet-hidden: translateY(calc(100% + var(--yj-sheet-gap, 0px)));
+  --yj-sheet-rest: translateY(var(--drawer-swipe-movement-y, 0px));
+  @apply yj-sheet-base;
+}
+@utility yj-sheet-left {
+  --yj-sheet-hidden: translateX(calc(-100% - var(--yj-sheet-gap, 0px)));
+  --yj-sheet-rest: translateX(var(--drawer-swipe-movement-x, 0px));
+  @apply yj-sheet-base;
+}
+@utility yj-sheet-right {
+  --yj-sheet-hidden: translateX(calc(100% + var(--yj-sheet-gap, 0px)));
+  --yj-sheet-rest: translateX(var(--drawer-swipe-movement-x, 0px));
+  @apply yj-sheet-base;
+}
+@utility yj-sheet-start {
+  --yj-sheet-hidden: translateX(calc(-100% - var(--yj-sheet-gap, 0px)));
+  --yj-sheet-rest: translateX(var(--drawer-swipe-movement-x, 0px));
+  @apply yj-sheet-base;
+
+  &:dir(rtl) {
+    --yj-sheet-hidden: translateX(calc(100% + var(--yj-sheet-gap, 0px)));
+  }
+}
+@utility yj-sheet-end {
+  --yj-sheet-hidden: translateX(calc(100% + var(--yj-sheet-gap, 0px)));
+  --yj-sheet-rest: translateX(var(--drawer-swipe-movement-x, 0px));
+  @apply yj-sheet-base;
+
+  &:dir(rtl) {
+    --yj-sheet-hidden: translateX(calc(-100% - var(--yj-sheet-gap, 0px)));
+  }
+}
+@utility yj-sheet-base {
+  transform: var(--yj-sheet-rest);
+  transition: transform calc(var(--yj-duration-slow) * var(--yj-motion, 1)) var(--ease-enter);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    transform: var(--yj-sheet-hidden);
+  }
+  &[data-ending-style] {
+    transition-duration: calc(var(--yj-duration-base) * var(--drawer-swipe-strength, 1) * var(--yj-motion, 1));
+    transition-timing-function: var(--ease-exit);
+  }
+  &[data-swiping] {
+    transition-duration: 0s;
+  }
+}
+
+/* ── Toast ─────────────────────────────────────────────────────────────────
+ * Base UI's stacked toasts. Collapsed, toasts behind the front one peek out
+ * by --yj-toast-peek and shrink a step each; hovering or focusing the
+ * viewport spreads them out with --yj-toast-gap between. New toasts rise in
+ * from the edge, swiped toasts leave in the swipe direction from where the
+ * finger let go, and the rest of the stack reflows on the same curve.
+ * `yj-toast` stacks against the bottom edge, `yj-toast-top` against the top.
+ * Put `yj-toast-content` on Toast.Content to hide the text of toasts behind. */
+
+@utility yj-toast {
+  --yj-toast-up: -1;
+  bottom: 0;
+  transform-origin: bottom center;
+  @apply yj-toast-base;
+
+  &::after {
+    top: 100%;
+  }
+}
+@utility yj-toast-top {
+  --yj-toast-up: 1;
+  top: 0;
+  transform-origin: top center;
+  @apply yj-toast-base;
+
+  &::after {
+    bottom: 100%;
+  }
+}
+@utility yj-toast-base {
+  --yj-toast-t: calc(var(--yj-duration-slow) * var(--yj-motion, 1));
+  --yj-toast-scale: max(0, calc(1 - var(--toast-index) * 0.05));
+  --yj-toast-shrink: calc(1 - var(--yj-toast-scale));
+  --yj-toast-height: var(--toast-frontmost-height, var(--toast-height));
+  --yj-toast-offset: calc(
+    var(--yj-toast-up) * (var(--toast-offset-y) + var(--toast-index) * var(--yj-toast-gap, 0.75rem)) +
+      var(--toast-swipe-movement-y)
+  );
+  position: absolute;
+  inset-inline: 0;
+  z-index: calc(1000 - var(--toast-index));
+  height: var(--yj-toast-height);
+  transform: translateX(var(--toast-swipe-movement-x))
+    translateY(
+      calc(
+        var(--toast-swipe-movement-y) + var(--yj-toast-up) *
+          (var(--toast-index) * var(--yj-toast-peek, 0.75rem) + var(--yj-toast-shrink) * var(--yj-toast-height))
+      )
+    )
+    scale(var(--yj-toast-scale));
+  transition:
+    transform var(--yj-toast-t) var(--ease-enter),
+    opacity var(--yj-toast-t) var(--ease-enter),
+    height calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard);
+
+  /* Keeps the stack expanded while the pointer crosses the gap between toasts. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    height: calc(var(--yj-toast-gap, 0.75rem) + 1px);
+  }
+  &[data-expanded] {
+    height: var(--toast-height);
+    transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--yj-toast-offset));
+  }
+  &[data-starting-style],
+  &[data-ending-style]:not([data-swipe-direction]) {
+    transform: translateY(calc(var(--yj-toast-up) * -150%));
+  }
+  &[data-ending-style] {
+    opacity: 0;
+  }
+  &[data-ending-style][data-swipe-direction='up'] {
+    transform: translateY(calc(var(--toast-swipe-movement-y) - 150%));
+  }
+  &[data-ending-style][data-swipe-direction='down'] {
+    transform: translateY(calc(var(--toast-swipe-movement-y) + 150%));
+  }
+  &[data-ending-style][data-swipe-direction='left'] {
+    transform: translateX(calc(var(--toast-swipe-movement-x) - 150%)) translateY(var(--yj-toast-offset));
+  }
+  &[data-ending-style][data-swipe-direction='right'] {
+    transform: translateX(calc(var(--toast-swipe-movement-x) + 150%)) translateY(var(--yj-toast-offset));
+  }
+  &[data-limited] {
+    opacity: 0;
+  }
+  &[data-swiping] {
+    transition-duration: 0s;
+  }
+}
+@utility yj-toast-content {
+  transition: opacity calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard);
+
+  &[data-behind] {
+    opacity: 0;
+  }
+  &[data-expanded] {
+    opacity: 1;
+  }
+}
+
+/* ── Collapse ──────────────────────────────────────────────────────────────
+ * Collapsible and Accordion panels: height from 0 to the size Base UI
+ * measures (it switches to auto once open, so content can still grow), with
+ * the content fading as it goes. Keep focus rings inside the padding: the
+ * panel clips while it animates. */
+
+@utility yj-collapse {
+  height: var(--collapsible-panel-height, var(--accordion-panel-height, auto));
+  overflow: hidden;
+  transition:
+    height calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard),
+    opacity calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    height: 0;
+    opacity: 0;
+  }
+}

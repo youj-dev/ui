@@ -1,0 +1,150 @@
+---
+title: Prompt Input
+description: "Compose a message with attachments and a send button that becomes a stop control."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="prompt-input/demo" height={300} />
+
+A composer with a model select and a Search toggle, where send turns into stop while a pretend reply streams.
+
+`status` is `idle`, `submitted` or `streaming`. Anything but `idle` turns send into stop, a real path morph from the arrow to a square, and Escape in the field stops too. Send stays focusable while it can't act, so keyboard focus is never dropped mid-reply.
+
+`toolbar` puts your controls at the start of the bottom bar: a model select, tool toggles, dictation. The demo has a model [Select](/docs/components/select) and a [Toggle](/docs/components/toggle). Size them `sm` to sit on the bar.
+
+</Story>
+
+<Story id="attachments" label="Attachments">
+
+<ComponentPreview name="prompt-input/attachments" height={280} />
+
+A composer that attaches files by paperclip, paste or drop, shown as chips above the text.
+
+Pass `onAttach` and a paperclip appears, and pasting or dropping files attaches them too. `accept` filters all three, as in `<input accept>`. Attachments sit above the text as chips, a thumbnail for images and name and size for files, each with its own remove button. `usePromptAttachments()` manages picked files for you: `add`, `remove` and `clear`, with object-URL previews revoked when they're removed or the component unmounts.
+
+An attachment with `status: 'uploading'` blocks sending until it's ready, and one with `status: 'error'` says so.
+
+</Story>
+
+<Story id="limits" label="Limits">
+
+<ComponentPreview name="prompt-input/limit" height={240} />
+
+A 220-character limit with a long draft in the field, so the counter shows.
+
+`maxLength` shows a counter near the limit and blocks sending past it. The counter appears from 80% of the limit, turns to a warning at 95% and to danger past it. Replace it with `counter`, for example `<PromptInputCounter value={tokens} max={8000} unit="tokens" />` to count tokens instead.
+
+</Story>
+
+<Story id="side-panel" label="Side panel">
+
+<ComponentPreview name="prompt-input/side-panel" height={300} />
+
+An assistant composer in a narrow side panel, with suggestion chips above it.
+
+[Chat Suggestions](/docs/components/chat/suggestions) above the field fill it on a click and move focus there. `onAttach` brings the built-in paperclip; `toolbar` takes your own tools beside it, here a Create button and a dictation [Toggle](/docs/components/toggle). `maxLength` blocks sending past 300 characters and shows the count near the limit.
+
+</Story>
+
+<Story id="session" label="Session details">
+
+<ComponentPreview name="prompt-input/session" height={420} />
+
+A composer with a session panel under it: context used, reasoning, tools, MCP and skills, and a status dot, over a footer with workspace and permission selects and a spinner.
+
+It is a composition, not a part: a [Property List](/docs/components/property-list) for the rows, a [Segmented Meter](/docs/components/segmented-meter) for the context window (amber from 80%), [Selects](/docs/components/select) and a [Spinner](/docs/components/spinner) in the footer. Send a message: Status turns to Running with the spinner on, and the context grows by a turn when the reply ends.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="PromptInput" noImport />
+
+Use it below a [Chat Message List](/docs/components/chat/message-list) for anything someone writes to an assistant. It handles the keyboard rules people expect from a chat composer, attachments by picker, paste and drop, and the switch from send to stop while a reply runs. For a plain multi-line field in a form, use a [Textarea](/docs/components/textarea).
+
+```tsx
+import { PromptInput } from '@youj/react'
+
+<PromptInput status={status} onStop={stop} onSubmit={({ text, attachments }) => send(text, attachments)} />
+```
+
+`onSubmit` gets the trimmed text and the attachments. Uncontrolled, the field clears itself after sending. Control it with `value` and `onValueChange` to fill it from elsewhere, like a [suggestion](/docs/components/chat/suggestions), and `textareaRef` to focus it.
+
+Enter sends and Shift+Enter breaks the line, and neither cuts an IME composition short. On touch keyboards Enter is a line break and the button sends. The field grows with the message up to 40% of the viewport, then scrolls.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="onSubmit, value, defaultValue… (23)">
+
+### Props
+
+<PropsTable name="PromptInput" />
+
+#### PromptInputCounter
+
+<PropsTable name="PromptInputCounter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Send to stop, reversal, attachment enters… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Send to stop', note: 'IconSwap `morph`: the arrow’s strokes bend into the square, and back', ease: 'emphasized', value: 'deliberate + fast: 700ms' },
+    { moment: 'Reversal', note: 'stopping mid-morph turns back from where it is', value: 'length × distance left' },
+    { moment: 'Attachment enters', note: 'fades and drops 6px (Presence List)', duration: 'base', ease: 'enter' },
+    { moment: 'Attachment leaves', note: 'fades in place, then the rest close the gap', duration: 'fast', ease: 'exit' },
+    { moment: 'Chips make room', spring: 'smooth' },
+    { moment: 'Counter', note: 'fades in near the limit', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Send and stop swap instantly, and chips appear and disappear in place."
+/>
+
+#### Reduced motion
+
+The arrow swaps to the square without morphing, and attachment chips appear and leave at once. Everything else, the keyboard rules and the counter, is unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- The field is named by `label` (default "Message"). With `maxLength`, it's described by the counter and set `aria-invalid` past the limit.
+- The counter is announced only in the last stretch (under 10% left) and when over, not on every keystroke.
+- Send is named "Send message", and "Stop generating" while busy, with a tooltip. It stays focusable while it can't act.
+- The paperclip is named "Attach files". Attachments are a list named "Attachments", and each remove button is named after its file. Removing one moves focus to its neighbor, never to the page.
+- `disabled` grays the whole frame and blocks typing, attaching and sending.
+
+</ReferenceRow>

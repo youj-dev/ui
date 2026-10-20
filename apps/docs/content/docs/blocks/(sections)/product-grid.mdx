@@ -1,0 +1,62 @@
+---
+title: Product grid
+description: "A shop's catalog on real photographs, with filters, saves and a quick view, for a storefront or collection page."
+---
+
+<BlockStories>
+
+<BlockStory id="grid" label="Product grid" block="commerce-product-grid" story="Default" backdrop="sandstone">
+
+A shop's catalog on the editorial Product card: categories as tabs with live counts, a Saved view, a Filters popover (price over its histogram, colors as swatches) whose choices become chips you can remove, and a sort. The featured product takes a wide tile, cards that stop matching fade while the rest glide into place, and a long catalog shows a page at a time.
+
+</BlockStory>
+
+<BlockStory id="quick-view" label="Quick view" block="commerce-product-grid" story="QuickView" backdrop="sandstone">
+
+Look closer without leaving the grid: the photo flies out of its tile into the dialog while the details rise around it, ← and → step through the grid's order, and closing flies it home onto its tile. Pick a colorway, a size and add it to the bag, or save it for later.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, filters, dialog, live counts">
+
+### Accessibility
+
+The grid is a `<section>` named by its own heading (`aria-labelledby`); the heading is an `h1` by default and `headingLevel` changes it, and every product is an article named by its link. The category tabs are a labeled group, the Filters popover's price is a two-thumb slider with named ends and its colors are checkboxes, and every chip is a button that says what it removes, handing focus to its neighbor (or the count) when it goes. The count of matching products is a polite status, and saving one is announced.
+
+Each card's heart is a toggle button (`aria-pressed`) named for its product. Quick view is a modal dialog named by the product: focus moves to it and back to the card's quick view button when it closes, Escape closes it, ← and → step through the grid when focus isn't in a field, and its sizes are a radio group with the sold-out ones disabled. Under reduced motion nothing flies and the dialog simply appears.
+
+</ReferenceRow>
+
+</BlockStories>

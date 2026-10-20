@@ -1,0 +1,137 @@
+---
+title: Stagger
+description: "Animate a group of elements in sequence, with shared timing and order controls."
+---
+
+<ComponentPreview name="stagger/demo" height={400} />
+
+Use it when a group arrives together: a grid of cards, a feature list, a row of stats. The offsets are tens of milliseconds, so the group reads as one gesture, not a queue. Don't stagger content people are waiting to read, like search results or a table that has just loaded. Show those at once.
+
+## Installation
+
+<InstallTabs name="stagger" />
+
+## Usage
+
+Every child gets its own cue. A child that isn't a [Reveal](/docs/motion/reveal) is wrapped in one, using the group's `variant`.
+
+```tsx
+import { Stagger } from '@youj/motion'
+
+export function Features() {
+  return (
+    <Stagger className="grid grid-cols-3 gap-4">
+      <FeatureCard title="Previews" />
+      <FeatureCard title="Rollbacks" />
+      <FeatureCard title="Analytics" />
+    </Stagger>
+  )
+}
+```
+
+The wrapper is the grid item. Each child sits inside its own `div`, so a layout class on the child (`col-span-2`, `justify-self-end`) no longer reaches the grid: the wrapper is what the grid lays out. Two ways to put it where it counts:
+
+- **The same class for every item:** `itemClassName` goes on each wrapper, for example `itemClassName="h-full"` so the cards fill their cells and match heights.
+- **A different class per item:** wrap that child in a `Reveal` yourself and give the `Reveal` the class. A `Reveal` child isn't wrapped again, so it is the grid item.
+
+```tsx
+<Stagger className="grid grid-cols-3 gap-4" itemClassName="h-full">
+  <Reveal className="col-span-2">
+    <FeatureCard title="Previews" />
+  </Reveal>
+  <FeatureCard title="Rollbacks" />
+  <FeatureCard title="Analytics" />
+</Stagger>
+```
+
+`itemClassName` goes on the wrappers Stagger makes, not on a `Reveal` you wrote. Give your own `Reveal` the classes it needs, `h-full` included.
+
+A `Reveal` child keeps its own variant, and its own `delay` adds to the cue the group gives it. Mix them when one item should arrive differently:
+
+```tsx
+<Stagger step="loose">
+  <Reveal as="h2" variant="blur-in">Pricing</Reveal>
+  <PlanCard plan="hobby" />
+  <PlanCard plan="pro" />
+</Stagger>
+```
+
+## Examples
+
+<Examples>
+
+<Example id="order" label="Order">
+
+### Order
+
+`order` decides which child moves first. `start` reads top to bottom, `end` runs in reverse, and `center` ripples out from the middle of the sequence. `random` shuffles the cues with a `seed`, so the server and the client agree on the order and the page hydrates without a jump.
+
+<ComponentPreview name="stagger/orders" height={260} />
+
+Ranks follow the children's order in the source, not their position on screen. In a grid, `center` starts from the middle item and works outward in both directions.
+
+</Example>
+
+<Example id="lists" label="Lists">
+
+### Lists
+
+Pass `as="ul"` and `itemAs="li"` to keep list semantics. Each child is wrapped in an animated `li`, so screen readers still announce a list and its length. A `tight` step with `fade` suits dense rows.
+
+<ComponentPreview name="stagger/list" height={320} />
+
+</Example>
+
+<Example id="when-it-plays" label="When it plays">
+
+### When it plays
+
+With the default `inView`, the group plays once, when 20% of it is on screen. Pass an object to change that: `inView={{ amount: 0.5 }}`, `margin` to start earlier or later, and `once: false` to replay every time it comes back into view. `inView={false}` plays as soon as the group renders. Use it for content that is already on screen when the page opens.
+
+`delay` holds the whole sequence back by a number of steps, so it stays on the same grid as the cues. `delay={3}` with `step="base"` waits three base steps before the first child moves.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="as, itemAs, itemClassName… (13)">
+
+### Props
+
+<PropsTable name="Stagger" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Cue offset, dense lists, hero sections… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Cue offset', note: 'between neighboring ranks, default `step`', stagger: 'base' },
+    { moment: 'Dense lists', note: '`step="tight"`', stagger: 'tight' },
+    { moment: 'Hero sections', note: '`step="loose"`', stagger: 'loose' },
+    { moment: 'Each child', note: 'the default `rise` variant', duration: 'slow', ease: 'enter' },
+  ]}
+  reduced="Every child renders in its final state at once. There's no sequence and no travel."
+/>
+
+Each child animates with its Reveal variant, so the timing of one item is the same as a lone Reveal. Only the start times differ.
+
+#### Reduced motion
+
+The group appears complete, with no cascade. Nothing is hidden or delayed, so the page reads the same with or without motion. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- Every child is in the document from the first render, in source order, so assistive technology reads the whole group whether or not it has played.
+- Stagger adds no roles. Use `as` and `itemAs` to give the group and its items their semantics.
+- The sequence plays once by default. Content that re-animates each time it scrolls past distracts, and it's hard to read for people with attention or vestibular conditions.
+
+</ReferenceRow>

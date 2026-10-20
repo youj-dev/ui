@@ -1,0 +1,225 @@
+---
+title: Using icons
+description: "Use animated icons to show actions and states in your interface."
+sidebarTitle: Overview
+---
+
+<TopicLoop topic="icons" />
+
+Every icon is drawn on the same grid and moves on the same clock as the rest of your interface. Here's one taken apart: the grid it's drawn on, its resting state, the path it travels and where it lands. Pick another to see how it moves.
+
+<IconLayers />
+
+<IconGallery />
+
+Use icons to identify actions and states in buttons, menus, tabs and status lines. Their animation gives feedback on hover and keyboard focus. For inline text or dense tables, use `trigger="none"` to keep them still.
+
+## Installation
+
+The package ships the whole set from one entry.
+
+```bash
+pnpm add @youj/icons
+```
+
+```tsx
+import { BellIcon, MenuIcon } from '@youj/icons'
+```
+
+Or copy icons in one at a time with the Youj CLI. Each is its own item, `icon-<name>`, and brings the icon engine with it.
+
+```bash
+npx youj add icon-bell icon-menu
+```
+
+## Usage
+
+Every icon is a component. It's decorative by default (`aria-hidden`); give it an `aria-label` when it carries meaning on its own.
+
+```tsx
+import { BellIcon } from '@youj/icons'
+
+<button type="button">
+  <BellIcon size={18} />
+  Notifications
+</button>
+```
+
+Icons play on hover by default, and they listen to their closest interactive parent, so hovering or keyboard-focusing the button above rings the bell. Mark any other container with `data-yj-trigger` to make it the trigger.
+
+## Examples
+
+<Examples>
+
+<Example id="triggers" label="Triggers">
+
+### Triggers
+
+<ComponentPreview name="icons/triggers" height={300} />
+
+- `hover` plays the choreography while the trigger is hovered or keyboard-focused, and settles back when it's released. The trigger is the closest ancestor with `data-yj-trigger`, otherwise the closest button, link, `summary`, `label` or element with a button, link, menu item, tab, switch or option role, otherwise the icon itself. Only keyboard focus counts, so a button that keeps focus after a click still settles when the pointer leaves.
+- `mount` plays once, as the icon appears.
+- `loop` repeats while the icon is on screen and the tab is visible, and pauses otherwise. Most icons cycle: they play for two `deliberate` steps and rest for one. Loaders (`LoaderRingIcon`, `LoaderDotsIcon` and `HourglassIcon`) run continuously instead, and they loop by default.
+- `none` holds the resting pose.
+
+A controlled `active` wins over every trigger. `true` holds the icon in its active pose, `false` at rest.
+
+</Example>
+
+<Example id="state-icons" label="State icons">
+
+### State icons
+
+State icons carry two states, such as menu and close, play and pause, muted and live, or saved and unsaved. Drive them from your own state with `active`. The icon shows the state, and the button around it carries the meaning for assistive technology. [useIconState](/docs/icons/use-icon-state) wires up both.
+
+<ComponentPreview name="icons/state-controls" height={340} />
+
+Reversing plays the opposite choreography, and a toggle mid-morph turns back from wherever the icon is. [Morphs](/docs/icons/morphs) has all of them.
+
+</Example>
+
+<Example id="size-and-stroke" label="Size and stroke">
+
+### Size and stroke
+
+`size` sets the width and height. It takes a number of pixels or any CSS length, so `size="100%"` fills its box. `strokeWidth` is in view-box units, so it scales with the icon: the default 1.5 draws 1px lines at 16px and 2px lines at 32px.
+
+<ComponentPreview name="icons/sizes" height={300} />
+
+| Where | Size | Stroke |
+| --- | --- | --- |
+| 24px controls, 12px text | 14 | 1.75 |
+| 28–32px controls, 13–14px text | 16 | 1.75 |
+| 40px controls, 16px text | 20 | 1.5 |
+| On its own | 24–32 | 1.5 |
+| Display, 40px and up | 40+ | 1.25 |
+
+Inside Youj's UI controls, leave `size` alone: a [Button](/docs/components/button), a menu item or a tab sizes its icons to the control. Pass only the stroke.
+
+</Example>
+
+<Example id="brand-marks" label="Brand marks">
+
+### Brand marks
+
+Brand marks sit in their own `brand` category, for signing in with a service or linking to it: `BrandGithubIcon`, `BrandXIcon`, `BrandLinkedinIcon`, `BrandDiscordIcon` and `BrandFigmaIcon`. Each is drawn from its owner's official asset, in one color, and never animates: the guidelines don't allow a mark to be altered, and a moving mark is an altered one.
+
+```tsx
+import { Button } from '@youj/react'
+import { BrandGithubIcon } from '@youj/icons'
+
+<Button variant="outline">
+  <BrandGithubIcon />
+  Continue with GitHub
+</Button>
+```
+
+- Use a mark only to refer to its service: a sign-in button, a link to a profile or project, a row of social links. Never as your own logo, and never so it suggests the service endorses you.
+- Keep it as drawn, in black or white (the foreground color). GitHub also allows gray or green, LinkedIn its blue, Discord its Blurple. Don't recolor it in your accent, stretch it or combine it with other marks or words.
+- Name the service beside the mark where you can; Discord asks for it.
+- Google, Apple, Microsoft, Slack and GitLab aren't in the set. Their guidelines require their own artwork (Google's full-color G, Apple's and Microsoft's sign-in buttons) or don't allow their logos to be redistributed, so use the sign-in button artwork each one provides.
+
+#### Continue with Google
+
+Google is the one exception to the single-color rule, so it isn't an icon here. The [auth blocks](/docs/blocks/auth) draw Google's button from its [Sign in with Google guidelines](https://developers.google.com/identity/branding-guidelines), in `blocks/auth/shell/google-mark.tsx`:
+
+- The standard four-color G, never monochrome, recolored or resized out of proportion.
+- Google's own button colors, not your theme's: the light theme (white fill, `#747775` stroke, `#1F1F1F` text) in a light scope and the dark theme (`#131314`, `#8E918F`, `#E3E3E3`) in a dark one, following each scope's `color-scheme`. `googleButton.neutral` is the neutral theme (`#F2F2F2`, no stroke).
+- An approved label: "Continue with Google", "Sign in with Google" or "Sign up with Google", translated where the page is.
+- The same size and weight as the other sign-in buttons beside it.
+
+Those colors are the one raw-color exception to Youj's token lint, allowlisted for that file alone. Google specifies Google Sans Medium for the label; the block uses your UI font, so load Google Sans if you need strict compliance.
+
+The marks are their owners' trademarks, used under each owner's brand guidelines, and aren't covered by Youj's MIT license. [Credits](/docs/contributing#credits-and-licenses) links every guideline.
+
+</Example>
+
+<Example id="how-an-icon-is-built" label="How an icon is built">
+
+### How an icon is built
+
+Each icon is a `createIcon` definition. `variants(k)` receives the Youj timing object, so every duration and spring comes from the tokens, and the Speed control and reduced motion reach every part. Each part defines a `rest` and an `active` pose, and optionally a `from` pose for `trigger="mount"`. `render` draws the parts as Motion elements. This is the complete source of `CheckIcon`:
+
+```tsx
+import { motion } from 'motion/react'
+import { createIcon, drawIn, drawn, hidden, origin } from '@youj/icons'
+
+/** Draws its stroke with a decisive ease-out, then settles with a tiny spring. */
+export const CheckIcon = createIcon({
+  name: 'check',
+  category: 'actions',
+  keywords: ['done', 'complete', 'confirm', 'ok', 'success', 'tick'],
+  variants: (k) => ({
+    mark: {
+      from: { ...hidden, scale: 0.9 },
+      rest: { ...drawn(k), scale: 1 },
+      active: {
+        ...drawIn(k, 'slow'),
+        scale: [0.88, 1],
+        transition: { ...drawIn(k, 'slow').transition, scale: { ...k.spring('settle'), delay: k.duration('base') } },
+      },
+    },
+  }),
+  render: (v) => <motion.path d="M4 12.5 L9 17.5 L20 6.5" variants={v.mark} style={origin(12, 12)} />,
+})
+```
+
+The engine does the rest: it resolves the trigger, pauses loops offscreen, sets the ARIA attributes, and under reduced motion turns every variant into its final pose with no transition. A state icon adds `states: ['menu', 'close']`, and its `active` pose is the second state.
+
+The choreography helpers come from the same entry:
+
+| Helper | Does |
+| --- | --- |
+| `origin(x, y)` | Pivots a part around a point in view-box units. |
+| `seq(k, token, times, eases?)` | A keyframed tween over one duration token, with one easing token per segment. `seqFor` takes seconds instead. |
+| `after(k, delay, token, ease?)` | A tween that starts after a delay, for sequenced steps. |
+| `drawIn`, `drawOut`, `drawn`, `hidden` | Stroke draw-on, retract, fully drawn and hidden poses for `pathLength`. |
+
+Every component carries `meta` with its `name`, `category`, `keywords`, `states` and `defaultTrigger`. The `icons` array holds the whole set in alphabetical order, and `ICON_CATEGORIES` lists the categories the [explorer](/icons) groups them by.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, strokeWidth, aria-label… (8)">
+
+### Props
+
+<PropsTable name="IconProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Choreography steps, feedback, draw on… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Choreography steps', note: 'most parts move in short tweens', duration: 'fast', ease: 'standard' },
+    { moment: 'Feedback', note: 'flips, snaps and presses', spring: 'snappy' },
+    { moment: 'Draw on', note: '`drawIn`, a stroke writing itself', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Retract', note: '`drawOut`', duration: 'fast', ease: 'exit' },
+    { moment: 'Arrival and success', note: 'a check landing, a bookmark filling', spring: 'settle' },
+    { moment: 'Loop cycle', note: 'plays for 2 steps, rests for 1', duration: 'deliberate' },
+  ]}
+  reduced="Icons hold their resting pose and never play. State icons switch instantly, and loops stop."
+/>
+
+#### Reduced motion
+
+An icon holds its resting pose and never plays, and loops stop. A controlled `active` still sets the pose, so a state icon switches straight to its new state: a muted microphone still shows its slash. The meaning survives; only the motion goes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Icons are decorative by default: `aria-hidden`, and never focusable. Inside a labeled button, leave them that way, so the button has one name.
+- `aria-label` turns an icon into `role="img"` with that name. Use it only for an icon that stands alone and means something, like a status mark with no text beside it.
+- Hover choreography also plays on visible keyboard focus, so keyboard users get the same feedback as pointer users.
+- A state icon shows its state but doesn't announce it. Put the state on the control, with `aria-pressed` or a name that changes, as [useIconState](/docs/icons/use-icon-state) does.
+
+</ReferenceRow>

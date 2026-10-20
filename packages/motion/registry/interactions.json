@@ -1,0 +1,56 @@
+[
+  {
+    "name": "shimmer-border",
+    "type": "registry:component",
+    "title": "Shimmer Border",
+    "description": "A container or button whose border carries a travelling point of accent light (conic gradient on a registered @property, masked to the border). Intensifies on hover and keyboard focus.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-presets", "shimmer"],
+    "files": [{ "path": "src/components/youj/interactions/shimmer-border.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "spotlight-card",
+    "type": "registry:component",
+    "title": "Spotlight Card",
+    "description": "Pointer-tracked surface spotlight and border glow shared across a grid of cards, so neighbours light at their nearest edges. Keyboard focus gets the same treatment.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "spotlight"],
+    "files": [{ "path": "src/components/youj/interactions/spotlight-card.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "cursor-follower",
+    "type": "registry:component",
+    "title": "Cursor Follower",
+    "description": "Spring-following cursor layer that morphs over data-cursor targets (button, text, link, media). Off for coarse pointers and reduced motion; never hides the native cursor without a fallback.",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core"],
+    "files": [{ "path": "src/components/youj/interactions/cursor-follower.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "page-transition",
+    "type": "registry:component",
+    "title": "Page Transition",
+    "description": "Route transition kit: fade-through, direction-aware slide, clip-reveal and curtain wipe variants, plus a SharedElement helper built on Motion layoutId.",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core"],
+    "files": [{ "path": "src/components/youj/interactions/page-transition.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "dock",
+    "type": "registry:component",
+    "title": "Dock",
+    "description": "macOS-style magnifying dock, transform-only and spring-smoothed, with tooltips, roving-focus keyboard navigation that magnifies on focus, and a travelling active indicator.",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core", "youj-labels-dock"],
+    "files": [{ "path": "src/components/youj/interactions/dock.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "liquid-glass",
+    "type": "registry:component",
+    "title": "Liquid Glass",
+    "description": "A pane of liquid glass behind any content: backdrop blur and saturation, a lit rim, a highlight that follows the pointer, a lean toward it on a spring that overshoots and settles, and a squish on press. CSS and springs, no WebGL; static glass under reduced motion.",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core"],
+    "files": [{ "path": "src/components/youj/interactions/liquid-glass.tsx", "type": "registry:component" }]
+  }
+]

@@ -1,0 +1,119 @@
+---
+title: ScrambleText
+description: "Reveal short text through changing random characters."
+---
+
+<ComponentPreview name="scramble-text/demo" height={380} />
+
+Use it for short technical strings that change: a deploy status, a commit hash, a region code, a label that reacts to hover. The noise says "computed", so keep it to a few words, and don't use it on sentences, prices or numbers people compare. For a number that moves, use [Counter](/docs/motion/counter).
+
+## Installation
+
+<InstallTabs name="scramble-text" />
+
+## Usage
+
+```tsx
+import { ScrambleText } from '@youj/motion'
+
+export function DeployStatus({ status }: { status: string }) {
+  return (
+    <span role="status" className="font-mono text-xs uppercase">
+      <ScrambleText>{status}</ScrambleText>
+    </span>
+  )
+}
+```
+
+By default it decodes when it mounts and again whenever its text changes, starting from whatever it showed last. A monospace face, or a fixed width such as `w-[9ch]`, keeps the layout still while the glyphs roll.
+
+## Examples
+
+<Examples>
+
+<Example id="triggers" label="Triggers">
+
+### Triggers
+
+`trigger` takes one of `mount`, `view`, `hover` and `change`, or an array of them.
+
+- `mount` plays once, before the first paint.
+- `view` plays once, when 60% of the element is on screen.
+- `hover` plays when the pointer enters the element, and when the element itself takes focus.
+- `change` plays when the text changes. Without it, new text swaps in place.
+
+<ComponentPreview name="scramble-text/hover" height={240} />
+
+`hover` listens on ScrambleText's own element. Render it as the control itself, with `as="button"`, so a keyboard user who tabs to it sees the same decode as the pointer. Focus on a wrapping button or link doesn't reach a child.
+
+</Example>
+
+<Example id="glyphs" label="Glyphs">
+
+### Glyphs
+
+`glyphs` is the alphabet the noise is drawn from. The default is upper-case letters and digits. Match it to the content, so the noise already looks like the answer: hex digits for a hash, `01` for a checksum, letters for a status.
+
+```tsx
+<ScrambleText glyphs="0123456789abcdef">{commit}</ScrambleText>
+<ScrambleText glyphs="01" duration="slow">SHA-256 verified</ScrambleText>
+```
+
+Spaces stay spaces while the rest decodes, so the shape of the words reads early.
+
+</Example>
+
+<Example id="changing-text" label="Changing text">
+
+### Changing text
+
+With `change` alone, nothing plays on mount, and every new string decodes from the one before. Here a secret decodes out of its mask and back.
+
+<ComponentPreview name="scramble-text/reveal" height={300} />
+
+The mask is hidden from assistive technology and replaced by the word "Hidden", so a screen reader never reads out sixteen bullets.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="children, as, trigger… (6)">
+
+### Props
+
+<PropsTable name="ScrambleText" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Decode, glyph re-roll · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Decode', note: 'positions resolve left to right with jitter; the last one lands at `duration`', duration: 'deliberate' },
+    { moment: 'Glyph re-roll', note: 'unresolved positions redraw every half `tick`', duration: 'instant' },
+  ]}
+  reduced="The new text replaces the old at once. No glyphs."
+/>
+
+Each position resolves at a time between 15% and 100% of `duration`, later for positions further right, with up to a quarter of the duration in random jitter. That reads as decoding rather than typing. Frames are written straight to the text node, so a decode never re-renders React.
+
+#### Reduced motion
+
+Text renders as it is and changes in place, instantly. Nothing decodes, on any trigger, and the status in the first preview simply reads Queued, Building, Deploying and Ready in turn.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The real text is rendered once in a visually hidden span, and the decoding copy is `aria-hidden`. A screen reader reads the text, never the noise.
+- The hidden copy updates the moment the text changes. To announce a change, put ScrambleText inside a live region, as the status in the first preview does with `role="status"`.
+- `hover` also plays on keyboard focus when ScrambleText is the focusable element. Give it `as="button"` rather than wrapping it.
+- The effect is visual only. Keep it to short strings, because noise over a long string reads as broken.
+
+</ReferenceRow>

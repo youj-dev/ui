@@ -1,0 +1,721 @@
+---
+title: Theming
+description: "Choose a preset or set your own colors, type and motion for light and dark modes."
+---
+
+<TopicLoop topic="themes" />
+
+Choose your colors, corners, spacing, typefaces and motion. You can also set line weight, shadows, surface shading, title and label styles, and chart colors. Youj uses these choices to calculate the tokens for light and dark modes.
+
+Pick your own preset and style: Youj has no brand look you're meant to keep. Without a theme, components draw the Youj palette in the **Clean style** (Inter and JetBrains Mono, rounded rectangles, sentence-case labels), in dark, so a bare page looks right; `npx youj init` and Create ask you to choose. This site wears **Graphite in light and Basalt in dark**, both the Youj palette in Clean: that pairing is only the docs' own choice. Every preset is tuned for both schemes: its light colors are chosen for light surfaces, not darkened copies of its dark ones.
+
+A theme sets colors, type and shared sizing. A [look](/docs/looks) sets how components are built. Classic, the default, gives you bordered panels, rounded-rectangle buttons and outlined fields. Bezel gives you sectioned cards, pill buttons and filled fields. Pair either look with any theme.
+
+<ThemeLayers />
+
+<ThemePresets />
+
+<Callout title="Try a preset">
+  This site wears Basalt in dark mode and, in light, Basalt's character in Graphite's blue. Its previews start in a stock preset, Graphite in light and Basalt in dark (each toolbar's Palette menu marks it Default). To see another, pick a **Palette** and a **Style** where something is rendered: the Appearance menu in a component's or a block's preview toolbar, or the [builder](#build-your-own) below. Each changes only its previews. To make a theme of your own and take it into your app, use [Create](/create).
+</Callout>
+
+## Roles
+
+A theme never sets a color by name. It sets a few inputs (the neutral, the accent and status inks, the character, the tone) and the stylesheet derives the **roles** from them, in light and dark. Components paint with roles only: `bg-surface`, `text-fg-muted`, `border-line-control`. So any theme reaches every component, and `checkTheme` can prove every pair a role implies before your app draws it.
+
+Use the role that names what the thing *is*, not the color you want: a menu is `overlay`, a tab track is `well` and its selected tab `key`, a sidebar is `chrome`. Every role below is derived again inside each theme scope and tone scope, so the same class is right everywhere.
+
+Each role is a Tailwind color: `bg-surface`, `text-fg-muted`, `border-line-control`, `ring-focus`.
+
+<RoleTable />
+
+### Every class, to copy
+
+The class names the theme drives, read from the tokens when the site is built. Each role works with any color utility (`bg-`, `text-`, `border-`, `ring-`, `fill-`, `stroke-`); the one listed is its usual use.
+
+<TokenClasses />
+
+### Each preset's roles
+
+The surfaces carry text in all three weights, and each ink is shown solid and as a soft badge (its `-text` on its `-subtle`, ringed by its `-line`). These are live: the page's stylesheet draws them, in the site's mode.
+
+<RoleSampler />
+
+### Tints
+
+An opacity on a role (a slash and a percentage after the role's class) is never right in Youj: it isn't checked for contrast, it changes with whatever is underneath, and it reads differently in dark. Every tint the components need is a role of its own:
+
+| Role | Formula | Instead of |
+| --- | --- | --- |
+| `hover` | `fg` at 6% | text color at a low opacity, `bg-muted`, shadcn's `accent` |
+| `selected` | `fg` at 9% | text color at 10%, a selection drawn with the accent |
+| `band` | `fg` at 5% | half of `muted`, text color at 3% |
+| `line-subtle` | `line` at 55% | the line at half opacity |
+| `<ink>-subtle` | the ink at 10% in light, 14% in dark | the accent or danger at 10 to 15% |
+| `<ink>-line` | the ink at 35% | an ink border at 20 to 40% |
+| `<ink>-text` | the ink mixed 80% with `fg` | the ink itself as small text |
+
+The inks are `accent`, `success`, `warning`, `danger` and `info`. `<ink>-text` reads at 4.5:1 on its own `-subtle` over the page and a card, which `checkTheme` holds. Selected is also hoverable: write `bg-selected hover:bg-selected`, never `hover:bg-selected` on a selected item. A faint neutral wash below 5% takes no tint at all. Youj's own lint (`lint:tokens`) refuses `/N` on a role in its source; your app can follow the same rule.
+
+### Tone: two-tone themes
+
+A **tone scope** is an element with `data-yj-tone`: `header` on the top bar (AppHeader, block headers), `chrome` on the other bars attached to the frame (Sidebar, the bottom tab bar), `float` on chrome that floats (Toolbar, Menubar, Capsule, ActionIsland, Dock, islands), `overlay` on every menu, popover, dialog and toast, and `inverse` on the tooltip. Components write it on their own root, so you never add it. Inside a tone scope every role is derived again in that tone's mode, so a button, a field, tabs or a menu inside a dark sidebar are their dark selves, by derivation.
+
+The theme's `tone` chooses those modes:
+
+| `tone` | Values | Default |
+| --- | --- | --- |
+| `chrome` | `match` follows the page; `dark` or `light` holds the chrome to that mode | `match` |
+| `bars` | `chrome` draws headers and sidebars in the chrome's mode; `content` keeps them in the page's, so only floating chrome changes; `top` draws only the top bar in the chrome's mode | `chrome` |
+| `overlays` | `content` draws menus and dialogs in the page's mode; `chrome` in the chrome's; `ink` in the page's, with the row under the pointer or the keyboard filled with ink (`cursor`) and lettered in paper | `content` |
+
+`{ chrome: 'dark' }` on a light page gives dark bars and a dark sidebar around light content. `{ chrome: 'dark', bars: 'content' }` keeps the header and sidebar light and darkens only what floats: islands, toolbars, docks. `bars: 'top'` adds a dark header over a light sidebar. In dark mode it changes nothing, and `chrome: 'light'` is its mirror. Tones are absolute: the inverse is always the page's opposite, wherever it is drawn.
+
+```ts title="app/theme.ts"
+import { defineTheme, graphite } from '@youj/core'
+
+export const studio = defineTheme({ ...graphite, id: 'studio', name: 'Studio', tone: { chrome: 'dark' } })
+```
+
+<TwoToneExample />
+
+With `overlays: 'chrome'` the menus follow the chrome as well:
+
+<TwoToneExample overlays="chrome" />
+
+In CSS, `tone` is six switches, which a complete theme resets so nothing leaks from an outer scope: `--yj-tone-chrome-fixed` and `--yj-tone-chrome-dark` (each `0` or `1`), `--yj-tone-bars-chrome`, `--yj-tone-header-chrome`, `--yj-tone-overlay-chrome` and `--yj-tone-overlay-ink`. A highlighted row paints `bg-cursor` and wears `yj-on-cursor`, which letters it in `on-cursor` and turns the text roles inside to match. `checkTheme` runs its role matrix under every tone (match, chrome dark, chrome light, chrome dark with chrome overlays, a top bar alone with chrome overlays, and content bars with chrome or ink overlays), so a two-tone theme is held to AA like any other. In [Create](/create), **Chrome**, **Bars** and **Overlays** sit in the theme's basics, and the link and `npx youj create` carry them.
+
+### Coming from shadcn
+
+Youj's names are not shadcn's, and Youj's own source never reads shadcn's. An app that already speaks shadcn's vocabulary adds the compat sheet after Youj's stylesheet, in the same Tailwind root:
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';
+@import '@youj/react/shadcn.css';
+```
+
+It maps each shadcn name onto the role it means, per theme scope and tone: `background` to `canvas`, `card` to `surface`, `popover` to `overlay`, `primary` to `accent`, `muted` to `band`, `border`, `input` and `ring` to `line`, `line-control` and `focus`, `sidebar` to `chrome`.
+
+One name can't map: shadcn's `accent` is a hover surface, and in Youj `accent` is the brand ink. `npx youj add` rewrites shadcn's `accent` to `hover` (and `accent-foreground` to `fg`) in code it copies in; in your own code, make the same change. [Coming from shadcn/ui](/docs/guides/shadcn) covers the move step by step.
+
+## The contract
+
+These are the settings you pass to `defineTheme`, and the CSS variables they produce. `defineTheme` freezes your settings; use `checkTheme` to validate them. Basalt is the baseline: a theme with an `id` takes Basalt's value for every field it leaves out, and so does a page with no theme, so `defineTheme({ id: 'mine' })` is Basalt, and `defineTheme({ id: 'mine', accent })` and `defineTheme({ accent })` agree on everything but colour. That includes the neutral ramp and the colours: an accent or status colour you leave out is Basalt's tuned pair (with the light ink held to AA on your own neutrals), and a chart palette you leave out is Basalt's while you set no colour of your own, then one drawn from your accent. Those are the Youj palette's: Graphite's ultramarine in light, Basalt's amber in dark; set the colours you want.
+
+| Field | CSS | Values | Default |
+| --- | --- | --- | --- |
+| Neutral hue | `--yj-neutral-hue` | an OKLCH hue in degrees | `285`, Basalt's cool violet-gray |
+| Neutral chroma | `--yj-neutral-chroma` | `0` (pure gray) to `0.04` | `0.008` |
+| Neutral wash | `--yj-neutral-wash` | `0` to `1`: how much tint reaches the page and surfaces | `0` |
+| Neutral lift | `--yj-neutral-lift` | `0` to `1`: in dark mode, how far cards and the surfaces above them stand from the page | `1` |
+| Neutral page | `--yj-neutral-page` | `gray` `white`: in light mode, white cards on a soft gray page, or a white page with cards and code a gray step down | `gray` |
+| Accent | `--yj-accent`, or `--yj-accent-light` and `--yj-accent-dark` | any CSS color, or [one per mode](#colors-per-mode) | Basalt's amber |
+| Success, warning, danger | `--yj-success`, `--yj-warning`, `--yj-danger`, each with `-light` and `-dark` | any CSS color, or one per mode, optional | Basalt's tuned pairs |
+| Info | `--yj-info`, with `-light` and `-dark` | any CSS color, or one per mode, optional: informational alerts, toasts and badges | the accent |
+| Chart | `--yj-chart-1` to `--yj-chart-5`, each with `-light` and `-dark` | five CSS colors, or five per mode, optional: the [chart palette](#chart-palette) | Basalt's, or drawn from your accent once you set one |
+| Radius | `--yj-radius` | `none` `sm` `md` `lg` `xl` `full` | `xl`, 10px on a 32px control |
+| Control size (`controlSize`) | `--yj-density` | `compact` `default` `comfortable` | `default`, 32px controls |
+| Fonts | `--yj-font-sans`, `--yj-font-mono`, `--yj-font-display` | font-family lists; `display` sets titles | Inter, JetBrains Mono; titles in Inter |
+| Motion personality (`motionPersonality`) | `data-yj-motion` | `precise` `calm` `lively` | `precise` |
+| Stroke | `--yj-stroke-width`, `--yj-stroke-ink`, `--yj-icon-weight` | a width in px, `0` to `1` toward the ink, an icon multiplier | a `1px` neutral hairline, icons as drawn |
+| Shadow | `--yj-shadow-soft`, `--yj-shadow-hard` | `soft` `hard` `none` | `soft` |
+| Actions | `--yj-action-ink` | `accent` `ink` | `accent` |
+| Controls | `--yj-pill` | `pill` `rounded`: the [shape](#shapes) of every control | `rounded` |
+| Fields | `--yj-field-soft` | `outlined` `soft`: how every [field](#shapes) is drawn | `outlined` |
+| Surfaces | `--yj-surface-gradient` | `0` to `1`: cards shade toward their foot (lighter in dark), ink buttons carry a sheen | `0`, flat |
+| Headings | `--yj-heading-weight`, `--yj-heading-tracking` | a weight, a tracking in em | `600`, `-0.025em` |
+| Tone | `--yj-tone-chrome-fixed`, `--yj-tone-chrome-dark`, `--yj-tone-bars-chrome`, `--yj-tone-header-chrome`, `--yj-tone-overlay-chrome`, `--yj-tone-overlay-ink` | `chrome`: `match` `dark` `light`; `bars`: `chrome` `content` `top`; `overlays`: `content` `chrome` `ink` ([two-tone](#tone-two-tone-themes)) | `match`, `chrome`, `content` |
+| Labels | `--yj-label-case`, `--yj-label-font`, `--yj-label-tracking` | capitals, the mono face, a tracking | sentence case in the text face (a theme that sets capitals gets a tracking fitted to its face) |
+
+The motion personality uses the `data-yj-motion` attribute to select a timing curve. It is not the provider's `motion` prop, which only switches animation on or off, and the control size is not the provider's `density`, which is layout room (see [Density and scaling](#density-and-scaling)). The appearance settings are covered under [Character](#character).
+
+## Colors per mode
+
+A color you give once is derived for each scheme: darkened until text in it reads on light surfaces, lifted until it reads on dark ones. That keeps any color legible, but a color that's right in one scheme isn't always right in the other. A pale amber that glows on near-black turns brown once it's darkened enough to read on white. A light green in dark mode wants a deeper, cleaner green in light mode, not a darker copy.
+
+So each color can also be given per mode, as `{ light, dark }`. Each side is used exactly as given:
+
+```ts title="app/theme.ts"
+import { defineTheme } from '@youj/core'
+
+export const brand = defineTheme({
+  id: 'brand',
+  // One color: both schemes are derived from it.
+  success: '#10b981',
+  // Tuned per mode: a signal orange for white, an amber that glows on black.
+  accent: { light: 'oklch(0.528 0.145 47)', dark: 'oklch(0.8 0.165 73)' },
+  // Five series for each scheme.
+  chart: {
+    light: ['oklch(0.595 0.19 140)', 'oklch(0.6 0.23 358)', 'oklch(0.54 0.25 293)', 'oklch(0.625 0.155 55)', 'oklch(0.6 0.11 222)'],
+    dark: ['oklch(0.9 0.2 129)', 'oklch(0.67 0.21 354)', 'oklch(0.61 0.22 293)', 'oklch(0.8 0.165 73)', 'oklch(0.8 0.13 210)'],
+  },
+})
+```
+
+In CSS, a pair is two variables, used as given. Set both, and no single color beside them: where both forms are set, the single color wins, which is what lets `--yj-accent` alone re-brand a page over the default pairs.
+
+```css
+:root {
+  --yj-accent-light: oklch(0.528 0.145 47);
+  --yj-accent-dark: oklch(0.8 0.165 73);
+}
+```
+
+Nothing moves a color you give per mode, so `checkTheme` holds each side to the same pairs a derived color meets: 4.5:1 as text on every surface in its scheme, and 3:1 for chart series. A side that misses is an error, and `allowLowContrast` accepts it, as for any other pair. Every palette gives its colors per mode. Youj's are the tuned pairs a theme gets when it leaves them unset.
+
+Code that reads a theme's colors can tell the two forms apart with `isPerMode(theme.accent)`. To get the color a theme actually draws in each mode, whichever form it uses, call `deriveTheme(theme)`.
+
+## Palette and style
+
+A theme is two layers that pair freely:
+
+- A **palette** is color only: the neutral (`hue`, `chroma`, `wash`, `lift`, `page`), the `accent`, the `success`, `warning`, `danger` and `info` inks, and the `chart`. A palette never tints the whites and grays: every shipped palette has a `wash` of 0, so pages, cards and fields stay neutral and the color goes to buttons, checks, focus, selection, charts and the backdrop.
+- A **style** is form only: `radius`, `controlSize`, `fonts`, `stroke`, `shadow`, `actions`, `controls`, `surfaces`, `headings`, `labels`, `motionPersonality`, and the [look](/docs/looks) it's built in. Pick a style and the look follows it.
+
+Any palette goes with any style. Pick them on the provider or a scope, by the exported objects:
+
+```tsx title="app/providers.tsx"
+import { YoujProvider, meadowPalette, brutalStyle } from '@youj/core'
+
+<YoujProvider palette={meadowPalette} style={brutalStyle}>{children}</YoujProvider>
+```
+
+Either one alone swaps that half of the theme around it and keeps the other, so `<ThemeScope style={classicStyle}>` sets one section in Classic in the app's own colors. A `theme` on the same provider applies on top, and an explicit `look` wins over the style's. In code, `composeTheme(palette, style)` makes the complete theme, and `definePalette` and `defineStyle` declare your own:
+
+```ts title="app/theme.ts"
+import { composeTheme, definePalette, cleanStyle } from '@youj/core'
+
+export const harbor = definePalette({
+  id: 'harbor',
+  name: 'Harbor',
+  neutral: { hue: 230, chroma: 0.004, wash: 0, lift: 0.5 },
+  accent: { light: 'oklch(0.5 0.12 240)', dark: 'oklch(0.78 0.1 235)' },
+})
+
+export const theme = composeTheme(harbor, cleanStyle)
+```
+
+| Style | Look | Radius | Type | Character |
+| --- | --- | --- | --- | --- |
+| Clean (default) | Classic | `xl` | Inter, JetBrains Mono | hairline, soft, accent actions, rounded controls, semibold tight titles |
+| Bezel | Bezel | `lg` | Geist, Geist Mono | hairline, soft, accent pills, a surface gradient, medium titles, tracked mono capitals |
+| Classic | Classic | `sm` | IBM Plex Sans, Plex Mono | hairline, soft, accent actions, a light surface gradient |
+| Brutal | Classic | `none` | Inter, JetBrains Mono | 2px ink, hard shadows, heavy titles, mono capitals |
+| Terminal | Bezel | `none`, compact | JetBrains Mono throughout | hairline, flat, accent pills |
+
+**Youj** is the default palette: near-black panels with one amber signal and neon charts in dark, cool grays with one electric ultramarine in light. The others are drawn from Sanzo Wada's *A Dictionary of Color Combinations*: Meadow, Sandstone, Cinnabar, Umber, Seaglass and Heather. Each is exported as `<id>Palette` (`youjPalette`, `meadowPalette`) and listed in `palettes`; the styles as `<id>Style` and in `styles`. Each Wada palette matches a [backdrop](/docs/backdrops) of the same name, and picking it in a preview brings that backdrop; Youj's is the docs' aurora.
+
+In CSS, each layer is an attribute next to `data-yj-theme` (which marks where the roles re-derive), from `lib/youj/theme/palettes.css` and `lib/youj/theme/styles.css` (in `@youj/core/styles.css`, or the `youj-palettes` and `youj-styles` registry items):
+
+```html
+<html data-yj-theme data-yj-palette="meadow" data-yj-style="clean" data-yj-look="classic">
+```
+
+## Presets
+
+A preset is a named pair of a palette and a style. `DEFAULT_PRESET` (Basalt) is a starting suggestion, not a default you're meant to keep: what `init --yes` and Create start from. Its values, the Youj palette in Clean, are what a theme of your own takes for the fields it leaves unset (see [the contract](#the-contract)), and what a page with no theme draws. Use any preset as it is or as a starting point. Each is available through the package stylesheet and as a JavaScript export.
+
+| Preset | Palette | Style |
+| --- | --- | --- |
+| Graphite | Youj | Clean |
+| Terminal | Youj | Terminal |
+| Brutal | Youj | Brutal |
+| Basalt | Youj | Clean |
+| Meadow | Meadow: one grass green, sky and gold in the data | Clean |
+| Sandstone | Sandstone: one raw sienna, a night blue for information | Clean |
+| Cinnabar | Cinnabar: one English red, ivory in the data; made dark first | Clean |
+| Umber | Umber: one brass, a slate blue for information | Clean |
+| Seaglass | Seaglass: one deep sea blue, cream and aqua in the data | Clean |
+| Heather | Heather: one heather plum, old rose and sage in the data | Clean |
+
+Each shipped preset is exported by its id: `graphite`, `terminal`, `brutal`, `basalt`, `meadow`, `sandstone`, `cinnabar`, `umber`, `seaglass` and `heather`. Every style moves with the `precise` personality; `calm` and `lively` are there for your own. The site runs the lively personality; your app uses its style's.
+
+```css title="@youj/core/lib/youj/theme/palettes.css"
+[data-yj-palette='meadow'] {
+  --yj-neutral-hue: 100;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-accent-light: oklch(0.5 0.11 148);
+  --yj-accent-dark: oklch(0.79 0.13 150);
+  --yj-success-light: oklch(0.5 0.085 185);
+  --yj-success-dark: oklch(0.79 0.1 185);
+  --yj-warning-light: oklch(0.52 0.11 68);
+  --yj-warning-dark: oklch(0.8 0.13 75);
+  --yj-danger-light: oklch(0.53 0.17 25);
+  --yj-danger-dark: oklch(0.72 0.15 25);
+  --yj-chart-1-light: oklch(0.46 0.099 148);
+  --yj-chart-1-dark: oklch(0.81 0.13 150);
+  /* … chart-2 to chart-5 */
+}
+```
+
+```ts title="app/theme.ts"
+import { composeTheme, definePalette, terminalStyle } from '@youj/core'
+
+export const phosphor = definePalette({
+  id: 'phosphor',
+  name: 'Phosphor',
+  neutral: { hue: 150, chroma: 0.004, wash: 0 },
+  accent: { light: 'oklch(0.49 0.145 146)', dark: 'oklch(0.86 0.23 145)' },
+  success: { light: 'oklch(0.495 0.08 195)', dark: 'oklch(0.74 0.12 195)' },
+  warning: { light: 'oklch(0.515 0.125 58)', dark: 'oklch(0.82 0.15 80)' },
+  danger: { light: 'oklch(0.53 0.19 27)', dark: 'oklch(0.665 0.175 25)' },
+})
+
+export const theme = composeTheme(phosphor, terminalStyle)
+```
+
+## Apply a theme
+
+### With CSS
+
+Import the component stylesheet, then set the preset, scheme and style on `<html>`. This applies them to the whole document, including overlays.
+
+```css title="app/globals.css"
+@import '@youj/react/styles.css';
+```
+
+```html
+<html data-theme="dark" data-yj-theme="basalt" data-yj-motion="precise" data-yj-look="classic">
+```
+
+For Terminal in light mode, change the theme and the scheme:
+
+```html
+<html data-theme="light" data-yj-theme="terminal" data-yj-motion="precise" data-yj-look="bezel">
+```
+
+You can also set the theme variables yourself, after importing the stylesheet. On `:root` it re-themes the whole app. On an element with a `data-yj-theme` attribute it themes that element's subtree, because the attribute makes it a scope where the tokens are derived again.
+
+```css title="app/globals.css"
+:root {
+  --yj-neutral-hue: 60;
+  --yj-neutral-chroma: 0.01;
+  --yj-accent: #ff5a1f;
+  --yj-radius: 0.25rem;
+}
+```
+
+A single color like `--yj-accent` wins over the per-mode pairs the page wears by default (Basalt's), so the one line re-brands both schemes. Over a preset applied with `data-yj-theme` it wins too, as long as your rule comes after the stylesheet. Status and chart colors work the same way: `--yj-success`, `--yj-chart-1`.
+
+### With JavaScript
+
+Spread a preset to keep its settings, then change the fields you need. Spread a nested group too if you want to keep its other values. This theme keeps Basalt’s fonts, charts and surface shading:
+
+```tsx title="app/theme.ts"
+import { basalt, defineTheme } from '@youj/core'
+
+export const brand = defineTheme({
+  ...basalt,
+  id: 'brand',
+  name: 'Brand',
+  accent: '#ff5a1f',
+  neutral: { ...basalt.neutral, hue: 60, chroma: 0.01 },
+  radius: 'sm',
+  controlSize: 'compact',
+  motionPersonality: 'calm',
+})
+```
+
+```tsx title="app/providers.tsx"
+import { YoujProvider } from '@youj/core'
+import { brand } from './theme'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <YoujProvider theme={brand}>{children}</YoujProvider>
+}
+```
+
+`YoujProvider` applies the theme to its subtree and carries it onto everything the subtree portals, such as menus, dialogs and toasts. `useYouj()` follows the theme's motion personality (`motionPersonality`), and `useTheme()` reads the resolved theme.
+
+A bare provider uses the defaults: Classic and Basalt. It leaves the scheme to `data-theme` on `<html>`, dark when it's unset; to set it from the provider, see [Color mode](#color-mode).
+
+### Without a flash
+
+A provider renders its theme into the server HTML, so nothing flashes on load. To theme `<html>` itself (the page background, the scrollbars, and anything portaled to `<body>` from outside a provider), spread `themeProps` on it in the root layout:
+
+```tsx title="app/layout.tsx"
+import { themeProps } from '@youj/core'
+import { brand } from './theme'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" data-theme="dark" data-yj-look="classic" {...themeProps(brand)}>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+### A theme picker for the whole app
+
+A provider with a theme in state themes its subtree, but `<html>` keeps the theme the server rendered, so the page background and scrollbars stay in the old one. To switch the whole app, put the same attributes on `<html>` when the choice changes. `themeProps` is plain data, so it works in a client file:
+
+```tsx title="app/providers.tsx"
+'use client'
+
+import { useEffect, useState, type ReactNode } from 'react'
+import { basalt, themeProps, YoujProvider, type ThemeInput } from '@youj/core'
+
+export function Providers({ children, themes }: { children: ReactNode; themes: ThemeInput[] }) {
+  const [theme, setTheme] = useState<ThemeInput>(basalt)
+  useEffect(() => {
+    const { style, ...attributes } = themeProps(theme)
+    for (const [name, value] of Object.entries(attributes)) document.documentElement.setAttribute(name, String(value))
+    for (const [name, value] of Object.entries(style)) document.documentElement.style.setProperty(name, String(value))
+  }, [theme])
+  return (
+    <YoujProvider theme={theme}>
+      <select value={theme.id} onChange={(e) => setTheme(themes.find((t) => t.id === e.target.value) ?? basalt)}>
+        {themes.map((t) => (
+          <option key={t.id} value={t.id}>{t.name}</option>
+        ))}
+      </select>
+      {children}
+    </YoujProvider>
+  )
+}
+```
+
+The same goes for the other switches on the provider: `look="classic"` and `motion={false}` are props, so keep them in state the same way.
+
+### Part of a page
+
+`ThemeScope` themes a subtree, and scopes nest:
+
+```tsx
+import { brutal, ThemeScope } from '@youj/core'
+
+<ThemeScope theme={brutal}>
+  <Article />
+  <ThemeScope theme={{ accent: '#10b981' }}>
+    <PricingHero />
+  </ThemeScope>
+</ThemeScope>
+```
+
+<Callout title="Complete themes and overrides">
+  A theme with an `id`, like every preset, is complete: anything it leaves out takes the default (Basalt's), never the surrounding theme's value. So a preset nested inside another looks exactly as it does on its own. A theme without an `id` is an override: it changes only what it sets.
+</Callout>
+
+<Callout type="warning" title="Overlays and CSS-only scopes">
+  Overlays render at the end of `<body>`. A theme on `<html>` reaches them, and so does one set with `YoujProvider` or `ThemeScope`, which carry it onto their portals. A theme set only in CSS on an inner element doesn't reach them, so wrap a scope that opens menus or popovers in `ThemeScope`.
+</Callout>
+
+### Copy in a theme
+
+An app that copies the core (`npx youj init --mode registry`) gets the theme contract, every preset as a JavaScript export and the stylesheets of Basalt and Graphite. The stylesheets of the other presets are items of their own, since only an app that themes with `<html>` attributes (Vite, Astro) imports one:
+
+```bash
+npx youj add theme terminal   # also brutal, meadow, sandstone, cinnabar, umber, seaglass, heather
+```
+
+This copies `lib/youj/theme/themes/terminal.css` and, in a Vite or Astro app, imports it after `youj.css`. `init` adds the stylesheet of the preset you pick on its own. A theme set through `<YoujProvider theme={terminal}>`, `ThemeScope` or `themeProps` needs no stylesheet.
+
+## Color mode
+
+The palette has a dark and a light scheme, and `YoujProvider`'s `mode` chooses between them:
+
+| `mode` | Scheme |
+| --- | --- |
+| `'dark'` | Dark. The default. |
+| `'light'` | Light. |
+| `'system'` | Follows the operating system's `prefers-color-scheme`, live. |
+
+A page that sets no mode is dark, as the palette always was. The mode is written as `data-theme` (and `color-scheme`) on `<html>` by the top-level provider, put back when it unmounts, and on the subtree by a nested provider or a `ThemeScope`, which also carries it onto what they portal:
+
+```tsx title="app/providers.tsx"
+import { YoujProvider } from '@youj/core'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <YoujProvider mode="system">{children}</YoujProvider>
+}
+```
+
+```tsx
+<ThemeScope mode="light">
+  <PricingHero />
+</ThemeScope>
+```
+
+On the top-level provider, `mode` is the default until the visitor picks one: a choice from an uncontrolled [ThemeToggle](/docs/components/theme-toggle) or `setThemeMode()` (stored in `localStorage` under `"theme"`) wins over it, and `ModeScript` applies it too, so a toggle works under `mode` with nothing more to wire.
+
+Leave `mode` out and Youj doesn't touch `data-theme`: your own tooling (`next-themes`) can own it, as in [Installation](/docs/installation#theme). Don't set both.
+
+To switch the mode from your own code, avoid a flash on load or read the mode in a component, see [Light, dark and system](/docs/guides/light-dark-and-system#from-your-own-control).
+
+## Density and scaling
+
+Standard size is the default: roomy panels at 100%, which suits most apps and every marketing, auth and content page. A dense pro tool (an admin console, an editor, a trading screen) can opt into less room. Two provider props size the UI, apart from the theme:
+
+- **Layout density** (`density`) sets how much room panels give their content: card and dialog padding, sheet and popover padding, table and list row heights, the gap between fields. `roomy` is the default. `compact` is for dense pro tools, with 16px panel sides and 36px rows.
+- **Scaling** (`scaling`) sizes the whole UI by one factor, from `75%` to `120%`: type, spacing, control heights, radii and icons. Hairlines, focus rings and breakpoints hold, and no control goes below 24px. Below 100% applies to fine pointers only, so phones and tablets keep their touch targets, and so does a subtree forced to [touch](/docs/guides/touch-mode).
+
+The theme's `controlSize` is a third, separate setting: the control height (`--yj-density`, see [the contract](#the-contract)). It moves buttons and inputs 4px a step and leaves panels alone.
+
+| Prop | Type | Default | Writes |
+| --- | --- | --- | --- |
+| `density` | `'compact' \| 'roomy'` | inherited, else `'roomy'` | `data-yj-density` |
+| `scaling` | `'75%'` `'80%'` `'85%'` `'90%'` `'95%'` `'100%'` `'110%'` `'120%'` | inherited, else `'100%'` | `data-yj-scaling`, the number without `%` |
+
+Both are props of `YoujProvider` and `ThemeScope`, and both reach portaled overlays. Neither is set by default, so an app that doesn't ask keeps every size as it was.
+
+`npx youj init` and `create` leave the provider at its standard size, with no size props. For a dense pro tool, opt in on the root provider:
+
+```tsx title="app/layout.tsx"
+<YoujProvider theme={basalt} density="compact" scaling="90%">
+  {children}
+</YoujProvider>
+```
+
+A scope sets a region apart. In a compact tool, give a marketing or settings page the standard size back:
+
+```tsx title="app/pricing/page.tsx"
+import { ThemeScope } from '@youj/core'
+
+export default function Page() {
+  return (
+    <ThemeScope density="roomy" scaling="100%">
+      <Pricing />
+    </ThemeScope>
+  )
+}
+```
+
+Scopes nest both ways: a compact region inside a roomy page, or a roomy one inside a compact app. Without JavaScript, put the attributes on any element: `<main data-yj-density="compact" data-yj-scaling="90">`.
+
+Blocks set no density of their own: each takes the page's, so a block in a compact tool is compact and a block at the standard size is roomy. To set one block apart, wrap it in a `ThemeScope`, which also reaches what it portals.
+
+Layout density moves panels, not controls: a button looks the same at both. Card, Dialog, Sheet, Drawer, Popover, Tabs, Field and FieldGroup, Alert, Empty, Table, Data Table, Data Grid and the sidebar's rows follow it, and so does every block built from them.
+
+`DENSITIES` and `SCALINGS` list the values. In your own components, `useYoujLayout()` returns the `density` and `scaling` in effect, for a size that lives in JavaScript, such as a virtualized row height. It reads the nearest provider or scope, so it doesn't see attributes written by hand.
+
+To see a size before you set it, use the **Size** control in any preview's toolbar on this site (in the Settings sheet on a phone). It sets the density and the scale together, re-renders the preview at once, and holds for every preview until you press **Reset**. Every preview starts at the standard size, roomy at 100%; pick Compact to see a block as a dense tool would have it. In [Create](/create), the size you pick is the one the export writes on your root provider (none, at the standard size).
+
+## Text and type
+
+The provider sets colors, fonts and the scheme, but plain text inside it keeps your page's own size: a `<p>` or a `<div>` doesn't pick up the components' text size. Next to a Button at 13px, your 16px body copy looks large. Pick the size for your text from the tokens:
+
+| Class | Size at 100% | For |
+| --- | --- | --- |
+| `text-ui-xs` | 11px | Captions and counts. |
+| `text-ui-sm` | 12px | Helper text and metadata. |
+| `text-ui` | 13px | The size components use. |
+| `text-ui-lg` | 14px | Emphasis within a panel, card titles. |
+
+They scale with the provider's [`scaling`](#density-and-scaling) and never go under 11px. For text colors use `text-fg`, `text-fg-muted` and `text-fg-subtle`. For long-form text, the [Typography](/docs/components/typography) components (`TypographyH1` to `TypographyH4`, `TypographyP`, `TypographyLead`, `TypographyMuted`) set size, line height and spacing together, so a marketing page or a changelog reads right without any classes.
+
+## Character
+
+Use these settings to change borders, shadows, button fills, surface shading and typography. In a named theme, omitted fields use Basalt’s values. Spread a preset first if you want to keep its appearance.
+
+<ThemeCharacter />
+
+| Field | What it changes | Values |
+| --- | --- | --- |
+| `stroke.width` | Every border, divider and separator, and the focus ring (1px heavier, 2px at least) | px, `0.5` to `4` |
+| `stroke.ink` | How far lines and field borders lean from the neutral line color toward the text color | `0` (hairline) to `1` (ink) |
+| `stroke.icons` | Every icon's stroke, as a multiple of its own | `0.5` to `2` |
+| `shadow` | Elevation. `hard` draws one solid block in ink, offset down and to the right by 1.5 to 4 strokes, and buttons that cast one press into it | `soft` `hard` `none` |
+| `actions` | What fills a primary action (the default Button). `ink` fills it with the text color, lettered in the page color, and leaves the accent to checkboxes, switches, sliders, selection and data | `accent` `ink` |
+| `controls` | The [shape](#shapes) of every control, in both looks: buttons and toggles, fields, tab and toggle tracks, badges and chips. `rounded` gives them the control radius instead of pills, in proportion to each one's height (8px on a 32px control in `lg`, 9px on 36px), with keys and rows at the concentric radius inside; switches, radios and avatars stay round | `pill` `rounded` |
+| `fields` | How every field is drawn: inputs, select triggers, textareas and the pickers. `outlined` is the field fill on a 3:1 edge; `soft` is a filled band with no edge (focus and an invalid value still draw one), which leaves the field's boundary under WCAG 1.4.11's 3:1, so use it where fields are identifiable otherwise | `outlined` `soft` |
+| `surfaces.gradient` | Cards shade toward the next neutral step at their foot, lighter in dark and a touch deeper in light, and an ink-filled action gets a sheen: a lit top and a deeper foot. The foot never passes that step, so every text pair keeps its contrast; accent and danger fills stay flat for the same reason | `0` (flat) to `1` |
+| `headings` | Titles set in `font-semibold`: cards, dialogs, sheets, popovers and page headings | `weight`, `tracking` in em |
+| `labels` | Badges and chips, column heads, the label over a field, menu and sidebar group headings, tabs and keys ([the full list](#what-labels-reaches)). A label beside a checkbox stays a sentence | `case: 'upper'`, `font: 'mono'`, `tracking` |
+| `fonts.display` | The titles' face | a font-family list |
+
+```ts title="app/theme.ts"
+import { defineTheme } from '@youj/core'
+
+export const brutal = defineTheme({
+  id: 'brutal',
+  name: 'Brutal',
+  neutral: { hue: 95, chroma: 0.02, wash: 0.5 },
+  accent: 'oklch(0.54 0.265 295)',
+  radius: 'none',
+  stroke: { width: 2, ink: 1, icons: 1.3 },
+  shadow: 'hard',
+  headings: { weight: 800, tracking: -0.035 },
+  labels: { case: 'upper', font: 'mono' },
+})
+```
+
+Basalt is the quiet end of the same fields: hairlines and soft shadows kept, rounded rectangles, flat cards that stand clear of the page in dark, and data in neon. Its colors are [tuned per mode](#colors-per-mode): in light mode it wears the Youj palette's ultramarine and deep-ink series. It's set in Inter, with labels in sentence case.
+
+```ts title="app/theme.ts"
+import { cleanStyle, composeTheme, youjPalette } from '@youj/core'
+
+export const basalt = composeTheme(youjPalette, cleanStyle, { id: 'basalt', name: 'Basalt' })
+```
+
+Components use these settings through shared tokens, in both looks. Bezel follows `actions` (its primary pill takes the theme's action fill), `labels` (its eyebrows, column heads and field labels take the theme's label voice), `controls` and `fields` (see [Shapes](#shapes)). What Bezel decides on its own is the anatomy: sectioned cards, filled fields, keyed tracks. Your `className` still wins over it; see [overriding a recipe](/docs/looks#overriding-a-recipe).
+
+### What `labels` reaches
+
+`labels` is the voice of the kit's short labels. `case: 'upper'` (and `font`, `tracking`) reach:
+
+- **Every Badge and the chips built on one:** MultiSelect's and TagInput's values, PropertyTag, a ChoiceCard's badge and Kanban's column counts.
+- **Keys:** every `Kbd` (a menu item's `DropdownMenuShortcut` is plain text and keeps its case).
+- **Column heads:** `TableHead`, and the data table's and data grid's header rows with their sort buttons.
+- **A field's label above its control** (a vertical `Field`). A label beside a checkbox, radio or switch stays a sentence.
+- **Group headings:** `SelectLabel`, `DropdownMenuLabel`, the menubar's labels, `SidebarGroupLabel` and the Command palette's group headings.
+- **Tabs:** every `TabsTrigger`.
+- **The data-display components' own labels:** StatCard, the meters, rings and dials, the rails and rulers, CalendarHeatmap and the others whose captions read the label voice. The Bezel style adds its card eyebrows.
+
+To keep one of them in sentence case, give it `normal-case` (a utility beats the label rule; add `font-sans tracking-normal` to drop the mono face and tracking too). For a whole region, such as a table of user-written tags, reset the three variables on its wrapper and everything inside follows:
+
+```tsx
+<Badge color="chart-3" className="normal-case">Design review</Badge>
+
+<div className="[--yj-label-case:none] [--yj-label-font:var(--font-sans)] [--yj-label-tracking:normal]">
+  {/* labels in here keep the case they were written in */}
+</div>
+```
+
+### Shapes
+
+A theme's shape is one decision. Each control family reads one corner, derived from `radius` and `controls`, and nothing else sets it: not the look, not another component, not a block. So within a theme every button, field, tab track and badge shares one shape (all rounded in Basalt and Graphite, all pills in a theme in the Bezel style, all square in Brutal and Terminal), and changing the theme changes all of them.
+
+| Family | Token (Tailwind) | Used by |
+| --- | --- | --- |
+| Button | `rounded-button`, `-xs` `-sm` `-lg` | Button, AsyncButton, Toggle, ToggleGroup (joined), InputGroupButton |
+| Field | `rounded-field`, `-xs` `-sm` `-lg`; `rounded-field-area` | Input, Select and NativeSelect triggers, Combobox, InputGroup and the fields built on it (NumberInput, PasswordInput, the date and time pickers); a field that grows past one line (Textarea, TagInput, MultiSelect) caps at `rounded-field-area`, 12px at most |
+| Choice | `rounded-choice`, `-xs` `-sm` `-lg`; `rounded-choice-key` | the pill tracks of Tabs, SegmentedControl and ToggleGroup; the key inside is the track's corner less its inset, so the two stay concentric |
+| Chip | `rounded-chip` | Badge, FilterChips |
+| Surface | `rounded-surface` | Card (capped by the layout density) |
+| Overlay | `rounded-overlay`, `rounded-overlay-lg` | popovers, menus, select lists and hover cards; dialogs and sheets |
+
+Each size keeps one proportion: a pill at every height, or the control radius scaled to the control's height. Fields follow `fields` the same way: every field reads `--ui--field-line` and `--ui--field-fill`, so a field is never made soft or outlined where it's used.
+
+To give one family a shape of its own, set its switch on the theme's scope: `--yj-shape-button`, `--yj-shape-field`, `--yj-shape-choice` or `--yj-shape-chip`, `1` for pills and `0` for rounded. Unset, each follows `controls`.
+
+```css title="app/globals.css"
+/* Basalt's rounded controls, with pill fields. */
+:root {
+  --yj-shape-field: 1;
+}
+```
+
+In your own code, use the control's props (`size`, `variant="ghost"` on a SelectTrigger, Badge's `size`) or these tokens rather than a fixed `rounded-full` or `h-10` on a kit control.
+
+<Callout title="Load your theme’s fonts">
+  A theme names font stacks; your app loads the font files. `npx youj init` loads the preset's, and Create’s export includes its theme's. Basalt (the Clean style) and the Brutal style use Inter and JetBrains Mono, which is also what a theme that leaves its fonts out gets, and Terminal JetBrains Mono, through stacks that ask for `'Inter Variable'` and `'JetBrains Mono Variable'`: the names `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` register. Install those and import them once in your root layout or entry (`import '@fontsource-variable/inter'`); `next/font` and Google register `'Inter'`, which those stacks don't match. The Bezel style uses Geist and Geist Mono (`next/font`'s `Geist` and `Geist_Mono`, or the Google Fonts stylesheet), and the Classic style IBM Plex. If a font is unavailable, the browser uses the next face in its stack.
+</Callout>
+
+## Chart palette
+
+Charts read `var(--color-chart-1)` to `var(--color-chart-5)`. Every palette tunes five for each scheme, in its own character:
+
+| Palette | Series 1 to 5 |
+| --- | --- |
+| Youj | light: blue, rose, violet, amber, teal; dark: lime, hot pink, violet, amber, cyan |
+| Meadow | grass, gold, pine, sky, dusk blue |
+| Sandstone | sienna, rust, cinnamon, ecru, night blue |
+| Cinnabar | English red, ember, ivory gold, ash, slate |
+| Umber | brass, umber, olive, clay, slate blue |
+| Seaglass | sea blue, cream, navy, ecru, aqua |
+| Heather | plum, old rose, sage, lilac, heather violet |
+
+They share their roles, and blocks rely on them: series 1 leads, series 2 is warm and series 5 cool (the color of cold, water and rest). Neighbors differ in lightness as well as hue, so they stay apart for readers with red-green color blindness too.
+
+A theme that leaves `chart` unset (in Create, the palette "From the accent") draws one from its accent: the accent itself, then four hues around the color wheel from it, each at a lightness of its own, all at 3:1 on every surface and inside sRGB. A theme that sets `chart` gets five series colors of its own instead, in order:
+
+```ts
+import { defineTheme } from '@youj/core'
+
+export const ops = defineTheme({
+  id: 'ops',
+  chart: ['#b4f750', '#f0509e', '#8b5cf6', '#fdaa1c', '#2fd4ec'],
+})
+```
+
+Youj adjusts these colors for each scheme so chart marks reach 3:1 contrast on every surface they're drawn on. Text colors need 4.5:1. Use a foreground text token for chart labels rather than assuming a series color is readable as text.
+
+A palette that glows on black rarely survives being darkened for white: lime turns olive, amber turns brown. Give `chart` as `{ light, dark }`, five colors each, to choose the light series yourself; they're used as given and checked at 3:1.
+
+`checkTheme` checks each series in both schemes and warns about colors outside sRGB. Browsers without relative color syntax keep a palette given per mode; for any other, they draw a one-hue ramp of the accent.
+
+## Motion personality
+
+| Personality | Feel | `base` | `slow` | `enter` curve | `settle` |
+| --- | --- | --- | --- | --- | --- |
+| `precise` | Fast and confident; lands without overshoot | 220ms | 340ms | `cubic-bezier(0.16, 1, 0.3, 1)` | bounce 0.3 |
+| `calm` | About 1.4× longer, soft at both ends | 300ms | 460ms | `cubic-bezier(0.33, 1, 0.68, 1)` | no bounce |
+| `lively` | About 15% quicker; arrivals overshoot a touch | 190ms | 290ms | `cubic-bezier(0.34, 1.3, 0.64, 1)` | bounce 0.4 |
+
+Token names stay the same and only their values change, so components need nothing new. `useYouj()` returns the personality's values for Motion-driven animation, and the CSS presets read the same numbers through `--yj-duration-*` and the `ease-*` curves. Speed and reduced motion still apply on top.
+
+## What's derived
+
+- **Neutrals.** Eight steps from `canvas` to `fg`, each a fixed lightness at a share of the neutral chroma. Light mode lays an app out: white cards, menus and fields on a soft gray page, wells a step below it, on hairlines. A white page (`neutral.page`) swaps the page and the cards, for a document such as this site. Wash pushes the tint onto the page and surfaces, and lowers the light page a little to make room for it. Lift, in dark mode, doubles the step from the page to a card, raises overlays and lines with it, and lifts `fg-subtle` so it keeps its contrast; light mode is unchanged.
+- **Accent and status.** In light mode a color is darkened in linear light until text in it reads at 4.5:1 on the darkest surface; its hue and saturation stay put. In dark mode it's lifted to a lightness floor and its chroma is capped. A color given per mode skips both and is used as given. Text on the accent and the focus ring follow it.
+- **Chart colors.** A [chart palette](#chart-palette) is derived the same way, held to 3:1, with a lower dark floor and a higher chroma cap. Without one, a palette is drawn from the accent: the accent, then four hues around the wheel from it, each scaled to a luminance of its own that holds 3:1.
+- **The roles.** Every [role](#roles) from the steps and inks above: the surfaces, lines, text, states, tints and chart, again inside each theme scope and [tone scope](#tone-two-tone-themes). And the elevation shadows, which take the neutral hue. shadcn's names come only with the [compat sheet](#coming-from-shadcn).
+- **Shape and density.** The radius scale grows from `--yj-radius` with caps, so `full` makes controls pills while cards stay rectangles. Every control family takes its corner from `controls` ([Shapes](#shapes)): the control radius, in proportion, unless the theme sets `controls: 'pill'`. Control heights move 4px per density step, and 8px more on touch screens.
+
+Graphite derives its own hand-tuned palette exactly.
+
+## Guardrails
+
+`checkTheme` derives a theme in both modes and lists every problem: unreadable or out-of-range inputs, any pair the library draws that misses WCAG AA, and colors that fall outside sRGB.
+
+```ts
+import { checkTheme, defineTheme } from '@youj/core'
+
+const issues = checkTheme(defineTheme({ accent: '#ffd400' }))
+// Inspect each issue’s level, token and message.
+```
+
+Each issue has a `level`. A pair that misses WCAG AA (text below 4.5:1, a control boundary below 3:1) is an `error`, like an input Youj can't use; an out-of-gamut color is a `warning`. `themeErrors(theme)` returns just the errors: the list that blocks a theme.
+
+In an app that copies the core, `checkTheme` and `themeErrors` aren't there: the core keeps a no-op in place of the check, since production builds strip it. `npx youj add theme check` (`youj-theme-check`) replaces it with the real one; import `checkTheme` from `@/lib/youj/theme/check`.
+
+Create and the export tools block themes with errors. Providers report errors in development; they still render the theme:
+
+| Where | A theme that misses AA |
+| --- | --- |
+| `YoujProvider`, `ThemeScope` (development) | `console.error`, once per theme, naming each failing pair |
+| [Create](/create) | the command and the .zip are disabled until the Theme step passes |
+| `npx youj create '<link>'` | refused, with the failing pairs; `--allow-low-contrast` writes it anyway, with a warning |
+| MCP `create_theme` | refused, with the failing pairs; `allowLowContrast: true` returns it, with a warning |
+
+If you've checked that the failing pairs aren't drawn in your app, opt out on the theme itself, so the choice is visible in code and travels with the theme:
+
+```ts
+import { defineTheme } from '@youj/core'
+import { brand } from './theme'
+
+export const acceptedTheme = defineTheme({ ...brand, allowLowContrast: true })
+// Any contrast failures become warnings. Invalid inputs remain errors.
+```
+
+The checks cover these pairs in both schemes. Keep `neutral.chroma` within `0` to `0.04`, and wash and lift within `0` to `1`:
+
+- `fg`, `fg-muted` and `fg-subtle` read at 4.5:1 on every surface role (`canvas`, `surface`, `overlay`, `well`, `field`, `key`, `control`, `chrome`, `chrome-float`, `inverse`), each in the tone it's drawn in, under every tone a theme can set, so every text color is real text.
+- Field borders (`--color-line-control`) reach 3:1 on every surface, the minimum WCAG 1.4.11 sets for control boundaries.
+- Accent and status colors read at 4.5:1 as text, and so does text on the accent. Each ink's `-text` reads at 4.5:1 on its own `-subtle`, `on-accent` on every ink and `on-action` on `action`. Colors given per mode are checked as given, each in its own scheme.
+- The focus ring reaches 3:1 on every surface, and the fills that must read apart do: `hover` from a card, `selected` from `hover`, `well` from a card, `chrome-float` from the page.
+- A theme's chart colors read at 3:1 on every surface, the minimum for marks.
+- The theme’s surface gradient stays within one neutral step of `surface`. Check any custom surface colors separately.
+
+Canvas, WebGL and Lottie code that draws with token colors: see [Styling hooks](/docs/guides/styling-hooks#canvas-webgl-and-lottie).
+
+## Build your own
+
+Use the builder below to try a preset and adjust its colors, type and appearance. The previews and checks update as you edit.
+
+To use the theme in an app, open [Create](/create) and choose the **Theme** step. Choose your frame and style, then open **Export**. Copy its command and run it in your app:
+
+```bash
+npx youj create '<paste your Create link here>'
+```
+
+The CLI installs the selected frame and writes your theme to `lib/theme.ts`. Keep the link in quotes so your shell preserves its settings. Add `--dry-run` to preview the changes, or `--mode registry` to copy source files into an app that has not been set up yet. Create also offers a ZIP and code you can copy by hand.
+
+<ThemeBuilder />
+
+## Browser support
+
+Youj supports Chrome 123, Safari 17.5 and the current Firefox, or later. The neutrals need only `oklch()`, `color-mix()` and `calc()`, like the rest of Tailwind CSS v4. Deriving a theme's own accent, status and chart colors uses relative color syntax and `pow()`: Chrome 120, Safari 18 and Firefox 128 or later. Safari 17.5 keeps Graphite's accent and status colors, and draw charts without a palette in a one-hue ramp of the accent. Colors given per mode need no derivation, so they hold in every browser: every preset's chart palette among them.

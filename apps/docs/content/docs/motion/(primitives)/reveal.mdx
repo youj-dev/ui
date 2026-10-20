@@ -1,0 +1,123 @@
+---
+title: Reveal
+description: "Animate content in as it loads or scrolls into view, and out as it leaves, with fades, slides, blur and more."
+---
+
+<ComponentPreview name="reveal/demo" />
+
+Use it for content that should arrive rather than appear: a hero's headline, a section as it scrolls in, a panel that opens. One Reveal moves one element. For a group, use [Stagger](/docs/motion/stagger), and for a headline that assembles word by word, [TextSplit](/docs/motion/text-split). Don't reveal what people came to read or act on, like form fields, table rows or navigation. It should be there when they look.
+
+## Installation
+
+<InstallTabs name="reveal" />
+
+## Usage
+
+Wrap anything. By default it rises into place the first time 30% of it is on screen.
+
+```tsx
+import { Reveal } from '@youj/motion'
+
+export function Feature() {
+  return (
+    <Reveal>
+      <FeatureCard />
+    </Reveal>
+  )
+}
+```
+
+Use `inView={false}` for content that should arrive as soon as it renders, and `as` to reveal a heading or list item without an extra wrapper.
+
+```tsx
+<Reveal as="h2" inView={false} className="text-4xl font-semibold">
+  Motion that lands where you meant it.
+</Reveal>
+```
+
+## Examples
+
+<Examples>
+
+<Example id="variants" label="Variants">
+
+### Variants
+
+Eight arrivals share one timing model. `rise`, `fade` and `scale` take the `slow` duration. The four `wipe-*` variants and `blur-in` travel further, so they take `deliberate`. Everything that travels decelerates hard into place on the `enter` curve. `fade` doesn't travel, so it uses `standard`.
+
+<ComponentPreview name="reveal/variants" />
+
+</Example>
+
+<Example id="choreography" label="Choreography">
+
+### Choreography
+
+`delay` is a count of stagger steps, not milliseconds. `delay={2}` waits two `delayStep` steps. The whole sequence stays on the token grid, so it scales with the Speed control and never drifts out of rhythm.
+
+```tsx
+<Reveal inView={false} delay={0} delayStep="loose">Eyebrow</Reveal>
+<Reveal inView={false} delay={1} delayStep="loose">Headline</Reveal>
+<Reveal inView={false} delay={2} delayStep="loose">Body</Reveal>
+```
+
+For lists, reach for [Stagger](/docs/motion/stagger): it hands each child its cue, and a `Reveal` inside it takes its timing and delay from the parent.
+
+</Example>
+
+<Example id="exits" label="Exits">
+
+### Exits
+
+Inside `AnimatePresence`, a Reveal leaves with the `fast` duration on the `exit` curve. Exits are shorter than arrivals, because nobody waits for something to leave. Toggle quickly: a re-entry mid-exit retargets from wherever the element is, without a jump.
+
+<ComponentPreview name="reveal/presence" height={280} />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="as, variant, inView… (12)">
+
+### Props
+
+<PropsTable name="Reveal" />
+
+`distance`, how far `rise` travels, defaults to `12` (px).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, enter, long travel, fade… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: '`rise`, `scale`', duration: 'slow', ease: 'enter' },
+    { moment: 'Enter, long travel', note: '`blur-in`, `wipe-*`', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Fade', note: 'opacity only', duration: 'slow', ease: 'standard' },
+    { moment: 'Exit', duration: 'fast', ease: 'exit' },
+    { moment: 'Delay step', note: 'default `delayStep`', stagger: 'base' },
+  ]}
+  reduced="Renders in its final state: no fade, no travel. Presence exits remove the element immediately."
+/>
+
+It animates only `opacity`, `transform`, `filter` and `clip-path`, so a reveal never triggers layout.
+
+#### Reduced motion
+
+A Reveal renders in its final state from the first frame: no fade, no travel and no wait. Inside `AnimatePresence`, it's removed at once. Nothing is hidden behind a scroll position, so the page reads the same either way.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- The content is in the document from the first render, so assistive technology reads it whether or not it has animated in.
+- Reveal adds no roles. Put semantics on the element itself, with `as`.
+- Scroll reveals are one-shot by default (`inView={{ once: true }}`). Content that disappears as it scrolls away makes a page feel unstable, so opt out only with a reason.
+
+</ReferenceRow>

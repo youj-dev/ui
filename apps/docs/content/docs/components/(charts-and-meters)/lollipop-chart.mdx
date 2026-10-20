@@ -1,0 +1,118 @@
+---
+title: Lollipop Chart
+description: "Compare many items on one value scale: a dot on a stem from a baseline each, sorted into a curve, with one item picked and named."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="lollipop-chart/demo" height={320} />
+
+A made-up league's goal difference against par, sorted lowest first, each dot in its status tone. Sorted, the stems read as one curve from the worst to the best, below the baseline on one side and above it on the other.
+
+</Story>
+
+<Story id="picked" label="Picking one">
+
+<ComponentPreview name="lollipop-chart/picked" height={360} />
+
+`value` and `onValueChange` pick one item: its column gets a band, its dot a ring, and a pill over the plot names it with its value. A fixed `domain` and `ticks` keep separate charts on the same scale.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="lollipop-chart" noImport />
+
+Use a lollipop chart to compare many items on one measure where the sign matters, like error budget left by SLO, score against par by team, or stock against target by shop. A table beside it can follow and lead the pick. For a few items' parts of a whole use a [Share Bar](/docs/components/share-bar); for values over time, a [Chart](/docs/components/chart). The [Lollipop ranking](/docs/blocks/rankings-and-breakdowns#lollipop-ranking) card is built on it.
+
+```tsx
+import { LollipopChart } from '@youj/react'
+
+<LollipopChart
+  label="Budget left by SLO"
+  data={slos.map((s) => ({ id: s.id, label: s.name, value: s.budget, tone: s.budget < 0 ? 'danger' : 'success' }))}
+  sort="ascending"
+  domain={[-1, 1]}
+  value={picked}
+  onValueChange={setPicked}
+  formatValue={(v) => percent.format(v)}
+/>
+```
+
+Each item is a dot at its `value` on a stem from `baseline` (0 by default), in its `tone`. `sort` orders them lowest or highest first; without it they keep the data's order. The scale runs over `domain` (by default the data's range with the baseline, rounded out to even `ticks`). `formatValue` writes values in the tooltip, the pill and the spoken text, and `formatTick` the axis. Give it a height with a class (`h-64` by default). No items shows the empty state.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="data, sort, value, onValueChange, domain, baseline, ticks…">
+
+### Props
+
+<PropsTable name="LollipopChart" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `lollipop-chart`, `lollipop-chart-flag-row`, `lollipop-chart-flag`, `lollipop-chart-axis`, `lollipop-chart-plot`, `lollipop-chart-grid`, `lollipop-chart-baseline`, `lollipop-chart-band`, `lollipop-chart-item`, `lollipop-chart-stem`, `lollipop-chart-dot` and `lollipop-chart-summary`. The picked item has `data-state="selected"`; an item's tone is `--lollipop-ink`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Grow, pick · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Grow', note: 'the stems grow from the baseline and the dots ride them out when a third of the chart scrolls into view', spring: 'smooth' },
+    { moment: 'Pick', note: 'the band and the pill glide to the picked item; its dot grows a ring', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; a new pick lands at once."
+/>
+
+#### Reduced motion
+
+The stems and dots are drawn at their values, and the band and pill jump to a new pick.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `listbox` (your `label`, or the labels' "Lollipop chart") described by the count and the range ("18 points, from -82.3% to +94.1%.").
+- Every item is an `option` named with its label and value, `aria-selected` when picked.
+- One tab stop. The arrow keys walk the items (mirrored in RTL), `Home` and `End` go to the ends, and `Enter` or `Space` picks; focus shows the same tooltip as hovering.
+- The axis, gridlines and stems are decorative. Tones never carry the meaning alone: the values are signed and spoken.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

@@ -1,0 +1,116 @@
+---
+title: Collapse
+description: "Animate a panel’s height as it opens and closes, with support for mid-animation changes."
+---
+
+<ComponentPreview name="collapse/demo" height={420} />
+
+Use it for disclosure you build yourself: a filter panel, "show more", an inline error, a settings section. The content below moves with the height instead of jumping. For Base UI's Collapsible and Accordion, use the [`yj-collapse`](/docs/motion/presets) preset on the panel instead, or @youj/react's [Collapsible](/docs/components/collapsible) and [Accordion](/docs/components/accordion), which already do.
+
+## Installation
+
+<InstallTabs name="collapse" />
+
+## Usage
+
+The trigger owns the state. Give the panel an `id`, and point the trigger's `aria-controls` and `aria-expanded` at it.
+
+```tsx
+import { useId, useState } from 'react'
+import { Collapse } from '@youj/motion'
+
+export function Filters() {
+  const id = useId()
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
+        Filters
+      </button>
+      <Collapse id={id} open={open}>
+        <FilterForm />
+      </Collapse>
+    </>
+  )
+}
+```
+
+Other attributes pass through to the panel, so it can carry a `role`, an `aria-labelledby` or a class.
+
+## Examples
+
+<Examples>
+
+<Example id="interrupting" label="Interrupting">
+
+### Interrupting
+
+The height eases to and from the content's own height, so there's nothing to measure or hard-code. Press Filters twice in quick succession: a reversal starts from the current height and heads back on the same curve, with no jump. Content added while the panel is open grows it normally, because at rest the height is `auto`.
+
+The panel clips only while it moves or while it's closed. At rest nothing is clipped, so focus rings and popovers inside it aren't cut off.
+
+</Example>
+
+<Example id="one-at-a-time" label="One at a time">
+
+### One at a time
+
+Drive several panels from one piece of state for an accordion. One panel closes while the next opens, on the same duration and curve.
+
+<ComponentPreview name="collapse/faq" height={340} />
+
+</Example>
+
+<Example id="keeping-state" label="Keeping state">
+
+### Keeping state
+
+By default the content unmounts once it has collapsed. With `keepMounted`, it stays in the DOM while closed, hidden and inert, so a half-filled form or a scroll position survives. `duration` sets the height's duration token, `base` by default. This section uses `slow` for a taller panel.
+
+<ComponentPreview name="collapse/keep-mounted" height={390} />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="open, children, keepMounted… (4)">
+
+### Props
+
+<PropsTable name="Collapse" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Height, fade in, fade out · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Height', note: 'to and from `auto`, both ways, default `duration`', duration: 'base', ease: 'standard' },
+    { moment: 'Fade in', note: 'the content, alongside the height', duration: 'base', ease: 'standard' },
+    { moment: 'Fade out', note: 'faster than the collapse, so text never looks squashed', duration: 'fast', ease: 'exit' },
+  ]}
+  reduced="The panel opens and closes in one frame. The content below moves at once, and closed content is hidden and inert as usual."
+/>
+
+Height is a layout animation, and here that's the point: the content below has to move. Keep panels to the size of a section. For whole pages, use a route transition.
+
+#### Reduced motion
+
+The panel shows and hides at once, with no height animation and no fade. What's shown and what's reachable are exactly the same as with motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus">
+
+### Accessibility
+
+- Collapse adds no roles or state of its own. The trigger carries `aria-expanded` and `aria-controls`, as in the examples. Add `role="region"` and `aria-labelledby` when a panel is a landmark worth jumping to.
+- Closed content is `inert` from the first frame of the close, so it can't take focus or clicks while it collapses. It then unmounts or, with `keepMounted`, is hidden from assistive technology.
+- Keep the trigger in place while the panel moves. It sits outside the panel, so it never shifts under the pointer.
+
+</ReferenceRow>

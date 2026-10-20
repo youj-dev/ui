@@ -1,0 +1,122 @@
+---
+title: Share Bar
+description: "Show a share of a total in a table cell or list row."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="share-bar/demo" height={300} />
+
+A plan list where each row has a revenue figure, a segmented share bar and a percentage.
+
+</Story>
+
+<Story id="named" label="Named">
+
+<ComponentPreview name="share-bar/solid" height={200} />
+
+Two named bars, solid and segmented, at the same value, with a button that picks a new one.
+
+With `label` the bar is a `meter`: screen readers hear its name and the share as a percentage in the provider's locale (or your `valueText`). Without it the bar is decorative and hidden from assistive technology, which is right when the number sits beside it, as it does in a table cell. That's the default because it's the common case: a meter and a visible number would say the same thing twice.
+
+</Story>
+
+<Story id="ticks" label="Ticks">
+
+<ComponentPreview name="share-bar/ticks" height={240} />
+
+Test suites by result as a run of ticks, over a legend of counts that points at its part.
+
+`mark="tick"` draws each of the `segments` as a hairline on a taller bar, colored by the part it falls in. Hovering a legend entry passes its index to `active`, which quiets the other parts.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="share-bar" noImport />
+
+Use a share bar to show how much of a whole one row takes: a plan's share of revenue, a suite's pass rate, a volume against its size. It's a mark, not a chart: no axis and no tooltip, so put the number beside it. For the shape of values over time use a [Sparkline](/docs/components/sparkline); for how a whole divides into parts at once, a [Treemap](/docs/components/treemap).
+
+```tsx
+import { ShareBar } from '@youj/react'
+
+<ShareBar value={0.412} segments={24} tone="accent" />
+<ShareBar value={268} max={480} tone="neutral" label="Build minutes used" />
+```
+
+`value` is a share from 0 to 1, or a value out of `max`. Without `segments` it's one solid bar; with it, it's a run of that many cells, and the value rounds to whole cells: any share above zero lights at least one, and only a full share lights them all. `tone` takes the accent, a chart color (`chart-1` to `chart-5`), a status (`success`, `warning`, `danger`) or `neutral`. Give it a width from its container; the height is 6px solid and 12px in cells, and a class changes it.
+
+With `parts` the fill is a whole split into its parts, each in its `tone` (the chart colors in order by default), from the inline start; `max` defaults to their sum, so they fill the bar. In cells, each part gets whole cells and any part above zero keeps one. `mark="tick"` draws the segments as hairlines on a taller bar instead of cells. `active` lights one part and quiets the rest: pair the bar with a [Breakdown List](/docs/components/breakdown-list) and pass its `onActiveChange` here, so pointing at a row lights its segment.
+
+```tsx
+<ShareBar parts={[{ value: 61_420 }, { value: 38_960 }, { value: 21_310 }]} active={active} />
+```
+
+In a table where every row is a share of the same whole, pass the largest share as `max` so the top row fills its bar and the rest compare to it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, max, parts… (9)">
+
+### Props
+
+<PropsTable name="ShareBar" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fill, new value · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fill', note: 'the edge travels from empty when half the bar scrolls into view, once; a clip, so cells and rounded ends never stretch', spring: 'smooth' },
+    { moment: 'New value', note: 'retargets from where the edge is, so a burst of updates glides instead of restarting', spring: 'smooth' },
+  ]}
+  reduced="Drawn at its value; a new value jumps."
+/>
+
+#### Reduced motion
+
+The bar is drawn at its value, and changes land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- With `label`, `role="meter"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and a percentage as `aria-valuetext`.
+- Without `label` (or `aria-label`, `aria-labelledby`) it's `aria-hidden`: say the value in the text beside it.
+- With `parts` and a `label`, the meter speaks each part's share when every part has a `label`: "Online 75%, Away 25%".
+- The fill grows from the inline start, so it runs right to left in RTL.
+
+</ReferenceRow>

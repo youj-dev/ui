@@ -1,0 +1,1874 @@
+[
+  {
+    "name": "youj-labels-account-menu",
+    "type": "registry:lib",
+    "title": "accountMenu labels",
+    "description": "The English strings of accountMenu (accountMenu, accountTheme, accountPreset, accountAppearance, colorModeLight, colorModeDark, colorModeSystem, signOut, workspaces), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/accountMenuLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-alert-dialog",
+    "type": "registry:lib",
+    "title": "alertDialog labels",
+    "description": "The English strings of alertDialog (cancel, confirming, phraseMatches, typeToConfirm, copyPhrase, somethingWentWrong), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/alertDialogLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-alert",
+    "type": "registry:lib",
+    "title": "alert labels",
+    "description": "The English strings of alert (dismiss), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/alertLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-anchor-nav",
+    "type": "registry:lib",
+    "title": "anchorNav labels",
+    "description": "The English strings of anchorNav (onThisPage), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/anchorNavLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-app-header",
+    "type": "registry:lib",
+    "title": "appHeader labels",
+    "description": "The English strings of appHeader (search, searchPlaceholder, menu, openMenu, closeMenu, ctrlKey), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/appHeaderLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-avatar-stack",
+    "type": "registry:lib",
+    "title": "avatarStack labels",
+    "description": "The English strings of avatarStack (avatarStackPeople, avatarStackNames, avatarStackShowAll, presenceOnline, presenceAway, presenceBusy, presenceOffline), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/avatarStackLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-avatar-upload",
+    "type": "registry:lib",
+    "title": "avatarUpload labels",
+    "description": "The English strings of avatarUpload (cancel, saving, saved, saveFailed, fileTooLarge, fileTypeList, fileMaxSize, avatarUnsupported, avatarChangePhoto, avatarUploadPhoto, avatarPhotoOf, avatarProfilePhoto, avatarRemove, avatarCropTitle, avatarCropDescription, avatarCropArea, avatarCropLabel, avatarCropInstructions, avatarReadFailed, avatarZoom, avatarZoomIn, avatarZoomOut, avatarSavePhoto), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/avatarUploadLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-banner",
+    "type": "registry:lib",
+    "title": "banner labels",
+    "description": "The English strings of banner (announcement, dismissAnnouncement), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/bannerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-bottom-tab-bar",
+    "type": "registry:lib",
+    "title": "bottomTabBar labels",
+    "description": "The English strings of bottomTabBar (primaryNavigation, badgeNew, badgeNewCount), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/bottomTabBarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-breadcrumb",
+    "type": "registry:lib",
+    "title": "breadcrumb labels",
+    "description": "The English strings of breadcrumb (breadcrumb, showMoreCount), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/breadcrumbLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-button-async",
+    "type": "registry:lib",
+    "title": "buttonAsync labels",
+    "description": "The English strings of buttonAsync (working, done, failed, holdToConfirm), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/buttonAsyncLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-button",
+    "type": "registry:lib",
+    "title": "button labels",
+    "description": "The English strings of button (loading), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/buttonLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-calendar",
+    "type": "registry:lib",
+    "title": "calendar labels",
+    "description": "The English strings of calendar (nextMonth, previousMonth, calendarDay), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/calendarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-carousel",
+    "type": "registry:lib",
+    "title": "carousel labels",
+    "description": "The English strings of carousel (carousel, slide, slidePosition, slideOf, slideNumber, previousSlide, nextSlide, chooseSlide, slideThumbnails, pauseSlideRotation, startSlideRotation), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/carouselLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chart",
+    "type": "registry:lib",
+    "title": "chart labels",
+    "description": "The English strings of chart (viewData, hideData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chartLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-color-picker",
+    "type": "registry:lib",
+    "title": "colorPicker labels",
+    "description": "The English strings of colorPicker (colour, hue, swatches, accentSwatch, saturationBrightness, saturationBrightnessValue, pickColourFromScreen), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/colorPickerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-combobox",
+    "type": "registry:lib",
+    "title": "combobox labels",
+    "description": "The English strings of combobox (searchPlaceholder, selectPlaceholder, loadingEllipsis, clearSelection, noResults, createOption, selectionCleared, optionsShown), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/comboboxLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-command-palette",
+    "type": "registry:lib",
+    "title": "commandPalette labels",
+    "description": "The English strings of commandPalette (close, back, commandPalette, commandPalettePlaceholder, commandPalettePage, home, navigate, open, escKey), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/commandPaletteLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-command",
+    "type": "registry:lib",
+    "title": "command labels",
+    "description": "The English strings of command (search, loadingEllipsis, commandPalette, commandPaletteDescription), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/commandLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-date-picker",
+    "type": "registry:lib",
+    "title": "datePicker labels",
+    "description": "The English strings of datePicker (chooseDate), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/datePickerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-date-range-picker",
+    "type": "registry:lib",
+    "title": "dateRangePicker labels",
+    "description": "The English strings of dateRangePicker (presets, chooseDates, startDate, endDate, pickStartDate, pickEndDate, dateRangeSummary, yesterday, lastMonth, yearToDate, today, last7Days, last30Days, thisMonth), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dateRangePickerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-dialog",
+    "type": "registry:lib",
+    "title": "dialog labels",
+    "description": "The English strings of dialog (close, open), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dialogLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-file-upload",
+    "type": "registry:lib",
+    "title": "fileUpload labels",
+    "description": "The English strings of fileUpload (add, retry, remove, done, copy, fileUploaded, fileUploadedTile, fileUploadFailed, fileFailedToUpload, fileUnsupported, fileTooLarge, fileDuplicate, fileTooMany, filesAdded, filesRejected, fileRemoved, fileRetrying, fileTypeList, fileTypeGroup, fileMaxSize, fileMaxFiles, fileDropToUpload, fileDropPrompt, fileBrowse, fileListImages, fileListFiles, fileStatusUploaded, fileRetry, fileRetryError, fileCancelUpload, fileUploading), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/fileUploadLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-form",
+    "type": "registry:lib",
+    "title": "form labels",
+    "description": "The English strings of form (failed, checkForm), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/formLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-input-otp",
+    "type": "registry:lib",
+    "title": "inputOtp labels",
+    "description": "The English strings of inputOtp (verifyingCode, codeVerified, codeInvalid, resendCode, resendIn, sending, sent, sendFailed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/inputOtpLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-multi-select",
+    "type": "registry:lib",
+    "title": "multiSelect labels",
+    "description": "The English strings of multiSelect (searchPlaceholder, selectPlaceholder, remove, noResults, selectedItems, selectAll, selectedSummary, allSelected, allDeselected, countOfMaxSelected, optionsShown, limitReached, limitOfReached, removed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/multiSelectLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-notification-center",
+    "type": "registry:lib",
+    "title": "notificationCenter labels",
+    "description": "The English strings of notificationCenter (today, justNow, notifications, notificationsUnread, notificationNew, notificationsNew, notificationsMarkAllRead, notificationsMarkRead, notificationsAll, notificationsUnreadTab, notificationsMentions, notificationsEmptyTitle, notificationsEmptyDescription, notificationsCaughtUpTitle, notificationsCaughtUpDescription, notificationsNoMentionsTitle, notificationsNoMentionsDescription, notificationsRecent, notificationsEarlier, notificationUnreadPrefix), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/notificationCenterLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-number-input",
+    "type": "registry:lib",
+    "title": "numberInput labels",
+    "description": "The English strings of numberInput (increase, decrease), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/numberInputLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-pagination",
+    "type": "registry:lib",
+    "title": "pagination labels",
+    "description": "The English strings of pagination (pagination, previous, next, goToPreviousPage, goToNextPage), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/paginationLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-password-input",
+    "type": "registry:lib",
+    "title": "passwordInput labels",
+    "description": "The English strings of passwordInput (showPassword, capsLockOn, passwordStrength, passwordStrengthIs, noPassword, passwordVeryWeak, passwordWeak, passwordFair, passwordGood, passwordStrong, passwordMinLength, passwordMixedCase, passwordNumber, passwordSymbol, requirementMet, requirementUnmet), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/passwordInputLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-phone-input",
+    "type": "registry:lib",
+    "title": "phoneInput labels",
+    "description": "The English strings of phoneInput (phoneCountry), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/phoneInputLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-rating",
+    "type": "registry:lib",
+    "title": "rating labels",
+    "description": "The English strings of rating (stars, noRating, notRated, ratingValue, ratedOutOf), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/ratingLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-sheet",
+    "type": "registry:lib",
+    "title": "sheet labels",
+    "description": "The English strings of sheet (close), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/sheetLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-sidebar",
+    "type": "registry:lib",
+    "title": "sidebar labels",
+    "description": "The English strings of sidebar (sidebar, toggleSidebar), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/sidebarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-sortable-list",
+    "type": "registry:lib",
+    "title": "sortableList labels",
+    "description": "The English strings of sortableList (sortableInstructions, sortableRoleItem, sortableReorder, sortableReorderItem, sortablePosition, sortablePickedUp, sortablePickedUpKeyboard, sortableMoved, sortableDropped, sortableCancelled), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/sortableListLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-spinner",
+    "type": "registry:lib",
+    "title": "spinner labels",
+    "description": "The English strings of spinner (loading), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/spinnerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-stat-card",
+    "type": "registry:lib",
+    "title": "statCard labels",
+    "description": "The English strings of statCard (trendUp, trendDown, trendFlat, loadingNamed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/statCardLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-meter",
+    "type": "registry:lib",
+    "title": "meter labels",
+    "description": "The English strings of meter (meterWarning, meterCritical), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/meterLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-limit-meter",
+    "type": "registry:lib",
+    "title": "limitMeter labels",
+    "description": "The English strings of limitMeter (meterWarning, meterCritical, allowanceRemaining, allowanceSpent, allowanceLimit, allowanceOverLimit, allowanceValueText, allowanceOverText, allowanceMarkerAt), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/limitMeterLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-dot-map",
+    "type": "registry:lib",
+    "title": "dotMap labels",
+    "description": "The English strings of dotMap (dotMap, dotMapSummary), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dotMapLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-rollout-ruler",
+    "type": "registry:lib",
+    "title": "rolloutRuler labels",
+    "description": "The English strings of rolloutRuler (rollout, rolloutOff, rolloutInternal, rolloutBeta, rolloutGeneral, rolloutStageAt), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/rolloutRulerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-level-matrix",
+    "type": "registry:lib",
+    "title": "levelMatrix labels",
+    "description": "The English strings of levelMatrix (permissions, permissionNone, permissionRead, permissionWrite, permissionAdmin, permissionSelectRow, permissionSelectColumn, permissionSelectAll, permissionSelected, permissionSetSelected, permissionBulkSet, permissionChanged, permissionWas, permissionLocked, permissionHint, clearSelection), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/levelMatrixLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-stage-rail",
+    "type": "registry:lib",
+    "title": "stageRail labels",
+    "description": "The English strings of stageRail (stageRail, stageQueued, stageRunning, stagePassed, stageFailed, stageSkipped, stageItem), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/stageRailLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-severity-timeline",
+    "type": "registry:lib",
+    "title": "severityTimeline labels",
+    "description": "The English strings of severityTimeline (severityTimeline, severity, milestoneAcknowledged, milestoneMitigated, milestoneResolved, sinceStart, ongoing, incidentNoEvents), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/severityTimelineLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-lane-meter",
+    "type": "registry:lib",
+    "title": "laneMeter labels",
+    "description": "The English strings of laneMeter (laneMeter, laneOf, laneItemAction, retry, showMoreCount), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/laneMeterLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-day-ring",
+    "type": "registry:lib",
+    "title": "dayRing labels",
+    "description": "The English strings of dayRing (dayRing, nextRun, runsIn, scheduleRunAt, scheduleRuns, scheduleOverlaps, scheduleOverlapAt, now), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dayRingLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-stepper-nav",
+    "type": "registry:lib",
+    "title": "stepperNav labels",
+    "description": "The English strings of stepperNav (progress, steps), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/stepperNavLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-stepper",
+    "type": "registry:lib",
+    "title": "stepper labels",
+    "description": "The English strings of stepper (progress, optional, stepCompleted, stepCurrent, stepUpcoming, stepError, stepDetour), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/stepperLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-tag-input",
+    "type": "registry:lib",
+    "title": "tagInput labels",
+    "description": "The English strings of tagInput (remove, limitOfReached, removed, tags, addTag, tagHint, upToTags, added, addedTags, alreadyAdded, movedTo), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/tagInputLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-filter-chips",
+    "type": "registry:lib",
+    "title": "filterChips labels",
+    "description": "The English strings of filterChips (activeFilters, removeFilter, queryPlaceholder, queryAddAnother, queryChipHint, added, removed, alreadyAdded), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/filterChipsLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-histogram-range",
+    "type": "registry:lib",
+    "title": "histogramRange labels",
+    "description": "The English strings of histogramRange (rangeMin, rangeMax, minimumOf, maximumOf, valueRange), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/histogramRangeLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-time-picker",
+    "type": "registry:lib",
+    "title": "timePicker labels",
+    "description": "The English strings of timePicker (empty, hours, minutes, dayPeriod), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/timePickerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-timeline",
+    "type": "registry:lib",
+    "title": "timeline labels",
+    "description": "The English strings of timeline (yesterday, today, justNow, timelineCommit, timelineComment, timelineDeploy, timelineAlert, timelineMerge, timelinePullRequest, timelineActivity, timelineEmptyTitle, timelineEmptyDescription, timelineLoadMore, timelineLoadingOlder, timelineEnd, timelineDetails, timelineHideDetails), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/timelineLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-toast",
+    "type": "registry:lib",
+    "title": "toast labels",
+    "description": "The English strings of toast (dismiss, loading), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/toastLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-wizard",
+    "type": "registry:lib",
+    "title": "wizard labels",
+    "description": "The English strings of wizard (back, done, stepOf, skip, continue, finish, finishing, checking, checkStep), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/wizardLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-workspace-switcher",
+    "type": "registry:lib",
+    "title": "workspaceSwitcher labels",
+    "description": "The English strings of workspaceSwitcher (workspaces, workspaceCreate, workspaceCreateNamed, workspaceSearch, workspaceSwitch, workspaceChoose, workspaceNoMatch), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/workspaceSwitcherLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-citation",
+    "type": "registry:lib",
+    "title": "chatCitation labels",
+    "description": "The English strings of chatCitation (chatSources), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatCitationLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-copy-button",
+    "type": "registry:lib",
+    "title": "chatCopyButton labels",
+    "description": "The English strings of chatCopyButton (copy, copied, copyFailed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatCopyButtonLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-markdown",
+    "type": "registry:lib",
+    "title": "chatMarkdown labels",
+    "description": "The English strings of chatMarkdown (chatTable, code, copyCode), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatMarkdownLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-message-list",
+    "type": "registry:lib",
+    "title": "chatMessageList labels",
+    "description": "The English strings of chatMessageList (chatConversation, chatJumpToLatest), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatMessageListLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-message",
+    "type": "registry:lib",
+    "title": "chatMessage labels",
+    "description": "The English strings of chatMessage (cancel, edit, send, retry, copy, chatAssistant, chatYou, chatSystem, chatResponding, chatResponseFailed, chatRegenerate, chatGoodResponse, chatBadResponse, chatMessageActions, chatEditMessage), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatMessageLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-prompt-input",
+    "type": "registry:lib",
+    "title": "chatPromptInput labels",
+    "description": "The English strings of chatPromptInput (send, escKey, remove, chatPromptPlaceholder, chatPromptLabel, chatAttachFiles, chatAttachments, chatStopGenerating, chatSendMessage, chatStop, chatCharacters, chatOverLimit, chatLeft, chatUploading, chatUploadFailed, chatPastedImage), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatPromptInputLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-suggestions",
+    "type": "registry:lib",
+    "title": "chatSuggestions labels",
+    "description": "The English strings of chatSuggestions (chatSuggestions), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatSuggestionsLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-thinking",
+    "type": "registry:lib",
+    "title": "chatThinking labels",
+    "description": "The English strings of chatThinking (done, chatThinking, chatReasoning, chatThoughtFor), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatThinkingLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-tool-call",
+    "type": "registry:lib",
+    "title": "chatToolCall labels",
+    "description": "The English strings of chatToolCall (done, failed, chatToolQueued, chatToolRunning, chatToolDuration, chatToolFailed, chatToolArguments, chatToolResult, chatToolError), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatToolCallLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-chat-tool-approval",
+    "type": "registry:lib",
+    "title": "chatToolApproval labels",
+    "description": "The English strings of chatToolApproval (done, failed, chatToolRunning, chatToolDuration, chatToolFailed, chatToolArguments, cancel, save, edit, toolApproval, toolApprovalRiskLow, toolApprovalRiskMedium, toolApprovalRiskHigh, toolApprovalReason, toolApprovalAllowOnce, toolApprovalAlwaysAllow, toolApprovalDeny, toolApprovalEdited, toolApprovalShowMore, toolApprovalShowLess, toolApprovalShowValue, toolApprovalHideValue, toolApprovalHidden, toolApprovalPending, toolApprovalApproved, toolApprovalDenied, toolApprovalExpired, toolApprovalApprovedBy, toolApprovalDeniedBy, toolApprovalNotRun, toolApprovalDeniedReason, toolApprovalRequired, toolApprovalNotNumber, toolApprovalNotJson, toolApprovalNotBoolean, toolApprovalAnnounce), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/chatToolApprovalLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-code-block",
+    "type": "registry:lib",
+    "title": "codeBlock labels",
+    "description": "The English strings of codeBlock (copied, copyFailed, code, codeBlock, copyCode), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/codeBlockLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-diff-viewer",
+    "type": "registry:lib",
+    "title": "diffViewer labels",
+    "description": "The English strings of diffViewer (diffViewer, diffSummary, diffView, diffUnified, diffSplit, diffWrap, diffAddedLine, diffRemovedLine, diffUnchanged, diffChange, diffChanges, diffNextChange, diffPreviousChange, diffNoChanges, diffNoNewline, diffBefore, diffAfter, diffHint, copied, copyFailed, copyCode), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/diffViewerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-bulk-bar",
+    "type": "registry:lib",
+    "title": "dataTableBulkBar labels",
+    "description": "The English strings of dataTableBulkBar (clearSelection, rowsNoun, selectionActions, selected, selectAllCount, clearSelectionShortcut), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableBulkBarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-columns",
+    "type": "registry:lib",
+    "title": "dataTableColumns labels",
+    "description": "The English strings of dataTableColumns (actions, columns, hiddenColumns, toggleColumns, resetColumns, columnOptions, sortAscending, sortDescending, clearSort, pinToStart, pinToEnd, unpinned, moveLeft, moveRight, hideColumn, rowActions, selectAllOnPage, selectRow), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableColumnsLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-confirm",
+    "type": "registry:lib",
+    "title": "dataTableConfirm labels",
+    "description": "The English strings of dataTableConfirm (rowsNoun, cannotBeUndone, itemCount, confirmTitle, confirmAction, confirmPending), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableConfirmLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-editor",
+    "type": "registry:lib",
+    "title": "dataTableEditor labels",
+    "description": "The English strings of dataTableEditor (enterNumber, enterAtLeast, enterAtMost), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableEditorLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-filters",
+    "type": "registry:lib",
+    "title": "dataTableFilters labels",
+    "description": "The English strings of dataTableFilters (clear, search, searchPlaceholder, presets, clearSearch, filterBy, filterNoOptions, clearFilter, clearAll, activeFilters, removeFilter, quoted, today, last7Days, last30Days, thisMonth, thisYear, dateFrom, dateTo, filterFrom, filterUntil, rangeMin, rangeMax, minimumOf, maximumOf), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableFiltersLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-pagination",
+    "type": "registry:lib",
+    "title": "dataTablePagination labels",
+    "description": "The English strings of dataTablePagination (pagination, rowsNoun, rowsPerPage, firstPage, previousPage, nextPage, lastPage, rangeOf, pageOf, noItems), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTablePaginationLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-toolbar",
+    "type": "registry:lib",
+    "title": "dataTableToolbar labels",
+    "description": "The English strings of dataTableToolbar (rowDensity, compactRows, standardRows, comfortableRows), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableToolbarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-views",
+    "type": "registry:lib",
+    "title": "dataTableViews labels",
+    "description": "The English strings of dataTableViews (cancel, views, viewModified, savedViews, savedViewsEmpty, saveViewChanges, revertChanges, saveAsNewView, deleteView, saveView, saveViewDescription, viewName, viewNamePlaceholder, viewNameTaken), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableViewsLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-kanban",
+    "type": "registry:lib",
+    "title": "kanban labels",
+    "description": "The English strings of kanban (cancel, add, kanbanBoard, kanbanRoleBoard, kanbanRoleCard, kanbanInstructions, kanbanLane, kanbanPlace, kanbanPickedUp, kanbanPickedUpKeyboard, kanbanDropped, kanbanCancelled, kanbanMoveFailed, kanbanExpand, kanbanCollapse, kanbanCardCount, kanbanNoCards, kanbanAddCard, kanbanNewCard, kanbanCardTitle, selected), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/kanbanLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-multi-language-input-provider",
+    "type": "registry:lib",
+    "title": "multiLanguageInputProvider labels",
+    "description": "The English strings of multiLanguageInputProvider (clear, removed, added, language, allLanguages, moreLanguages, searchLanguages, noLanguageMatches, needsWork, nothingToTranslate, pinnedLanguages, recentLanguages, regionAmericas, regionEurope, regionMiddleEastAfrica, regionAsiaPacific, regionOther, translationSource, translationComplete, translationReview, translationOutdated, translationMissing, translationCount, previousToTranslate, nextToTranslate, translationProgress, languagesComplete, fieldsComplete, copyFrom, copiedFrom, useSuggestion, suggestionUsed, markReviewed, markedReviewed, sourceChanged, filledAutomatically, requiredIn, characterCount, charactersOver, editingLanguage, everyLanguageComplete, translationActions, fillFromSource, markAllReviewed, clearLanguage, clearLanguageDescription, translationBulkDone, copy), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/multiLanguageInputProviderLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-tree-view",
+    "type": "registry:lib",
+    "title": "treeView labels",
+    "description": "The English strings of treeView (retry, loadingEllipsis, empty, treeLoadingItem, treeLoaded, treeLoadFailed, treeRename, treeRenamed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/treeViewLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-async-feedback",
+    "type": "registry:lib",
+    "title": "asyncFeedback labels",
+    "description": "The English strings of asyncFeedback (working, done, failed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/asyncFeedbackLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-scroll-progress",
+    "type": "registry:lib",
+    "title": "scrollProgress labels",
+    "description": "The English strings of scrollProgress (scrollProgress), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/scrollProgressLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-dock",
+    "type": "registry:lib",
+    "title": "dock labels",
+    "description": "The English strings of dock (dock), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dockLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-blueprint",
+    "type": "registry:lib",
+    "title": "blueprint labels",
+    "description": "The English strings of blueprint (blueprintFrame, blueprintRegion, blueprintBox, blueprintText, blueprintButton, blueprintField, blueprintIcon, blueprintChart, blueprintMedia, blueprintRule, blueprintRow, blueprintLink, blueprintBuild, blueprintValues, blueprintGrid, blueprintInk, blueprintTone, blueprintSet), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/blueprintLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-layers",
+    "type": "registry:lib",
+    "title": "layers labels",
+    "description": "The English strings of layers (layersFrame, layersRegions, layersBoxes, layersContent), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/layersLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-render-passes",
+    "type": "registry:lib",
+    "title": "renderPasses labels",
+    "description": "The English strings of renderPasses (renderPassesLayout, renderPassesPaint, renderPassesComposite), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/renderPassesLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-table",
+    "type": "registry:lib",
+    "title": "table labels",
+    "description": "The English strings of table (tableScrollRegion), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/tableLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-treemap",
+    "type": "registry:lib",
+    "title": "treemap labels",
+    "description": "The English strings of treemap (treemap, noData, shareOfTotal, treemapItem, treemapSummary), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/treemapLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-refill-meter",
+    "type": "registry:lib",
+    "title": "refillMeter labels",
+    "description": "The English strings of refillMeter (bucketTokens, bucketRefill, bucketFullIn, bucketFull, bucketEmpty, bucketBurst, bucketValueText, bucketUnderBurst), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/refillMeterLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-distribution-strip",
+    "type": "registry:lib",
+    "title": "distributionStrip labels",
+    "description": "The English strings of distributionStrip (latencyDistribution, latencyWithinSlo, latencySloAt, latencySummary, latencyWithin, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/distributionStripLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-history-strip",
+    "type": "registry:lib",
+    "title": "historyStrip labels",
+    "description": "The English strings of historyStrip (uptime, uptimeDay, uptimeNoData, uptimeIncidents, uptimeDowntime, uptimeSummary, today), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/historyStripLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-forecast-band",
+    "type": "registry:lib",
+    "title": "forecastBand labels",
+    "description": "The English strings of forecastBand (forecast, forecastActual, forecastProjected, forecastRange, forecastBudget, forecastCrosses, forecastSummary, forecastWithin, today, forecastScenario, forecastScenarioSummary), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/forecastBandLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-flow-lanes",
+    "type": "registry:lib",
+    "title": "flowLanes labels",
+    "description": "The English strings of flowLanes (flowLanes, flowLanesItem, flowLanesSummary, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/flowLanesLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-cell-bar",
+    "type": "registry:lib",
+    "title": "cellBar labels",
+    "description": "The English strings of cellBar (cellBar, cellBarItem, cellBarSummary, cellBarProjected, cellBarTarget), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/cellBarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-lollipop-chart",
+    "type": "registry:lib",
+    "title": "lollipopChart labels",
+    "description": "The English strings of lollipopChart (lollipopChart, lollipopChartSummary, unitChartItem, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/lollipopChartLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-share-ring",
+    "type": "registry:lib",
+    "title": "shareRing labels",
+    "description": "The English strings of shareRing (noData, shareRingPart, shareRingSummary), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/shareRingLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-activity-rings",
+    "type": "registry:lib",
+    "title": "activityRings labels",
+    "description": "The English strings of activityRings (activityRings, activityRingsValue), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/activityRingsLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-slot-grid",
+    "type": "registry:lib",
+    "title": "slotGrid labels",
+    "description": "The English strings of slotGrid (slotGrid, slotGridHint, slotGridLeft, slotGridFull, slotGridClosed, slotGridFew, slotGridOpen, slotGridMine, slotGridCell, slotGridDays, slotGridOpenCount), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/slotGridLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-waveform-scrubber",
+    "type": "registry:lib",
+    "title": "waveformScrubber labels",
+    "description": "The English strings of waveformScrubber (waveformSeek, waveformPosition, waveformClipStart, waveformClipEnd), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/waveformScrubberLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-progress-list",
+    "type": "registry:lib",
+    "title": "progressList labels",
+    "description": "The English strings of progressList (transfers, transferPause, transferResume, transferCancel, transferProgress, transferLeft, transferQueued, transferPaused, transferFinished, transferFailed, transferFiles, transferRate, transferTimeLeft, transferPauseAll, transferResumeAll, transferCancelAll, showFewer, showMoreCount, fileRetry, done), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/progressListLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-progress-path",
+    "type": "registry:lib",
+    "title": "progressPath labels",
+    "description": "The English strings of progressPath (progressPath, progressPathHint, lessonItem, milestoneItem, lessonDone, lessonCurrent, lessonLocked, lessonStart, sectionProgress), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/progressPathLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-segmented-ring",
+    "type": "registry:lib",
+    "title": "segmentedRing labels",
+    "description": "The English strings of segmentedRing (intervalTimer, intervalWork, intervalRest, intervalWarmup, intervalCooldown, intervalRound, intervalRoundOf, intervalLeft, intervalStarted, intervalFinished, intervalNext), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/segmentedRingLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-seat-map",
+    "type": "registry:lib",
+    "title": "seatMap labels",
+    "description": "The English strings of seatMap (seatMap, seatMapHint, seatMapStage, seatItem, seatAvailable, seatUnavailable, seatSelected, seatRow, seatNumber, seatAdded, seatRemoved, seatLimit), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/seatMapLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-dial",
+    "type": "registry:lib",
+    "title": "dial labels",
+    "description": "The English strings of dial (dial, dialNow, dialValueNow, dialMark), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dialLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-time-lanes",
+    "type": "registry:lib",
+    "title": "timeLanes labels",
+    "description": "The English strings of timeLanes (rota, rotaNow, rotaShift, rotaOverride, rotaHandoff, rotaHint, rotaOnCall, rotaUpcoming, rotaEnded, proposed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/timeLanesLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-diff-bar",
+    "type": "registry:lib",
+    "title": "diffBar labels",
+    "description": "The English strings of diffBar (diffBetter, diffEven), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/diffBarLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-calendar-heatmap",
+    "type": "registry:lib",
+    "title": "calendarHeatmap labels",
+    "description": "The English strings of calendarHeatmap (calendarHeatmap, streakDay, streakDone, streakMissed, streakFrozen, streakPartial, streakToday, streakMarkDone, streakTodayDone, streakTodayUndone, streakCurrent, streakLongest, streakRate, streakFreezes, streakDays, streakFreezesLeft, streakMilestone, streakLess, streakMore), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/calendarHeatmapLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-allocation-meter",
+    "type": "registry:lib",
+    "title": "allocationMeter labels",
+    "description": "The English strings of allocationMeter (envelopes, envelopeLeft, envelopeOver, envelopeOf, envelopeRollover, envelopeRolloverTag, envelopeOverspentTag, envelopeHint, envelopePickedUp, envelopeTarget, envelopeMoved, envelopeMoveCancelled), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/allocationMeterLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-day-rail",
+    "type": "registry:lib",
+    "title": "dayRail labels",
+    "description": "The English strings of dayRail (itinerary, itineraryDay, itineraryLeg, itineraryTimeShift, itineraryNights, itineraryNow, itineraryInTransit), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dayRailLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-capsule-player",
+    "type": "registry:lib",
+    "title": "capsulePlayer labels",
+    "description": "The English strings of capsulePlayer (play, pause, previousTrack, nextTrack, waveformSeek, waveformPosition), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/capsulePlayerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-capsule-stepper",
+    "type": "registry:lib",
+    "title": "capsuleStepper labels",
+    "description": "The English strings of capsuleStepper (increase, decrease), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/capsuleStepperLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-capsule-search",
+    "type": "registry:lib",
+    "title": "capsuleSearch labels",
+    "description": "The English strings of capsuleSearch (search, clear, ctrlKey), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/capsuleSearchLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-stat-pill",
+    "type": "registry:lib",
+    "title": "statPill labels",
+    "description": "The English strings of statPill (trendUp, trendDown, trendFlat), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/statPillLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-gradient-slider",
+    "type": "registry:lib",
+    "title": "gradientSlider labels",
+    "description": "The English strings of gradientSlider (gradientSliderValue), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/gradientSliderLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-flow-graph",
+    "type": "registry:lib",
+    "title": "flowGraph labels",
+    "description": "The English strings of flowGraph (flowGraph, flowGraphHint, flowQueued, flowRunning, flowSucceeded, flowFailed, flowRetried, flowSkipped, flowGraphNode, flowGraphAfter, flowGraphThen, flowGraphAttempts, zoomIn, zoomOut, zoomToFit), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/flowGraphLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-track-timeline",
+    "type": "registry:lib",
+    "title": "trackTimeline labels",
+    "description": "The English strings of trackTimeline (trackTimeline, trackTimelineHint, trackTimelineClip, trackTimelineRange, trackTimelineClipStart, trackTimelineClipEnd, trackTimelineMute, trackTimelineSolo, trackTimelinePlayhead, waveformPosition, zoomIn, zoomOut, zoomToFit), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/trackTimelineLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-item-pager",
+    "type": "registry:lib",
+    "title": "itemPager labels",
+    "description": "The English strings of itemPager (records, previousRecord, nextRecord, recordOf), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/itemPagerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-property-list",
+    "type": "registry:lib",
+    "title": "propertyList labels",
+    "description": "The English strings of propertyList (editProperty), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/propertyListLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-route-map",
+    "type": "registry:lib",
+    "title": "routeMap labels",
+    "description": "The English strings of routeMap (routeMap, routeOnTime, routeDelayed, routeDone, proposed, routeOrigin, routeDestination, routeCurrent, routeStop), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/routeMapLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-annotated-image",
+    "type": "registry:lib",
+    "title": "annotatedImage labels",
+    "description": "The English strings of annotatedImage (annotations), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/annotatedImageLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-image-accordion",
+    "type": "registry:lib",
+    "title": "imageAccordion labels",
+    "description": "The English strings of imageAccordion (imageAccordion), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/imageAccordionLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-proposal-card",
+    "type": "registry:lib",
+    "title": "proposalCard labels",
+    "description": "The English strings of proposalCard (proposed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/proposalCardLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-unit-chart",
+    "type": "registry:lib",
+    "title": "unitChart labels",
+    "description": "The English strings of unitChart (unitChart, noData, unitChartItem, unitChartSummary), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/unitChartLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-waffle-chart",
+    "type": "registry:lib",
+    "title": "waffleChart labels",
+    "description": "The English strings of waffleChart (waffleChart, noData, shareOfTotal, treemapItem, treemapSummary), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/waffleChartLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-radar-chart",
+    "type": "registry:lib",
+    "title": "radarChart labels",
+    "description": "The English strings of radarChart (radarChart, radarChartAxis, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/radarChartLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-radial-graph",
+    "type": "registry:lib",
+    "title": "radialGraph labels",
+    "description": "The English strings of radialGraph (radialGraph, radialGraphHops, radialGraphItem, radialGraphSummary, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/radialGraphLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-density-lanes",
+    "type": "registry:lib",
+    "title": "densityLanes labels",
+    "description": "The English strings of densityLanes (densityLanes, densityLanesSummary, unitChartItem, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/densityLanesLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-coverage-matrix",
+    "type": "registry:lib",
+    "title": "coverageMatrix labels",
+    "description": "The English strings of coverageMatrix (coverageMatrix, coverageMatrixNone, coverageMatrixDepth, coverageMatrixSummary, noData), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/coverageMatrixLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-milestone-ruler",
+    "type": "registry:lib",
+    "title": "milestoneRuler labels",
+    "description": "The English strings of milestoneRuler (milestoneRuler, milestoneRulerDone, milestoneRulerUpcoming, milestoneRulerAtRisk, milestoneRulerItem, milestoneRulerCount, milestoneRulerMore, milestoneRulerSummary, milestoneRulerEmpty), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/milestoneRulerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-score-ring",
+    "type": "registry:lib",
+    "title": "scoreRing labels",
+    "description": "The English strings of scoreRing (scoreRing, scoreRingValue, scoreRingGrade), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/scoreRingLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-signature-pad",
+    "type": "registry:lib",
+    "title": "signaturePad labels",
+    "description": "The English strings of signaturePad (signaturePad, signaturePadHint, signHere, signatureMethod, signatureDraw, signatureType, signatureTypedName, signatureCleared, signatureSigned, signatureAccept, signatureAccepting, signatureAccepted, signatureSignedAt, signatureLocked, signatureResign, signatureUnlocked, undo, clear), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/signaturePadLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-whiteboard",
+    "type": "registry:lib",
+    "title": "whiteboard labels",
+    "description": "The English strings of whiteboard (whiteboard, whiteboardHint, whiteboardTools, whiteboardSelect, whiteboardHand, whiteboardPen, whiteboardLine, whiteboardArrow, whiteboardRectangle, whiteboardEllipse, whiteboardText, whiteboardColor, whiteboardWidth, whiteboardThin, whiteboardMedium, whiteboardBold, whiteboardInk, whiteboardAccent, whiteboardRed, whiteboardAmber, whiteboardGreen, whiteboardBlue, whiteboardDelete, whiteboardTextPlaceholder, whiteboardSummary, whiteboardSelected, whiteboardAdded, whiteboardDeleted, whiteboardShapeText, whiteboardSticky, whiteboardConnector, whiteboardComment, whiteboardEmbed, whiteboardRoute, whiteboardStraight, whiteboardElbow, whiteboardConnects, whiteboardPoint, whiteboardArrange, whiteboardAlignLeft, whiteboardAlignCenter, whiteboardAlignRight, whiteboardAlignTop, whiteboardAlignMiddle, whiteboardAlignBottom, whiteboardDistributeHorizontal, whiteboardDistributeVertical, whiteboardView, whiteboardZoomToSelection, whiteboardMinimap, whiteboardSnapToGrid, whiteboardShortcuts, whiteboardPan, whiteboardNudge, whiteboardSelectAll, whiteboardComments, whiteboardPin, whiteboardResolve, whiteboardReopen, whiteboardResolved, whiteboardDeleteComment, whiteboardCommentPlaceholder, undo, redo, zoomIn, zoomOut, zoomToFit, zoomReset, ctrlKey), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/whiteboardLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-voice-orb",
+    "type": "registry:lib",
+    "title": "voiceOrb labels",
+    "description": "The English strings of voiceOrb (voiceOrb, voiceOrbIdle, voiceOrbListening, voiceOrbThinking, voiceOrbSpeaking, voiceOrbMuted, voiceOrbState), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/voiceOrbLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-world-clock",
+    "type": "registry:lib",
+    "title": "worldClock labels",
+    "description": "The English strings of worldClock (worldClock, worldClockCursor, worldClockHint, worldClockTime, worldClockSummary, worldClockOverlap, worldClockNoOverlap, worldClockWorkingHours, worldClockOutsideHours, worldClockNight, worldClockDaytime, worldClockEveryone, now), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/worldClockLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-inline-confirm",
+    "type": "registry:lib",
+    "title": "inlineConfirm labels",
+    "description": "The English strings of inlineConfirm (inlineConfirmPrompt, cancel), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/inlineConfirmLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-session-timeout",
+    "type": "registry:lib",
+    "title": "sessionTimeout labels",
+    "description": "The English strings of sessionTimeout (sessionTimeoutTitle, sessionTimeoutWarning, sessionTimeoutReason, sessionTimeoutStay, sessionTimeoutSignOut, sessionTimeoutDoneTitle, sessionTimeoutDoneBody, sessionTimeoutSignIn), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/sessionTimeoutLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-filter-builder",
+    "type": "registry:lib",
+    "title": "filterBuilder labels",
+    "description": "The English strings of filterBuilder (filterBuilder, filterAnd, filterOr, filterCombinator, filterAddRule, filterAddGroup, filterRuleN, filterGroupN, filterDuplicate, filterField, filterOperator, filterValue, filterValueFrom, filterValueTo, filterDays, filterApply, filterReset, filterUnapplied, filterApplied, filterDiscarded, filterIncomplete, filterEmpty, filterSummary, filterSummaryNone, filterShowChips, filterShowSentence, filterOpIs, filterOpIsNot, filterOpContains, filterOpStartsWith, filterOpGt, filterOpLt, filterOpBetween, filterOpBefore, filterOpAfter, filterOpInLast, filterOpIsAnyOf, filterOpHasAny, filterOpHasAll, filterOpIsEmpty, filterOpIsNotEmpty, filterOpIsTrue, filterOpIsFalse, filterWhere, filterUngroup, filterGroupActions, undo, searchPlaceholder, noResults, remove, added, removed, selectPlaceholder), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/filterBuilderLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-import-mapper",
+    "type": "registry:lib",
+    "title": "importMapper labels",
+    "description": "The English strings of importMapper (back, continue, retry, done, undo, skip, importMapperTitle, importMapperDescription, importMapperDropTitle, importMapperDropHint, importMapperChoose, importMapperReplace, importMapperRemove, importMapperStartOver, importMapperSample, importMapperFileMeta, importMapperTooLarge, importMapperNotCsv, importMapperEmptyFile, importMapperUnclosedQuote, importMapperRaggedRow, importMapperProblemsMore, importMapperColumn, importMapperTarget, importMapperSkipColumn, importMapperRequired, importMapperCheck, importMapperCheckWhy, importMapperNotMatched, importMapperPickColumn, importMapperPickColumnFor, importMapperBlocked, importMapperNothing, importMapperMapped, importMapperNotImported, importMapperBlank, importMapperItems, importMapperImport, importMapperAllGood, importMapperIssueMissing, importMapperIssueInvalid, importMapperReview, importMapperSkipThem, importMapperSkippedNote, importMapperDuplicatesFound, importMapperPolicy, importMapperPolicyUpdate, importMapperPolicyCreate, importMapperMoreOptions, importMapperKey, importMapperCountsAnnounce, importMapperRow, importMapperErrorRequired, importMapperErrorEmail, importMapperErrorNumber, importMapperErrorDate, importMapperEditCell, importMapperShowing, importMapperLeft, importMapperRowFixed, importMapperRowSkipped, importMapperSkipThisRow, importMapperImporting, importMapperProgress, importMapperProgressLabel, importMapperImported, importMapperUpdatedCount, importMapperSkippedCount, importMapperDoneAnnounce, importMapperErrorReport, importMapperImportAnother, importMapperFailed, importMapperReportField, importMapperReportValue, importMapperReportProblem), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/importMapperLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-inspector",
+    "type": "registry:lib",
+    "title": "inspector labels",
+    "description": "The English strings of inspector (inspectorEnable, inspectorShow, inspectorHide, inspectorCollapse, inspectorExpand, inspectorChangeType, add, remove), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/inspectorLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-color-opacity-field",
+    "type": "registry:lib",
+    "title": "colorOpacityField labels",
+    "description": "The English strings of colorOpacityField (colour, hexColour, opacity), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/colorOpacityFieldLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-slide-to-confirm",
+    "type": "registry:lib",
+    "title": "slideToConfirm labels",
+    "description": "The English strings of slideToConfirm (slideToConfirm, slideToConfirmHint, working, confirmed, failed, somethingWentWrong), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/slideToConfirmLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-tour",
+    "type": "registry:lib",
+    "title": "tour labels",
+    "description": "The English strings of tour (tourStepOf, tourStepAnnounce, tourHint, tourStart, back, next, done, skip), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/tourLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-audio-recorder",
+    "type": "registry:lib",
+    "title": "audioRecorder labels",
+    "description": "The English strings of audioRecorder (audioRecorder, audioRecorderHint, audioRecorderLimit, audioRecorderStart, audioRecorderStop, play, pause, audioRecorderPause, audioRecorderResume, audioRecorderElapsed, audioRecorderRemaining, audioRecorderRecording, audioRecorderPaused, audioRecorderStopped, audioRecorderLimitReached, audioRecorderRequesting, audioRecorderDenied, audioRecorderNoDevice, audioRecorderUnsupported, audioRecorderFailed, audioRecorderDiscard, audioRecorderDiscarded, audioRecorderRestored, audioRecorderSave, audioRecorderSaving, audioRecorderSaved, undo), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/audioRecorderLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-live-cursors",
+    "type": "registry:lib",
+    "title": "liveCursors labels",
+    "description": "The English strings of liveCursors (liveCursorsJoined, liveCursorsLeft, liveCursorsPeople, liveCursorsViewing, liveCursorsEditing, liveCursorsFollow, liveCursorsFollowing, liveCursorsMore), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/liveCursorsLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-hierarchy-chart",
+    "type": "registry:lib",
+    "title": "hierarchyChart labels",
+    "description": "The English strings of hierarchyChart (hierarchyChart, hierarchyChartHint, hierarchyChartHidden, hierarchyChartExpand, hierarchyChartCollapse, zoomIn, zoomOut, zoomToFit), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/hierarchyChartLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-radial-menu",
+    "type": "registry:lib",
+    "title": "radialMenu labels",
+    "description": "The English strings of radialMenu (actions, radialMenuHint, radialMenuChosen), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/radialMenuLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-image-compare",
+    "type": "registry:lib",
+    "title": "imageCompare labels",
+    "description": "The English strings of imageCompare (imageCompare, imageCompareBefore, imageCompareAfter, imageCompareValue), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/imageCompareLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-currency-swap",
+    "type": "registry:lib",
+    "title": "currencySwap labels",
+    "description": "The English strings of currencySwap (currencySwapPay, currencySwapReceive, currencySwapFlip, currencySwapFromAsset, currencySwapToAsset, currencySwapSubmit, currencySwapResult, currencySwapRate), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/currencySwapLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-wheel-picker",
+    "type": "registry:lib",
+    "title": "wheelPicker labels",
+    "description": "The English strings of wheelPicker (wheelPicker), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/wheelPickerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-hours-dial",
+    "type": "registry:lib",
+    "title": "hoursDial labels",
+    "description": "The English strings of hoursDial (hoursDial, hoursDialStart, hoursDialEnd, hoursDialValue), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/hoursDialLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-share-dialog",
+    "type": "registry:lib",
+    "title": "shareDialog labels",
+    "description": "The English strings of shareDialog (shareDialogTitle, shareDialogAddPeople, shareDialogRole, shareDialogMessage, shareDialogSend, shareDialogSending, shareDialogSent, shareDialogInvited, shareDialogNotEmail, shareDialogHasAccess, shareDialogFixInvalid, shareDialogRemoveRecipient, shareDialogSuggestions, shareDialogGroupSize, shareDialogPeople, shareDialogOwner, shareDialogPending, shareDialogResend, shareDialogResendTo, shareDialogCancelInvite, shareDialogRemoveAccess, shareDialogRoleOf, shareDialogLoading, shareDialogGeneral, shareDialogRestricted, shareDialogRestrictedHint, shareDialogOrganization, shareDialogOrganizationHint, shareDialogAnyone, shareDialogAnyoneHint, shareDialogLinkRole, shareDialogCopyLink, shareDialogCopied, shareDialogLinkCopied, shareDialogCopyFailed, shareDialogDone, shareDialogRemoved, shareDialogRoleChanged, shareDialogAccessChanged, shareDialogFailed, shareDialogViewer, shareDialogCommenter, shareDialogEditor, shareDialogInvitedOnly, shareDialogPeopleCount), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/shareDialogLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-portfolio",
+    "type": "registry:lib",
+    "title": "portfolio labels",
+    "description": "The English strings of portfolio (portfolioPeriod, portfolioChart, portfolioChartHint, portfolioReading, portfolioUp, portfolioDown, portfolioFlat, portfolioInfo), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/portfolioLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-growth-forecast",
+    "type": "registry:lib",
+    "title": "growthForecast labels",
+    "description": "The English strings of growthForecast (growthContribution, growthYears, growthRate, growthToday, growthYear, growthBars, growthBar), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/growthForecastLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-export-dialog",
+    "type": "registry:lib",
+    "title": "exportDialog labels",
+    "description": "The English strings of exportDialog (exportDialogTitle, exportPeriod, exportCustom, exportCustomHint, exportOptions, exportFormat, exportTimeZone, exportTimeZoneLocal, exportColumnsAll, exportColumnsSome, exportSelectAll, exportSelectNone, exportColumnsPick, exportAs, exportNothing, exportQueued, exportEmailed, exportEmailedTo, exportFailedNote, today, yesterday, last7Days, last30Days, thisMonth, lastMonth, yearToDate, columns, itemCount, rowsNoun, working, done, failed, cancel, close), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/exportDialogLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-blocks",
+    "type": "registry:lib",
+    "title": "blocks labels",
+    "description": "The English strings of blocks (save, presenceDoNotDisturb, presenceInvisible, presenceStatus, presenceSetTo, pages, pagesFound, pagesNoMatch, filterPages, filterPagesPlaceholder, searchEverything), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/blocksLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-table-block",
+    "type": "registry:lib",
+    "title": "dataTableBlock labels",
+    "description": "The English strings of dataTableBlock (search, quoted, filterFrom, filterUntil, empty, pagination, loadingNamed, rowsNoun, row, rowNumber, export, clearFilters, pageOf, noItems, selectAllRows, selectAllOnPage, sortedBy, sortedColumn, sortCleared, selectionCleared, selectedRows, matchCount, totalCount, columnWidth, cellOf, cellSaved, cellSaveFailed, gridHintArrows, gridHintSelect, gridHintEdit, gridHintSort, gridHintResize, gridHintMenu, loadFailed, tryAgain, noMatches, noMatchesHint, emptyHint, saving, saved, selectRow), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataTableBlockLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-labels-data-grid-block",
+    "type": "registry:lib",
+    "title": "dataGridBlock labels",
+    "description": "The English strings of dataGridBlock (justNow, escKey, search, searchPlaceholder, clearSearch, filterBy, filterNoOptions, clearFilter, clearFilters, clearAll, activeFilters, removeFilter, columns, toggleColumns, resetColumns, rowDensity, compactRows, comfortableRows, rowActions, actions, selectRow, selectAllRows, selectAllOnPage, selectionActions, selected, selectAllCount, clearSelection, clearSelectionShortcut, rowsNoun, row, rowNumber, sortedBy, sortedColumn, sortCleared, sortAscending, sortDescending, clearSort, selectionCleared, selectedRows, matchCount, totalCount, itemCount, loadFailed, tryAgain, noMatches, noMatchesHint, noItems, emptyHint, loadingNamed, pagination, previousPage, nextPage, rangeOf, pageOf, rowsPerPage, gridHintArrows, gridHintSelect, gridHintSort, views, copy, copied, copyFailed, cellOf, trendUp, trendDown, trendFlat, spaciousRows, groupBy, noGrouping, groupedBy, groupingCleared, showDetails, hideDetails, copyValue, sortBy, addFilter, booleanYes, booleanNo, valueOfMax, gridHintOpen, groupTotal, groupAverage), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/dataGridBlockLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  }
+]

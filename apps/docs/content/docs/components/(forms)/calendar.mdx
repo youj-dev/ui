@@ -1,0 +1,123 @@
+---
+title: Calendar
+description: "Pick a date or range from a month grid."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="calendar/demo" height={420} />
+
+A single-date Calendar with today selected and the chosen day read out beneath it.
+
+</Story>
+
+<Story id="ranges" label="Ranges">
+
+<ComponentPreview name="calendar/range" height={420} />
+
+Range selection, with the chosen days drawn as one continuous band.
+
+With `mode="range"`, the chosen days form one continuous band with solid ends. The band runs unbroken across each week and rounds off at the week's edges and where a month begins or ends mid-week, so it reads as rows. Show two months with `numberOfMonths={2}`. They sit side by side from the `sm` breakpoint and stack below it.
+
+</Story>
+
+<Story id="bounds-and-disabled-days" label="Bounds and disabled days">
+
+<ComponentPreview name="calendar/bounded" height={440} />
+
+A calendar with bounded months and disabled days.
+
+`startMonth` and `endMonth` stop the arrows at the bounds. `disabled` takes react-day-picker matchers: dates, `{ before }` and `{ after }`, day-of-week objects, or a function such as date-fns's `isWeekend`. A `footer` sits under the grid, which is a good place to confirm the choice.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="calendar" noImport />
+
+Requires `date-fns` and `react-day-picker`, [optional dependencies](/docs/installation#optional-dependencies). Import it from `@youj/react/date`.
+
+Use Calendar when choosing a date is the main task and the month should stay visible. In a form, use [Date Picker](/docs/components/date-picker) or [Date Range Picker](/docs/components/date-range-picker). Both put this calendar in a popover and let people type a date.
+
+```tsx
+import { useState } from 'react'
+import { Calendar } from '@youj/react/date'
+
+export function DeployDay() {
+  const [date, setDate] = useState<Date | undefined>(new Date())
+  return <Calendar mode="single" selected={date} onSelect={setDate} />
+}
+```
+
+`Calendar` is [react-day-picker](https://daypicker.dev) dressed in Youj's controls: every day and both arrows are a ghost [Button](/docs/components/button), so hover, press and the focus ring match every other control. Every react-day-picker prop works as its docs describe: `mode` (`single`, `multiple` or `range`), `selected` and `onSelect`, `disabled` matchers, `startMonth` and `endMonth`, `numberOfMonths`, `locale`, `footer` and more.
+
+Today carries a dot under its number. `showOutsideDays` and `fixedWeeks` are on by default, so the grid keeps six rows and the popover around it doesn't change height from month to month.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Calendar takes react-day-picker's DayPicker props, unchanged, and…">
+
+### Props
+
+`Calendar` takes react-day-picker's `DayPicker` props, unchanged, and passes `animate` only while motion is allowed. It sets three defaults of its own: `showOutsideDays`, `fixedWeeks` and `animate` are all `true`. `classNames` and `components` merge over Youj's, so you can restyle one part or replace one component without losing the rest. `CalendarDayButton` is exported for custom day rendering.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Month enters, month leaves, day hover and press · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Month enters', note: 'from the side it comes from, a third of the width, fading in', duration: 'base', ease: 'enter' },
+    { moment: 'Month leaves', note: 'the other way, fading out', duration: 'base', ease: 'standard' },
+    { moment: 'Day hover and press', note: 'the Button\'s background and press scale', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The month changes in place, with no slide. Days don't scale when pressed."
+/>
+
+The slide only plays when the month changes from the arrows. Moving across a month's edge from the keyboard swaps the month in place, because react-day-picker keeps focus stable on the day. Under right-to-left layouts the slide is mirrored.
+
+#### Reduced motion
+
+The month swaps in place instead of sliding, and the day buttons don't scale when pressed. Selection, keyboard navigation and labels are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The grid is react-day-picker's `role="grid"`, labeled with the month and year in the locale you pass.
+- Arrow keys move by day, PageUp and PageDown by month, Shift with PageUp or PageDown by year, and Home and End to the start and end of the week. Enter or Space selects.
+- Days carry full date labels ("Monday, September 28th, 2026"), today and selected states, and disabled days are skipped for selection.
+- The arrows are real buttons, named "Go to the Previous Month" and "Go to the Next Month", and disabled at the bounds.
+
+</ReferenceRow>

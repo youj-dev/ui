@@ -1,0 +1,113 @@
+---
+title: Lane Meter
+description: "Compare workloads across queues or pipeline stages on a shared grid."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="lane-meter/demo" height={320} />
+
+Queued, running and failed job lanes, where the failed lane lists its jobs and can retry them.
+
+A lane with `items` lights one cell per item, such as a failed job. With `onItemAction`, each item is a button with a tooltip (its `label` and `detail`), named by the action and the item ("Retry job-8f2a1c"; set the verb with `itemActionLabel`). The lane is one tab stop: arrow keys move between items, Home and End go to the first and last. When an item leaves, it shrinks out, the rest glide over, and focus moves to its neighbor.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="lane-meter" noImport />
+
+Use a lane meter where a workload moves through states and people compare them at a glance: queued, running, failed and done jobs; builds by stage; requests by region. Every lane has as many cells as the others, so the rows form one ruled grid. A lane with its own capacity (worker slots, a queue's size) fills against it and shows it muted beside the value ("24 / 32"); the other lanes share one scale. For one resource on its own, use a [Segmented Meter](/docs/components/segmented-meter); for a share of a whole in a table row, use a [Share Bar](/docs/components/share-bar).
+
+```tsx
+import { Button, LaneMeter } from '@youj/react'
+
+<LaneMeter
+  lanes={[
+    { id: 'queued', label: 'Queued', value: 214, max: 500 },
+    { id: 'running', label: 'Running', value: 24, max: 32, tone: 'accent', active: true },
+    { id: 'failed', label: 'Failed', value: failed.length, tone: 'danger', items: failed, action: <Button size="xs" variant="secondary">Retry all</Button> },
+    { id: 'done', label: 'Done', value: 12480, max: 16000, tone: 'success' },
+  ]}
+  format={{ notation: 'compact', maximumFractionDigits: 1 }}
+  onItemAction={(item) => retry(item)}
+/>
+```
+
+Each lane takes a `label`, a `value` and, optionally, its own `max`, a `tone` (a status, the accent, a chart color or `neutral`, the ink), `active` for work in progress and an `action` for its end. `segments` sets the cells per lane (default 32) and `format` takes `Intl.NumberFormat` options for the values.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="lanes, max, segments… (9)">
+
+### Props
+
+<PropsTable name="LaneMeter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `lane-meter`, `lane-meter-lanes`, `lane-meter-lane`, `lane-meter-meter`, `lane-meter-label`, `lane-meter-value`, `lane-meter-max`, `lane-meter-track`, `lane-meter-cell` (with `data-state` `on` or `off`), `lane-meter-item`, `lane-meter-glint`, `lane-meter-action` and `lane-meter-tooltip`. Each lane has `data-tone` and, when active, `data-active`. The labels take the theme's label voice (mono capitals in Basalt). Under 30rem of width, each lane stacks its label and value over the cells.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fill, new value, active lane… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fill', note: 'when the meter scrolls into view, each lane lights its cells one after another at a constant rate, a stagger step after the lane above', duration: 'deliberate' },
+    { moment: 'New value', note: 'lights or darkens the cells between the edge on screen and the new one, in order', duration: 'fast', ease: 'standard' },
+    { moment: 'Active lane', note: 'a soft light crosses its lit cells and rests, only while the meter is on screen', duration: 'deliberate' },
+    { moment: 'Item leaves', note: 'shrinks and fades out while the others glide to their new cells', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="Cells are lit in place, the active lane has no traveling light, and items change at once."
+/>
+
+#### Reduced motion
+
+Every cell is lit at once, the active lane's light is off, and items appear and leave without animation.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard">
+
+### Accessibility
+
+- The meter is a `group` named by `label` (default "Queue load"). Each lane is a `meter` named by its visible label; a lane with its own `max` is spoken "24 of 32".
+- Item buttons sit in a group named by their lane. The lane is one tab stop; arrow keys follow the reading direction.
+- The cells are hidden from assistive tech; they fill from the inline start, so right to left in RTL.
+
+</ReferenceRow>

@@ -1,0 +1,143 @@
+---
+title: Media
+description: "Files, pictures and sound: uploads, libraries, editors, players, arrangers and product pictures."
+---
+
+<BlockStories>
+
+<BlockStory id="dropzone" label="Drop zone" block="media-dropzone" story="Default" backdrop="heather">
+
+A drop zone that takes files every way people have them. It wakes as soon as files are dragged anywhere over the page, says how many are coming and whether they're accepted, and turns to danger when none would be; a drop that misses it never opens the file in the tab. Folders drop or pick whole, read in batches with their paths kept and system files left out, and ⌘V pastes a screenshot under the moment's name. Every refusal has its own reason: the type, the size, the count, the total, a duplicate, an image's dimensions or your own check. Files show a real thumbnail drawn small, a video's frame and running time, then upload three at a time with progress and Retry.
+
+</BlockStory>
+
+<BlockStory id="upload-tray" label="Upload tray" block="media-upload-tray" story="Default" backdrop="heather">
+
+Uploads that keep going while people keep working. Wrap a page in it and files dropped anywhere upload under a veil that names where they go; any button inside sends files with `useUploadTray().add`. A few move at once, each pauses and resumes from the bytes already stored (your `onUpload` gets the offset and an AbortSignal, as tus and S3 multipart need), and a failure retries itself with a countdown. Going offline holds everything and says so, and coming back resumes it. The header sums it up with a smoothed speed and an honest time left, folds to a hairline of progress, and asks before closing on unfinished uploads.
+
+</BlockStory>
+
+<BlockStory id="image-editor" label="Image editor" block="media-image-editor" story="Default" backdrop="heather">
+
+An image field that shows exactly how the picture will look everywhere it appears. The photo moves under a fixed frame: drag it, pinch or scroll to zoom about the pointer, turn it a quarter, straighten it by the degree or flip it, and at any angle it still covers the frame. The focal point marks what matters, and the previews beside it are the real framing at each size the image is shown, cropped around the focal point as far as the edges allow. Save draws the result on a canvas and hands over the file with its region in the source's pixels and the focal point, ready for an image CDN. It also comes as a 3:1 cover and a round avatar.
+
+</BlockStory>
+
+<BlockStory id="media-library" label="Media library" block="media-library" story="Default" backdrop="heather">
+
+A media picker that's as quick from the keyboard as with a mouse. Search names and descriptions, narrow by type, open a folder, switch between grid and list. Picking keeps its order, the first being the cover, and stops at a maximum with a word on why. Arrows move through the grid in two dimensions, Shift picks a run and ⌘A picks everything shown. Enter opens a lightbox that grows from its tile and picks from there. Drop files on the grid to upload into the open folder; they fill as they go and are picked as they land.
+
+</BlockStory>
+
+<BlockStory id="attachments" label="Attachments" block="media-attachments" story="Default" backdrop="heather">
+
+A reply box that takes files while you write: attach, paste a screenshot or drop files, and each uploads at once with a ring as it goes. Arrange them by dragging, with a caret showing where one lands, or with Alt or Option and the arrows. Send waits for uploads still running and says how many it's waiting for, then sends the text and the files in their order; a failed upload stops it with focus on the file, which retries on a press.
+
+</BlockStory>
+
+<BlockStory id="track-arranger" label="Track arranger" block="app-track-arranger" story="Default" backdrop="meadow">
+
+A project in tracks: a song idea, a podcast edit or a video timeline. Drag clips to move or trim them with snapping, solo or mute each track, and open the selected clip in an inspector with its start, end and gain. Play runs the clock and playhead.
+
+</BlockStory>
+
+<BlockStory id="product" label="Product" block="commerce-product-card" story="Default" backdrop="sandstone">
+
+An editorial storefront card where the photo is the card: a 4:5 studio shot with the name, price, category and rating under it. Hover or focus turns the product to its other side (or eases the shot closer), the swatches preview and pick a colorway with its own photo, and quick add goes straight to the cart or opens sizes first. Use it for a shop grid; pass your own photos per product or per colorway.
+
+</BlockStory>
+
+<BlockStory id="exploded-view" label="Exploded view" block="app-exploded-view" story="Default" backdrop="sandstone">
+
+A spec card built around an exploded drawing of one device. Switch between assembled and exploded, and point at a spec figure to light the part it describes. The drawing is a fixed five-layer illustration; the part names and the spec sheet are your data. Use it for hardware product pages.
+
+**Partly demo.** `copy`, `parts`, `specs` and `onOrder` are props; the five-layer drawing itself is fixed.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Connecting your storage" summary="onUpload, progress, resume, abort">
+
+### Connecting your storage
+
+Nothing here touches the network. Every upload goes through an `onUpload` you wire to your own storage, and without one a simulated upload stands in (it warns once in development). Each block awaits it, shows its progress, stops it through the `AbortSignal` when a file is removed or paused, and keeps whatever it resolves with (a URL, a key) on the file.
+
+The drop zone, the media library and the attachments report progress in percent. With a presigned URL (S3, R2, Vercel Blob), an `XMLHttpRequest` reports it as the bytes go:
+
+```tsx
+async function onUpload(file: File, { signal, onProgress }: { signal: AbortSignal; onProgress: (percent: number) => void }) {
+  const { url, key } = await fetch('/api/uploads', { method: 'POST', body: JSON.stringify({ name: file.name, type: file.type }) }).then((r) => r.json())
+  await new Promise<void>((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.upload.onprogress = (event) => onProgress((event.loaded / event.total) * 100)
+    xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(`Upload failed (${xhr.status})`)))
+    xhr.onerror = () => reject(new Error('The connection dropped.'))
+    xhr.onabort = () => reject(new Error('Canceled'))
+    signal.addEventListener('abort', () => xhr.abort())
+    xhr.open('PUT', url)
+    xhr.send(file)
+  })
+  return { key }
+}
+```
+
+The upload tray reports bytes and passes the `offset` already stored, so a resumable protocol carries on from there after a pause or a lost connection: tus picks it up from its upload URL, S3 multipart from its last part. An uploader that can't resume starts over and reports from 0, and the tray follows. Rejecting retries after each of `retryDelays`, then shows your message with Retry.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="drop targets, progress, sliders, motion">
+
+### Accessibility
+
+Every drop target is also a button, or sits beside one, so nothing needs a mouse: the drop zone is the picker's button and describes its rules, the image editor's empty stage is a button, and the library and the composer have Upload and Attach. Pasting works wherever focus is in the block. Refusals are listed with one reason per file, tied to the zone or the field with `aria-describedby`; outcomes (added, uploaded, failed, all done, removed, moved) are announced politely through one live region per block, and failures assertively. Progress isn't read out percent by percent: each file is a named progress bar with its bytes and time left as its value text.
+
+The upload tray's header is a disclosure button whose name is its summary; each row's ring is its Pause, Resume or Retry, named for the file, and closing mid-upload is an alert dialog. The image editor's stage is a labelled group that describes its keys (arrows move, + and − zoom, [ and ] straighten, R turns, H and V flip, 0 resets); the focal point is a control of its own whose position is read out, and the sliders speak in degrees and percent. The media library is one multi-select listbox with a single tab stop: arrows move in two dimensions, Space picks, Shift picks a run, ⌘A or Ctrl+A picks all and Escape clears, and each option's name includes its place in the selection. Its lightbox is a dialog that steps with the arrow keys and hands focus back to the file's tile. The composer's attachments are buttons named with their size and state; Alt or Option with an arrow moves one and says where it went, Delete removes it and focus moves on, and ⌘↵ or Ctrl+↵ sends.
+
+The Chapter player's waveform is a slider underneath: the arrow keys step, Page Up and Page Down step ten times as far, and the chapter title is announced politely as it changes. The play button is named and carries `aria-pressed`, the skip buttons say how far they jump, the speed fader is labelled, the clip toggle is pressed while a clip is open, and the chapter now playing is marked `aria-current`.
+
+Both players are simulated by a clock; wire them to real audio and keep these labels. Under reduced motion the wave is drawn in place and level strips jump to each reading.
+
+In Track arranger every clip is a tab stop: the arrow keys move it, Shift moves it ten times as far, and its trim edges are sliders. Play and rewind are named, and the clock is `role="timer"` with live announcements off. The gain fader is labelled.
+
+The product card is an `article` named by its product name (an `h2`), and its photos are decorative (`alt=""`); a studio shot becomes an image only when you pass `label`, and its fallback keeps that name if the photo fails. The colorway swatches are a radio group: each is named by its color, and the arrow keys pick one. Quick add is a button named for the product, and a product with sizes opens a labelled group over the photo Escape closes it and focus returns. A struck-through price is read as was and now.
+
+The device spec card keeps its drawing `aria-hidden`; the Assembled / Exploded switch and the spec figures are labelled groups, and focusing a figure lights its part the same way hovering does.
+
+Under reduced motion the turn, the push-in, the photo fades and crossfades, the sheet and every cart change happen at once.
+
+Under reduced motion the zone and tray change in place, rows and chips appear and leave at once, progress jumps, the editor's changes land without gliding or springing back, and the lightbox opens without growing. Colors and messages still show every state.
+
+</ReferenceRow>
+
+</BlockStories>

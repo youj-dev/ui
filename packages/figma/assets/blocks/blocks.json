@@ -1,0 +1,51 @@
+[
+  {
+    "id": "hero-motion",
+    "title": "Marketing \u00b7 Hero motion",
+    "kind": "Section",
+    "story": "blocks-marketing-hero-motion--default",
+    "file": "hero-motion.jpg"
+  },
+  {
+    "id": "pricing",
+    "title": "Marketing \u00b7 Pricing",
+    "kind": "Section",
+    "story": "blocks-marketing-pricing--yearly",
+    "file": "pricing.jpg"
+  },
+  {
+    "id": "login",
+    "title": "Auth \u00b7 Login (split)",
+    "kind": "Screen",
+    "story": "blocks-auth-login--split",
+    "file": "login.jpg"
+  },
+  {
+    "id": "customers",
+    "title": "App \u00b7 Customers (data grid)",
+    "kind": "Screen",
+    "story": "blocks-app-customers--default",
+    "file": "customers.jpg"
+  },
+  {
+    "id": "agent-trace",
+    "title": "App \u00b7 Agent trace",
+    "kind": "Card",
+    "story": "blocks-app-step-trace--default",
+    "file": "agent-trace.jpg"
+  },
+  {
+    "id": "service-health",
+    "title": "App \u00b7 Service health",
+    "kind": "Card",
+    "story": "blocks-app-health-dial--default",
+    "file": "service-health.jpg"
+  },
+  {
+    "id": "model-compare",
+    "title": "App \u00b7 Head to head",
+    "kind": "Card",
+    "story": "blocks-app-head-to-head--default",
+    "file": "model-compare.jpg"
+  }
+]

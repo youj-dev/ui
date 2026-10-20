@@ -1,0 +1,262 @@
+---
+title: CLI
+description: "Every command and flag of the youj CLI: init, add, create, doctor and mcp."
+---
+
+<PageArt art="cli" />
+
+The `youj` CLI sets Youj up in an app, copies items in as source, builds an app from a [Create](/create) link, checks a setup and connects your AI coding tool. Run it with `npx` in your app's folder. It needs Node.js 22 or later.
+
+```bash
+npx youj <command> [options]
+```
+
+| Command | What it does |
+| --- | --- |
+| [`init`](#init) | Detects the app, asks a few questions and sets Youj up |
+| [`add`](#add) | Adds items: installs what a packaged component needs, or copies an item's source in |
+| [`create`](#create) | Sets the app up from a Create link: theme, fonts, app frame and its screens |
+| [`doctor`](#doctor) | Checks the setup and prints a fix for anything that's off |
+| [`mcp`](#mcp) | Adds the Youj MCP server to your AI editor's config |
+
+Every command shows its file changes as diffs. Running a command again with the same input changes nothing.
+
+## Options for every command
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `--cwd <dir>` | the current folder | The app's folder. |
+| `--help`, `-h` | | Prints the commands and their options. Running `npx youj` with no command does the same, and `npx youj add --help` prints just `add`'s options. |
+| `--version`, `-v` | | Prints the CLI's version, which is also the Youj version it installs. |
+| `--latest` | off | On `init`, `create` and `add`: copies items from the registry's latest alias instead of the CLI's own version (see [Which registry](#which-registry)). |
+
+The CLI ignores options it doesn't know, except on `add`, which passes them on (see [add](#add)).
+
+## init
+
+```bash
+npx youj init [options]
+```
+
+Sets Youj up in an existing app. It recognizes Next.js (App Router and Pages Router), Vite with React, React Router v7 and Astro with its React integration, and your package manager (pnpm, npm, Yarn or Bun, from the lockfile or the `packageManager` field).
+
+It asks five questions, in this order, unless a flag answers them: how to install Youj, the [theme preset](/docs/theming), the motion personality, the [component look](/docs/looks) and the default quality. Then it:
+
+- installs Tailwind CSS v4 if it's missing (it asks first), or offers to run Tailwind's official upgrade tool on a v3 app,
+- in package mode, installs `@youj/react`, `@youj/core`, `@youj/motion`, `@youj/icons` and `motion`, skipping any the app already has,
+- in registry mode, writes `components.json` with the `@youj` namespace, sets up the `@/` alias on Vite, and copies the core (tokens, provider, theme and the UI token bridge) into the app,
+- imports the Youj stylesheet right after Tailwind in your global CSS,
+- wraps the app in `YoujProvider` with your preset at the provider's own size, roomy at 100% ([density and scaling](/docs/theming#density-and-scaling) for a dense tool's compact size), and spreads the theme on a server-rendered `<html>`,
+- puts `data-theme="dark"` and `data-yj-look` on `<html>`, and `suppressHydrationWarning` where React hydrates it (Next.js App Router, React Router), since the theme script sets the scheme on it first,
+- loads the preset's fonts. Basalt and every other preset but Terminal use Inter and JetBrains Mono, and Terminal JetBrains Mono: `init` installs `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` and imports them where the app imports its stylesheet, since the presets ask for the names those packages register (`'Inter Variable'`),
+- removes create-next-app's starter colors from `:root` and its `font-family: Arial` from `body`, which would override the theme,
+- clears create-vite's starter styles (`src/index.css` and `src/App.css`: a centered, bordered `#root` and 56px headings), when they're unchanged,
+- in a shadcn app, removes what would override Youj from the stylesheet: shadcn's `@custom-variant dark`, the `@theme inline` lines that map Youj's color and radius names to shadcn's variables, and its `:root` and `.dark` variable blocks (see [Coming from shadcn/ui](/docs/guides/shadcn)).
+
+The last two show their diff and ask first in an interactive run; with `--yes` they go ahead, and the diff is in the summary.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `--yes`, `-y` | off | Takes the default for every question a flag doesn't answer. On when the terminal isn't interactive, such as in CI. |
+| `--mode <package\|registry>` | `package` | `package` installs the npm packages. `registry` copies the source into your app. An app whose `components.json` already maps `@youj` defaults to `registry`. |
+| `--theme <graphite\|terminal\|brutal\|basalt\|meadow\|sandstone\|cinnabar\|umber\|seaglass\|heather>` | `basalt` | The theme preset. |
+| `--motion-personality <precise\|calm\|lively>` | the preset's own | The motion personality. Every preset currently uses `precise`. Another value wraps the preset with `defineTheme({ ...preset, motionPersonality })`. |
+| `--look <classic\|bezel>` | `classic` | How components are built, with any theme. Classic needs nothing on the provider. Bezel adds `look="bezel"` to it, and on the registry copies its stylesheet in. |
+| `--quality <auto\|high\|low>` | `auto` | The [motion budget](/docs/motion/in-your-components#the-motion-budget). Anything but `auto` adds `quality="…"` to the provider. |
+| `--dry-run` | off | Shows the file changes and the commands it would run. Writes and installs nothing. |
+
+In an interactive run, init ends by offering to set up the [MCP server](#mcp). It skips the offer with `--yes` or `--dry-run`.
+
+```bash
+npx youj init
+npx youj init --yes --theme terminal
+npx youj init --mode registry --look classic --dry-run
+```
+
+init stops without changing anything, and exits with code 1, when:
+
+- the folder has no `package.json`,
+- it can't tell the framework (follow the [manual steps](/docs/installation#manual) instead),
+- React is older than 19,
+- an Astro app doesn't have `@astrojs/react` yet,
+- the app is on Tailwind v3 and you decline the upgrade, or pass `--yes`,
+- a flag has a value it doesn't accept.
+
+In registry mode, it also stops with code 1 when the core can't be copied completely: shadcn fails, a core file doesn't arrive, or a file of your own sits where the core goes. It stops before your stylesheet and layout point at anything, so the app still builds, and the next run copies the core again. It never waits on shadcn's "already exists. Overwrite?" prompt: it merges `lib/utils.ts` (see [add](#add)) and settles the other files as `add` does.
+
+Steps it can't do safely, such as wrapping a root file it doesn't recognize, are printed at the end for you to finish by hand.
+
+## add
+
+```bash
+npx youj add <items…> [options]
+```
+
+Name items by their registry name, as each component's page, and each block's story on the [Blocks](/docs/blocks/activity-and-conversations) pages shows it. [Choosing a level](/docs/choosing-a-level) introduces the levels. What `add` does depends on how the app has Youj:
+
+- **On the package** (`@youj/react` in `package.json`), a component the package ships isn't copied. `add` installs its optional peer dependencies and tells you which entry to import it from. For example, `add chart` installs `recharts` and points you to `@youj/react/chart`.
+- **Icons and illustrations** come from `@youj/icons` and `@youj/illustrations` in an app on the packages. `add` installs the package and adds its stylesheet line where one is needed.
+- **`sound`** installs `@youj/sound` (with `@youj/core`, its peer, when `package.json` doesn't list it), or copies its source in a registry app, and gives your `YoujProvider` `sound={beacon}`. On the Next.js App Router that happens in a client `app/providers.tsx` (a pack is an object of functions, which a server layout can't pass), and the layout renders its `<Providers>`.
+- **Languages and themes** are items of their own in a registry app, so the copied core holds only English, the provider, the theme contract and the Basalt and Graphite stylesheets. `npx youj add locale de` copies the German pack (`youj-locale-de`), `npx youj add theme terminal` a preset's stylesheet (`youj-theme-terminal`; also `brutal`, `meadow`, `sandstone`, `cinnabar`, `umber`, `seaglass`, and `heather`), and `npx youj add theme check` the development check for themes (`youj-theme-check`). `init` adds the stylesheet of the preset you pick where the theme is an `<html>` attribute (Vite, Astro). See [Language packs](/docs/guides/i18n) and [Copy in a theme](/docs/theming#copy-in-a-theme).
+- **Blocks and examples** are copied in as source. In an app on the package, only the block's own files are copied, plus any other block or part it's built from. What the packages ship stays in the packages: the block's imports of components, the provider, icons and motion point at `@youj/react` (or the entry that exports them, such as `@youj/react/chart`), `@youj/core`, `@youj/motion` and `@youj/icons`. `add` installs whichever of those packages, optional peers and libraries the block needs and the app doesn't have yet. It leaves your stylesheet alone, since the package stylesheet already styles the block, unless the block draws an illustration: then it adds the `@youj/illustrations/styles.css` line too. It needs no `components.json`. The block's own parts import each other through the `@/` alias, which `add` sets up if it's missing.
+- **In a registry app**, everything is copied in as source, the core and components included. `add` checks the `@/` alias first and stops, naming the file to fix, if it isn't set up.
+
+`add` never waits on shadcn's prompts. A file that's already there and matches Youj's is left alone. A file you've changed is kept and listed at the end, unless a Youj item it copies needs Youj's version of it: a file that isn't Youj's (a shadcn component, built on Radix) or that lacks a name the item imports. Kept, it would leave an app that doesn't compile, so in an interactive terminal `add` asks to replace it, and otherwise it keeps it, prints the `--overwrite` command and exits with code 1.
+
+`add` records what it copied in `youj.json` at the app root: for each item, the Youj version and a SHA-256 of every file as it left it. A file whose hash still matches is untouched, so safe to replace; one that doesn't is yours. Adding an item again writes nothing when its files are unchanged, and keeps a file you edited (with its recorded hash) unless you pass `--overwrite`. The files themselves carry no header comment, so they stay identical to the registry's. Commit `youj.json` with the files. An app on the package that copies nothing has none.
+
+`lib/utils.ts` is merged, with or without `--overwrite`: shadcn's stock file (only `cn`) is replaced by Youj's, whose `cn` does the same and knows Youj's tokens; a file with helpers of your own moves to `lib/utils.local.ts`, and Youj's re-exports it, so your imports keep working. Items added to an app whose stylesheet doesn't import the copied `youj.css` yet end with a note to run `npx youj init --mode registry`.
+
+For example, `add app-analytics-overview` in an app on the package writes `blocks/app/analytics-overview.tsx` and its parts (`channels.tsx`, `copy.ts`, `data.ts`, `kpis.tsx`, `top-products.tsx`, `trend.tsx`) under `blocks/app/analytics-overview/`, and nothing under `components/` or `lib/`. Its parts import their components from `@youj/react` and `useYouj` from `@youj/core`, and `add` installs `recharts`, `date-fns` and `react-day-picker`, which its chart and date range picker need, when the app doesn't have them.
+
+| Option | Description |
+| --- | --- |
+| `--overwrite`, `-o` | Replaces files you've changed, and your own that Youj's items import, with Youj's version. `lib/utils.ts` is merged either way. |
+| `--path <dir>`, `-p <dir>` | Copies the items into this folder. Registry apps only. |
+| `--dry-run` | Lists the files it would copy (new ones, ones of yours it would keep, and a count of the rest) and what it would install, and does neither. |
+| `--diff`, `--view` | A registry app's preview as shadcn shows it: a diff of what would change, or the items' files. Neither installs or copies. |
+| `--cwd <dir>` | The app's folder. |
+
+In a registry app, `add` runs shadcn's installer underneath and passes other options on to it. `--yes` is accepted and changes nothing.
+
+When it has copied something, `add` ends with the import that uses it, such as `import { MarketingNavbar } from '@/blocks/marketing/navbar'`.
+
+A command it runs that fails (shadcn, or the package manager's install) stops `add` with exit code 1 and the end of that command's output, not a stack trace.
+
+```bash
+npx youj add chart
+npx youj add app-auth-flow marketing-navbar
+npx youj add app-analytics-overview
+npx youj add illustration-coffee
+npx youj add sound
+npx youj add locale de
+npx youj add theme terminal
+npx youj add button dialog --overwrite
+```
+
+## create
+
+```bash
+npx youj create '<link>' [options]
+```
+
+Builds an app frame from a [Create](/create) link. Copy the command (or the link) from Create's **Get the code** and put the link in quotes, since it contains `?` and `&`. The query string on its own works too.
+
+In an app without Youj, `create` runs `init --yes` first, with the link's preset, motion and look. Then it:
+
+- writes the theme to `lib/theme.ts` and points `YoujProvider` (and `themeProps` on `<html>`) at it,
+- loads the theme's typefaces: with `next/font` in `lib/fonts.ts` on the Next.js App Router, or a Google Fonts import at the top of the global stylesheet elsewhere,
+- adds the frame's blocks and its screens, writes the shell that composes them to `components/app-shell.tsx` and its nav, an item per screen, to `lib/nav.ts`,
+- on the App Router, makes each screen a route, `app/(app)/<screen>/page.tsx` (`screens=customers,billing` makes `customers/page.tsx` and `billing/page.tsx`), whose group layout wraps it in the shell, and points `/` at the first with a redirect in `app/page.tsx` (create-next-app's own home page makes way for it; any other `app/page.tsx` stays, and is listed). Elsewhere the screens are blocks to render at their `lib/nav.ts` hrefs with your own router. A frame with no screens (`screens=`) is the shell and an empty nav.
+
+Older links that name Create's former pages (`page=dashboard`, `pages=table,calendar`) open as the closest screens.
+
+Files go under `src/` when the app has one. A file that's already there and differs is left unchanged and listed, unless you pass `--overwrite`.
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `--mode <package\|registry>` | `package` | How to set up Youj in an app that doesn't have it yet. An app that already has Youj keeps its mode. |
+| `--overwrite` | off | Replaces a `lib/theme.ts`, `components/app-shell.tsx` or other file that's already there. |
+| `--allow-low-contrast` | off | Writes a theme that misses WCAG AA contrast. Without it, `create` refuses and lists the failing pairs. |
+| `--dry-run` | off | Shows the file changes and commands. Writes and runs nothing. |
+
+A parameter in the link that Create doesn't offer (a screen in `screens=` or a `preset=` that isn't one of its choices, or a `theme=`, which Create writes as `preset=`) gets a warning, and the default is used in its place.
+
+```bash
+npx youj create 'https://www.youj.dev/create?sidebar=rail-panel&screens=analytics-overview,billing'
+npx youj create '<link>' --dry-run
+```
+
+## doctor
+
+```bash
+npx youj doctor [--strict] [--cwd <dir>]
+```
+
+Checks an app's Youj setup and prints each result as passed, to look at, or to fix, with the fix underneath:
+
+- React (19) and Tailwind CSS (v4),
+- the Youj packages: installed, and all on one version,
+- `motion`: installed, in the range Youj needs, and only one copy,
+- `@youj/core`: listed in `package.json` (it's a peer of the other packages and holds `YoujProvider`'s state) and installed only once. A second copy, nested under another package or resolved twice in pnpm's store, means components stop seeing the provider, so doctor treats it as an error,
+- the stylesheet: Youj imported right after Tailwind, in the right order, in the stylesheet that imports Tailwind, every file it imports there, and nothing of shadcn's overriding it: a `@custom-variant dark` of its own, `--color-accent` mapped to shadcn's `--accent`, or shadcn's color variables,
+- in an app on the package, copied Youj files that duplicate what the packages ship, such as the provider in `lib/youj/`, which give the app two of each. Components of your own that have a Youj version, such as a shadcn app's `components/ui/button.tsx`, are listed as yours, to switch to `@youj/react` when you're ready,
+- in a registry app, `components.json`, and in any app with copied source, the `@/` alias, a stray `./@` folder, copied `@/` imports that point at missing files, and copied Youj components that import a file of yours that can't stand in for Youj's,
+- in an app with a `youj.json`, copies you've edited since `add` wrote them (listed to look at, nothing to fix), and items copied from an older Youj than the CLI's, which is a warning,
+- `YoujProvider`, which is optional, in the root file or a file it imports (such as `app/providers.tsx`).
+
+doctor changes nothing. It exits with code 1 when anything needs fixing, and 0 otherwise, including when there are only things to look at, so you can run it in CI.
+
+| Option | Description |
+| --- | --- |
+| `--strict` | Fails on things to look at too, and runs the app's own TypeScript over it (`tsc --noEmit`, or `tsc -b` for Vite's split config), so it fails when the app won't typecheck. |
+
+## mcp
+
+```bash
+npx youj mcp [options]
+```
+
+Adds the [Youj MCP server](/docs/mcp) to your editor's config file, merged with any servers already there. The server is pinned to the Youj version your app has installed, or `latest` when it has none, so its answers match your version.
+
+| Editor | `--client` | Config file |
+| --- | --- | --- |
+| Claude Code | `claude` | `.mcp.json` |
+| Cursor | `cursor` | `.cursor/mcp.json` |
+| VS Code | `vscode` | `.vscode/mcp.json` |
+| Windsurf | `windsurf` | `~/.codeium/windsurf/mcp_config.json` |
+| Codex | `codex` | `.codex/config.toml` (TOML) |
+| Gemini CLI | `gemini` | `.gemini/settings.json` |
+| Zed | `zed` | `.zed/settings.json` |
+| JetBrains AI Assistant | `jetbrains` | Settings → Tools → AI Assistant → Model Context Protocol (MCP): printed to paste, since JetBrains keeps its servers in a dialog, not a file |
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `--client <name>` | asks | `claude`, `cursor`, `vscode`, `windsurf`, `codex`, `gemini`, `zed`, `jetbrains` or `all`. Repeat it, or separate names with commas, for more than one. |
+| `--yes`, `-y` | off | Doesn't ask: uses the editors the project already has config for (`.mcp.json`, `CLAUDE.md` or `.claude` for Claude Code, `.cursor`, `.vscode`, `.codex`, `.gemini` or `GEMINI.md`, `.zed`, `.idea`), or Claude Code when it finds none. On when the terminal isn't interactive. |
+| `--print` | off | Prints each editor's config to paste yourself. Writes nothing. |
+| `--dry-run` | off | Shows the changes. Writes nothing. |
+
+Without `--client`, it asks which editor, with the ones it found marked, and offers Claude Code, Cursor and VS Code together. A config file it can't edit safely, such as JSON with comments (Zed's `settings.json` often has some) or a Codex `[mcp_servers.youj]` table with settings of your own, is left unchanged, and the snippet to add is printed instead. For Claude Code, it also prints the `claude mcp add` command, for setting it up without a `.mcp.json`, and for Codex `codex mcp add`, which writes `~/.codex/config.toml`.
+
+```bash
+npx youj mcp
+npx youj mcp --client cursor --client vscode
+npx youj mcp --client all --print
+```
+
+Restart your editor, or reload its MCP servers, after adding it.
+
+## Which registry
+
+The registry serves each release's items at `https://www.youj.dev/r/v<version>/<name>.json`, and the latest ones at `https://www.youj.dev/r/<name>.json`. The CLI copies from its own version's, the same version as the packages it installs, so what `add` writes doesn't change when the site deploys a newer release. `init --mode registry` maps the `@youj` namespace in `components.json` to that versioned URL too.
+
+To copy the newest items instead, run the newest CLI (`npx youj@latest add …`), which reads its own, newer version. `--latest` reads the latest alias with any CLI. When an item is newer than your CLI, `add` stops with a 404 that says so.
+
+## Exit codes
+
+| Code | When |
+| --- | --- |
+| `0` | The command finished. |
+| `1` | It stopped on an error, which it prints. Also: an unknown command, a canceled prompt, `init --mode registry` copying the core only partly, `add` keeping a file of yours that a Youj item needs replaced, and `doctor` finding something to fix (or, with `--strict`, anything to look at). |
+
+Output is in color in an interactive terminal. Set `NO_COLOR` to turn color off.
+
+## Environment variables
+
+| Variable | Description |
+| --- | --- |
+| `YOUJ_REGISTRY_URL` | Where registry items come from. A template with `{name}`, or a base URL. Default: `https://www.youj.dev/r/v<the CLI's version>/{name}.json`. Every Youj item an item depends on comes from the same registry, whatever address its JSON names. |
+| `YOUJ_REGISTRY_LATEST` | Set to `1` to do what `--latest` does: copy from the latest alias, `https://www.youj.dev/r/{name}.json`. `YOUJ_REGISTRY_URL` takes precedence. |
+| `YOUJ_REGISTRY_TOKEN` | Sends `Authorization: Bearer <token>` to a private registry, and only to it. `init --mode registry` writes the header into `components.json` as a reference to the variable, never the token itself. |
+| `YOUJ_NPM_REGISTRY` | Points the app's `@youj` scope at another npm registry: `init` adds `@youj:registry=<url>` to `.npmrc` in package mode. |
+| `NO_COLOR` | Turns off colored output. |
+
+## Related
+
+<Cards>
+  <Card title="Installation" href="/docs/installation">The same setup, with the manual route.</Card>
+  <Card title="Choosing a level" href="/docs/choosing-a-level">What `add` copies in, and how to use it.</Card>
+  <Card title="MCP server" href="/docs/mcp">What `npx youj mcp` connects your editor to.</Card>
+  <Card title="Looks" href="/docs/looks">Classic and Bezel, the two values of `--look`.</Card>
+</Cards>

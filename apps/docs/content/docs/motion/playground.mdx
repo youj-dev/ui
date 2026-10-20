@@ -1,0 +1,21 @@
+---
+title: Motion playground
+description: "Try motion settings, compare their timing curves and copy the code."
+full: true
+status: new
+---
+
+<MotionPlayground />
+
+## What each view shows
+
+- **Springs**: `snappy`, `smooth` and `settle`, or a felt duration and bounce of your own, on a sidebar's selection. The plot is Motion's own solver; the trace is the highlight as it really moves, and it keeps its velocity when you press another item mid-glide.
+- **Tweens**: the five durations against the `standard`, `enter`, `exit` and `emphasized` curves, or your own cubic-bezier, on a toast that comes and goes.
+- **Stagger**: `tight`, `base` and `loose` steps on a list, in any order, with a timeline of when each row starts and lands.
+- **Personalities**: `precise`, `calm` and `lively` side by side on the same moment. The code is the same in all three; the theme decides what the tokens mean.
+- **Presence**: the overlay presets, `yj-pop`, `yj-dialog`, `yj-sheet-end` and `yj-toast`, in and out, and how much shorter the way out is.
+- **Reduced motion**: the same interaction with reduced motion off and on, and what each keeps.
+
+The views follow your system's reduced-motion setting, and the Speed beside the tabs slows them. Under reduced motion every stage shows its end state and the plots show the motion it replaces. The address is the view: copy it, or use the link button, to share exactly what's on screen.
+
+When a value is a token, the code names the token. A custom value prints as numbers, scaled by `k.timeScale` so Speed still reaches it, with the closest token beside it. Prefer the token: it follows the theme's [motion personality](/docs/theming#motion-personality) and keeps the kit consistent.

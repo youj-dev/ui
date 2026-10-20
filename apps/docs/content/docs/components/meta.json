@@ -1,0 +1,25 @@
+{
+  "title": "Components",
+  "pages": [
+    "index",
+    "(actions)",
+    "(forms)",
+    "(overlays)",
+    "(navigation)",
+    "(feedback)",
+    "(layout)",
+    "(data-display)",
+    "(data-marks)",
+    "(media)",
+    "(capsules)",
+    "(pickers-and-inputs)",
+    "(data-and-tables)",
+    "(navigation-and-app-chrome)",
+    "(charts-and-meters)",
+    "(timelines-and-planning)",
+    "(specialized)",
+    "chat",
+    "(effects)",
+    "(backgrounds)"
+  ]
+}

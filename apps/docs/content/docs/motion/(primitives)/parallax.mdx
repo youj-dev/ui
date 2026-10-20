@@ -1,0 +1,133 @@
+---
+title: Parallax
+description: "Add depth by moving, scaling, rotating or fading an element as the page scrolls."
+---
+
+<ComponentPreview name="parallax/demo" height={420} />
+
+Use it to give a marketing scene depth: layered product shots, floating cards around a headline, a backdrop that moves slower than the content. Keep it off anything people read while they scroll, like articles, lists and app screens. Drifting text is tiring, and large movement can make some people feel unwell.
+
+## Installation
+
+<InstallTabs name="parallax" />
+
+## Usage
+
+Give it an output range for each property you want to move. With no `container`, it follows the page's scroll.
+
+```tsx
+import { Parallax } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <section className="relative">
+      <Parallax y={[-60, 60]} className="absolute inset-0">
+        <HeroBackdrop />
+      </Parallax>
+      <Parallax y={[40, -40]} rotate={[-3, 2]}>
+        <ProductShot />
+      </Parallax>
+    </section>
+  )
+}
+```
+
+`x` and `y` are in pixels, `rotate` in degrees, and `scale` and `opacity` are plain numbers. A property you don't pass stays at rest.
+
+## Examples
+
+<Examples>
+
+<Example id="layers" label="Layers">
+
+### Layers
+
+Depth comes from contrast between speeds. Give far layers small ranges and near layers large ones, and let the ranges run against the scroll, so near things seem to rise past far ones.
+
+<ComponentPreview name="parallax/layers" height={380} />
+
+</Example>
+
+<Example id="stops" label="Stops">
+
+### Stops
+
+By default each range maps across two stops, `input={[0, 1]}`: from the moment the element enters the viewport to the moment it leaves. Add stops to shape the curve. With three, each release below reaches full size as it crosses the middle of the frame, while a glow behind it fades up and away.
+
+<ComponentPreview name="parallax/focus" height={380} />
+
+```tsx
+<li className="relative">
+  <Parallax input={[0, 0.5, 1]} opacity={[0, 1, 0]} aria-hidden className="absolute -inset-1 rounded-2xl bg-accent-line blur-md" />
+  <Parallax input={[0, 0.5, 1]} scale={[0.94, 1, 0.94]} className="relative">
+    <ReleaseCard />
+  </Parallax>
+</li>
+```
+
+Values interpolate linearly between stops and hold at the ends. Only the glow fades: text that fades with the scroll drops below a readable contrast at the edges of the frame, and people can stop scrolling anywhere.
+
+</Example>
+
+<Example id="scroll-containers-and-offsets" label="Scroll containers and offsets">
+
+### Scroll containers and offsets
+
+`container` takes a ref to an element that scrolls on its own. Every preview on this page uses one, so it works inside the frame. Give that element `tabIndex={0}` and a name, so it can be scrolled from the keyboard.
+
+`offset` sets which scroll positions count as 0 and 1. The default, `['start end', 'end start']`, runs from the element's top meeting the bottom of the viewport to its bottom meeting the top. To finish a move by the time the element is centered, end it earlier:
+
+```tsx
+<Parallax offset={['start end', 'center center']} y={[80, 0]} opacity={[0, 1]}>
+  <Screenshot />
+</Parallax>
+```
+
+Parallax follows vertical scroll.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="input, x, y… (10)">
+
+### Props
+
+<PropsTable name="Parallax" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Scroll input, mapping · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Scroll input', note: 'smooths the scroll progress; `spring={false}` tracks it exactly', spring: 'smooth' },
+    { moment: 'Mapping', note: 'linear between `input` stops, clamped at the ends', value: 'no easing' },
+  ]}
+  reduced="The element sits at rest: no translate, scale or rotation, and full opacity."
+/>
+
+The spring gives the layers a moment of inertia, so a fast fling settles instead of snapping. Every output is a transform or an opacity, so scrolling never triggers layout.
+
+#### Reduced motion
+
+Every layer sits still at its resting position, fully opaque, as if the scene were a static composition. Scrolling moves the page and nothing else.
+
+An element at rest isn't always the right static design. A glow that marks the card in focus would light every card at once, so the release list leaves the glows out when `useYouj().reduced` is true.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- Parallax only transforms. The element keeps its place in the document and the reading order.
+- Movement tied to scroll is a known trigger for vestibular disorders. Reduced motion turns it off completely, and keeping ranges modest helps everyone else.
+- Don't fade text people need below a readable contrast. In the release list, the text stays at full contrast in every position, and only a decorative glow fades.
+- A contained scene needs a focusable, named scroll container to be reachable from the keyboard.
+
+</ReferenceRow>

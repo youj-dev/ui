@@ -1,0 +1,2102 @@
+[
+  {
+    "name": "loader-marquee",
+    "type": "registry:component",
+    "title": "Marquee loader",
+    "description": "A cursor crosses an artboard, drags a selection marquee whose marching ants run round it, and the shapes it closes round take their handles; it lets go, clicks away, and goes back. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "marquee",
+      "component": "LoaderMarquee",
+      "category": "interface",
+      "technique": "lines",
+      "order": 1,
+      "title": "Marquee",
+      "tags": [
+        "cursor",
+        "selection",
+        "drag",
+        "marching ants",
+        "design tool",
+        "canvas",
+        "select"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Artwork",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/marquee.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tabstop",
+    "type": "registry:component",
+    "title": "Tabstop loader",
+    "description": "A focus ring tabs through a form in perspective, from field to field to the checkbox and the button, reshaping to each and sending out a pulse as it lands. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "tabstop",
+      "component": "LoaderTabstop",
+      "category": "interface",
+      "technique": "lines",
+      "order": 2,
+      "title": "Tabstop",
+      "tags": [
+        "focus",
+        "ring",
+        "keyboard",
+        "tab",
+        "form",
+        "accessibility",
+        "input"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Button",
+          "mono": "ink"
+        },
+        {
+          "part": "Tick",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/tabstop.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-build",
+    "type": "registry:component",
+    "title": "Build loader",
+    "description": "A build pipeline in isometric: a packet runs the pipe from stage to stage, each stage raises its block as it arrives, the last one lights up when it’s done, and they sink for the next run. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "build",
+      "component": "LoaderBuild",
+      "category": "interface",
+      "technique": "planes",
+      "order": 3,
+      "title": "Build",
+      "tags": [
+        "pipeline",
+        "ci",
+        "deploy",
+        "stages",
+        "isometric",
+        "progress",
+        "steps"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Taps",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/build.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-prompt",
+    "type": "registry:component",
+    "title": "Prompt loader",
+    "description": "A terminal in perspective: the caret, the brand’s square in the accent, types a command, its output prints and checks off, and the screen scrolls up for the next prompt. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "prompt",
+      "component": "LoaderPrompt",
+      "category": "interface",
+      "technique": "lines",
+      "order": 4,
+      "title": "Prompt",
+      "tags": [
+        "terminal",
+        "caret",
+        "cli",
+        "typing",
+        "command",
+        "console",
+        "output"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Prompt",
+          "mono": "ink"
+        },
+        {
+          "part": "Check",
+          "mono": "accent",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/prompt.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-measure",
+    "type": "registry:component",
+    "title": "Measure loader",
+    "description": "An artboard on a drafting table, with crop marks at its corners and dimension lines along two sides, is resized from its accent handle; the measurements follow it as it goes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "measure",
+      "component": "LoaderMeasure",
+      "category": "interface",
+      "technique": "lines",
+      "order": 5,
+      "title": "Measure",
+      "tags": [
+        "dimension",
+        "crop marks",
+        "resize",
+        "frame",
+        "blueprint",
+        "artboard",
+        "layout"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Dimensions",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/measure.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-register",
+    "type": "registry:component",
+    "title": "Register loader",
+    "description": "Two printing plates in perspective, one in ink and one in the accent, each with registration marks: the accent plate settles down onto the other until every mark sits in register, then lifts and drifts out again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "register",
+      "component": "LoaderRegister",
+      "category": "interface",
+      "technique": "lines",
+      "order": 6,
+      "title": "Register",
+      "tags": [
+        "registration",
+        "print",
+        "align",
+        "plates",
+        "crosshair",
+        "blueprint",
+        "calibrate"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Content",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/register.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-queue",
+    "type": "registry:component",
+    "title": "Queue loader",
+    "description": "Notifications queue up in depth: each new toast rises in at the front, the ones before it step back and dim, and the oldest fades away at the back. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "queue",
+      "component": "LoaderQueue",
+      "category": "interface",
+      "technique": "planes",
+      "order": 7,
+      "title": "Queue",
+      "tags": [
+        "toast",
+        "notification",
+        "stack",
+        "cards",
+        "depth",
+        "feed",
+        "messages"
+      ],
+      "beats": 3,
+      "colors": [
+        {
+          "part": "Timer",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/queue.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-gantry",
+    "type": "registry:component",
+    "title": "Gantry loader",
+    "description": "A carriage riding a bridge across two rails plots a square layout on an isometric bed with its accent nib. The bridge follows every precise corner, lifts the pen after closing the outline, and clears the drawing for another pass. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "gantry",
+      "component": "LoaderGantry",
+      "category": "interface",
+      "technique": "lines",
+      "order": 8,
+      "title": "Gantry",
+      "tags": [
+        "plotter",
+        "layout",
+        "carriage",
+        "rails",
+        "artboard",
+        "construction",
+        "isometric"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Machine",
+          "mono": "ink"
+        },
+        {
+          "part": "Plot",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/gantry.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-sift",
+    "type": "registry:component",
+    "title": "Sift loader",
+    "description": "Five unequal slats sort through alternating neighbouring comparisons. Each exchanging pair passes at separate depths, then the comparison schedule reverses to restore the starting order without a reset or a crossfade. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "sift",
+      "component": "LoaderSift",
+      "category": "interface",
+      "technique": "planes",
+      "order": 9,
+      "title": "Sift",
+      "tags": [
+        "sort",
+        "compare",
+        "swap",
+        "lanes",
+        "algorithm",
+        "steps"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Comparisons",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/sift.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-conflux",
+    "type": "registry:component",
+    "title": "Conflux loader",
+    "description": "An incoming request fans into three concurrent routes, whose checkpoints finish at different times. The join waits for every branch, closes its accent ring and releases the outgoing response before the network clears for the next request. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "conflux",
+      "component": "LoaderConflux",
+      "category": "interface",
+      "technique": "lines",
+      "order": 10,
+      "title": "Conflux",
+      "tags": [
+        "graph",
+        "fork",
+        "join",
+        "parallel",
+        "dependency",
+        "concurrent",
+        "progress"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Routes",
+          "mono": "ink"
+        },
+        {
+          "part": "Checkpoints",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/conflux.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-parity",
+    "type": "registry:component",
+    "title": "Parity loader",
+    "description": "A raised cellular grid recomputes itself row by row after its seed shifts. Each cell takes the exclusive-or of its two parents; a narrow read line follows the write, then a second pass restores the original seed and all its descendants. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "parity",
+      "component": "LoaderParity",
+      "category": "interface",
+      "technique": "planes",
+      "order": 11,
+      "title": "Parity",
+      "tags": [
+        "cellular",
+        "automaton",
+        "xor",
+        "logic",
+        "grid",
+        "computation"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Values",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/parity.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-stow",
+    "type": "registry:component",
+    "title": "Stow loader",
+    "description": "Six unequal parcels fill a wireframe bay without overlap. The lower course settles before the upper pieces arrive, a short accent seam closes the final fit, and the packing withdraws in reverse order to make room for the next allocation. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "stow",
+      "component": "LoaderStow",
+      "category": "interface",
+      "technique": "planes",
+      "order": 12,
+      "title": "Stow",
+      "tags": [
+        "packing",
+        "allocation",
+        "bin",
+        "fit",
+        "stages",
+        "capacity"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Labels",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/stow.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-fathom",
+    "type": "registry:component",
+    "title": "Fathom loader",
+    "description": "A search frontier discovers a spatial graph one hop at a time. Visited stations lift off their ghost sockets, cross-links reveal cycles, and the reached destination traces its shortest route back to the source before the search releases. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "fathom",
+      "component": "LoaderFathom",
+      "category": "interface",
+      "technique": "lines",
+      "order": 13,
+      "title": "Fathom",
+      "tags": [
+        "graph",
+        "search",
+        "breadth first",
+        "frontier",
+        "route",
+        "discovery"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Scan",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/fathom.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-refine",
+    "type": "registry:component",
+    "title": "Refine loader",
+    "description": "A coarse triangulated patch refines around two inspection windows. Each triangle splits at its centroid only after its parent has settled, new spokes grow into the fine mesh, and the windows exchange resolution before the subdivisions withdraw. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "refine",
+      "component": "LoaderRefine",
+      "category": "interface",
+      "technique": "lines",
+      "order": 14,
+      "title": "Refine",
+      "tags": [
+        "mesh",
+        "triangulation",
+        "adaptive",
+        "subdivision",
+        "resolution",
+        "focus"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Refinement",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/refine.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lexicon",
+    "type": "registry:component",
+    "title": "Lexicon loader",
+    "description": "Three documents contribute their matching terms to an inverted index. Each read comb dispatches two curved transfer strokes, ordered document tabs seat beneath the corresponding term headers, and the completed posting lists unwrite back to their sources. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "lexicon",
+      "component": "LoaderLexicon",
+      "category": "interface",
+      "technique": "lines",
+      "order": 15,
+      "title": "Lexicon",
+      "tags": [
+        "index",
+        "documents",
+        "terms",
+        "postings",
+        "search",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Postings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/lexicon.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-raster",
+    "type": "registry:component",
+    "title": "Raster loader",
+    "description": "Two interlaced scan fields reconstruct a shaded architectural section on a tilted plate. Odd lines seat before the even lines fill their gaps; a raised scanning rail follows the active row, then the fields lift away in reverse order to expose the empty plate again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "raster",
+      "component": "LoaderRaster",
+      "category": "interface",
+      "technique": "lines",
+      "order": 16,
+      "title": "Raster",
+      "tags": [
+        "interlace",
+        "scan",
+        "imaging",
+        "fields",
+        "raster",
+        "reconstruction",
+        "progress"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Scan line",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/raster.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-alcove",
+    "type": "registry:component",
+    "title": "Alcove loader",
+    "description": "Three distinct records hash to the same address. The first seats at home; the next two inspect occupied slots and descend through a linear probe to the first vacancy, preserving each resident key before the insertions retrace their own routes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "alcove",
+      "component": "LoaderAlcove",
+      "category": "interface",
+      "technique": "planes",
+      "order": 17,
+      "title": "Alcove",
+      "tags": [
+        "hash",
+        "index",
+        "collision",
+        "probe",
+        "records",
+        "allocation"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Keys",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/alcove.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-escrow",
+    "type": "registry:component",
+    "title": "Escrow loader",
+    "description": "A stable snapshot remains readable while three edits enter a separate bank and its write-ahead journal. Only after every journal entry closes does one publication bracket transfer ownership to the prepared snapshot; the transaction then unwinds to its original version. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "escrow",
+      "component": "LoaderEscrow",
+      "category": "interface",
+      "technique": "lines",
+      "order": 18,
+      "title": "Escrow",
+      "tags": [
+        "transaction",
+        "journal",
+        "snapshot",
+        "commit",
+        "publish",
+        "stages"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "New version",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/escrow.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-sachet",
+    "type": "registry:component",
+    "title": "Sachet loader",
+    "description": "Two keys set three independent hash banks, sharing one previously written bit. A membership probe finds all three of its addresses occupied, while a second reaches an empty bit and is rejected; the compact filter then releases its writes for another batch. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "sachet",
+      "component": "LoaderSachet",
+      "category": "interface",
+      "technique": "lines",
+      "order": 19,
+      "title": "Sachet",
+      "tags": [
+        "membership",
+        "filter",
+        "hash",
+        "bits",
+        "lookup",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Set bits",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/sachet.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-swizzle",
+    "type": "registry:component",
+    "title": "Swizzle loader",
+    "description": "A matrix transposes around its anchored diagonal. Three pairs of record cards exchange row and column through separate depth lanes, retaining their contents; a diagonal register advances with each exchange before the transformation reverses. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "swizzle",
+      "component": "LoaderSwizzle",
+      "category": "interface",
+      "technique": "planes",
+      "order": 20,
+      "title": "Swizzle",
+      "tags": [
+        "matrix",
+        "transpose",
+        "reshape",
+        "dataset",
+        "rows",
+        "columns"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Contents",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/swizzle.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-medoid",
+    "type": "registry:component",
+    "title": "Medoid loader",
+    "description": "Record tiles assign themselves to three exemplars through distance spokes. Each cluster elects the actual record with the least total distance, the spokes transfer to their new hubs, and fitted enclosures close around the groups before the assignment releases. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "medoid",
+      "component": "LoaderMedoid",
+      "category": "interface",
+      "technique": "lines",
+      "order": 21,
+      "title": "Medoid",
+      "tags": [
+        "clustering",
+        "dataset",
+        "exemplar",
+        "partition",
+        "distance",
+        "training"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Membership",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/medoid.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-schema",
+    "type": "registry:component",
+    "title": "Schema loader",
+    "description": "Three table schemas assemble column by column. Their key columns lift above the records, orthogonal relationship lines connect matching rows, and the keys seat together before the relationships and columns withdraw. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "schema",
+      "component": "LoaderSchema",
+      "category": "interface",
+      "technique": "lines",
+      "order": 22,
+      "title": "Schema",
+      "tags": [
+        "tables",
+        "keys",
+        "relations",
+        "database",
+        "schema",
+        "indexing"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Relations",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/schema.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-prefix",
+    "type": "registry:component",
+    "title": "Prefix loader",
+    "description": "Unequal input bands become an inclusive prefix scan. Each addend slides beyond the previous total while a carried span grows behind it; a stepped bracket transfers that total to the next row, then the scan unwinds to its original inputs. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "prefix",
+      "component": "LoaderPrefix",
+      "category": "interface",
+      "technique": "lines",
+      "order": 23,
+      "title": "Prefix",
+      "tags": [
+        "scan",
+        "accumulate",
+        "prefix sum",
+        "aggregation",
+        "dataset",
+        "carry"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Carry",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/prefix.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-trellis",
+    "type": "registry:component",
+    "title": "Trellis loader",
+    "description": "A sequence alignment fills its cost table along dependency diagonals. The working diagonal lifts from its sockets, each cell retains its computed cost, and a raised traceback walks the optimal edits back to the origin before the table unwrites. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "trellis",
+      "component": "LoaderTrellis",
+      "category": "interface",
+      "technique": "lines",
+      "order": 24,
+      "title": "Trellis",
+      "tags": [
+        "alignment",
+        "sequence",
+        "dynamic programming",
+        "wavefront",
+        "matrix",
+        "processing"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Traceback",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/trellis.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-collate",
+    "type": "registry:component",
+    "title": "Collate loader",
+    "description": "Two ordered runs merge into one output. Independent read brackets compare the remaining heads; the smaller keyed record crosses a raised transfer lane and appends to the result, then the merge returns each record to its original run. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "collate",
+      "component": "LoaderCollate",
+      "category": "interface",
+      "technique": "planes",
+      "order": 25,
+      "title": "Collate",
+      "tags": [
+        "merge",
+        "sorted runs",
+        "records",
+        "dataset",
+        "stream",
+        "comparison"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Keys",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/collate.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-docket",
+    "type": "registry:component",
+    "title": "Docket loader",
+    "description": "A report paginates into three leaves. Empty sheets fan out from a common spine, ruled sections flow onto each page in reading order, and a binding line closes only after the final page is set; the leaves then clear and collate again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "docket",
+      "component": "LoaderDocket",
+      "category": "interface",
+      "technique": "planes",
+      "order": 26,
+      "title": "Docket",
+      "tags": [
+        "report",
+        "pagination",
+        "document",
+        "layout",
+        "typesetting",
+        "assembly"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Writing",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/docket.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-stencil",
+    "type": "registry:component",
+    "title": "Stencil loader",
+    "description": "A lifted three-tap kernel reads a field of samples along a serpentine path. Its selected samples rise into the window, weighted results accumulate on a separate output rail, and the filter retraces its route to release the results. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "stencil",
+      "component": "LoaderStencil",
+      "category": "interface",
+      "technique": "lines",
+      "order": 27,
+      "title": "Stencil",
+      "tags": [
+        "convolution",
+        "kernel",
+        "filter",
+        "image",
+        "samples",
+        "processing"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Output",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/stencil.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-coalesce",
+    "type": "registry:component",
+    "title": "Coalesce loader",
+    "description": "Overlapping ranges register against a shared ruler. Each group drops onto its union lane, duplicate coverage contracts into the already claimed span, and the two compact ranges lift back into their original records. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "coalesce",
+      "component": "LoaderCoalesce",
+      "category": "interface",
+      "technique": "planes",
+      "order": 28,
+      "title": "Coalesce",
+      "tags": [
+        "interval",
+        "union",
+        "compaction",
+        "range",
+        "merge",
+        "allocation"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Brackets",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/coalesce.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-folio",
+    "type": "registry:component",
+    "title": "Folio loader",
+    "description": "An insertion fills an index page and separates it into two ordered leaves. The right leaf copies its first key into a raised parent; routing branches connect only after that separator seats, then the split reunites for the next insertion. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "folio",
+      "component": "LoaderFolio",
+      "category": "interface",
+      "technique": "planes",
+      "order": 29,
+      "title": "Folio",
+      "tags": [
+        "index",
+        "page split",
+        "b tree",
+        "separator",
+        "records",
+        "database"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Keys",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/folio.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-occlude",
+    "type": "registry:component",
+    "title": "Occlude loader",
+    "description": "A tiled depth buffer resolves two overlapping triangular surfaces. The first pass writes one candidate; the second retains only the nearer fragments, splitting their overlap along its exact depth boundary while a sample ray connects the working tile to its source. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "occlude",
+      "component": "LoaderOcclude",
+      "category": "interface",
+      "technique": "planes",
+      "order": 30,
+      "title": "Occlude",
+      "tags": [
+        "render",
+        "depth buffer",
+        "visibility",
+        "fragments",
+        "tiles",
+        "rasterization"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Depth test",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/occlude.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-accord",
+    "type": "registry:component",
+    "title": "Accord loader",
+    "description": "A warped net solves toward its fixed boundary through alternating constraint sweeps. Each bank moves to the average of its neighbours, residual witnesses contract and an energy gauge steps down; the sweeps unwind to the original unsolved field. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "accord",
+      "component": "LoaderAccord",
+      "category": "interface",
+      "technique": "lines",
+      "order": 31,
+      "title": "Accord",
+      "tags": [
+        "solver",
+        "relaxation",
+        "constraints",
+        "red black",
+        "mesh",
+        "convergence"
+      ],
+      "beats": 5.6,
+      "colors": [
+        {
+          "part": "Correction",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/accord.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tensile",
+    "type": "registry:component",
+    "title": "Tensile loader",
+    "description": "Paired operand vectors advance through three outer-product passes. A diagonal write front raises each result tile and lengthens its accumulated value, then the contributions unwind in reverse order through the same contracted axis. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "tensile",
+      "component": "LoaderTensile",
+      "category": "interface",
+      "technique": "planes",
+      "order": 32,
+      "title": "Tensile",
+      "tags": [
+        "matrix",
+        "multiply",
+        "outer product",
+        "compute",
+        "accumulate",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Products",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/tensile.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-adjoint",
+    "type": "registry:component",
+    "title": "Adjoint loader",
+    "description": "A small model carries activations forward through three depth-separated banks. The output sends its error backward along the same connections, their weight witnesses adjust by the computed gradients, and the training step unwinds for the next example. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "adjoint",
+      "component": "LoaderAdjoint",
+      "category": "interface",
+      "technique": "lines",
+      "order": 33,
+      "title": "Adjoint",
+      "tags": [
+        "training",
+        "model",
+        "gradient",
+        "backpropagation",
+        "network",
+        "learning"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Activation",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/adjoint.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-isoline",
+    "type": "registry:component",
+    "title": "Isoline loader",
+    "description": "A survey window reads a scalar field cell by cell. Interpolated edge crossings join into a continuous contour behind it; the completed boundary lifts clear of the sample grid before the survey unwrites along its original route. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "isoline",
+      "component": "LoaderIsoline",
+      "category": "interface",
+      "technique": "lines",
+      "order": 34,
+      "title": "Isoline",
+      "tags": [
+        "contour",
+        "marching squares",
+        "map",
+        "scalar field",
+        "interpolation",
+        "extraction"
+      ],
+      "beats": 6.2,
+      "colors": [
+        {
+          "part": "Contour",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/isoline.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-radix",
+    "type": "registry:component",
+    "title": "Radix loader",
+    "description": "Keyed records distribute into digit buckets and gather in stable order. A second pass reads the next digit from the opposite bank, retaining the first pass within each bucket; the fully ordered records return through separate depth lanes for the next dataset. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "radix",
+      "component": "LoaderRadix",
+      "category": "interface",
+      "technique": "planes",
+      "order": 35,
+      "title": "Radix",
+      "tags": [
+        "radix sort",
+        "buckets",
+        "stable",
+        "records",
+        "indexing",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Digits",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/radix.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-pivot",
+    "type": "registry:component",
+    "title": "Pivot loader",
+    "description": "A raised pivot row eliminates the entries beneath its diagonal. Real row operations shorten coefficient bars to zero, an outside bracket carries each subtraction to its target, and the resulting triangular matrix restores its coefficients in reverse order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "pivot",
+      "component": "LoaderPivot",
+      "category": "interface",
+      "technique": "lines",
+      "order": 36,
+      "title": "Pivot",
+      "tags": [
+        "matrix",
+        "elimination",
+        "pivot",
+        "solver",
+        "linear algebra",
+        "training"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Row operation",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/pivot.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-stride",
+    "type": "registry:component",
+    "title": "Stride loader",
+    "description": "A butterfly transform doubles its pairing distance at each stage. Crossed sum-and-difference routes write the next bank of signed amplitudes only after their inputs arrive; each crossing separates in depth, and the transform unwrites from the final bank back to the source. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "stride",
+      "component": "LoaderStride",
+      "category": "interface",
+      "technique": "lines",
+      "order": 37,
+      "title": "Stride",
+      "tags": [
+        "butterfly",
+        "transform",
+        "stride",
+        "parallel",
+        "compute",
+        "signal processing"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Butterflies",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/stride.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-bisect",
+    "type": "registry:component",
+    "title": "Bisect loader",
+    "description": "A spatial index divides a record field at alternating axis medians. Each divider rises only after its parent is set, leaving unequal nested search rooms; a lookup follows the actual partition decisions to one leaf, then the index withdraws from its deepest cuts. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "bisect",
+      "component": "LoaderBisect",
+      "category": "interface",
+      "technique": "lines",
+      "order": 38,
+      "title": "Bisect",
+      "tags": [
+        "spatial index",
+        "kd tree",
+        "partition",
+        "median",
+        "search",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Lookup",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/bisect.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-reduce",
+    "type": "registry:component",
+    "title": "Reduce loader",
+    "description": "Four operand records fold into two intermediate instructions, which then lower into one wide output register. The records keep their strokes while travelling down separate depth lanes; consumed operands fill their parent instructions, and the expression expands in reverse dependency order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "reduce",
+      "component": "LoaderReduce",
+      "category": "interface",
+      "technique": "lines",
+      "order": 39,
+      "title": "Reduce",
+      "tags": [
+        "compiler",
+        "syntax tree",
+        "reduction",
+        "expression",
+        "assembly",
+        "build"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Values",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/reduce.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-meander",
+    "type": "registry:component",
+    "title": "Meander loader",
+    "description": "A continuous Hilbert traversal indexes a square field without crossing itself. Neighbouring records join into four raised pages, their directory brackets close as each page completes, and the traversal walks backward to release the index. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "meander",
+      "component": "LoaderMeander",
+      "category": "interface",
+      "technique": "lines",
+      "order": 40,
+      "title": "Meander",
+      "tags": [
+        "hilbert",
+        "space filling",
+        "spatial index",
+        "locality",
+        "pages",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Route",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/meander.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-entail",
+    "type": "registry:component",
+    "title": "Entail loader",
+    "description": "Candidate conduit tiles hover in shallow stacks above their sockets. Matching edge constraints remove unsupported choices from neighbouring stacks; surviving tiles seat into one connected layout, a proof stroke crosses each newly agreed seam, and the alternatives reopen in reverse. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "entail",
+      "component": "LoaderEntail",
+      "category": "interface",
+      "technique": "planes",
+      "order": 41,
+      "title": "Entail",
+      "tags": [
+        "constraints",
+        "propagation",
+        "tiles",
+        "generation",
+        "assembly",
+        "wave function collapse"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Collapse",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/entail.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-condense",
+    "type": "registry:component",
+    "title": "Condense loader",
+    "description": "Repeated records collapse into three compact run tokens. Matching keys travel through raised transfer lanes, each consumed copy adds one notch to its token’s count, and the encoded strip binds only after every run is complete before expanding back into its source records. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "condense",
+      "component": "LoaderCondense",
+      "category": "interface",
+      "technique": "planes",
+      "order": 42,
+      "title": "Condense",
+      "tags": [
+        "compression",
+        "run length",
+        "encoding",
+        "records",
+        "counts",
+        "dataset"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Count",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/condense.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/data-plane.ts",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/interface/computing.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-minify",
+    "type": "registry:component",
+    "title": "Minify loader",
+    "description": "An image builds two reduced resolution levels above its source. A raised read window averages each two-by-two block into one destination texel; the next level waits for the first, and the image pyramid unwrites from its smallest plate downward. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "minify",
+      "component": "LoaderMinify",
+      "category": "interface",
+      "technique": "planes",
+      "order": 43,
+      "title": "Minify",
+      "tags": [
+        "image",
+        "pyramid",
+        "mipmap",
+        "downsample",
+        "filter",
+        "generation"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Reader",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/minify.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-traverse",
+    "type": "registry:component",
+    "title": "Traverse loader",
+    "description": "A sampling ray walks the exact cell boundaries of a volume. Each crossed voxel reveals its occupied interval, the working cell opens in lit faces, and a transmittance witness accumulates the integrated density before the traversal retraces. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "traverse",
+      "component": "LoaderTraverse",
+      "category": "interface",
+      "technique": "lines",
+      "order": 44,
+      "title": "Traverse",
+      "tags": [
+        "volume",
+        "voxel",
+        "ray",
+        "rendering",
+        "sampling",
+        "integration"
+      ],
+      "beats": 5.75,
+      "colors": [
+        {
+          "part": "Beam",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/traverse.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-splice",
+    "type": "registry:component",
+    "title": "Splice loader",
+    "description": "Three object sections dock into one continuous address space. Unresolved reference slots acquire their relocated targets through raised binding arches, the image closes along its address ruler, and the bindings release before the sections separate. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "splice",
+      "component": "LoaderSplice",
+      "category": "interface",
+      "technique": "planes",
+      "order": 45,
+      "title": "Splice",
+      "tags": [
+        "linker",
+        "compile",
+        "relocation",
+        "sections",
+        "addresses",
+        "assembly"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "References",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/splice.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-salvage",
+    "type": "registry:component",
+    "title": "Salvage loader",
+    "description": "A missing data stripe is reconstructed from two surviving stripes and their parity. Three read fingers contribute to each exclusive-or result before the recovered cell seats; a witness binds the restored stripe and the recovery unwrites column by column. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "interface"
+    ],
+    "meta": {
+      "loader": "salvage",
+      "component": "LoaderSalvage",
+      "category": "interface",
+      "technique": "lines",
+      "order": 46,
+      "title": "Salvage",
+      "tags": [
+        "recovery",
+        "erasure",
+        "parity",
+        "restore",
+        "validation",
+        "data"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Donors",
+          "mono": "ink"
+        },
+        {
+          "part": "Sealed",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/interface/salvage.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

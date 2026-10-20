@@ -1,0 +1,221 @@
+[
+  {
+    "name": "settled-entrances",
+    "type": "registry:component",
+    "title": "Settled Entrances",
+    "description": "A scope inside which Reveal, Stagger, Counter and PresenceItem render already settled (no entrance); hover and other motion are untouched.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      {
+        "path": "src/components/youj/motion/settled.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "reveal",
+    "type": "registry:component",
+    "title": "Reveal",
+    "description": "Enter on mount or in view with fade, rise, blur-in, scale or clip-wipe (4 directions); exits via AnimatePresence; delay as a stagger-token multiple.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "settled-entrances"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/reveal.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "stagger",
+    "type": "registry:component",
+    "title": "Stagger",
+    "description": "Orchestrates children in sequence with a stagger token, ordered from start, end, center or seeded random; plays in view.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "reveal",
+      "settled-entrances"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/stagger.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "magnetic",
+    "type": "registry:component",
+    "title": "Magnetic",
+    "description": "Pulls an element toward the pointer within a radius with a spring return; MagneticInner adds label parallax.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/magnetic.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "tilt",
+    "type": "registry:component",
+    "title": "Tilt",
+    "description": "3D pointer tilt with perspective, optional compositor-only glare and a spring reset.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/tilt.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "text-split",
+    "type": "registry:component",
+    "title": "TextSplit",
+    "description": "Splits text by chars, words or measured lines (resize and font safe) and reveals with any Reveal variant; accessible text preserved.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "reveal"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/text-split.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "scramble-text",
+    "type": "registry:component",
+    "title": "ScrambleText",
+    "description": "Decode/scramble toward target text with a configurable glyph set; triggers on mount, view, hover/focus or text change.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/scramble-text.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "counter",
+    "type": "registry:component",
+    "title": "Counter",
+    "description": "Animated number with Intl.NumberFormat and tabular numerals; tween or odometer roll; retargets mid-animation.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "settled-entrances"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/counter.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "text-effect",
+    "type": "registry:component",
+    "title": "TextEffect",
+    "description": "Text renderer with a chosen reveal: split-flap board, terminal typing, decode, word blur-in or rolling reels; reserves the final box, one accessible copy, replays on text change.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "scramble-text"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/text-effect.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "marquee",
+    "type": "registry:component",
+    "title": "Marquee",
+    "description": "Seamless infinite loop, horizontal or vertical; auto-fills, faded edges, eases to a stop on hover/focus, pauses offscreen.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/marquee.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "scroll-progress",
+    "type": "registry:component",
+    "title": "ScrollProgress",
+    "description": "Spring-smoothed bar or ring bound to page or container scroll, exposed as a progressbar.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "youj-labels-scroll-progress"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/scroll-progress.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "parallax",
+    "type": "registry:component",
+    "title": "Parallax",
+    "description": "Scroll-linked translate, scale, rotate and opacity mapped from an input range to output ranges.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/motion/parallax.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

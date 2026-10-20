@@ -1,0 +1,2652 @@
+/* The site's own language, on youj tokens.
+ *
+ * A construction frame: content sits between two hairline rails, and every
+ * section starts on a rule with registration marks where it meets them. Type
+ * is the scale below: Youj Display for titles and headings, Inter for the
+ * rest, JetBrains Mono for code. One accent, the square particle from the mark,
+ * spent on what's current or live. */
+
+:root {
+  --site-width: 1200px;
+  /* The sticky header's height: its 4.5rem bar and the notch above it (viewport-fit=cover, app/layout.tsx). */
+  --header-bar: 4.5rem;
+  --header-height: calc(var(--header-bar) + env(safe-area-inset-top, 0px));
+  --gutter: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 2rem;
+  }
+}
+
+/* The site's UI type, one step over the kit's (11/12/13/14px → 12/13/14/15px). Every kit control, menu, popover,
+ * tooltip, select, tab and the command palette in the site's own chrome reads its size from these four tokens, at
+ * Basalt's comfortable control height (both site themes' controlSize), so they grow together from here. Demos keep the
+ * kit's sizes: a live preview is a scaling scope, which redeclares them from the kit's values (ui.css); any other
+ * themed scope in the page is put back below; a framed demo's document (/view, data-framed) never takes them. */
+:root:not([data-framed]) {
+  --text-ui-xs: 0.75rem;
+  --text-ui-sm: 0.8125rem;
+  --text-ui-sm--line-height: 1.125rem;
+  --text-ui: 0.875rem;
+  --text-ui-lg: 0.9375rem;
+  --text-ui-lg--line-height: 1.375rem;
+}
+[data-yj-theme]:not(html, [data-yj-scaling]) {
+  --text-ui-xs: max(var(--yj-text-min, 0.6875rem), calc(0.6875rem * var(--yj-scale, 1)));
+  --text-ui-sm: max(var(--yj-text-min, 0.6875rem), calc(0.75rem * var(--yj-scale, 1)));
+  --text-ui-sm--line-height: calc(1rem * var(--yj-scale, 1));
+  --text-ui: max(var(--yj-text-min, 0.6875rem), calc(0.8125rem * var(--yj-scale, 1)));
+  --text-ui-lg: max(var(--yj-text-min, 0.6875rem), calc(0.875rem * var(--yj-scale, 1)));
+  --text-ui-lg--line-height: calc(1.25rem * var(--yj-scale, 1));
+}
+
+@layer base {
+  html {
+    scroll-padding-top: calc(var(--header-height) + 1.5rem);
+    /* Inter is variable (100–900) and Youj Display has one weight: nothing on the site is ever faked bolder. */
+    font-synthesis-weight: none;
+  }
+  /* A themed preview keeps the browser's default for its own fonts. */
+  [data-yj-theme]:not(html) {
+    font-synthesis-weight: auto;
+  }
+
+  body {
+    font-optical-sizing: auto;
+  }
+}
+
+/* ── Type ─────────────────────────────────────────────────────────────── */
+
+/* The site's one type scale, the same in light and dark. A themed preview (data-yj-theme on its own element) keeps its
+ * theme's type; everything around it uses these. Two families and a code face:
+ *
+ *   Youj Display (--site-display): titles, headings and big figures. One weight (400) and no italic, so it is never
+ *     set bolder or slanted (font-synthesis: none), and its tracking is relaxed, not tightened.
+ *   Inter (--font-sans): everything else. Labels too: sentence case, no capitals, no wide tracking, no mono.
+ *   JetBrains Mono (--font-mono): code only, in one style (theme.css: code-block, code-inline, kbd).
+ *
+ * Each step is a `font` value and a utility of the same name:
+ *
+ *   type-display-xl   the home hero's headline                      Youj Display
+ *   type-display-l    a landing section's title, a big figure       Youj Display
+ *   type-title        a page's title (h1)                           Youj Display
+ *   type-heading      a section heading (h2)                        Youj Display
+ *   type-subheading   a sub-section heading (h3)                    Youj Display
+ *   type-lede         the line under a title                        Inter
+ *   type-body         running text                                  Inter
+ *   type-body-strong  a name in a list, a question, a group's head  Inter 600
+ *   type-small        metadata, counts, values (tabular figures)    Inter
+ *   type-label        a small label: groups, table heads, badges    Inter 500, muted
+ *   type-code         code, commands and keys                       JetBrains Mono
+ */
+:root {
+  --type-display-xl: 400 clamp(2.5rem, 1.5rem + 4vw, 4.625rem) / 1.02 var(--site-display);
+  --type-display-l: 400 clamp(2rem, 1.45rem + 2.2vw, 3.125rem) / 1.08 var(--site-display);
+  --type-title: 400 clamp(2rem, 1.6rem + 1.6vw, 2.5rem) / 1.1 var(--site-display);
+  --type-heading: 400 1.5rem / 1.25 var(--site-display);
+  --type-subheading: 400 1.125rem / 1.35 var(--site-display);
+  --type-lede: 400 clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem) / 1.6 var(--font-sans);
+  --type-body: 400 1rem / 1.75 var(--font-sans);
+  --type-body-strong: 600 1rem / 1.4 var(--font-sans);
+  --type-small: 400 0.875rem / 1.45 var(--font-sans);
+  --type-label: 500 0.875rem / 1.3 var(--font-sans);
+  --type-code: 400 0.9375rem / 1.7 var(--font-mono);
+  /* Youj Display's own spacing, a hair open; Inter's labels at their natural spacing. */
+  --type-display-tracking: 0.005em;
+}
+
+/* Youj Display's steps: the face, its one weight, nothing synthesized. */
+@utility type-display-xl {
+  font: var(--type-display-xl);
+  letter-spacing: var(--type-display-tracking);
+  font-synthesis: none;
+  text-wrap: balance;
+}
+@utility type-display-l {
+  font: var(--type-display-l);
+  letter-spacing: var(--type-display-tracking);
+  font-synthesis: none;
+  text-wrap: balance;
+}
+@utility type-title {
+  font: var(--type-title);
+  letter-spacing: var(--type-display-tracking);
+  font-synthesis: none;
+  text-wrap: balance;
+}
+@utility type-heading {
+  font: var(--type-heading);
+  letter-spacing: var(--type-display-tracking);
+  font-synthesis: none;
+  text-wrap: balance;
+}
+@utility type-subheading {
+  font: var(--type-subheading);
+  letter-spacing: var(--type-display-tracking);
+  font-synthesis: none;
+}
+
+/* Inter's steps. */
+@utility type-lede {
+  font: var(--type-lede);
+  color: var(--color-fg-muted);
+  text-wrap: pretty;
+}
+@utility type-body {
+  font: var(--type-body);
+}
+@utility type-body-strong {
+  font: var(--type-body-strong);
+  letter-spacing: 0;
+}
+@utility type-small {
+  font: var(--type-small);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+/* A small label: a group's name, a table's head, a status. Quiet, in sentence case. */
+@utility type-label {
+  font: var(--type-label);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-fg-muted);
+}
+@utility type-code {
+  font: var(--type-code);
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+}
+
+/* Headings outside a themed preview take the brand face, whatever sets them (prose, a dialog's title); a heading
+ * that is really a label (a utility above) keeps its own. In the base layer, so any utility wins. */
+@layer base {
+  :is(h1, h2, h3):not(:where([data-yj-theme]:not(html), [data-yj-theme]:not(html) *)) {
+    font-family: var(--site-display);
+    font-weight: 400;
+    letter-spacing: var(--type-display-tracking);
+    font-synthesis: none;
+  }
+}
+
+/* If you can press it, it's sans: tabs on the site's chrome, not inside a preview or a live stage (those keep their theme's voice). */
+[data-slot='tabs-trigger']:not(:where([data-yj-theme]:not(html) *, [data-stage] *)) {
+  font-family: var(--font-sans);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* The kit's menu, select and command group headings set capitals; on the site's chrome (not inside a themed preview)
+ * they are labels like the rest, in sentence case. */
+:is([data-slot='dropdown-menu-label'], [data-slot='select-label'], [cmdk-group-heading]):not(:where([data-yj-theme]:not(html) *)) {
+  font: var(--type-label);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ── Scrollbars ───────────────────────────────────────────────────────── */
+
+/* The site scrolls without drawing its bars: wheel, touch, keys and drags all
+ * scroll, nothing is drawn. Unlayered, so it wins over yj-scrollbar and the
+ * page's own thin bar. Two exceptions: a stage (a preview, a tile, a framed
+ * /view page) is the reader's app, so the site leaves its scrollers alone; and
+ * what scrolls sideways where a cue matters (code, tables, a command line)
+ * keeps a thin bar, drawn only while the pointer or focus is on it. */
+/* A /view page's <html> carries data-framed (app/view/layout.tsx). Not :root:has([data-frame-view]):
+ * that made every DOM change anywhere restyle the whole page, which was most of the docs' scroll and click cost. */
+:root:not([data-framed]),
+:root:not([data-framed]) *:not(:where([data-yj-theme]:not(html) *)) {
+  scrollbar-width: none;
+}
+
+:root:not([data-framed]) *:not(:is(.code-pre, .code-panel, .code-text, .scroll-fade), :where([data-yj-theme]:not(html) *))::-webkit-scrollbar,
+:root:not([data-framed])::-webkit-scrollbar {
+  display: none;
+}
+
+:root:not([data-framed]) [data-slot='scroll-area-scrollbar']:not(:where([data-yj-theme]:not(html) *)) {
+  display: none;
+}
+
+:is(.code-pre, .code-panel, .code-text, .scroll-fade):not(:where([data-yj-theme]:not(html) *)) {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &:focus-visible,
+  &:has(:focus-visible) {
+    scrollbar-color: var(--ui-scrollbar-thumb) transparent;
+  }
+  @media (hover: hover) {
+    &:hover {
+      scrollbar-color: var(--ui-scrollbar-thumb) transparent;
+    }
+  }
+}
+
+/* ── Docs timeline (components/docs/toc.tsx) ─────────────────────────── */
+
+/* Minor ticks every 1.5rem along the line, fainter than a heading's. */
+.docs-timeline-minor {
+  background: repeating-linear-gradient(to bottom, color-mix(in oklab, var(--color-line) 70%, transparent) 0 1px, transparent 1px 1.5rem);
+}
+
+/* The marker glides to the section in view; under reduced motion it jumps. */
+.docs-timeline-marker {
+  transition:
+    translate calc(var(--yj-duration-slow) * var(--yj-motion, 1)) var(--ease-standard),
+    width calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard);
+}
+
+/* ── Frame ────────────────────────────────────────────────────────────── */
+
+@utility frame {
+  position: relative;
+  width: 100%;
+  max-width: var(--site-width);
+  margin-inline: auto;
+
+  /* Rails only where the frame has room around it; at the screen's edge they'd be the edge. */
+  @media (min-width: 1248px) {
+    border-inline: 1px solid var(--color-line);
+  }
+}
+
+/* The homepage runs edge to edge over its moods: no rails, so no registration marks either. */
+[data-landing] .frame {
+  border-inline: 0;
+}
+[data-landing] .frame-section::before,
+[data-landing] .frame-section::after {
+  display: none;
+}
+/* The homepage's sections follow one another with no rule between them. */
+[data-landing] .frame-section {
+  border-top: 0;
+}
+
+/* A section on the frame: a rule on top with registration marks at the rails. */
+@utility frame-section {
+  position: relative;
+  border-top: 1px solid var(--color-line);
+
+  @media (min-width: 1248px) {
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      width: 11px;
+      height: 11px;
+      pointer-events: none;
+      background:
+        linear-gradient(var(--color-line-strong), var(--color-line-strong)) center / 1px 100% no-repeat,
+        linear-gradient(var(--color-line-strong), var(--color-line-strong)) center / 100% 1px no-repeat;
+      z-index: 1;
+    }
+    &::before {
+      inset-inline-start: -6px;
+    }
+    &::after {
+      inset-inline-end: -6px;
+    }
+  }
+}
+
+@utility gutter {
+  padding-inline: var(--gutter);
+}
+
+/* The square particle: the brand's one ornament. */
+@utility particle {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 1px;
+  background: var(--color-accent);
+}
+
+/* A faint construction grid, faded out towards the edges of its box. */
+@utility blueprint {
+  background-image:
+    linear-gradient(to right, var(--blueprint-ink, color-mix(in oklab, var(--color-line) 70%, transparent)) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--blueprint-ink, color-mix(in oklab, var(--color-line) 70%, transparent)) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: -1px -1px;
+  visibility: var(--stage-overlay, visible);
+}
+
+/* ── Depth ────────────────────────────────────────────────────────────── */
+
+/* The chrome lays itself out on the theme's planes in both modes: the page
+ * (canvas), code and command blocks a step away from it (surface), all on
+ * hairlines, with real shadows kept for what floats (menus, popovers,
+ * dialogs). In light the site's theme has a white page (SITE_LIGHT, `page:
+ * 'white'`), so the chrome is white and its code the soft gray the presets
+ * give their own pages. The `light:` variant is for the rare place a mode
+ * needs its own value. */
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+/* A stage (components/site/stage.tsx): a theme scope in its own page colour,
+ * the gray app page unless it asks for a website's white one, so library output
+ * on it reads as it will in an app. Its mode and preset are attributes the
+ * scope derives from; only its page is set here. The dev panel's Paper stage
+ * (lib/dev-theme PAPER, data-site-stage on <html>) tints every stage that wears
+ * the site's theme toward a warm paper. */
+@layer components {
+  .site-stage {
+    --yj-neutral-page: 0;
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+  }
+  .site-stage[data-page='white'] {
+    --yj-neutral-page: 1;
+  }
+  :root[data-site-stage='paper'] .site-stage[data-yj-theme=''] {
+    --yj-neutral-hue: 85;
+    --yj-neutral-chroma: 0.01;
+    --yj-neutral-wash: 0.7;
+  }
+
+  /* A stage's grid in light (Stage `pattern`, else <html>'s data-stage-pattern): CSS gradients on the stage itself,
+   * inked from its own line roles, on the white card plane (--yj-paper) instead of the gray page. The cards on it
+   * are opaque, so the grid stops at them. Each pattern only names its layers (--stage-grid*); the light rule below
+   * paints them, so dark never draws one. The site's own grid layers inside a stage (.blueprint, .dot-grid) step
+   * aside under one, so nothing doubles. Iso: IsoGrid's rhombi (illustrations, graphics/grids), 24px, the
+   * miniatures' plinth angle. Lines: LineGrid's rhythm, 24px with a firmer line every 96px. Dots: dot-grid's 16px lattice. */
+  .site-stage[data-pattern='iso'],
+  :root[data-stage-pattern='iso'] :is(.site-stage,[data-preview-stage]):not([data-pattern]) {
+    --stage-ink: color-mix(in oklab, var(--color-line) 50%, transparent);
+    --stage-grid:
+      repeating-linear-gradient(30deg, transparent 0 19.78px, var(--stage-ink) 19.78px 20.78px),
+      repeating-linear-gradient(150deg, transparent 0 19.78px, var(--stage-ink) 19.78px 20.78px);
+    --stage-grid-size: auto;
+    --stage-hides: hidden;
+  }
+  .site-stage[data-pattern='lines'],
+  :root[data-stage-pattern='lines'] :is(.site-stage,[data-preview-stage]):not([data-pattern]) {
+    --stage-ink: color-mix(in oklab, var(--color-line) 40%, transparent);
+    --stage-ink-major: color-mix(in oklab, var(--color-line) 80%, transparent);
+    --stage-grid:
+      linear-gradient(to right, var(--stage-ink-major) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--stage-ink-major) 1px, transparent 1px),
+      linear-gradient(to right, var(--stage-ink) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--stage-ink) 1px, transparent 1px);
+    --stage-grid-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+    --stage-grid-at: -1px -1px;
+    --stage-hides: hidden;
+  }
+  .site-stage[data-pattern='dots'],
+  :root[data-stage-pattern='dots'] :is(.site-stage,[data-preview-stage]):not([data-pattern]) {
+    --stage-ink: color-mix(in oklab, var(--color-line-strong) 70%, transparent);
+    --stage-grid: radial-gradient(circle, var(--stage-ink) 1px, transparent 1.25px);
+    --stage-grid-size: 16px 16px;
+    --stage-hides: hidden;
+  }
+  /* Blueprint: dark mode's own stage grid, the same layers (the blueprint utility, faded towards the centre where a
+   * docs example has one), on the white card plane in light with a firmer ink so it reads there as it does in dark. */
+  .site-stage[data-pattern='blueprint'],
+  :root[data-stage-pattern='blueprint'] :is(.site-stage,[data-preview-stage]):not([data-pattern]) {
+    --stage-grid: none;
+    --stage-hides: visible;
+  }
+  :root[data-theme='light'][data-stage-pattern='blueprint'] :is(.site-stage,[data-preview-stage]):not([data-theme='dark'],[data-pattern]),
+  :root[data-theme='light'] .site-stage[data-pattern='blueprint']:not([data-theme='dark']) {
+    --blueprint-ink: color-mix(in oklab, var(--color-line-strong) 55%, transparent);
+  }
+  .site-stage[data-pattern='none'],
+  :root[data-stage-pattern='none'] :is(.site-stage,[data-preview-stage]):not([data-pattern]) {
+    --stage-grid: none;
+    --stage-hides: visible;
+  }
+  :root[data-theme='light'] :is(.site-stage,[data-preview-stage]):not([data-theme='dark']) {
+    --stage-overlay: var(--stage-hides, visible);
+  }
+  :root[data-theme='light'] :is(.site-stage,[data-preview-stage]):not([data-theme='dark'],[data-pattern='none']) {
+    /* A soft wash under the grid, so white cards read against a ground instead of white on white:
+     * a breath of the accent at the top left settling to a pale neutral at the bottom right. */
+    --stage-wash: var(--site-wash);
+    background-color: var(--yj-paper);
+    background-image: var(--stage-grid), var(--stage-wash);
+    background-size: var(--stage-grid-size), auto;
+    background-position: var(--stage-grid-at, center), center;
+  }
+  :root[data-theme='light'][data-stage-pattern='none'] :is(.site-stage,[data-preview-stage]):not([data-pattern]) {
+    background-color: var(--color-canvas);
+  }
+  /* A docs example's live stage (components/docs/preview-live.tsx): a theme scope of the preset picked for it, so
+   * not a Stage, but a stage all the same; its fill is here so the grid above can replace it in light. */
+  [data-preview-stage] {
+    background-color: var(--color-canvas);
+  }
+
+  /* The frame or tile around a stage, in the site's scope, on a hairline: the paper plane (the theme's white card
+   * plane in light, its card step in dark), so a stage's gray page reads inside it in both modes, as a preview frame
+   * always has. One that links adds hover:border-line-strong. */
+  /* The showroom's paper plate (ShowroomHero plate="paper", the miniatures): the warm cream ground the plate had,
+   * in both modes, over the light stage's white card plane. */
+  .site-stage[data-plate='paper'],
+  :root[data-theme='light'] .site-stage[data-plate='paper'] {
+    --yj-neutral-hue: 85;
+    --yj-neutral-chroma: 0.01;
+    --yj-neutral-wash: 0.7;
+    background-color: var(--color-canvas);
+    background-image: none;
+  }
+
+  /* The showroom's dotted plate (icons, illustrations, loaders) in light, and the piece's own stage on it: plain white,
+   * no accent-tinted wash, so the dots and the piece carry it; a plate switched to dark keeps its own ground. */
+  :root[data-theme='light'] .site-stage[data-plate='dots']:not([data-scheme='dark']) {
+    /* The piece's own stage inherits it: no wash there either. */
+    --site-wash: none;
+    background-color: oklch(1 0 0);
+    background-image: none;
+  }
+
+  .site-card {
+    border: 1px solid var(--color-line);
+    background-color: var(--yj-paper);
+  }
+}
+
+/* Copy-this boxes (code blocks, install commands: theme.css --code-*) against the white page, per pattern: on iso
+ * and dots the gray well on a hairline, on lines (already a ruled stage) a white box on the hairline. */
+:root[data-theme='light']:is([data-stage-pattern='blueprint'], [data-stage-pattern='iso'], [data-stage-pattern='dots']) {
+  /* Half-way from the well to the white page: the full well read too heavy for long code blocks in light. */
+  --code-bg: color-mix(in oklab, var(--color-well) 50%, var(--yj-paper));
+  --code-line: var(--color-line);
+}
+:root[data-theme='light'][data-stage-pattern='lines'] {
+  --code-bg: var(--color-canvas);
+  --code-line: var(--color-line);
+}
+
+/* The home page in light: its cards, tiles and stacked layers sit on the gradient stages, so they take the white
+ * card plane rather than the soft gray a white page gives cards elsewhere, and stand on their border and shadow. */
+:root[data-theme='light'] [data-landing],
+:root[data-theme='light'] [data-landing] :is(.site-stage, [data-yj-theme]):not([data-theme='dark']) {
+  /* The light card plane's own white (youj.css: surface lightness 1, chroma 0), not --yj-paper, which reads surface. */
+  --color-surface: oklch(1 0 0);
+}
+
+/* A docs demo's plate (components/docs/preview-live.tsx Plate): a bare demo sits on the theme's card, on a
+ * hairline with a soft shadow, as a component would in an app. A demo that paints its own surface is left as it is. */
+.preview-plate {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  min-width: fit-content;
+  align-items: center;
+  justify-content: center;
+}
+.preview-plate-card {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--color-shadow) 5%, transparent), 0 12px 32px -16px color-mix(in oklab, var(--color-shadow) 22%, transparent);
+  pointer-events: none;
+}
+
+/* A demo waiting to generate in (components/site/ui-generation/generated.tsx): hidden until the effect takes over its opacity. */
+[data-gen-pending] > :first-child { opacity: 0; }
+
+/* A docs story on its way (components/docs/story-switch.ts): while the next story loads, the stage breathes over the
+ * softened old one, a soft pool of light drifting across it and a hairline sweeping its top. It shows only after a
+ * beat (a story that's ready by then never brings it) and only transforms and opacity animate; at rest it's paused.
+ * The menu's dot by the picked story's name pulses with it. None under reduced motion. */
+.story-breath {
+  --breath-glow: oklch(1 0 0 / 0.6);
+  --breath-line: color-mix(in oklab, var(--color-fg) 30%, transparent);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--yj-duration-slow) ease-out;
+}
+:root[data-theme='dark'] .story-breath {
+  --breath-glow: oklch(1 0 0 / 0.11);
+  --breath-line: color-mix(in oklab, var(--color-fg) 35%, transparent);
+}
+.story-breath[data-on] {
+  opacity: 1;
+  transition-duration: var(--yj-duration-slow);
+  transition-delay: 240ms;
+}
+.story-breath::before,
+.story-breath::after {
+  content: '';
+  position: absolute;
+  will-change: transform;
+  animation-play-state: paused;
+}
+.story-breath::before {
+  inset: 0 22%;
+  background: radial-gradient(closest-side, var(--breath-glow), transparent);
+  animation: story-breath 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate paused;
+}
+.story-breath::after {
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--breath-line), transparent);
+  animation: story-sweep 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite paused;
+}
+.story-breath[data-on]::before,
+.story-breath[data-on]::after {
+  animation-play-state: running;
+}
+@keyframes story-breath {
+  from {
+    transform: translateX(-28%) scale(0.9);
+    opacity: 0.55;
+  }
+  to {
+    transform: translateX(28%) scale(1.06);
+    opacity: 1;
+  }
+}
+@keyframes story-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+.story-dot {
+  display: inline-block;
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0;
+  animation: story-dot 1.2s ease-in-out 160ms infinite alternate;
+}
+@keyframes story-dot {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-breath {
+    display: none;
+  }
+  .story-dot {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* A card block's stage in light (components/showcase/kind-stage.tsx): the same soft wash as a docs preview's stage,
+ * so a card reads white on it in the viewer, its tile's live render and the gallery's captures alike. */
+:root[data-theme='light'] [data-kind-stage='card'] {
+  background-image: var(--site-wash);
+}
+/* A card block that draws its own page (min-h-dvh bg-canvas, held to its content on this stage) lets the stage's
+ * wash show through it, so its cards stand on the gradient like every other card. */
+:root[data-theme='light'] [data-kind-stage='card'] .min-h-dvh.bg-canvas {
+  background-color: transparent;
+}
+:root[data-theme='light'] [data-kind-stage='card'],
+:root[data-theme='light'] [data-kind-stage='card'] [data-yj-theme]:not([data-theme='dark']) {
+  /* The light card plane's own white, not the soft gray a white page gives cards. */
+  --color-surface: oklch(1 0 0);
+}
+
+/* A section or card in a docs page's preview (components/docs/block-preview.tsx) stands straight on the panel: its
+ * document, its stage (and a card stage's wash) and the block's own canvas (its page, its section, a background layer
+ * filling it) are see-through, so no plane sits behind it. A screen keeps its app's canvas. */
+:root[data-docs-frame],
+:root[data-docs-frame] body,
+:root[data-docs-frame] [data-frame-view],
+:root[data-docs-frame] [data-kind-stage],
+:root[data-docs-frame] [data-kind-stage] .min-h-dvh.bg-canvas,
+:root[data-docs-frame] [data-kind-root] .bg-canvas:not(:where([data-kind-root] .bg-canvas *)),
+:root[data-docs-frame] [data-kind-root] :is(section, main, header, footer, .min-h-dvh, .absolute.inset-0).bg-canvas {
+  background: transparent;
+}
+/* In light a block's cards are the white card plane on the aurora, as on a card block's stage: a block set on a white
+ * page (most marketing ones) otherwise paints them the soft gray a white page gives cards. On a backdrop they keep
+ * their preset's own paper, which is part of the pairing. */
+:root[data-theme='light'][data-docs-frame]:not([data-docs-backdrop]) [data-kind-stage],
+:root[data-theme='light'][data-docs-frame]:not([data-docs-backdrop]) [data-kind-stage] [data-yj-theme]:not([data-theme='dark']) {
+  --color-surface: oklch(1 0 0);
+}
+
+/* A block shown on frosted glass over the aurora (BlockStory `backdrop="glass"`, components/docs/block-preview.tsx). */
+.block-glass {
+  background: color-mix(in oklab, var(--color-surface) 50%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-surface) 70%, transparent);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 1px 2px oklch(0.2 0.01 270 / 0.06),
+    0 16px 40px -16px oklch(0.2 0.01 270 / 0.18);
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+/* A marketing section's own page padding (py-20, md:py-28: 112px at a website's width) is empty space in a docs preview,
+ * whose stage and glass already frame it: trimmed to 64px, so the block fills the preview. */
+:root[data-docs-frame] [data-kind-stage='section'] section[class~='md:py-28'] {
+  padding-block: 4rem;
+}
+/* No scrollbar inside a docs preview: where the OS draws one that takes room (a mouse attached), its appearing would
+ * narrow the block, rewrap it and make it taller, which the preview would then keep. A tall block still scrolls. */
+:root[data-docs-frame] {
+  scrollbar-width: none;
+}
+:root[data-docs-frame]::-webkit-scrollbar {
+  display: none;
+}
+/* A screen on glass (BlockStory `backdrop="glass"`): its page's outermost canvas is see-through, so the glass is its ground. */
+:root[data-docs-frame][data-docs-bare] [data-frame-view] .bg-canvas:not(:where([data-frame-view] .bg-canvas *)),
+:root[data-docs-frame][data-docs-bare] [data-frame-view] section.bg-canvas:not(:where(section *)) {
+  background: transparent;
+}
+:root[data-docs-frame][data-docs-whole] {
+  overflow: hidden;
+}
+
+/* The viewer (components/showcase/item-viewer.tsx, full-preview.tsx) in light: white on a gray hairline, so the
+ * gradient stage inside reads as the one tinted plane. */
+:root[data-theme='light'] :is([data-item-viewer], [data-full-preview]) {
+  --color-surface: oklch(1 0 0);
+  border-color: var(--color-line);
+}
+
+/* The viewer (components/showcase/item-viewer.tsx, full-preview.tsx) in light: white on a gray hairline, so the
+ * gradient stage inside reads as the one tinted plane. */
+:root[data-theme='light'] :is([data-item-viewer], [data-full-preview]) {
+  --color-surface: oklch(1 0 0);
+  border-color: var(--color-line);
+}
+
+/* A gallery tile in light (components/showcase/gallery-card.tsx): the tile itself, stage and caption, is one soft
+ * wash, the docs previews' gradient, and the block inside it is the white card. No grid. */
+:root[data-theme='light'] :is([data-gallery-tile], .site-card.group\/level, [data-nav-panel] [data-feature-card]) {
+  background-color: oklch(1 0 0);
+  background-image: var(--site-wash);
+}
+/* The explorers' cards (illustrations, loaders: ShowroomCard `dots`) are plain light gray under the site's dot grid, no wash. */
+:root[data-theme='light'] [data-gallery-tile][data-gallery-tile] {
+  background-color: oklch(0.965 0.002 285);
+  background-image: none;
+}
+/* The hero island's thumbnails take the same light gray, so they stand off the island's white as they do in dark. */
+:root[data-theme='light'] [data-showroom-strip] [data-id][data-set] {
+  background-color: oklch(0.965 0.002 285);
+}
+/* Their name and count sit on a pane of frosted glass, as the homepage's parts do (`[data-landing] .family-foot`). */
+:root [data-gallery-tile][data-gallery-tile] .gallery-caption.gallery-caption {
+  margin: 0.25rem;
+  border-radius: calc(var(--radius-xl) - 4px);
+  background: color-mix(in oklab, var(--color-surface) 90%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-surface) 70%, transparent);
+  box-shadow: 0 1px 2px oklch(0.2 0.01 270 / 0.06), 0 8px 24px -12px oklch(0.2 0.01 270 / 0.2);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+:root[data-theme='light'] [data-gallery-tile][data-gallery-tile] .gallery-caption.gallery-caption {
+  background: oklch(1 0 0);
+}
+/* The explorers' cards keep their dot grid in dark too (the other tiles drop it, below). */
+:root[data-theme='dark'] [data-gallery-tile][data-gallery-tile] .gallery-stage > .dot-grid {
+  display: block;
+}
+:root[data-theme='dark'] [data-gallery-tile][data-gallery-tile] .gallery-caption.gallery-caption {
+  background: color-mix(in oklab, var(--color-surface) 90%, oklch(1 0 0));
+  border-color: color-mix(in oklab, var(--color-surface) 80%, oklch(1 0 0));
+}
+:root[data-theme='light'] [data-gallery-tile] :is(.gallery-stage, .gallery-caption, .bg-canvas, [data-stage], [data-kind-stage='card']),
+:root[data-theme='light'] :is(.site-card.group\/level, [data-nav-panel] [data-feature-card]) .site-stage {
+  background-color: transparent;
+  background-image: none;
+}
+/* The level selector's drawings on the wash: white faces and a softer ink, so they read light rather than gray. */
+:root[data-theme='light'] .site-card.group\/level .yj-anim {
+  --yj-anim-paper: oklch(1 0 0) !important;
+  --yj-anim-ink: color-mix(in oklab, var(--color-fg) 42%, oklch(1 0 0)) !important;
+}
+/* The mini screen a card is scaled into draws no frame of its own on a tile: the block's card sits on the wash. */
+:root[data-theme='light'] [data-gallery-tile] .ring-line.shadow-sm[class*='contain:layout_paint'] {
+  box-shadow: none;
+}
+:root[data-theme='light'] .gallery-card:not([data-gallery-tile]) :is(.blueprint, .dot-grid) {
+  display: none;
+}
+
+/* A docs example's stage is clean: the soft wash in light, the plain stage in dark, no grid in any pattern. */
+[data-preview-stage] {
+  --stage-grid: none !important;
+}
+
+/* Dark mode: the light tiles' unified card without the wash. A gallery tile (blocks, illustrations, loaders) and a
+ * level card are one plain surface, no dots, grid or inner box; docs previews and the viewer keep their plain stage. */
+:root[data-theme='dark'] :is([data-gallery-tile], .site-card.group\/level, [data-feature-card]:not([data-paper-tile])) {
+  background-color: var(--color-surface);
+  background-image: none;
+}
+:root[data-theme='dark'] [data-gallery-tile] :is(.gallery-stage, .gallery-caption, .bg-canvas, [data-stage], [data-kind-stage='card']),
+:root[data-theme='dark'] .site-card.group\/level .site-stage {
+  background-color: transparent;
+  background-image: none;
+}
+:root[data-theme='dark'] :is([data-gallery-tile], .site-card.group\/level) :is(.dot-grid, .blueprint) {
+  display: none;
+}
+
+/* A miniature's tile is one card in its shot's own paper: the photo's backdrop (rgb 245 243 240 light, 27 25 24 dark)
+ * runs under the caption too, so picture and card read as one plate. */
+[data-paper-tile] {
+  background-color: rgb(245 243 240);
+}
+:root[data-theme='dark'] [data-paper-tile] {
+  background-color: rgb(27 25 24);
+}
+[data-paper-tile] :is(.gallery-stage, .gallery-caption) {
+  background-color: transparent;
+  background-image: none;
+}
+
+/* The command palette's picture (components/site/search-stage.tsx) on the docs previews' aurora, in light. */
+:root[data-theme='light'] .search-stage-art {
+  background-image: var(--docs-wash);
+}
+/* The Visuals menu's four cards in light: the gallery tile's own colour, its piece on a frosted-glass plate with a
+ * soft lift (the glass itself is the stage's classes, components/site/desktop-nav.tsx). */
+:root[data-theme='light'] [data-nav-panel] [data-feature-card][data-glass] .site-stage {
+  box-shadow:
+    0 1px 2px color-mix(in oklab, var(--color-shadow) 6%, transparent),
+    0 4px 12px -4px color-mix(in oklab, var(--color-shadow) 12%, transparent);
+}
+/* A page band's scenes in light (components/docs/page-art-scenes.tsx, `tone`): each takes one of the docs' aurora
+ * colours as its accent, a stronger shade of the preview wash's pools, so the band shows the kit in more than one
+ * colour. Dark keeps the site's accent. */
+:root[data-theme='light'] [data-page-art] [data-art-tone='mint'] { --color-accent: oklch(0.66 0.13 170); }
+:root[data-theme='light'] [data-page-art] [data-art-tone='sky'] { --color-accent: oklch(0.62 0.14 235); }
+:root[data-theme='light'] [data-page-art] [data-art-tone='violet'] { --color-accent: oklch(0.58 0.17 295); }
+:root[data-theme='light'] [data-page-art] [data-art-tone='peach'] { --color-accent: oklch(0.7 0.15 55); }
+/* The header's menus: a plain popup; the feature card is a gallery tile (above), its art straight on the card. */
+/* The Youj look's swatch in a preview's theme menu: ink on the aurora. */
+.site-look-swatch {
+  background: conic-gradient(oklch(0.21 0.006 270) 0 25%, oklch(0.88 0.07 175) 0 50%, oklch(0.88 0.07 230) 0 75%, oklch(0.9 0.08 55) 0);
+}
+
+/* The light washes: the site's (galleries, tiles, menus, the viewer) a breath of the accent settling to a pale neutral;
+ * the docs previews' "aurora", mint from the top left, sky from the top right and a soft violet from below. */
+:root {
+  --site-wash: linear-gradient(
+    155deg,
+    color-mix(in oklab, var(--color-accent) 7%, oklch(1 0 0)),
+    color-mix(in oklab, var(--color-fg) 5%, oklch(1 0 0))
+  );
+  --docs-wash:
+    radial-gradient(70% 85% at 0% 0%, oklch(0.88 0.07 175 / 0.95), transparent 70%),
+    radial-gradient(70% 85% at 100% 0%, oklch(0.88 0.07 230 / 0.9), transparent 70%),
+    radial-gradient(80% 90% at 60% 100%, oklch(0.86 0.07 290 / 0.9), transparent 70%),
+    linear-gradient(oklch(0.98 0.004 80), oklch(0.98 0.004 80));
+}
+
+/* A docs example's stage: the aurora, and room to read as a hero, at least 26rem tall from sm up. The aurora drifts:
+ * an oversized layer of four pools (mint, sky, violet and a warm orange) turns slowly behind the demo, so the light
+ * moves through its colours over about a minute. Only a transform animates (no repaint); still under reduced motion.
+ * It's the example's panel's (the stage and the island's strip under it), so one aurora runs behind both. */
+:root[data-theme='light'] [data-preview-panel][data-site-look] {
+  isolation: isolate;
+  overflow: clip;
+  background-color: oklch(0.98 0.004 80);
+}
+:root[data-theme='light'] [data-preview-panel][data-site-look] [data-preview-stage][data-site-look]:not([data-theme='dark']) {
+  --stage-wash: none;
+  background: transparent;
+}
+:root[data-theme='light'] [data-preview-panel][data-site-look]::before {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 42% at 25% 25%, oklch(0.88 0.07 175 / 0.95), transparent 70%),
+    radial-gradient(42% 42% at 75% 25%, oklch(0.88 0.07 230 / 0.9), transparent 70%),
+    radial-gradient(42% 42% at 75% 75%, oklch(0.86 0.07 290 / 0.9), transparent 70%),
+    radial-gradient(42% 42% at 25% 75%, oklch(0.9 0.08 55 / 0.9), transparent 70%);
+  animation: aurora-drift 60s linear infinite;
+  will-change: transform;
+}
+:root[data-theme='light'] [data-preview-stage]:not([data-site-look], [data-theme='dark']) {
+  /* A picked preset shows on its own plain page, no wash, so the theme's changes read. */
+  --stage-wash: none;
+  background-color: var(--color-canvas);
+}
+/* The aurora at night: the same four pools, deep and glowing on the dark canvas rather than tinting a light one. */
+:root[data-theme='dark'] [data-preview-panel][data-site-look] {
+  isolation: isolate;
+  overflow: clip;
+  background-color: oklch(0.17 0.012 270);
+}
+:root[data-theme='dark'] [data-preview-panel][data-site-look] [data-preview-stage][data-site-look]:not([data-theme='light']) {
+  --stage-wash: none;
+  background: transparent;
+}
+:root[data-theme='dark'] [data-preview-panel][data-site-look]::before {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 42% at 25% 25%, oklch(0.45 0.1 175 / 0.7), transparent 70%),
+    radial-gradient(42% 42% at 75% 25%, oklch(0.42 0.12 235 / 0.7), transparent 70%),
+    radial-gradient(42% 42% at 75% 75%, oklch(0.4 0.14 290 / 0.75), transparent 70%),
+    radial-gradient(42% 42% at 25% 75%, oklch(0.45 0.11 50 / 0.55), transparent 70%);
+  animation: aurora-drift 60s linear infinite;
+  will-change: transform;
+}
+@keyframes aurora-drift {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme='light'] [data-preview-panel][data-site-look]::before,
+  :root[data-theme='dark'] [data-preview-panel][data-site-look]::before {
+    animation: none;
+  }
+}
+/* A showroom's plate wearing the aurora (ShowroomHero siteLook, the loaders and illustrations): the plate is the panel,
+ * so the rules above paint its aurora; only its own grid and fill step aside. */
+:root .site-stage[data-plate='aurora'][data-preview-panel] {
+  background-image: none;
+}
+@media (min-width: 40rem) {
+  [data-preview-stage]:not([data-device='phone']) {
+    min-height: max(var(--stage-min-sm, 0px), 26rem);
+  }
+}
+
+/* A stage's grid, kept to the edges: it fades out under the centre so a
+ * component (fields, tints, table cells) always sits on solid canvas. Put it
+ * on an aria-hidden absolute layer behind relatively positioned content. */
+/* A dotted plate's field (the showroom's Raw view): clear only close around the middle, so more of the dots show. */
+@utility dots-edge {
+  mask-image: radial-gradient(ellipse 70% 66% at 50% 50%, transparent 18%, black 70%);
+}
+
+@utility blueprint-edge {
+  mask-image: radial-gradient(ellipse 72% 68% at 50% 50%, transparent 45%, black 100%);
+}
+
+/* ── Chrome ───────────────────────────────────────────────────────────── */
+
+/* A small link's touch target grown to at least 24px tall without moving anything: an invisible box around it. */
+@utility hit-area {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px -4px;
+  }
+}
+
+/* A link that underlines in the accent on hover, from a quiet hairline. */
+@utility link-quiet {
+  color: var(--color-fg);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in oklch, var(--color-accent) 40%, transparent);
+  transition: text-decoration-color calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard);
+
+  &:hover {
+    text-decoration-color: var(--color-accent);
+  }
+}
+
+/* An install line as a chip: code's block, in a pill's shape. */
+@utility code-chip {
+  @apply code-block code-text;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  border-radius: 0.5rem;
+}
+
+/* ── Docs ─────────────────────────────────────────────────────────────── */
+
+/* A docs page is one column, centred between the sidebar and the TOC: its
+ * title, text, previews, code, tables, Reference, pager and footer all share
+ * the column's two edges. It's 56rem: a roomier live preview and ~110
+ * characters of code; at 1440 (90rem) beside the sidebar and the rail it
+ * gives up some of that width (17 + 6 + 56 + 3 + 15 = 97rem), from about
+ * 1550px it has it all. The docs' frame is
+ * wider than the landing's --site-width, so on a big screen the sidebar and
+ * the TOC keep to its edges and the column stays centred between them, with
+ * even room either side. The rail shows from `toc:` (just under that, the
+ * column gives up a little of its width); narrower, "On this page" is a
+ * popover in the page's header. */
+:root {
+  --docs-width: 110rem;
+  --docs-column: 56rem;
+  /* The text measure on the Blocks and Examples pages, beside their sidebars. */
+  --track-prose: 45rem;
+}
+
+@theme {
+  --breakpoint-toc: 86rem;
+  /* Where the Blocks and Examples galleries take another column. */
+  --breakpoint-3xl: 100rem;
+}
+
+@layer components {
+  /* A docs page's text is set a size up from the prose default, so the
+   * column's 48rem stays the measure it always read at: 48 ems, about 100
+   * characters a line on its 1.75 leading. Tables and code keep their own
+   * sizes and scroll sideways inside the column when they're wider. */
+  .docs-flow {
+    font-size: 1.0625rem;
+  }
+
+  /* ── touch chrome ── */
+  /* A link in running text is one line tall and a thumb is not: on a coarse pointer its hit area grows by padding above and below, which an inline box takes without moving a line (a link with a class of its own, a card or a button, sets its own size). */
+  @media (pointer: coarse) {
+    .prose :where(a:not([class])):not(:where(.not-prose, .not-prose *)) {
+      padding-block: 0.8125rem;
+    }
+  }
+
+  /* A section label in the docs tree: a quiet label, in sentence case. */
+  .tree-label {
+    @apply type-label;
+    margin-bottom: 0.375rem;
+    padding-inline: 0.625rem;
+  }
+
+  li.tree-label {
+    margin-top: 1rem;
+  }
+  /* Headings in the tree stand apart from the pages: a section's header and a label inside a group are set bold in ink. */
+  .tree-section,
+  li.tree-label {
+    font-weight: 600;
+    color: var(--color-fg);
+  }
+
+  /* A section's header in the docs tree: the label with the section's icon, a button that folds the section. */
+  .tree-section {
+    @apply type-label;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.375rem;
+    transition: color var(--yj-duration-fast) var(--ease-standard);
+    &:hover {
+      color: var(--color-fg);
+    }
+  }
+  /* Beside the timeline the icon takes the tick's place in the rail, so the label lines up with the rows under it. */
+  [data-timeline] .tree-section {
+    position: relative;
+  }
+  [data-timeline] .tree-section-icon {
+    position: absolute;
+    inset-inline-start: -1.375rem;
+  }
+  /* A group's arrow moves into the rail too, where its tick would be; the row keeps its label in line with the pages. */
+  [data-timeline] button[aria-expanded]:not(.tree-folder-toggle) > .tree-chevron {
+    position: absolute;
+    inset-inline-start: -1.25rem;
+  }
+  [data-timeline] .tree-folder-toggle {
+    inset-inline-end: auto;
+    inset-inline-start: -1.75rem;
+    width: 1.5rem;
+  }
+  /* The rows under a section header step in, with the rail (page-tree.tsx), so the header's icon stands alone. */
+  [data-timeline] .tree-section-rows {
+    margin-inline-start: 0.625rem;
+  }
+  [data-timeline] .tree-folder-link {
+    padding-inline-end: 0.625rem;
+  }
+
+  /* Where a grid has a few pictures (three or more cards lead with a live
+   * demo), the rest keep the same stage, empty, so the grid reads as one set
+   * of pictures. With fewer it's a set of words: the odd demo is left out
+   * rather than leave the rest as blank tiles. On a phone (one column, no row
+   * to match) a card without a demo is just its words. */
+  .doc-cards:not(:has([data-preview] ~ [data-preview] ~ [data-preview])) .card-stage,
+  .card-stage[data-empty] {
+    display: none;
+  }
+  @media (width >= 40rem) {
+    .doc-cards:has([data-preview] ~ [data-preview] ~ [data-preview]) .card-stage[data-empty] {
+      display: block;
+    }
+  }
+
+  /* Pictures lead there, so every card's words shrink to one line. */
+  .doc-cards:has([data-preview] ~ [data-preview] ~ [data-preview]) .doc-card-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+  }
+}
+
+/* The docs' repeated server-rendered parts, each one class: a page's payload carries a class string once per element
+ * (twice, in its HTML and its RSC payload), so a heading anchor, a card or a props row that spelled out its utilities
+ * wrote them again on every one (about a quarter of a docs page's payload). Each applies the same utilities it
+ * replaced, so nothing looks different. */
+
+/* A heading's link to itself, and the # that shows on hover beside it (components/docs/blocks.tsx). */
+@utility heading-anchor {
+  @apply relative text-inherit no-underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+@utility heading-hash {
+  @apply absolute -start-5 top-0 hidden font-sans font-normal text-fg-subtle opacity-0 transition-opacity duration-(--yj-duration-fast) ease-standard group-hover/heading:opacity-100 md:block;
+}
+
+/* A list's section heading (components/showcase/explorer.tsx): its link, and the arrow that nudges on hover. */
+@utility gallery-head-link {
+  @apply hit-area inline-flex min-w-0 items-center gap-1.5 rounded-sm;
+}
+@utility gallery-head-arrow {
+  @apply shrink-0 text-fg-subtle transition-[translate] yj-duration-fast ease-standard group-hover/head:translate-x-0.5 group-hover/head:text-fg rtl:-scale-x-100 rtl:group-hover/head:-translate-x-0.5;
+}
+
+/* A fenced code block's frame. */
+@utility code-figure {
+  @apply code-block relative my-6 overflow-hidden;
+}
+
+/* A docs card: its frame, the hover and focus of one that links, its demo stage, title, arrow and words. */
+@utility card-frame {
+  @apply relative block overflow-hidden rounded-xl border border-line p-4;
+}
+@utility card-link {
+  @apply transition-colors duration-(--yj-duration-fast) ease-standard hover:border-line-strong has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-accent;
+}
+/* A card's picture: a canvas set 3px inside the card's gray, as the gallery's cards and the viewer frame theirs. */
+@utility card-stage {
+  @apply relative -mx-[13px] -mt-[13px] mb-3.5 h-36 overflow-hidden rounded-[calc(var(--radius-xl)-3px)];
+}
+@utility card-title {
+  @apply text-[14.5px] font-medium tracking-tight text-fg;
+}
+@utility card-arrow {
+  @apply ms-auto text-fg-subtle transition-colors duration-(--yj-duration-fast) ease-standard group-hover/card:text-fg;
+}
+@utility card-text {
+  @apply mt-1 text-[13px] leading-relaxed text-fg-muted [&_a]:relative [&_a]:z-10 [&_p]:m-0;
+}
+
+/* The family on the homepage (components/landing/family.tsx): its grid, where UI leads at two by two and Motion runs
+ * two wide (data-size), then each tile: its link, its picture's stage, its foot, the part's name, what it holds and
+ * the arrow that lights with the tile. */
+@utility family-grid {
+  @apply grid grid-flow-row-dense gap-3 sm:grid-cols-2 xl:grid-cols-4;
+}
+@utility family-item {
+  @apply min-w-0;
+  &[data-size] {
+    @apply sm:col-span-2;
+  }
+  &[data-size='lead'] {
+    @apply xl:row-span-2;
+  }
+}
+@utility family-tile {
+  @apply flex h-full flex-col overflow-hidden rounded-2xl p-[3px] transition-colors yj-duration-fast ease-standard hover:border-line-strong;
+}
+@utility family-stage {
+  @apply relative grid min-h-56 flex-1 place-items-center overflow-hidden rounded-[calc(var(--radius-2xl)-3px)];
+  /* The lead's picture at the size of its stage: it has twice the room. */
+  [data-size='lead'] & > * {
+    @apply xl:scale-[1.4];
+  }
+}
+@utility family-stat {
+  @apply truncate text-[13px] leading-5 text-fg-muted;
+  /* A lead's or wide tile's blurb is a sentence: it wraps rather than cut off. */
+  [data-size] & {
+    @apply line-clamp-2 whitespace-normal;
+  }
+}
+@utility family-foot {
+  @apply flex items-center gap-3 px-3 py-3.5;
+}
+@utility family-name {
+  @apply min-w-0 truncate text-[15px] leading-5 font-semibold tracking-tight text-fg;
+  [data-size='lead'] & {
+    @apply xl:text-[19px] xl:leading-6;
+  }
+}
+@utility family-arrow {
+  @apply shrink-0 text-fg-subtle transition-colors yj-duration-fast ease-standard group-hover/tile:text-fg rtl:-scale-x-100;
+}
+
+/* The homepage's Explore bento (components/landing/explore/explore.tsx): one column on a phone, each tile its own
+ * height; two from `sm`, flowing dense on rows of one height; four from `xl`, each tile in its named area (its id, as
+ * --area) so the rows have no holes. Then each tile: its card, its stage, the server's stand-in (gone once the
+ * live piece is in, `data-live`), the live layer, its foot, its name and its corner link to the docs, whose words show
+ * on hover or focus (always on a touch screen). */
+@utility explore-grid {
+  @apply grid gap-3 sm:auto-rows-[16rem] sm:grid-flow-row-dense sm:grid-cols-2 xl:grid-cols-4;
+  @media (width >= 80rem) {
+    /* Wider than the page's column: the bento takes most of the screen, centered on it. */
+    width: min(calc(100vw - 4rem), 112rem);
+    margin-inline: calc((100% - min(calc(100vw - 4rem), 112rem)) / 2);
+    /* A finer rhythm, 44 rows: each tile is as tall as its content needs, so the edges stagger between the two halves. */
+    grid-auto-rows: 3rem;
+    grid-template-areas:
+      'voice voice rings slide'
+      'voice voice rings slide'
+      'voice voice rings slide'
+      'voice voice rings hold'
+      'voice voice rings hold'
+      'voice voice rings hold'
+      'voice voice rings waffle'
+      'voice voice rings waffle'
+      'voice voice icons waffle'
+      'voice voice icons waffle'
+      'flap flap icons waffle'
+      'flap flap icons waffle'
+      'flap flap capsule capsule'
+      'flap flap capsule capsule'
+      'units units capsule capsule'
+      'units units capsule capsule'
+      'units units share loader'
+      'units units share loader'
+      'units units share loader'
+      'units units share loader'
+      'units units share gauge'
+      'units units share gauge'
+      'chart chart share gauge'
+      'chart chart share gauge'
+      'chart chart scene gauge'
+      'chart chart scene miniature'
+      'chart chart scene miniature'
+      'chart chart scene miniature'
+      'chart chart scene miniature'
+      'cursors cursors scene miniature'
+      'cursors cursors scene miniature'
+      'cursors cursors hierarchy hierarchy'
+      'cursors cursors hierarchy hierarchy'
+      'cursors cursors hierarchy hierarchy'
+      'cursors cursors hierarchy hierarchy'
+      'cursors cursors hierarchy hierarchy'
+      'cursors cursors hierarchy hierarchy'
+      'cursors cursors breakdown dial'
+      'cursors cursors breakdown dial'
+      'signature signature breakdown dial'
+      'signature signature breakdown dial'
+      'signature signature breakdown dial'
+      'signature signature breakdown dial'
+      'diff diff heatmap heatmap'
+      'diff diff heatmap heatmap'
+      'diff diff heatmap heatmap'
+      'diff diff heatmap heatmap'
+      'diff diff heatmap heatmap'
+      'diff diff heatmap heatmap'
+      'scrub scrub heatmap heatmap'
+      'scrub scrub heatmap heatmap'
+      'scrub scrub glass glass'
+      'scrub scrub glass glass'
+      'scrub scrub glass glass'
+      'compare compare glass glass'
+      'compare compare glass glass'
+      'compare compare radar wheel'
+      'compare compare radar wheel'
+      'compare compare radar wheel'
+      'compare compare radar wheel'
+      'clock clock radar wheel'
+      'clock clock radar wheel'
+      'clock clock radar wheel'
+      'clock clock radar wheel'
+      'clock clock radar wheel';
+  }
+}
+@utility explore-item {
+  @apply h-64 min-w-0 sm:h-auto;
+  &[data-size='lg'] {
+    @apply h-[32rem] sm:col-span-2 sm:row-span-2 sm:h-auto;
+  }
+  &[data-size='wide'] {
+    @apply sm:col-span-2;
+  }
+  &[data-size='tall'] {
+    @apply h-[28rem] sm:row-span-2 sm:h-auto;
+  }
+  /* From xl each tile sits in its area, which sets its span too. */
+  @media (width >= 80rem) {
+    &,
+    &[data-size] {
+      grid-area: var(--area);
+    }
+  }
+}
+@utility explore-tile {
+  @apply relative h-full overflow-hidden rounded-2xl p-[3px];
+}
+@utility explore-stage {
+  @apply relative isolate size-full overflow-hidden rounded-[calc(var(--radius-2xl)-3px)];
+}
+@utility explore-ph {
+  @apply absolute inset-0 m-auto h-3/5 w-3/4 max-w-80 rounded-xl border border-line bg-band transition-opacity yj-duration-base ease-standard;
+  &[data-ph='round'] {
+    @apply aspect-square h-1/2 w-auto rounded-full;
+  }
+  [data-live] > & {
+    @apply opacity-0;
+  }
+}
+@utility explore-live {
+  /* Smaller than the tile, and clear of the bottom, where the name and link pills show on hover. */
+  @apply absolute inset-0 grid origin-top scale-[0.88] grid-cols-[minmax(0,1fr)] place-items-center overflow-visible px-3 pt-4 pb-16;
+}
+/* On hover (or focus inside), the tile's name shows as a pill at the bottom start and its links as icon pills at the
+ * bottom end; the piece stays live and usable under them. */
+@utility explore-name {
+  @apply pointer-events-none absolute start-4 bottom-4 z-10 flex h-11 items-center rounded-full bg-line px-5 text-[13px] leading-5 font-medium text-fg opacity-0 transition-[opacity,translate] yj-duration-base ease-standard translate-y-1;
+}
+@utility explore-actions {
+  @apply absolute end-4 bottom-4 z-10 flex items-center gap-2 opacity-0 transition-[opacity,translate] yj-duration-base ease-standard translate-y-1;
+}
+@utility explore-icon {
+  @apply grid size-11 place-items-center rounded-full bg-line text-fg transition-colors yj-duration-fast ease-standard focus-ring hover:bg-line-strong;
+}
+.explore-tile:is(:hover, :focus-within) :is(.explore-name, .explore-actions) {
+  opacity: 1;
+  translate: 0 0;
+}
+@media (hover: none) {
+  .explore-tile :is(.explore-name, .explore-actions) {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* The hero's elements, moving on the compositor (components/landing/hero-elements.tsx). The rollout curve: its point
+ * runs across at a constant rate (ho-run-x) and up on the curve's own ease (ho-run-y, the element's --run-ease), over
+ * two thirds of the loop, then holds; the guide shortens as it goes (ho-run-w). The notification's sweep: a reveal on
+ * translate (the window slides in, its content counter-slides), then a fade. */
+.ho-run :is(.ho-run-x, .ho-run-y, .ho-run-w) {
+  animation-duration: var(--run);
+  animation-delay: var(--run-at, 0ms);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+.ho-run .ho-run-x {
+  animation-name: ho-run-x;
+  animation-timing-function: linear;
+}
+.ho-run .ho-run-y {
+  animation-name: ho-run-y;
+  animation-timing-function: var(--run-ease);
+}
+.ho-run .ho-run-w {
+  animation-name: ho-run-w;
+  animation-timing-function: linear;
+}
+.ho-run[data-still] :is(.ho-run-x, .ho-run-y, .ho-run-w) {
+  animation-play-state: paused;
+}
+@keyframes ho-run-x {
+  0% {
+    translate: 0 0;
+  }
+  66.667%,
+  100% {
+    translate: 176px 0;
+  }
+}
+@keyframes ho-run-y {
+  0% {
+    translate: 0 0;
+  }
+  66.667%,
+  100% {
+    translate: 0 -104px;
+  }
+}
+@keyframes ho-run-w {
+  0% {
+    scale: 1 1;
+  }
+  66.667%,
+  100% {
+    scale: 0.1111 1;
+  }
+}
+.ho-sweep {
+  animation:
+    ho-sweep-out var(--sweep) linear var(--sweep-wait) both,
+    ho-sweep-fade calc(var(--sweep) * 2.4) linear var(--sweep-wait) both;
+}
+.ho-sweep-in {
+  animation: ho-sweep-in var(--sweep) linear var(--sweep-wait) both;
+}
+@keyframes ho-sweep-out {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes ho-sweep-in {
+  from {
+    translate: 100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes ho-sweep-fade {
+  0%,
+  75% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes ho-rise {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+/* The home hero (components/landing/hero-stage.tsx). Pinned, the track is the view timeline its score
+ * plays on (hero-score.ts writes the keyframes once a layout is measured); until the card starts to come apart the
+ * grid and its heading wait, hidden, and the grid takes the pointer only once it has landed. A tile's card frame shows
+ * its template's dashed slots (the hero fades them in as the parts leave). Elsewhere each tile rises in as it enters. */
+@media (min-width: 1280px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
+  .ho:not([data-flat]) {
+    .ho-track {
+      view-timeline: --ho block;
+      view-timeline-inset: var(--header-height) 0px;
+    }
+    .ho-card [data-el] {
+      transform-origin: 0 0;
+    }
+    &:not([data-apart]) :is(.ho-heading, [data-tile], .ho-rail) {
+      opacity: 0;
+    }
+    .ho-rail-tick,
+    .ho-rail-done {
+      opacity: 0;
+    }
+    .ho-rail-fill {
+      scale: 1 0;
+    }
+    &[data-apart] .ho-copy {
+      pointer-events: none;
+    }
+    &:not([data-landed]) .ho-family {
+      pointer-events: none;
+    }
+  }
+}
+.ho-tile-frame .ho-well {
+  opacity: 1;
+}
+/* In light the parts' cards are a step of gray off the white page, so they stand apart from it. */
+:root[data-theme='light'] [data-landing] .family-tile {
+  background: color-mix(in oklab, var(--color-fg) 4%, var(--color-canvas));
+}
+
+/* The outer tiles: no edge, a step of gray off the page, short of the inner cards' surface so the two stay apart. Hover
+ * changes nothing on the tile itself: only its name and link pills show. */
+[data-landing] .explore-tile.site-card {
+  border-color: transparent;
+  background-color: color-mix(in oklab, var(--color-surface) 40%, var(--color-canvas));
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+/* In dark the pills' text and icons sit a step back, so they don't glare over the piece. */
+:root[data-theme='dark'] [data-landing] :is(.explore-name, .explore-icon) {
+  color: var(--color-fg-muted);
+}
+:root[data-theme='dark'] [data-landing] .explore-icon:hover {
+  color: var(--color-fg);
+}
+/* In light the surface and the canvas are both near white, so the tile takes a soft gray instead. */
+:root[data-theme='light'] [data-landing] .explore-tile.site-card {
+  background-color: color-mix(in oklab, var(--color-fg) 5%, var(--color-canvas));
+}
+/* In light, the pieces with no card of their own sit in one, so they read against the gray tile. */
+:root[data-theme='light'] [data-landing] .explore-box {
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-surface);
+  box-shadow: 0 1px 2px oklch(0.2 0.01 270 / 0.06);
+}
+/* In light the departures board letters in ink, and Slide to pay's thumb wears the accent instead of the ink action. */
+:root[data-theme='light'] [data-landing] .explore-flap {
+  color: var(--color-fg);
+}
+:root[data-theme='light'] [data-landing] .explore-slide {
+  --color-action: var(--color-accent);
+  --color-on-action: var(--color-on-accent);
+}
+[data-landing] .explore-tile .explore-stage.site-stage {
+  background: transparent;
+}
+
+/* The homepage's parts stand on their mood whole: the ground fills the card inside its 3px edge, behind the picture
+ * (see-through here) and the words under it, which keep their own room so the picture never runs into them. */
+[data-landing] .family-tile {
+  position: relative;
+  isolation: isolate;
+}
+[data-landing] .family-ground {
+  inset: 3px;
+  z-index: -1;
+  border-radius: calc(var(--radius-2xl) - 3px);
+}
+[data-landing] .family-stage {
+  background: none;
+}
+
+/* The words on a homepage part sit in a pane of frosted glass over its mood, so they read on any ground. */
+[data-landing] .family-foot {
+  margin: 0.25rem;
+  padding-block: 0.5rem;
+  border-radius: calc(var(--radius-2xl) - 6px);
+  background: color-mix(in oklab, var(--color-surface) 55%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-surface) 70%, transparent);
+  box-shadow: 0 1px 2px oklch(0.2 0.01 270 / 0.06), 0 8px 24px -12px oklch(0.2 0.01 270 / 0.2);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* In light, Sandstone (UI) and Cinnabar (Loaders) are the loudest grounds: each shows its calmest stretch (Sandstone's
+ * pale top-left, Cinnabar's ivory edge) under a soft veil of the page, in the hero's panels and the parts' tiles. */
+:root[data-theme='light'] :is(.family-tile, .hc-frame) [data-backdrop='sandstone'] > * {
+  transform: scale(2);
+  transform-origin: 12% 8%;
+}
+:root[data-theme='light'] :is(.family-tile, .hc-frame) [data-backdrop='cinnabar'] > * {
+  transform: scale(2.2);
+  transform-origin: 2% 50%;
+}
+:root[data-theme='light'] :is(.family-tile, .hc-frame) :is([data-backdrop='sandstone'], [data-backdrop='cinnabar'])::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--color-canvas) 35%, transparent);
+}
+
+/* In light the hero card sits on the docs previews' aurora, the same four drifting pools as an example's stage. */
+:root[data-theme='light'] .hc-frame {
+  background: oklch(0.98 0.004 80);
+}
+:root[data-theme='light'] .hc-ground::before {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  background:
+    radial-gradient(42% 42% at 25% 25%, oklch(0.88 0.07 175 / 0.95), transparent 70%),
+    radial-gradient(42% 42% at 75% 25%, oklch(0.88 0.07 230 / 0.9), transparent 70%),
+    radial-gradient(42% 42% at 75% 75%, oklch(0.86 0.07 290 / 0.9), transparent 70%),
+    radial-gradient(42% 42% at 25% 75%, oklch(0.9 0.08 55 / 0.9), transparent 70%);
+  animation: aurora-drift 60s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme='light'] .hc-ground::before {
+    animation: none;
+  }
+}
+
+/* In light the card's header is part of the card: no fill and no divider, its words straight on the rainbow. */
+:root[data-theme='light'] .hc-head {
+  border-bottom-color: transparent;
+}
+
+/* In light the hero's icon toolbar is liquid glass, like the card's panels. */
+:root[data-theme='light'] .hc-toolbar {
+  background: linear-gradient(180deg, color-mix(in oklab, white 60%, transparent), color-mix(in oklab, white 32%, transparent));
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 85%, transparent),
+    0 6px 16px -10px oklch(0.2 0.01 270 / 0.25);
+  backdrop-filter: blur(16px) saturate(1.5);
+}
+
+/* In light the card's panels are plain liquid glass over its rainbow: no moods, a frosted pane with a bright rim. */
+:root[data-theme='light'] .hc-tile > :is([data-backdrop], .hc-aurora) {
+  display: none;
+}
+:root[data-theme='light'] .hc-tile {
+  background: linear-gradient(180deg, color-mix(in oklab, white 55%, transparent), color-mix(in oklab, white 28%, transparent));
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 85%, transparent),
+    0 1px 2px oklch(0.2 0.01 270 / 0.05),
+    0 10px 24px -14px oklch(0.2 0.01 270 / 0.22);
+  backdrop-filter: blur(16px) saturate(1.5);
+}
+
+/* A Visuals menu card on its mood (components/site/desktop-nav.tsx): the ground smooth like a homepage tile's, the words on
+ * a pane of glass. The pane is a translucent fill (no backdrop-filter, which would trap the card-wide link overlay). */
+.nav-mood [data-backdrop] > * {
+  filter: blur(18px);
+  transform: scale(1.25);
+}
+.nav-mood-pane {
+  border-radius: calc(var(--radius-lg) - 2px);
+  background: color-mix(in oklab, var(--color-surface) 72%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-surface) 80%, transparent);
+  box-shadow: 0 1px 2px oklch(0.2 0.01 270 / 0.06), 0 8px 24px -12px oklch(0.2 0.01 270 / 0.2);
+}
+
+/* The install section's two path pictures: their moods in dark, the install field's plain gray in light. */
+:root[data-theme='light'] .start-path-dark,
+:root[data-theme='dark'] .start-path-light {
+  display: none;
+}
+
+/* A homepage tile's backdrop (components/landing/family.tsx) is a still made for a full page: at a tile's size its
+ * bands and seams read as hard lines, so it's blurred into a smooth wash, scaled past the edges the blur would soften. */
+.family-tile [data-backdrop] > *,
+.start-path-stage [data-backdrop] > *,
+.hc-frame [data-backdrop] > * {
+  filter: blur(18px);
+  transform: scale(1.25);
+}
+/* Sound's Umber sits beside UI's Sandstone, two warm grounds: it shows another stretch of its scene, turned over and
+ * drawn in close on its lower corner, so the two read as different places. */
+[data-tile='sound'] .family-tile [data-backdrop] > *,
+.start-path-stage[data-mood='umber'] [data-backdrop='umber'] > * {
+  transform: rotate(180deg) scale(2.2);
+  transform-origin: 75% 80%;
+}
+
+/* The hero card's aurora (components/landing/hero-card.tsx): the docs previews' four drifting pools, pale on light
+ * and glowing on dark, behind the parts; still under reduced motion. */
+.hc-aurora {
+  background-color: oklch(0.98 0.004 80);
+}
+.hc-aurora::before {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  background:
+    radial-gradient(42% 42% at 25% 25%, oklch(0.88 0.07 175 / 0.95), transparent 70%),
+    radial-gradient(42% 42% at 75% 25%, oklch(0.88 0.07 230 / 0.9), transparent 70%),
+    radial-gradient(42% 42% at 75% 75%, oklch(0.86 0.07 290 / 0.9), transparent 70%),
+    radial-gradient(42% 42% at 25% 75%, oklch(0.9 0.08 55 / 0.9), transparent 70%);
+  animation: aurora-drift 60s linear infinite;
+  will-change: transform;
+}
+:root[data-theme='dark'] .hc-aurora {
+  background-color: oklch(0.17 0.012 270);
+}
+:root[data-theme='dark'] .hc-aurora::before {
+  background:
+    radial-gradient(42% 42% at 25% 25%, oklch(0.45 0.1 175 / 0.7), transparent 70%),
+    radial-gradient(42% 42% at 75% 25%, oklch(0.42 0.12 235 / 0.7), transparent 70%),
+    radial-gradient(42% 42% at 75% 75%, oklch(0.4 0.14 290 / 0.75), transparent 70%),
+    radial-gradient(42% 42% at 25% 75%, oklch(0.45 0.11 50 / 0.55), transparent 70%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hc-aurora::before {
+    animation: none;
+  }
+}
+
+[data-theme='light'] .ho {
+  --ho-banyan-ink: color-mix(in oklab, var(--color-accent) 72%, var(--color-fg));
+}
+@media not ((min-width: 1280px) and (min-height: 860px)) {
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .ho:not([data-flat]) [data-tile] {
+        animation: ho-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 70%;
+      }
+    }
+  }
+}
+
+/* `code` in a doc comment or a note (components/docs/inline-code.tsx), a token name, a prop's value. */
+@utility inline-code {
+  @apply code-inline whitespace-nowrap;
+}
+@utility token-chip {
+  @apply code-inline whitespace-nowrap;
+}
+@utility value-chip {
+  @apply code-inline;
+}
+
+/* A sideways scroller's cue (ScrollFrame, components/docs/scroll-table.tsx):
+ * the side with more to see fades out, so a cut-off column reads as "keeps
+ * going", not as broken. */
+@utility scroll-fade {
+  --fade-start: 0px;
+  --fade-end: 0px;
+  mask-image: linear-gradient(to var(--fade-to, right), transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+  &:dir(rtl) {
+    --fade-to: left;
+  }
+  &[data-more-start] {
+    --fade-start: 2rem;
+  }
+  &[data-more-end] {
+    --fade-end: 2rem;
+  }
+  /* A mask clips everything outside the box, the focus outline included. */
+  &:focus-visible {
+    mask-image: none;
+  }
+}
+
+/* A props table (components/docs/props-table.tsx). Below sm the rows stack,
+ * the name over its type and note, rather than share a line with a third of
+ * the width spent on the name: a phone reads down, not across. The stacking
+ * lives here, not in the markup, so a long table's HTML doesn't carry it once
+ * per row (scripts/page-weight.ts). */
+@utility props-table {
+  @apply w-full border-collapse text-start max-sm:block;
+  @variant max-sm {
+    & > thead {
+      @apply sr-only;
+    }
+    & > tbody,
+    & > tfoot,
+    & > tfoot > tr,
+    & > tfoot > tr > td {
+      display: block;
+    }
+  }
+}
+@utility props-row {
+  @apply border-b border-line align-top last:border-b-0 max-sm:block max-sm:px-4 max-sm:py-3;
+  /* The type and note cell. */
+  @variant max-sm {
+    & > td:first-of-type {
+      @apply mt-1.5 block p-0;
+    }
+  }
+}
+@utility props-key {
+  @apply px-4 py-3 text-start font-normal max-sm:flex max-sm:items-baseline max-sm:gap-2.5 max-sm:p-0;
+}
+@utility props-name {
+  @apply code-text whitespace-nowrap;
+}
+@utility props-required {
+  @apply type-label mt-1 block text-accent max-sm:mt-0;
+}
+@utility props-type {
+  @apply code-text [overflow-wrap:anywhere] text-fg-muted;
+}
+@utility props-note {
+  @apply mt-1.5 text-[13.5px] leading-relaxed text-fg-muted [&_code]:whitespace-normal [&_code]:[overflow-wrap:anywhere];
+}
+@utility props-default-inline {
+  @apply code-text mt-1.5 text-fg-muted sm:hidden;
+}
+@utility props-default {
+  @apply hidden px-4 py-3 sm:table-cell;
+}
+@utility props-default-value {
+  @apply code-text [overflow-wrap:anywhere];
+}
+
+/* A motion spec's row (components/docs/motion-spec.tsx). */
+@utility spec-row {
+  @apply border-b border-line align-middle last:border-b-0;
+}
+@utility spec-moment {
+  @apply px-4 py-3 text-start text-[13.5px] font-medium text-fg;
+}
+@utility spec-note {
+  @apply mt-0.5 block text-[12.5px] font-normal text-fg-muted;
+}
+@utility spec-values-inline {
+  @apply type-small mt-1 text-fg-muted md:hidden;
+}
+@utility spec-values {
+  @apply type-small hidden px-4 py-3 md:table-cell;
+}
+@utility spec-value {
+  @apply block whitespace-nowrap;
+}
+
+/* ── Landing ──────────────────────────────────────────────────────────── */
+
+/* The hero's entrance, in CSS so it starts with the first paint, before any
+ * JavaScript. The headline (the largest paint, at every width) holds still;
+ * the rest rises into place, `--i` instant-token steps apart.
+ * Every duration is a token times --yj-motion, so reduced motion (the OS's,
+ * or the site's own switch) shows each piece in place. */
+/* The home hero's card in the intro (the first visit of a session, components/landing/hero-build.ts): hidden until it
+ * builds itself, and shown anyway after a few seconds if the build never comes. */
+:root[data-hero-build] .ho-card {
+  opacity: 0;
+  animation: hero-build-wait 1ms 8s forwards;
+}
+@keyframes hero-build-wait {
+  to { opacity: 1; }
+}
+/* The intro: an opaque veil over the whole page (rendered whole underneath), the hero's section lifted above the rest
+ * of the page, and the card's wrapper and the hero's heading above the veil. The veil fades out as the card glides home; if the intro never
+ * starts it goes by itself after a few seconds. */
+.ho-veil {
+  display: none;
+}
+:root[data-hero-intro] {
+  & section[aria-labelledby='hero-title'] {
+    z-index: 45;
+  }
+  & .ho-cardwrap {
+    z-index: 40;
+  }
+  /* the heading and lede stay on top, in place, so the visitor knows what the card is building; the calls to action
+     wait under the veil and rise with the handoff (hero-build.ts) */
+  & .ho-copy {
+    z-index: 42;
+  }
+  &:not([data-hero-intro-out]) .ho-ctas {
+    visibility: hidden;
+    animation: hero-ctas-wait 1ms 9s forwards; /* with the veil, if the intro never starts */
+  }
+  & .ho-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    display: block;
+    background: var(--color-canvas);
+    animation: hero-veil-wait 300ms 9s forwards;
+  }
+  &[data-hero-intro-out] .ho-veil {
+    opacity: 0;
+    pointer-events: none;
+    /* the card settles first; then the veil lifts slowly (hero-build.ts times the rest of the handoff from the same start) */
+    transition: opacity 900ms var(--ease-standard, ease-out) 250ms;
+    animation: none;
+  }
+}
+@keyframes hero-ctas-wait {
+  to { visibility: visible; }
+}
+@keyframes hero-veil-wait {
+  to { opacity: 0; visibility: hidden; }
+}
+/* The intro's Skip: a soft pill, in a second after the intro starts so it never competes with the first frame. */
+.ho-skip {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem 0.375rem 0.875rem;
+  border: 1px solid var(--color-line);
+  border-radius: calc(var(--radius-control-xs) + 3px);
+  background: color-mix(in oklab, var(--color-chrome-float) var(--yj-glass), transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  color: var(--color-fg-muted);
+  font-size: 0.8125rem;
+  opacity: 0.75;
+  transition: opacity 200ms var(--ease-standard, ease-out), color 200ms var(--ease-standard, ease-out);
+}
+.ho-skip:is(:hover, :focus-visible) {
+  opacity: 1;
+  color: var(--color-fg);
+}
+.ho-skip kbd {
+  padding: 0.0625rem 0.375rem;
+  border-radius: var(--radius-control-xs);
+  background: color-mix(in oklab, var(--color-fg) 8%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-fg-muted);
+}
+:root[data-hero-intro]:not([data-hero-intro-out]) .ho-skip {
+  display: inline-flex;
+  animation: ho-skip-in 500ms var(--ease-enter, ease-out) 1s backwards;
+}
+/* A short screen gives the card the room under the heading (hero-build.ts, SHORT_INTRO): the pill waits in the corner. */
+@media (max-height: 819.98px) {
+  .ho-skip {
+    inset-inline: auto 1.5rem;
+    bottom: 1.5rem;
+    translate: none;
+  }
+}
+@keyframes ho-skip-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+.ho-replay {
+  transition: opacity 200ms ease-out;
+}
+.ho[data-apart] .ho-replay,
+.ho[data-flat] .ho-replay,
+:root[data-hero-building] .ho-replay,
+:root[data-hero-intro] .ho-replay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@utility hero-in {
+  animation: hero-in calc(var(--yj-duration-deliberate) * var(--yj-motion, 1)) var(--ease-enter) both;
+  animation-delay: calc(var(--i, 0) * var(--yj-duration-instant) * var(--yj-motion, 1));
+}
+
+/* A part that replaces another in place (a dialog's tab, a stage's next
+ * item) fades in, opacity only; under reduced motion it's a swap. */
+@keyframes swap-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@utility swap-in {
+  animation: swap-in calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard) both;
+}
+
+/* A docs page's arrival (components/docs/pending-page.tsx). A navigation
+ * swaps the page at once, and its content arrives: the title first, then the
+ * lede, the first four blocks of its text and the rail, each rising 6px into
+ * place as it fades up, on the base duration and the enter curve, a short
+ * step (half the instant duration) apart. Opacity and transform only, so
+ * nothing reflows. A page band's scenes (components/docs/page-art-scenes.tsx)
+ * arrive the same way a step after their band, one after another. What's
+ * further down is simply there. Only a page mounted in the browser arrives:
+ * the page a visit lands on is painted as sent. Under reduced motion
+ * --yj-motion is 0: everything is in place at once. */
+@keyframes page-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* backwards, not both: a held transform would make the page the containing block of a fixed descendant (full screen). */
+.docs-page[data-arrive] :is(.docs-head > *, .docs-head + .docs-flow > :nth-child(-n + 4), [data-page-art] [data-art-tone]),
+.docs-page[data-arrive] .docs-rail {
+  animation: page-arrive calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-enter) backwards;
+  animation-delay: calc((var(--arrive, 0) + var(--after, 0)) * var(--yj-duration-instant) * 0.5 * var(--yj-motion, 1));
+}
+
+.docs-page[data-arrive] {
+  & .docs-head > h1 ~ * { --arrive: 1; }
+  & .docs-head + .docs-flow > :nth-child(1) { --arrive: 2; }
+  & .docs-head + .docs-flow > :nth-child(2) { --arrive: 3; }
+  & .docs-head + .docs-flow > :nth-child(3) { --arrive: 4; }
+  & .docs-head + .docs-flow > :nth-child(4) { --arrive: 5; }
+  & .docs-rail { --arrive: 3; }
+  /* A scene keeps its band's step and adds its own. */
+  & [data-page-art] [data-art-tone] { --after: 1; }
+  & [data-page-art] [data-art-tone]:nth-child(n + 2 of [data-art-tone]) { --after: 2; }
+}
+
+/* ── Gallery ──────────────────────────────────────────────────────────── */
+
+/* A tile on a level's list (components/showcase/gallery-card.tsx), drawn as
+ * the showroom grid's card (components/showroom/explorer.tsx): a hairline
+ * card on the frame's fill, the screen in a well inset 3px, and the name
+ * under it. The link is stretched over the card. Pointed at or focused, the
+ * border steps up, the name brightens and the card's island of actions
+ * (.card-island) takes the name's place. */
+@layer components {
+  .gallery-grid {
+    column-gap: 0.625rem;
+    row-gap: 0.625rem;
+  }
+
+  /* A tile before the browser draws it (components/showcase/explorer-client's LazyTiles): a box of its height, its name for assistive technology and crawlers. */
+  .tile-stub {
+    position: relative;
+    min-width: 0;
+    aspect-ratio: 4 / 3;
+    padding-bottom: 2.5rem;
+    box-sizing: content-box;
+    border-radius: var(--radius-xl);
+  }
+
+  .tile-stub > a {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .gallery-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 3px;
+    border-radius: var(--radius-xl);
+    transition: border-color var(--yj-duration-fast) var(--ease-standard);
+
+    &:hover {
+      border-color: var(--color-line-strong);
+    }
+  }
+
+  .gallery-card:has(.gallery-link:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* The whole card is the link's target. */
+  .gallery-link {
+    outline: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: var(--radius-xl);
+    }
+  }
+
+  .gallery-stage {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: calc(var(--radius-xl) - 3px);
+  }
+
+  .gallery-caption {
+    display: flex;
+    height: 2.5rem;
+    min-width: 0;
+    align-items: center;
+    gap: 0.5rem;
+    padding-inline: 0.5rem;
+  }
+
+  .gallery-title {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-fg-muted);
+    transition: color var(--yj-duration-fast) var(--ease-standard);
+  }
+
+  .gallery-card:is(:hover, :has(.gallery-link:focus-visible)) .gallery-title {
+    color: var(--color-fg);
+  }
+
+  .gallery-meta {
+    flex-shrink: 0;
+    font: var(--type-small);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-fg-subtle);
+  }
+}
+
+/* Moving through the gallery (components/showcase/explorer-client.tsx): only
+ * the tiles change. While the next category is on its way they settle out,
+ * under a heading that holds still; when it arrives by a client navigation
+ * they wait, unseen, for their first row's pictures (a moment at most), then
+ * fade in together, and the first six rise a step, a short stagger apart, so
+ * no tile shows before the ones above it, a big grid is no slower than a
+ * small one, and tiles below the fold do no work. The heading's text
+ * crossfades (lib/crossfade.ts). Search results fade in the same way as they
+ * come (the whole run, count and all), and their count rolls. Transform and opacity only, each a token
+ * times --yj-motion: under reduced motion everything lands in place. */
+@keyframes gallery-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes tile-in {
+  from {
+    translate: 0 calc(8px * var(--yj-motion, 1));
+  }
+}
+
+@keyframes count-roll {
+  from {
+    opacity: 0;
+    translate: 0 calc(60% * var(--yj-motion, 1));
+  }
+}
+
+@layer components {
+  .gallery-swap {
+    /* The heading's crossfade lays the last one's copy in here. */
+    position: relative;
+
+    & .gallery-grid {
+      transition: opacity calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-exit);
+    }
+
+    &[data-leaving] .gallery-grid,
+    &[data-hold] .gallery-grid {
+      opacity: 0;
+    }
+
+    &[data-hold] .gallery-grid {
+      transition: none;
+    }
+
+    &:is(section),
+    &[data-enter]:not([data-hold]) .gallery-grid {
+      animation: gallery-in calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard) backwards;
+    }
+
+    &:is([data-enter]:not([data-hold]), section) > .gallery-grid > li:nth-child(-n + 6),
+    &[data-enter]:not([data-hold]) > section:first-of-type > .gallery-grid > li:nth-child(-n + 6) {
+      animation: tile-in calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-enter) backwards;
+      animation-delay: calc(var(--n, 0) * var(--yj-duration-instant) / 2 * var(--yj-motion, 1));
+    }
+
+    li:nth-child(2) {
+      --n: 1;
+    }
+    li:nth-child(3) {
+      --n: 2;
+    }
+    li:nth-child(4) {
+      --n: 3;
+    }
+    li:nth-child(5) {
+      --n: 4;
+    }
+    li:nth-child(6) {
+      --n: 5;
+    }
+  }
+
+  .count-roll {
+    display: inline-block;
+    animation: count-roll calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-enter) backwards;
+  }
+}
+
+/* A gallery card's in-page render (components/showcase/live-stage.tsx) is a
+ * 1280×800 stage, not a viewport: a page as tall as the viewport is as tall
+ * as the stage, as it is in the frame the build captures. */
+[data-stage] :is(.min-h-dvh, .min-h-svh, .min-h-screen) {
+  min-height: var(--stage-h);
+}
+[data-stage] :is(.h-dvh, .h-svh, .h-screen) {
+  height: var(--stage-h);
+}
+[data-stage] .max-h-dvh {
+  max-height: var(--stage-h);
+}
+
+/* A section's or a card's stage (components/showcase/kind-stage.tsx) is as
+ * tall as its content: a page a story or a block draws around it, as high as
+ * the viewport, is held to what it holds, so the frame and the capture can
+ * size themselves to it. A card sits at its own width, centered. */
+[data-kind-stage] :is(.min-h-dvh, .min-h-svh, .min-h-screen) {
+  min-height: 0;
+}
+[data-kind-stage] :is(.h-dvh, .h-svh, .h-screen) {
+  height: auto;
+}
+/* A card's box is centered by a rule its stage brings along (components/showcase/kind-stage.tsx), not one here:
+ * its `[style*=…]` made every inline style change on any page (each animation frame) restyle that element's subtree. */
+
+/* The item viewer's stage while its item loads (components/showcase/item-viewer.tsx):
+ * a small spinner that only appears if the wait passes 150ms, so a fast open
+ * never shows it. Reduced motion: it holds still. */
+.viewer-spinner {
+  opacity: 0;
+  animation:
+    viewer-spinner-in calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard) 150ms forwards,
+    viewer-spin 0.8s linear infinite;
+}
+@keyframes viewer-spinner-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes viewer-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .viewer-spinner {
+    animation: viewer-spinner-in var(--yj-duration-fast) var(--ease-standard) 150ms forwards;
+  }
+}
+
+/* ── Explorer cards ───────────────────────────────────────────────────── */
+
+/* A card's actions in the icons and illustrations explorers
+ * (components/explorer/island.tsx): a frosted island floating over the
+ * card's foot, a few icon buttons wide. It isn't drawn until its card
+ * (.island-host) is pointed at, focused from the keyboard or, on touch,
+ * chosen ([data-hot], or a visible focus on or in it). Then the card's name
+ * starts to fade and, a beat behind it (half the instant token), the island
+ * rises 8px into its place, fading in and growing from 96%, on the enter
+ * curve; leaving is the same run backwards, the island first and the name a
+ * beat behind. Its first appearance plays too (@starting-style), so a card
+ * pointed at for the first time doesn't pop. Transform and opacity only, the
+ * distances times --yj-motion: a reversal mid-way carries on from where it
+ * is, and under reduced motion the island and the name cross-fade in place.
+ * Unlayered, so it takes over from the defaults of the kit's Toolbar it's
+ * drawn on (utilities). */
+.card-island {
+  --island-beat: calc(var(--yj-duration-instant) * 0.5);
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(--island-inset, 0.5rem);
+  z-index: 2;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 2px;
+  margin-inline: auto;
+  padding: 3px;
+  border: 1px solid var(--color-line);
+  border-radius: calc(var(--radius-control-xs) + 3px);
+  background: color-mix(in oklab, var(--color-chrome-float) var(--yj-glass), transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow: var(--ui-shadow-md);
+  visibility: hidden;
+  opacity: 0;
+  translate: 0 calc(8px * var(--yj-motion, 1));
+  scale: calc(1 - 0.04 * var(--yj-motion, 1));
+  transition:
+    opacity var(--yj-duration-fast) var(--ease-exit),
+    translate var(--yj-duration-fast) var(--ease-exit),
+    scale var(--yj-duration-fast) var(--ease-exit),
+    visibility 0s linear var(--yj-duration-fast);
+
+  /* In a list row: at the row's end, centred on it, coming in from the end. */
+  &[data-placement='end'] {
+    inset-inline: auto 0.5rem;
+    top: 0;
+    bottom: 0;
+    height: fit-content;
+    margin-block: auto;
+    translate: calc(8px * var(--yj-motion, 1)) 0;
+  }
+}
+
+/* A hairline between the island's groups. */
+.island-sep {
+  width: 1px;
+  height: 1rem;
+  margin-inline: 2px;
+  background: var(--color-line);
+}
+
+.island-host:is([data-hot], :focus-visible, :has(:focus-visible)) .card-island {
+  visibility: visible;
+  opacity: 1;
+  translate: none;
+  scale: none;
+  transition:
+    opacity var(--yj-duration-fast) var(--ease-standard) var(--island-beat),
+    translate var(--yj-duration-base) var(--ease-enter) var(--island-beat),
+    scale var(--yj-duration-base) var(--ease-enter) var(--island-beat),
+    visibility 0s linear 0s;
+
+  /* Drawn already up (the first time a card is asked for it): it comes in from where it rests. */
+  @starting-style {
+    opacity: 0;
+    translate: 0 calc(8px * var(--yj-motion, 1));
+    scale: calc(1 - 0.04 * var(--yj-motion, 1));
+  }
+}
+
+.island-host:is([data-hot], :focus-visible, :has(:focus-visible)) .card-island[data-placement='end'] {
+  @starting-style {
+    translate: calc(8px * var(--yj-motion, 1)) 0;
+  }
+}
+
+/* A card's name, where its island rises: it steps aside as the island comes
+ * (the card keeps its accessible name), and comes back a beat after the island
+ * starts to go. */
+.card-caption {
+  transition: opacity var(--yj-duration-fast) var(--ease-standard) calc(var(--yj-duration-instant) * 0.5);
+}
+
+.island-host:is([data-hot], :focus-visible, :has(:focus-visible)):has(.card-island) .card-caption {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+/* An icon's card (components/icons/icon-grid.tsx): its stage is the details
+ * stage in small, drawn in its background alone, with no element per card: a
+ * fine grid a quarter of the icon's size, the icon's own box a step stronger
+ * (so a size reads against it), fading out from the icon toward the card's
+ * edges, and the accent's light under the icon. At rest the grid is faint and
+ * the light off, so a page of cards stays quiet; while you're on a card the
+ * grid comes up a step and the light comes on, as the island takes the name's
+ * place. Two registered properties carry the strengths, so they ease in and
+ * out from wherever they are. */
+@property --card-grid {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+@property --card-glow {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+.icon-card {
+  --grid-ink: var(--color-line);
+  --grid-rest: 36%;
+  --grid-on: 85%;
+  --glow-on: 20%;
+  --card-grid: var(--grid-rest);
+  --card-glow: 0%;
+  transition:
+    --card-grid calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard),
+    --card-glow calc(var(--yj-duration-slow) * var(--yj-motion, 1)) var(--ease-standard),
+    color calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard),
+    border-color calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard),
+    box-shadow calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard);
+}
+
+:root[data-theme='light'] .icon-card {
+  --grid-ink: var(--color-line-strong);
+  --grid-rest: 17%;
+  --grid-on: 52%;
+  --glow-on: 14%;
+}
+
+.icon-card:is([data-hot], :focus-visible, :has(:focus-visible)) {
+  --card-grid: var(--grid-on);
+  --card-glow: var(--glow-on);
+}
+
+.icon-card-stage {
+  --minor: color-mix(in oklab, var(--grid-ink) calc(var(--card-grid) * 0.7), transparent);
+  --major: color-mix(in oklab, var(--grid-ink) var(--card-grid), transparent);
+  --cell: calc(var(--preview, 40px) / 4);
+  background-image:
+    radial-gradient(circle calc(var(--preview, 40px) * 1.35) at 50% 50%, color-mix(in oklab, var(--color-accent) var(--card-glow), transparent), transparent),
+    radial-gradient(ellipse 48% 54% at 50% 50%, transparent 25%, var(--color-surface) 100%),
+    linear-gradient(to right, var(--major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--major) 1px, transparent 1px),
+    linear-gradient(to right, var(--minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--minor) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    var(--preview, 40px) var(--preview, 40px),
+    var(--preview, 40px) var(--preview, 40px),
+    var(--cell) var(--cell),
+    var(--cell) var(--cell);
+  /* The icon's box on the major lines, a minor one through its centre. */
+  background-position:
+    0 0,
+    0 0,
+    50% 50%,
+    50% 50%,
+    calc(50% + var(--cell) / 2) calc(50% + var(--cell) / 2),
+    calc(50% + var(--cell) / 2) calc(50% + var(--cell) / 2);
+}
+
+/* On phones the smallest UI text steps up to 12px, so labels and tabs stay legible. */
+@media (width < 40rem) {
+  :root,
+  [data-yj-theme]:not(html, [data-yj-scaling]) {
+    --text-ui-xs: 0.75rem;
+  }
+}
+
+/* ── device preview ── */
+/* A docs example's frame in its two experiences (components/docs/preview-live.tsx): the toolbar's touch sizing, the
+ * phone-sized stage and the scroll fades of a stage a demo is wider than. */
+
+/* Every control in a preview's toolbar is a 44px target where the toolbar is one row with a Settings sheet: touch
+ * hardware, and phone widths. The shell (preview-frame.tsx) takes the same token, so nothing moves when it wakes. */
+@media (pointer: coarse), (width < 40rem) {
+  [data-slot='preview-toolbar'] {
+    --spacing-control-xs: 2.75rem;
+  }
+}
+
+/* Touch on a screen that isn't one: a phone's screen, 390px of viewport, inside a hairline bezel. The transform and
+ * `contain` make the screen the containing block for `fixed`, so the demo's sheets, dialogs and menus (portalled
+ * into it) rise from its bottom edge instead of the browser window's. */
+[data-phone] {
+  /* A modern iPhone's screen in points (393 × 852, the 6.1" size), so a demo lays out as it would on one. */
+  --phone-width: 393px;
+  --phone-height: 852px;
+}
+/* The sheets size themselves from the window (85dvh); inside a phone they take its screen instead. */
+[data-phone-screen] [data-sheet-popup] {
+  max-height: calc(var(--phone-height) * 0.85);
+}
+[data-phone-screen] {
+  transform: translateZ(0);
+  contain: layout paint;
+}
+
+/* A stage a demo is wider than scrolls; a soft edge shows which side has more. */
+.stage-scroll[data-fade],
+.phone-scroll[data-fade] {
+  --fade: 2rem;
+}
+.stage-scroll[data-fade~='end'],
+.phone-scroll[data-fade~='end'] {
+  mask-image: linear-gradient(to right, black calc(100% - var(--fade)), transparent);
+}
+.stage-scroll[data-fade~='start'],
+.phone-scroll[data-fade~='start'] {
+  mask-image: linear-gradient(to right, transparent, black var(--fade));
+}
+.stage-scroll[data-fade~='start'][data-fade~='end'],
+.phone-scroll[data-fade~='start'][data-fade~='end'] {
+  mask-image: linear-gradient(to right, transparent, black var(--fade), black calc(100% - var(--fade)), transparent);
+}
+:root[dir='rtl'] .stage-scroll[data-fade~='end'],
+:root[dir='rtl'] .phone-scroll[data-fade~='end'] {
+  mask-image: linear-gradient(to left, black calc(100% - var(--fade)), transparent);
+}
+/* ── end device preview ── */
+
+/* ── inline preview island ──
+ * A docs example's island (components/docs/preview-live.tsx): every example
+ * has its own, in a strip under its stage, inside the same frame, parted from
+ * the stage by a hairline. The strip is the stage's colour: transparent over
+ * the panel's aurora in the light Youj look, the stage's canvas otherwise
+ * (--strip-bg, the preset's once one is picked). The island's keys sit
+ * straight on it (PreviewIsland `bare`). The shell's empty strip holds the
+ * row's height (a touch phone's 44px keys), so nothing moves when it fills. */
+.preview-box {
+  position: relative;
+  overflow: clip;
+}
+
+.island-dock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(2.75rem + 1rem + 1px);
+  padding: 0.5rem;
+  border-top: 1px solid var(--color-line-subtle);
+  background: var(--strip-bg, transparent);
+}
+:root[data-theme='light'] [data-preview-panel][data-site-look] .island-dock,
+:root[data-theme='dark'] [data-preview-panel][data-site-look] .island-dock {
+  background: transparent;
+  border-top-color: transparent;
+}
+/* The strip's keys and the stage's corner keys: frosted glass on the aurora (a translucent white with a blur and a soft
+ * shadow), a light gray key elsewhere, so each reads as a button. A pressed key or one with its menu open keeps its
+ * accent edge. */
+.island-dock [data-slot='action-island-tile'],
+.stage-corner [data-slot='action-island-tile'] {
+  background: color-mix(in oklab, var(--color-fg) 5%, transparent);
+  border-color: transparent;
+}
+.island-dock [data-slot='action-island-tile']:hover,
+.stage-corner [data-slot='action-island-tile']:hover {
+  background: color-mix(in oklab, var(--color-fg) 9%, transparent);
+}
+.island-dock:where(:root[data-theme='light'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile'],
+.stage-corner:where(:root[data-theme='light'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile'] {
+  background: oklch(1 0 0 / 0.55);
+  border-color: transparent;
+  box-shadow:
+    0 1px 2px oklch(0.2 0.01 270 / 0.06),
+    0 4px 12px -4px oklch(0.2 0.01 270 / 0.12);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+.island-dock:where(:root[data-theme='light'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile']:hover,
+.stage-corner:where(:root[data-theme='light'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile']:hover {
+  background: oklch(1 0 0 / 0.78);
+}
+/* At night the keys are smoked glass on the glow. */
+.island-dock:where(:root[data-theme='dark'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile'],
+.stage-corner:where(:root[data-theme='dark'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile'] {
+  background: oklch(1 0 0 / 0.08);
+  border-color: transparent;
+  box-shadow: 0 4px 12px -4px oklch(0 0 0 / 0.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+.island-dock:where(:root[data-theme='dark'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile']:hover,
+.stage-corner:where(:root[data-theme='dark'] [data-preview-panel][data-site-look] *) [data-slot='action-island-tile']:hover {
+  background: oklch(1 0 0 / 0.14);
+}
+.island-dock [data-slot='action-island-tile']:is([aria-pressed='true'], [data-popup-open]),
+.stage-corner [data-slot='action-island-tile']:is([aria-pressed='true'], [data-popup-open]) {
+  border-color: var(--color-accent);
+}
+/* ── backdrops ──
+ * A block story on a backdrop (BlockStory `backdrop="meadow"`, lib/backdrops, components/docs/backdrop-layer.tsx):
+ * the backdrop runs behind the stage and the strip, a scene's still shows the mode's version until its shader draws,
+ * a photograph is the mode's file under the scenes' grain, and the island's keys are frosted glass in either mode. */
+[data-backdrop-still='dark'],
+:root[data-theme='dark'] [data-backdrop-still='light'] {
+  display: none;
+}
+:root[data-theme='dark'] [data-backdrop-still='dark'] {
+  display: block;
+}
+[data-backdrop-photo] {
+  background: var(--backdrop-light) center / cover no-repeat;
+}
+:root[data-theme='dark'] [data-backdrop-photo] {
+  background-image: var(--backdrop-dark);
+}
+[data-backdrop-photo]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+}
+[data-preview-panel][data-backdrop] .island-dock {
+  border-top-color: transparent;
+}
+.island-dock:where([data-preview-panel][data-backdrop] *) [data-slot='action-island-tile'],
+.stage-corner:where([data-preview-panel][data-backdrop] *) [data-slot='action-island-tile'] {
+  background: color-mix(in oklab, var(--color-surface) 62%, transparent);
+  border-color: transparent;
+  box-shadow:
+    0 1px 2px oklch(0.2 0.01 270 / 0.08),
+    0 4px 12px -4px oklch(0.2 0.01 270 / 0.18);
+  backdrop-filter: blur(12px) saturate(1.3);
+}
+.island-dock:where([data-preview-panel][data-backdrop] *) [data-slot='action-island-tile']:hover,
+.stage-corner:where([data-preview-panel][data-backdrop] *) [data-slot='action-island-tile']:hover {
+  background: color-mix(in oklab, var(--color-surface) 84%, transparent);
+}
+/* The showroom plate's toolbar (ShowroomHero, data-stage-keys): the same frosted keys on the aurora and on a backdrop,
+ * the toolbar's own frame gone so each key stands alone. */
+[data-preview-panel]:is([data-site-look], [data-backdrop]) [data-stage-keys] {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+:root[data-theme='light'] [data-preview-panel][data-site-look] [data-stage-keys] button:not([aria-pressed='true']) {
+  background: oklch(1 0 0 / 0.55);
+  box-shadow:
+    0 1px 2px oklch(0.2 0.01 270 / 0.06),
+    0 4px 12px -4px oklch(0.2 0.01 270 / 0.12);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+:root[data-theme='light'] [data-preview-panel][data-site-look] [data-stage-keys] button:not([aria-pressed='true']):hover {
+  background: oklch(1 0 0 / 0.78);
+}
+:root[data-theme='dark'] [data-preview-panel][data-site-look] [data-stage-keys] button:not([aria-pressed='true']) {
+  background: oklch(1 0 0 / 0.08);
+  box-shadow: 0 4px 12px -4px oklch(0 0 0 / 0.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+:root[data-theme='dark'] [data-preview-panel][data-site-look] [data-stage-keys] button:not([aria-pressed='true']):hover {
+  background: oklch(1 0 0 / 0.14);
+}
+[data-preview-panel][data-backdrop] [data-stage-keys] button:not([aria-pressed='true']) {
+  background: color-mix(in oklab, var(--color-surface) 62%, transparent);
+  box-shadow:
+    0 1px 2px oklch(0.2 0.01 270 / 0.08),
+    0 4px 12px -4px oklch(0.2 0.01 270 / 0.18);
+  backdrop-filter: blur(12px) saturate(1.3);
+}
+[data-preview-panel][data-backdrop] [data-stage-keys] button:not([aria-pressed='true']):hover {
+  background: color-mix(in oklab, var(--color-surface) 84%, transparent);
+}
+/* The stage's corner keys sit over the demo's top-right, where an app's own header actions live, so on a pointer
+ * device they appear while the stage is hovered or a key has focus, and never cover content otherwise. Touch has no
+ * hover, so they stay shown there. */
+@media (hover: hover) {
+  .stage-corner {
+    opacity: 0;
+    transition: opacity calc(var(--yj-duration-fast) * var(--yj-motion, 1)) var(--ease-standard);
+  }
+  [data-preview-panel]:hover .stage-corner,
+  .stage-corner:focus-within {
+    opacity: 1;
+  }
+}
+/* The code dialog's motion (components/ui/code-export-dialog.tsx): it grows out of the control that opened it
+ * (its transform-origin is set on that control as it mounts) from a soft, small state, on the kit's spring, and
+ * retracts back into it a little quicker as it leaves. Reduced motion: the kit's --yj-motion makes it instant. */
+.code-grow.yj-dialog {
+  transition:
+    opacity calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-enter),
+    transform calc(var(--yj-duration-spring) * 1.15 * var(--yj-motion, 1)) var(--ease-spring),
+    filter calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-enter);
+}
+.code-grow.yj-dialog[data-starting-style] {
+  opacity: 0;
+  transform: scale(0.2);
+  filter: blur(8px);
+}
+/* Its first open mounts it already open (the code arrives with it), so Base UI sets no starting style: the browser's
+ * own first-frame style gives it the same entrance. */
+@starting-style {
+  .code-grow.yj-dialog {
+    opacity: 0;
+    transform: scale(0.2);
+    filter: blur(8px);
+  }
+}
+.code-grow.yj-dialog[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.25);
+  filter: blur(6px);
+  transition-duration: calc(var(--yj-duration-base) * var(--yj-motion, 1));
+  transition-timing-function: var(--ease-standard);
+}
+/* The aurora in small places: the header logo's tittle takes the docs' mint → sky → violet (with the warm orange
+ * the drifting wash also carries) instead of the accent. */
+.aurora-stop-1 { stop-color: oklch(0.8 0.12 175); }
+.aurora-stop-2 { stop-color: oklch(0.74 0.13 235); }
+.aurora-stop-3 { stop-color: oklch(0.72 0.15 300); }
+.site-logo rect.fill-accent {
+  fill: url(#site-aurora);
+}
+/* The site's flat fields (the header search, the Copy page key): the code blocks' gray, no border or shadow, a step
+ * darker on hover, so the chrome's inputs read as one family with the install fields and code. */
+@utility site-fill {
+  border: 1px solid transparent;
+  background: var(--code-bg);
+  box-shadow: none;
+  transition: background-color var(--yj-duration-fast) var(--ease-standard);
+  &:hover,
+  &:has([data-popup-open]) {
+    background: color-mix(in oklab, var(--color-fg) 6%, var(--code-bg));
+  }
+}
+/* ── end inline preview island ── */
+
+/* A story page's Get started tabs: borderless buttons, no track; the chosen one a flat gray key that glides. */
+.button-tabs [data-slot='tabs-list'][data-variant='pill'] {
+  gap: 0.25rem;
+  padding: 0;
+  background-color: transparent;
+}
+.button-tabs [data-slot='tabs-list'][data-variant='pill'] > [data-slot='tabs-indicator'] {
+  height: 100%;
+  background-color: var(--code-bg);
+  box-shadow: none;
+}
+.button-tabs [data-slot='tabs-list'][data-variant='pill'] > [data-slot='tabs-trigger']:not([data-active]):hover {
+  color: var(--color-fg);
+}
+/* Without the track's padding, the keys' wider hit area would overflow the row and show its scroll arrows. */
+.button-tabs [data-slot='tabs-trigger']::after {
+  inset: 0;
+}
+.button-tabs [data-slot='tabs-scroll-button'] {
+  display: none;
+}
+
+/* Experiment: light mode in monochrome. The homepage's moods (the parts' grounds and the hero card's aurora) turn to
+ * soft graphite, so color lives only in the components themselves. Dark keeps its full moods. */
+:root[data-theme='light'] [data-landing] :is(.family-ground, .hc-ground) {
+  filter: grayscale(1) contrast(0.92) brightness(1.04);
+}
+/* The parts' grounds lifted further, so the darker moods (Motion, Icons, Illustrations, Sound) stay a light graphite. */
+:root[data-theme='light'] [data-landing] .family-ground {
+  filter: grayscale(1) contrast(0.55) brightness(1.32);
+}
+/* Loaders' ground already sits at the right lightness; it keeps the gentler lift. */
+:root[data-theme='light'] [data-landing] [data-tile='loaders'] .family-ground {
+  filter: grayscale(1) contrast(0.7) brightness(1.18);
+}
+/* …and the pieces on them too, so the whole hero reads in ink. Themes keeps its color: showing color is its job. */
+:root[data-theme='light'] [data-landing] :is(.ho-card [data-el], .family-stage):not([data-el='themes'], [data-tile='themes'] *) {
+  filter: grayscale(1);
+}
+
+/* The hero title's rotating word in light, each in one of the themes' colors (sandstone, graphite, heather, meadow):
+ * the one color on the monochrome page. In dark it stays the title's own white. The cursor follows the text color. */
+.hero-word {
+  transition: color var(--yj-duration-base) var(--ease-standard);
+}
+:root[data-theme='light'] .hero-word[data-word='0'] { color: oklch(0.62 0.15 50); }
+:root[data-theme='light'] .hero-word[data-word='1'] { color: oklch(0.54 0.25 268); }
+:root[data-theme='light'] .hero-word[data-word='2'] { color: oklch(0.55 0.16 300); }
+:root[data-theme='light'] .hero-word[data-word='3'] { color: oklch(0.58 0.14 145); }
+
+/* The Visuals menu's cards in light, in the homepage's monochrome: their moods as light graphite. */
+:root[data-theme='light'] .nav-mood [data-backdrop] {
+  filter: grayscale(1) contrast(0.55) brightness(1.32);
+}
+
+/* …the Visuals menu's pictures too (the illustration's and loader's accents), whole card in ink. */
+:root[data-theme='light'] .nav-mood {
+  filter: grayscale(1);
+}
+/* …and the Start section's whole-screen picture: its aurora as light graphite. */
+:root[data-theme='light'] [data-landing] .start-wide-ground {
+  filter: grayscale(1) contrast(0.55) brightness(1.32);
+}

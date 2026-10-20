@@ -1,0 +1,139 @@
+---
+title: Dock
+description: "Navigate with a row of icons that magnify under the pointer or keyboard focus."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="dock/demo" height={300} />
+
+A row of eight app icons that magnify under the pointer or keyboard focus, with a dot on the open app.
+
+</Story>
+
+<Story id="how-it-moves" label="How it moves">
+
+<ComponentPreview name="dock/lens" height={300} />
+
+A dock with its lens shaped by `size`, `magnification` and `distance`.
+
+One spring smooths the pointer's position and a second fades the effect in and out. Each icon's scale and offset is a pure function of those two values, so neighbors can never disagree about where they are, and the point under the cursor stays under the cursor while the row grows around it. Icons grow up from their baseline, and the backplate widens with them through a `clip-path` inset. Nothing triggers layout.
+
+Shape the lens with three props: `size` is the resting icon size, `magnification` the peak scale under the pointer, and `distance` how far, in pixels, the effect reaches. A dense toolbar wants a small, quiet lens, and an app launcher can afford the default.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="dock" noImport />
+
+Use it for a short row of destinations people return to, where the row itself is a signature of the product: a launcher, a portfolio's sections, a creative tool's modes. Keep it to about five to ten items that are recognizable by icon alone. Don't use it for primary app navigation with text labels, or for more items than fit on a phone. A [Sidebar](/docs/components/sidebar) or [Tabs](/docs/components/tabs) serve those better.
+
+```tsx
+import { useState } from 'react'
+import { HomeIcon, LayersIcon, MailIcon } from '@youj/icons'
+import { Dock, type DockItem } from '@youj/motion/interactions'
+
+const items: DockItem[] = [
+  { id: 'home', label: 'Home', icon: <HomeIcon /> },
+  { id: 'mail', label: 'Mail', icon: <MailIcon /> },
+  { id: 'docs', label: 'Docs', icon: <LayersIcon />, href: '/docs' },
+]
+
+export function AppDock() {
+  const [active, setActive] = useState('home')
+  return <Dock items={items} value={active} onValueChange={setActive} />
+}
+```
+
+Items render as buttons, or as links when they have an `href`. The item whose `id` matches `value` gets a dot, which travels to the next active item.
+
+```ts
+interface DockItem {
+  id: string
+  label: string // accessible name and tooltip
+  icon: ReactNode
+  href?: string // render as a link
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, value, onValueChange… (8)">
+
+### Props
+
+<PropsTable name="Dock" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Keyboard" summary="The dock is a single tab stop (role=toolbar)">
+
+### Keyboard
+
+The dock is a single tab stop (`role="toolbar"`). The arrow keys move focus, `Home` and `End` jump to the ends, and `Enter` or `Space` activates. Keyboard focus magnifies exactly like the pointer, and shows the same tooltip. Tab into the preview and try it.
+
+<Callout type="tip" title="Icons that answer back">
+  The demo uses Youj's [animated icons](/docs/icons). Each one plays its own choreography when its dock button is hovered or focused, with no wiring: icons listen to their closest interactive parent.
+</Callout>
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Magnification, active indicator, tooltip in… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Magnification', note: 'pointer position and effect strength', spring: 'snappy' },
+    { moment: 'Active indicator', note: 'travels between items', spring: 'smooth' },
+    { moment: 'Tooltip in', duration: 'fast', ease: 'enter' },
+    { moment: 'Tooltip out', duration: 'instant', ease: 'exit' },
+  ]}
+  reduced="Icons stay at their resting size. Tooltips and the active indicator change instantly."
+/>
+
+#### Reduced motion
+
+The lens is off: every icon stays at its resting size, under the pointer and under keyboard focus alike. Tooltips still appear on hover and focus, and the active dot still marks the current item, but both change instantly instead of traveling. The dock stays a complete, labeled toolbar.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- It's a `toolbar` with a roving tab stop, named by `label` (default "Dock").
+- Each item's accessible name is its `label`. Tooltips are visual only, because the name is already on the button.
+- The active item carries `aria-current`.
+- Touch input doesn't magnify: on a phone, the dock is a plain row of buttons.
+
+</ReferenceRow>

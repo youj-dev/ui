@@ -1,0 +1,272 @@
+---
+title: Toast
+description: "Show brief notifications with swipe dismissal, triggered from anywhere in your app."
+aliases: ["snackbar", "notification", "flash message", "popup message"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="toast/demo" height={260} />
+
+Mount one `Toaster` in your root layout, inside `YoujProvider`. Then import `toast` from `@youj/react` and call it from any client component:
+
+```tsx title="app/layout.tsx"
+import { Toaster } from '@youj/react'
+
+// inside <YoujProvider>, after {children}
+<Toaster />
+```
+
+```tsx title="app/save-button.tsx"
+'use client'
+import { Button, toast } from '@youj/react'
+
+export function SaveButton() {
+  return <Button onClick={() => toast.success('Saved')}>Save</Button>
+}
+```
+
+A project panel whose Deploy and Archive buttons raise toasts. Deploy shows a loader while it builds and the deploy scene once it's live.
+
+A toast can carry one `action`, such as Undo or Retry. Pressing it runs `onClick` and dismisses that toast only. When an action can be reversed, do it straight away and offer Undo, instead of asking first. "Archive 3 issues" in the demo works this way.
+
+```tsx
+toast('Archived 3 issues', {
+  description: 'ORI-812, ORI-815 and ORI-821 moved to the archive.',
+  action: { label: 'Undo', onClick: () => restore(issues) },
+})
+```
+
+`position` sets the corner or edge the stack grows from: `top-start`, `top-center`, `top-end`, `bottom-start`, `bottom-center` or `bottom-end`, the default. `start` and `end` follow the writing direction. Top positions stack down from the top edge and swipe up. Try each one with the Position menu in the demo.
+
+**Beside a floating bar.** The bars that float over a page's foot sit at the bottom center: a data table's selection bar does, and so does an [Action island](/docs/components/action-island) placed there. Keep toasts in a corner (`bottom-end`, the default, or `top-end`): an "Archived 3 issues" toast then lands beside the bar that raised it instead of over it. Avoid `bottom-center` on those pages. On a phone the stack is nearly the screen's width, so lift it clear of the bar there with a class; `className` reaches the stack's fixed frame:
+
+```tsx
+<Toaster position="bottom-end" className="max-sm:bottom-20" />
+```
+
+</Story>
+
+<Story id="media" label="Media">
+
+<ComponentPreview name="toast/media" height={160} />
+
+Three buttons: a toast with an illustration, one with a loader that becomes an illustration, and one with an animated icon.
+
+`media` puts a visual at the toast's start, in place of the status icon. Import it from the package that owns it and pass the element: an illustration from `@youj/illustrations`, a loader from `@youj/loaders/<id>` or an animated icon from `@youj/icons`.
+
+```tsx
+import { IllustrationBackups } from '@youj/illustrations'
+import { LoaderWinnow } from '@youj/loaders/winnow'
+import { BellIcon } from '@youj/icons'
+
+toast('Backup complete', { media: <IllustrationBackups /> })
+toast('Indexing orion…', { media: <LoaderWinnow label={null} />, timeout: 0 })
+toast('Reminder set', { media: <BellIcon trigger="mount" /> })
+```
+
+The media sits on a small recessed stage that fits each kind without a size from you: a scene fills it, a loader keeps its proportions inside it, and an icon sits at half its size. The stage lands just after the toast, and when the media changes, by `toast.update` or a call with the same `id`, the new media crossfades in over the old. A typed toast with media, such as `toast.success`, shows its status as a small badge on the stage's corner.
+
+The stage is decorative and hidden from assistive technology, so the title still has to say what happened. Pass loaders `label={null}`: the toast already announces the wait.
+
+</Story>
+
+<Story id="types" label="Types">
+
+<ComponentPreview name="toast/types" height={160} />
+
+Buttons for the default, success, info, warning and error toasts.
+
+`toast()` shows a plain toast. `toast.success`, `toast.info`, `toast.warning` and `toast.error` add a status icon, which plays once as the toast lands.
+
+</Story>
+
+<Story id="promise-toasts" label="Promise toasts">
+
+<ComponentPreview name="toast/promise" height={160} />
+
+A Deploy button and a failing Deploy button, each following a promise in one toast.
+
+`toast.promise(work, { loading, success, error })` follows a promise in one toast. It stays up while the work runs, then its first line morphs: the spinner becomes a drawn check, or a cross that shakes. `success` and `error` can be functions of the result or the error, and every step can carry its own description and action.
+
+Each step can carry its own `media`, so a loader can run while the work does and an illustration land when it's done. The stage crossfades from one to the next, and a step without `media` shows none.
+
+```tsx
+toast.promise(deploy(), {
+  loading: { title: 'Deploying orion…', media: <LoaderBuild label={null} /> },
+  success: { title: 'Deployed to production', media: <IllustrationDeploy /> },
+  error: { title: 'Deployment failed', media: <IllustrationLightning /> },
+})
+```
+
+`toast.promise` returns a promise that settles the way the work does, so handle its rejection.
+
+</Story>
+
+<Story id="updating-a-toast" label="Updating a toast">
+
+<ComponentPreview name="toast/update" height={160} />
+
+An upload button whose toast updates in place as the files finish.
+
+`toast.update(id, { title, description, … })` changes a toast in place. Calling a toast function again with an existing `id` updates it the same way, can change its type, and restarts its timer. Use `timeout: 0` to keep a toast up while the work runs.
+
+</Story>
+
+<Story id="stacking" label="Stacking">
+
+<ComponentPreview name="toast/stack" height={160} />
+
+A button that sends five notifications, and one that dismisses them all.
+
+New toasts come in at the front of the stack. Each toast behind the front one peeks out by 12px, 5% smaller than the one before, with its text hidden. Hover or focus the stack to spread it out with gaps between, which also pauses every timer. `limit` (default 3) sets how many show at once, and older toasts wait, hidden, for room.
+
+Swipe a toast toward the edge it sits on to dismiss it. In a corner, a swipe sideways toward the nearer side works too. The toast leaves from where the finger let go, and the toasts behind step up.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="toast" />
+
+Use Toast to confirm an action or report a background task’s result, such as a copied link or completed deploy. Toasts dismiss automatically. Put essential information in an [Alert](/docs/components/alert), or use an [Alert Dialog](/docs/components/alert-dialog) when you need a response. Avoid repeating feedback already visible on the page.
+
+In the Next.js App Router, render this from a Client Component, a file that starts with `'use client'`: a toast's `action.onClick` is a function, and `toast()` runs from event handlers, which a Server Component can't have. [Server rendering](/docs/guides/ssr) has the rest.
+
+Render one `Toaster` near the root of the app, inside `YoujProvider` so toasts follow its Speed and reduced-motion settings. Then call `toast()` from anywhere: event handlers, data hooks, code outside React.
+
+```tsx title="app/layout.tsx"
+import { basalt, YoujProvider, themeProps } from '@youj/core'
+import { ThemeScript, Toaster } from '@youj/react'
+import './globals.css'
+
+// The layout from Installation, with a Toaster added: keep its font lines and the className on <html>.
+export default function RootLayout({ children }: LayoutProps<'/'>) {
+  return (
+    <html lang="en" suppressHydrationWarning {...themeProps(basalt)}>
+      <head>
+        <ThemeScript />
+      </head>
+      <body>
+        <YoujProvider theme={basalt}>
+          {children}
+          <Toaster />
+        </YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+```tsx
+import { toast } from '@youj/react'
+
+toast.success('Invite link copied', { description: 'Anyone at Acme with the link can join orion.' })
+```
+
+`toast()` and its typed helpers return the toast's id. Only one `Toaster` renders at a time. If a second one mounts, for example in a layout and again in a page, it shows nothing until the first unmounts, so each toast appears and is announced once. On this page, the Toaster in the demo renders the toasts from every preview, so its Speed and Reduced motion controls apply to all of them.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="position, limit, timeout… (5)">
+
+### Props
+
+#### Toaster
+
+<PropsTable name="Toaster" />
+
+`timeout` is the default time on screen, in milliseconds, for every toast. `0` keeps toasts until they're dismissed.
+
+#### toast()
+
+| Call | Returns | Does |
+| --- | --- | --- |
+| `toast(title, options?)` | the id | Shows a plain toast. |
+| `toast.success(title, options?)` | the id | Adds a success icon. `toast.info`, `toast.warning` and `toast.error` work the same way. |
+| `toast.promise(work, steps)` | a promise | Shows `steps.loading` until `work` settles, then `steps.success` or `steps.error`. |
+| `toast.update(id, changes)` | nothing | Changes the title or any option of a toast in place. |
+| `toast.dismiss(id?)` | nothing | Closes one toast, or every toast when called without an id. |
+
+#### Options
+
+Every toast call takes these, and so does each step of `toast.promise`. A step can also be a plain string, which becomes its title.
+
+| Option | Type | Default | Does |
+| --- | --- | --- | --- |
+| `id` | `string` | generated | Names the toast. A call with an existing id updates that toast in place and restarts its timer. |
+| `description` | `ReactNode` |  | The second line. |
+| `timeout` | `number` | the Toaster's | Time on screen in milliseconds. `0` keeps it until it's dismissed. |
+| `priority` | `'low'` or `'high'` | `'low'` | `'high'` interrupts: the toast is announced assertively, through an alert. |
+| `action` | `{ label, onClick }` |  | A button in the toast. Pressing it runs `onClick` and dismisses the toast. |
+| `media` | `ReactNode` |  | A visual at the toast's start in place of the status icon: an illustration, a loader or an animated icon. Decorative, so the title still carries the message. |
+| `onClose` | `() => void` |  | Called when the toast starts to close. |
+| `onRemove` | `() => void` |  | Called once it has left and is removed. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, stack and spread, height… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'rises in from beyond the edge (`yj-toast`)', duration: 'slow', ease: 'enter' },
+    { moment: 'Stack and spread', note: 'the toasts behind step back, or spread out on hover', duration: 'slow', ease: 'enter' },
+    { moment: 'Height', note: 'the stack fits the front toast', duration: 'fast', ease: 'standard' },
+    { moment: 'Text behind', note: 'fades out behind the front toast (`yj-toast-content`)', duration: 'base', ease: 'standard' },
+    { moment: 'Exit', note: 'back past the edge as it fades, or on in the swipe direction', duration: 'slow', ease: 'enter' },
+    { moment: 'Promise headline', note: 'spinner to check or cross, with the width', spring: 'snappy' },
+    { moment: 'Media lands', note: 'the stage grows in just after the toast', spring: 'settle' },
+    { moment: 'Media changes', note: 'the new media fades and grows in over the old', duration: 'slow', ease: 'enter' },
+    { moment: 'Error shake', note: '4, 3 and 2px, then home', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="Toasts appear and leave in place, and the stack changes shape at once. A swipe still tracks the finger. Status icons appear already drawn, a pending promise toast shows its title without a spinner, and media appears and changes in place. A loader in the media shows its still frame."
+/>
+
+#### Reduced motion
+
+Toasts appear and leave in place, with no rise, slide or fade, and the stack collapses and spreads without moving. A swipe still moves the toast under the finger, because that motion is the person's own. Status icons hold their drawn pose, and a promise toast swaps its line without a morph or a shake.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The Toaster is a polite live region named "Notifications". New toasts, and the steps of a promise toast, are announced without moving focus.
+- `priority: 'high'` makes a toast interrupt. Base UI speaks it through an assertive alert and hides the toast itself from assistive technology until it's focused. Keep it for the rare toast that can't wait.
+- F6 moves focus to the notifications and pauses their timers, and Shift+Tab from there goes back to where you were. Each toast is a tab stop, its buttons follow it, and Escape dismisses the focused toast.
+- Timers pause while the stack is hovered or focused, and while the window is in the background, so a toast doesn't disappear while someone reads it.
+- `media` is hidden from assistive technology, along with its status badge. The title and description carry the message, and a toast's type is announced the same way with or without media.
+- The × button, named "Dismiss", shows once the stack is spread, like the rest of the stack's controls. Toasts past the `limit` are hidden and inert until there's room.
+
+</ReferenceRow>

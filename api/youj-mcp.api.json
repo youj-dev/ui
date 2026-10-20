@@ -1,0 +1,881 @@
+{
+  "tools": {
+    "create_theme": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accent": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60,
+            "description": "Brand colour: hex, rgb(), hsl() or oklch()"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "base": {
+            "description": "A preset to extend (default basalt)",
+            "type": "string",
+            "enum": [
+              "graphite",
+              "terminal",
+              "brutal",
+              "basalt",
+              "meadow",
+              "sandstone",
+              "cinnabar",
+              "umber",
+              "seaglass",
+              "heather"
+            ]
+          },
+          "neutral": {
+            "description": "Neutral tint (default: leans toward the accent hue at chroma 0.01)",
+            "type": "object",
+            "properties": {
+              "hue": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 360
+              },
+              "chroma": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.04
+              },
+              "wash": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "lift": {
+                "description": "Dark mode: how far cards and raised surfaces stand above the page (0 close, 1 lit slabs)",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          },
+          "success": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "warning": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "danger": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "info": {
+            "description": "Informational ink (alerts, toasts, badges); default: the accent",
+            "type": "string",
+            "maxLength": 60
+          },
+          "radius": {
+            "type": "string",
+            "enum": [
+              "none",
+              "sm",
+              "md",
+              "lg",
+              "full"
+            ]
+          },
+          "controlSize": {
+            "description": "Control heights: compact, default or comfortable",
+            "type": "string",
+            "enum": [
+              "compact",
+              "default",
+              "comfortable"
+            ]
+          },
+          "motionPersonality": {
+            "description": "Timing: precise, calm or lively",
+            "type": "string",
+            "enum": [
+              "precise",
+              "calm",
+              "lively"
+            ]
+          },
+          "fonts": {
+            "type": "object",
+            "properties": {
+              "sans": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "mono": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "display": {
+                "description": "Titles; default: sans",
+                "type": "string",
+                "maxLength": 200
+              }
+            }
+          },
+          "stroke": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "description": "Border width in px (default 1)",
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 4
+              },
+              "ink": {
+                "description": "0 = quiet hairline, 1 = lines in the text colour",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "icons": {
+                "description": "Icon stroke multiplier",
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 2
+              }
+            }
+          },
+          "shadow": {
+            "description": "soft: blurred elevation; hard: solid offset shadows in ink; none: flat",
+            "type": "string",
+            "enum": [
+              "soft",
+              "hard",
+              "none"
+            ]
+          },
+          "actions": {
+            "description": "What fills primary buttons: accent (default), or ink, the text colour, leaving the accent to \"on\" states",
+            "type": "string",
+            "enum": [
+              "accent",
+              "ink"
+            ]
+          },
+          "controls": {
+            "description": "The shape of every control (buttons, fields, tab and toggle tracks, badges): pill (default), or rounded at the control radius in proportion to each height",
+            "type": "string",
+            "enum": [
+              "pill",
+              "rounded"
+            ]
+          },
+          "fields": {
+            "description": "How every field is drawn: outlined (default, the fill on a 3:1 edge) or soft (a filled band with no edge)",
+            "type": "string",
+            "enum": [
+              "outlined",
+              "soft"
+            ]
+          },
+          "tone": {
+            "description": "Two-tone: which mode the chrome (sidebar, headers, toolbars, islands) is drawn in, match (default) or held dark or light; overlays (menus, dialogs) follow the content (default) or the chrome. { chrome: 'dark' } gives dark bars on a light page",
+            "type": "object",
+            "properties": {
+              "chrome": {
+                "type": "string",
+                "enum": [
+                  "match",
+                  "dark",
+                  "light"
+                ]
+              },
+              "overlays": {
+                "type": "string",
+                "enum": [
+                  "content",
+                  "chrome"
+                ]
+              }
+            }
+          },
+          "headings": {
+            "type": "object",
+            "properties": {
+              "weight": {
+                "type": "number",
+                "minimum": 100,
+                "maximum": 900
+              },
+              "tracking": {
+                "type": "number",
+                "minimum": -0.1,
+                "maximum": 0.3
+              }
+            }
+          },
+          "labels": {
+            "description": "Badges, column heads, field labels, group headings, tabs and keys",
+            "type": "object",
+            "properties": {
+              "case": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "upper"
+                ]
+              },
+              "font": {
+                "type": "string",
+                "enum": [
+                  "sans",
+                  "mono"
+                ]
+              },
+              "tracking": {
+                "type": "number",
+                "minimum": -0.1,
+                "maximum": 0.3
+              }
+            }
+          },
+          "allowLowContrast": {
+            "description": "Accept pairs that miss WCAG AA. Without it, a failing theme is refused with the failing pairs listed.",
+            "type": "boolean"
+          },
+          "look": {
+            "description": "The look to apply it with: how components are built, independent of the theme (classic, the default: hairline panels, rounded controls, outlined fields, underline tabs; bezel: instrument panels, pill actions, filled fields, segmented tabs, mono figures)",
+            "type": "string",
+            "enum": [
+              "classic",
+              "bezel"
+            ]
+          }
+        },
+        "required": [
+          "accent"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "draw_illustration": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "scene": {
+            "anyOf": [
+              {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              },
+              {
+                "type": "string",
+                "maxLength": 200000
+              }
+            ],
+            "description": "{ \"name\", \"base\", \"parts\": [...], \"groups\"?: [...] }, as get_illustration_guide describes"
+          },
+          "name": {
+            "description": "The component’s name, e.g. \"Empty inbox\" → IllustrationEmptyInbox (default: the scene’s name)",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "cwd": {
+            "description": "App directory (default: process.cwd()); reads stay inside this directory",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "scene"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "get_add_command": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "minItems": 1,
+            "maxItems": 50,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          },
+          "cwd": {
+            "description": "App directory (default: process.cwd()); reads stay inside this directory",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "get_block": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The block's name, from list_blocks",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "slug": {
+            "description": "Deprecated: use name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "source": {
+            "description": "Return source code instead of the summary",
+            "type": "boolean"
+          },
+          "file": {
+            "description": "Which file (from the Files list)",
+            "type": "string",
+            "maxLength": 200
+          },
+          "offset": {
+            "description": "Character offset, to page through a long file",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "get_component": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "Registry name, title or export name"
+          },
+          "part": {
+            "description": "A sub-component export to show props for, e.g. \"DialogContent\"",
+            "type": "string",
+            "maxLength": 80
+          },
+          "sections": {
+            "description": "Only these sections (default: all)",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "install",
+                "usage",
+                "props",
+                "motion",
+                "a11y",
+                "related"
+              ]
+            }
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "get_icon": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "`bell-off`, `BellOffIcon`, or `lucide:rocket`"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "get_illustration_guide": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "get_tokens": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "preset": {
+            "type": "string",
+            "enum": [
+              "graphite",
+              "terminal",
+              "brutal",
+              "basalt",
+              "meadow",
+              "sandstone",
+              "cinnabar",
+              "umber",
+              "seaglass",
+              "heather"
+            ]
+          },
+          "groups": {
+            "description": "Only these groups (default: all)",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "color",
+                "type",
+                "radius",
+                "spacing",
+                "motion",
+                "character"
+              ]
+            }
+          },
+          "mode": {
+            "default": "both",
+            "type": "string",
+            "enum": [
+              "light",
+              "dark",
+              "both"
+            ]
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "list_blocks": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "group": {
+            "description": "Only this group, e.g. \"Auth\"",
+            "type": "string",
+            "maxLength": 40
+          },
+          "level": {
+            "description": "Only this level, e.g. \"screen\" for whole screens",
+            "type": "string",
+            "enum": [
+              "card",
+              "section",
+              "screen"
+            ]
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "list_components": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "description": "Only this kind",
+            "type": "string",
+            "enum": [
+              "ui",
+              "core",
+              "motion",
+              "sound"
+            ]
+          },
+          "category": {
+            "description": "Only this docs category, e.g. \"forms\"",
+            "type": "string",
+            "maxLength": 40
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "list_illustrations": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "description": "Only this category, e.g. \"food\" or \"Data\"",
+            "type": "string",
+            "maxLength": 40
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "list_loaders": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "description": "Only this category",
+            "type": "string",
+            "maxLength": 40
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "list_miniatures": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "description": "Only this category",
+            "type": "string",
+            "maxLength": 40
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "motion_guidance": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "interaction": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "interaction"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "search": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "What you need, in plain words"
+          },
+          "kinds": {
+            "description": "Only these kinds (default: all)",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "component",
+                "block",
+                "icon",
+                "illustration",
+                "miniature",
+                "loader",
+                "hook",
+                "docs"
+              ]
+            }
+          },
+          "limit": {
+            "default": 8,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 25
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "search_icons": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "type": {
+            "default": "all",
+            "type": "string",
+            "enum": [
+              "all",
+              "static",
+              "morph",
+              "swap"
+            ]
+          },
+          "category": {
+            "description": "A Youj icon category",
+            "type": "string",
+            "enum": [
+              "actions",
+              "ai",
+              "arrows",
+              "brand",
+              "commerce",
+              "communication",
+              "data",
+              "development",
+              "devices",
+              "editor",
+              "files",
+              "location",
+              "media",
+              "navigation",
+              "people",
+              "security",
+              "status",
+              "system",
+              "time",
+              "weather"
+            ]
+          },
+          "source": {
+            "default": "all",
+            "type": "string",
+            "enum": [
+              "all",
+              "youj",
+              "lucide"
+            ]
+          },
+          "limit": {
+            "default": 12,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "setup": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "framework": {
+            "type": "string",
+            "enum": [
+              "next-app",
+              "next-pages",
+              "vite",
+              "react-router",
+              "astro"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "package",
+              "registry"
+            ]
+          },
+          "look": {
+            "description": "The look: classic (default) or bezel. Independent of the theme",
+            "type": "string",
+            "enum": [
+              "classic",
+              "bezel"
+            ]
+          },
+          "packageJson": {
+            "description": "The app’s package.json",
+            "type": "string",
+            "maxLength": 50000
+          },
+          "css": {
+            "description": "The global stylesheet",
+            "type": "string",
+            "maxLength": 50000
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "suggest_icon_morph": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "pair": {
+            "description": "\"from → to\", e.g. \"play → pause\"",
+            "type": "string",
+            "maxLength": 120
+          },
+          "from": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "to": {
+            "type": "string",
+            "maxLength": 60
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  },
+  "prompts": [
+    {
+      "name": "brand-theme",
+      "arguments": [
+        {
+          "name": "accent",
+          "required": true
+        },
+        {
+          "name": "name",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "build-screen",
+      "arguments": [
+        {
+          "name": "screen",
+          "required": true
+        },
+        {
+          "name": "framework",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "resources": [
+    "youj://components",
+    "youj://docs/{+slug}",
+    "youj://tokens"
+  ]
+}

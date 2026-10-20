@@ -1,0 +1,1372 @@
+[
+  {
+    "name": "loader-cue",
+    "type": "registry:component",
+    "title": "Cue loader",
+    "description": "The interface’s sounds as waveforms: a tap, a toggle, a bell and a success, each struck and written out by the accent head, then wiped away as the next one rings. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "cue",
+      "component": "LoaderCue",
+      "category": "signal",
+      "technique": "paths",
+      "order": 1,
+      "title": "Cue",
+      "tags": [
+        "waveform",
+        "sound",
+        "audio",
+        "cue",
+        "envelope",
+        "playhead",
+        "glass"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Strikes",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/cue.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-phosphor",
+    "type": "registry:component",
+    "title": "Phosphor loader",
+    "description": "A scope’s beam sweeps a modulated signal across its graticule, each trace glowing where it was just written and fading behind the beam, the last sweeps lingering as ghosts. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "phosphor",
+      "component": "LoaderPhosphor",
+      "category": "signal",
+      "technique": "lines",
+      "order": 2,
+      "title": "Phosphor",
+      "tags": [
+        "oscilloscope",
+        "scope",
+        "trace",
+        "persistence",
+        "graticule",
+        "modulation",
+        "beam"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Phosphor",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/phosphor.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-sustain",
+    "type": "registry:component",
+    "title": "Sustain loader",
+    "description": "A waterfall of spectra in perspective: each new spectrum rises at the front and flows back into the distance, so a struck note leaves a ridge that rings on, dying away, as the stack recedes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "sustain",
+      "component": "LoaderSustain",
+      "category": "signal",
+      "technique": "lines",
+      "order": 3,
+      "title": "Sustain",
+      "tags": [
+        "spectrum",
+        "waterfall",
+        "ridgeline",
+        "spectrogram",
+        "perspective",
+        "notes",
+        "audio",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "New spectrum",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/sustain.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-isobar",
+    "type": "registry:component",
+    "title": "Isobar loader",
+    "description": "An isometric spectrum: lit columns on a plinth jump as notes are struck and fall back, each with a cap that holds its peak a moment before it drops, the last strike’s cap in the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "isobar",
+      "component": "LoaderIsobar",
+      "category": "signal",
+      "technique": "planes",
+      "order": 4,
+      "title": "Isobar",
+      "tags": [
+        "spectrum",
+        "equalizer",
+        "isometric",
+        "bars",
+        "peak hold",
+        "audio",
+        "meter",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Second channel",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/isobar.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tail",
+    "type": "registry:component",
+    "title": "Tail loader",
+    "description": "A live line chart following its newest value: each point arrives as the chart steps left, the accent head drawing the new stretch while a level line marks where it stands. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "tail",
+      "component": "LoaderTail",
+      "category": "signal",
+      "technique": "paths",
+      "order": 5,
+      "title": "Tail",
+      "tags": [
+        "chart",
+        "line chart",
+        "stream",
+        "live",
+        "realtime",
+        "metrics",
+        "sparkline",
+        "data"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Area",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/tail.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tempo",
+    "type": "registry:component",
+    "title": "Tempo loader",
+    "description": "A dial scaled in the motion tokens: the needle steps up through instant, fast, base, slow and deliberate, landing on each tick as it lights, then sweeps home. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "tempo",
+      "component": "LoaderTempo",
+      "category": "signal",
+      "technique": "lines",
+      "order": 6,
+      "title": "Tempo",
+      "tags": [
+        "gauge",
+        "dial",
+        "meter",
+        "needle",
+        "sweep",
+        "tokens",
+        "speedometer"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Progress",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/tempo.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-locus",
+    "type": "registry:component",
+    "title": "Locus loader",
+    "description": "A Lissajous figure in three dimensions, three tones in one closed curve over its shadow on a construction frame, turning in perspective while the accent traces it with a bright wake. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "locus",
+      "component": "LoaderLocus",
+      "category": "signal",
+      "technique": "paths",
+      "order": 7,
+      "title": "Locus",
+      "tags": [
+        "lissajous",
+        "curve",
+        "knot",
+        "harmonic",
+        "3d",
+        "orbit",
+        "oscilloscope",
+        "trace"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Wake",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/locus.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-vitals",
+    "type": "registry:component",
+    "title": "Vitals loader",
+    "description": "A monitor’s sweep writes a steady pulse, each beat a double tap stepping up like a toggle clicking in, the accent head throbbing on the beat as the old trace clears ahead of it. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "vitals",
+      "component": "LoaderVitals",
+      "category": "signal",
+      "technique": "paths",
+      "order": 8,
+      "title": "Vitals",
+      "tags": [
+        "heartbeat",
+        "pulse",
+        "ecg",
+        "monitor",
+        "health",
+        "status",
+        "alive",
+        "sweep"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Fresh trace",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/vitals.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-harmonics",
+    "type": "registry:component",
+    "title": "Harmonics loader",
+    "description": "A square built from sines: a chain of turning circles adds the odd harmonics one by one, and the wave its tip draws squares up, with every corner, then softens back to a sine. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "harmonics",
+      "component": "LoaderHarmonics",
+      "category": "signal",
+      "technique": "lines",
+      "order": 9,
+      "title": "Harmonics",
+      "tags": [
+        "fourier",
+        "square wave",
+        "epicycles",
+        "phasor",
+        "sine",
+        "synthesis",
+        "harmonic"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Wave",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/harmonics.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-delta",
+    "type": "registry:component",
+    "title": "Delta loader",
+    "description": "A line chart rewritten in place: a caret sweeps across it and each point it passes moves to its new value, leaving the old line as a dashed ghost and the change marked, three times a loop. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "delta",
+      "component": "LoaderDelta",
+      "category": "signal",
+      "technique": "paths",
+      "order": 10,
+      "title": "Delta",
+      "tags": [
+        "chart",
+        "line chart",
+        "diff",
+        "update",
+        "caret",
+        "revision",
+        "data",
+        "refresh"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Change",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/delta.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-least-squares",
+    "type": "registry:component",
+    "title": "Least squares loader",
+    "description": "Scattered square particles gather into a trend, and a line in the accent finds it: it turns from level to the fit as the residuals between it and each point shrink, then the points scatter again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "least-squares",
+      "component": "LoaderLeastSquares",
+      "category": "signal",
+      "technique": "particles",
+      "order": 11,
+      "title": "Least squares",
+      "tags": [
+        "scatter",
+        "regression",
+        "trend",
+        "fit",
+        "data",
+        "analytics",
+        "chart",
+        "line"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Residuals",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/least-squares.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-bell",
+    "type": "registry:component",
+    "title": "Bell loader",
+    "description": "Square particles drop through a board of pegs, falling left or right at each, and stack in the bins below into a bell, which a curve then traces before the bins empty and it begins again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "bell",
+      "component": "LoaderBell",
+      "category": "signal",
+      "technique": "particles",
+      "order": 12,
+      "title": "Bell",
+      "tags": [
+        "distribution",
+        "histogram",
+        "bell curve",
+        "normal",
+        "galton",
+        "probability",
+        "statistics"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Particles",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/bell.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-spool",
+    "type": "registry:component",
+    "title": "Spool loader",
+    "description": "A recorder’s drum turns in perspective while the accent stylus writes a trace onto it, the line winding round and rising a step each turn, so the record spools up the drum and fades at the top. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "spool",
+      "component": "LoaderSpool",
+      "category": "signal",
+      "technique": "paths",
+      "order": 13,
+      "title": "Spool",
+      "tags": [
+        "drum",
+        "recorder",
+        "seismograph",
+        "cylinder",
+        "trace",
+        "3d",
+        "helix",
+        "pen"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Record",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/spool.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-wick",
+    "type": "registry:component",
+    "title": "Wick loader",
+    "description": "A live candlestick chart: the newest candle forms as its price wanders, wicks stretching to each extreme, then it closes, the chart steps left and the next one opens where it closed. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "wick",
+      "component": "LoaderWick",
+      "category": "signal",
+      "technique": "mixed",
+      "order": 14,
+      "title": "Wick",
+      "tags": [
+        "candlestick",
+        "chart",
+        "market",
+        "price",
+        "live",
+        "ticker",
+        "finance",
+        "data"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Rising candles",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/wick.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/signal/trace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-caustic",
+    "type": "registry:component",
+    "title": "Caustic loader",
+    "description": "A cylindrical bundle of rays passes through a convex lens and converges at a travelling focus. Short light fronts cross the lens, meet at the waist and spread onto the receiving screen as the focus draws near and recedes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "caustic",
+      "component": "LoaderCaustic",
+      "category": "signal",
+      "technique": "lines",
+      "order": 15,
+      "title": "Caustic",
+      "tags": [
+        "optics",
+        "lens",
+        "focus",
+        "light",
+        "ray",
+        "convergence"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Refracted rays",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/caustic.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-umbra",
+    "type": "registry:component",
+    "title": "Umbra loader",
+    "description": "An opaque disc drifts across an extended light source. Grazing rays bound its core shadow and soft penumbra on a gridded screen; a short light front travels along the clear boundary while the shadow follows the disc at its projected magnification. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "umbra",
+      "component": "LoaderUmbra",
+      "category": "signal",
+      "technique": "lines",
+      "order": 16,
+      "title": "Umbra",
+      "tags": [
+        "optics",
+        "eclipse",
+        "shadow",
+        "penumbra",
+        "rays",
+        "projection"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Grazing rays",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/umbra.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-flux",
+    "type": "registry:component",
+    "title": "Flux loader",
+    "description": "A cage of field lines connects two opposed pole pieces. As the poles separate, the returning arches expand in six depth planes; short travelling strokes follow the field while one near arc briefly takes the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "flux",
+      "component": "LoaderFlux",
+      "category": "signal",
+      "technique": "lines",
+      "order": 17,
+      "title": "Flux",
+      "tags": [
+        "magnetic",
+        "field",
+        "dipole",
+        "poles",
+        "force",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Field strokes",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/flux.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-fringe",
+    "type": "registry:component",
+    "title": "Fringe loader",
+    "description": "A coherent beam meets two narrow slits. Paired circular wavefronts spread through depth, overlap, and reach a receiving screen whose bright and dark bands follow their path-length difference; the central fringe carries a small accent tick. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "fringe",
+      "component": "LoaderFringe",
+      "category": "signal",
+      "technique": "lines",
+      "order": 18,
+      "title": "Fringe",
+      "tags": [
+        "diffraction",
+        "interference",
+        "double slit",
+        "wavefront",
+        "light",
+        "optics"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Bright bands",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/fringe.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-capillary",
+    "type": "registry:component",
+    "title": "Capillary loader",
+    "description": "Three narrow tubes wet from a shared shallow bath. Their concave fronts climb to progressively greater heights as the bore narrows, pause at equilibrium, and retreat; fine level guides and the nearest wet rim follow each rise. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "capillary",
+      "component": "LoaderCapillary",
+      "category": "signal",
+      "technique": "lines",
+      "order": 19,
+      "title": "Capillary",
+      "tags": [
+        "wetting",
+        "tubes",
+        "meniscus",
+        "surface tension",
+        "liquid",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Liquid",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/capillary.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-refract",
+    "type": "registry:component",
+    "title": "Refract loader",
+    "description": "A sheet of parallel light crosses both inclined walls of a triangular prism. Its direction changes at each interface according to the same refractive ratio; travelling fronts narrow inside the glass and emerge onto a ruled receiving plane. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "refract",
+      "component": "LoaderRefract",
+      "category": "signal",
+      "technique": "lines",
+      "order": 20,
+      "title": "Refract",
+      "tags": [
+        "prism",
+        "refraction",
+        "wavefront",
+        "snell",
+        "optics",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Light fronts",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/refract.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-azimuth",
+    "type": "registry:component",
+    "title": "Azimuth loader",
+    "description": "Three surveyed landmarks turn their bearings toward a common fix on a tilted map. Their uncertainty wedges narrow in sequence, the intersecting rays resolve a small coordinate cross, and the bearings release for the next observation. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "azimuth",
+      "component": "LoaderAzimuth",
+      "category": "signal",
+      "technique": "lines",
+      "order": 21,
+      "title": "Azimuth",
+      "tags": [
+        "navigation",
+        "survey",
+        "bearings",
+        "triangulation",
+        "map",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Bearings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/azimuth.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-apsis",
+    "type": "registry:component",
+    "title": "Apsis loader",
+    "description": "A small faceted satellite accelerates around an elliptical orbit and slows at its far apsis. Three equal-time swept sectors reveal equal areas around the focus, while a companion circles the moving body in an inclined plane. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "apsis",
+      "component": "LoaderApsis",
+      "category": "signal",
+      "technique": "lines",
+      "order": 22,
+      "title": "Apsis",
+      "tags": [
+        "orbit",
+        "ellipse",
+        "kepler",
+        "equal area",
+        "astronomy",
+        "satellite"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Swept area",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/apsis.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-nodal",
+    "type": "registry:component",
+    "title": "Nodal loader",
+    "description": "A circular membrane exchanges two standing-wave modes inside a fixed drum rim. Opposing lobes rise and fall around quiet nodal diameters, the wire skin follows the deformation, and a small rim exciter marks the exchange of energy. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "nodal",
+      "component": "LoaderNodal",
+      "category": "signal",
+      "technique": "mixed",
+      "order": 23,
+      "title": "Nodal",
+      "tags": [
+        "membrane",
+        "standing wave",
+        "resonance",
+        "drum",
+        "nodes",
+        "modes"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Rising lobes",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/nodal.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-analyzer",
+    "type": "registry:component",
+    "title": "Analyzer loader",
+    "description": "A polarized wave crosses a fixed grid and a turning analyzer. Its transmitted oscillation follows the projection onto the moving axis, extinguishing at crossed alignment; the receiving screen brightens with the squared projection before the axes align again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "analyzer",
+      "component": "LoaderAnalyzer",
+      "category": "signal",
+      "technique": "lines",
+      "order": 24,
+      "title": "Analyzer",
+      "tags": [
+        "polarization",
+        "light",
+        "analyzer",
+        "malus",
+        "filter",
+        "wave"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Output",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/analyzer.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-descent",
+    "type": "registry:component",
+    "title": "Descent loader",
+    "description": "A measured descent follows the gradient of an asymmetric loss basin. Each iterate leaves a checkpoint, a tangent frame tilts to the local slope, and the next step shortens toward the minimum; the path retraces its evaluations to begin again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "descent",
+      "component": "LoaderDescent",
+      "category": "signal",
+      "technique": "lines",
+      "order": 31,
+      "title": "Descent",
+      "tags": [
+        "optimization",
+        "gradient",
+        "loss",
+        "training",
+        "landscape",
+        "iteration"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Path",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/descent.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-quantile",
+    "type": "registry:component",
+    "title": "Quantile loader",
+    "description": "A cumulative distribution is integrated from unequal sample intervals. Three probability readers travel to the curve and drop their value fences; four unequal-width strips then seat below it, each enclosing the same data mass, before the readers retrace. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "quantile",
+      "component": "LoaderQuantile",
+      "category": "signal",
+      "technique": "lines",
+      "order": 32,
+      "title": "Quantile",
+      "tags": [
+        "distribution",
+        "quantiles",
+        "dataset",
+        "cdf",
+        "statistics",
+        "thresholds"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Curve",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/quantile.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-leader",
+    "type": "registry:component",
+    "title": "Leader loader",
+    "description": "A stepped discharge tests several paths between two electrodes. A rising streamer meets the descending leader, a restrained return stroke runs back up the connected channel, and the unsuccessful side branches drain away before the gap clears. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "leader",
+      "component": "LoaderLeader",
+      "category": "signal",
+      "technique": "lines",
+      "order": 40,
+      "title": "Leader",
+      "tags": [
+        "discharge",
+        "lightning",
+        "stepped leader",
+        "return stroke",
+        "electricity",
+        "branches"
+      ],
+      "beats": 5.7,
+      "colors": [
+        {
+          "part": "Return stroke",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/leader.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-overturn",
+    "type": "registry:component",
+    "title": "Overturn loader",
+    "description": "Two counterrotating convection cells lift a central plume from a heated bed. Layered streamlines fan out beneath the upper boundary and descend along the outer walls; short travelling strokes show the circulation while one accent front rises through the shared updraft. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "overturn",
+      "component": "LoaderOverturn",
+      "category": "signal",
+      "technique": "lines",
+      "order": 41,
+      "title": "Overturn",
+      "tags": [
+        "convection",
+        "rolls",
+        "fluid",
+        "circulation",
+        "thermal",
+        "plume",
+        "flow"
+      ],
+      "beats": 5.4,
+      "colors": [
+        {
+          "part": "Tracers",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/overturn.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-barcode",
+    "type": "registry:component",
+    "title": "Barcode loader",
+    "description": "A filtered complex connects its perimeter, adds radial edges, and fills its triangular faces. Every enclosed cycle writes its computed lifetime to a barcode below; long and short holes close at different stages, then the filtration unwrites back to isolated sites. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "barcode",
+      "component": "LoaderBarcode",
+      "category": "signal",
+      "technique": "lines",
+      "order": 64,
+      "title": "Barcode",
+      "tags": [
+        "topology",
+        "persistence",
+        "filtration",
+        "cycles",
+        "dataset",
+        "analysis"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Lifetimes",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/barcode.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-blossom",
+    "type": "registry:component",
+    "title": "Blossom loader",
+    "description": "Three successive interpolation levels evaluate a spatial cubic curve. Sliding construction bars converge on its writing point, a tangent follows the generated stroke, and the evaluation retraces to release the curve without a reset. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "signal"
+    ],
+    "meta": {
+      "loader": "blossom",
+      "component": "LoaderBlossom",
+      "category": "signal",
+      "technique": "lines",
+      "order": 80,
+      "title": "Blossom",
+      "tags": [
+        "bezier",
+        "interpolation",
+        "curve",
+        "generation",
+        "control",
+        "construction"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Stroke",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/signal/blossom.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

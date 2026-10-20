@@ -1,0 +1,138 @@
+---
+title: Activity & conversations
+description: "What people said and did: threads, doc comments, feeds, inboxes, versions, chat, calls and feedback."
+---
+
+<BlockStories>
+
+<BlockStory id="comment-thread" label="Comment thread" block="activity-comment-thread" story="Default" backdrop="heather">
+
+The discussion on a record: threads of a comment and its replies on a rail, written in markdown-lite with @mentions that autocomplete at the caret, emoji reactions that pop, edit in place, delete with a confirmation, and resolve, which folds a thread to one line. A comment shows the moment it's sent and settles when `onPost` resolves; one that fails stays with Retry and Discard. In the demo, Mara starts typing a few seconds in, then replies.
+
+</BlockStory>
+
+<BlockStory id="doc-comments" label="Doc comments" block="activity-doc-comments" story="Default" backdrop="heather">
+
+A document with comments pinned to its words, the way Google Docs does it: highlights in the text and a rail of threads beside them, each level with its words, the one you open set right against them and the rest pushed clear. Select a few words and press Comment to start a thread on them. Below 48rem of its own width, the rail becomes a list under the document.
+
+</BlockStory>
+
+<BlockStory id="feed" label="Activity feed" block="activity-feed" story="Default" backdrop="heather">
+
+A project's activity by day: one sentence a row, with what it carried under it (a comment's words, a change as from → to, labels, a deploy's outcome, the commits). Repeats fold together, filters pick a kind and people, and new events arrive live, waiting behind an "N new" pill while you're reading so nothing moves under your eyes.
+
+</BlockStory>
+
+<BlockStory id="inbox" label="Inbox" block="activity-inbox" story="Default" backdrop="heather">
+
+The notifications triage panel, for a popover or a side panel. One row per thread with its latest words; approve, decline or reply in place; snooze to later today, tomorrow or next week; mark done with Undo. A thread with news is unread again. Every move is a key.
+
+</BlockStory>
+
+<BlockStory id="version-history" label="Version history" block="activity-version-history" story="Default" backdrop="heather">
+
+A document's versions by day beside the document as it was, with what changed marked word by word and changed properties as before → after. Compare with the version before, the current one or a named one, step through the changes, name a version, or restore one: the restore lands on top as a new version, so nothing is lost.
+
+</BlockStory>
+
+<BlockStory id="support-chat" label="Support chat" block="app-support-chat" story="Home" accent backdrop="heather">
+
+A support widget: a launcher with an unread count opens a panel with your team, recent conversations and a help search. Conversations start with an assistant that streams replies, takes attachments and hands off to a person.
+
+</BlockStory>
+
+<BlockStory id="voice-call" label="Voice call" block="app-voice-call" story="SupportCall" accent backdrop="heather">
+
+A call with a voice agent: its name and what it is doing, the call clock, a [Voice Orb](/docs/components/voice-orb), the caption line, and the controls a call needs. Mute grays the orb and stops it hearing, the speaker volume sits beside a meter of the voice, and End call leaves the call ended with how long it lasted and Call again. Its stories show the call muted and ended.
+
+</BlockStory>
+
+<BlockStory id="feedback" label="Feedback" block="app-feedback" story="Survey" backdrop="heather">
+
+An in-product NPS survey: a card that slides into the corner without taking focus, with a 0 to 10 scale, a follow-up question that changes with the score and Not now or dismiss with Undo. A floating Feedback widget is also in the block.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Keyboard" summary="composer, mentions, threads, feed, versions, triage">
+
+### Keyboard
+
+| Where | Keys | What they do |
+| --- | --- | --- |
+| Any composer | ⌘/Ctrl + Enter | Send |
+| | Esc | Cancel an edit or a reply |
+| | ↑ in an empty composer | Edit your last comment |
+| | ⌘/Ctrl + B, I, E | Bold, italic, code |
+| | @ | Mention someone: ↑ ↓ to choose, Enter or Tab to insert, Esc to close |
+| Doc comments | ⌘⌥M / Ctrl+Alt+M | Comment on the selected words |
+| | Alt + ↑ / ↓ | Previous or next thread |
+| | Enter on a highlight | Open its thread and go to it |
+| Activity feed | PageUp / PageDown | Previous or next row |
+| | Ctrl + Home / End | Leave the feed before its start or after its end |
+| Version history | ↑ ↓, Home, End in the list | Pick a version |
+| | Alt + ↑ / ↓ | Previous or next change |
+| Inbox | ↑ ↓ or J K, Home, End | Move between notifications |
+| | Enter | Open (and mark read) |
+| | E, S, R, U | Done, snooze, reply, read or unread |
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="articles, feeds, live regions, motion">
+
+### Accessibility
+
+Comments are `article`s named by their author and described by their time, in lists. The composer is a labelled textarea whose shortcuts are its description; the mention list is a `listbox` the field drives with `aria-activedescendant`, so focus never leaves the text, and the number of matches is announced. Reactions are toggle buttons (`aria-pressed`) named with the emoji's name, the count and who reacted. Sent, edited, deleted and resolved comments, new replies and failures are announced; failures use `role="alert"`.
+
+In Doc comments each highlight is a button in the text, named by its words and described by its comments, one tab stop per thread; the rail is a list in document order, each thread a group named by its quote.
+
+The activity feed is a WAI-ARIA `feed` of `article`s with `aria-posinset` and `aria-setsize` (−1 while older events can load), busy while they load, under a heading per day. Arrivals are announced once, whether they come in at once or wait behind the pill.
+
+The inbox's rows are one tab stop between them (the current row's tools join it), named by their sentence with "Unread" first when they are; its keys are listed in each tool's `aria-keyshortcuts`.
+
+The version list is a `listbox` with groups per day; changes are real `ins` and `del` elements that say "Added" and "Removed" to a screen reader, each a stop for Previous and Next change.
+
+The support chat is an `aside` named for the product. On desktop the panel is a popover, on phones a full-screen sheet; Escape closes it and focus returns to the launcher. A polite `role="status"` line reports the header's status.
+
+The voice call's orb is an image named by the agent and its state, and state changes are announced politely; the clock is a `role="timer"`, Mute is a toggle with `aria-pressed`, the volume is a labeled slider and the voice level a meter, End call and Call again are named buttons, and the caption line is a polite live region. Muting grays the orb and empties the meter while the agent listens.
+
+The survey card is a labelled `region` that does not steal focus when it appears, and focus returns to the page when it leaves. The 0 to 10 scale is one radio group: each score is named by its number, the arrow keys move through it. The feedback widget's type is a labelled segmented control, the message sends with Cmd or Ctrl and Enter.
+
+Under reduced motion new rows and comments appear in place, threads fold instantly, reactions don't pop and the rail's cards jump to their places.
+
+Under reduced motion cards appear in place and replies arrive whole.
+
+</ReferenceRow>
+
+</BlockStories>

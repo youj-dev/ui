@@ -1,0 +1,152 @@
+---
+title: Live Cursors
+description: "Show who is on a shared surface and where they point: cursors, names, chat bubbles and selections, fed by your own realtime channel."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="live-cursors/demo" height={400} />
+
+Three simulated people in a design file: two editing, one typing a comment. Move your pointer over the canvas: it goes out through `useLiveCursorsInput` and comes straight back as the "You" cursor.
+
+Updates arrive a few times a second, as they would over a socket, and each cursor springs between them.
+
+</Story>
+
+<Story id="follow-a-user" label="Follow a user">
+
+<ComponentPreview name="live-cursors/follow" height={380} />
+
+A board larger than its view. Press Ada's avatar to follow her: her cursor is scrolled into view as she moves. Press it again to stop.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="live-cursors" noImport />
+
+Use live cursors on anything several people work on at once: a design canvas, a whiteboard, a shared document, a dashboard being reviewed together. Youj has no transport of its own: you send the local pointer over whatever you already use (WebSockets, WebRTC, Liveblocks, Supabase Realtime, a CRDT's awareness) and pass everyone else back in.
+
+```tsx
+import { LiveCursors, PresenceAvatars, useLiveCursorsInput, type LiveCursorUser } from '@youj/react'
+
+const surface = useRef<HTMLDivElement>(null)
+const [others, setOthers] = useState<LiveCursorUser[]>([])
+const [following, setFollowing] = useState<string | null>(null)
+
+// Send your pointer: { x, y } in fractions of the surface, or null when it leaves.
+useLiveCursorsInput(surface, (position) => channel.send({ id: me.id, name: me.name, ...position }))
+// Receive everyone else's into `others` (leave yourself out).
+useEffect(() => channel.onPresence(setOthers), [])
+
+<PresenceAvatars users={others} following={following} onFollowingChange={setFollowing} />
+<LiveCursors ref={surface} users={others} following={following}>
+  <Canvas />
+</LiveCursors>
+```
+
+`LiveCursors` wraps the surface (it renders a `relative` box around its children) and draws a cursor for each person in `users` with an `x` and `y`. Positions are fractions of the surface, 0 to 1 from the top left, so a person on a wide screen and one on a phone point at the same spot. Leave `x` and `y` out while someone's pointer is elsewhere and their cursor goes; remove them from `users` when they leave.
+
+Each person has a `color`, by default one of the theme's five chart colors picked from their `id`, so every screen gives them the same one. Five colors mean two people can share one; pass `color` (a slot your server hands out, say) where they must differ. The name tag's text turns black or white for contrast. A `message` shows as a chat bubble under the name, and `selection` draws their selected areas as tinted rectangles.
+
+Updates can be sparse: each cursor springs to its newest position, all of them on one animation loop that stops when they rest or the surface scrolls out of view. A cursor that hasn't moved for `idleAfter` milliseconds (10 seconds by default; `0` keeps them) fades out until it moves or speaks again.
+
+`useLiveCursorsInput(ref, onMove, { throttle })` reports the pointer at most every `throttle` milliseconds (50 by default), always ending on the last move, and `null` when it leaves the surface.
+
+`PresenceAvatars` shows who is here, with each person's color as a ring and their `status` ("Viewing" or "Editing") in a tooltip. Give it `following` and `onFollowingChange` and each avatar becomes a button that follows that person: pass the same `following` to `LiveCursors`, which scrolls their cursor into view as they move. Without them, the avatars only show who's here. Past `max` (5) the rest are counted.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="users, following, idleAfter… (17)">
+
+### Props
+
+#### LiveCursors
+
+<PropsTable name="LiveCursors" />
+
+#### PresenceAvatars
+
+<PropsTable name="PresenceAvatars" />
+
+#### LiveCursorUser
+
+| Field | Type | |
+| --- | --- | --- |
+| `id` | `string` | Stable across updates: it keys the cursor and picks the color. |
+| `name` | `string` | The name tag. |
+| `x`, `y` | `number` | Where their pointer is, as fractions of the surface. Leave both out while it's elsewhere. |
+| `color` | `string` | Any CSS color. Default: a chart color chosen by `id`. |
+| `message` | `string` | A chat bubble under the name. |
+| `selection` | `LiveCursorRect[]` | Selected areas, `{ x, y, width, height }` in fractions. |
+| `status` | `'viewing' \| 'editing'` | Shown in PresenceAvatars' tooltip. |
+| `src` | `string` | An avatar image. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `live-cursors` (with `data-yj-following` while a placed person is followed), `live-cursors-overlay`, `live-cursor` (with `data-yj-idle` once faded and `data-yj-following`), `live-cursor-name`, `live-cursor-message`, `live-cursor-selection`, `live-cursors-follow-anchor`, `presence-avatars`, `presence-avatar` (with `data-status`: `viewing` or `editing`, and `aria-pressed` while followed) and `presence-avatars-more`. Each cursor, selection and avatar sets `--ui--live-cursor` to the person's color. The overlay is left to right whatever the page's direction: a position is the same spot on every screen.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Glide, enter, leave, idle · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Cursor moves', note: 'each cursor springs to its newest position, all on one animation loop that stops when they rest or the surface is off screen', spring: 'snappy' },
+    { moment: 'Someone arrives or leaves', note: 'the cursor scales up from its tip, or shrinks away', duration: 'fast', ease: 'enter' },
+    { moment: 'Chat bubble', note: 'pops in under the name and out when the message clears', duration: 'fast', ease: 'enter' },
+    { moment: 'Idle', note: 'a cursor that stops moving fades out after idleAfter', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="Cursors jump to each update, and appear, go idle and leave at once."
+/>
+
+#### Reduced motion
+
+Each cursor jumps to its newest position; cursors, bubbles and selections appear and go without fades or scaling, and following scrolls without smoothing.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Hidden cursors, announcements, avatars">
+
+### Accessibility
+
+- The cursors, bubbles and selections are decorative and hidden from screen readers; the surface's own content stays as it is.
+- A polite live region announces who joined and who left ("Joan and Kenji joined. Grace left"), not who was already there. Turn it off with `announce={false}` where the app announces presence itself.
+- PresenceAvatars is a group named "People here" (or `label`). With following, each avatar is a toggle button named "Follow Ada", pressed while followed, and starting to follow is announced ("Following Ada"); without it, each is an image named with the person and their status ("Ada, Editing").
+- Its words come from the labels (`liveCursorsJoined`, `liveCursorsLeft`, `liveCursorsPeople`, `liveCursorsViewing`, `liveCursorsEditing`, `liveCursorsFollow`, `liveCursorsFollowing` and `liveCursorsMore`), translated by the language packs; lists of names are formatted by Intl in the locale.
+
+</ReferenceRow>

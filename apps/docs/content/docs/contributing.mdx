@@ -1,0 +1,240 @@
+---
+title: Contributing and credits
+sidebarTitle: Contributing & credits
+description: "Work on Youj itself: how the monorepo is laid out, how to run it, the checks a change passes and how to propose one, and the open-source projects Youj builds on."
+---
+
+<PageArt art="contributing" />
+
+Youj is built in one pnpm monorepo: one package per product, sharing one design language and released together at one version. This page is for changing Youj itself. To use it in an app, start with [Installation](/docs/installation).
+
+## Set up
+
+You need Node.js 22.18 or newer (`.nvmrc` pins what CI runs; the published packages need 22 or later) and pnpm 10 (`corepack enable` installs the pinned version). Clone the [repository](repo:), then install from its root:
+
+```bash
+pnpm install
+```
+
+pnpm installs every package and app in the workspace at once, and links them to each other.
+
+## How the repo is laid out
+
+| Folder | Package | What |
+| --- | --- | --- |
+| `packages/core` | `@youj/core` | Tokens, `YoujProvider` and `useYouj`, themes, labels and the sound cue bus |
+| `packages/motion` | `@youj/motion` | Motion primitives, transitions, effects, interactions, backgrounds and the Lottie player |
+| `packages/ui` | `@youj/react` | The accessible components, animated through `@youj/motion`, and the blocks |
+| `packages/loaders` | `@youj/loaders` | The loading animations |
+| `packages/miniatures` | `@youj/miniatures` | Interactive isometric objects, one entry each |
+| `packages/icons` | `@youj/icons` | The animated icon set and its engine |
+| `packages/illustrations` | `@youj/illustrations` | The isometric kit, the scenes, and the illustration builder's scene format and renderer |
+| `packages/sound` | `@youj/sound` | Interface sounds, the Glass pack and custom packs |
+| `packages/cli` | `youj` | The [CLI](/docs/cli) |
+| `packages/mcp` | `@youj/mcp` | The [MCP server](/docs/mcp) |
+| `packages/figma` | `@youj/figma` (private) | The Figma plugin that builds the [Figma kit](/docs/figma) from the real tokens |
+| `apps/docs` | `docs` | This site, which also hosts the registry at `/r` |
+| `apps/promo` | `promo` | The promo film, rendered from the real components |
+
+`scripts/` holds the workspace's own tools (the import check, the release, the consumer smoke tests), and `tests/` the Playwright suites that run over Storybook.
+
+Each package has a `CONTRIBUTING.md` with its own rules. Two rules hold across all of them:
+
+- **Dependencies point one way.** Motion, loaders, icons, illustrations and sound build on core; miniatures needs only React; ui builds on core, motion and icons. Never the reverse: core imports no other Youj package, and motion imports no icon or scene. `pnpm check:imports` fails on a package importing one it doesn't declare.
+- **Source mirrors the install path.** The `src/` folders of motion, icons and illustrations match where `youj add` copies their files (`lib/youj/`, `components/youj/icons/`, `components/youj/graphics/`), so copied files keep their relative imports.
+
+## Run it
+
+```bash
+pnpm storybook          # http://localhost:6006
+pnpm -F docs dev        # http://localhost:3100
+```
+
+**Storybook** is where components are built and reviewed. One Storybook at the root shows every package, and its toolbar sets the theme (light or dark), the preset, reduced motion, the speed and the text direction. Check every change there in both themes, with reduced motion, and at more than one speed.
+
+**The docs site** runs its generate step first (props tables, the registry, the gallery data), so the first start takes a moment. [apps/docs/README.md](repo:file/apps/docs/README.md) explains how it's built.
+
+## Scripts
+
+Run these from the repository root:
+
+| Script | What it does |
+| --- | --- |
+| `pnpm typecheck` | Typechecks every package and app. |
+| `pnpm test` | Runs every package's tests. |
+| `pnpm verify` | The full gate: the import, changeset and public API checks, then each package's own `verify` (typecheck, token lint, generated-file and registry checks, tests), then the package check. |
+| `pnpm check:imports` | Fails on a package importing one it doesn't declare. |
+| `pnpm check:api` | Fails when a package's public API (its exports, signatures, defaults and props) changed and its snapshot in `api/` didn't. `pnpm api:update` rewrites the snapshot. |
+| `pnpm check:changesets` | Fails on a changeset that asks for a major bump while the packages are 0.x, which would publish 1.0.0. |
+| `pnpm check:packages` | Builds and packs every published package as a dry run (no tarball), and fails on a broken build or a manifest entry missing from the package. |
+| `pnpm build-storybook` | Builds Storybook as a static site. |
+| `pnpm test:a11y` | Runs the accessibility checks (axe, and touch target sizes) over the stories. |
+| `pnpm test:visual` | Runs the visual regression suite in Docker. `pnpm test:visual:update` refreshes its baselines. |
+| `pnpm smoke` | Packs the packages, installs them into fresh apps (Next.js and Vite on React 19), builds them and renders them in a browser. |
+
+To run a script for one package, filter by its name:
+
+```bash
+pnpm -F @youj/motion test
+pnpm -F @youj/react verify
+pnpm -F youj test
+pnpm -F docs typecheck
+```
+
+`verify` is what CI checks, so run it for each package you changed before you open a pull request.
+
+## Conventions
+
+### Tokens only
+
+- **Colors are semantic tokens**: `bg-canvas`, `bg-surface`, `text-fg`, `text-fg-muted`, `border-line`, `bg-accent` and the rest. No raw colors and no stock Tailwind palette.
+- **Sizes come from the theme**: heights from `h-control*`, type from `text-ui*`, and radius and density from the theme contract.
+- **A component's classes that a style recipe also sets carry `own:`**, so an app's `className` beats the recipe. Don't write them by hand: `node packages/ui/scripts/codemods/own-variant.mjs` writes them (`ui:add` runs it on new components), and `lint:tokens` checks them.
+- **Timing comes from the [motion tokens](/docs/motion/tokens)**: `useYouj()` in JavaScript, `yj-duration-*` and `ease-*` in CSS. Never a hard-coded duration or curve, and never `transition-all` or a stock `duration-*`.
+
+`pnpm -F <package> lint:tokens` enforces this, and `verify` runs it. Mark a justified exception on its own line with `// youj-allow: <reason>`.
+
+### Motion
+
+- Every animation has a designed reduced-motion state that tells the reader the same thing. Loops stop; scroll and pointer effects switch off.
+- The time scale reaches everything, including `requestAnimationFrame` loops and shaders.
+- Motion elements are `m.*` from `motion/react`, inside `MotionFeatures`, so apps load Motion's engine on demand.
+- Animate `transform`, `opacity`, `clip-path`, `filter` and SVG `pathLength` only. Pause offscreen loops and clean up every frame, observer and GL context.
+
+### Components
+
+- Accessibility isn't optional: correct roles, full keyboard support, visible focus rings, and live-region announcements where state changes silently.
+- Inside a package, import with relative paths, never the `@/` alias, so the source works both as a package and as copied files.
+- A component that needs a reusable motion behavior takes it from `@youj/motion`. A component never animates on its own terms.
+- A new component starts from shadcn's source through the package's wrapper, `pnpm -F @youj/react ui:add <name>`, which rewrites it to Youj's conventions. [packages/ui/CONTRIBUTING.md](repo:file/packages/ui/CONTRIBUTING.md) lists the steps that finish it.
+- Don't add dependencies casually. Say in the pull request what you need and why; a heavy one becomes an optional peer with its own entry.
+
+### Building a block
+
+A block is a page-sized composition in `packages/ui/src/blocks/<group>/<name>.tsx`, built only from public components, and usable without editing its source. Every block follows one API, which its docs page turns into Usage and Props (see [Dashboards](/docs/blocks/dashboards) for one):
+
+- **Data** comes in through domain-noun props (`kpis`, `members`, `plans`) typed by block-prefixed interfaces (`DashboardKpi`) in its `data.ts`. The defaults are the demo's data.
+- **Strings** go through `copy?: Partial<XCopy>`: every visible string, aria-labels and toasts included, with a function for any string that holds a value.
+- **Theme and locale** come from the app: the block renders `<ThemeScope theme={theme}>` with `theme` undefined by default, and formats in `useLocale(locale)`, never `'en-US'`. A showcase look goes in the story's `args`.
+- **Actions** are `on<Verb>` callbacks that may return a promise; the block shows them pending, then the rejection's message.
+- **An unwired action** falls back through the block's `demo('<Block>: on<Verb>', ms)`, which plays the demo and warns once in development. A block that simulates live data does it only without its data prop, under a `Demo data` badge (`demoMarker`).
+- **State the app owns** is a `value`/`defaultValue`/`onValueChange` trio (named, like `range`/`defaultRange`/`onRangeChange`, when there are several). Time comes in as `now` or `today`.
+- **Lists and loads** take `loading`, `error` with `onRetry`, and `empty`.
+- **Composition:** `className` and the rest props on the root, named slots (`header`, `actions`, `footer`, `empty`…), `brand` for a product name and logo, and `linkComponent` (default `a`) for links whose `href` comes from the data.
+- A **With your data** story feeds it other data, and its test proves the props drive the content, `copy` rewrites the text and the callbacks fire.
+
+`pnpm -F @youj/react lint:blocks` (part of `verify`) fails on a forced theme, a hard-coded `'en-US'` or a bare `wait()`. A block stays under 400 lines, or keeps its entry and moves its parts to a sibling folder, each under 300. [packages/ui/CONTRIBUTING.md](repo:file/packages/ui/CONTRIBUTING.md) has the full standard.
+
+### Tests and stories
+
+- Every component has tests beside it (`<name>.test.tsx`) that check behavior, not implementation details.
+- Every component has a story (`<name>.stories.tsx`) with at least one story that looks like a real product moment, Controls for its meaningful props, and a reduced-motion story or note.
+
+### Docs and Storybook stay in step
+
+Every component, block and example that ships has a docs page as well as a story. `apps/docs/test/parity.test.ts` fails when one is missing, when a page isn't in its folder's `meta.json`, or when a page doesn't follow the rules in [apps/docs/README.md](repo:file/apps/docs/README.md). A component page shows a live preview, the install command, its motion tokens, reduced-motion behavior and a props table generated from the source.
+
+### Generated files
+
+Some files are generated from the source, and `verify` fails while they're stale. Regenerate them after these changes:
+
+| After you… | Run |
+| --- | --- |
+| Add a component or hook, or change its imports | `pnpm -F @youj/react generate` |
+| Add an icon | `pnpm -F @youj/icons icons:generate` |
+| Add an illustration scene | `pnpm -F @youj/illustrations generate` |
+| Change docs, components or icons the MCP server describes | `pnpm -F @youj/mcp generate` |
+| Change a package's public API: an export, a prop, a default | `pnpm api:update`, and commit `api/` |
+
+## Propose a change
+
+- **Found a bug?** [Open an issue](repo:issues/new) with the component, the browser, the steps to reproduce, and what you expected.
+- **Have a question or an idea?** Start a [discussion](repo:discussions) before writing a large change, so the approach can be agreed first.
+- **Found a vulnerability?** Report it privately, as the [security policy](/security) describes. Don't open a public issue.
+- **Speak one of the translated languages?** [CONTRIBUTING.md](repo:file/CONTRIBUTING.md#improving-a-language) explains how to fix a language pack.
+
+For a pull request:
+
+<Steps>
+<Step>
+
+### Make one change
+
+Keep a pull request to one logical change, with its tests, its story and its docs page in the same pull request.
+
+</Step>
+<Step>
+
+### Describe it for the changelog
+
+If it changes a published package, run `pnpm changeset`, pick the bump and write one line for the changelog. The packages are 0.x, so a breaking change is a minor bump and anything else a patch; never pick major. Commit the file it creates in `.changeset/`.
+
+A diff in `api/` is the cue: a removed or renamed export or prop, or a changed default, is breaking ([what counts](/docs/versioning#what-counts-as-breaking)). Deprecate first where it's cheap: keep the old name working, mark it `@deprecated` in its JSDoc.
+
+</Step>
+<Step>
+
+### Check it
+
+Run `verify` for each package you changed, or `pnpm verify` for all of them. CI also builds the packages, Storybook and this site, checks the bundle size budgets, runs the consumer smoke tests and compares screenshots.
+
+</Step>
+</Steps>
+
+## Credits and licenses
+
+Youj is MIT-licensed. It builds on the open-source projects below, and each is used under its own license. Thank you to everyone who made them.
+
+### Foundations
+
+| Project | What Youj uses it for | License |
+|---|---|---|
+| [shadcn/ui](https://ui.shadcn.com) | `@youj/react` components begin from shadcn's `base-nova` sources, and copied-in items install through the Youj CLI (`npx youj add`), which uses the shadcn registry format and installer | MIT © shadcn |
+| [Base UI](https://base-ui.com) | The accessible, headless primitives behind the components | MIT © MUI |
+| [Motion](https://motion.dev) | The animation runtime every motion token and component runs on | MIT © Motion Division |
+| [Tailwind CSS](https://tailwindcss.com) | Styling and the token layer | MIT © Tailwind Labs |
+| [React](https://react.dev) | Everything | MIT © Meta Platforms |
+
+### Components
+
+| Project | Used by | License |
+|---|---|---|
+| [TanStack Table](https://tanstack.com/table) and [TanStack Virtual](https://tanstack.com/virtual) | The data table kit and blocks, TreeView, long lists | MIT © Tanner Linsley |
+| [cmdk](https://cmdk.paco.me) | Command and CommandPalette | MIT © Paco Coursey |
+| [React Day Picker](https://daypicker.dev) and [date-fns](https://date-fns.org) | Calendar and the date pickers | MIT |
+| [React Hook Form](https://react-hook-form.com), [Zod](https://zod.dev) and [@hookform/resolvers](https://github.com/react-hook-form/resolvers) | Form | MIT |
+| [Recharts](https://recharts.org) | Chart | MIT © recharts group |
+| [Embla Carousel](https://www.embla-carousel.com) | Carousel | MIT © David Jerleke |
+| [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) | Resizable | MIT © Brian Vaughn |
+| [class-variance-authority](https://cva.style) | Component variants | Apache-2.0 © Joe Bell |
+| [clsx](https://github.com/lukeed/clsx) and [tailwind-merge](https://github.com/dcastil/tailwind-merge) | Class names | MIT |
+| [dotLottie](https://github.com/LottieFiles/dotlottie-web) | The Lottie player (optional peer dependency of `@youj/motion`) | MIT |
+| [Clack](https://github.com/bombshell-dev/clack) | The prompts in `npx youj init` | MIT © Nate Moore |
+| [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) | The [Youj MCP server](/docs/mcp), which bundles it | MIT © Anthropic, PBC |
+
+### Icons
+
+The Youj icon set is original work, drawn for Youj, and a geometric check in its test suite compares every icon with Lucide's on each run. `YoujIcon` and `IconSwap` also work with [Lucide](https://lucide.dev) icons, which are used under the ISC license, © Lucide Contributors. The packages don't depend on lucide-react: an app that animates Lucide icons installs it itself.
+
+#### Brand marks
+
+The brand marks below, the `brand` icons and the Google mark in the auth blocks, are trademarks of their owners, drawn from each owner's official asset and included only to refer to their services, following their published guidelines. They aren't covered by Youj's MIT license.
+
+| Mark | Guidelines |
+|---|---|
+| GitHub | [brand.github.com](https://brand.github.com/foundations/logo) |
+| X | [X brand toolkit](https://about.x.com/en/who-we-are/brand-toolkit) |
+| LinkedIn | [brand.linkedin.com](https://brand.linkedin.com/in-logo) |
+| Discord | [discord.com/branding](https://discord.com/branding) |
+| Figma | [Using the Figma brand](https://www.figma.com/using-the-figma-brand/) |
+| Google (auth blocks' sign-in button) | [Sign in with Google branding guidelines](https://developers.google.com/identity/branding-guidelines) |
+
+### Type and media
+
+| Asset | Used for | License |
+|---|---|---|
+| [Inter](https://rsms.me/inter) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) | The docs site, Storybook and the promo film; not shipped in the packages | SIL Open Font License 1.1 |
+| [Geist and Geist Mono](https://vercel.com/font), [IBM Plex](https://www.ibm.com/plex/) (Sans, Serif and Mono), [Manrope](https://github.com/sharanda/manrope), [DM Sans and DM Mono](https://github.com/googlefonts/dm-fonts), [Plus Jakarta Sans](https://github.com/tokotype/PlusJakartaSans), [Outfit](https://github.com/Outfitio/Outfit-Fonts), [Space Grotesk](https://github.com/floriankarsten/space-grotesk) and [Space Mono](https://github.com/googlefonts/spacemono), [Instrument Serif](https://github.com/Instrument/instrument-serif), [Fraunces](https://github.com/undercasetype/Fraunces), [Newsreader](https://github.com/productiontype/Newsreader), [Source Serif 4](https://github.com/adobe-fonts/source-serif) and [Bricolage Grotesque](https://github.com/ateliertriay/bricolage) | The typefaces [Create](/create) and the theme builder offer, self-hosted by this site (Latin subsets) and loaded only when chosen; an export sets up the ones its theme uses. Not shipped in the packages | SIL Open Font License 1.1 |
+| [Remotion](https://www.remotion.dev) | Rendering the promo film; not shipped in the packages | Remotion License |
+
+Each package ships with its `LICENSE`, and the full third-party notices are kept in `THIRD_PARTY_NOTICES.md` alongside the source.

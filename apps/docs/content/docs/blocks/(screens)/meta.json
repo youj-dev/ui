@@ -1,0 +1,25 @@
+{
+  "title": "Screens",
+  "pages": [
+    "api-and-integrations",
+    "assistant",
+    "auth",
+    "billing-and-team",
+    "checkout",
+    "dashboards",
+    "freight",
+    "help-and-search",
+    "landing",
+    "list-detail",
+    "onboarding",
+    "planning",
+    "storefront",
+    "product-updates",
+    "reading",
+    "settings",
+    "status",
+    "surveys",
+    "tables",
+    "workspace-tools"
+  ]
+}

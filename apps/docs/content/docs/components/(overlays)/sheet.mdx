@@ -1,0 +1,184 @@
+---
+title: Sheet
+description: "Open settings, filters or details in a panel that slides from a screen edge."
+aliases: ["drawer", "side panel", "slide over"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="sheet/demo" height={240} />
+
+A project card whose Settings button opens a side sheet with a form that saves after a moment.
+
+</Story>
+
+<Story id="sides" label="Sides">
+
+<ComponentPreview name="sheet/sides" height={200} />
+
+A sheet for each side, from top to end.
+
+`side` picks the edge the sheet slides from: `top`, `right`, `bottom`, `left`, `start` or `end`. The default is `end`. Side sheets fill the height and are up to 24rem wide, leaving a 2.5rem strip of the page visible on a phone. Top and bottom sheets fill the width and stop at 85% of the height.
+
+
+`start` and `end` follow the writing direction: in a right-to-left page, an `end` sheet comes in from the left. Prefer them to `left` and `right` for anything that follows the reading order, such as navigation or details, and keep the physical sides for things tied to the screen itself.
+
+</Story>
+
+<Story id="floating" label="Floating">
+
+<ComponentPreview name="sheet/floating" height={200} />
+
+A floating sheet for a record, with a Item Pager and a Property List.
+
+`variant="floating"` lifts the sheet off its edge: it sits 12px in from every side, takes the theme's panel radius and the largest shadow, and reads as a card over the page rather than a strip of it. Use it for a record opened from a list, where the list should stay in view behind it. `backdrop="blur"` also blurs the page a little under a thinner scrim. Both work on every side; side sheets are up to 28rem wide, top and bottom ones a centered 42rem column.
+
+
+The [Item Pager](/docs/components/item-pager) and [Property List](/docs/components/property-list) in this preview are the pieces a record drawer is built from. On touch a floating sheet becomes the bottom sheet a Dialog becomes there (see Touch below).
+
+</Story>
+
+<Story id="scrolling-content" label="Scrolling content">
+
+<ComponentPreview name="sheet/logs" height={200} />
+
+A sheet of logs that scrolls in its body while the header and footer stay put.
+
+Content taller than the sheet scrolls inside `SheetBody`, while the header and footer hold still. If nothing in the body can take focus, the body makes itself a tab stop once it overflows, so a keyboard can still scroll it. Give it a `role` and an `aria-label` when it's a region worth naming, as the log below does.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="sheet" noImport />
+
+Use Sheet for settings, filters, row details or logs that need more room than a [Dialog](/docs/components/dialog). It is modal, so keep it to one task. Use a [Popover](/docs/components/popover) for quick choices anchored to a button, or a [Drawer](/docs/components/drawer) for swipe dismissal.
+
+```tsx
+import {
+  Button,
+  Sheet,
+  SheetBody,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@youj/react'
+
+export function FiltersSheet() {
+  return (
+    <Sheet>
+      <SheetTrigger render={<Button variant="outline" />}>Filters</SheetTrigger>
+      <SheetContent side="end">
+        <SheetHeader>
+          <SheetTitle>Filters</SheetTitle>
+          <SheetDescription>Narrow the deployments list.</SheetDescription>
+        </SheetHeader>
+        <SheetBody>
+          <DeploymentFilters />
+        </SheetBody>
+        <SheetFooter>
+          <SheetClose render={<Button variant="outline" />}>Cancel</SheetClose>
+          <Button>Apply</Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  )
+}
+```
+
+A sheet is a column: `SheetHeader` and `SheetFooter` stay put while `SheetBody` scrolls between them. `SheetContent` renders the portal, the scrim and the panel, with a × button in its top corner. `Sheet` is Base UI's Dialog root, so `open`, `onOpenChange` and `modal` work as Base UI documents them.
+
+For a form, wrap the header, body and footer in the `<form>` and give it `flex min-h-0 flex-1 flex-col`, so the body still scrolls and the footer's submit button belongs to the form. The Demo story does this, and it ignores close requests while the save runs.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="side, variant, backdrop, showCloseButton (4)">
+
+### Props
+
+`SheetContent` adds four props to Base UI's `Dialog.Popup`.
+
+<PropsTable name="SheetContent" />
+
+`Sheet`, `SheetTrigger`, `SheetClose`, `SheetTitle` and `SheetDescription` pass their props through to Base UI's Dialog parts. `SheetHeader`, `SheetBody` and `SheetFooter` are `div`s.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device a side sheet covers the screen's full width; a floating one is a bottom sheet">
+
+### Touch
+
+On a touch device a side sheet covers the screen's full width, up to 28rem on a tablet, so on a phone it reads as a page laid over the app rather than a panel with a sliver of page beside it. The × gets a 44px target, the content clears the notch and the home indicator, and the footer's actions share its width at 44px tall.
+
+A floating sheet is different on touch: it becomes the bottom sheet a [Dialog](/docs/components/dialog) becomes there, with a grab handle, its body scrolling up to 90% of the screen, and pulled down to dismiss. Its header, body and footer keep their layout.
+
+A docked sheet doesn't follow the finger. For a panel people pull away, which is what a bottom sheet on a phone usually wants, use [Drawer](/docs/components/drawer). A [Dialog](/docs/components/dialog) already becomes a pull-to-dismiss bottom sheet on touch.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, exit, scrim in… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'slides fully in from its edge (`yj-sheet-*`)', duration: 'slow', ease: 'enter' },
+    { moment: 'Exit', note: 'slides back off the same edge', duration: 'base', ease: 'exit' },
+    { moment: 'Scrim in', note: 'opacity (`yj-backdrop`)', duration: 'base', ease: 'standard' },
+    { moment: 'Scrim out', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The sheet and its scrim appear and disappear at once, with no slide."
+/>
+
+A floating sheet travels past its 12px gap too (`--yj-sheet-gap`), so nothing of it is left at the edge. With `backdrop="blur"` the blur is static and fades in with the scrim's opacity.
+
+Only `transform` moves, so the slide never triggers layout. It runs on a CSS transition, so closing a sheet halfway in sends it back from where it is.
+
+#### Reduced motion
+
+The sheet is in place the moment it opens and gone the moment it closes, and the scrim does the same. Nothing else changes: focus, scrolling and dismissal behave exactly as they do with motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- A sheet is a modal dialog: `role="dialog"`, named by `SheetTitle` and described by `SheetDescription`. Always render a title.
+- Focus moves to the first control in the sheet when it opens, and stays inside it until it closes. The page behind is hidden from assistive technology and doesn't scroll.
+- Escape, a press on the scrim and the × button (named "Close") close it, and focus returns to the trigger.
+- The scrolling body becomes a tab stop only when it overflows with nothing focusable inside, so it never adds a pointless stop.
+
+</ReferenceRow>

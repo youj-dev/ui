@@ -1,0 +1,147 @@
+---
+title: Timeline
+description: "Show an activity feed grouped by day, with space made for new events."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="timeline/demo" height={620} />
+
+An activity feed with a Simulate event button and a Load more for older events.
+
+A timeline is always **newest first**: it sorts `events` by `time`, whatever their order, and groups them under Today, Yesterday and dated headings, so the latest event is at the top and older ones load at the bottom. Add an event to the front of `events` while the feed is on screen, as Simulate event does in the demo. It fades into its slot at the top while the events below glide down to make room, and its mark plays once. `onLoadMore` with `hasMore` adds a Load more button that shows a spinner while the promise runs. Older events join the bottom the same way, and once `hasMore` is false the feed says "That's everything."
+
+`details` adds a Details toggle under an event that opens in place, for a build log, a stack trace or the commits in a push. `meta` puts a badge or a link at the end of the event's line.
+
+</Story>
+
+<Story id="your-own-event-types" label="Your own event types">
+
+<ComponentPreview name="timeline/types" height={300} />
+
+Two custom event types, an invoice and a new member, beside the built-in comment.
+
+The built-in types are `commit`, `comment`, `deploy`, `alert`, `merge` and `pull-request`. `types` adds your own, or replaces them. Each one names an icon, a tone (`neutral`, `accent`, `success`, `warning` or `danger`) and the label a screen reader hears before the title.
+
+</Story>
+
+<Story id="comments" label="Comments">
+
+<ComponentPreview name="timeline/comments" height={420} />
+
+An issue's activity: comments beside status changes, with a comment box above the feed.
+
+A comment is an event of the built-in `comment` type whose `title` is what the person wrote; the timeline puts their name and avatar before it. Since the feed is newest first, put the composer above it, not below as a chat would: a posted comment then lands right under the box, fades into its slot and is announced. Add your own types (here `status`) for the other things that happen to the record. For a thread that reads oldest first, with replies and reactions, use the [Comment thread](/docs/blocks/activity-and-conversations) block instead.
+
+```tsx
+const post = (text: string) =>
+  setEvents((list) => [{ id: crypto.randomUUID(), type: 'comment', actor: me, title: text, time: new Date() }, ...list])
+```
+
+</Story>
+
+<Story id="empty" label="Empty">
+
+<ComponentPreview name="timeline/empty" height={220} />
+
+A timeline with no events.
+
+With no events the feed says so. Pass `empty` to say something more specific.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="timeline" noImport />
+
+Use a timeline for what happened, in order: deploys, commits, comments and alerts on a project, or the history of an order or an account. Each event has a typed mark on a rail, who did it, when, and optional details that open in place. For a list of things people act on (read, archive, snooze), use [Notification Center](/docs/components/notification-center). For records people sort and filter, use a [data table](/docs/blocks/tables-and-lists).
+
+```tsx
+import { Timeline, type TimelineEvent } from '@youj/react'
+
+const events: TimelineEvent[] = [
+  { id: 'e1', type: 'deploy', actor: { name: 'Mira Chen' }, title: 'deployed web@4f2c91a to production', time: '2026-09-27T09:41:00Z' },
+  { id: 'e2', type: 'comment', actor: { name: 'Jonas Weber' }, title: 'commented on #482', time: '2026-09-27T08:15:00Z' },
+]
+
+export function Activity() {
+  return <Timeline events={events} />
+}
+```
+
+Pass events in any order. The timeline sorts them newest first and groups them under Today, Yesterday and dated headings. Each time reads as "5 min ago" today and as a clock time on older days, and it stays true: the feed re-renders every minute. Pass `now` to pin the clock instead, so a demo or a test reads the same on any day.
+
+Keep the actor out of `title`: the timeline shows the name, with an avatar, before it. When `title` is JSX, pass a plain-text `summary` too, for the announcement when the event arrives live.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="events, types, onLoadMore… (7)">
+
+### Props
+
+<PropsTable name="Timeline" />
+
+An event (`TimelineEvent`) has an `id`, a `type`, a `title`, a `time` (a `Date`, an ISO string or a timestamp), and optionally an `actor` (`name`, `avatar`), a plain-text `summary`, `details` and `meta`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Event arrives, events below, event leaves… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Event arrives', note: 'fades down 6px into its slot at the top (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Events below', note: 'glide down to make room', spring: 'smooth' },
+    { moment: 'Event leaves', duration: 'fast', ease: 'exit' },
+    { moment: 'Mark', note: 'an arriving event’s icon plays once; every mark plays while its row is hovered' },
+    { moment: 'Details', note: 'height and opacity (Collapse)', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Events appear and leave in place, details open at once and the marks stay still."
+/>
+
+#### Reduced motion
+
+New events take their place at once and the list below doesn't glide. Details open and close instantly, and the marks don't play. What's announced, and when, is unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- Each day is a section with a heading and an ordered list of its events.
+- Every event starts with its type in words, "Deploy:", before who did it and what, because the mark is decorative.
+- Times are `<time>` elements with the full date and time in `datetime` and on hover.
+- A live arrival is announced once in a polite live region, as "Deploy: Mira Chen deployed web@4f2c91a to production". Loaded history isn't announced as news.
+- Details toggles are disclosure buttons with `aria-expanded` and `aria-controls`. Load more announces "Loading older activity" while it runs.
+
+</ReferenceRow>

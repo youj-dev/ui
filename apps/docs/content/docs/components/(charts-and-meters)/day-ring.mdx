@@ -1,0 +1,113 @@
+---
+title: Day Ring
+description: "Show scheduled runs on a daily dial, with overlaps and the next run highlighted, such as a job schedule."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="day-ring/demo" height={460} />
+
+Five scheduled jobs on a 24-hour ring in UTC, where you can highlight one job and see how many runs overlap.
+
+Runs collide when runs of two or more jobs share any minute; runs that only touch (one ends as the next starts) don't. A run without a duration counts as one minute, and a collision across midnight is one collision. `findOverlaps(jobs)` returns them (`start`, `end` in minutes, which passes 1440 across midnight, and the `jobs` involved), so your list can say who collides and when.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="day-ring" noImport />
+
+Use a day ring where people plan recurring work around the clock: cron jobs, backups, report exports, maintenance windows. Each job gets its own track, so a day of runs reads at a glance, and where runs of different jobs collide a warning zone brackets them and a marker points at it from outside the ruler. For a timeline of what already happened, use a [Timeline](/docs/components/timeline); for one bounded value, a [Gauge](/docs/components/gauge).
+
+```tsx
+import { DayRing, findOverlaps } from '@youj/react'
+
+const jobs = [
+  { id: 'backup', name: 'backup-db', runs: [120], duration: 40 },
+  { id: 'reindex', name: 'reindex-search', runs: [150], duration: 25 },
+  { id: 'sync', name: 'sync-crm', runs: [15, 255, 495, 735, 975, 1215], duration: 10 },
+]
+
+<DayRing jobs={jobs} timeZone="UTC" />
+findOverlaps(jobs) // [{ start: 150, end: 160, jobs: ['backup', 'reindex'] }]
+```
+
+`runs` are the starts today, in minutes after midnight, in `timeZone` (default: the browser's). A job with a `duration` draws its runs as arcs as long as they take; without one, as ticks. `tone` picks the job's color (the chart colors in turn by default), and `paused` draws it dim and dashed and leaves it out of every collision. `highlight` keeps one job lit, dims the rest and counts down to its next run: point it at the row a person is hovering in your own list. `now` pins the clock (tests, screenshots); by default it's live, and on the server there's no hand or countdown until the browser has the time.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="jobs, now, timeZone… (7)">
+
+### Props
+
+<PropsTable name="DayRing" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `day-ring`, `day-ring-svg`, `day-ring-ruler`, `day-ring-elapsed`, `day-ring-hour`, `day-ring-track`, `day-ring-overlap` (with `data-jobs`), `day-ring-runs` (a job's group, with `data-job`, `data-tone`, `data-paused`, `data-highlighted` and `data-dimmed`), `day-ring-run` (with `data-minute`), `day-ring-hand`, `day-ring-center`, `day-ring-label`, `day-ring-next`, `day-ring-value` and `day-ring-description`. It fills its box's width up to 20rem; the center's type scales with it.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, hand, A run moves… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'the runs appear as a radar pass: each fades in a step later the further round the day it sits', duration: 'deliberate' },
+    { moment: 'Hand', note: 'turns from midnight to now on the smooth spring, with the elapsed shading on the same spring; then it steps each minute', spring: 'smooth' },
+    { moment: 'A run moves', note: 'it glides round its track to the new time', duration: 'slow', ease: 'standard' },
+    { moment: 'Highlight', note: 'the other jobs fade down', duration: 'fast', ease: 'standard' },
+    { moment: 'Collisions', note: 'zones fade in and out as runs move or jobs pause', duration: 'base', ease: 'enter' },
+  ]}
+  reduced="Drawn in place; a run that moves jumps. The countdown still ticks."
+/>
+
+#### Reduced motion
+
+Every run and the hand are drawn in place, with no radar pass; runs that move jump. The countdown keeps ticking: it's information, not motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- The ring is an image (`role="img"`) named by `label` (default: the labels' "Daily schedule") and described in words: how many runs a day, how many collisions, the next run, and one sentence per collision ("backup-db and reindex-search overlap at 02:30").
+- The countdown isn't live, so it doesn't talk every second; announce a start yourself if the page needs it.
+- A dial turns clockwise in every script, so the ring keeps its direction under RTL; the text in the center follows the page.
+- Its words come from the labels (`dayRing`, `nextRun`, `runsIn`, `scheduleRunAt`, `scheduleRuns`, `scheduleOverlaps`, `scheduleOverlapAt`), translated by the language packs.
+
+</ReferenceRow>

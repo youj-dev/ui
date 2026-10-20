@@ -1,0 +1,108 @@
+---
+title: Import mapper
+description: "Bring a CSV into an app: choose a file, match its columns to your fields, fix only the rows with problems and import."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Import a CSV">
+
+<ComponentPreview name="import-mapper/page" height={760} />
+
+Bringing a CSV of contacts or orders into the app in two screens and a result. Drop a file (or press Use sample) and you land on the mapping: the file on top, then each of its columns with a sample value and the field it goes to. Confident matches stay quiet; a guess is marked "Check", and a required field with no column says so with a picker for it. Above the button, what needs attention in plain words: Review opens a sheet with only those rows and just the wrong value to fix, or Skip them; duplicates are a question (update, skip or add as new). The button says what will happen ("Import 44 contacts") and stays off only while a required field is unmatched. The result shows what was imported and skipped, with the skipped rows to download.
+
+</Story>
+
+<Story id="dialog" label="In a dialog">
+
+<ComponentPreview name="import-mapper/dialog" height={700} />
+
+The same import in a compact card for a dialog about 500px wide. Pass `variant="dialog"` and it splits the work over two steps with one footer: the file and its columns with the field each goes to, then **Start over** or **Continue**. Continue opens what needs attention (Review and Skip them for the rows with problems, and the question about duplicates) with **Back** and the button that says what will happen. The result and the skipped rows to download are unchanged.
+
+Continue waits while a required field has no column, and that field's picker sits right above the list. Every control in this variant is one height, and the missing field is a plain line rather than a box.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="import-mapper" noImport />
+
+Use an Import mapper where people bring a file of records into your app: contacts, orders, stock. For a table that only shows data, use the [Data table](/docs/components/data-table); for the other direction, the [Export dialog](/docs/components/export-dialog).
+
+Describe what can be imported with `fields` (an `id`, a `label`, a `type` of `text`, `email`, `number` or `date`, `required`, and `synonyms` the matching also tries), say which one tells whether a record already exists with `keyField` (it is found for you from the first email or required field, and can be changed under More options), and pass the values of it that already exist in `existing`. Nothing leaves the browser until `onImport(rows, context)` is called with the rows to create or update (each has its `row` number, its `values` by field id and an `action`); resolve with the counts if your server's differ, reject to stop with the message shown, and report progress with `context.onProgress(done)`. Without `onImport` a short demo wait stands in, and without `fields` the card shows the demo's six contact fields.
+
+```tsx
+<ImportMapper
+  fields={[
+    { id: 'sku', label: 'SKU', required: true, synonyms: ['item code'] },
+    { id: 'qty', label: 'Quantity', type: 'number' },
+  ]}
+  keyField="sku"
+  existing={await loadSkus()}
+  onImport={async (rows, { onProgress }) => {
+    for (const [i, row] of rows.entries()) {
+      await save(row)
+      onProgress(i + 1)
+    }
+  }}
+/>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="fields, keyField, existing, onImport, variant, copy…">
+
+### Props
+
+<PropsTable name="ImportMapper" />
+
+#### The CSV reader
+
+The reader is the component's own and follows RFC 4180: quoted values may hold the delimiter, line breaks and doubled quotes, any line ending works, a byte-order mark is dropped and blank lines are skipped. The delimiter (comma, semicolon or tab) is found for you. Rows with too many or too few values are padded or cut and listed; a quote that never closes keeps you on the drop zone with the line named. Dates are read as `2026-03-14` or as day-first or month-first with slashes; numbers may carry thousands commas.
+
+</ReferenceRow>
+
+<ReferenceRow title="Labels" summary="Every string, in every built-in language">
+
+### Labels
+
+Every string is a core label (`importMapper…`) in every built-in language, so the provider's `locale` or `labels` (see [Internationalization](/docs/guides/i18n)) rewrites them, and `copy` rewrites any of them for one instance. The noun in "Import 44 contacts" is `importMapperItems` (and `importMapperDuplicatesFound`), so rewrite those with `copy` for orders or SKUs. `onDone` adds a Done button to the result.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Focus, announcements, motion">
+
+### Accessibility
+
+- The card is a section named by its title. A screen change (file, mapping, result) crossfades and moves focus to the first thing in the new screen; in the dialog variant, Continue and Back move focus to the control that replaces them. With reduced motion the screens swap at once.
+- Each column's field select is named by its column; a guessed match says "Check" in text, and a required field with no column is a status line naming it, with its own picker.
+- Counts, skipped rows and the import's progress are announced in a polite live region, and a failure is shown as text.
+- Review opens a sheet where each wrong value is an input with its error described on it (`aria-invalid` and `aria-describedby`).
+
+</ReferenceRow>

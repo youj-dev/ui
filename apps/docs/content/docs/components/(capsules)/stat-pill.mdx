@@ -1,0 +1,100 @@
+---
+title: Stat Pill
+description: "Show one live figure in a capsule, with its unit and how it's changing."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="stat-pill/demo" height={180} />
+
+Three pills: a live CPU load with a trend line, a latency that fell by 6 ms, and a cache that grew by 0.3 GB.
+
+`delta` is the change since the last reading. `better` says which way is good, so the change is tinted to match. The default is `up`. Use `down` for latency and errors, and `none` for figures such as loudness, where a change is just news and stays neutral.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="stat-pill" noImport />
+
+Use a stat pill for a figure people glance at while they work: the CPU load in an editor, the latency of a stream, the size of a cache. It shows an icon, the figure's name, the value with its unit, and optionally how it's moving, either a change since the last reading or a small trend line.
+
+```tsx
+import { StatPill } from '@youj/react'
+import { ActivityIcon } from '@youj/icons'
+
+<StatPill label="Latency" icon={<ActivityIcon />} value={42} unit="ms" delta={-6} better="down" />
+```
+
+`format` takes `Intl.NumberFormat` options for the value. Without it, the value keeps its own decimals. `trend` takes recent readings, oldest first, and draws them as a small line with a dot on the latest one.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="label, value, format… (11)">
+
+### Props
+
+<PropsTable name="StatPill" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `stat-pill`, `stat-pill-icon`, `capsule-label`, `stat-pill-value`, `capsule-unit` and `stat-pill-delta` (with `data-direction` and `data-tone`).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="New value, new reading">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'New value', note: 'counts from where it is to the new value; the first reading is shown as it is', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'New reading', note: 'the trend line morphs point by point and its dot glides to the latest reading', duration: 'slow' },
+  ]}
+  reduced="Values and the trend change at once."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="announcements">
+
+### Accessibility
+
+- The name, value and unit are plain text, so they're read in order.
+- The direction of a change is spoken ("Up 4.2"), so it isn't carried by color alone.
+- The icon and the trend line are decorative.
+- If the figure updates often, don't make it a live region; people can read it when they want.
+
+</ReferenceRow>

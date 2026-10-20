@@ -1,0 +1,72 @@
+---
+title: Dashboards
+description: "Overview screens: analytics, a conversion funnel, a usage report, a spend overview and a personal bank’s home."
+---
+
+<BlockStories>
+
+<BlockStory id="analytics" label="Analytics" block="app-analytics-overview" story="Default" backdrop="seaglass">
+
+See how a store did over any date range: headline numbers, a trend against the previous period, channels, categories and top products.
+
+</BlockStory>
+
+<BlockStory id="funnel" label="Funnel report" block="app-funnel-report" story="Default" backdrop="seaglass">
+
+Follow trial teams to paid: a conversion funnel, step changes against the previous period, cohort retention, time to paid and daily upgrades.
+
+</BlockStory>
+
+<BlockStory id="usage-overview" label="Usage overview" block="app-usage-overview" story="Default" backdrop="seaglass">
+
+Track cloud spending against a budget with a projected bill, usage breakdown, a spend cap and invoices.
+
+</BlockStory>
+
+<BlockStory id="spend-overview" label="Spend overview" block="app-spend-overview" story="Default" backdrop="seaglass">
+
+See where a workspace’s money is going and whether it lasts the month: the spend so far with its change and one plain status, the running total carried to the period’s end against the limit, the latest requests with their failures, the audit trail, and cards for your usage, the top spenders and billing.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, loading">
+
+### Accessibility
+
+Each screen sits in a `main` or a labelled region with one page heading (`headingLevel` changes it), and its panels are labelled regions or sections (`aria-labelledby`) that set `aria-busy` while they load. Analytics and Funnel report add visually hidden text for loading, ranks, trends and empty cohort cells. Spend overview states its status in words (on track, or the day it will exceed the limit), names the forecast chart with a text summary, draws the request strip as one image that says how many requests failed, and lists the audit trail and the top spenders as ordered lists. Usage shows budget warnings as alerts and labels its spend-cap slider. Money overview names its balance and cards as regions, hides every amount behind a labeled toggle that reports its state, and reviews a payment in a drawer before it sends. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

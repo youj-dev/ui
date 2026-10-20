@@ -1,0 +1,1214 @@
+{
+  "name": "@youj/loaders",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) Loading animations for React: polite status loaders drawn on one shared ticker, each its own entry, on @youj/core.",
+  "keywords": [
+    "alpha",
+    "loaders",
+    "loading",
+    "spinner",
+    "animation",
+    "canvas",
+    "reduced-motion",
+    "react",
+    "youj"
+  ],
+  "homepage": "https://www.youj.dev/docs/loaders",
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/loaders"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./accord": "./src/components/youj/loaders/interface/accord.tsx",
+    "./adduct": "./src/components/youj/loaders/science/adduct.tsx",
+    "./adjoint": "./src/components/youj/loaders/interface/adjoint.tsx",
+    "./alcove": "./src/components/youj/loaders/interface/alcove.tsx",
+    "./alveole": "./src/components/youj/loaders/geometry/alveole.tsx",
+    "./amanuensis": "./src/components/youj/loaders/software/amanuensis.tsx",
+    "./analyzer": "./src/components/youj/loaders/signal/analyzer.tsx",
+    "./apsis": "./src/components/youj/loaders/signal/apsis.tsx",
+    "./arbor": "./src/components/youj/loaders/geometry/arbor.tsx",
+    "./armature": "./src/components/youj/loaders/orbs/armature.tsx",
+    "./arris": "./src/components/youj/loaders/geometry/arris.tsx",
+    "./ashlar": "./src/components/youj/loaders/geometry/ashlar.tsx",
+    "./atlas": "./src/components/youj/loaders/geometry/atlas.tsx",
+    "./atrium": "./src/components/youj/loaders/geometry/atrium.tsx",
+    "./attest": "./src/components/youj/loaders/software/attest.tsx",
+    "./auger": "./src/components/youj/loaders/mechanics/auger.tsx",
+    "./azimuth": "./src/components/youj/loaders/signal/azimuth.tsx",
+    "./band": "./src/components/youj/loaders/geometry/band.tsx",
+    "./banyan": "./src/components/youj/loaders/geometry/banyan.tsx",
+    "./barcode": "./src/components/youj/loaders/signal/barcode.tsx",
+    "./beacon": "./src/components/youj/loaders/color/beacon.tsx",
+    "./bell": "./src/components/youj/loaders/signal/bell.tsx",
+    "./bellows": "./src/components/youj/loaders/mechanics/bellows.tsx",
+    "./bisect": "./src/components/youj/loaders/interface/bisect.tsx",
+    "./bloom": "./src/components/youj/loaders/color/bloom.tsx",
+    "./blossom": "./src/components/youj/loaders/signal/blossom.tsx",
+    "./bolus": "./src/components/youj/loaders/mechanics/bolus.tsx",
+    "./bragg": "./src/components/youj/loaders/waves/bragg.tsx",
+    "./brim": "./src/components/youj/loaders/orbs/brim.tsx",
+    "./build": "./src/components/youj/loaders/interface/build.tsx",
+    "./cadence": "./src/components/youj/loaders/software/cadence.tsx",
+    "./calyx": "./src/components/youj/loaders/geometry/calyx.tsx",
+    "./capillary": "./src/components/youj/loaders/signal/capillary.tsx",
+    "./carton": "./src/components/youj/loaders/geometry/carton.tsx",
+    "./carve": "./src/components/youj/loaders/geometry/carve.tsx",
+    "./casement": "./src/components/youj/loaders/software/casement.tsx",
+    "./cast": "./src/components/youj/loaders/geometry/cast.tsx",
+    "./catenate": "./src/components/youj/loaders/science/catenate.tsx",
+    "./caustic": "./src/components/youj/loaders/signal/caustic.tsx",
+    "./chamber": "./src/components/youj/loaders/science/chamber.tsx",
+    "./chaperone": "./src/components/youj/loaders/science/chaperone.tsx",
+    "./chirp": "./src/components/youj/loaders/waves/chirp.tsx",
+    "./chord": "./src/components/youj/loaders/color/chord.tsx",
+    "./chordal": "./src/components/youj/loaders/orbs/chordal.tsx",
+    "./chorus": "./src/components/youj/loaders/software/chorus.tsx",
+    "./cincture": "./src/components/youj/loaders/orbs/cincture.tsx",
+    "./cleave": "./src/components/youj/loaders/orbs/cleave.tsx",
+    "./coalesce": "./src/components/youj/loaders/interface/coalesce.tsx",
+    "./coarea": "./src/components/youj/loaders/geometry/coarea.tsx",
+    "./collate": "./src/components/youj/loaders/interface/collate.tsx",
+    "./compose": "./src/components/youj/loaders/glyph/compose.tsx",
+    "./condense": "./src/components/youj/loaders/interface/condense.tsx",
+    "./conflux": "./src/components/youj/loaders/interface/conflux.tsx",
+    "./contour": "./src/components/youj/loaders/geometry/contour.tsx",
+    "./corbel": "./src/components/youj/loaders/geometry/corbel.tsx",
+    "./core": "./src/components/youj/loaders/geometry/core.tsx",
+    "./corridor": "./src/components/youj/loaders/depth/corridor.tsx",
+    "./cue": "./src/components/youj/loaders/signal/cue.tsx",
+    "./cupola": "./src/components/youj/loaders/geometry/cupola.tsx",
+    "./curl": "./src/components/youj/loaders/geometry/curl.tsx",
+    "./datum": "./src/components/youj/loaders/geometry/datum.tsx",
+    "./delta": "./src/components/youj/loaders/signal/delta.tsx",
+    "./descent": "./src/components/youj/loaders/signal/descent.tsx",
+    "./detent": "./src/components/youj/loaders/mechanics/detent.tsx",
+    "./docket": "./src/components/youj/loaders/interface/docket.tsx",
+    "./draft": "./src/components/youj/loaders/geometry/draft.tsx",
+    "./drop": "./src/components/youj/loaders/depth/drop.tsx",
+    "./duplex": "./src/components/youj/loaders/waves/duplex.tsx",
+    "./dwell": "./src/components/youj/loaders/mechanics/dwell.tsx",
+    "./elide": "./src/components/youj/loaders/software/elide.tsx",
+    "./entail": "./src/components/youj/loaders/interface/entail.tsx",
+    "./envelope": "./src/components/youj/loaders/geometry/envelope.tsx",
+    "./epicycle": "./src/components/youj/loaders/mechanics/epicycle.tsx",
+    "./escrow": "./src/components/youj/loaders/interface/escrow.tsx",
+    "./evanesce": "./src/components/youj/loaders/waves/evanesce.tsx",
+    "./exchange": "./src/components/youj/loaders/science/exchange.tsx",
+    "./extrude": "./src/components/youj/loaders/geometry/extrude.tsx",
+    "./facet": "./src/components/youj/loaders/geometry/facet.tsx",
+    "./fathom": "./src/components/youj/loaders/interface/fathom.tsx",
+    "./fletch": "./src/components/youj/loaders/waves/fletch.tsx",
+    "./flux": "./src/components/youj/loaders/signal/flux.tsx",
+    "./folio": "./src/components/youj/loaders/interface/folio.tsx",
+    "./fringe": "./src/components/youj/loaders/signal/fringe.tsx",
+    "./fulcrum": "./src/components/youj/loaders/mechanics/fulcrum.tsx",
+    "./fulgur": "./src/components/youj/loaders/waves/fulgur.tsx",
+    "./gantry": "./src/components/youj/loaders/interface/gantry.tsx",
+    "./gimbal": "./src/components/youj/loaders/mechanics/gimbal.tsx",
+    "./gores": "./src/components/youj/loaders/orbs/gores.tsx",
+    "./graft": "./src/components/youj/loaders/software/graft.tsx",
+    "./gyre": "./src/components/youj/loaders/color/gyre.tsx",
+    "./halite": "./src/components/youj/loaders/science/halite.tsx",
+    "./harmonics": "./src/components/youj/loaders/signal/harmonics.tsx",
+    "./heddle": "./src/components/youj/loaders/mechanics/heddle.tsx",
+    "./hint": "./src/components/youj/loaders/glyph/hint.tsx",
+    "./impulse": "./src/components/youj/loaders/mechanics/impulse.tsx",
+    "./infill": "./src/components/youj/loaders/geometry/infill.tsx",
+    "./inscribe": "./src/components/youj/loaders/glyph/inscribe.tsx",
+    "./iris": "./src/components/youj/loaders/mechanics/iris.tsx",
+    "./isobar": "./src/components/youj/loaders/signal/isobar.tsx",
+    "./isoline": "./src/components/youj/loaders/interface/isoline.tsx",
+    "./isotherm": "./src/components/youj/loaders/color/isotherm.tsx",
+    "./jot": "./src/components/youj/loaders/glyph/jot.tsx",
+    "./kekule": "./src/components/youj/loaders/science/kekule.tsx",
+    "./kern": "./src/components/youj/loaders/glyph/kern.tsx",
+    "./knead": "./src/components/youj/loaders/geometry/knead.tsx",
+    "./lacuna": "./src/components/youj/loaders/geometry/lacuna.tsx",
+    "./lamella": "./src/components/youj/loaders/geometry/lamella.tsx",
+    "./lamina": "./src/components/youj/loaders/orbs/lamina.tsx",
+    "./laminate": "./src/components/youj/loaders/geometry/laminate.tsx",
+    "./lathe": "./src/components/youj/loaders/geometry/lathe.tsx",
+    "./lattice": "./src/components/youj/loaders/mechanics/lattice.tsx",
+    "./layers": "./src/components/youj/loaders/depth/layers.tsx",
+    "./leader": "./src/components/youj/loaders/signal/leader.tsx",
+    "./least-squares": "./src/components/youj/loaders/signal/least-squares.tsx",
+    "./ledger": "./src/components/youj/loaders/software/ledger.tsx",
+    "./lexicon": "./src/components/youj/loaders/interface/lexicon.tsx",
+    "./ligate": "./src/components/youj/loaders/science/ligate.tsx",
+    "./litmus": "./src/components/youj/loaders/color/litmus.tsx",
+    "./lobule": "./src/components/youj/loaders/science/lobule.tsx",
+    "./locus": "./src/components/youj/loaders/signal/locus.tsx",
+    "./loft": "./src/components/youj/loaders/geometry/loft.tsx",
+    "./marquee": "./src/components/youj/loaders/interface/marquee.tsx",
+    "./meander": "./src/components/youj/loaders/interface/meander.tsx",
+    "./measure": "./src/components/youj/loaders/interface/measure.tsx",
+    "./medoid": "./src/components/youj/loaders/interface/medoid.tsx",
+    "./meniscus": "./src/components/youj/loaders/geometry/meniscus.tsx",
+    "./mesh": "./src/components/youj/loaders/mechanics/mesh.tsx",
+    "./minify": "./src/components/youj/loaders/interface/minify.tsx",
+    "./mosaic": "./src/components/youj/loaders/geometry/mosaic.tsx",
+    "./mullion": "./src/components/youj/loaders/software/mullion.tsx",
+    "./murmur": "./src/components/youj/loaders/depth/murmur.tsx",
+    "./nacre": "./src/components/youj/loaders/geometry/nacre.tsx",
+    "./newel": "./src/components/youj/loaders/geometry/newel.tsx",
+    "./nodal": "./src/components/youj/loaders/signal/nodal.tsx",
+    "./notch": "./src/components/youj/loaders/geometry/notch.tsx",
+    "./nutate": "./src/components/youj/loaders/mechanics/nutate.tsx",
+    "./occlude": "./src/components/youj/loaders/interface/occlude.tsx",
+    "./offshoot": "./src/components/youj/loaders/software/offshoot.tsx",
+    "./ogive": "./src/components/youj/loaders/geometry/ogive.tsx",
+    "./outpost": "./src/components/youj/loaders/software/outpost.tsx",
+    "./overprint": "./src/components/youj/loaders/color/overprint.tsx",
+    "./overtone": "./src/components/youj/loaders/waves/overtone.tsx",
+    "./overturn": "./src/components/youj/loaders/signal/overturn.tsx",
+    "./parity": "./src/components/youj/loaders/interface/parity.tsx",
+    "./phosphor": "./src/components/youj/loaders/signal/phosphor.tsx",
+    "./pipette": "./src/components/youj/loaders/software/pipette.tsx",
+    "./pith": "./src/components/youj/loaders/orbs/pith.tsx",
+    "./pivot": "./src/components/youj/loaders/interface/pivot.tsx",
+    "./pleat": "./src/components/youj/loaders/geometry/pleat.tsx",
+    "./plumb": "./src/components/youj/loaders/glyph/plumb.tsx",
+    "./portico": "./src/components/youj/loaders/software/portico.tsx",
+    "./prefix": "./src/components/youj/loaders/interface/prefix.tsx",
+    "./prism": "./src/components/youj/loaders/color/prism.tsx",
+    "./prompt": "./src/components/youj/loaders/interface/prompt.tsx",
+    "./quantile": "./src/components/youj/loaders/signal/quantile.tsx",
+    "./quarry": "./src/components/youj/loaders/geometry/quarry.tsx",
+    "./queue": "./src/components/youj/loaders/interface/queue.tsx",
+    "./quire": "./src/components/youj/loaders/software/quire.tsx",
+    "./raccord": "./src/components/youj/loaders/software/raccord.tsx",
+    "./radix": "./src/components/youj/loaders/interface/radix.tsx",
+    "./raster": "./src/components/youj/loaders/interface/raster.tsx",
+    "./ravel": "./src/components/youj/loaders/geometry/ravel.tsx",
+    "./reciprocal": "./src/components/youj/loaders/geometry/reciprocal.tsx",
+    "./reduce": "./src/components/youj/loaders/interface/reduce.tsx",
+    "./reeve": "./src/components/youj/loaders/depth/reeve.tsx",
+    "./refine": "./src/components/youj/loaders/interface/refine.tsx",
+    "./refract": "./src/components/youj/loaders/signal/refract.tsx",
+    "./register": "./src/components/youj/loaders/interface/register.tsx",
+    "./respire": "./src/components/youj/loaders/orbs/respire.tsx",
+    "./retile": "./src/components/youj/loaders/geometry/retile.tsx",
+    "./ridge": "./src/components/youj/loaders/geometry/ridge.tsx",
+    "./sachet": "./src/components/youj/loaders/interface/sachet.tsx",
+    "./saddle": "./src/components/youj/loaders/geometry/saddle.tsx",
+    "./salvage": "./src/components/youj/loaders/interface/salvage.tsx",
+    "./satchel": "./src/components/youj/loaders/software/satchel.tsx",
+    "./schema": "./src/components/youj/loaders/interface/schema.tsx",
+    "./scion": "./src/components/youj/loaders/software/scion.tsx",
+    "./section": "./src/components/youj/loaders/geometry/section.tsx",
+    "./selvedge": "./src/components/youj/loaders/geometry/selvedge.tsx",
+    "./shingle": "./src/components/youj/loaders/geometry/shingle.tsx",
+    "./sift": "./src/components/youj/loaders/interface/sift.tsx",
+    "./simplex": "./src/components/youj/loaders/geometry/simplex.tsx",
+    "./siphon": "./src/components/youj/loaders/mechanics/siphon.tsx",
+    "./slice": "./src/components/youj/loaders/depth/slice.tsx",
+    "./sounding": "./src/components/youj/loaders/waves/sounding.tsx",
+    "./spectrum": "./src/components/youj/loaders/color/spectrum.tsx",
+    "./spell": "./src/components/youj/loaders/glyph/spell.tsx",
+    "./splice": "./src/components/youj/loaders/interface/splice.tsx",
+    "./spool": "./src/components/youj/loaders/signal/spool.tsx",
+    "./stave": "./src/components/youj/loaders/geometry/stave.tsx",
+    "./stayed": "./src/components/youj/loaders/geometry/stayed.tsx",
+    "./stencil": "./src/components/youj/loaders/interface/stencil.tsx",
+    "./stow": "./src/components/youj/loaders/interface/stow.tsx",
+    "./stride": "./src/components/youj/loaders/interface/stride.tsx",
+    "./sustain": "./src/components/youj/loaders/signal/sustain.tsx",
+    "./suture": "./src/components/youj/loaders/geometry/suture.tsx",
+    "./swatch": "./src/components/youj/loaders/color/swatch.tsx",
+    "./swizzle": "./src/components/youj/loaders/interface/swizzle.tsx",
+    "./tabstop": "./src/components/youj/loaders/interface/tabstop.tsx",
+    "./tackle": "./src/components/youj/loaders/mechanics/tackle.tsx",
+    "./tail": "./src/components/youj/loaders/signal/tail.tsx",
+    "./tangent": "./src/components/youj/loaders/software/tangent.tsx",
+    "./tempo": "./src/components/youj/loaders/signal/tempo.tsx",
+    "./tenon": "./src/components/youj/loaders/geometry/tenon.tsx",
+    "./tensile": "./src/components/youj/loaders/interface/tensile.tsx",
+    "./tensor": "./src/components/youj/loaders/waves/tensor.tsx",
+    "./tessera": "./src/components/youj/loaders/geometry/tessera.tsx",
+    "./throat": "./src/components/youj/loaders/geometry/throat.tsx",
+    "./tittle": "./src/components/youj/loaders/depth/tittle.tsx",
+    "./torsion": "./src/components/youj/loaders/geometry/torsion.tsx",
+    "./traverse": "./src/components/youj/loaders/interface/traverse.tsx",
+    "./tread": "./src/components/youj/loaders/mechanics/tread.tsx",
+    "./trellis": "./src/components/youj/loaders/interface/trellis.tsx",
+    "./tributary": "./src/components/youj/loaders/geometry/tributary.tsx",
+    "./truss": "./src/components/youj/loaders/geometry/truss.tsx",
+    "./umbra": "./src/components/youj/loaders/signal/umbra.tsx",
+    "./valance": "./src/components/youj/loaders/software/valance.tsx",
+    "./valence": "./src/components/youj/loaders/science/valence.tsx",
+    "./vault": "./src/components/youj/loaders/geometry/vault.tsx",
+    "./verdict": "./src/components/youj/loaders/software/verdict.tsx",
+    "./vesicle": "./src/components/youj/loaders/orbs/vesicle.tsx",
+    "./vitals": "./src/components/youj/loaders/signal/vitals.tsx",
+    "./vortex": "./src/components/youj/loaders/depth/vortex.tsx",
+    "./weave": "./src/components/youj/loaders/color/weave.tsx",
+    "./whisper": "./src/components/youj/loaders/waves/whisper.tsx",
+    "./wick": "./src/components/youj/loaders/signal/wick.tsx",
+    "./winnow": "./src/components/youj/loaders/software/winnow.tsx",
+    "./yoke": "./src/components/youj/loaders/mechanics/yoke.tsx"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./accord": {
+        "types": "./dist/components/youj/loaders/interface/accord.d.ts",
+        "default": "./dist/components/youj/loaders/interface/accord.js"
+      },
+      "./adduct": {
+        "types": "./dist/components/youj/loaders/science/adduct.d.ts",
+        "default": "./dist/components/youj/loaders/science/adduct.js"
+      },
+      "./adjoint": {
+        "types": "./dist/components/youj/loaders/interface/adjoint.d.ts",
+        "default": "./dist/components/youj/loaders/interface/adjoint.js"
+      },
+      "./alcove": {
+        "types": "./dist/components/youj/loaders/interface/alcove.d.ts",
+        "default": "./dist/components/youj/loaders/interface/alcove.js"
+      },
+      "./alveole": {
+        "types": "./dist/components/youj/loaders/geometry/alveole.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/alveole.js"
+      },
+      "./amanuensis": {
+        "types": "./dist/components/youj/loaders/software/amanuensis.d.ts",
+        "default": "./dist/components/youj/loaders/software/amanuensis.js"
+      },
+      "./analyzer": {
+        "types": "./dist/components/youj/loaders/signal/analyzer.d.ts",
+        "default": "./dist/components/youj/loaders/signal/analyzer.js"
+      },
+      "./apsis": {
+        "types": "./dist/components/youj/loaders/signal/apsis.d.ts",
+        "default": "./dist/components/youj/loaders/signal/apsis.js"
+      },
+      "./arbor": {
+        "types": "./dist/components/youj/loaders/geometry/arbor.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/arbor.js"
+      },
+      "./armature": {
+        "types": "./dist/components/youj/loaders/orbs/armature.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/armature.js"
+      },
+      "./arris": {
+        "types": "./dist/components/youj/loaders/geometry/arris.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/arris.js"
+      },
+      "./ashlar": {
+        "types": "./dist/components/youj/loaders/geometry/ashlar.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/ashlar.js"
+      },
+      "./atlas": {
+        "types": "./dist/components/youj/loaders/geometry/atlas.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/atlas.js"
+      },
+      "./atrium": {
+        "types": "./dist/components/youj/loaders/geometry/atrium.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/atrium.js"
+      },
+      "./attest": {
+        "types": "./dist/components/youj/loaders/software/attest.d.ts",
+        "default": "./dist/components/youj/loaders/software/attest.js"
+      },
+      "./auger": {
+        "types": "./dist/components/youj/loaders/mechanics/auger.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/auger.js"
+      },
+      "./azimuth": {
+        "types": "./dist/components/youj/loaders/signal/azimuth.d.ts",
+        "default": "./dist/components/youj/loaders/signal/azimuth.js"
+      },
+      "./band": {
+        "types": "./dist/components/youj/loaders/geometry/band.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/band.js"
+      },
+      "./banyan": {
+        "types": "./dist/components/youj/loaders/geometry/banyan.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/banyan.js"
+      },
+      "./barcode": {
+        "types": "./dist/components/youj/loaders/signal/barcode.d.ts",
+        "default": "./dist/components/youj/loaders/signal/barcode.js"
+      },
+      "./beacon": {
+        "types": "./dist/components/youj/loaders/color/beacon.d.ts",
+        "default": "./dist/components/youj/loaders/color/beacon.js"
+      },
+      "./bell": {
+        "types": "./dist/components/youj/loaders/signal/bell.d.ts",
+        "default": "./dist/components/youj/loaders/signal/bell.js"
+      },
+      "./bellows": {
+        "types": "./dist/components/youj/loaders/mechanics/bellows.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/bellows.js"
+      },
+      "./bisect": {
+        "types": "./dist/components/youj/loaders/interface/bisect.d.ts",
+        "default": "./dist/components/youj/loaders/interface/bisect.js"
+      },
+      "./bloom": {
+        "types": "./dist/components/youj/loaders/color/bloom.d.ts",
+        "default": "./dist/components/youj/loaders/color/bloom.js"
+      },
+      "./blossom": {
+        "types": "./dist/components/youj/loaders/signal/blossom.d.ts",
+        "default": "./dist/components/youj/loaders/signal/blossom.js"
+      },
+      "./bolus": {
+        "types": "./dist/components/youj/loaders/mechanics/bolus.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/bolus.js"
+      },
+      "./bragg": {
+        "types": "./dist/components/youj/loaders/waves/bragg.d.ts",
+        "default": "./dist/components/youj/loaders/waves/bragg.js"
+      },
+      "./brim": {
+        "types": "./dist/components/youj/loaders/orbs/brim.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/brim.js"
+      },
+      "./build": {
+        "types": "./dist/components/youj/loaders/interface/build.d.ts",
+        "default": "./dist/components/youj/loaders/interface/build.js"
+      },
+      "./cadence": {
+        "types": "./dist/components/youj/loaders/software/cadence.d.ts",
+        "default": "./dist/components/youj/loaders/software/cadence.js"
+      },
+      "./calyx": {
+        "types": "./dist/components/youj/loaders/geometry/calyx.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/calyx.js"
+      },
+      "./capillary": {
+        "types": "./dist/components/youj/loaders/signal/capillary.d.ts",
+        "default": "./dist/components/youj/loaders/signal/capillary.js"
+      },
+      "./carton": {
+        "types": "./dist/components/youj/loaders/geometry/carton.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/carton.js"
+      },
+      "./carve": {
+        "types": "./dist/components/youj/loaders/geometry/carve.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/carve.js"
+      },
+      "./casement": {
+        "types": "./dist/components/youj/loaders/software/casement.d.ts",
+        "default": "./dist/components/youj/loaders/software/casement.js"
+      },
+      "./cast": {
+        "types": "./dist/components/youj/loaders/geometry/cast.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/cast.js"
+      },
+      "./catenate": {
+        "types": "./dist/components/youj/loaders/science/catenate.d.ts",
+        "default": "./dist/components/youj/loaders/science/catenate.js"
+      },
+      "./caustic": {
+        "types": "./dist/components/youj/loaders/signal/caustic.d.ts",
+        "default": "./dist/components/youj/loaders/signal/caustic.js"
+      },
+      "./chamber": {
+        "types": "./dist/components/youj/loaders/science/chamber.d.ts",
+        "default": "./dist/components/youj/loaders/science/chamber.js"
+      },
+      "./chaperone": {
+        "types": "./dist/components/youj/loaders/science/chaperone.d.ts",
+        "default": "./dist/components/youj/loaders/science/chaperone.js"
+      },
+      "./chirp": {
+        "types": "./dist/components/youj/loaders/waves/chirp.d.ts",
+        "default": "./dist/components/youj/loaders/waves/chirp.js"
+      },
+      "./chord": {
+        "types": "./dist/components/youj/loaders/color/chord.d.ts",
+        "default": "./dist/components/youj/loaders/color/chord.js"
+      },
+      "./chordal": {
+        "types": "./dist/components/youj/loaders/orbs/chordal.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/chordal.js"
+      },
+      "./chorus": {
+        "types": "./dist/components/youj/loaders/software/chorus.d.ts",
+        "default": "./dist/components/youj/loaders/software/chorus.js"
+      },
+      "./cincture": {
+        "types": "./dist/components/youj/loaders/orbs/cincture.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/cincture.js"
+      },
+      "./cleave": {
+        "types": "./dist/components/youj/loaders/orbs/cleave.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/cleave.js"
+      },
+      "./coalesce": {
+        "types": "./dist/components/youj/loaders/interface/coalesce.d.ts",
+        "default": "./dist/components/youj/loaders/interface/coalesce.js"
+      },
+      "./coarea": {
+        "types": "./dist/components/youj/loaders/geometry/coarea.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/coarea.js"
+      },
+      "./collate": {
+        "types": "./dist/components/youj/loaders/interface/collate.d.ts",
+        "default": "./dist/components/youj/loaders/interface/collate.js"
+      },
+      "./compose": {
+        "types": "./dist/components/youj/loaders/glyph/compose.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/compose.js"
+      },
+      "./condense": {
+        "types": "./dist/components/youj/loaders/interface/condense.d.ts",
+        "default": "./dist/components/youj/loaders/interface/condense.js"
+      },
+      "./conflux": {
+        "types": "./dist/components/youj/loaders/interface/conflux.d.ts",
+        "default": "./dist/components/youj/loaders/interface/conflux.js"
+      },
+      "./contour": {
+        "types": "./dist/components/youj/loaders/geometry/contour.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/contour.js"
+      },
+      "./corbel": {
+        "types": "./dist/components/youj/loaders/geometry/corbel.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/corbel.js"
+      },
+      "./core": {
+        "types": "./dist/components/youj/loaders/geometry/core.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/core.js"
+      },
+      "./corridor": {
+        "types": "./dist/components/youj/loaders/depth/corridor.d.ts",
+        "default": "./dist/components/youj/loaders/depth/corridor.js"
+      },
+      "./cue": {
+        "types": "./dist/components/youj/loaders/signal/cue.d.ts",
+        "default": "./dist/components/youj/loaders/signal/cue.js"
+      },
+      "./cupola": {
+        "types": "./dist/components/youj/loaders/geometry/cupola.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/cupola.js"
+      },
+      "./curl": {
+        "types": "./dist/components/youj/loaders/geometry/curl.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/curl.js"
+      },
+      "./datum": {
+        "types": "./dist/components/youj/loaders/geometry/datum.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/datum.js"
+      },
+      "./delta": {
+        "types": "./dist/components/youj/loaders/signal/delta.d.ts",
+        "default": "./dist/components/youj/loaders/signal/delta.js"
+      },
+      "./descent": {
+        "types": "./dist/components/youj/loaders/signal/descent.d.ts",
+        "default": "./dist/components/youj/loaders/signal/descent.js"
+      },
+      "./detent": {
+        "types": "./dist/components/youj/loaders/mechanics/detent.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/detent.js"
+      },
+      "./docket": {
+        "types": "./dist/components/youj/loaders/interface/docket.d.ts",
+        "default": "./dist/components/youj/loaders/interface/docket.js"
+      },
+      "./draft": {
+        "types": "./dist/components/youj/loaders/geometry/draft.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/draft.js"
+      },
+      "./drop": {
+        "types": "./dist/components/youj/loaders/depth/drop.d.ts",
+        "default": "./dist/components/youj/loaders/depth/drop.js"
+      },
+      "./duplex": {
+        "types": "./dist/components/youj/loaders/waves/duplex.d.ts",
+        "default": "./dist/components/youj/loaders/waves/duplex.js"
+      },
+      "./dwell": {
+        "types": "./dist/components/youj/loaders/mechanics/dwell.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/dwell.js"
+      },
+      "./elide": {
+        "types": "./dist/components/youj/loaders/software/elide.d.ts",
+        "default": "./dist/components/youj/loaders/software/elide.js"
+      },
+      "./entail": {
+        "types": "./dist/components/youj/loaders/interface/entail.d.ts",
+        "default": "./dist/components/youj/loaders/interface/entail.js"
+      },
+      "./envelope": {
+        "types": "./dist/components/youj/loaders/geometry/envelope.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/envelope.js"
+      },
+      "./epicycle": {
+        "types": "./dist/components/youj/loaders/mechanics/epicycle.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/epicycle.js"
+      },
+      "./escrow": {
+        "types": "./dist/components/youj/loaders/interface/escrow.d.ts",
+        "default": "./dist/components/youj/loaders/interface/escrow.js"
+      },
+      "./evanesce": {
+        "types": "./dist/components/youj/loaders/waves/evanesce.d.ts",
+        "default": "./dist/components/youj/loaders/waves/evanesce.js"
+      },
+      "./exchange": {
+        "types": "./dist/components/youj/loaders/science/exchange.d.ts",
+        "default": "./dist/components/youj/loaders/science/exchange.js"
+      },
+      "./extrude": {
+        "types": "./dist/components/youj/loaders/geometry/extrude.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/extrude.js"
+      },
+      "./facet": {
+        "types": "./dist/components/youj/loaders/geometry/facet.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/facet.js"
+      },
+      "./fathom": {
+        "types": "./dist/components/youj/loaders/interface/fathom.d.ts",
+        "default": "./dist/components/youj/loaders/interface/fathom.js"
+      },
+      "./fletch": {
+        "types": "./dist/components/youj/loaders/waves/fletch.d.ts",
+        "default": "./dist/components/youj/loaders/waves/fletch.js"
+      },
+      "./flux": {
+        "types": "./dist/components/youj/loaders/signal/flux.d.ts",
+        "default": "./dist/components/youj/loaders/signal/flux.js"
+      },
+      "./folio": {
+        "types": "./dist/components/youj/loaders/interface/folio.d.ts",
+        "default": "./dist/components/youj/loaders/interface/folio.js"
+      },
+      "./fringe": {
+        "types": "./dist/components/youj/loaders/signal/fringe.d.ts",
+        "default": "./dist/components/youj/loaders/signal/fringe.js"
+      },
+      "./fulcrum": {
+        "types": "./dist/components/youj/loaders/mechanics/fulcrum.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/fulcrum.js"
+      },
+      "./fulgur": {
+        "types": "./dist/components/youj/loaders/waves/fulgur.d.ts",
+        "default": "./dist/components/youj/loaders/waves/fulgur.js"
+      },
+      "./gantry": {
+        "types": "./dist/components/youj/loaders/interface/gantry.d.ts",
+        "default": "./dist/components/youj/loaders/interface/gantry.js"
+      },
+      "./gimbal": {
+        "types": "./dist/components/youj/loaders/mechanics/gimbal.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/gimbal.js"
+      },
+      "./gores": {
+        "types": "./dist/components/youj/loaders/orbs/gores.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/gores.js"
+      },
+      "./graft": {
+        "types": "./dist/components/youj/loaders/software/graft.d.ts",
+        "default": "./dist/components/youj/loaders/software/graft.js"
+      },
+      "./gyre": {
+        "types": "./dist/components/youj/loaders/color/gyre.d.ts",
+        "default": "./dist/components/youj/loaders/color/gyre.js"
+      },
+      "./halite": {
+        "types": "./dist/components/youj/loaders/science/halite.d.ts",
+        "default": "./dist/components/youj/loaders/science/halite.js"
+      },
+      "./harmonics": {
+        "types": "./dist/components/youj/loaders/signal/harmonics.d.ts",
+        "default": "./dist/components/youj/loaders/signal/harmonics.js"
+      },
+      "./heddle": {
+        "types": "./dist/components/youj/loaders/mechanics/heddle.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/heddle.js"
+      },
+      "./hint": {
+        "types": "./dist/components/youj/loaders/glyph/hint.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/hint.js"
+      },
+      "./impulse": {
+        "types": "./dist/components/youj/loaders/mechanics/impulse.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/impulse.js"
+      },
+      "./infill": {
+        "types": "./dist/components/youj/loaders/geometry/infill.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/infill.js"
+      },
+      "./inscribe": {
+        "types": "./dist/components/youj/loaders/glyph/inscribe.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/inscribe.js"
+      },
+      "./iris": {
+        "types": "./dist/components/youj/loaders/mechanics/iris.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/iris.js"
+      },
+      "./isobar": {
+        "types": "./dist/components/youj/loaders/signal/isobar.d.ts",
+        "default": "./dist/components/youj/loaders/signal/isobar.js"
+      },
+      "./isoline": {
+        "types": "./dist/components/youj/loaders/interface/isoline.d.ts",
+        "default": "./dist/components/youj/loaders/interface/isoline.js"
+      },
+      "./isotherm": {
+        "types": "./dist/components/youj/loaders/color/isotherm.d.ts",
+        "default": "./dist/components/youj/loaders/color/isotherm.js"
+      },
+      "./jot": {
+        "types": "./dist/components/youj/loaders/glyph/jot.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/jot.js"
+      },
+      "./kekule": {
+        "types": "./dist/components/youj/loaders/science/kekule.d.ts",
+        "default": "./dist/components/youj/loaders/science/kekule.js"
+      },
+      "./kern": {
+        "types": "./dist/components/youj/loaders/glyph/kern.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/kern.js"
+      },
+      "./knead": {
+        "types": "./dist/components/youj/loaders/geometry/knead.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/knead.js"
+      },
+      "./lacuna": {
+        "types": "./dist/components/youj/loaders/geometry/lacuna.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/lacuna.js"
+      },
+      "./lamella": {
+        "types": "./dist/components/youj/loaders/geometry/lamella.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/lamella.js"
+      },
+      "./lamina": {
+        "types": "./dist/components/youj/loaders/orbs/lamina.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/lamina.js"
+      },
+      "./laminate": {
+        "types": "./dist/components/youj/loaders/geometry/laminate.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/laminate.js"
+      },
+      "./lathe": {
+        "types": "./dist/components/youj/loaders/geometry/lathe.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/lathe.js"
+      },
+      "./lattice": {
+        "types": "./dist/components/youj/loaders/mechanics/lattice.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/lattice.js"
+      },
+      "./layers": {
+        "types": "./dist/components/youj/loaders/depth/layers.d.ts",
+        "default": "./dist/components/youj/loaders/depth/layers.js"
+      },
+      "./leader": {
+        "types": "./dist/components/youj/loaders/signal/leader.d.ts",
+        "default": "./dist/components/youj/loaders/signal/leader.js"
+      },
+      "./least-squares": {
+        "types": "./dist/components/youj/loaders/signal/least-squares.d.ts",
+        "default": "./dist/components/youj/loaders/signal/least-squares.js"
+      },
+      "./ledger": {
+        "types": "./dist/components/youj/loaders/software/ledger.d.ts",
+        "default": "./dist/components/youj/loaders/software/ledger.js"
+      },
+      "./lexicon": {
+        "types": "./dist/components/youj/loaders/interface/lexicon.d.ts",
+        "default": "./dist/components/youj/loaders/interface/lexicon.js"
+      },
+      "./ligate": {
+        "types": "./dist/components/youj/loaders/science/ligate.d.ts",
+        "default": "./dist/components/youj/loaders/science/ligate.js"
+      },
+      "./litmus": {
+        "types": "./dist/components/youj/loaders/color/litmus.d.ts",
+        "default": "./dist/components/youj/loaders/color/litmus.js"
+      },
+      "./lobule": {
+        "types": "./dist/components/youj/loaders/science/lobule.d.ts",
+        "default": "./dist/components/youj/loaders/science/lobule.js"
+      },
+      "./locus": {
+        "types": "./dist/components/youj/loaders/signal/locus.d.ts",
+        "default": "./dist/components/youj/loaders/signal/locus.js"
+      },
+      "./loft": {
+        "types": "./dist/components/youj/loaders/geometry/loft.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/loft.js"
+      },
+      "./marquee": {
+        "types": "./dist/components/youj/loaders/interface/marquee.d.ts",
+        "default": "./dist/components/youj/loaders/interface/marquee.js"
+      },
+      "./meander": {
+        "types": "./dist/components/youj/loaders/interface/meander.d.ts",
+        "default": "./dist/components/youj/loaders/interface/meander.js"
+      },
+      "./measure": {
+        "types": "./dist/components/youj/loaders/interface/measure.d.ts",
+        "default": "./dist/components/youj/loaders/interface/measure.js"
+      },
+      "./medoid": {
+        "types": "./dist/components/youj/loaders/interface/medoid.d.ts",
+        "default": "./dist/components/youj/loaders/interface/medoid.js"
+      },
+      "./meniscus": {
+        "types": "./dist/components/youj/loaders/geometry/meniscus.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/meniscus.js"
+      },
+      "./mesh": {
+        "types": "./dist/components/youj/loaders/mechanics/mesh.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/mesh.js"
+      },
+      "./minify": {
+        "types": "./dist/components/youj/loaders/interface/minify.d.ts",
+        "default": "./dist/components/youj/loaders/interface/minify.js"
+      },
+      "./mosaic": {
+        "types": "./dist/components/youj/loaders/geometry/mosaic.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/mosaic.js"
+      },
+      "./mullion": {
+        "types": "./dist/components/youj/loaders/software/mullion.d.ts",
+        "default": "./dist/components/youj/loaders/software/mullion.js"
+      },
+      "./murmur": {
+        "types": "./dist/components/youj/loaders/depth/murmur.d.ts",
+        "default": "./dist/components/youj/loaders/depth/murmur.js"
+      },
+      "./nacre": {
+        "types": "./dist/components/youj/loaders/geometry/nacre.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/nacre.js"
+      },
+      "./newel": {
+        "types": "./dist/components/youj/loaders/geometry/newel.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/newel.js"
+      },
+      "./nodal": {
+        "types": "./dist/components/youj/loaders/signal/nodal.d.ts",
+        "default": "./dist/components/youj/loaders/signal/nodal.js"
+      },
+      "./notch": {
+        "types": "./dist/components/youj/loaders/geometry/notch.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/notch.js"
+      },
+      "./nutate": {
+        "types": "./dist/components/youj/loaders/mechanics/nutate.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/nutate.js"
+      },
+      "./occlude": {
+        "types": "./dist/components/youj/loaders/interface/occlude.d.ts",
+        "default": "./dist/components/youj/loaders/interface/occlude.js"
+      },
+      "./offshoot": {
+        "types": "./dist/components/youj/loaders/software/offshoot.d.ts",
+        "default": "./dist/components/youj/loaders/software/offshoot.js"
+      },
+      "./ogive": {
+        "types": "./dist/components/youj/loaders/geometry/ogive.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/ogive.js"
+      },
+      "./outpost": {
+        "types": "./dist/components/youj/loaders/software/outpost.d.ts",
+        "default": "./dist/components/youj/loaders/software/outpost.js"
+      },
+      "./overprint": {
+        "types": "./dist/components/youj/loaders/color/overprint.d.ts",
+        "default": "./dist/components/youj/loaders/color/overprint.js"
+      },
+      "./overtone": {
+        "types": "./dist/components/youj/loaders/waves/overtone.d.ts",
+        "default": "./dist/components/youj/loaders/waves/overtone.js"
+      },
+      "./overturn": {
+        "types": "./dist/components/youj/loaders/signal/overturn.d.ts",
+        "default": "./dist/components/youj/loaders/signal/overturn.js"
+      },
+      "./parity": {
+        "types": "./dist/components/youj/loaders/interface/parity.d.ts",
+        "default": "./dist/components/youj/loaders/interface/parity.js"
+      },
+      "./phosphor": {
+        "types": "./dist/components/youj/loaders/signal/phosphor.d.ts",
+        "default": "./dist/components/youj/loaders/signal/phosphor.js"
+      },
+      "./pipette": {
+        "types": "./dist/components/youj/loaders/software/pipette.d.ts",
+        "default": "./dist/components/youj/loaders/software/pipette.js"
+      },
+      "./pith": {
+        "types": "./dist/components/youj/loaders/orbs/pith.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/pith.js"
+      },
+      "./pivot": {
+        "types": "./dist/components/youj/loaders/interface/pivot.d.ts",
+        "default": "./dist/components/youj/loaders/interface/pivot.js"
+      },
+      "./pleat": {
+        "types": "./dist/components/youj/loaders/geometry/pleat.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/pleat.js"
+      },
+      "./plumb": {
+        "types": "./dist/components/youj/loaders/glyph/plumb.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/plumb.js"
+      },
+      "./portico": {
+        "types": "./dist/components/youj/loaders/software/portico.d.ts",
+        "default": "./dist/components/youj/loaders/software/portico.js"
+      },
+      "./prefix": {
+        "types": "./dist/components/youj/loaders/interface/prefix.d.ts",
+        "default": "./dist/components/youj/loaders/interface/prefix.js"
+      },
+      "./prism": {
+        "types": "./dist/components/youj/loaders/color/prism.d.ts",
+        "default": "./dist/components/youj/loaders/color/prism.js"
+      },
+      "./prompt": {
+        "types": "./dist/components/youj/loaders/interface/prompt.d.ts",
+        "default": "./dist/components/youj/loaders/interface/prompt.js"
+      },
+      "./quantile": {
+        "types": "./dist/components/youj/loaders/signal/quantile.d.ts",
+        "default": "./dist/components/youj/loaders/signal/quantile.js"
+      },
+      "./quarry": {
+        "types": "./dist/components/youj/loaders/geometry/quarry.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/quarry.js"
+      },
+      "./queue": {
+        "types": "./dist/components/youj/loaders/interface/queue.d.ts",
+        "default": "./dist/components/youj/loaders/interface/queue.js"
+      },
+      "./quire": {
+        "types": "./dist/components/youj/loaders/software/quire.d.ts",
+        "default": "./dist/components/youj/loaders/software/quire.js"
+      },
+      "./raccord": {
+        "types": "./dist/components/youj/loaders/software/raccord.d.ts",
+        "default": "./dist/components/youj/loaders/software/raccord.js"
+      },
+      "./radix": {
+        "types": "./dist/components/youj/loaders/interface/radix.d.ts",
+        "default": "./dist/components/youj/loaders/interface/radix.js"
+      },
+      "./raster": {
+        "types": "./dist/components/youj/loaders/interface/raster.d.ts",
+        "default": "./dist/components/youj/loaders/interface/raster.js"
+      },
+      "./ravel": {
+        "types": "./dist/components/youj/loaders/geometry/ravel.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/ravel.js"
+      },
+      "./reciprocal": {
+        "types": "./dist/components/youj/loaders/geometry/reciprocal.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/reciprocal.js"
+      },
+      "./reduce": {
+        "types": "./dist/components/youj/loaders/interface/reduce.d.ts",
+        "default": "./dist/components/youj/loaders/interface/reduce.js"
+      },
+      "./reeve": {
+        "types": "./dist/components/youj/loaders/depth/reeve.d.ts",
+        "default": "./dist/components/youj/loaders/depth/reeve.js"
+      },
+      "./refine": {
+        "types": "./dist/components/youj/loaders/interface/refine.d.ts",
+        "default": "./dist/components/youj/loaders/interface/refine.js"
+      },
+      "./refract": {
+        "types": "./dist/components/youj/loaders/signal/refract.d.ts",
+        "default": "./dist/components/youj/loaders/signal/refract.js"
+      },
+      "./register": {
+        "types": "./dist/components/youj/loaders/interface/register.d.ts",
+        "default": "./dist/components/youj/loaders/interface/register.js"
+      },
+      "./respire": {
+        "types": "./dist/components/youj/loaders/orbs/respire.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/respire.js"
+      },
+      "./retile": {
+        "types": "./dist/components/youj/loaders/geometry/retile.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/retile.js"
+      },
+      "./ridge": {
+        "types": "./dist/components/youj/loaders/geometry/ridge.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/ridge.js"
+      },
+      "./sachet": {
+        "types": "./dist/components/youj/loaders/interface/sachet.d.ts",
+        "default": "./dist/components/youj/loaders/interface/sachet.js"
+      },
+      "./saddle": {
+        "types": "./dist/components/youj/loaders/geometry/saddle.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/saddle.js"
+      },
+      "./salvage": {
+        "types": "./dist/components/youj/loaders/interface/salvage.d.ts",
+        "default": "./dist/components/youj/loaders/interface/salvage.js"
+      },
+      "./satchel": {
+        "types": "./dist/components/youj/loaders/software/satchel.d.ts",
+        "default": "./dist/components/youj/loaders/software/satchel.js"
+      },
+      "./schema": {
+        "types": "./dist/components/youj/loaders/interface/schema.d.ts",
+        "default": "./dist/components/youj/loaders/interface/schema.js"
+      },
+      "./scion": {
+        "types": "./dist/components/youj/loaders/software/scion.d.ts",
+        "default": "./dist/components/youj/loaders/software/scion.js"
+      },
+      "./section": {
+        "types": "./dist/components/youj/loaders/geometry/section.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/section.js"
+      },
+      "./selvedge": {
+        "types": "./dist/components/youj/loaders/geometry/selvedge.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/selvedge.js"
+      },
+      "./shingle": {
+        "types": "./dist/components/youj/loaders/geometry/shingle.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/shingle.js"
+      },
+      "./sift": {
+        "types": "./dist/components/youj/loaders/interface/sift.d.ts",
+        "default": "./dist/components/youj/loaders/interface/sift.js"
+      },
+      "./simplex": {
+        "types": "./dist/components/youj/loaders/geometry/simplex.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/simplex.js"
+      },
+      "./siphon": {
+        "types": "./dist/components/youj/loaders/mechanics/siphon.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/siphon.js"
+      },
+      "./slice": {
+        "types": "./dist/components/youj/loaders/depth/slice.d.ts",
+        "default": "./dist/components/youj/loaders/depth/slice.js"
+      },
+      "./sounding": {
+        "types": "./dist/components/youj/loaders/waves/sounding.d.ts",
+        "default": "./dist/components/youj/loaders/waves/sounding.js"
+      },
+      "./spectrum": {
+        "types": "./dist/components/youj/loaders/color/spectrum.d.ts",
+        "default": "./dist/components/youj/loaders/color/spectrum.js"
+      },
+      "./spell": {
+        "types": "./dist/components/youj/loaders/glyph/spell.d.ts",
+        "default": "./dist/components/youj/loaders/glyph/spell.js"
+      },
+      "./splice": {
+        "types": "./dist/components/youj/loaders/interface/splice.d.ts",
+        "default": "./dist/components/youj/loaders/interface/splice.js"
+      },
+      "./spool": {
+        "types": "./dist/components/youj/loaders/signal/spool.d.ts",
+        "default": "./dist/components/youj/loaders/signal/spool.js"
+      },
+      "./stave": {
+        "types": "./dist/components/youj/loaders/geometry/stave.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/stave.js"
+      },
+      "./stayed": {
+        "types": "./dist/components/youj/loaders/geometry/stayed.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/stayed.js"
+      },
+      "./stencil": {
+        "types": "./dist/components/youj/loaders/interface/stencil.d.ts",
+        "default": "./dist/components/youj/loaders/interface/stencil.js"
+      },
+      "./stow": {
+        "types": "./dist/components/youj/loaders/interface/stow.d.ts",
+        "default": "./dist/components/youj/loaders/interface/stow.js"
+      },
+      "./stride": {
+        "types": "./dist/components/youj/loaders/interface/stride.d.ts",
+        "default": "./dist/components/youj/loaders/interface/stride.js"
+      },
+      "./sustain": {
+        "types": "./dist/components/youj/loaders/signal/sustain.d.ts",
+        "default": "./dist/components/youj/loaders/signal/sustain.js"
+      },
+      "./suture": {
+        "types": "./dist/components/youj/loaders/geometry/suture.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/suture.js"
+      },
+      "./swatch": {
+        "types": "./dist/components/youj/loaders/color/swatch.d.ts",
+        "default": "./dist/components/youj/loaders/color/swatch.js"
+      },
+      "./swizzle": {
+        "types": "./dist/components/youj/loaders/interface/swizzle.d.ts",
+        "default": "./dist/components/youj/loaders/interface/swizzle.js"
+      },
+      "./tabstop": {
+        "types": "./dist/components/youj/loaders/interface/tabstop.d.ts",
+        "default": "./dist/components/youj/loaders/interface/tabstop.js"
+      },
+      "./tackle": {
+        "types": "./dist/components/youj/loaders/mechanics/tackle.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/tackle.js"
+      },
+      "./tail": {
+        "types": "./dist/components/youj/loaders/signal/tail.d.ts",
+        "default": "./dist/components/youj/loaders/signal/tail.js"
+      },
+      "./tangent": {
+        "types": "./dist/components/youj/loaders/software/tangent.d.ts",
+        "default": "./dist/components/youj/loaders/software/tangent.js"
+      },
+      "./tempo": {
+        "types": "./dist/components/youj/loaders/signal/tempo.d.ts",
+        "default": "./dist/components/youj/loaders/signal/tempo.js"
+      },
+      "./tenon": {
+        "types": "./dist/components/youj/loaders/geometry/tenon.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/tenon.js"
+      },
+      "./tensile": {
+        "types": "./dist/components/youj/loaders/interface/tensile.d.ts",
+        "default": "./dist/components/youj/loaders/interface/tensile.js"
+      },
+      "./tensor": {
+        "types": "./dist/components/youj/loaders/waves/tensor.d.ts",
+        "default": "./dist/components/youj/loaders/waves/tensor.js"
+      },
+      "./tessera": {
+        "types": "./dist/components/youj/loaders/geometry/tessera.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/tessera.js"
+      },
+      "./throat": {
+        "types": "./dist/components/youj/loaders/geometry/throat.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/throat.js"
+      },
+      "./tittle": {
+        "types": "./dist/components/youj/loaders/depth/tittle.d.ts",
+        "default": "./dist/components/youj/loaders/depth/tittle.js"
+      },
+      "./torsion": {
+        "types": "./dist/components/youj/loaders/geometry/torsion.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/torsion.js"
+      },
+      "./traverse": {
+        "types": "./dist/components/youj/loaders/interface/traverse.d.ts",
+        "default": "./dist/components/youj/loaders/interface/traverse.js"
+      },
+      "./tread": {
+        "types": "./dist/components/youj/loaders/mechanics/tread.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/tread.js"
+      },
+      "./trellis": {
+        "types": "./dist/components/youj/loaders/interface/trellis.d.ts",
+        "default": "./dist/components/youj/loaders/interface/trellis.js"
+      },
+      "./tributary": {
+        "types": "./dist/components/youj/loaders/geometry/tributary.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/tributary.js"
+      },
+      "./truss": {
+        "types": "./dist/components/youj/loaders/geometry/truss.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/truss.js"
+      },
+      "./umbra": {
+        "types": "./dist/components/youj/loaders/signal/umbra.d.ts",
+        "default": "./dist/components/youj/loaders/signal/umbra.js"
+      },
+      "./valance": {
+        "types": "./dist/components/youj/loaders/software/valance.d.ts",
+        "default": "./dist/components/youj/loaders/software/valance.js"
+      },
+      "./valence": {
+        "types": "./dist/components/youj/loaders/science/valence.d.ts",
+        "default": "./dist/components/youj/loaders/science/valence.js"
+      },
+      "./vault": {
+        "types": "./dist/components/youj/loaders/geometry/vault.d.ts",
+        "default": "./dist/components/youj/loaders/geometry/vault.js"
+      },
+      "./verdict": {
+        "types": "./dist/components/youj/loaders/software/verdict.d.ts",
+        "default": "./dist/components/youj/loaders/software/verdict.js"
+      },
+      "./vesicle": {
+        "types": "./dist/components/youj/loaders/orbs/vesicle.d.ts",
+        "default": "./dist/components/youj/loaders/orbs/vesicle.js"
+      },
+      "./vitals": {
+        "types": "./dist/components/youj/loaders/signal/vitals.d.ts",
+        "default": "./dist/components/youj/loaders/signal/vitals.js"
+      },
+      "./vortex": {
+        "types": "./dist/components/youj/loaders/depth/vortex.d.ts",
+        "default": "./dist/components/youj/loaders/depth/vortex.js"
+      },
+      "./weave": {
+        "types": "./dist/components/youj/loaders/color/weave.d.ts",
+        "default": "./dist/components/youj/loaders/color/weave.js"
+      },
+      "./whisper": {
+        "types": "./dist/components/youj/loaders/waves/whisper.d.ts",
+        "default": "./dist/components/youj/loaders/waves/whisper.js"
+      },
+      "./wick": {
+        "types": "./dist/components/youj/loaders/signal/wick.d.ts",
+        "default": "./dist/components/youj/loaders/signal/wick.js"
+      },
+      "./winnow": {
+        "types": "./dist/components/youj/loaders/software/winnow.d.ts",
+        "default": "./dist/components/youj/loaders/software/winnow.js"
+      },
+      "./yoke": {
+        "types": "./dist/components/youj/loaders/mechanics/yoke.d.ts",
+        "default": "./dist/components/youj/loaders/mechanics/yoke.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage.enabled",
+    "lint:tokens": "node ../core/scripts/check-tokens.mjs",
+    "loaders:generate": "node scripts/loaders.mjs",
+    "loaders:check": "node scripts/loaders.mjs --check",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "verify": "pnpm typecheck && pnpm lint:tokens && pnpm loaders:check && pnpm registry:check && pnpm test"
+  },
+  "devDependencies": {
+    "@youj/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@youj/core": "workspace:*",
+    "react": "^19",
+    "react-dom": "^19"
+  }
+}

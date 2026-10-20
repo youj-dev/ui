@@ -1,0 +1,135 @@
+---
+title: Badge
+description: "Label status, counts and metadata in a compact badge."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="badge/demo" height={320} />
+
+A deployments list where each row carries a status badge, and the main branch is also marked Production.
+
+</Story>
+
+<Story id="variants" label="Variants">
+
+<ComponentPreview name="badge/variants" height={180} />
+
+Every variant side by side.
+
+Badges are soft by default: a 10% tint of their color, with text in the same hue mixed toward the foreground, so it holds WCAG AA contrast on the tint in both modes. Only `solid` spends the accent at full strength, so save it for the one badge that should lead.
+
+Pick by meaning, not by color: `success`, `warning` and `danger` for outcomes, `secondary` and `outline` for neutral metadata, and `default` for what's new or in progress.
+
+For a live status, put a `BadgeDot` first inside the badge. It takes the badge's text color and is hidden from assistive tech, since the text carries the meaning:
+
+```tsx
+import { Badge, BadgeDot } from '@youj/react'
+
+<Badge variant="success">
+  <BadgeDot />
+  Live
+</Badge>
+```
+
+</Story>
+
+<Story id="colors" label="Colors">
+
+<ComponentPreview name="badge/colors" height={180} />
+
+Label chips in colours of their own: tinted chips, then outline chips with a coloured dot.
+
+`color` gives a chip a colour of its own, for labels people create (Frontend, Design): a theme colour's name (`chart-1`…`chart-5`, `accent`, `info`, `success`, `warning`, `danger`) or any CSS colour (`var(--brand)`). The chip is tinted with it and its text inked from it, the way the variants are, so a theme name holds contrast in both modes; a CSS colour of your own is yours to check. `BadgeDot color` paints only the dot, for a quieter outline chip.
+
+```tsx
+<Badge color="chart-3">Design</Badge>
+<Badge variant="outline">
+  <BadgeDot color="chart-3" />
+  Design
+</Badge>
+```
+
+</Story>
+
+<Story id="icons-and-links" label="Icons and links">
+
+<ComponentPreview name="badge/links" height={240} />
+
+A project card with a verified badge, a count, link badges and a warning.
+
+A leading or trailing icon sits 12px tall and is pulled 2px toward the edge, so the badge's padding looks even. Pass `render={<a href="…" />}` to make the badge a link. It keeps the badge's look and gains a hover tint and a focus ring. Youj icons inside a link play when the link is hovered or focused.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="badge" noImport />
+
+Use Badge for short labels such as status, count, version or environment. Keep it non-interactive or make it a link. Use a button for actions, and an [Alert](/docs/components/alert) or [Toast](/docs/components/toast) for longer messages.
+
+```tsx
+import { Badge } from '@youj/react'
+
+export function Status() {
+  return <Badge variant="success">Ready</Badge>
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant (1)">
+
+### Props
+
+<PropsTable name="Badge" />
+
+`render` comes from Base UI's `useRender`. It replaces the default `span` with your element and merges the badge's props onto it.
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="Badge doesn't move">
+
+### Reduced motion
+
+Badge doesn't move. A link badge's hover tint is a color change, and it stays under reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="focus">
+
+### Accessibility
+
+- A badge is plain text in a `span`, so it's read in line with its surroundings. Put it where the words make sense in reading order, such as after the item it describes.
+- Don't rely on color alone. The label carries the meaning, and an icon can reinforce it.
+- A link badge is a real `a` with a visible focus ring. Its text should say where it goes.
+
+</ReferenceRow>

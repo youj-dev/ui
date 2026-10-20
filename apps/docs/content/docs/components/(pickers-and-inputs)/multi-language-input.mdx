@@ -1,0 +1,224 @@
+---
+title: Multi-Language Input
+description: "Edit translations in one field, with a language picker and a status for each translation."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="multi-language-input/demo" height={420} />
+
+A product name and a description in five locales, only some of them translated yet.
+
+Each locale has one of five states, shown by shape as well as color:
+
+| Status | Glyph | Means |
+| --- | --- | --- |
+| Source | diamond | The locale the others are translated from |
+| Complete | filled disc with a check | Translated, current, reviewed |
+| Missing | hollow ring | No text yet |
+| Outdated | half-filled ring | The source changed after it was translated |
+| Needs review | dashed ring | Filled by a copy or a machine suggestion (`suggestions`), not checked yet |
+
+Outdated comes from `review`: for each locale, the source text it was translated against (`basis`), plus `unreviewed` for filled text that hasn't been checked yet. Typing sets the basis to the current source. "Mark reviewed" does the same for an outdated or unreviewed locale.
+
+Without a `review` prop, the component keeps this state itself, using the first source text it saw as the basis. Store `review` beside the value (`onReviewChange`) to keep "outdated" across sessions.
+
+`limit` is a soft limit, for every locale or per locale (`{ en: 60, ja: 30 }`). It counts characters the way a reader does: an emoji or an accented letter counts once. It shows a count and turns into an error past the limit. `maxLength` is still the hard cap the browser enforces.
+
+`validate(text, locale)` returns a message for text that isn't valid, and `errors` takes messages per locale from your server. The note under the text and `aria-invalid` both follow the locale being edited.
+
+</Story>
+
+<Story id="two-locales" label="Two locales">
+
+<ComponentPreview name="multi-language-input/two-locales" height={260} />
+
+A welcome message in English and French, where opening French offers to copy the English in.
+
+With five locales or fewer, every locale is a key, so it reads like tabs. Open an empty locale and it shows the source text as its placeholder, with a "Copy from English" button. A copy puts the caret at the end and flashes the field once. Copied text counts as "to review" until you edit it or mark it reviewed.
+
+</Story>
+
+<Story id="many-locales" label="Many locales">
+
+<ComponentPreview name="multi-language-input/many-locales" height={300} />
+
+Forty locales with English, German, French and Japanese pinned, and the rest a search away.
+
+With more locales, the source and the `pinned` locales stay as keys. The default pins the source and the required locales. Every other locale is in the picker, whose trigger is the last key, and while a locale from the picker is being edited, the trigger shows it.
+
+The picker lists locales in three groups: pinned, recent, and the rest by region (or by script, with `groupBy="script"` on a wrapping `MultiLanguageProvider`; the field itself doesn't take `groupBy`). Each locale shows its status. "Needs work" keeps only the locales with something missing, outdated or unreviewed.
+
+The keys never overflow: when the field is narrow, pinned keys fold into the picker, and the source and the locale being edited always stay. The arrows and ⌥⌘↓ / ⌥⌘↑ (Ctrl+Alt on Windows and Linux) move to the next or previous locale that needs work. Focus stays in the text, and the new locale is announced.
+
+</Story>
+
+<Story id="one-switcher-for-a-whole-form" label="One switcher for a whole form">
+
+<ComponentPreview name="multi-language-input/side-by-side" height={520} />
+
+A title and a summary sharing one switcher, a view toggle and actions, in side-by-side view with German selected.
+
+A `MultiLanguageProvider` gives every field inside it one active locale, one status model and one switcher. The status of each locale covers every field in the form, and `useMultiLanguage()` exposes it for your own toolbar.
+
+`MultiLanguageActions` offers three bulk actions for the active locale: fill every empty field from the source, mark all reviewed, or clear the locale (after a confirm). Each one is announced, and `onBulkAction` receives an `undo` so you can offer it in a toast.
+
+With `view="side-by-side"`, each field puts the source beside the translation, and for an outdated one it marks what changed in the source since. Screen readers hear the source as the field's description.
+
+</Story>
+
+<Story id="with-form" label="With Form">
+
+<ComponentPreview name="multi-language-input/form" height={320} />
+
+A required title inside a Form, validated by a schema whose message names the languages still missing.
+
+The value is a plain record, so a react-hook-form schema checks it like any other value. `missingTranslations(value, locales)` returns the locales still empty, for a message that names them. The Field's error describes the control, and a required locale that's still empty says so under its text.
+
+</Story>
+
+<Story id="right-to-left" label="Right to left">
+
+<ComponentPreview name="multi-language-input/rtl" height={380} />
+
+An Arabic interface, where the switcher mirrors and each field runs in its own language's direction.
+
+In a right-to-left interface, the keys, the picker and the arrows mirror. Each field still runs in its own locale's direction: an English translation inside an Arabic page runs left to right.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="multi-language-input" noImport />
+
+Use it for content you publish in more than one language: a product name, a page title, a description, an email subject. One field holds every language, so a form is as long as it would be in one. The field also shows which translations are missing, out of date or waiting for review.
+
+It scales from two locales to forty. Pinned locales are one-press keys; every other locale is a search away, by its name, its own name, its code or its region. Wrap several fields in a `MultiLanguageProvider` and they share one switcher, one status model and a side-by-side view for translators.
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel, MultiLanguageInput } from '@youj/react'
+
+export function ProductName() {
+  const [name, setName] = useState<Record<string, string>>({ en: 'Linen overshirt' })
+  return (
+    <Field required>
+      <FieldLabel>Product name</FieldLabel>
+      <MultiLanguageInput locales={['en', 'fr', 'de']} value={name} onValueChange={setName} name="name" />
+    </Field>
+  )
+}
+```
+
+- **The value** is a record of locale to text: `{ en: 'Linen overshirt', fr: 'Surchemise en lin' }`.
+- **Locales** are BCP 47 tags (`'en'`, `'pt-BR'`, `'zh-Hans'`). Their names come from `Intl.DisplayNames` in the interface's language, and you can pass `{ code, label }` to name one yourself.
+- **Direction and script:** every control carries its locale's `lang` and `dir`. Arabic and Hebrew run right to left, spellcheck and speech follow the language, and Japanese gets Japanese glyphs rather than Chinese ones. Chinese, Japanese, Korean, Devanagari and Thai are set a step larger.
+- **The source locale** (`sourceLocale`, the first by default) is the one translations are made from. A required Field requires it, or every locale in `requiredLocales`.
+- **Native forms:** with a `name`, the form submits one hidden input per locale: `name[en]`, `name[fr]`, and so on.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="locales, sourceLocale, requiredLocales… (51)">
+
+### Props
+
+#### MultiLanguageInput
+
+<PropsTable name="MultiLanguageInput" />
+
+#### MultiLanguageProvider
+
+<PropsTable name="MultiLanguageProvider" />
+
+#### MultiLanguageSwitcher, MultiLanguageProgress and MultiLanguageActions
+
+<PropsTable name="MultiLanguageSwitcher" />
+
+<PropsTable name="MultiLanguageProgress" />
+
+<PropsTable name="MultiLanguageActions" />
+
+#### Helpers
+
+| Export | What it does |
+| --- | --- |
+| `useMultiLanguage()` | Returns `locale`, `setLocale`, `view`, `setView`, `missingOnly`, `setMissingOnly`, `summaries` (per locale: worst status, and field counts per status), `next()` / `previous()`, and the bulk actions. |
+| `missingTranslations(value, locales)` | The locales among `locales` with no text. |
+| `translationStatus(value, locale, source, review?)` | One translation's status. |
+| `describeLocale(code, displayLocale)` | A locale's name, native name, script, region and direction. |
+| `countCharacters(text, locale)` | Characters as a reader counts them (grapheme clusters). |
+| `TranslationStatusIcon` | The status glyph on its own, for your own overviews. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Locale switch, keys and picker highlight, status glyph… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Locale switch', note: 'the new text fades up and drifts 6px in from the side it came from (a Web Animation; the next switch cancels it)', duration: 'base', ease: 'enter' },
+    { moment: 'Keys and picker highlight', note: 'glide to the selected key and the highlighted row', spring: 'smooth' },
+    { moment: 'Status glyph', note: 'a changed status pops in', duration: 'fast', ease: 'enter' },
+    { moment: 'Locale complete', note: 'the disc lands and its check draws', spring: 'settle' },
+    { moment: 'Progress ring', note: 'the arc follows the count, and turns to success at 100%', spring: 'smooth' },
+    { moment: 'Progress bar and meters', note: 'segments grow and move along the track', duration: 'slow', ease: 'standard' },
+    { moment: 'Copy flash', note: 'the surface tints at once, then fades back', duration: 'slow', ease: 'standard' },
+    { moment: 'Source pane', note: 'fades in with a 4px drift as side by side opens', duration: 'base', ease: 'enter' },
+  ]}
+  reduced="The text changes in place, keys and highlights jump, statuses appear drawn, meters jump to their value and nothing flashes. Announcements and focus are unchanged."
+/>
+
+#### Reduced motion
+
+The text swaps in place, the keys and the picker highlight jump, statuses appear already drawn, and meters show their value at once. Copying doesn't flash. Focus, the caret and every announcement are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- **Names:** every control is named by its Field label and its locale: "Title, German".
+- **Descriptions:** it's described by the Field's description and error, the source text in side-by-side view, the note for the locale being edited, and the character count. `aria-invalid` follows the locale being edited.
+- **Keys:** the keys are a toggle group named "Language". Each key reads its language and, when there's work, its status ("French, Missing").
+- **Picker:** its search is a combobox that drives a grouped listbox through `aria-activedescendant`, so focus stays in the search. An empty result is announced.
+- **Announcements:** locale switches from the keyboard shortcut or the picker, copies, suggestions, "mark reviewed" and bulk actions are announced politely.
+- **Progress:** the progress ring and bar are progress bars, and their value text reads the whole breakdown ("12 of 16 languages complete, 2 outdated, 2 missing").
+
+| Key | Action |
+| --- | --- |
+| ← → | Move between the keys. |
+| Any letter on the picker key | Opens the picker with that letter searched. |
+| ↑ ↓, Enter, Escape (picker) | Move through the locales, pick one, close. |
+| ⌥⌘↓ / ⌥⌘↑ (Ctrl+Alt elsewhere) | Next or previous locale that needs work, from anywhere in the field or form. |
+
+</ReferenceRow>

@@ -1,0 +1,108 @@
+---
+title: Layers
+description: "Show real UI first as an exploded isometric stack of its layers, then settle the camera flat as the stack collapses into the real thing."
+---
+
+<ComponentPreview name="layers/demo" height={460} />
+
+Use it for an entrance that shows how a piece of UI is put together: a hero demo, a product tour, a component on show. The demo starts as an exploded stack, the way a view-hierarchy debugger shows a screen: the frame at the bottom, its regions above it, its boxes above those and its content (text and icons) on top, each a thin plane with its depth label (`z2  boxes  19`). The planes come up one by one and draw their parts in build order. Then the camera settles from the isometric angle to flat while the gaps close layer by layer, and each plane hands over to the real parts it holds. Keep it to one moment on a page.
+
+## Installation
+
+<InstallTabs name="layers" />
+
+## Usage
+
+Wrap the UI in `LayersEntrance`. It plays on its first child, on mount.
+
+```tsx
+import { LayersEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <LayersEntrance>
+      <Dashboard />
+    </LayersEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the look. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { layers } from '@youj/motion'
+
+const run = layers(document.querySelector('#dashboard')!, { speed: 1.5 })
+await run.finished
+```
+
+## Pacing
+
+Three stages: **stack** (the planes come up one by one, each drawing its parts as it arrives), **collapse** (the camera turns flat while the gaps close, bottom first) and **resolve** (the frame, then each plane in turn: its real parts fade in, then the plane fades off them).
+
+The length grows with the demo: about 3 seconds for a card and about 5 for a small screen. `duration` fixes it in milliseconds, `speed` scales it, and `phases` shares it out as weights (default `{ stack: 45, collapse: 33, resolve: 22 }`).
+
+## What it reads
+
+The parts come from the real DOM, read once before the first frame (the same reading as Blueprint's), and are drawn on the planes in their real fills, borders, radii, type and shapes, so the flat stack is already close to the UI it hands over to. The camera is fitted so the exploded stack stays inside the demo's box and a small margin around it. A demo with no regions has three planes.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, onFinish">
+
+### Props
+
+<PropsTable name="LayersEntrance" />
+
+#### layers
+
+```ts
+function layers(node: HTMLElement, options?: LayersOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `{ stack?: number; collapse?: number; resolve?: number }` | `{ stack: 45, collapse: 33, resolve: 22 }` | Each stage's share of the run, as weights. |
+| `labels` | `Partial<LayersLabels>` | Youj's labels | The layers' names on the depth labels. `<LayersEntrance>` takes them from `<YoujProvider labels>`. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the entrance. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Stack, collapse, resolve · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Plane up', note: '`transform` (translateZ) and `opacity`, one plane after another', duration: 'slow', ease: 'enter' },
+    { moment: 'Parts drawn', note: 'each part wipes onto its plane in build order', value: 'the stack, 45%', ease: 'standard' },
+    { moment: 'Collapse', note: 'the camera turns flat; the gaps close one at a time, bottom first', value: '33%', ease: 'standard' },
+    { moment: 'Resolve', note: 'per plane: its real parts fade in, then the plane fades off them', value: '22%', ease: 'enter' },
+  ]}
+  reduced="No stack: the UI is just there, and nothing is added to the page."
+/>
+
+The stack is one preserve-3d stage on the overlay, moved by `transform` and `opacity` only. The demo is never restyled: its parts are held by their inline opacity while they wait and each arrives as a Web Animation. When the run ends, or `cancel()` is called, everything is put back exactly. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `layers()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The stack is `aria-hidden` and never takes the pointer. The demo stays in the accessibility tree the whole time.
+- Tabbing into the demo, or pressing on it, ends the run at once.
+- The camera move is slow and eased; under reduced motion there is none.
+
+</ReferenceRow>

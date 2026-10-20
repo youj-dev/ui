@@ -1,0 +1,6 @@
+/* One Tailwind root: the ui token bridge only takes effect when compiled
+ * together with youj.css, which owns the Tailwind import. */
+@import '../packages/core/src/styles/youj.css';
+@import '../packages/ui/src/styles/ui.css';
+/* Component styles: recipes keyed on data-yj-look (the toolbar's Look). */
+@import '../packages/ui/src/styles/bezel.css';

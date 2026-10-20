@@ -1,0 +1,116 @@
+---
+title: Miniatures
+description: "Interactive isometric models of real things, for React: a turntable that plays, a server cabinet that fails over, an hourglass that is also a progress indicator."
+---
+
+<Callout type="note" title="New">Miniatures are new. They're ready to use; names, props and visuals may still change between releases before 1.0.</Callout>
+
+Miniatures are interactive isometric models of real things. Where an [illustration](/docs/illustrations) is a scene to look at, a miniature is a machine you can work: parts that move, keys that switch it, a live readout, light and dark. Each one is a React component drawn in SVG, and React is the only dependency.
+
+The [miniatures page](/miniatures) shows them all live: pick one, press its keys, read its readout, then copy its import.
+
+## Installation
+
+```bash
+pnpm add @youj/miniatures
+```
+
+Each miniature is its own entry, so an app bundles only the ones it imports, plus the engine they share once (about 8 KB gzipped). Each one adds 7 to 13 KB.
+
+## Usage
+
+```tsx
+import { MiniatureTurntable } from '@youj/miniatures/turntable'
+
+export function Hero() {
+  return <MiniatureTurntable size={420} stage />
+}
+```
+
+Without `size` it fills its container's width at its own aspect ratio. On the server it renders an empty host at that ratio, so the page doesn't shift, and it draws once mounted.
+
+## Props
+
+Every miniature takes these. Other HTML attributes (`className`, `style`, `id`, handlers) go to the host `<div>`.
+
+| Prop | Default | |
+| --- | --- | --- |
+| `mode` | `'system'` | `'light'`, `'dark'`, or `'system'`: a `.dark`/`.light` class or `data-theme` on an ancestor, else the OS. |
+| `size` | | The side of the square it's fitted into, in pixels or any CSS length. |
+| `stage` | `false` | Paints its stage behind it: warm paper, or warm charcoal in the dark. |
+| `interactive` | `true` | `false` draws a still picture (`role="img"`): no focus, pointer or keys. The ref still drives it. |
+| `keyboard` | `'scoped'` | Where its keys work: `'scoped'`, `'global'` or `'off'` (see [Keys](#keys)). |
+| `sound` | `false` | Lets it make its sounds, from the first click or key on it, never before. |
+| `autoPlay` | `true` | `false` shows its first frame and waits for an interaction or `play()`. For pages of many. |
+| `reducedMotion` | `'user'` | `'user'` follows `prefers-reduced-motion`; `'always'` and `'never'` force it. Reduced, every change jumps to its end. |
+| `onStateChange` | | Called with the new snapshot after the readout changes. |
+| `aria-label` | its name and model | Overrides the accessible name. |
+
+Offscreen, a miniature's clock holds (and its sound pauses), so a page of them costs only what's in view.
+
+## Readout and keys
+
+The component is the drawing and its behavior; your page presents the rest. The root import is a catalogue of every miniature's metadata (name, model, spec, description, key hints, first readout) with no drawing code, safe in a server component. The ref's handle presses keys and reads the snapshot:
+
+```tsx
+'use client'
+
+import { useRef, useState } from 'react'
+import type { AnyMiniatureHandle, MiniatureSnapshot } from '@youj/miniatures'
+import { MiniatureTurntable, turntable } from '@youj/miniatures/turntable'
+
+export function Exhibit() {
+  const ref = useRef<AnyMiniatureHandle>(null)
+  const [snapshot, setSnapshot] = useState<MiniatureSnapshot>(turntable.initial)
+  return (
+    <figure>
+      <MiniatureTurntable ref={ref} onStateChange={setSnapshot} stage />
+      <figcaption>
+        {turntable.name} · {snapshot.readout} · {snapshot.state}
+        {turntable.keys.map((hint) => (
+          <button
+            key={hint.label}
+            aria-pressed={'toggle' in hint ? snapshot.pressed[hint.keys[0]] : undefined}
+            onClick={() => ref.current?.press(hint.keys[0])}
+          >
+            {hint.caps.join(' ')} {hint.label}
+          </button>
+        ))}
+      </figcaption>
+    </figure>
+  )
+}
+```
+
+`press(key)` takes a `KeyboardEvent.key` (`' '`, `'c'`, `'ArrowUp'`, `'shift+w'`) or a name (`'space'`, `'up'`). `getSnapshot()` and `subscribe()` fit `useSyncExternalStore`; `pause()` and `play()` hold and release its clock.
+
+### Keys
+
+A miniature never takes the page's keys by default. With `keyboard="scoped"` its keys work while focus is inside it (Tab reaches it and each of its parts), or while the pointer is over it and nothing else has focus. `"global"` takes them anywhere except text fields and another control's own keys (Space on a button, arrows in a slider). `"off"` leaves only its parts' own Enter and Space, and `press()`. It lists its keys in `aria-keyshortcuts`.
+
+## As a progress indicator
+
+The hourglass, the packaging line and the repair bench are also progress indicators (`meta.progress`). They take `progress`, a share from 0 to 1 (or `null` for indeterminate), and `done`:
+
+```tsx
+import { MiniatureHourglass } from '@youj/miniatures/hourglass'
+
+<MiniatureHourglass interactive={false} size={160} progress={uploaded / total} done={finished} aria-label="Uploading" />
+```
+
+Without `progress` it runs on its own. With it, it follows the share: the sand settles, the pallet fills, the checklist lights up. `done` finishes the job: the glass makes a last turn and glows, the pallet is wrapped, the case closes and its beacon turns green. Their handle adds `setProgress(p | null)` and `done()`.
+
+## Theming
+
+Each miniature wears its own palette: a product drawing on warm paper in light, the same materials relit on a warm charcoal stage in dark. Every token a miniature declares yields to the same name with a `--yjm-` prefix set on any ancestor: `--yjm-accent` recolors its lit parts and focus ring, `--yjm-bg` its stage, `--yjm-wood` its walnut.
+
+```css
+.exhibit {
+  --yjm-accent: #e5484d;
+}
+.dark .exhibit {
+  --yjm-accent: #ff6b6f;
+}
+```
+
+Each miniature draws in its own shadow root, so your CSS can't reach its drawing and its CSS can't reach your page; the host element styles like any `<div>`. `palette`, `stage` and `relight(hex, role)` are exported from the root for pages that match its colors.

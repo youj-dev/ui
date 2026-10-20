@@ -1,0 +1,115 @@
+---
+title: Kbd
+description: "Show keyboard keys and shortcuts as keycaps."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="kbd/demo" height={380} />
+
+A shortcut list with key combinations and sequences, and a footer of key hints.
+
+</Story>
+
+<Story id="in-buttons-and-tooltips" label="In buttons and tooltips">
+
+<ComponentPreview name="kbd/in-context" height={200} />
+
+Keycaps inside a search button, a tooltip and a Deploy button.
+
+Keycaps sit inside buttons and tooltips at the right size, and an icon inside a keycap shrinks to 12px. In a tooltip they restyle themselves for its chip, in both modes. Hover or focus the middle button to see one.
+
+</Story>
+
+<Story id="in-a-sentence" label="In a sentence">
+
+<ComponentPreview name="kbd/inline" height={240} />
+
+Keycaps in a sentence of help text.
+
+Keycaps sit on the text's baseline, so keys can go mid-sentence: in help text, onboarding tips and docs. A keycap is 20px tall, the height of a line of UI text. As a direct child of a paragraph, list item, table cell, quote or caption it trims its block margins, so a line with a key is no taller than one without; `leading-6` still gives the keycaps more air.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="kbd" noImport />
+
+Use `Kbd` wherever you name a key: a shortcut beside a command, a hint in a footer, a step in the docs. It's the right element for keyboard input, not a styled `code` or `span`. Don't use it for arbitrary labels or counts. Those are [Badges](/docs/components/badge).
+
+```tsx
+import { Kbd, KbdGroup } from '@youj/react'
+
+export function Shortcut() {
+  return (
+    <KbdGroup>
+      <Kbd>⌘</Kbd>
+      <Kbd>K</Kbd>
+    </KbdGroup>
+  )
+}
+```
+
+A single key is a `Kbd`. A combination is a `KbdGroup` of `Kbd`s, which is nested `<kbd>` elements, the way HTML spells keys pressed together. For a sequence, like G then S, put the word between the keys, as in the demo.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Options">
+
+### Props
+
+#### Kbd
+
+<PropsTable name="Kbd" />
+
+#### KbdGroup
+
+<PropsTable name="KbdGroup" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="Kbd is static">
+
+### Reduced motion
+
+Kbd is static. Nothing changes under reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- `Kbd` renders `<kbd>`, HTML's element for keyboard input. It ignores the pointer, so it never steals a click from the control around it.
+- Symbols such as ⌘, ⌥ and ⇧ are read inconsistently. When the shortcut matters, write it out in the surrounding text, or give the icon inside a keycap an `aria-label`, as the arrow keys in the preview do.
+- Inside a button, the keycaps are a hint, not part of the button's name. Mark them `aria-hidden`. When the shortcut really works, expose it with `aria-keyshortcuts` on the button.
+
+</ReferenceRow>

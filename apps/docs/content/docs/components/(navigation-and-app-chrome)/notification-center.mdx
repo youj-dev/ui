@@ -1,0 +1,144 @@
+---
+title: Notification Center
+description: "Collect notifications behind a bell, with unread counts, filters and actions."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="notification-center/demo" height={280} />
+
+A bell in a header with an inbox of mentions, deployments and invitations, and a button that simulates a new notification.
+
+</Story>
+
+<Story id="empty-states" label="Empty states">
+
+<ComponentPreview name="notification-center/empty" height={200} />
+
+A bell with no notifications, showing the empty state.
+
+Each tab has its own empty state: "No notifications", "You're all caught up" once everything is read, and "No mentions".
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="notification-center" noImport />
+
+Use a notification center for things that happened while someone was away and that they'll act on later: mentions, invites, deploys, alerts. Press the bell to open it, or simulate an arrival and watch the bell swing and the count roll. For a message about something that just happened in front of the person, use a [Toast](/docs/components/toast). For a history of events on one object, use a [Timeline](/docs/components/timeline).
+
+```tsx
+import { NotificationCenter, type NotificationItem } from '@youj/react'
+
+export function Inbox({ items }: { items: NotificationItem[] }) {
+  return (
+    <NotificationCenter
+      notifications={items}
+      onMarkRead={(id) => markRead(id)}
+      onMarkAllRead={() => markAllRead()}
+    />
+  )
+}
+```
+
+The center reads the list you pass and never changes it: marking read calls `onMarkRead` or `onMarkAllRead`, and you pass back the updated list. Each item has an `id`, a `title` and a `time`, and optionally:
+
+- `actor`, the person who did it (their avatar shows beside it), or an `icon` for system events.
+- `body`, a second line, clamped to two lines.
+- `read`. Unread items carry a dot and count towards the badge.
+- `mention`, which lists the item under Mentions.
+- `actions`, buttons under the item, such as Reply or Accept.
+- `summary`, plain text for announcements and toasts when `title` isn't a string.
+
+It opens in a [Popover](/docs/components/popover) aligned to the bell's end on desktop, and in a bottom [Sheet](/docs/components/sheet) below the `md` breakpoint.
+
+### Arrivals and toasts
+
+A notification whose `id` wasn't in the previous list is an arrival. If it's unread, the bell swings once and it's announced. With the panel open, it takes its slot at the top of the list and the rest glide down.
+
+`useNotificationToasts` also shows a [Toast](/docs/components/toast) for each arrival. Pass `enabled: !open` so arrivals toast only while the panel is closed, and render one `<Toaster />` in the app, as the Demo story does.
+
+```tsx
+import { useState } from 'react'
+const [open, setOpen] = useState(false)
+useNotificationToasts(items, { enabled: !open })
+
+<NotificationCenter notifications={items} open={open} onOpenChange={setOpen} />
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="notifications, onMarkRead, onMarkAllRead… (8)">
+
+### Props
+
+<PropsTable name="NotificationCenter" />
+
+`useNotificationToasts(items, { enabled })` takes the same list, and toasts every arrival while `enabled` (default `true`).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Bell swing, count, badge… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Bell swing', note: 'The Youj BellIcon swings once per arrival; a second arrival mid-swing extends it', duration: 'deliberate' },
+    { moment: 'Count', note: 'the number rolls to its new value (Counter, `roll`)', duration: 'slow', ease: 'standard' },
+    { moment: 'Badge', note: 'pops in from scale 0 on the first unread', duration: 'base', ease: 'enter' },
+    { moment: 'Arrival', note: 'rises into its slot at the top and fades in (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Removal', note: 'fades out, as when an item leaves the Unread tab', duration: 'fast', ease: 'exit' },
+    { moment: 'Reflow', note: 'the rest of the list glides to its new place', spring: 'smooth' },
+    { moment: 'Unread dot', note: 'fades and shrinks to half when read', duration: 'base', ease: 'standard' },
+    { moment: 'Tab indicator', note: 'glides to the chosen filter (SlidingIndicator)', spring: 'smooth' },
+  ]}
+  reduced="The bell doesn't swing and the badge doesn't pop; the count and the list change in place."
+/>
+
+#### Reduced motion
+
+The bell stays still, the badge appears without the pop and new or removed items change the list in place. Arrivals are still announced, and toasts still show.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The bell is a button whose name carries the count: "Notifications, 3 unread".
+- Arrivals are announced politely: "New notification: Mira Chen mentioned you in Q3 roadmap".
+- Unread items start with "Unread:" for screen readers, so the dot isn't the only signal.
+- Mark as read, Mark all as read and every action are real buttons. Mark as read shows on hover and focus, and always on touch screens.
+- Today and Earlier are labeled sections with their own headings, and the filters are [Tabs](/docs/components/tabs) with arrow-key navigation.
+- Times are `<time>` elements with a machine-readable `dateTime`.
+
+</ReferenceRow>

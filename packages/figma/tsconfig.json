@@ -1,0 +1,47 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "types": [
+      "node",
+      "vitest/globals"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@youj/core": [
+        "../core/src/index.ts"
+      ],
+      "@youj/core/*": [
+        "../core/src/*"
+      ],
+      "@youj/icons": [
+        "../icons/src/index.ts"
+      ],
+      "@youj/icons/*": [
+        "../icons/src/*"
+      ],
+      "@youj/illustrations": [
+        "../illustrations/src/index.ts"
+      ],
+      "@youj/illustrations/*": [
+        "../illustrations/src/*"
+      ],
+      "@youj/react/*": [
+        "../ui/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/data",
+    "src/kit.ts",
+    "scripts",
+    "test",
+    "vitest.config.ts"
+  ]
+}

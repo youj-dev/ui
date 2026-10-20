@@ -1,0 +1,46 @@
+[
+  {
+    "name": "icon-morph",
+    "type": "registry:lib",
+    "title": "Icon morph engine",
+    "description": "Dependency-free true path morphing between arbitrary stroke icons: flattens any rendered SVG into contours, keeps shared strokes still, carves strokes cut by a slash out of the original, pairs the rest by position and length with a rotation-aware blend, and draws leftovers in or out.",
+    "files": [
+      {
+        "path": "src/components/youj/icons/icon-morph.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "icon-swap",
+    "type": "registry:component",
+    "title": "IconSwap",
+    "description": "Swaps any two icons (lucide-react or youj) with rotate, scale-blur, draw, flip, slide, fold, wipe, zoom, pop or a true morph. One progress value drives every transition, so reversing mid-swap never jumps; per-state labels; instant under reduced motion.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "icon-engine",
+      "icon-morph"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/icons/icon-swap.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "use-icon-state",
+    "type": "registry:hook",
+    "title": "useIconState",
+    "description": "Turns an IconSwap or a state icon into an accessible toggle button: aria-pressed with a fixed name for toggles, or a name that follows the state for actions like play/pause.",
+    "files": [
+      {
+        "path": "src/components/youj/icons/use-icon-state.ts",
+        "type": "registry:hook"
+      }
+    ]
+  }
+]

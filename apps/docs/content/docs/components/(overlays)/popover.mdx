@@ -1,0 +1,154 @@
+---
+title: Popover
+description: "Show a small task or extra detail in a panel anchored to a control."
+aliases: ["popup", "flyout"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="popover/demo" height={500} />
+
+A project header with a Share button that opens a popover for inviting teammates, aligned to the end of the trigger.
+
+</Story>
+
+<Story id="placement" label="Placement">
+
+<ComponentPreview name="popover/placement" height={340} />
+
+One popover on each side of its trigger.
+
+The popup opens on `side` (`bottom` by default) and aligns to the trigger with `align` (`center`). It sits `sideOffset` px away (6), keeps `collisionPadding` px from the viewport edge (8), and flips to the opposite side when it runs out of room. It always grows out of the edge that touches the trigger, including after a flip.
+
+
+The popup is 18rem wide by default and never wider than the space available. Size it with `className`, as the share panel in the Demo story does with `w-80`.
+
+</Story>
+
+<Story id="open-on-hover" label="Open on hover">
+
+<ComponentPreview name="popover/infotip" height={320} />
+
+An info icon that opens a popover on hover and on press.
+
+An info icon that explains a figure is a popover, not a tooltip. `openOnHover` on the trigger opens it after a short rest (Base UI's `delay`, 300ms), and a press still opens it, so touch and keyboard users reach the same text. Opened with a press, it's a dialog like any other popover, and screen readers read its title and description.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="popover" noImport />
+
+Use Popover for a small task or detail tied to a control, such as sharing, filters or a quick setting. The page stays usable by default. Use a [Dialog](/docs/components/dialog) when the task must be completed or dismissed first. Use a [Tooltip](/docs/components/tooltip) for a short visual label.
+
+```tsx
+import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@youj/react'
+
+export function SharePopover() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="outline" />}>Share</PopoverTrigger>
+      <PopoverContent align="end">
+        <PopoverHeader>
+          <PopoverTitle>Share youj-web</PopoverTitle>
+          <PopoverDescription>Invite teammates by email.</PopoverDescription>
+        </PopoverHeader>
+        <InviteForm />
+      </PopoverContent>
+    </Popover>
+  )
+}
+```
+
+`PopoverTrigger` renders a button. Pass `render` to use your own [Button](/docs/components/button) and keep its variants. `PopoverContent` brings the portal, the positioner and the popup in one part, so placement props go straight on it. `PopoverClose` closes the popover from inside, for a Done or Cancel button.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="container, presentation (2)">
+
+### Props
+
+#### PopoverContent
+
+<PropsTable name="PopoverContent" />
+
+`Popover` takes Base UI's root props (`open`, `defaultOpen`, `onOpenChange`, `modal`), and `PopoverTrigger` takes the trigger's (`openOnHover`, `delay`, `closeDelay`, `render`). `PopoverHeader`, `PopoverTitle`, `PopoverDescription` and `PopoverClose` add no props of their own.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the popover is a bottom sheet">
+
+### Touch
+
+On a touch device the popover is a bottom sheet. It rises from the bottom of the screen over a scrim, spans the screen's width and has a grab handle. Pull it down, tap outside it or press Escape to close it, and focus returns to the trigger. Your content and its horizontal padding stay the same; placement props (`side`, `align`, offsets) don't apply, since a finger would cover anything anchored to the trigger. A field inside raises the on-screen keyboard, and the sheet moves up to stay above it.
+
+On touch, `Popover` is modal unless you pass `modal`, so the page under the sheet doesn't scroll. A control inside that handles its own drag, such as a slider or a canvas, can carry `data-sheet-no-drag` so dragging it never pulls the sheet away.
+
+`presentation` on `PopoverContent` chooses: `auto` (the default) is a popover under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the anchored popover on touch too. Touch follows the device, not the screen width, and `YoujProvider`'s `device` can force it for a part of the page.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, keyboard open, Escape close · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'scale .96 → 1 and fade, from the anchor point (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', note: 'gets out of the way faster than it arrived', duration: 'instant', ease: 'exit' },
+    { moment: 'Keyboard open, Escape close', note: 'Base UI sets `data-instant`', value: '0ms' },
+  ]}
+  reduced="The popover appears and disappears at once. Focus handling, placement and content are unchanged."
+/>
+
+The popup's `transform-origin` is the point Base UI anchors it to, so it scales out of the trigger, not out of its own center. It animates on transitions, not keyframes, so reopening a popover while it closes reverses it from where it is.
+
+#### Reduced motion
+
+The popover appears in place and closes at once. Its portal carries the nearest `YoujProvider`'s settings, so a provider set to `reducedMotion="always"` reaches it even though it renders outside the provider's DOM.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The popup is a `dialog`, named by `PopoverTitle` and described by `PopoverDescription`. The trigger carries `aria-expanded` and `aria-haspopup="dialog"`.
+- Opening moves focus to the first focusable element inside, or to the popup itself. Closing returns focus to the trigger.
+- Under a mouse or trackpad it isn't modal by default: the rest of the page stays usable, and a press outside closes the popover. Pass `modal` to `Popover` to trap focus and lock scrolling instead. On touch it's modal unless you pass `modal={false}`.
+
+| Key | Action |
+| --- | --- |
+| `Enter` / `Space` | Opens or closes the popover from the trigger. |
+| `Tab` | Moves through the popover's content. |
+| `Escape` | Closes the popover and returns focus to the trigger. |
+
+</ReferenceRow>

@@ -1,0 +1,96 @@
+---
+title: Onboarding & states
+description: "Getting started and the in-between pages: checklists, setup choices, first sources, empty and illustrated states."
+---
+
+<BlockStories>
+
+<BlockStory id="checklist" label="Checklist" block="app-checklist" story="Default" backdrop="umber">
+
+A getting-started checklist that floats at the bottom of an app: a progress ring, one open step at a time with its action, and finished steps gliding down to Done. It minimizes to a pill that keeps the count.
+
+</BlockStory>
+
+<BlockStory id="setup-picker" label="Setup picker" block="app-setup-picker" story="Default" backdrop="umber">
+
+A setup step where each choice shows what it builds: three deployment shapes as cards with a small isometric plan that builds when chosen. A sentence says what the choice means, and Continue saves it.
+
+</BlockStory>
+
+<BlockStory id="connect-sources" label="Connect sources" block="app-connect-sources" story="Default" backdrop="umber">
+
+A setup step for plugging your sources in. An isometric power strip shows each connected source as a plug in its color, the one still backfilling hovering over its socket, and empty sockets for the rest. Each tile shows a source's day as a small histogram with events a day, how far a backfill has come, or the coverage it would add and a Connect button; the foot sums the coverage on a segmented meter beside Skip for now and Continue.
+
+</BlockStory>
+
+<BlockStory id="first-source" label="First data source" block="app-first-source" story="Default" backdrop="heather">
+
+The first source for an empty library, drawn as a floor plan; a data warehouse by default. Choice cards (database, event stream, files here; a photo library or a CRM with your own `sources`) reshape what is waiting to land, and the primary action connects the chosen source.
+
+</BlockStory>
+
+<BlockStory id="gallery" label="Gallery" block="app-empty-states" story="Gallery" backdrop="heather">
+
+Four empty states in one card: no projects yet, no results, no access and offline. Each says what is missing, why, and the one thing to do next, with an isometric scene that assembles as it scrolls into view.
+
+</BlockStory>
+
+<BlockStory id="illustrated" label="Illustrated" block="content-illustrated-states" story="Welcome" backdrop="heather">
+
+A full page for the moments between real pages: welcome, empty workspace, 404, maintenance, payment done and offline. One composition keeps them looking like a family; the story shows the welcome state.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="status, pictures, choices, motion">
+
+### Accessibility
+
+The checklist is a `section` labelled by its title and each change is announced. Its title heading follows `headingLevel`.
+
+Setup picker uses a radio group, so the arrow keys move between the cards and the choice is announced. The isometric plans are decorative.
+
+Connect sources keeps its drawing decorative (hidden from assistive tech) and says everything in the tiles: a named list where each tile has its source's name, its state in words ("Connected", a backfill percentage, or the coverage it adds) and a Connect button named for the source. The histograms are decorative too; the line under each says the number. The coverage meter is a `meter` named Coverage, and connecting announces the result in a polite live region.
+
+Every state has a plain title and sentence, and the illustrated pages are a `section` or `main` named by their heading. The isometric scenes are pictures: they are `aria-hidden`, and the words beside them carry the meaning.
+
+In the gallery the offline state follows the browser's online state and announces changes in a `role="status"` paragraph. In the first data source block the three choices are a labelled radio group, so the arrow keys move between them and the chosen one is announced; the primary action's label follows the choice.
+
+Under reduced motion the scenes appear finished and still, nothing bobs or drops, and the choice reshapes in place.
+
+Under reduced motion rows, rings and steps change in place, the chosen plan is simply built and the bar jumps to its new split.
+
+</ReferenceRow>
+
+</BlockStories>

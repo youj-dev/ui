@@ -1,0 +1,162 @@
+---
+title: Shimmer
+description: "Draw attention to an element with accent light that travels along its border."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="shimmer/demo" height={220} />
+
+A docs search field wrapped in Shimmer; hover or focus it to lengthen the light.
+
+</Story>
+
+<Story id="on-your-own-element" label="On your own element">
+
+<ComponentPreview name="shimmer/use-shimmer" height={200} />
+
+A workspace nav whose Upgrade link takes the effect through useShimmer.
+
+`useShimmer()` puts the effect on an element you already render, like a link or a button. Spread `rootProps` on it, merging `className` and `style` with your own, and render `layers` as its first children.
+
+```tsx
+import { cn } from '@youj/core'
+import { useShimmer } from '@youj/motion'
+
+function UpgradeLink() {
+  const { rootProps, layers } = useShimmer<HTMLAnchorElement>({ idle: 'visible', speed: 'slow' })
+  return (
+    <a href="/pricing" {...rootProps} className={cn(rootProps.className, 'rounded-full px-3')}>
+      {layers}
+      <span className="relative z-2">Try Pro free</span>
+    </a>
+  )
+}
+```
+
+</Story>
+
+<Story id="options" label="Options">
+
+<ComponentPreview name="shimmer/options" height={300} />
+
+Tiles for each idle setting and for different speeds.
+
+`idle` sets how visible the light is at rest: `subtle`, the default, `visible`, or `hidden`, which only shows it on hover and focus. `speed` sets how long one lap takes. `intensify`, on by default, lengthens the light and lifts a soft bloom along the edge while the element is hovered or holds keyboard focus. Hover the tiles.
+
+`borderWidth` thickens the border that carries the light, in pixels. Past 2px it starts to read as an outline rather than a glint.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="shimmer" noImport />
+
+Use it for a single invitation: an AI prompt, a search field, an upgrade link. It keeps moving, so it pulls the eye, which is the point and also the cost. Use one per screen, and not on anything the reader has to concentrate on nearby, like a form or a long text. For the ready-made composer and button looks, use [Shimmer Border](/docs/components/shimmer-border).
+
+`Shimmer` wraps anything in the effect and brings no look of its own. Give it a radius and a background.
+
+```tsx
+import { Shimmer } from '@youj/motion'
+
+export function AskField() {
+  return (
+    <Shimmer className="rounded-xl bg-surface">
+      <label className="relative z-2 flex h-12 items-center gap-3 px-4">
+        <span className="sr-only">Search the docs or ask a question</span>
+        <input placeholder="Search the docs or ask a question…" />
+      </label>
+    </Shimmer>
+  )
+}
+```
+
+The element gets a 1px border in `--color-line`, and the light travels along it. Keep your content above the light's layers with `relative z-2`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="idle, intensify, speed… (5)">
+
+### Props
+
+#### Shimmer
+
+<PropsTable name="Shimmer" />
+
+#### useShimmer
+
+```ts
+function useShimmer<T extends HTMLElement>(options?: ShimmerOptions): {
+  rootProps: { ref; className; style; 'data-intensify'; 'data-reduced' }
+  layers: ReactNode
+}
+```
+
+`ShimmerOptions` are the same four options as the component's props:
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `idle` | `'subtle' \| 'visible' \| 'hidden'` | `'subtle'` | How visible the light is at rest. `hidden` shows it only on hover and focus. |
+| `intensify` | `boolean` | `true` | Lengthen the light and add a bloom on hover and keyboard focus. |
+| `speed` | `'slow' \| 'base' \| 'fast'` | `'base'` | How long one lap of the border takes. |
+| `borderWidth` | `number` | `1` | Border width in pixels. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Lap, intensify · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Lap', note: '`speed`: `slow`, `base`, `fast`', ease: 'linear', value: 'deliberate × 10, × 6, × 3.5' },
+    { moment: 'Intensify', note: 'longer light, bloom, full strength', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="The light is parked at a fixed point on the border and doesn't travel. Hover and focus still intensify it, instantly."
+/>
+
+At normal speed a lap takes 5.6 s (`slow`), 3.36 s (`base`) or 1.96 s (`fast`). The loop runs entirely in CSS: the light is a conic gradient whose start angle is a registered `@property`, so the browser animates it with no JavaScript per frame. The length of the light is a registered property too, so leaving mid-way through intensifying reverses from where it is. The loop pauses while the element is offscreen or the tab is hidden.
+
+#### Reduced motion
+
+The light stops traveling and stays parked at a fixed point on the border, so the element keeps its accent glint without movement. Hover and focus still lengthen it, instantly, with no transition.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The light's layers are `aria-hidden` and ignore the pointer. The effect adds no roles and no tab stops.
+- Keyboard focus intensifies the light exactly like hover, so keyboard users see the same emphasis. It isn't a focus ring, though: keep the control's own focus indicator.
+- A constantly moving element is a distraction for some readers. Keep it to one per screen, and prefer `idle="hidden"` where the emphasis only matters on interaction.
+
+</ReferenceRow>

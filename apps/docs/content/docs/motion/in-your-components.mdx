@@ -1,0 +1,222 @@
+---
+title: Motion in your components
+description: "Use Youj timing in your components so they follow shared speed and reduced-motion settings."
+---
+
+Use Youj’s shared durations, curves, springs and stagger steps in your own components. A theme’s [motion personality](/docs/theming#motion-personality) adjusts these tokens. `YoujProvider` supplies speed and reduced-motion settings, so your animations can follow the rest of the app.
+
+This guide covers the four ways in, from the least code to the most: reuse a block, write a CSS transition, time a Motion animation, or drive a loop.
+
+## The provider
+
+`YoujProvider` is optional. Without it, every component runs at normal speed and follows the operating system's reduced-motion setting. Add it at the root to control those two settings, or around one subtree, since the nearest provider wins.
+
+```tsx
+import { YoujProvider } from '@youj/core'
+
+<YoujProvider timeScale={1} reducedMotion="user">
+  {children}
+</YoujProvider>
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `timeScale` | `number` | `1` | Multiplies every duration. `4` plays everything four times slower. |
+| `reducedMotion` | `'user' \| 'always' \| 'never'` | `'user'` | `'user'` follows `prefers-reduced-motion`. `'always'` forces the reduced state, for a setting in your app, and `'never'` ignores the OS. |
+| `quality` | `'auto' \| 'high' \| 'low'` | inherited, else `'auto'` | The [motion budget](#the-motion-budget). `'auto'` measures the device once per visit; `'high'` and `'low'` force a tier. |
+
+These are the motion props. The provider also takes `theme` (see [Theming](/docs/theming)), `mode` (see [Color mode](/docs/theming#color-mode)), `motion` (`false` turns animation off; see [Motion loads on demand](/docs/installation#motion-loads-on-demand)), `style` (see [Looks](/docs/looks)), `density` and `scaling` (see [Density and scaling](/docs/theming#density-and-scaling)), and `locale` and `labels` (see [Translating built-in text](/docs/guides/i18n)).
+
+The provider sets the same two settings for CSS, as custom properties on a wrapper element with `display: contents`: `--yj-time-scale`, and `--yj-motion`, which is `1` with motion and `0` when reduced.
+
+## Reuse a block first
+
+Before writing motion, check whether a block already solves it. Blocks are interruptible, follow Speed, and have a designed reduced state, which is most of the work.
+
+| You need | Block |
+| --- | --- |
+| A highlight that glides between tabs, segments or nav items | [Sliding Indicator](/docs/motion/sliding-indicator) |
+| A label that changes while its box morphs | [Morph Label](/docs/motion/morph-label) |
+| A disclosure that animates to and from `height: auto` | [Collapse](/docs/motion/collapse) |
+| A skeleton that resolves into content | [Content Swap](/docs/motion/content-swap) |
+| List items or table rows that enter, leave and reorder | [Presence List](/docs/motion/presence-list) |
+| Base UI popovers, dialogs, sheets and toasts | [Overlay presets](/docs/motion/presets) |
+
+[Composing components](/docs/guides/composing-components) builds a full component from them.
+
+## Transitions in CSS
+
+Hover tints, pressed states, a chevron that turns: most interface motion is a CSS transition between two states. Take the duration from a `yj-duration-*` utility and the curve from an `ease-*` utility.
+
+<ComponentPreview name="motion-in-your-components/css" height={300} />
+
+```tsx
+<button className="transition-colors yj-duration-fast ease-standard hover:bg-hover">…</button>
+<ChevronDownIcon className="transition-transform yj-duration-base ease-standard data-panel-open:rotate-180" />
+```
+
+- `yj-duration-instant | fast | base | slow | deliberate` is the token, times the time scale, times `--yj-motion`. Under reduced motion it becomes zero, so the state change is instant, and it still happens.
+- `ease-standard | enter | exit | emphasized` are the curves. Use `enter` for things arriving, `exit` for things leaving, and `standard` between two resting states.
+- `var(--yj-duration-fast)` and its siblings follow the time scale but not reduced motion. They suit loop durations, which you stop separately under reduced motion. For anything that moves between states, use the `yj-duration-*` utilities.
+
+A transform with no duration still snaps. To drop a press scale entirely under reduced motion, as the rows above do, mark the element with `data-reduced-motion` from `useYouj()` and use the `reduced:` variant:
+
+```tsx
+const k = useYouj()
+
+<ul data-reduced-motion={k.reduced || undefined}>
+  <button className="active:scale-[0.99] reduced:active:scale-100">…</button>
+</ul>
+```
+
+The `reduced:` variant ships in `@youj/react`'s stylesheet. With only `@youj/core` and `@youj/motion`, declare it once in your CSS:
+
+```css
+@custom-variant reduced (&:where([data-reduced-motion], [data-reduced-motion] *));
+```
+
+<Callout type="warning" title="Don't use stock durations">
+  `duration-150` and `transition-all duration-300` ignore both Speed and reduced motion. Youj's own components are linted against them, and your own code deserves the same rule.
+</Callout>
+
+## Timing in JavaScript
+
+For Motion animations, `useYouj()` returns ready transitions built from the tokens and scaled by the provider.
+
+<ComponentPreview name="motion-in-your-components/save-bar" height={360} />
+
+Toggle a setting to bring in the save bar, then save to see the confirmation arrive on the one spring that's allowed to overshoot.
+
+```tsx
+import { AnimatePresence, m } from 'motion/react'
+import { MotionFeatures, useYouj } from '@youj/core'
+
+function SaveBar({ dirty }: { dirty: boolean }) {
+  const k = useYouj()
+  const enter = k.reduced ? { duration: 0 } : k.tween('base', 'enter')
+  const exit = k.reduced ? { duration: 0 } : k.tween('fast', 'exit')
+
+  return (
+    <MotionFeatures>
+      <AnimatePresence>
+        {dirty && (
+          <m.div
+            initial={k.reduced ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0, transition: enter }}
+            exit={{ opacity: 0, y: 8, transition: exit }}
+          />
+        )}
+      </AnimatePresence>
+    </MotionFeatures>
+  )
+}
+```
+
+`m` elements animate under `MotionFeatures`, which loads Motion's engine on demand and does nothing when the provider already has (see [Motion loads on demand](/docs/installation#motion-loads-on-demand)). Use `features="max"` for layout and drag.
+
+If you wrap content in `<AnimatePresence initial={false}>` and it holds `m` elements, put that content in `<PresenceSettled>` (from `@youj/core`). Motion skips the first animation of anything mounted there, and with the engine loading on demand, "first" can be the moment it arrives, so a value that changed in between would otherwise never animate to its target.
+
+| Member | Returns | Use it for |
+| --- | --- | --- |
+| `k.tween(duration, ease?)` | a Motion tween transition | Enters, exits, anything between two states. `ease` defaults to `standard`. |
+| `k.spring(token)` | a Motion spring transition | `snappy` for feedback, `smooth` for layout, `settle` for success and arrival. |
+| `k.stagger(token)` | seconds | The step between siblings in a sequence. |
+| `k.duration(token)` | seconds | Motion's unit, already scaled. |
+| `k.ms(token)` | milliseconds | Timers, WAAPI and `requestAnimationFrame` code, already scaled. |
+| `k.ease(token)` | `[x1, y1, x2, y2]` | A cubic-bezier for your own tween or WAAPI call. |
+| `k.reduced` | `boolean` | Whether to render the static or instant alternative. |
+| `k.timeScale` | `number` | The current multiplier, for loops. |
+
+Two rules keep this honest. Exits are shorter than entrances and accelerate away (`fast` on `exit`), because nobody waits for something to leave. And every timer that paces an interface, like how long a confirmation holds, comes from `k.ms()`, so Speed stretches it too.
+
+### Springs
+
+Springs are defined by how long they feel and how much they bounce, not by stiffness and damping, so the time scale reaches them like everything else. `snappy` and `smooth` never overshoot. `settle` overshoots once, and it's reserved for success and arrival. A save confirmation earns it. A menu opening doesn't. The [Motion playground](/docs/motion/playground) plays each against its curve, and the [Motion principles](/docs/motion/principles) say which one each interaction takes.
+
+## Loops, canvas and requestAnimationFrame
+
+Code that animates frame by frame reads the same contract, by hand:
+
+<ComponentPreview name="motion-in-your-components/loop" height={260} />
+
+```tsx
+useEffect(() => {
+  if (k.reduced) {
+    drawStatic()
+    return
+  }
+  let elapsed = 0
+  let last = performance.now()
+  let frame = requestAnimationFrame(function tick(now) {
+    elapsed += (now - last) / 1000 / k.timeScale // Speed reaches the loop
+    last = now
+    draw(elapsed)
+    frame = requestAnimationFrame(tick)
+  })
+  return () => cancelAnimationFrame(frame)
+}, [k])
+```
+
+- **Time scale.** Divide elapsed time by `k.timeScale`. For shaders, pass the scaled time as the uniform.
+- **Pause what nobody sees.** Stop the loop offscreen with an `IntersectionObserver`, and in hidden tabs with `visibilitychange`, as the chart above does.
+- **Reduced motion.** Stop the loop and draw a designed frame. When the data is live, keep it current in discrete steps with no travel, like the chart does.
+- **Clean up.** Cancel the frame and disconnect every observer on unmount. For WebGL, release the context too.
+- **Colors.** A canvas can't read Tailwind classes. Read the tokens from computed style (`getComputedStyle(el).getPropertyValue('--color-accent')`) and read them again when the theme changes.
+
+## The motion budget
+
+Some devices can't afford the full treatment: a budget phone, a laptop on battery saver, a visitor on Data Saver. The motion budget gives every component one answer to "how much should I do here?", as a tier: `'high'` for the full treatment, `'low'` for a lighter one that still moves. It isn't reduced motion. Reduced motion is the visitor's request to stop movement; the low tier is the device's limit, so the motion keeps its meaning and sheds its cost.
+
+<ComponentPreview name="motion-in-your-components/budget" height={280} />
+
+`useMotionBudget()` returns the provider's `quality` setting and the `tier` in effect. With `quality="auto"`, the default, the tier comes from the device, once per visit:
+
+1. **Hints decide first.** Data Saver (`Save-Data`), `prefers-reduced-data`, two or fewer logical cores, or 2 GB of memory or less mean `'low'` straight away.
+2. **Otherwise a short probe runs** once the page is idle: a fixed slice of animation-like work timed over a few frames. A main thread that takes over 5 ms for it, or can't hold frames under 34 ms while nearly idle, is `'low'`.
+3. **The result is kept for the session**, so later pages start on the right tier.
+
+The server render and the hydration render always see `'high'`. Hydrated components re-render with the real tier straight after, the same way the OS reduced-motion setting arrives, so server and client HTML never disagree.
+
+```tsx
+import { useMotionBudget } from '@youj/core'
+
+function Sparks() {
+  const { tier } = useMotionBudget()
+  const count = tier === 'low' ? 12 : 48 // fewer particles, same idea
+  return <ParticleField count={count} />
+}
+```
+
+What Youj does on `'low'`:
+
+- **Staggers** longer than six steps compress into six, in [Stagger](/docs/motion/stagger) and [Text Split](/docs/motion/text-split): a 40-letter headline lands in a few beats instead of trickling in.
+- **Canvas backgrounds** cap the pixel ratio at 1 and render at 30 fps, and each piece may shed work of its own.
+- **The [Cursor Follower](/docs/components/cursor-follower)** turns off.
+
+Force a tier with `quality`, for a performance setting in your app or to test the light path on a fast machine. Nested providers inherit `quality` unless they set their own.
+
+```tsx
+<YoujProvider quality={settings.lowPower ? 'low' : 'auto'}>{children}</YoujProvider>
+```
+
+## Overlays and portals
+
+A portal renders outside the provider's wrapper element, so its CSS can't inherit `--yj-time-scale` or `--yj-motion`. Spread `useYoujScope()` on every portal you render, and the overlay follows Speed and reduced motion again:
+
+```tsx
+import { useYoujScope } from '@youj/core'
+
+const scope = useYoujScope()
+<Popover.Portal {...scope}>…</Popover.Portal>
+```
+
+Every `@youj/react` overlay already does this. For your own overlays, the [Overlay presets](/docs/motion/presets) give you the entrance and exit, too.
+
+## Checklist
+
+- No literal durations, cubic-beziers or stock `duration-*` classes. Everything comes from `useYouj()`, the `yj-duration-*` and `ease-*` utilities, or a preset.
+- Every animated state has a reduced alternative that carries the same information. Loops stop, and pointer and scroll effects switch off.
+- Interrupt everything: reverse a toggle mid-animation, open and close quickly. Transitions and springs continue from where they are, and keyframes jump.
+- Animate `transform`, `opacity`, `clip-path` and `filter`. Other properties trigger layout.
+- Decorative motion is `aria-hidden`, and state changes that matter are announced, once.
+- Check at ¼ speed. Anything still moving at full speed has a hard-coded duration.

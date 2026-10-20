@@ -1,0 +1,97 @@
+---
+title: Capsule Search
+description: "A small search capsule with its shortcut on it, which opens when you start searching."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="capsule-search/demo" height={180} />
+
+A search capsule with a / shortcut that reports what was submitted when you press Enter.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="capsule-search" noImport />
+
+Use a capsule search where space is tight but search is always one key away: a toolbar, an editor's top bar, a dock. It waits as a small capsule showing its shortcut. When you press the shortcut or click it, it widens to make room to type.
+
+```tsx
+import { CapsuleSearch } from '@youj/react'
+
+<CapsuleSearch shortcut="/" placeholder="Search samples" onValueChange={setQuery} onSubmit={runSearch} />
+```
+
+`shortcut` is any single key, such as `/`, or `mod+<key>`, such as `mod+k` for ⌘K on Apple devices and Ctrl K elsewhere. The shortcut works from anywhere on the page, but a plain key is ignored while someone is typing in another field. `width` sets how wide it is at rest and when open. By default that's 11rem and 18rem, and it never grows wider than its container.
+
+It stays open while it holds text. Once there's text, the shortcut hint becomes a clear button. Escape clears the text, and a second Escape leaves the field.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (7)">
+
+### Props
+
+<PropsTable name="CapsuleSearch" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `capsule-search` (with `data-open`), `capsule-search-input` and `capsule-search-hint`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open and close">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open and close', note: 'the capsule widens with its ends kept round and its contents unstretched; a quick focus and blur reverses mid-way', spring: 'snappy' },
+  ]}
+  reduced="It opens and closes at once."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- It's a search box, named "Search" by default. `aria-label` renames it.
+- `aria-keyshortcuts` announces the shortcut.
+- The clear button is named by the labels' `clear`, which the language packs translate.
+
+</ReferenceRow>

@@ -1,0 +1,420 @@
+---
+title: Draw your own
+description: Draw isometric scenes of your own with the stage, shapes, exploded stacks and illustration kit that every ready-made scene is built from.
+---
+
+<ComponentPreview name="iso-scene/demo" height={420} />
+
+The [ready-made scenes](/docs/illustrations) are drawn with a small kit you can draw with too. Use it when a screen explains a thing: what a device is made of, where a system's parts sit, what an empty warehouse will hold. It draws in isometric, the view of a technical drawing, so parts line up and read at a glance, and every color comes from the theme, so a drawing looks at home in any preset and either scheme. Don't use it for decoration alone. A drawing earns its space by saying something the copy beside it can't.
+
+Four blocks draw with the kit directly, and each is a worked example:
+
+- [First source](/docs/blocks/onboarding-and-states#first-source): a floor with a ghost bay, and the chosen source waiting to land in it.
+- [Tiered capacity](/docs/blocks/meters-and-limits): each region's use as a stack of tiers on a plinth.
+- [Exploded view](/docs/blocks/media#exploded-view): an exploded view whose layers are named on the rail beside it.
+- [Setup picker](/docs/blocks/onboarding-and-states#setup-picker): option cards whose drawings frame alike, so their floors sit on one line.
+
+## The builder
+
+To draw a scene without writing it, use the [illustration builder](/illustrations/build) (experimental). Drag the kit's parts onto the shared 8 × 8 floor: boxes and tiles, cylinders, plinths, prisms with a preset outline, and turned solids. Move them in half units and size them by their handles, or type the numbers. Light the part the scene is about, and give parts a lift for when the scene comes apart and a float. Preview shows it assembling and coming apart, in any preset, light or dark, and as reduced motion draws it.
+
+Then take it home. **Copy code** writes a component the way the scenes below are written: the stage and the kit's shapes, imported from where `npx youj add illustration-kit iso-shapes` copies them. It draws exactly what the builder showed. The Export panel also downloads the frame as SVG or PNG and copies the scene as JSON. The scene lives in the page's address as you work, so a link opens it again, and the builder keeps your last scene in this browser. Everything works from the keyboard: the layers list chooses parts, the arrows move them on the canvas, and the keyboard button lists the shortcuts.
+
+The builder makes new scenes. The ready-made ones are code, not data, so they open in the [explorer](/illustrations) rather than in the builder.
+
+## What the drawings share
+
+- **Grid units in, pixels out.** You place shapes on a grid (`x` to the lower right, `y` to the lower left, `z` up), and one function, `project`, turns a grid point into a point on screen. Faces, edges, callout anchors and the frame all come from it, so they agree to the pixel.
+- **The theme's light.** Every face is mixed from your tokens: the top face lightest, the left a step down, the right the darkest, in both schemes. The accent is kept for the part that matters.
+- **One scene, one clock.** Shapes assemble, part and float on motion the scene shares, from the motion tokens, so the Speed control and the theme's personality reach them.
+- **Hairlines stay hairlines.** A drawing is crispest at its natural size and scales down to fit a narrow screen. Its lines stay 1 px and its labels keep their size.
+
+## Installation
+
+The kit is `@youj/illustrations`, a package of its own on `@youj/core`: `pnpm add @youj/illustrations`.
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';   /* or '@youj/core/styles.css' without the components */
+@import '@youj/illustrations/styles.css';
+```
+
+Its sheet points Tailwind at the built scenes, so it generates the classes they use; it goes after the tokens, in the same file. `npx youj add` adds it for you.
+
+<InstallTabs name="iso-scene" imports="IsoScene" />
+
+Import everything below from `@youj/illustrations`. To copy the source in instead, `npx youj add <item>` copies these items, each bringing what it needs:
+
+| Item | Brings |
+| --- | --- |
+| `iso-scene` | `IsoScene`, `IsoPiece`, the projection helpers and the face tones |
+| `iso-shapes` | `IsoBox`, `IsoCylinder` and `IsoPlatform` |
+| `iso-stack` | `IsoStack` and `IsoCallout` |
+| `grid-backdrops` | The [backdrops](/docs/illustrations/grid-backdrops) and `IsoFloor` |
+| `illustration-kit` | [The illustration kit](#the-illustration-kit): the stage, groups, turned and extruded solids, marks and links. Copy-in only: the package doesn't export it. |
+
+## Examples
+
+<Examples>
+
+<Example id="the-scene" label="The scene">
+
+### The scene
+
+`IsoScene` is one SVG that holds a drawing. Put shapes inside it: boxes, cylinders and plinths, exploded stacks, a floor grid. The scene decides where they land on screen and in what order they're painted, and gives them one set of motion.
+
+```tsx
+import { IsoBox, IsoFloor, IsoPlatform, IsoScene } from '@youj/illustrations'
+
+export function EmptyBay() {
+  return (
+    <IsoScene title="An empty bay on a plinth" assemble>
+      <IsoFloor w={8} d={6} kind="dots" />
+      <IsoPlatform x={0.5} y={0.5} w={7} d={5} grid={1}>
+        <IsoBox x={3} y={2} z={0.7} w={2} d={2} h={0} variant="ghost" />
+      </IsoPlatform>
+      <IsoBox x={1} y={1} z={0.7} w={1.5} d={1.5} h={1.2} tone="accent" />
+    </IsoScene>
+  )
+}
+```
+
+Shapes are placed in grid units: `x` runs to the lower right, `y` to the lower left and `z` straight up, and `(0, 0, 0)` is the far corner of the floor. A box's `x`, `y` and `z` are its corner nearest the origin, and `w`, `d` and `h` its size along each axis.
+
+#### Framing
+
+The scene frames what's in it. Each shape reports its extent on screen, including where it reaches when it's apart (a stack at full separation, a shape's `lift`, the top of a bob), and the scene's viewBox is the union of those, plus `pad` (one number, or `[top, right, bottom, left]`, in user units). An exploded stack is never clipped, and the drawing stays centered in its container whatever it holds.
+
+Scenes that must line up, such as a row of option cards, frame alike with `size`: a volume in grid units, `[w, d, h]`, that each scene frames instead of its content, so their floors sit on one line and their shapes at one scale. Every ready-made illustration frames the same volume this way, which is why one swaps for another.
+
+<ComponentPreview name="iso-scene/framing" height={220} />
+
+A drawing is crispest at its natural size, where one grid unit is `unit` CSS px (24 by default). In a narrower container it scales down to fit; with `grow` it also scales up to fill a wider one. Either way, its hairlines stay 1 px and its labels keep their size: the scene writes its scale to `--kg-px` (user units per CSS px), and the strokes and text are sized by it. Below about three quarters of its natural size, callouts drop their detail lines and keep their names.
+
+#### Painter's order
+
+SVG paints in document order, so nearer shapes must come later. The scene sorts its direct children that are shapes far to near with `isoSort` before it paints them, so you can write a scene in any order. Anything else keeps its place: write the floor first and it stays under everything, write an `IsoCallout` last and it stays on top. Shapes drawn as another shape's children (a chip on a board) are painted with their parent, after it.
+
+Two boxes are ordered when one lies wholly behind the other along an axis. When neither does (they interpenetrate) or a rare cycle of long boxes forms, the one whose center is farther goes first.
+
+#### The rail
+
+When a shape names its parts (an [exploded stack](#exploded-stacks) with labeled layers, or an `IsoCallout`), the scene keeps a rail beside the drawing, `rail` CSS px wide (168 by default) at every scale, at the end of the line: on the right, or on the left on an RTL page. Leaders run from the parts to the rail's edge, and the labels stand in it, so a label never sits on the geometry. Each label has a knockout halo in the surface color; set `--kg-halo` on the scene when it sits on another color. `rail={false}` leaves the rail out.
+
+#### Assemble, part and float
+
+- **Assemble.** With `assemble`, shapes drop in from above the first time the scene scrolls into view, far ones first, a stack's layers one after another. Each lands on the `settle` spring, the arrival moment the motion tokens keep a little overshoot for, and fades in on the enter curve.
+- **Separation.** `explode` is one value from 0 (together) to 1 (apart) that stacks and any shape's `lift` follow. Give it a number, a boolean, or `"hover"`, which parts the drawing while a mouse pointer is over it. It moves on the `smooth` spring, so changing it mid-way turns the parts round from where they are, with no jump.
+- **Float.** Shapes with `float` bob gently on one clock the scene runs only while one is mounted and the scene is on screen, each a little out of step with the next.
+
+</Example>
+
+<Example id="shapes" label="Shapes">
+
+### Shapes
+
+<ComponentPreview name="iso-shapes/demo" height={380} />
+
+Three shapes build most drawings. `IsoBox` is a box, or a tile when it has no height. `IsoCylinder` is a cylinder, or a disc. `IsoPlatform` is a plinth for the rest to stand on.
+
+```tsx
+import { IsoBox, IsoCylinder, IsoPlatform, IsoScene } from '@youj/illustrations'
+
+export function Bench() {
+  return (
+    <IsoScene>
+      <IsoPlatform x={0} y={0} w={8} d={5} grid={1} />
+      <IsoBox x={1} y={1} z={0.7} w={3} d={2} h={1.2} />
+      <IsoCylinder x={5} y={1.5} z={0.7} r={0.9} h={1.6} tone="accent" />
+    </IsoScene>
+  )
+}
+```
+
+A box is placed by its corner nearest the origin (`x`, `y`, `z`) and sized along each axis (`w`, `d`, `h`). A cylinder stands in the square footprint from `x, y` to `x + 2r, y + 2r`, so a cylinder of radius 1 at `(4, 4)` is centered on `(5, 5)`, and it sorts beside boxes by that footprint.
+
+#### Faces from your tokens
+
+Every face is mixed from the theme's tokens at paint time, so a drawing re-colors with the theme and needs no JavaScript to do it. Light comes from above and a little to the left: the top face is the lightest, the left face a step down and the right face the darkest. The same holds in the dark scheme, where each face is a lift of the surface toward the ink rather than a shade of it, and a light scope inside a dark page shades itself correctly.
+
+<ComponentPreview name="iso-shapes/tones" height={220} />
+
+- **`tone`** picks the color: `neutral` (the default), `raised` (a lighter object, for the thing in hand), `sunken` (a darker one, for bases and wells), `accent`, or a status ink, `success`, `warning` or `danger`. The accent is for the part that matters. One lit part reads; three compete.
+- **`hue`** (`1`, `2` or `3`) gives a neutral tone one of the scene's [colours](/docs/illustrations#colour): the theme's pair (derived from the accent, softened under it) or the scene's own `colors`. It takes effect when the scene has `colors`; without them the part shows its `tone`. The tone still shades it, so a `raised` part is a step lighter. The ready-made scenes colour their subject this way and leave plinths and bases neutral.
+- **`color`** takes any CSS color and derives the three faces from it: lifted on top, as given on the left, shaded on the right. Token references follow the theme, so `color="var(--color-chart-2)"` paints a chart series in its own shade in every preset.
+- The colors are custom properties on the shape's group (`--kg-top`, `--kg-left`, `--kg-right`, `--kg-edge`, `--kg-lit`), so a `style` can override any of them. `faceVars(tone, variant, color)` returns the same set, for a part you draw yourself.
+
+#### Solid, wire and ghost
+
+- **`solid`** (the default) fills the faces, rules every edge with a hairline, and lights the two near edges of the top face, the way a machined edge catches the light.
+- **`wire`** draws a wireframe: the faces a breath of color, the edges strong, and the hidden edges dashed. Use it for a cover you can see through, a part that isn't there yet, or a technical view. With a `tone` or `color`, the lines take it.
+- **`ghost`** is only a dashed outline: a place something will go, such as an empty bay or the next item in a queue. At `h={0}` it's a dashed footprint on the floor.
+
+`hidden` turns the dashed hidden edges on or off for any variant.
+
+#### Tiles, discs and parts on top
+
+A box with `h={0}` is a tile, and a cylinder with `h={0}` a disc: flat marks on a plane, such as a pad, a label plate or a status light. A shape's children draw on its top face and move with it, so parts placed on a board travel with the board when it rises, and don't drop in on their own when the scene assembles. Children are placed in the scene's coordinates: on a board 0.4 high, a part sits at `z={0.4}`.
+
+```tsx
+<IsoBox x={0} y={0} w={6} d={4} h={0.4} tone="sunken">
+  <IsoBox x={0.5} y={0.5} z={0.4} w={2} d={2} h={0.3} tone="raised" />
+  <IsoCylinder x={4} y={1} z={0.4} r={0.25} h={0} tone="success" />
+</IsoBox>
+```
+
+#### Plinths
+
+`IsoPlatform` is a base slab with a thinner plate set in from its edge by `inset`, so the edge reads as a lip. It's `sunken` by default, so what stands on it carries the light. A square plinth can engrave its plate with a `grid` in the scene's own units, so shapes placed on whole numbers line up with its lines. `shape="round"` makes a turntable of two tiers. Its children draw on the plate, which is where ghost bays go.
+
+Every shape also takes `float` (a gentle bob, `true` or its height in grid units) and `lift` (how far it rises, in grid units, at the scene's full separation).
+
+</Example>
+
+<Example id="exploded-stacks" label="Exploded stacks">
+
+### Exploded stacks
+
+<ComponentPreview name="iso-stack/demo" height={480} />
+
+Use `IsoStack` to explain what a thing is made of: a device's layers, a product's tiers, a system's parts. Together, it's one object. As the scene's separation rises, each layer rises in proportion to its height in the stack, so the top goes furthest, and each named layer gets a callout on the scene's [rail](#the-rail). Light one layer to say which part the screen is about.
+
+```tsx
+import { IsoScene, IsoStack } from '@youj/illustrations'
+
+export function BatteryModule() {
+  return (
+    <IsoScene explode="hover" title="A battery module: base plate, cells and cover">
+      <IsoStack
+        x={0}
+        y={0}
+        w={4}
+        d={3}
+        layers={[
+          { id: 'base', h: 0.6, label: 'base plate', detail: 'aluminium, 3 mm' },
+          { id: 'cells', h: 0.9, inset: 0.25, label: 'cell pack', detail: '4 × 21700', lit: true },
+          { id: 'cover', h: 0.8, variant: 'wire', label: 'cover' },
+        ]}
+      />
+    </IsoScene>
+  )
+}
+```
+
+Layers go bottom to top. Each has an `id`, a height `h`, and optionally an `inset` (a board inside its case sits in from the stack's footprint), a `tone`, `color` or `variant`, a `label` and `detail` for its callout, `lit`, and `content`: a function that gets the layer's top footprint in grid units and draws on it, moving with the layer.
+
+#### Taking it apart
+
+The stack follows its scene's `explode`: a number from 0 to 1, a boolean, or `"hover"`. At full separation each layer has traveled its index times `gap` grid units along `axis` (`z` by default: straight up), and the scene frames that reach, so the stack never clips. The value moves on the `smooth` spring, so reversing it mid-way, from a toggle or a pointer leaving, turns the layers round from where they are.
+
+Drive it from a control when readers need it, as the demo's toggle does: hover answers a mouse pointer only.
+
+```tsx
+import { useState } from 'react'
+const [apart, setApart] = useState(true)
+
+<IsoScene explode={apart}>…</IsoScene>
+<button aria-pressed={apart} onClick={() => setApart((a) => !a)}>Take it apart</button>
+```
+
+`axis="x"` or `"y"` lays the layers out side by side instead, for a sequence rather than an assembly. Callouts are drawn for `z`.
+
+#### Callouts
+
+Along `z`, each layer with a `label` gets a callout: a dot at the layer's outermost point, at half its height, and a hairline leader to the edge of the scene's rail, where its name stands in small mono capitals with the `detail` below in a quieter ink. The callouts fade in as the layers part and out as they come together: assembled, the thing is one object, and its parts aren't named. A `lit` layer takes the accent, with a solid leader and an accent label; `dim` quiets the other layers around it.
+
+`IsoCallout` names any other point: give it a grid point `at`, a `label` and an optional `detail`, and write it after the shapes, so it's painted on top. Its leader runs to the same rail.
+
+<ComponentPreview name="iso-stack/callout" height={260} />
+
+#### Disks
+
+`shape="disk"` stacks cylinders instead of slabs: a puck, a lens, a round sensor. A disk takes the smaller of `w` and `d` as its diameter, and its leader leaves from the rim.
+
+<ComponentPreview name="iso-stack/disks" height={420} />
+
+</Example>
+
+<Example id="the-illustration-kit" label="The illustration kit">
+
+### The illustration kit
+
+The ready-made scenes add a few pieces on top of the shapes, and they're yours to draw with. They are copy-in only, as the item `illustration-kit` (every `illustration-<id>` brings it along), which the CLI writes to `components/youj/graphics/illustrations/kit.tsx` beside the scenes. The package draws its scenes with them but doesn't export them.
+
+```bash
+npx youj add illustration-kit
+```
+
+- **`IllustrationStage`** is the stage every scene draws on: an `IsoScene` framed to the shared volume (`VOLUME`, an 8 × 8 floor with room above it), with no rail, assembling by default, and decorative unless titled. It takes the scene props (`IllustrationProps`) and an `id`. Draw on it and your scene swaps with any ready-made one without the layout moving.
+- **`Group`** holds several shapes that drop, bob and rise as one object (a rocket, a figure), painted far to near among themselves. It takes `float`, `lift` and `delay`, extra steps of stagger in the assemble.
+- **`Lathe`** turns a profile about an axis: a cup, a bulb, a globe. The profile is `[radius, height]` pairs from the bottom up; it stands on `z` by default, and `axis="x"` or `"y"` lays it down, its end facing you. `convex` outlines it as the hull of its rings, exact for a solid that bulges; `orb(r)` is a ball's profile.
+- **`Prism`** extrudes a profile toward you from a plane: a heart, a speech bubble, a roof. Its front face takes the plane's shade, each side is shaded by the way it faces, and its children draw on the front face.
+- **`Mark`** is a flat mark on a face or the floor: a label, a door, a glyph. Draw it as a shape's child so it moves with the shape.
+- **`Link`** is a hairline through points in the scene: a cable, a route, a drop line. `lit` draws it in the accent and `dashed` dashes it.
+- **`Hollow`** is the inside of an open box, seen through its opening: the two far walls and the floor, clipped to the rim. Draw it as the box's child.
+
+Marks and prisms are drawn on a plane, in plane units from the point `at`: the `top` plane runs along `x` and `y`, the `left` face (the one toward `+y`) runs `x` along and `z` up, and the `right` face (toward `+x`) runs `y` along and `z` up. `rect`, `rounded`, `circle`, `arc`, `band`, `curve` and `smooth` make the points; `flat(x, y)` places a point on a top face as it should look on screen, for a glyph that must read upright, such as a check. `INK` holds the inks for marks, which read on any face in either scheme. `bob(props, height)` is the float for a scene's hero part, and `false` when the scene was asked to hold still, so a scene of your own answers `float={false}` as the ready-made ones do.
+
+```tsx
+import { IsoPlatform } from '@/components/youj/graphics/iso-platform'
+import { bob, circle, INK, IllustrationStage, Lathe, Mark, type IllustrationProps } from '@/components/youj/graphics/illustrations/kit'
+
+/** A jar on its plinth, and its lid in the accent, lifting off when it's taken apart. */
+export function IllustrationJar(props: IllustrationProps) {
+  const [cx, cy] = [4, 4]
+  return (
+    <IllustrationStage id="jar" {...props}>
+      <IsoPlatform x={1} y={1} w={6} d={6} shape="round" />
+      <Lathe cx={cx} cy={cy} z={0.7} profile={[[1.1, 0], [1.3, 0.4], [1.3, 1.6], [1, 1.9]]} convex />
+      <Lathe cx={cx} cy={cy} z={2.6} profile={[[1.05, 0], [1.05, 0.35]]} tone="accent" float={bob(props, 0.12)} lift={0.8}>
+        <Mark plane="top" at={[cx, cy, 2.95]} points={circle(0, 0, 0.6)} stroke={INK.line} closed />
+      </Lathe>
+    </IllustrationStage>
+  )
+}
+```
+
+The kit is copied source. In an app set up from source it imports the scene and the shapes from beside it; in an app on the packages `npx youj add` copies it and the shapes (`iso-shapes`, `grid-backdrops`) too, their scene pointed at `@youj/illustrations`. Either way, draw with what `add` wrote: a stage from one copy and shapes from another don't share a scene.
+
+</Example>
+
+<Example id="drawing-by-hand" label="Drawing by hand">
+
+### Drawing by hand
+
+Anything you draw inside a scene can use its maths. `useIsoScene()` returns the scene's `unit`, its separation and clock, and the rail's position; `useIsoPoint(x, y, z)` turns a grid point into a point on screen. Wrap a hand-drawn part in `IsoPiece` to give it the same drop, `lift` and `float` as the built-in shapes.
+
+```tsx
+import { IsoPiece, useIsoPoint } from '@youj/illustrations'
+
+function Beacon({ x, y, z }: { x: number; y: number; z: number }) {
+  const [cx, cy] = useIsoPoint(x, y, z)
+  return (
+    <IsoPiece float>
+      <circle cx={cx} cy={cy} r={3} style={{ fill: 'var(--color-accent)' }} />
+    </IsoPiece>
+  )
+}
+```
+
+A component that should be sorted and framed like a shape carries static `isoBounds(props)` (its box at rest) and `isoFit(props, unit)` (its screen extent, apart); `isoRail(props)` returning true asks for the rail. The type `IsoShape` describes them.
+
+The same functions the shapes use, for drawing by hand or laying out data:
+
+| Helper | What it gives |
+| --- | --- |
+| `project(x, y, z, unit)` | the screen point of a grid point, in user units |
+| `axisStep(axis, unit)` | the screen direction of one grid unit along `x`, `y` or `z` |
+| `boxFaces(bounds, unit)` | a box's top, left and right faces as point lists |
+| `isoEllipse(cx, cy, z, r, unit)` | the screen ellipse a level circle projects to (its height is its width × tan 30°) |
+| `isoSort(items, boundsOf)` | items in painter's order, far to near |
+| `sceneViewBox(size, unit, pad)` | the viewBox that holds a volume, plus padding |
+| `toPoints(points)` | a point list as a polygon's `points` attribute |
+
+```tsx
+import { boxFaces, isoSort, project, toPoints } from '@youj/illustrations'
+
+const [x, y] = project(2, 1, 0.5, 24) // [20.78, 24]
+const { top } = boxFaces({ x: 0, y: 0, z: 0, w: 2, d: 2, h: 1 }, 24)
+const face = <polygon points={toPoints(top)} />
+const ordered = isoSort(racks, (rack) => rack.bounds)
+```
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, unit, pad… (126)">
+
+### Props
+
+#### IsoScene
+
+<PropsTable name="IsoScene" />
+
+#### IsoPiece
+
+<PropsTable name="IsoPiece" />
+
+#### IsoBox
+
+<PropsTable name="IsoBoxProps" />
+
+#### IsoCylinder
+
+<PropsTable name="IsoCylinderProps" />
+
+#### IsoPlatform
+
+<PropsTable name="IsoPlatformProps" />
+
+#### IsoStack
+
+<PropsTable name="IsoStackProps" />
+
+#### Stack layer
+
+<PropsTable name="IsoStackLayer" />
+
+#### IsoCallout
+
+<PropsTable name="IsoCalloutProps" />
+
+<Callout type="note" title="Copy-in only from here down">Group, Lathe, Prism, Mark and Link come with the copied kit (`npx youj add illustration-kit`); `@youj/illustrations` doesn't export them.</Callout>
+
+#### Group
+
+<PropsTable name="GroupProps" />
+
+#### Lathe
+
+<PropsTable name="LatheProps" />
+
+#### Prism
+
+<PropsTable name="PrismProps" />
+
+#### Mark
+
+<PropsTable name="MarkProps" />
+
+#### Link
+
+<PropsTable name="LinkProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Assemble, assemble fade, separation… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Assemble', note: 'each shape drops from 3 grid units above, far ones first; a stack’s layers land bottom first', spring: 'settle', stagger: 'loose' },
+    { moment: 'Assemble fade', note: 'opacity, with the drop', duration: 'base', ease: 'enter' },
+    { moment: 'Separation', note: '`explode`, `"hover"` and `lift`, translate only; a stack’s layers by their index × `gap`', spring: 'smooth' },
+    { moment: 'Callouts', note: 'opacity, from 30% to 75% of the separation', value: 'follows the separation' },
+    { moment: 'Float', note: 'a sine bob, out of step with its neighbors, paused offscreen', value: 'one bob per 10 × deliberate' },
+  ]}
+  reduced="The final state, drawn once: nothing drops, nothing bobs, and the separation jumps to its target, so a drawing that's apart is shown apart, with its callouts."
+/>
+
+#### Reduced motion
+
+The scene draws its final state and holds it. Shapes that would assemble are already in place, a scene set apart is shown apart with its callouts, one set together is drawn together, and nothing floats or fades. Switch on Reduced motion in the previews above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus">
+
+### Accessibility
+
+- A scene is decorative by default: the SVG is `aria-hidden` and not focusable. Keep what it shows in the text around it.
+- When the drawing carries meaning the text doesn't, give it a `title` (and a `description` for more). It becomes `role="img"`, named by its `<title>` and described by its `<desc>`. For a stack, a title that lists the parts, as the demo's does.
+- Hover to part is a flourish, not a control: it answers a mouse pointer only. Put anything a reader needs behind a real control, as the stack demo's toggle does.
+- Labels and callouts are real SVG text in the theme's inks, read with the scene when it's a named image. They keep their CSS size when the drawing scales down; keep them short, a name and a detail of a few words.
+- Don't make color the only difference. A ghost is dashed as well as pale, a lit layer's leader is solid where the others are dashed, and a lit part should also be named in the text or a callout.
+
+</ReferenceRow>

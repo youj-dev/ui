@@ -1,0 +1,8 @@
+.claude
+**/node_modules
+**/.next
+**/storybook-static
+**/test-results
+apps/promo/out
+apps/promo/exports
+.env*

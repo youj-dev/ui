@@ -1,0 +1,172 @@
+---
+title: Status
+description: "Screens for when a page can't do its job: sign in, no access, not found, errors, maintenance, loading, a launch, tracking, a public status page and a pre-launch waitlist, most beside a miniature that plays the page's state."
+---
+
+<BlockStories>
+
+<BlockStory id="service-unavailable" label="Service unavailable (503)" block="app-status-screen" story="ServiceUnavailable" backdrop="umber">
+
+Say the service is temporarily down and nothing was lost. The page tries again on its own, waiting longer each time, with the countdown under Try now, while the server cabinet beside it runs with two nodes down; they recover when a retry gets through.
+
+</BlockStory>
+
+<BlockStory id="unauthorized" label="Unauthorized (401)" block="app-status-screen" story="Unauthorized" backdrop="umber">
+
+Ask for a sign-in, beside a parcel locker whose keypad waits for its code. Sign in goes to your sign-in page, and the line under the buttons says where the visitor comes back to.
+
+</BlockStory>
+
+<BlockStory id="unauthorized-plain" label="Unauthorized (401), plain" block="app-status-screen" story="UnauthorizedPlain" backdrop="umber">
+
+The same page without the miniature (`media={null}`): the code set large over the headline.
+
+</BlockStory>
+
+<BlockStory id="forbidden" label="Forbidden (403)" block="app-status-screen" story="Forbidden" backdrop="umber">
+
+Explain that the visitor is signed in but not allowed, beside a firewall in lockdown. The page names the permission they lack and the account they're signed in with (Switch account beside it), asks an admin for access and says what happens next.
+
+</BlockStory>
+
+<BlockStory id="forbidden-plain" label="Forbidden (403), plain" block="app-status-screen" story="ForbiddenPlain" backdrop="umber">
+
+The 403 without the miniature.
+
+</BlockStory>
+
+<BlockStory id="not-found" label="Not found (404)" block="marketing-not-found" story="NotFound" backdrop="umber">
+
+Give visitors a way forward when a page has moved or never existed: a lighthouse sweeps the fog beside a search field, the way home and a few likely destinations.
+
+</BlockStory>
+
+<BlockStory id="not-found-plain" label="Not found (404), plain" block="marketing-not-found" story="NotFoundPlain" backdrop="umber">
+
+The 404 without the miniature: its digits rise out of their masks.
+
+</BlockStory>
+
+<BlockStory id="server-error" label="Server error (500)" block="app-error" story="ServerError" backdrop="umber">
+
+Apologize plainly when the server fails. The mainframe stands in machine check; Try again resets it and feeds its cards, and it runs again once the retry works. The status page, each service's state and the incident ID to copy for support sit under it.
+
+</BlockStory>
+
+<BlockStory id="server-error-plain" label="Server error (500), plain" block="app-error" story="ServerErrorPlain" backdrop="umber">
+
+The 500 without the miniature: the code set large.
+
+</BlockStory>
+
+<BlockStory id="service-unavailable-plain" label="Service unavailable (503), plain" block="app-status-screen" story="ServiceUnavailablePlain" backdrop="umber">
+
+The 503 without the miniature.
+
+</BlockStory>
+
+<BlockStory id="maintenance" label="Maintenance" block="app-error" story="Maintenance" backdrop="umber">
+
+Announce a planned window: the time left, how far along it is and each step, a field to be emailed when it's back, and a repair bench whose checklist lights up as the window passes. Its beacon turns green when the window ends.
+
+</BlockStory>
+
+<BlockStory id="maintenance-plain" label="Maintenance, plain" block="app-error" story="MaintenancePlain" backdrop="umber">
+
+Maintenance without the miniature.
+
+</BlockStory>
+
+<BlockStory id="loading" label="Loading" block="app-status-screen" story="Loading" backdrop="umber">
+
+Hold the page while it loads. The hourglass's sand is the progress (it turns over on its own while that's unknown), a polite live region says what is happening, and past `slowAfter` the page offers a reload.
+
+</BlockStory>
+
+<BlockStory id="loading-plain" label="Loading, plain" block="app-status-screen" story="LoadingPlain" backdrop="umber">
+
+Loading without the miniature: the headline over a progress bar that sweeps until you pass `progress`.
+
+</BlockStory>
+
+<BlockStory id="launch" label="Launch countdown" block="app-error" story="LaunchCountdown" backdrop="umber">
+
+The page before a launch: the time left in rolling digits and a field for early-access codes, beside a drone charging on its pad that takes off when the countdown reaches zero. The demo accepts `EARLY`.
+
+</BlockStory>
+
+<BlockStory id="launch-plain" label="Launch countdown, plain" block="app-error" story="LaunchCountdownPlain" backdrop="umber">
+
+The launch countdown without the miniature.
+
+</BlockStory>
+
+<BlockStory id="tracking" label="Tracking" block="app-request-tracking" story="Default" backdrop="umber">
+
+Let people look up an order, request or incident by its reference and see where it stands, step by step, with when each step happened and what comes next. The packaging line beside it fills its pallet as the order moves through its steps and wraps it once it's delivered.
+
+</BlockStory>
+
+<BlockStory id="tracking-plain" label="Tracking, plain" block="app-request-tracking" story="Plain" backdrop="umber">
+
+Tracking without the miniature.
+
+</BlockStory>
+
+<BlockStory id="public-status" label="Public status" block="app-public-status" story="Operational" backdrop="umber">
+
+Keep your customers informed with a public status page for the same services, their uptime and incident updates. It has no miniature: people scan it for one answer, so the answer leads.
+
+</BlockStory>
+
+<BlockStory id="waitlist" label="Waitlist" block="marketing-waitlist" story="Default" backdrop="umber">
+
+Build interest before launch with a waitlist page, a countdown and a referral link. The demo shows your place in line after you join.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, decorative miniatures, status, live regions">
+
+### Accessibility
+
+Every screen is a `main` with one heading (an `h1` by default; set `headingLevel` where the page around it needs another). The miniatures are decoration: each is a still, unfocusable picture (`interactive={false}`) inside an `aria-hidden` stage, so the headline, the text and the live regions carry the meaning, and each follows reduced motion, showing its states at once. The status code is read as plain text: a small line over the headline beside a miniature, set large on the plain page.
+
+Status screen's loading state sets `aria-busy` on the page and announces its headline through a `status` region; its progress bar is a labelled `progressbar`, with no value while the wait is unknown, and the line that offers a reload is a `status` as well. The 503's automatic retries run through its Try now button, so each attempt and its outcome are announced (Retrying…, Still down, Back online); the countdown to the next one is plain text, never read out every second. After a 403 request, the line saying what happens next is a `status`. The 404's search is a `search` landmark with a labelled field. Request tracking announces a found request politely, lists the steps as an ordered list with the current one marked `aria-current="step"` and each step's state spelled out for screen readers, and shows lookup errors under the field (`aria-describedby`).
+
+Actions that wait on a server (Try again, Try now, Request access, Notify me, Track) are Buttons with `onAction` or a `status`: they show progress and the result in text as well as motion. Links and buttons are real `a` and `button` elements with the kit's focus ring. Everything animated stands still under reduced motion.
+
+</ReferenceRow>
+
+</BlockStories>

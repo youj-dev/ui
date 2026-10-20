@@ -1,0 +1,121 @@
+---
+title: Day Rail
+description: "Show typed segments and time-zone changes on a daily timeline, such as a trip’s flights and stays."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="day-rail/demo" height={380} />
+
+A six-day trip through Lisbon, Barcelona and Rome with its flights, stays and a plan for each day, pinned mid-flight to Rome.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="day-rail" noImport />
+
+Use an day rail for a trip, or anything that moves between places over a few days: a tour, a site visit, a move. Each day is a column and a tab. Flights arc over the rail from departure to arrival with their code at the top, and a change of clocks is marked beside the landing (+1 h). Stays sit under the rail as spans from check-in to check-out, in their stop's color, with their nights. Past legs are solid and quiet, the ones ahead dashed, and during a flight the plane rides its arc. Pick a day and its `ItineraryDay` panel shows under the rail. The [Trip block](/docs/blocks/calendars-and-schedules#itinerary) lists each day's bookings there. For shifts across a week, use [Time Lanes](/docs/components/time-lanes); for events that already happened, a [Timeline](/docs/components/timeline).
+
+```tsx
+import { ItineraryDay, DayRail, type ItineraryLeg, type ItineraryStay, type ItineraryStop } from '@youj/react'
+
+const stops: ItineraryStop[] = [
+  { id: 'lis', code: 'LIS', name: 'Lisbon', utcOffset: 60 },
+  { id: 'bcn', code: 'BCN', name: 'Barcelona', utcOffset: 120 },
+]
+const legs: ItineraryLeg[] = [
+  { id: 'out', from: 'lis', to: 'bcn', depart: new Date('2026-09-30T08:40Z'), arrive: new Date('2026-09-30T10:55Z'), code: 'TP 1036' },
+  { id: 'back', from: 'bcn', to: 'lis', depart: new Date('2026-10-03T12:20Z'), arrive: new Date('2026-10-03T14:35Z'), code: 'TP 1039' },
+]
+const stays: ItineraryStay[] = [
+  { id: 'bonay', at: 'bcn', start: new Date('2026-09-30T13:00Z'), end: new Date('2026-10-03T09:00Z'), name: 'Casa Bonay' },
+]
+
+<DayRail stops={stops} legs={legs} stays={stays} start={new Date('2026-09-29T23:00Z')} days={4}>
+  <ItineraryDay value={0}>Fly to Barcelona at 09:40.</ItineraryDay>
+  <ItineraryDay value={1}>Sagrada Família at 10:30.</ItineraryDay>
+</DayRail>
+```
+
+A stop is a place with a `code` for the rail, a `name` for the words, and its `utcOffset` in minutes, which sets how its times read and marks the change of clocks on landing. A leg flies `from` one stop `to` another between `depart` and `arrive`, with an optional flight `code`. A stay sits `at` a stop from `start` to `end`, and takes its stop's `tone` (the chart colors in turn by default). A flight is hours on a rail of days, so its arc is drawn at least a twelfth of the rail wide around its middle; the exact times are in the words.
+
+`start` is the first moment shown, the first day's midnight at the first stop, and `days` how many follow (7 by default). `now` places the line: by default it follows the clock, read every 30 seconds once the page is live; pass a time to pin it, or `null` to hide it. The day shown starts on today while the trip is under way and on the first day otherwise; set it with `defaultValue`, or control it with `value` and `onValueChange`. Each `ItineraryDay` takes the `value` of its day, from 0.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="stops, legs, start… (11)">
+
+### Props
+
+<PropsTable name="DayRail" />
+
+<PropsTable name="ItineraryDay" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `day-rail`, `day-rail-scroll`, `day-rail-days`, `day-rail-day` (with `data-today`), `day-rail-label`, `day-rail-value`, `day-rail-track`, `day-rail-sky`, `day-rail-arc` (with `data-state`: `past`, `flying` or `upcoming`), `day-rail-code`, `day-rail-plane`, `day-rail-line`, `day-rail-node`, `day-rail-stop`, `day-rail-shift`, `day-rail-stays`, `day-rail-stay`, `day-rail-now`, `day-rail-summary` and `day-rail-panel`. A stay's color is `--stay-tone`. Below 34rem the rail scrolls sideways.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, clock tick, day picked · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'flown and flying arcs draw in along their length, one after another; the arcs ahead fade in', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Clock tick', note: 'the now line and the plane on its arc glide to their new places', duration: 'slow', ease: 'standard' },
+    { moment: 'Day picked', note: 'the day’s underline grows from its center', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The arcs are drawn, and the plane and the now line jump to each new time."
+/>
+
+#### Reduced motion
+
+The arcs are drawn from the start, and the now line and the plane jump to each new time instead of gliding.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- The days are a tab list named by `label` (default: the labels' "Itinerary"); each day is a tab named by its number and date ("Day 4, Sat, Oct 3"), and its `ItineraryDay` is the tab panel.
+- Left and right move between days (mirrored in RTL), Home and End go to the first and last.
+- The drawing is hidden from screen readers. In its place a list gives every leg with its code, from where to where, its local times and any change of clocks ("VY 6104, Barcelona to Rome, Sat, Oct 3, 14:20 to Sat, Oct 3, 16:10"), and every stay with its stop and its nights.
+- Its words come from the labels (`itinerary`, `itineraryDay`, `itineraryLeg`, `itineraryTimeShift`, `itineraryNights`, `itineraryNow` and `itineraryInTransit`), translated by the language packs.
+
+</ReferenceRow>

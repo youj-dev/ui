@@ -1,0 +1,170 @@
+---
+title: Trends & comparisons
+description: "Numbers over time and side by side: KPIs, metric charts, running totals, retention, percentiles, curves and head-to-heads."
+---
+
+<BlockStories>
+
+<BlockStory id="kpi-cards" label="KPI cards" block="app-kpi-cards" story="Default" backdrop="seaglass">
+
+The numbers at the top of a dashboard, each with its change on the period before, as figures on hairlines, a line with last period's ghost, or a bar per bucket. Move along any tile, or focus it and use the arrow keys, and every tile reads that day at once; a dashed segment marks a day still in progress.
+
+</BlockStory>
+
+<BlockStory id="metric-chart" label="Metric chart" block="app-metric-chart" story="Default" backdrop="seaglass">
+
+One metric over time, stacked by the segments it adds up from, against the period before. The legend shows each series' total, or its value on the hovered day; press a series to hide it or Alt-press to show only that one. Annotations mark the dates that explain the turns, and View data shows the numbers as a table.
+
+</BlockStory>
+
+<BlockStory id="running-total" label="Running total" block="app-running-total" story="Default" backdrop="seaglass">
+
+A total as it builds up against the period before: both running totals by day number, the gap between them washed (in danger where this period has fallen behind), each line ending in its value and a note beside its point, placed clear of both lines. Point along the plot, or use the arrow keys, to read a day against the last period; the footer gives the day it passed last period's total, the daily pace and the best day.
+
+</BlockStory>
+
+<BlockStory id="daily-bars" label="Daily bars" block="app-daily-bars" story="Default" backdrop="seaglass">
+
+A period read day by day: the total with its change on the period before, a bar per day with the busiest lit and the average as a dashed line with its tag. A note on a day is a callout above the bars, never touching one. Point at a day, or focus the chart and use the arrow keys, to read it; the footer gives the top day, the daily average and the quietest day.
+
+</BlockStory>
+
+<BlockStory id="live-metric" label="Live metric" block="app-live-metric" story="Default" backdrop="seaglass">
+
+What's happening right now: people on the site rolling digit by digit, the last five minutes as a strip that slides along as each bucket opens, and the pages they're on, re-ranking as traffic shifts. Pause holds it, and the count is read aloud every half minute rather than on every change. It runs demo traffic until you pass your feed.
+
+</BlockStory>
+
+<BlockStory id="retention" label="Retention" block="app-retention" story="Default" backdrop="seaglass">
+
+Weekly or monthly cohorts as a triangle under their curve. Point at a cell, or move through the grid with the arrow keys, and the curve draws that cohort over the average with how many points above or below it sits. Periods still in progress are hatched and left out of every average.
+
+</BlockStory>
+
+<BlockStory id="percentile-trend" label="Percentile trend" block="app-percentile-trend" story="Default" backdrop="seaglass">
+
+How long things take, as a spread: the p99 in large mono with its change, then every sample as a dot on a log scale with p50, p90 and p99 flagged against a target, and each item's own p99. Latency, delivery times and wait times read the same way; the windows on the control are yours, and `format` writes the units.
+
+</BlockStory>
+
+<BlockStory id="hour-lanes" label="Hour lanes" block="app-hour-lanes" story="Default" backdrop="umber">
+
+When things happen, by lane: a lane of dots per source, entrance or channel across the day, each swelling where it's busy on one scale, its share of the week under its name, and the busiest bucket flagged through every lane. The Off-hours switch keeps the night in color and quiets the working day; the foot says the peak, the share outside working hours, and which lane leads at night. The demo is security alerts; Store visits and Support calls show other lanes, hours and units, and Loading, Empty and Error hold the lanes' place.
+
+</BlockStory>
+
+<BlockStory id="quadrant" label="Quadrant" block="app-quadrant" story="Default">
+
+How two measures relate: accounts by usage and revenue, split into four groups by two lines you can drag or step with the keys. The chips count the groups and filter them. Movement draws where each account stood last month, and the list names who changed group.
+
+</BlockStory>
+
+<BlockStory id="compare-items" label="Compare items" block="app-compare-items" story="Default" backdrop="seaglass">
+
+Two to four things side by side: a picker heads each column and its swatch is that column's color on the radar, and the overview under it lines up every spec by column. Highlight best marks the best value in each row with a dot; add a column from the ones not yet picked, or remove one down to two.
+
+</BlockStory>
+
+<BlockStory id="head-to-head" label="Head to head" block="app-head-to-head" story="Default" backdrop="seaglass">
+
+Two things side by side before you choose: who leads overall, every measure as a bar growing from a shared center with its own format and margin, and the trade-off between two figures on a quadrant. Models, job offers and supplier quotes read the same way. Choose a side and act on it.
+
+</BlockStory>
+
+<BlockStory id="paired-bars" label="Paired bars" block="app-paired-bars" story="Default" backdrop="seaglass">
+
+Two things side by side: per row, two bars on one shared axis (log by default, so a row with a hundred and one with forty thousand both read), the numbers behind them in the row's own format, and optionally a second figure for each side with an old one struck through. Plans, schools and phones read the same way. Search narrows the rows; View all shows every row in the same room and scrolls inside it.
+
+</BlockStory>
+
+<BlockStory id="compound-projection" label="Compound projection" block="app-compound-projection" story="Default" backdrop="sandstone">
+
+What a steady addition grows into: set the monthly amount, the years and the yearly rate and the bars rise to the total at the end, one per year, the last highlighted. The demo is a savings plan; stories show a newsletter's readers and a forest's captured carbon.
+
+</BlockStory>
+
+<BlockStory id="curve-window" label="Curve window" block="app-curve-window" story="Default" backdrop="umber">
+
+One value against another over the recent parts, series by series (the demo: a station's bolts, torque against angle, with a battery discharge and a glucose response in the stories): pick a series, read the last curve as a number with its verdict, and see the recent curves against a dashed window. The last curve is the accent, and a part that ended outside the window is red with a callout that names it, its value and why. `axes` names and formats the two axes, and loading, error and empty states take the chart's place.
+
+</BlockStory>
+
+<BlockStory id="drift-histogram" label="Drift histogram" block="app-drift-histogram" story="Default" backdrop="umber">
+
+Whether a process is walking away from nominal (the demo: a hole's position, with a fill weight and a delivery ETA error in the stories): the offset of the recent parts and the process capability, a 3D histogram of where parts landed (older, recent, and out of the dashed tolerance ring) with an arrow for the drift, and the correction that would bring them back, with Apply. `format` reads the offsets, and loading, error and empty states take the plate's place.
+
+</BlockStory>
+
+<BlockStory id="coverage-grid" label="Coverage grid" block="app-coverage-grid" story="Default" backdrop="umber">
+
+Where coverage is thin: rows down the side and columns across the top, each cell filled by how deep the coverage goes in its column's color and hatched where there is none. Pick a row and its gaps turn red; the foot says how many it has, with a draft button for them and Review gaps. Drafts go live once reviewed, so the matrix keeps counting live ones only. The demo is detection rules by tactic and source; Test coverage and Course syllabus show other rows, columns and words.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="sliders, grids, text summaries, motion">
+
+### Accessibility
+
+Each chart has a name and a one-sentence summary, and the metric chart's numbers are also in a real table behind View data. Wherever you can scrub a chart (the KPI tiles and the metric chart), it is a slider: Left and Right step a bucket, Home and End jump to either end, Escape lets go, and each position is read out as a sentence with the date, the figures and the change. The tile and chart headers update with it.
+
+The metric chart's legend entries are toggle buttons with `aria-pressed`, and hiding or soloing a series is announced. Annotations are buttons named with what happened, the date and the details. The breakdown's ring is decorative: its parts are a list of buttons named with figure, share, change and how many parts they hold, the path is a breadcrumb, and focus lands in the new level after a zoom. The retention grid is one tab stop: the arrow keys move along the triangle, Home and End move along a row, and every cell is named with its cohort, period, share and count, marked when still in progress. The goals are a radio group, so arrow keys pick the goal the burn-up shows.
+
+The daily bars and the running total are each one tab stop, a group named for the chart and described by a sentence on the total and the extremes. Left and Right read a day, Home and End jump to either end and Escape lets go; the day is read out by a polite live region, and the callouts and end values are text.
+
+The live card's count is announced politely every 30 seconds while it runs, and Pause stops every update (WCAG 2.2.2). Its demo timers stop while the tab is hidden or the card is off screen.
+
+Percentile trend's strip has a visually hidden summary of its quantiles, the window switch is labelled, stats are a description list with a label, the items are a labelled section, and an item's status is added as hidden text. The new p99 is announced when the window changes.
+
+Hour lanes draws a named grid with a row per lane (its header the name and share) and a cell per bucket named with its time and count, and "highlighted" while the Off-hours switch is on; the grid is one tab stop, the arrow keys walk hours and sources, and focus shows the same tooltip as hovering. Off-hours is a labelled switch, and the foot's figures are a description list.
+
+Each of the quadrant's split lines has a handle that is a slider, named for the measure it splits and read with its value; the arrow keys, Page Up and Down, Home and End move it, and the new counts are announced once it stops. The bubbles are one tab stop, an arrow key goes to the nearest bubble that way, and each is named with its figures, its group and, with Movement on, the group it came from. The chips are toggle buttons named with their count.
+
+Compare items' radar and overview are one reading: the radar names each point with the model, axis and score, and has its own hidden table, and the overview is a real table with the models as columns. Each column's picker is a labelled select ("Model 1"), the remove buttons are named with the model they remove, and a best value is marked in text for assistive tech ("best in this row"), not only by its dot. Highlight best is a switch.
+
+Head to head groups contenders, metrics and the trade-off under labels. Each bar row carries a hidden verdict naming the winner, the quadrant is an image with a text alternative that states the trade-off, and the choose control is labelled.
+
+Paired bars is a table: each number carries its side's name, and the bars are for the eye. Under reduced motion every value lands in place; the limit meters' bucket still refills a token at a time.
+
+Curve window picks the series with one named choice, draws the curves as an image whose text gives the series, the number of parts, how many fell outside the window and the window itself, and lists every part with its result and where it ended in words. The failed part's callout is plain text on the page, not a hover tooltip.
+
+Drift histogram draws the plate as an image whose text says how many holes landed, how many are older, recent and outside the tolerance, and how far the recent ones sit from nominal; the offset, the capability and the tool offset are text, and Apply announces that the offset was applied.
+
+Coverage grid draws a named grid with a row per row (the picked one `aria-selected`) and every cell named with its column and depth ("Cloud: No rules"); the grid is one tab stop, the arrows move between rows and cells, and Enter picks a row. Gaps are hatched and dashed as well as colored. The suggestion is a polite live region, so picking a row or drafting is read out.
+
+Under reduced motion every figure, line, ring and bar is drawn at its value, and the now line and hand move on each minute without gliding. Scrubbing still follows the pointer and keys, the breakdown changes level without zooming, and the live dot stops pulsing. The heatmap's days, the flow's ribbons and the quadrant's bubbles are drawn in place, and a new range or a moved split changes them at once.
+
+</ReferenceRow>
+
+</BlockStories>

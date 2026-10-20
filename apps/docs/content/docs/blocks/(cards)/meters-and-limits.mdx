@@ -1,0 +1,111 @@
+---
+title: Meters & limits
+description: "How much is used and how much is left: limits, allowances, dials, capacity, stock, envelopes, streaks and goals."
+---
+
+<BlockStories>
+
+<BlockStory id="limit-meters" label="Limit meters" block="app-limit-meters" story="Default" backdrop="seaglass">
+
+How much of an allowance is used, live: pick what is limited (your own kinds, such as API keys and endpoints, phone lines or library cards) and watch its bucket drain as it is spent and refill at the limit's pace. Send a burst to see it refuse, or raise the limit.
+
+</BlockStory>
+
+<BlockStory id="limit-tracker" label="Limit tracker" block="app-limit-tracker" story="Default" backdrop="sandstone">
+
+What has been used of a limit, on a ruler from zero, with a rule's line and the pace beside it, a tile per category and the rules as switches. Change the limit or ask for more. The demo is a team card; stories show a yearly time-off allowance and a cloud storage plan.
+
+</BlockStory>
+
+<BlockStory id="health-dial" label="Health dial" block="app-health-dial" story="Default" backdrop="umber">
+
+One thing's health across its parts: a zoned gauge beside its signals and a row per part with two figures and a state. A part whose state offers the action (a lagging region) can be shifted off; the footer adds capacity. The windows, signals, states and every word are yours: a service and its regions, a patient and their monitors, a wind farm and its turbines.
+
+</BlockStory>
+
+<BlockStory id="tiered-capacity" label="Tiered capacity" block="app-tiered-capacity" story="Default" backdrop="seaglass">
+
+How full each region is, tier by tier, as a block of isometric columns, each filling its dashed case. Pick a region for its tiers and when it fills, and Add capacity provisions a step more. Storage by default; warehouse floors and parking levels are in the stories, and the tiers and the unit are yours.
+
+</BlockStory>
+
+<BlockStory id="bin-rack" label="Bin rack" block="app-bin-rack" story="Default" backdrop="umber">
+
+A rack of bins as an isometric drawing (the demo: a line-side flow rack, with a pharmacy shelf and a vending machine in the stories): each bin a cell holding a block as tall as its stock, in its part's color, with low bins in the warning color and empty ones as dashed outlines. Point at a bin for a tag with how many are left and when it runs out, and flip the auto-call switch to have a low bin call the refill. `format` reads the counts and times, and loading, error and empty states take the drawing's place.
+
+</BlockStory>
+
+<BlockStory id="envelopes" label="Envelopes" block="app-envelopes" story="Default" backdrop="sandstone">
+
+A budget as envelopes: safe to spend today in large mono, then a rack of cells per envelope that drain as the budget is spent. Drag between envelopes, or log the next entry. The demo is a household's month; stories show a team's sprint in hours and a cloud account's credits per project.
+
+</BlockStory>
+
+<BlockStory id="streaks" label="Streaks" block="app-streaks" story="Default" backdrop="meadow">
+
+A run of days on anything, as an instrument: the picked item's streak as a flame meter, 26 weeks of heat dots where today's dot is the toggle, and a daily list with a Mark done pill. A freeze can save a run broken yesterday. The demo is four daily habits; stories show a support team's response target and a student's study days.
+
+</BlockStory>
+
+<BlockStory id="goals" label="Goals" block="app-goals" story="Default" backdrop="seaglass">
+
+The period's targets, each with its progress, a notch for where an even pace would be by today and a status from the recent rate. The picked goal is drawn as a burn-up: the total so far, the even pace, and a forecast inside its likely range, with the day it reaches the target.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="meters, toggles, keyboard, motion">
+
+### Accessibility
+
+Limit meters has a labelled picker, and the bucket is a meter named by its label.
+
+Health dial labels its window control and the signals section, and each row's action button names its part ("Shift traffic from us-east-2"). Loading is announced, and an error says why with a Retry button. The stories show other worlds, with their own names and words.
+
+Tiered capacity draws its columns as a picture (`aria-hidden`); the region picker is a labelled segmented control with spoken buttons, the legend is a list, and a hidden table holds every figure.
+
+Bin rack draws the rack as a decorative image and lists every bin as a button with its state and when it runs out (for example "Caps C-12, 6 left, low, empty in ~14 min"); focusing a bin tags it on the drawing. Low and empty are named in words as well as colored and dashed, and the auto-call switch is labelled. The stories show other worlds, with their own names and words.
+
+Envelopes are a labelled group; each envelope is named with what is left (or by how much it is over). Money moves by drag or by keyboard: Space picks an envelope up, the arrow keys choose the target and the amount, Enter moves it and Escape cancels, with a hidden hint describing the keys. 
+The Pace budget treemap has one tab stop, with the arrow keys and Home and End moving between cells. The plan is a list of switches, each beside the step it applies.
+
+In Streaks each item in the list is a button with `aria-pressed` and a name, and the Mark done control is a labelled toggle for today. The list has its own label.
+
+Each chart has a name and a one-sentence summary, and the metric chart's numbers are also in a real table behind View data. Wherever you can scrub a chart (the KPI tiles and the metric chart), it is a slider: Left and Right step a bucket, Home and End jump to either end, Escape lets go, and each position is read out as a sentence with the date, the figures and the change. The tile and chart headers update with it.
+
+Under reduced motion values change in place.
+
+</ReferenceRow>
+
+</BlockStories>

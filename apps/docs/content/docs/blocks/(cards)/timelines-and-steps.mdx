@@ -1,0 +1,130 @@
+---
+title: Timelines & steps
+description: "Things that move through stages: event timelines, trackers, pipelines, traces, rollouts, gates, paths and roadmaps."
+---
+
+<BlockStories>
+
+<BlockStory id="event-timeline" label="Event timeline" block="app-event-timeline" story="Default" backdrop="umber">
+
+Something in progress as one card: a status pill, a level of urgency and a ticking open time, the time each phase took to reach, what it touches with a rate each, and a timeline of entries. Step it through your own phases (Acknowledge, Mitigate, Resolve; or Triage, Treat, Discharge), or raise its level.
+
+</BlockStory>
+
+<BlockStory id="step-tracker" label="Step tracker" block="app-step-tracker" story="Default" backdrop="sandstone">
+
+Anything on a road of stages, replayed scan by scan on one rail: a parcel from ordered to delivered by default, a loan or a visa with your own stages. Retried stops, refusals and skipped stages are drawn too. Pick a stage for its details or another item from the tabs.
+
+</BlockStory>
+
+<BlockStory id="stage-pipeline" label="Stage pipeline" block="app-stage-pipeline" story="Default" backdrop="umber">
+
+A run through ordered stages on one rail, with the selected stage's log tailing beneath it: a deploy from build to release, a bakery batch from mix to ship, an article from draft to publish. When every stage passes, Promote puts the result out; Roll back returns to what came before. The stages, the lines each prints and every word are yours.
+
+</BlockStory>
+
+<BlockStory id="run-timing" label="Stage pipeline run timing" block="app-stage-pipeline" story="RunTiming" backdrop="umber">
+
+A finished run read as time: steps grouped as Build and Deploy with when each started and how long it took, a strip across the top cutting the run into its groups, and the result line. Pass each step's `previous` time and it is compared: the earlier time is a longer ghost bar where the step got faster, an overshoot in the danger tone where it got slower, and a skipped step has only the word. It is `StagePipelineRunTiming`, a second part of the Stage pipeline block: it installs with it and is imported from `blocks/app/stage-pipeline/run-timing`.
+
+</BlockStory>
+
+<BlockStory id="step-trace" label="Step trace" block="app-step-trace" story="Default" backdrop="umber">
+
+One run as a graph of steps lit by state as it goes, with steps, elapsed time, size and cost counting up: an AI agent, a web request or a lab sample. Pick a step for its inputs and outputs, then approve the result.
+
+</BlockStory>
+
+<BlockStory id="case-file" label="Case file" block="app-case-file" story="Default" backdrop="umber">
+
+One case as a card: its stage on a stepper, the verdict in a sentence with its confidence and the evidence behind it as one split bar, and the chain of events step by step, each step in its source's color with its offset from the first and a ribbon that shows the pace. The primary action finishes the current stage and moves the case on (a stage that stops things ends the step still running); Dismiss closes it. The demo is a security case (Triage, Investigate, Contain, Close, with Contain account ending the step still running), and Phishing case, Insurance claim and Fraud review show the same card with other stages and verdicts.
+
+</BlockStory>
+
+<BlockStory id="staged-rollout" label="Staged rollout" block="app-staged-rollout" story="Default" backdrop="umber">
+
+An item's rollout on a ruler cut into stages, snapped to gate by gate per environment, with exposure, a watched rate against its guardrail and a kill switch that rolls it back to zero. Feature flags in the demo; price variants by region or a firmware wave by ring of devices read the same, with the environments, stages and words yours. Every item is listed below with its own ruler.
+
+</BlockStory>
+
+<BlockStory id="check-gate" label="Check gate" block="app-check-gate" story="Default" backdrop="umber">
+
+The checks that gate a candidate before it goes through: a mobile release, a loan application, a site inspection. Its pass rate against the bar, the last candidates as lollipops and every group of checks as a row. Filter to the blocking groups, then go ahead once they clear.
+
+</BlockStory>
+
+<BlockStory id="roadmap-timeline" label="Roadmap timeline" block="app-roadmap-timeline" story="Default" backdrop="umber">
+
+A year of dated items on one ruler of fine ticks; the default is a product's roadmap, and a wedding or a renovation reads the same way. A pin per item, taller for the big ones, solid once done, hollow while upcoming and amber when it needs attention, with a bright tick for today and a count where items crowd one week. Hover anywhere along it (the nearest pin answers, and the ticks near the pointer stretch) or walk the pins with the arrow keys, and the callout says the date, status, title and one line about it; the one you pick stays shown. The foot says how many are done, how soon the next lands and how many need attention. Your own statuses name those figures. It has loading and error states that keep its size.
+
+</BlockStory>
+
+<BlockStory id="interval-timer" label="Interval timer" block="app-interval-timer" story="Default" backdrop="meadow">
+
+Intervals of work and rest: a ring with an arc per interval, the item at hand or a rest countdown, and a logger with count and amount steppers. Start, Pause and Skip drive the clock. The demo is an evening HIIT session; stories show focus and break cycles and a pour-over brew.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="steps, listboxes, meters, motion">
+
+### Accessibility
+
+Event timeline reads out its level of urgency (hidden text beside the badge), the timeline is a labelled list, and failed actions use `role="alert"`. The open time is not announced as it ticks.
+
+The step tracker lists its stages as an ordered list named for the item. Each stage is a button with a full spoken label, `aria-pressed` for the one you picked and `aria-current="step"` for where the parcel is; the arrow keys move along the road, and the stage details panel is linked with `aria-controls`. The item tabs and the Replay button are named, and the decorative dots are `aria-hidden`.
+
+In Stage pipeline each stage is a labelled toggle with its name, state and duration, and the arrow keys, Home and End move between stages. The log is `role="log"` named by its title; it is a polite live region while it follows the newest line and goes silent once you scroll up or pause.
+
+Step trace's steps are one tab stop, arrow keys follow the flow direction, and the detail's close button is labelled.
+
+Case file shows its stage on a Stepper whose current step is `aria-current="step"` and whose every step says its state. The signals bar is a `meter` whose value text names every signal with its share, and the key under it repeats them as text. The chain of events is a named list, oldest first, each step with its clock time, how long after the first it came, its source and what it touched; the step still running says Ongoing. Contain, Close and Dismiss announce the new stage in a polite live region, and a failed action says why in its button.
+
+Staged rollout puts a named meter on each ruler, with the stage spoken (for example "Internal at 1%"). The playhead steps with the keyboard, the environment switch is labelled, and each item in the list is a button with `aria-pressed`. The stories show other worlds, with their own names and words.
+
+Check gate draws its history as an image with a text alternative that gives the candidate count, how many fell under the bar and the candidate's pass rate; the lollipops themselves are `aria-hidden`. The All / Blocking filter is a named control.
+
+Roadmap timeline draws its year as a named listbox of items, one tab stop: the arrow keys walk the pins, Home and End go to the ends, and selection follows focus. Every pin is named with its title, day and status in words ("SSO and audit log, Oct 28, At risk"), a shared pin names all of its items, and the one-line description is the pin's description; the callout repeats it visually. Status is a word and a solid, hollow or amber dot, never color alone, and the foot's figures are a description list.
+
+In both stories the progress path is a labelled group with one tab stop, and arrow keys move between steps, with a hidden hint. The points and daily goal meters are named, the week's flames are a labelled ordered list with each day's points written out, and finishing a step is announced in a status region.
+
+Interval timer's ring is a labelled group, and the timer is `role="timer"` with live announcements off so it does not chatter every second; the ring announces each interval and ticks through the last three seconds. Add 15 seconds and Skip rest have explicit labels.
+
+Under reduced motion numbers, rings and the trail are drawn in place.
+
+Each card is a `section` named by its title. Under reduced motion cells and rows change in place.
+
+</ReferenceRow>
+
+</BlockStories>

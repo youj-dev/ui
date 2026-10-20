@@ -1,0 +1,68 @@
+---
+title: Workspace tools
+description: "Task-specific tools: a file manager, a music studio and a collaborative canvas."
+---
+
+<BlockStories>
+
+<BlockStory id="file-manager" label="File manager" block="app-file-manager" story="Grid" backdrop="heather">
+
+Browse, upload and preview files with folders and a choice of grid or list views; this story opens on the grid.
+
+</BlockStory>
+
+<BlockStory id="music-studio" label="Music studio" block="app-music-studio" story="Default" backdrop="heather">
+
+Run a music session from controls that float over the song: play, change the tempo, snap the grid and search for clips.
+
+</BlockStory>
+
+<BlockStory id="meeting-booking" label="Meeting booking" block="app-meeting-booking" story="Embedded" backdrop="meadow">
+
+Let visitors choose a meeting time on a booking page that accounts for duration and time zone.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, toolbars, status">
+
+### Accessibility
+
+File manager is a `main` under a `header` with labelled toolbar controls, a selection bar and an upload tray; the preview opens in a sheet that traps focus and closes with Escape, and file actions sit in menus with arrow-key navigation. Music studio’s controls are a labelled group and its arrangement is a labelled ordered list. Collaborative canvas is a `main` named by its board, with breadcrumbs, a labelled group of who is here and a Share button that reports the copied link; the board is the [Whiteboard](/docs/components/whiteboard), its shapes a listbox walked with Tab, its cards regions of their own, and each comment pin a button that opens its thread in a popover that takes and returns focus. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+Meeting booking is a `main` with time slots that use `aria-pressed`, field errors in an alert and the confirmation in a status region.
+
+</ReferenceRow>
+
+</BlockStories>

@@ -1,0 +1,126 @@
+---
+title: Dial
+description: "Adjust a value on a circular scale, with a measured value and setpoints for reference."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="dial/demo" height={480} />
+
+A thermostat dial with a Heat and Cool switch, a target value and the measured room temperature.
+
+</Story>
+
+<Story id="ticks" label="Ticks">
+
+<ComponentPreview name="dial/ticks" height={360} />
+
+A humidity control whose ticks change color as the air goes from dry to comfortable to damp.
+
+`variant="ticks"` draws the arc as a ring of fine radial ticks, with no band or knob. The ticks from the start up to the value light in the tone and reach outward, longest at the value; the tick at the edge lights partway and the next few warm up a little, as Progress's ticks do. `ticks` sets how many there are (55 by default). `bands` change the tone by value: list them in ascending order, and the last band whose `from` the value has reached sets the tone. Dragging, the keys, `current`, `marks` and the figure work as on the default dial.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="dial" noImport />
+
+Use a dial for a bounded value people turn: a thermostat, a volume, a fan speed, a brightness. The arc runs three quarters of the way round, from the lower left to the lower right, ticked at every step, with the value as an ink knob on the band and large in mono in the middle. Give it a measured value and the stretch between the two lights in its tone, heating up to the target or cooling down to it. For a value along a line, use a [Slider](/docs/components/slider); to show a score that isn't set by hand, a [Gauge](/docs/components/gauge). For a window of the day that may run past midnight, such as a sleep schedule, use an [Hours Dial](/docs/components/hours-dial).
+
+```tsx
+import { Dial } from '@youj/react'
+
+<Dial
+  label="Target temperature"
+  caption="Heating to"
+  value={target}
+  onValueChange={setTarget}
+  min={12}
+  max={28}
+  step={0.5}
+  current={19.8}
+  tone="warm"
+  marks={[{ value: 17, label: 'Night' }, { value: 21, label: 'Morning' }]}
+  format={{ style: 'unit', unit: 'celsius', maximumFractionDigits: 1 }}
+/>
+```
+
+`min`, `max` and `step` bound the value, which snaps to the step; `largeStep` (ten steps by default) is what Page Up and Down take. `current` shows a measured value: a marker inside the band, "Now 19.8°C" under the figure, and the stretch between it and the value lit. `tone` colors that stretch: `warm` and `cool` suit heating and cooling, and the accent, a chart color or neutral suit anything else. `marks` put small rings on the ruler for setpoints, such as a schedule's. `format` sets how the figures read, and `caption` puts a mono capital over the figure. It's uncontrolled with `defaultValue`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (18)">
+
+### Props
+
+<PropsTable name="Dial" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `dial` (with `data-variant`, `data-tone` and `data-dragging`; `data-tone` is the band's tone when `bands` set one), `dial-face`, `dial-arc`, `dial-ruler`, `dial-track`, `dial-range`, `dial-mark`, `dial-current`, `dial-knob`, `dial-thumb`, `dial-center`, `dial-label`, `dial-value` and `dial-now`. The ticks variant draws `dial-ticks`, a `dial-tick` each, and `dial-focus` in place of the ruler, band and knob.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Keyboard or click, drag, hover, focus or drag · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Keyboard or click', note: 'the knob and the lit stretch glide to the new value together, retargeting mid-flight', spring: 'snappy' },
+    { moment: 'Drag', note: 'the knob follows the pointer 1:1, snapping to the step', duration: 'instant', ease: 'standard' },
+    { moment: 'Hover, focus or drag', note: 'a halo in the tone comes up round the knob', duration: 'fast', ease: 'standard' },
+    { moment: 'Ticks: keyboard or click', note: 'the lit ticks follow the value on the same spring, reaching outward as the edge passes', spring: 'snappy' },
+    { moment: 'Ticks: band change', note: 'the lit ticks cross-fade to the new tone', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Every change jumps."
+/>
+
+#### Reduced motion
+
+The knob and the lit stretch, or the lit ticks, jump to each new value.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- It's a Base UI slider under the arc: a native range input named by `label` (default: the labels' "Dial"), with the measured value spoken beside the setting ("21.5 °C, now 19.8 °C"). The marks are its description ("Night: 17 °C; Morning: 21 °C").
+- Arrows step, Page Up and Down take large steps, and Home and End jump to the ends. A pointer anywhere on the band drags the knob round and focuses the dial, so the keys carry on from there.
+- A dial turns clockwise in every script, so the arc and its keys keep their direction under RTL: right and up raise the value. The text in the center follows the page.
+- Every step plays the tick cue, like a detent, behind `sound` (on by default).
+- Its words come from the labels (`dial`, `dialNow`, `dialValueNow`, `dialMark`), translated by the language packs.
+
+</ReferenceRow>

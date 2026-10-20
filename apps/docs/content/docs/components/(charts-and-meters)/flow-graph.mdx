@@ -1,0 +1,120 @@
+---
+title: Flow Graph
+description: "Show the steps of a run or a pipeline as a graph that lays itself out, with each step’s state."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="flow-graph/demo" height={420} />
+
+An image-processing pipeline from upload to CDN, with step statuses and a line of detail for the step you open.
+
+The graph opens fitted to its canvas, but never below `fitFloor` (85%), so step names stay legible; a wider graph opens at the start of its flow and pans instead of shrinking. The canvas grows to the graph's height (`height="auto"`, from 200 to 640px), or takes a fixed `height`. Drag the canvas or use the wheel to pan, zoom with Ctrl or ⌘ and the wheel (or a pinch), the corner buttons or + and −, and press 0 to fit again. A minimap shows where you are while the graph overflows (`minimap={false}` hides it).
+
+`orientation="auto"` (the default) lays the graph out left to right, right to left under RTL, and top to bottom when the canvas is narrower than 34rem. Pass `horizontal` or `vertical` to fix it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="flow-graph" noImport />
+
+Use a flow graph when steps depend on each other and some run side by side: an agent's tool calls, a data pipeline, a build, a media job. You pass the steps and the edges between them, and it lays them out itself in layers that read in the flow direction: each step one layer past the furthest step it waits on, ordered to keep edges from crossing, and placed near the steps it joins. Steps are mono cards on a dot grid, joined port to port by curves, each showing its state: queued, running (a soft pulse, with dashes flowing along the edges into it), succeeded, failed, retried (with its attempts) or skipped (dashed, like its edges). Picking a step opens it, so the graph can drive a detail panel beside or under it. For a straight line of stages, use a [Stage Rail](/docs/components/stage-rail).
+
+```tsx
+import { FlowGraph } from '@youj/react'
+
+<FlowGraph
+  nodes={[
+    { id: 'fetch', label: 'git.log', kind: 'tool', status: 'ok', meta: '1.2 s' },
+    { id: 'group', label: 'changes.group', kind: 'llm', status: 'running', meta: '4.8 s' },
+    { id: 'draft', label: 'notes.draft', kind: 'llm', status: 'queued' },
+  ]}
+  edges={[
+    { from: 'fetch', to: 'group' },
+    { from: 'group', to: 'draft' },
+  ]}
+  value={open}
+  onValueChange={setOpen}
+  controls="step-detail"
+/>
+```
+
+`meta` is one figure beside the kind, already formatted ("1.2 s", "404"), and it's spoken after the state. A retried step shows its `attempts`. Cards are sized to their names so nothing truncates, and the edges of a step that skips a layer are routed around the steps in between. A cycle's closing edge is left out of the layout. `layoutFlowGraph(nodes, edges, orientation)` returns the same layout for drawing your own.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="nodes, edges, value… (13)">
+
+### Props
+
+<PropsTable name="FlowGraph" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `flow-graph` (with `data-orientation`), `flow-graph-viewport` (with `data-dragging`), `flow-graph-world`, `flow-graph-edges`, `flow-graph-edge` (with `data-state` `running`, `done`, `pending`, `error` or `skipped`, and `data-active`), `flow-graph-nodes`, `flow-graph-node` (with `data-status` and `data-open`), `flow-graph-pulse`, `flow-graph-port` (with `data-side`), `flow-graph-node-status`, `flow-graph-node-name`, `flow-graph-node-kind`, `flow-graph-node-meta`, `flow-graph-node-attempts`, `flow-graph-fade`, `flow-graph-minimap`, `flow-graph-controls` and `flow-graph-zoom`. The kinds take the theme's label voice; in [Bezel](/docs/looks) they're mono capital eyebrows and the figures are mono.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Running, zoom and fit, pan · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Running', note: 'the step’s halo breathes and its dot throws a ring; dashes flow along the edges into it, looping until it finishes', duration: 'deliberate' },
+    { moment: 'Zoom and fit', note: 'the view glides to its new scale, and can be caught mid-way by a drag or a wheel', duration: 'slow', ease: 'standard' },
+    { moment: 'Pan', note: 'the view follows the pointer and the wheel, never eased' },
+  ]}
+  reduced="Nothing breathes or flows: a running edge stays dashed in the accent, and zoom and fit land in place."
+/>
+
+#### Reduced motion
+
+The running step holds still and its edges stop flowing (they stay dashed in the accent), and zoom and fit land at once. Panning is unchanged, since it never animates.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The canvas is a group named by `label` (default "Flow graph"), described by a hint that explains the keys. The steps are buttons in one list and one tab stop: the running step, the open one, or the first.
+- Arrow keys along the flow follow the edges to the next or previous step (the nearest one, or back the way you came), the cross arrows move within a layer, and Home and End go to the first and last step. They're mirrored under RTL and turn with the orientation.
+- Each step is named by its name, state and figure ("changes.group, Running, 4.8 s") and described by what it follows and leads to ("After git.log. Then notes.draft"). An open step has `aria-expanded="true"` and `aria-controls` pointing at `controls`; Escape closes it.
+- The state is always a word as well as a color and a dot shape. With sound on, opening a step plays `select` and closing it `close`.
+- Its words come from the labels (`flowGraph`, `flowGraphHint`, the `flow*` states, `flowGraphNode`, `flowGraphAfter`, `flowGraphThen`, `flowGraphAttempts`, `zoomIn`, `zoomOut`, `zoomToFit`), translated by the language packs.
+
+</ReferenceRow>

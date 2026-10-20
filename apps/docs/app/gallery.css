@@ -1,0 +1,5 @@
+/* What a page that renders blocks needs on top of global.css: their utilities, and the theme
+ * variables only they use. It is tailwind.css compiled with the blocks scanned, less everything
+ * global.css already holds (postcss/gallery-delta.mjs), so each rule ships once. Import it from the code that
+ * renders them (components/showcase/render-story.tsx, components/create/create-view.tsx). */
+@import './tailwind.css';

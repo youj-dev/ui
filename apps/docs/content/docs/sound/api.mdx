@@ -1,0 +1,87 @@
+---
+title: API
+description: "Configure sound playback, trigger cues and define custom sound packs."
+---
+
+## YoujProvider's sound options
+
+`@youj/sound` exports packs; `YoujProvider` (from `@youj/core`) plays them. Without `sound`, no sound code is requested. With it, nothing downloads until sound is on and unmuted; then the player and the pack's audio load in chunks of their own, and sound starts at the user's first gesture.
+
+`sound` takes a pack on its own (`sound={beacon}`), `false`, or an object that sets the rest:
+
+- `pack: SoundPack | false`: The pack. `false` silences this subtree (a preview, an embedded editor). Nested providers inherit it.
+- `volume: number`: Loudness, 0–1, on a perceptual curve. Default 0.5.
+- `muted: boolean` and `onMutedChange: (muted: boolean) => void`: The user's mute, controlled. Left out, the provider keeps it, starting unmuted: setting `sound` is the opt-in, so cues play after the first gesture. Pass `muted: true` to start muted.
+- `whenReduced: boolean`: Keep playing under reduced motion. Default false. Sound is always silent under `motion={false}`.
+
+```tsx
+<YoujProvider sound={{ pack: beacon, volume: 0.4, muted, onMutedChange: setMuted }}>{children}</YoujProvider>
+```
+
+Settings a nested provider leaves out come from the one above it, so a quieter region is `<YoujProvider sound={{ volume: 0.3 }}>` and a silent one `<YoujProvider sound={false}>`.
+
+## useSound
+
+`useSound()` (from `@youj/core`) returns the nearest provider's state, for a settings screen or a component of your own:
+
+- `enabled: boolean`: Whether a provider above has sound on.
+- `muted: boolean`: The user's mute.
+- `setMuted: (muted: boolean) => void`: Mutes or unmutes. The provider reports it through `onMutedChange`; keeping it is the app's job.
+- `volume: number`: The provider's volume, 0–1.
+- `play: (cue: SoundCue) => boolean`: Plays a cue with every rule applied: silent when muted, under reduced motion, in a hidden tab, before the first gesture, and within the cue's cooldown. Returns whether it played (false too while the pack is still loading).
+
+## Packs
+
+The built-in packs are `beacon` (the one `definePack` falls back to), `halo`, `rill`, `glyph`, `zephyr` and `glass`; pass any of them as `sound`.
+
+### definePack
+
+`definePack(definition)` returns a `SoundPack` of your own. See [Custom sounds](/docs/sound/custom-sounds).
+
+- `sounds: Partial<Record<SoundCue, SoundSource>>`: Each cue's sound. The cues you leave out play the base pack's.
+- `base: SoundPack`: Plays every cue `sounds` leaves out, and any whose file won't load or decode. Loaded only then. Default `beacon`.
+- `name: string`: Names the pack in warnings. Default `'custom'`.
+
+A `SoundSource` is a `SoundFile` (a URL as a string or `URL`, or bytes as an `ArrayBuffer` or `Uint8Array`), or a function that loads one when sound first turns on, resolving to the file or to a module whose `default` is the file.
+
+### candidates
+
+`candidates` holds every built-in sound by cue and family, for `definePack`: `candidates.tap.halo`, `candidates.error.glyph`. Each is a loader, `() => Promise<Uint8Array>`, whose MP3 is a chunk of its own, fetched only when a pack that plays it turns sound on. The [Sound builder](/docs/sound#sound-builder) lists the six packs' sounds.
+
+### SoundPack
+
+A `SoundPack` is what `YoujProvider`'s `sound` takes: motion's small `SoundRuntime` interface (`arm()` fetches the player and audio, `play(cue, volume)` plays) plus a `name`, a `load()` that resolves to `SoundSources` (each cue's `SoundFile`), and an optional `base` that plays the cues it lacks. `load()` runs once, the first time sound turns on with the pack.
+
+## Cues
+
+`soundCues` lists the cues in order: `tap`, `select`, `toggleOn`, `toggleOff`, `success`, `error`, `notify`, `open`, `close` and `tick`. `SoundCue` is their type. Both live in `@youj/core`, where components emit them.
+
+## In your own components
+
+Components don't play sounds. They emit cues on motion's cue bus, and the provider above decides what plays. `useSoundCue()` from `@youj/core` returns the emitter. Call it where the motion starts, and only for a person's own action or an arrival, never on mount or hover. Without `sound` on the provider it does nothing, and your component carries no sound code:
+
+```tsx
+'use client'
+
+import { useSoundCue } from '@youj/core'
+import { BookmarkIcon } from '@youj/icons'
+
+export function SaveButton({ saved, onSavedChange }: { saved: boolean; onSavedChange: (saved: boolean) => void }) {
+  const cue = useSoundCue()
+  return (
+    <button
+      type="button"
+      aria-pressed={saved}
+      aria-label="Save"
+      onClick={() => {
+        onSavedChange(!saved)
+        cue(saved ? 'toggleOff' : 'toggleOn')
+      }}
+    >
+      <BookmarkIcon active={saved} />
+    </button>
+  )
+}
+```
+
+`YoujProvider` is the bus: components emit cues to it and the pack plays them. To send cues somewhere else, such as a haptics engine or a test's recorder, pass your own runtime as `sound`: a `{ name, arm, play }` object, which is what a pack is. Its `play(cue, volume)` is called for every cue that passes the rules above, and `arm()` when sound turns on.

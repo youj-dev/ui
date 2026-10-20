@@ -1,0 +1,157 @@
+---
+title: Context Menu
+description: "Open actions for an item with right-click, long press or Shift+F10."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="context-menu/demo" height={420} />
+
+A file list where right-clicking a row, or pressing its more button, opens the same actions.
+
+</Story>
+
+<Story id="anywhere-on-a-surface" label="Anywhere on a surface">
+
+<ComponentPreview name="context-menu/canvas" height={400} />
+
+A canvas where a right-click opens the menu at the pointer.
+
+The menu opens at the exact point of the right-click, a few pixels under the pointer, and flips to stay in the viewport. On a canvas, that point is the natural place for the new note. Checkbox and radio rows keep the menu open while settings change.
+
+</Story>
+
+<Story id="submenus" label="Submenus">
+
+<ComponentPreview name="context-menu/issue" height={420} />
+
+An issue row whose menu has submenus for status, assignee and labels.
+
+Submenus suit properties with several values: status, assignee, labels. Each opens beside its row, with a radio group for one-of-many and checkbox rows for tags.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="context-menu" noImport />
+
+Use a context menu as a shortcut to actions people can already reach another way: a file's rename and delete, a canvas's paste and zoom. It's easy to miss, and it's awkward on touch and for assistive technology, so give the same actions a visible control too. The file rows above pair each context menu with a ⋯ [Dropdown Menu](/docs/components/dropdown-menu) built from the same rows. Don't make it the only way to do anything.
+
+```tsx
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '@youj/react'
+
+export function FileRow({ file }: { file: File }) {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className="flex items-center gap-3">
+        <a href={file.url}>{file.name}</a>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem onClick={() => rename(file)}>Rename</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem variant="danger" onClick={() => remove(file)}>
+          Delete
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  )
+}
+```
+
+`ContextMenuTrigger` is the area that opens the menu. Put something focusable in it, like the file's link in the Demo story, so the keyboard can open the menu too. The rows are the [Dropdown Menu](/docs/components/dropdown-menu)'s under other names (`ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuSub`…), so one set of rows can serve both menus, and they look and move the same.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="container, presentation (2)">
+
+### Props
+
+#### ContextMenuContent
+
+<PropsTable name="ContextMenuContent" />
+
+Base UI places the popup at the pointer unless you pass `side`, `align` or their offsets. `ContextMenu` takes the root props (`open`, `defaultOpen`, `onOpenChange`, `disabled`). The rows take the same props as the [Dropdown Menu](/docs/components/dropdown-menu#props)'s: `variant` and `inset` on items, `checked` on checkbox items, `value` on radio groups.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device, pressing and holding the trigger for half a second…">
+
+### Touch
+
+On a touch device, pressing and holding the trigger for half a second opens the menu as the same action sheet `DropdownMenu` uses: it rises from the bottom of the screen with a grab handle, rows are 48px and shortcut hints are hidden. Pull it down, tap outside it or press Escape to close it. Base UI's trigger handles the long press itself, because iOS Safari never sends a `contextmenu` event. If the finger moves first, the press is canceled, so a list of triggers still scrolls. It also turns off the browser's own long-press callout and text selection on the trigger.
+
+A long press is easy to miss on a phone, so make sure the same actions are reachable from a visible button too.
+
+`presentation` on `ContextMenuContent` chooses: `auto` (the default) is a menu at the pointer under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the menu at the finger on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, highlight… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'scale .96 → 1 and fade, out of the point it opened at (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Highlight', note: 'one `SlidingIndicator` per popup glides between rows', spring: 'smooth' },
+    { moment: 'Check', note: 'draws in when a row turns on', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Keyboard open, Escape close', note: 'Base UI sets `data-instant`', value: '0ms' },
+  ]}
+  reduced="The menu appears at once, the highlight jumps from row to row, and checks appear already drawn."
+/>
+
+Because the popup's `transform-origin` is the pointer's position, the menu grows out of the spot you clicked rather than out of a corner.
+
+#### Reduced motion
+
+The menu appears in place at the pointer and closes at once, and the highlight moves without gliding. Everything else behaves the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- The menu is a `menu` with `menuitem`, `menuitemcheckbox` and `menuitemradio` rows, exactly like the dropdown menu, with the same keyboard support once open.
+- `Shift+F10` and the `Menu` key open it from a focused element inside the trigger, just under that element. Browsers only send those keys as a `contextmenu` event on some platforms, so the trigger sends one itself.
+- On touch, a long press opens it.
+- Focus moves into the menu and returns to where it was when the menu closes.
+
+| Key | Action |
+| --- | --- |
+| `Shift+F10` / `Menu` | Opens the menu from the focused element inside the trigger. |
+| `↑` / `↓`, `Home` / `End` | Move between rows. Letters jump by typeahead. |
+| `Enter` / `Space` | Runs the row, or toggles a checkbox or radio row. |
+| `→` / `←` | Opens or closes a submenu. |
+| `Escape` | Closes the menu. |
+
+</ReferenceRow>

@@ -1,0 +1,151 @@
+---
+title: Toggle Group
+description: "Group related options into a single or multiple-choice control."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="toggle-group/demo" height={380} />
+
+A List, Grid and Board view switcher that re-lays a list of deployments.
+
+</Story>
+
+<Story id="looks" label="Looks">
+
+<ComponentPreview name="toggle-group/looks" height={280} />
+
+The default, joined outline and segmented looks side by side.
+
+Three looks share one API. The default spaces its toggles apart. `outline` with `spacing={0}` joins them into one bordered strip with shared edges. `segmented` sets plain labels on a hairline at control height, so it lines up with inputs and buttons of the same size, and marks the pressed item with a 2px accent bar. `pill` is the other segmented look: a recessed track with the pressed key raised out of it.
+
+In a single-choice segmented group, the accent bar is one [Sliding Indicator](/docs/motion/sliding-indicator) that glides to the pressed item and retargets if you press again mid-glide. Resizes and font loads move it into place without animating. Set `orientation="vertical"` to stack the items. The arrow keys follow the orientation.
+
+</Story>
+
+<Story id="multiple-choice" label="Multiple choice">
+
+<ComponentPreview name="toggle-group/multiple" height={220} />
+
+Environment filters that can be on together, with a count of the deployments they show.
+
+With `multiple`, the items toggle independently. In the segmented look, each pressed item draws its own bar instead of sharing one indicator, because several can be pressed at once.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="toggle-group" noImport />
+
+Use a toggle group for a small set of options that change a view in place: a layout switcher, a time range, text formatting. Use [Tabs](/docs/components/tabs) when each option has its own panel of content, a [Radio Group](/docs/components/radio-group) for a choice inside a form, and a [Select](/docs/components/select) when there are more options than fit in a row.
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from '@youj/react'
+
+export function RangePicker() {
+  return (
+    <ToggleGroup variant="segmented" aria-label="Range" defaultValue={['7d']}>
+      <ToggleGroupItem value="24h">24h</ToggleGroupItem>
+      <ToggleGroupItem value="7d">7d</ToggleGroupItem>
+      <ToggleGroupItem value="30d">30d</ToggleGroupItem>
+    </ToggleGroup>
+  )
+}
+```
+
+The value is always an array of the pressed items' values, in single and multiple mode alike. In single mode, pressing the pressed item releases it and the value becomes empty. A view switcher should always have a view, so control `value` and ignore the change that would empty it, as the first preview does:
+
+```tsx
+<ToggleGroup value={view} onValueChange={(next) => next.length > 0 && setView(next)}>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, variant, spacing… (5)">
+
+### Props
+
+#### ToggleGroup
+
+<PropsTable name="ToggleGroup" />
+
+`spacing` is a gap in spacing steps: `0` joins the items, and the default is `1`, or `0` for `segmented` and `pill`. These Base UI props control the group:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string[]` | Controlled pressed values. |
+| `defaultValue` | `string[]` | Initial pressed values when uncontrolled. |
+| `onValueChange` | `(value: string[], details) => void` | Called with the new array when an item is pressed. |
+| `multiple` | `boolean` | Let several items be pressed at once. Default `false`. |
+| `orientation` | `'horizontal' \| 'vertical'` | Layout and arrow-key direction. Default `'horizontal'`. |
+| `loopFocus` | `boolean` | Wrap focus from the last item to the first. Default `true`. |
+| `disabled` | `boolean` | Disable every item. |
+
+#### ToggleGroupItem
+
+<PropsTable name="ToggleGroupItem" />
+
+Each item takes a `value` and, like a [Toggle](/docs/components/toggle), `disabled`. It inherits `variant` and `size` from the group unless you set them.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Indicator, indicator appears, press… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Indicator', note: 'segmented or pill, single choice: glides to the pressed item', spring: 'smooth' },
+    { moment: 'Indicator appears', note: 'when an empty group gets its first value', duration: 'fast', ease: 'standard' },
+    { moment: 'Press', note: 'each item scales to 0.97 while held', duration: 'instant', ease: 'standard' },
+    { moment: 'Release and hover', note: 'scale back, background and text colors', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The indicator jumps to the pressed item instead of gliding, and items don't scale when pressed."
+/>
+
+The glide is transform-only layout projection, so a pill key's corners stay round in flight and nothing around it reflows.
+
+#### Reduced motion
+
+The indicator moves straight to the pressed item with no glide, and presses don't scale. Which item is pressed reads exactly the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The group is a `group` named by its `aria-label`, and every item is a `<button>` with `aria-pressed`.
+- It's a single tab stop. The arrow keys move focus between items and wrap at the ends, `Home` and `End` jump to the first and last item, and `Space` or `Enter` presses the focused one.
+- The sliding indicator is decorative (`aria-hidden`) and isn't an item, so roving focus only visits the real toggles.
+- Name icon-only items with `aria-label`.
+
+</ReferenceRow>

@@ -1,0 +1,421 @@
+---
+title: Installation
+description: "Set up Youj in your React app with the CLI or install it by hand."
+---
+
+<PageArt art="installation" />
+
+Youj needs React 19 (React 18 isn't supported) and Tailwind CSS v4. The packages are ESM only: import them with `import`, and load them from a CommonJS config file with a dynamic `import()`. They and the CLI need Node 22 or later. Youj runs in Chrome 123, Safari 17.5 and the current Firefox, or later (Edge follows Chrome). A theme's own derived colors need Chrome 120, Safari 18 or Firefox 128; Safari 17.5 keeps Graphite's. See [Supported versions](/docs/versioning#supported-versions).
+
+Already have an app made with `shadcn init`? Run `npx youj init` in it. It adds a sheet that maps shadcn's color names onto Youj's, clears shadcn's dark variant and variable blocks (each change shown as a diff first), and leaves your own components as they are until you replace them. [Coming from shadcn/ui](/docs/guides/shadcn) goes through it step by step.
+
+## One command
+
+```bash
+npx youj init
+```
+
+Run it in your app. The CLI recognizes Next.js (App or Pages Router), Vite, React Router v7 and Astro. It detects your package manager and installs Tailwind v4 if needed. You choose packages or source files, a [theme preset](/docs/theming), motion settings, a [component look](/docs/looks) and default quality. The CLI then:
+
+- installs `@youj/react` (the components), `@youj/core` (the provider, themes and tokens), `@youj/motion` (the motion components) and `@youj/icons`,
+- adds the stylesheet to your global CSS, right after Tailwind,
+- wraps the app in `YoujProvider` with your preset at the provider's own size (roomy, 100%; an app can opt into `density="compact" scaling="90%"`, see [Density and scaling](/docs/theming#density-and-scaling)), and on a server-rendered `<html>` spreads the theme too, so nothing flashes on load,
+- loads the preset's fonts (see [Fonts](#fonts)),
+- clears what would restyle the components: create-next-app's starter colors, create-vite's starter styles, and in an app made with `shadcn init`, its dark variant and variable blocks (see [Coming from shadcn/ui](/docs/guides/shadcn)).
+
+The CLI shows each change as a diff, and asks before clearing a stylesheet. Running it again leaves the setup unchanged. Use `--yes` for defaults, or supply `--mode`, `--theme` and `--motion-personality`. Use `--dry-run` to preview changes:
+
+```bash
+npx youj init --yes --theme terminal
+```
+
+Then use a component:
+
+```tsx
+import { Button } from '@youj/react'
+```
+
+`npx youj doctor` checks an app at any time: versions, the stylesheet and its order, the provider, and duplicate copies of Motion. It prints the fix for anything that's off.
+
+Whole pages are copied in rather than installed: browse the [cards](/docs/blocks/activity-and-conversations), [sections](/docs/blocks/hero), [screens](/docs/blocks/checkout) (dashboards, settings, sign-in, pricing), or build an app frame in [Create](/create), then add one by its name, such as `npx youj add app-analytics-overview`. [Choosing a level](/docs/choosing-a-level) covers what lands where and how to feed them your data.
+
+## Manual
+
+<Steps>
+<Step>
+
+### Install
+
+<PackageInstall command="pnpm add @youj/react @youj/core @youj/motion @youj/icons motion@^14 @base-ui/react@~1.9.0 @fontsource-variable/inter @fontsource-variable/jetbrains-mono" />
+
+Each package owns one thing, and you import it from there: components from `@youj/react`, the provider, themes and tokens from `@youj/core`, motion components from `@youj/motion`, icons from `@youj/icons`. They come from public npm, so there is no registry or token to set up, and they release together at one version. The kit's packages also share `@youj/core/internal`, which exists for them and carries no stability promise: apps import only the entries named in these docs.
+
+`@youj/core`, `@youj/motion`, [Motion](https://motion.dev) and [Base UI](https://base-ui.com) (`@base-ui/react`) are peer dependencies, and the command names all four. Motion 13.4.4 or later and 14 work, and so does Base UI 1.8 and 1.9; the packages are tested against both ends of those ranges. `@youj/core` holds `YoujProvider`'s state, so the app needs exactly one copy, and `npx youj doctor` flags a second. Naming `motion` lets your own code import `motion/react`, as [Motion loads on demand](#motion-loads-on-demand) does: pnpm doesn't let an app import a peer it doesn't list, and Yarn doesn't install peers at all. The two `@fontsource-variable` packages are the typefaces most presets use (see [Fonts](#fonts)). Tailwind CSS v4 is a peer too; the next step sets it up.
+
+</Step>
+<Step>
+
+### Set up Tailwind, the stylesheet and the provider
+
+<FrameworkTabs>
+<FrameworkTab label="Next.js">
+
+create-next-app sets Tailwind v4 up already. In `app/globals.css`, add Youj's stylesheet right after Tailwind, and delete the starter rules below it: the `:root` block of `--background` and `--foreground`, the `prefers-color-scheme` block, the `@theme inline` block that points `--font-sans` and `--font-mono` at Geist, and the `body` rule. They set the page's colors and font after Youj's sheet, so they win over the theme: a page that stays white in dark, and text in Arial.
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';
+```
+
+The provider is optional (see [The provider is optional](#the-provider-is-optional)). To add one, wrap `{children}` in the root layout and spread the theme on `<html>`. This is create-next-app's layout with four changes: the imports, the theme attributes and `suppressHydrationWarning` on `<html>`, the `ThemeScript` in `<head>` (see [Theme](#theme)) and the provider in `<body>`. `npx youj init` writes the same:
+
+```tsx title="app/layout.tsx"
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import { basalt, YoujProvider, themeProps } from '@youj/core'
+import { ThemeScript } from '@youj/react'
+import './globals.css'
+// Basalt's typefaces, Inter and JetBrains Mono (see Fonts, below).
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
+
+// create-next-app's font lines can stay: Youj's stylesheet sets the theme's faces over them.
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Create Next App',
+  description: 'Generated by create next app',
+}
+
+export default function RootLayout({ children }: LayoutProps<'/'>) {
+  return (
+    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} {...themeProps(basalt)}>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="min-h-full flex flex-col">
+        <YoujProvider theme={basalt}>{children}</YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+</FrameworkTab>
+<FrameworkTab label="Vite">
+
+Install Tailwind v4 and its Vite plugin:
+
+<PackageInstall command="pnpm add -D tailwindcss @tailwindcss/vite" />
+
+```ts title="vite.config.ts"
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [tailwindcss(), react()],
+})
+```
+
+Replace create-vite's starter styles in `src/index.css` with Tailwind and Youj's stylesheet, and empty `src/App.css`: the starter centers `#root`, borders it and restyles `h1` and `h2`, which reaches every component.
+
+```css title="src/index.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';
+```
+
+The provider is optional (see [The provider is optional](#the-provider-is-optional)). To add one, wrap `<App />` in the entry file:
+
+```tsx title="src/main.tsx"
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { basalt, YoujProvider } from '@youj/core'
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <YoujProvider theme={basalt}>
+      <App />
+    </YoujProvider>
+  </StrictMode>,
+)
+```
+
+Then put the theme on `<html>` in `index.html`, so the first paint already has it:
+
+```html title="index.html"
+<html lang="en" data-theme="dark" data-yj-theme="basalt" data-yj-motion="precise" data-yj-look="classic">
+```
+
+To switch light and dark, add a [ThemeToggle](/docs/components/theme-toggle): it needs no library. Its default follows the operating system, but `data-theme="dark"` above is what the first paint shows, so a visitor on a light system sees dark, then light. Put this script in `<head>` of `index.html`, before the app loads, to set the right theme first (it is exactly what [`ThemeScript`](/docs/components/theme-toggle#without-next-themes) renders on a server; `themeScriptSource()` from `@youj/react` returns it as a string):
+
+```html title="index.html"
+<script>(function(k,d){try{var m=localStorage.getItem(k);if(m!=='light'&&m!=='dark'&&m!=='system')m=d;var s=m==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):m;var e=document.documentElement;e.setAttribute('data-theme',s);e.style.colorScheme=s}catch(e){}})("theme","system")</script>
+```
+
+</FrameworkTab>
+</FrameworkTabs>
+
+The stylesheet brings the tokens, the motion presets and the theme presets, and points Tailwind at the components and the icons, so it generates the classes they use. Built, that's about 540 KB of CSS, 70 KB gzipped, the same whether the app uses one component or all of them: Tailwind scans the whole kit, since it can't see which components your code imports. The sheet blocks first paint, so on a page where that matters, add components with `npx youj add <name>` instead: the source lands in your app, and Tailwind generates only the classes of what you added.
+
+Using the [illustrations](/docs/illustrations) too? Installing `@youj/illustrations` is not enough: add its stylesheet on the next line, after the tokens, or Tailwind never generates the classes the scenes use:
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';
+@import '@youj/illustrations/styles.css';
+```
+
+`npx youj add illustration-<id>` does both for you.
+
+</Step>
+</Steps>
+
+That's it:
+
+```tsx
+import { Button } from '@youj/react'
+```
+
+The packages ship ESM with types and mark their client components with `"use client"`, so server components can import them and there's nothing to transpile. A prop that's a function (`onAction`, `onValueChange`, `render`) is the exception: in the Next.js App Router, pass it from a Client Component, a file that starts with `'use client'`. [Server rendering](/docs/guides/ssr) covers the rest of what changes between the server and the browser.
+
+### Fonts
+
+A theme names its typefaces, and your app loads them. `npx youj init` does it for the preset you choose. By hand:
+
+| Preset | Typefaces | Load them with |
+|---|---|---|
+| Basalt, Graphite, Brutal, Meadow, Sandstone, Cinnabar, Umber, Seaglass, Heather | Inter, JetBrains Mono | The packages `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono`, imported once in your root layout or entry: `import '@fontsource-variable/inter'` |
+| Terminal | JetBrains Mono | `@fontsource-variable/jetbrains-mono`, the same way |
+
+The Inter and JetBrains Mono stacks ask for `'Inter Variable'` and `'JetBrains Mono Variable'`, the names `@fontsource-variable` registers. `next/font` and Google Fonts register `'Inter'` and `'JetBrains Mono'`, which those stacks don't match, so the text falls back to the system face.
+
+### What Youj changes in your app
+
+The stylesheet adds to your Tailwind setup and leaves the rest of it alone. Your palette (`bg-white`, `bg-red-500`, `bg-black/50`), your own `@theme` values and your utilities keep working. These are the things it does change, each on purpose:
+
+| What | The change | To keep your own |
+| --- | --- | --- |
+| Colors | Adds Youj's [roles](/docs/theming#roles), names (`bg-canvas`, `bg-surface`, `text-fg-muted`, `border-line-control`, `bg-accent-subtle`…), derived from the theme in light and dark. shadcn's names (`bg-background`, `bg-primary`…) aren't defined unless you add `@youj/react/shadcn.css` after it. | Your own colors are untouched. Youj's names that collide with yours (`accent`, `surface`, `line`…) follow the theme. |
+| Tone scopes | Elements with `data-yj-theme` or `data-yj-tone` (Youj's bars, sidebars, menus, tooltips) derive every role again, so a [two-tone theme](/docs/theming#tone-two-tone-themes) reaches what's inside them. | Nothing to keep: only elements that carry the attributes are affected. |
+| `dark:` | Means Youj's dark, in your own classes too: it follows `data-theme` on `<html>`, as Youj's tokens do, and a page without the attribute counts as dark. Your `bg-white dark:bg-black` is black until `data-theme="light"` is set. | Redefine it after the import, e.g. `@custom-variant dark (&:where(.dark, .dark *));` |
+| `font-sans`, `font-mono` | Follow the theme's fonts. | Set `fonts` in your theme, or `--yj-font-sans` and `--yj-font-mono`. |
+| `rounded-*` (xs to 2xl) | Follow the theme's radius. | Set `radius` in your theme, or `--yj-radius`. |
+| `border` | Its default width follows the theme's stroke (1px unless the theme says otherwise). | Write the width (`border-2`). |
+| Scaling | Inside a scaling scope (the provider's `scaling`, which an app sets to 90%), your spacing, text and container steps are multiplied by the factor. They're your own values, scaled, and no text goes under 11px. | Outside a scope, nothing is scaled. |
+| The page | `color-scheme` follows the mode, and native scrollbars take the theme's thumb. | `scrollbar-color: auto` on an element gives it back the platform's bar. |
+
+Youj also adds `ease-standard`, `ease-enter`, `ease-exit` and `ease-emphasized`, the `reduced:`, `touch:` and `fine:` variants, and the `own:` variant its components use so your `className` beats a [look's recipes](/docs/looks#overriding-a-recipe).
+
+### Optional dependencies
+
+Some components need optional peer dependencies. Install only those you use, with your package manager (`pnpm add`, `npm install`, `yarn add` or `bun add`), and import the components from the entries below. The main `@youj/react` entry works without these dependencies:
+
+| Import from | Components | Install |
+|---|---|---|
+| `@youj/react/chart` | [Chart](/docs/components/chart) | `recharts` |
+| `@youj/react/form` | [Form](/docs/components/form) | `react-hook-form`, `zod` and `@hookform/resolvers` |
+| `@youj/react/date` | [Calendar](/docs/components/calendar), [Date Picker](/docs/components/date-picker), [Date Range Picker](/docs/components/date-range-picker) | `date-fns react-day-picker` |
+| `@youj/react/carousel` | [Carousel](/docs/components/carousel) | `embla-carousel-react` |
+| `@youj/react/command` | [Command](/docs/components/command), [Command Palette](/docs/components/command-palette), [Combobox](/docs/components/combobox), [Multi Select](/docs/components/multi-select) | `cmdk` |
+| `@youj/react/data-table` | The [data table kit](/docs/components/data-table) (its filter menus are Command) | `cmdk` |
+| `@youj/react/workspace-switcher` | [Workspace Switcher](/docs/components/workspace-switcher) (built on Command) | `cmdk` |
+
+`npx youj add chart` installs them for you. Form's examples validate with a schema, so install `react-hook-form`, `zod` and `@hookform/resolvers` together. Copying an item in installs its dependencies with it.
+
+### The provider is optional
+
+Without a choice of yours, components draw the **Classic [look](/docs/looks) and the Basalt [preset](/docs/theming#presets) (the Youj palette in the Clean style), in dark**, with or without a provider. That's a fallback so a bare page looks right, not a look to keep: pick your own preset and look (`npx youj init` asks). Without one, components run at normal speed and follow the operating system’s reduced-motion setting. To change the defaults:
+
+| Setup | Look | Preset | Scheme |
+| --- | --- | --- | --- |
+| No provider | Classic; `data-yj-look="bezel"` on `<html>` for Bezel | Basalt; another with `data-yj-theme` on `<html>`, such as `data-yj-theme="graphite"` | Dark; `data-theme="light"` on `<html>` for light |
+| `<YoujProvider>` | Classic; `look="bezel"` for Bezel | Basalt; another with `theme`, such as `theme={graphite}` | Dark, or from `data-theme` on `<html>` if your tooling sets it; `mode="light"` or `mode="system"` on the provider sets it ([Color mode](/docs/theming#color-mode)) |
+| `npx youj init` | Classic, or the look you choose | Basalt, or the preset you choose | Dark |
+
+Add a provider to set a theme in JavaScript, turn on [sound](/docs/sound) (`pnpm add @youj/sound`, then `sound={beacon}`: in the Next.js App Router that prop goes on a provider in a `'use client'` file, since a sound pack is an object of functions and a server layout can't pass it), turn motion off, change speed, choose quality or size the UI for an app ([density and scaling](/docs/theming#density-and-scaling)). Switching the theme at runtime for the whole page is in [A theme picker for the whole app](/docs/theming#a-theme-picker-for-the-whole-app):
+
+```tsx title="app/layout.tsx"
+import { basalt, YoujProvider, themeProps } from '@youj/core'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" data-theme="dark" {...themeProps(basalt)}>
+      <body>
+        <YoujProvider theme={basalt}>{children}</YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+Components format numbers, dates and times in the provider's `locale`, `en-US` by default, never the runtime's default, so the server and the browser render the same text. Pass the user's locale from the server, for example `<YoujProvider locale="de-DE">`; a component's own `locale` prop still wins, and `useLocale()` reads it in your own components. Times relative to now ("5 min ago", "Today") and local clock times render in UTC on the server and switch to the browser's zone right after hydration.
+
+The text components render or announce ("Close", "Rows per page", "Choose date") comes from the provider's `labels`, English by default: `<YoujProvider locale="de-DE" labels={{ close: 'Schließen' }}>`. See [Translating built-in text](/docs/guides/i18n).
+
+| Package | Import it for | Stylesheet, after Tailwind |
+|---|---|---|
+| `@youj/react` | components | `@youj/react/styles.css` (brings core's, motion's and the icons') |
+| `@youj/core` | `YoujProvider`, themes, tokens, labels | `@youj/core/styles.css`, only without `@youj/react` |
+| `@youj/motion` | motion primitives, transitions, effects, interactions, backgrounds, players | `@youj/motion/styles.css`, only without `@youj/react` |
+| `@youj/icons` | the animated icons | `@youj/icons/styles.css`, only without `@youj/react` |
+| `@youj/illustrations` | the isometric scenes and kit | `@youj/illustrations/styles.css`, after the tokens |
+| `@youj/loaders` | the [loaders](/docs/loaders), one entry each: `@youj/loaders/<id>` | none of its own: they draw with the tokens of core's or react's sheet |
+| `@youj/miniatures` | the [miniatures](/docs/miniatures), one entry each: `@youj/miniatures/<id>` | none; React is its only dependency |
+| `@youj/sound` | interface sounds, off until `YoujProvider` gets a `sound`: see [Sound](/docs/sound) | none |
+
+For your own class names, `cn` merges them and knows Youj's tokens. Import it from `@youj/core`: `import { cn } from '@youj/core'`. The docs use that import everywhere.
+
+Only motion? Install `@youj/core @youj/motion motion@^14` and import `@youj/core/styles.css`, then `@youj/motion/styles.css`. Icons without the components? Add `@youj/icons` and its sheet after core's:
+
+```css
+@import 'tailwindcss';
+@import '@youj/core/styles.css';
+@import '@youj/icons/styles.css';
+```
+
+### Motion loads on demand
+
+Components animate with Motion's lightweight `m` elements, and Motion's animation engine arrives in a chunk of its own after the page loads, so most of it stays off the first load. The provider loads it once for the whole app; without a provider, each component loads it where it's needed. A component renders its resting state until the chunk lands, then animates as usual. The layout and drag features (the async Button's morph, Tabs' sliding indicator) load separately, only where a component uses them.
+
+`<YoujProvider motion={false}>` turns motion off for the app: every component renders its resting state, nothing animates, and the engine chunk is never downloaded. It differs from reduced motion, which follows the user's system setting, keeps the engine and keeps gentle feedback such as fades; `motion={false}` is the app's own absolute switch, implies `reducedMotion="always"` (CSS motion stops too) and silences sound. Pointer dragging (a sortable list's grip) belongs to the engine and goes with it; keyboard operation stays. Async states (Button's success and error) still show, without animation. Don't call `preloadMotionFeatures()` there.
+
+To fetch the engine earlier, say while a route prefetches, call `preloadMotionFeatures()`. To animate your own `m` elements (import them from `motion/react`, which the install command made importable), wrap them in `<MotionFeatures>` (`features="max"` for layout and drag), or use Motion's `LazyMotion` yourself. The components render no full `motion` components (Sortable List, built on Motion's `Reorder`, is the exception), so the rest also works under `<LazyMotion strict>`. Blocks and examples are different: they're source you copy and own, and many use Motion's full `motion` elements for layout, drag and morphing. In an app that runs `<LazyMotion strict>`, change those files to `m` elements inside `<MotionFeatures features="max">`, as above.
+
+```tsx
+import { MotionFeatures, preloadMotionFeatures } from '@youj/core'
+import { m } from 'motion/react'
+
+preloadMotionFeatures()
+
+export function Pulse() {
+  return (
+    <MotionFeatures>
+      <m.span animate={{ opacity: [1, 0.4, 1] }} transition={{ repeat: Infinity }} />
+    </MotionFeatures>
+  )
+}
+```
+
+## More ways in
+
+<details className="group my-4 rounded-xl border border-line bg-surface px-4 [&[open]]:pb-2">
+<summary className="cursor-pointer py-3 font-medium text-fg">Source code, through the CLI</summary>
+
+Copy items into your app as source you own and tune, with the Youj CLI (the shadcn CLI works too: see [Using with shadcn](/docs/shadcn-registry)):
+
+```bash
+npx youj init --mode registry
+```
+
+It writes (or adds to) `components.json` with the `@youj` namespace, copies `youj-core` (tokens, provider, the theme contract, the Basalt and Graphite themes, `cn`) and `youj-ui-core` (the UI token bridge), imports their stylesheets after Tailwind and wraps the app in the provider. A component brings its own English strings (one small `youj-labels-<component>` file), so a copy carries only the labels it reads. Other languages and themes aren't in the core: add them when you use them (`npx youj add locale de`, `npx youj add theme terminal`). Then add items by name:
+
+```bash
+npx youj add button dialog
+```
+
+Flags such as `--overwrite` pass through. Motion items land in `components/youj/` and UI items in `components/ui/`, each with everything it depends on, and you import them from there through your `@/` alias:
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '../styles/youj.css';
+@import '../styles/ui.css';
+```
+
+Motion items use relative imports, as in the package, so they work under `src/` or at the root without aliases; UI items need the `@/` alias to point at your source folder.
+
+Note: copied as source, a few components type their built-in labels more loosely than the package does, so TypeScript may flag those lines. They work as they are at runtime, and the packages aren't affected.
+
+Blocks, examples and the illustration kit are copy-in only: `npx youj add <name>` is the way to use them. In an app on the package, `add` copies only the block's own files and points its imports at the packages, so the app keeps one copy of each component. A component you name is never copied: `add chart` installs what it needs instead. Already on shadcn/ui? [Coming from shadcn/ui](/docs/guides/shadcn) covers the token bridge and the one renamed color.
+
+</details>
+
+<details className="group my-4 rounded-xl border border-line bg-surface px-4 [&[open]]:pb-2">
+<summary className="cursor-pointer py-3 font-medium text-fg">Yarn</summary>
+
+Yarn doesn't install peer dependencies, which is why the install command names `@youj/core`, `@youj/motion` and `motion` (`init` does too). With Plug'n'Play, install every Youj package you import from: PnP only lets an app import its own dependencies.
+
+</details>
+
+## React Router
+
+Blocks render their links as `<a href>`. To route them with React Router, pass a `linkComponent` that turns `href` into `to`:
+
+```tsx title="app/router-link.tsx"
+import { forwardRef, type ComponentProps } from 'react'
+import { Link } from 'react-router'
+
+export const RouterLink = forwardRef<HTMLAnchorElement, ComponentProps<'a'>>(({ href = '', ...props }, ref) => (
+  <Link ref={ref} to={href} {...props} />
+))
+```
+
+```tsx
+<AppFrame linkComponent={RouterLink} nav={nav} />
+```
+
+Next.js `Link` takes `href`, so pass it as it is.
+
+## Theme
+
+The palette follows a `data-theme` attribute on `<html>`: `"dark"` or `"light"`, and dark when it's unset. For a light/dark choice, use **`ThemeScript` with `ThemeToggle`**, the setup `npx youj init` writes in a Next.js app. It needs no library. `ThemeScript` runs in `<head>` before the page paints and sets `data-theme` and `color-scheme` from the visitor's stored choice (the system's, until they pick), so there's no flash of the wrong theme. `<html>` carries `suppressHydrationWarning`, since React would otherwise report the attribute the server couldn't know. The layout above has both.
+
+[ThemeToggle](/docs/components/theme-toggle) is the switch. Put it where people look for it, in a header or in settings, with no props:
+
+```tsx
+import { ThemeToggle } from '@youj/react'
+
+<ThemeToggle />
+<ThemeToggle variant="segmented" />
+```
+
+It stores the choice, follows the operating system while System is chosen, and every toggle and tab shares it. [Light, dark and system in Next.js](/docs/guides/light-dark-and-system) has the whole recipe in one place. To change the mode from your own code, see [Switching the mode from code](/docs/guides/light-dark-and-system#from-your-own-control).
+
+In Vite, add the early script from the Vite tab above; the toggle needs nothing else. An app with no switch can write `data-theme="dark"` or `"light"` on `<html>` itself and leave `ThemeScript` out.
+
+### Alternative: next-themes
+
+Already use [next-themes](https://github.com/pacocoursey/next-themes)? Keep it as the owner of `data-theme`, and leave `ThemeScript` out, since next-themes has its own script. Leave the provider's `mode` out too, so the two don't compete. Install it first:
+
+<PackageInstall command="pnpm add next-themes" />
+
+```tsx title="app/layout.tsx"
+import { basalt, YoujProvider, themeProps } from '@youj/core'
+import { ThemeProvider } from 'next-themes'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    // next-themes writes data-theme before the page paints; suppressHydrationWarning covers that one attribute.
+    <html lang="en" suppressHydrationWarning {...themeProps(basalt)}>
+      <body>
+        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+          <YoujProvider theme={basalt}>{children}</YoujProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+`defaultTheme="system"` follows the operating system until someone chooses; use `"dark"` for a dark-first app and keep `enableSystem` so System stays a choice. Hand a [ThemeToggle](/docs/components/theme-toggle) next-themes' `theme` and `setTheme`; it waits for mount before showing the stored choice, so the page hydrates cleanly for returning visitors.
+
+For the provider's `mode` prop and `ModeScript`, which follow the system without a stored choice, see [Color mode](/docs/theming#color-mode).
+
+Reduced motion needs no setup: everything follows the operating system unless the provider says `reducedMotion="always"` or `"never"`. `<YoujProvider motion={false}>` goes further: see [Motion loads on demand](#motion-loads-on-demand).
+
+To change the accent, the neutrals, the corners, the control size or how things move, pick a preset or bring your own theme. [Theming](/docs/theming) covers it.
+
+## Terms
+
+- **Preset**: a ready-made theme, such as Basalt or Graphite. A **theme** is a preset or your own `defineTheme`: colors, type, corners, density and motion.
+- **Look**: how components are built, independent of the theme. **Classic**, the default (bordered panels, rounded-rectangle buttons, outlined fields), or **Bezel** (sectioned cards, pill buttons, filled fields). See [Looks](/docs/looks).
+- **Style**: the form a theme gives its components (corners, type, line weight, labels): Clean (the default), Bezel, Classic, Brutal or Terminal. See [Palette and style](/docs/theming#palette-and-style). Classic and Bezel are names on both axes: the Bezel style is built in the Bezel look, and Clean, Classic and Brutal are built in the Classic look. A style picks its look; `look` overrides it.
+- **Registry**: the copy-in route. `npx youj add` copies an item's source into your app instead of importing it from a package.
+- **Role**: a color the theme derives and components paint with, such as `surface`, `fg-muted` or `line-control`. See [Roles](/docs/theming#roles).
+- **Token bridge**: `@youj/react/shadcn.css`, the opt-in sheet that maps shadcn's variables (`--background`, `--primary`…) onto Youj's roles. See [Coming from shadcn/ui](/docs/guides/shadcn).
+- **Cue**: a named moment a component emits as its motion starts (`tap`, `open`, `success`…), which [Sound](/docs/sound) can play.

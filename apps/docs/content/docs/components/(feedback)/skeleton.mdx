@@ -1,0 +1,134 @@
+---
+title: Skeleton
+description: "Reserve space for content while it loads."
+aliases: ["placeholder", "shimmer", "loading state"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="skeleton/demo" height={360} />
+
+A Members list that loads for about two seconds and resolves into content; Reload runs it again.
+
+Pair skeletons with motion's [Content Swap](/docs/motion/content-swap), as the demo does. The skeleton drops away quickly, the content resolves into focus a step later, and the box morphs between the two heights, so the page below moves instead of jumping. ContentSwap also marks the region `aria-busy` and announces the wait once. Press Reload to watch it go both ways.
+
+```tsx
+import { ContentSwap } from '@youj/motion'
+
+<ContentSwap loading={isLoading} fallback={<MembersSkeleton />} loadingLabel="Loading members">
+  <MemberList members={data} />
+</ContentSwap>
+```
+
+</Story>
+
+<Story id="shapes" label="Shapes">
+
+<ComponentPreview name="skeleton/shapes" height={320} />
+
+Skeletons for a profile card and other shapes, sized to the content they stand in for.
+
+Match the real content's geometry: the avatar's size, the line heights, the width a title usually takes. Vary line widths so a paragraph reads as text rather than a grid of bars.
+
+</Story>
+
+<Story id="one-skeleton-per-request" label="One skeleton per request">
+
+<ComponentPreview name="skeleton/stats" height={300} />
+
+Stat tiles that each resolve when their own request answers.
+
+When a view fills in from several requests, give each region its own skeleton and ContentSwap, so each one resolves as soon as its data arrives instead of waiting for the slowest. Anything you know before the data, like these labels, stays real. Only the numbers wait.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="skeleton" noImport />
+
+Use Skeleton when you know the shape of the loading content, such as rows, a profile or a card. Use a [Spinner](/docs/components/spinner) for short waits without a known layout, or [Progress](/docs/components/progress) for measurable work.
+
+A skeleton is a block. Size and round it with classes to match the content it stands in for.
+
+```tsx
+import { Skeleton } from '@youj/react'
+
+export function ProfileSkeleton() {
+  return (
+    <div className="flex items-center gap-3">
+      <Skeleton className="size-10 rounded-full" />
+      <div className="grid flex-1 gap-2">
+        <Skeleton className="h-3.5 w-3/5" />
+        <Skeleton className="h-3 w-2/5" />
+      </div>
+    </div>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Options">
+
+### Props
+
+<PropsTable name="Skeleton" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Shimmer · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Shimmer', note: 'a band of light crosses in the first 60% of each cycle, then rests', duration: 'deliberate', ease: 'standard', value: '× 3 per cycle' },
+  ]}
+  reduced="The band is gone and the blocks hold still."
+/>
+
+The cycle is three `deliberate` beats, so the band reads as a calm pulse rather than a constant wash. It follows the Speed control, and it runs the other way under right-to-left.
+
+#### Reduced motion
+
+The traveling band is removed and each block is a still, recessed shape. The layout still shows where content will land.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- Skeletons are `aria-hidden`: a pile of empty blocks means nothing to a screen reader.
+- Put `aria-busy` on the region they stand in for, and announce the wait once in a polite status, such as "Loading members". ContentSwap does both with `loadingLabel`.
+- Don't leave skeletons up once the content has failed. Swap them for an error with a way to retry.
+
+</ReferenceRow>

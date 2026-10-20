@@ -1,0 +1,48 @@
+{
+  "name": "Youj kit",
+  "id": "youj-kit-development",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  },
+  "menu": [
+    { "name": "Build or update the kit", "command": "build" },
+    { "separator": true },
+    {
+      "name": "Look",
+      "menu": [
+        { "name": "Classic (default)", "command": "look:classic" },
+        { "name": "Bezel", "command": "look:bezel" }
+      ]
+    },
+    {
+      "name": "Theme",
+      "menu": [
+        { "name": "Basalt · Light", "command": "theme:basalt:light" },
+        { "name": "Basalt · Dark", "command": "theme:basalt:dark" },
+        { "name": "Graphite · Light", "command": "theme:graphite:light" },
+        { "name": "Graphite · Dark", "command": "theme:graphite:dark" },
+        { "name": "Terminal · Light", "command": "theme:terminal:light" },
+        { "name": "Terminal · Dark", "command": "theme:terminal:dark" },
+        { "name": "Brutal · Light", "command": "theme:brutal:light" },
+        { "name": "Brutal · Dark", "command": "theme:brutal:dark" },
+        { "name": "Meadow · Light", "command": "theme:meadow:light" },
+        { "name": "Meadow · Dark", "command": "theme:meadow:dark" },
+        { "name": "Sandstone · Light", "command": "theme:sandstone:light" },
+        { "name": "Sandstone · Dark", "command": "theme:sandstone:dark" },
+        { "name": "Cinnabar · Light", "command": "theme:cinnabar:light" },
+        { "name": "Cinnabar · Dark", "command": "theme:cinnabar:dark" },
+        { "name": "Umber · Light", "command": "theme:umber:light" },
+        { "name": "Umber · Dark", "command": "theme:umber:dark" },
+        { "name": "Seaglass · Light", "command": "theme:seaglass:light" },
+        { "name": "Seaglass · Dark", "command": "theme:seaglass:dark" },
+        { "name": "Heather · Light", "command": "theme:heather:light" },
+        { "name": "Heather · Dark", "command": "theme:heather:dark" }
+      ]
+    }
+  ],
+  "relaunchButtons": [{ "command": "build", "name": "Rebuild the Youj kit" }]
+}

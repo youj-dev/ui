@@ -1,0 +1,351 @@
+---
+title: Button
+description: "Start an action on the page: save, submit, open a dialog or confirm."
+---
+
+<ComponentStories>
+
+<Story id="async-button" label="Async button">
+
+<ComponentPreview name="async-button/demo" height={320} />
+
+A settings list where each AsyncButton resolves, rejects or syncs through its own pending, success and error states.
+
+When the attempt ends in an outcome people need to know, such as saving, sending, publishing or syncing, use `AsyncButton`. It is a Button (same `variant`, `size` and look) that morphs its label through the whole attempt: pending, then success or error. To show the same states on a control that isn't a button, use [Async Feedback](/docs/components/async-feedback).
+
+<InstallTabs name="async-button" />
+
+```tsx
+import { AsyncButton } from '@youj/react'
+
+export function SaveBar() {
+  return (
+    <AsyncButton
+      onAction={() => saveProfile(values)}
+      pendingLabel="Saving…"
+      successLabel={(profile) => `Saved ${profile.name}`}
+      errorLabel={(error) => error instanceof Error ? error.message : 'Couldn’t save'}
+    >
+      Save
+    </AsyncButton>
+  )
+}
+
+// Work started elsewhere, such as a TanStack Query mutation: show its status.
+<AsyncButton status={mutation.status} onClick={() => mutation.mutate(values)} successLabel="Saved" errorLabel={mutation.error?.message}>
+  Save
+</AsyncButton>
+```
+
+One driver per button: `onAction` runs the work itself, `status` shows work started elsewhere. The types allow only one.
+
+##### Run an action
+
+Pass `onAction` to show the action’s progress inside the button. The label changes to a spinner, then a check and `successLabel`, or a cross and `errorLabel`. It returns to idle after a hold. Resolve the promise for success; reject it or throw for an error. Presses are ignored while pending and during the success hold. After an error, the next press retries immediately.
+
+The box morphs to each label's width on the same spring as the label, and success and error tint the button. Icon-only buttons stay square: their labels are announced, not shown. `onActionStateChange` reports every step (`idle`, `pending`, `success` or `error`, then `idle` again), and `resetAfter` sets the hold in milliseconds.
+
+`onAction` is a function, so in the Next.js App Router the button goes in a Client Component, a file that starts with `'use client'`:
+
+```tsx
+'use client'
+
+<AsyncButton
+  onAction={() => saveProfile(values)}
+  pendingLabel="Saving…"
+  successLabel="Saved"
+  errorLabel="Couldn’t save"
+>
+  Save
+</AsyncButton>
+```
+
+##### Labels from the outcome
+
+`successLabel` and `errorLabel` also take a function. `successLabel` gets what `onAction` resolved with, `errorLabel` what it rejected or threw with (typed `unknown`, even when your mutation knows its error type, so check it with `error instanceof Error`). Strings keep working.
+
+```tsx
+'use client'
+
+// A fetch only rejects on a network failure: throw on !res.ok.
+async function save(values: Profile) {
+  const res = await fetch('/api/profile', { method: 'POST', body: JSON.stringify(values) })
+  if (!res.ok) throw new Error((await res.json()).message)
+  return res.json() as Promise<{ name: string }>
+}
+
+<AsyncButton
+  onAction={() => save(values)}
+  successLabel={(profile) => `Saved ${profile.name}`}
+  errorLabel={(error) => (error instanceof Error ? error.message : 'Couldn’t save')}
+>
+  Save
+</AsyncButton>
+```
+
+With TanStack Query, `mutateAsync` returns the promise and rejects on error, so it fits `onAction` as is:
+
+```tsx
+'use client'
+
+const mutation = useMutation({ mutationFn: save })
+
+<AsyncButton onAction={() => mutation.mutateAsync(values)} successLabel={(p) => `Saved ${p.name}`} errorLabel={(e) => (e instanceof Error ? e.message : 'Couldn’t save')}>
+  Save
+</AsyncButton>
+```
+
+##### Status from elsewhere
+
+`status` drives the same pending, check or shake, hold, idle lifecycle for work started elsewhere. It takes `'idle' | 'pending' | 'success' | 'error'`, TanStack Query's mutation status names, so `status={mutation.status}` works as it is. Start the work in `onClick`.
+
+```tsx
+'use client'
+
+const mutation = useMutation({ mutationFn: save })
+
+<AsyncButton status={mutation.status} onClick={() => mutation.mutate(values)} successLabel="Saved" errorLabel={mutation.error?.message}>
+  Save
+</AsyncButton>
+```
+
+- A mutation keeps `success` until it is reset, so after the hold the button returns to rest even though `status` stays `success`. The next change of `status` plays again. A button that mounts already settled is at rest.
+- `status` and `onAction` drive one lifecycle: pass one (the types allow only one, and with both, `status` wins and development builds log an error).
+- Function labels need an outcome the button ran itself, so with `status` pass strings (`errorLabel={mutation.error?.message}`).
+- Announcements, sounds and reduced motion behave as with `onAction`.
+
+</Story>
+
+<Story id="demo" label="Publish card">
+
+<ComponentPreview name="button/demo" height={300} />
+
+A publish card whose Publish button runs its own async action, beside Discard and Export.
+
+</Story>
+
+<Story id="variants" label="Variants">
+
+<ComponentPreview name="button/variants" height={340} />
+
+The six variants, each with a note on when to use it.
+
+One `default` button per view carries the accent. `secondary` and `outline` sit beside it, `ghost` handles quiet actions and dismissals, and `danger` marks the action that deletes or revokes. `link` is an action styled as text. It's still a button.
+
+Youj icons inside a button play when the button is hovered or keyboard-focused, with no wiring. An icon at either end sits 2px closer to its edge than text would, which reads as even padding.
+
+</Story>
+
+<Story id="sizes" label="Sizes">
+
+<ComponentPreview name="button/sizes" height={300} />
+
+Text sizes from extra small to large, and the four matching icon sizes.
+
+Four text sizes and four square icon sizes sit on the control-height scale: 24, 28, 32 and 40px. On touch screens (`pointer: coarse`), every size is 8px taller and a default button is never under 44px, so it is a 44px target without a prop. The extra-small and small sizes stay compact and reach 44px with an invisible hit area around them.
+
+An icon-only button has no visible text, so it needs an `aria-label`.
+
+</Story>
+
+<Story id="async-actions" label="Async">
+
+<ComponentPreview name="button/async" height={260} />
+
+Export CSV and Run checks buttons that stay busy while their onClick promise is pending.
+
+Return a promise from `onClick` and the button looks after the wait: it shows its loading state (a spinner in place of the label, `aria-busy`, presses blocked, focus kept) until the promise settles, then returns to normal. There is no prop and no state to keep. A rejected promise ends the wait too, and the error surfaces as it would for any unawaited handler, so catch it in the handler if you need to show it. An explicit `loading` prop always wins.
+
+```tsx
+<Button onClick={() => exportReport()}>Export CSV</Button>
+```
+
+</Story>
+
+<Story id="hold" label="Hold to confirm">
+
+<ComponentPreview name="button/hold" height={240} />
+
+A danger zone whose Delete project button runs only after the press is held, then confirms as Deleted.
+
+Hold to confirm lives on `AsyncButton`, not on the plain `Button`: pass `hold` and the action runs only once a press is held, by a pointer or with Space or Enter held down. While held, a fill sweeps across from the inline start, so the press shows how long is left. Letting go early springs the fill back and nothing runs. When the fill is full the action starts and the button goes through its usual lifecycle: the spinner, then the success tint with the drawn check and `successLabel`, held, then back to rest (or the error, if it fails). The press sound plays as the hold completes, not on the press. `hold` (or `hold={true}`) takes twice the `deliberate` motion token, scaled by the provider's speed; a number is milliseconds.
+
+```tsx
+<AsyncButton variant="danger" hold onAction={() => deleteProject(id)} pendingLabel="Deleting…" successLabel="Deleted">
+  Delete project
+</AsyncButton>
+```
+
+<ComponentPreview name="async-button/hold" height={220} />
+
+```tsx
+<AsyncButton hold onAction={() => sendPayment(invoice)} pendingLabel="Sending…" successLabel="Sent">
+  Send payment
+</AsyncButton>
+```
+
+Use a hold for actions that are easy to trigger by mistake and costly to undo, where a dialog would be too much. For a slower, more deliberate gesture, use [Slide to Confirm](/docs/components/slide-to-confirm).
+
+</Story>
+
+<Story id="loading" label="Loading">
+
+<ComponentPreview name="button/loading" height={260} />
+
+Two buttons whose loading state is set from state you own.
+
+`loading` is the controlled alternative, for work that starts somewhere else or outlives the press. The label hands over to a spinner without changing the button's width, presses are blocked, and focus stays on the button.
+
+Pass `loading` (even as `false`) from the first render on any button that can load. Its live region then exists before it has anything to say, which some screen readers need before they'll announce a change.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="button" noImport />
+
+Use a button to save, submit, open a dialog or start another action on the page. For navigation, use a link; `buttonVariants` gives it the same look. For an option that stays on or off, use a [Toggle](/docs/components/toggle) or a [Switch](/docs/components/switch). For work that runs on press and shows its outcome in the button, see [Async actions](#async-actions).
+
+```tsx
+import { Button } from '@youj/react'
+
+export function SaveBar() {
+  return (
+    <div className="flex justify-end gap-2">
+      <Button variant="ghost">Cancel</Button>
+      <Button type="submit">Save changes</Button>
+    </div>
+  )
+}
+```
+
+It renders a native `<button>` through Base UI, which defaults to `type="button"`. Set `type="submit"` on the button that submits a form.
+
+### As a link
+
+Navigation should stay a link: it opens in a new tab, shows its URL and is announced as a link. Render the link through `render`, the same prop the triggers take, and it keeps the button's look and press.
+
+```tsx
+import Link from 'next/link'
+import { Button } from '@youj/react'
+
+<Button variant="outline" render={<Link href="/deployments" />}>
+  View deployments
+</Button>
+```
+
+A `render` element with an `href` or `to` (an anchor, Next.js `Link`, React Router `Link`) or another tag such as `span` sets `nativeButton={false}` for you, so Base UI doesn't expect a `<button>`. A link keeps its link role. A component without either prop can't be told apart from a button and stays native. If it renders something else, pass `nativeButton={false}` yourself.
+
+In a server component, or anywhere you'd rather not render a Button, give the anchor the button's look with `buttonVariants`. It is a plain function that returns class names, with no React in it, so a server component can call it. The same goes for `badgeVariants`, `alertVariants`, `bannerVariants`, `buttonGroupVariants`, `toggleVariants` and `navigationMenuTriggerStyle`.
+
+```tsx
+// app/page.tsx: a server component, no "use client"
+import Link from 'next/link'
+import { buttonVariants } from '@youj/react'
+
+export default function Page() {
+  return (
+    <Link href="/deployments" className={buttonVariants({ variant: 'outline' })}>
+      View deployments
+    </Link>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, size, loading, sound… (4), and Async Button's">
+
+### Props
+
+<PropsTable name="Button" />
+
+`variant` and `size` both default to `default`. Base UI Button props pass through, such as `disabled` and `focusableWhenDisabled`.
+
+#### Data attributes
+
+The button carries `data-variant` and `data-size`, and `data-loading` while busy. An Async Button also carries `data-state`, and with `hold`, `data-yj-hold` (`idle`, `holding`, `release` or `done`); its fill reads `--ui--hold` (0 to 1).
+
+#### Async Button props
+
+<PropsTable name="AsyncButton" />
+
+It takes Button's `variant`, `size` and `sound`, and Base UI Button props such as `disabled`. It has no `loading`: the lifecycle is its own.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Springs and timings used, reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Press', note: 'scales to 0.97 while held', duration: 'instant', ease: 'standard' },
+    { moment: 'Release and hover', note: 'scale back, background and text colors', duration: 'fast', ease: 'standard' },
+    { moment: 'Loading', note: 'the label fades out under the spinner', duration: 'fast', ease: 'standard' },
+    { moment: 'Spinner', note: 'one turn at a constant rate', duration: 'deliberate', ease: 'linear', value: '× 1.25 per turn' },
+  ]}
+  reduced="No press scale, and the spinner holds a still quarter arc."
+/>
+
+#### Async Button motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Label swap and tint', note: 'labels crossfade with a 0.9 scale and 2px blur', duration: 'fast', ease: 'standard' },
+    { moment: 'Width morph', note: 'the box follows the new label', spring: 'snappy' },
+    { moment: 'Success check', note: 'draws on, then lands', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Check landing', note: 'scale 0.88 to 1, after a `base` delay', spring: 'settle' },
+    { moment: 'Error shake', note: '4, 3 and 2px, decaying', duration: 'slow', ease: 'standard' },
+    { moment: 'Hold', note: 'success or error before returning to rest, unless `resetAfter` is set', duration: 'deliberate', value: '× 3' },
+    { moment: 'Hold-to-confirm fill', note: 'with `hold`, sweeps from the inline start at a constant rate while held', duration: 'deliberate', ease: 'linear', value: '× 2' },
+    { moment: 'Hold released early', note: 'the fill springs back to empty', spring: 'smooth' },
+    { moment: 'Hold complete', note: 'the fill fades as the action starts', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The pending label shows as text instead of a spinner, states swap instantly and errors don't shake."
+/>
+
+#### Reduced motion
+
+The press doesn't scale, and the spinner stops turning and holds a quarter arc. In an Async Button the pending state reads as its `pendingLabel` text, and every change after that is instant, with no shake. With `hold`, a percentage count stands in the label's place instead of the fill. Success still shows its check and label, and errors still read as errors.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a native `<button>`: `Enter` and `Space` activate it, and it takes part in form submission when `type="submit"`.
+- Name icon-only buttons with `aria-label`. Youj icons inside are decorative (`aria-hidden`) unless you label them.
+- An Async Button with `hold` is described as "Hold to confirm" (the `holdToConfirm` label), after any `aria-describedby` of your own. Space and Enter held down fill it from the keyboard; a key's own click, and a click from a press let go early, are ignored. Losing focus cancels a hold.
+- `disabled` removes the button from the tab order. Keep a disabled button focusable with `focusableWhenDisabled` when people need to find it and read why it's unavailable.
+- While `loading` or pending (including an async `onClick`), the button sets `aria-busy` and `aria-disabled`, blocks presses and keeps focus, so a keyboard user isn't dropped onto the page body mid-action. `loadingLabel` is announced politely.
+- An Async Button is the same native `<button>`, ignoring presses while pending and during the success hold. Its accessible name is the current label, and the outgoing one is hidden from assistive technology while it fades. While pending, the name is `pendingLabel` ("Working…" by default), including on icon-only buttons, where it's visually hidden beside the spinner. Pending and success are announced politely, errors assertively, from live regions rendered beside the button, because a button flattens the content inside it.
+
+</ReferenceRow>

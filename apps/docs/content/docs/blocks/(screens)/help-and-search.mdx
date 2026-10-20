@@ -1,0 +1,60 @@
+---
+title: Help and search
+description: "Screens for finding answers: a help center and a search results page."
+---
+
+<BlockStories>
+
+<BlockStory id="help-center" label="Help center" block="content-help-center" story="Default" backdrop="heather">
+
+Help customers find answers with live search, topic cards and a contact form.
+
+</BlockStory>
+
+<BlockStory id="search-results" label="Search results" block="app-search-results" story="Default" backdrop="heather">
+
+A results screen for an app or knowledge base, with a query field and suggestions, filters in a side column or a sheet, result cards and empty and error states.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, search, filters">
+
+### Accessibility
+
+Help center has a `main` with one `h1`, a labelled search field and a status region that announces the result count as you type; the contact form announces its outcome in a live region. Search results has a `main`, a labelled `aside` of filters (a sheet on phones), labelled active-filter chips and a status region for the result count. Its query field offers suggestions in a popover, the arrow keys move between result links, and the empty and error states use a list and an alert. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

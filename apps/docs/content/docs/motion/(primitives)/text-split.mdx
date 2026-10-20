@@ -1,0 +1,126 @@
+---
+title: TextSplit
+description: "Reveal text by character, word or line while keeping one readable copy for assistive technology."
+---
+
+<ComponentPreview name="text-split/demo" height={380} />
+
+Use it on display type that earns an entrance: a launch headline, a hero, a section opener. Keep it off body copy, labels and anything people need to read the moment the page opens. For a block of content use [Reveal](/docs/motion/reveal), and for a group of elements use [Stagger](/docs/motion/stagger).
+
+## Installation
+
+<InstallTabs name="text-split" />
+
+## Usage
+
+Pass the text as a string and choose what to split it by. By default it splits by word and rises into place the first time 40% of it is on screen.
+
+```tsx
+import { TextSplit } from '@youj/motion'
+
+export function Headline() {
+  return (
+    <TextSplit as="h1" by="lines" mask className="text-5xl font-semibold tracking-tight">
+      Every branch gets a preview you can share in seconds.
+    </TextSplit>
+  )
+}
+```
+
+`as` sets the element, so a heading stays a heading. `children` must be a plain string: the split needs the characters themselves.
+
+## Examples
+
+<Examples>
+
+<Example id="split-modes" label="Split modes">
+
+### Split modes
+
+`by` chooses the unit. Each mode has its own default step, because a character is small and a line is large: `chars` uses `tight`, `words` uses `base` and `lines` uses `loose`. Any [Reveal variant](/docs/motion/reveal#variants) works for the units, and `step` overrides the default.
+
+<ComponentPreview name="text-split/modes" height={400} />
+
+In `chars` mode, each word stays in one unbreakable span, so a word never wraps in the middle.
+
+</Example>
+
+<Example id="masks" label="Masks">
+
+### Masks
+
+`mask` clips each unit to its own box. With `rise`, the travel grows from 12px to 105% of the unit's height, so each piece slides up from behind its own baseline instead of fading as it moves. Masked lines are the classic editorial headline.
+
+<ComponentPreview name="text-split/mask" height={260} />
+
+</Example>
+
+<Example id="lines-follow-layout" label="Lines follow layout">
+
+### Lines follow layout
+
+Line mode groups words by where they actually wrapped. It measures an invisible copy of the text before the first paint, then again when the element's width changes and when web fonts finish loading. A regroup after the first play lands in place, already settled, so resizing never replays the entrance. Change the width below to see it.
+
+<ComponentPreview name="text-split/resize" height={340} />
+
+</Example>
+
+<Example id="choreography" label="Choreography">
+
+### Choreography
+
+`delay` counts steps of the unit's own step, like the units themselves, so several splits can share one grid. In the first preview the kicker plays by character, the headline starts one `loose` step later, and the deck follows on `tight` steps while the headline is still landing:
+
+```tsx
+<TextSplit as="p" by="chars" variant="fade" inView={false}>Launch week · Day 3</TextSplit>
+<TextSplit as="h2" by="lines" mask inView={false} delay={1} duration="deliberate">…</TextSplit>
+<TextSplit as="p" by="words" variant="blur-in" step="tight" inView={false} delay={14}>…</TextSplit>
+```
+
+`duration`, `ease` and `distance` tune the units the same way they tune a Reveal.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="children, as, by… (13)">
+
+### Props
+
+<PropsTable name="TextSplit" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Each unit, step, chars, step, words… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Each unit', note: 'the default `rise`; `mask` travels 105% instead of 12px', duration: 'slow', ease: 'enter' },
+    { moment: 'Step, chars', stagger: 'tight' },
+    { moment: 'Step, words', stagger: 'base' },
+    { moment: 'Step, lines', stagger: 'loose' },
+  ]}
+  reduced="Renders the plain string in its final state, unsplit."
+/>
+
+The units animate only `opacity`, `transform`, `filter` and `clip-path`, so a split never triggers layout while it plays.
+
+#### Reduced motion
+
+TextSplit renders the string as plain text in its element, with no split and no hidden copy, and skips line measurement entirely. The headline reads exactly as written, at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- The full string is rendered once in a visually hidden span, and the split copy is `aria-hidden`. A screen reader reads the headline as a sentence, never letter by letter.
+- With `as="h1"` or any other heading, the heading's accessible name is the whole string.
+- Each unit is an element. Keep `chars` to short strings, and prefer `words` or `lines` for anything longer than a headline.
+
+</ReferenceRow>

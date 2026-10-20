@@ -1,0 +1,141 @@
+---
+title: Cursor Follower
+description: "Add a cursor effect that follows the pointer and changes shape over controls, text and media."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="cursor-follower/demo" height={480} />
+
+A studio page where the follower reshapes over its links and other targets.
+
+</Story>
+
+<Story id="targets" label="Targets">
+
+<ComponentPreview name="cursor-follower/kinds" height={380} />
+
+One tile per kind of target, with a control for hiding the native cursor.
+
+Each kind of target gets its own shape. Everything else gets a small, faint halo.
+
+| `data-cursor` | Shape |
+| --- | --- |
+| `button` | Grows to wrap the target with 6px to spare, matching its corner radius, and leans 10% toward the pointer. |
+| `text` | Collapses to an I-beam as tall as the line. |
+| `link` | A small pill label beside the pointer. Its text is `data-cursor-label`, or "Open". |
+| `media` | A round badge centered on the pointer. Its text is `data-cursor-label`, or "View". |
+
+The native cursor stays visible by default, and the follower moves with it. With `hideNativeCursor`, the follower becomes the cursor: the native one is hidden while the follower is drawing, and a small dot marks the exact pointer position everywhere except over `text` and `media` targets, whose I-beam and badge already mark it. It comes back as soon as the pointer leaves the scope, or when the follower is disabled or unmounted. Try the switch in the preview.
+
+Set `disabled` to turn the follower off, for example while a dialog is open.
+
+</Story>
+
+<Story id="scope" label="Scope">
+
+<ComponentPreview name="cursor-follower/scope" height={450} />
+
+A gallery owned by the follower above a form that keeps the native cursor.
+
+`scope` keeps the follower to one part of the page, so leave forms out of it: over a field, people need the native text cursor to place the caret.
+
+Here the follower owns the gallery and hides the native cursor there. Move down to the form, and the follower fades out as the native cursor comes back.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="cursor-follower" noImport />
+
+Use it on expressive pages, like a portfolio, a launch or a studio site, where the pointer itself is part of the design. It tells the reader what a target is before they click: a button, some text, a link to read or a project to open. Don't use it in apps and tools. People work there with the cursor they know, and a second one adds latency to every glance. Move the pointer over the preview: it needs a mouse or a trackpad.
+
+Render one follower, scoped to the part of the page it serves, and mark its targets with `data-cursor`.
+
+```tsx
+import { useRef } from 'react'
+import { CursorFollower } from '@youj/motion/interactions'
+
+export function Studio() {
+  const scope = useRef<HTMLDivElement>(null)
+  return (
+    <div ref={scope}>
+      <CursorFollower scope={scope} />
+      <h1 data-cursor="text">We design software that feels inevitable.</h1>
+      <button data-cursor="button">Start a project</button>
+      <a href="/work/northwind" data-cursor="media">…</a>
+    </div>
+  )
+}
+```
+
+Without `scope`, it follows the pointer across the whole document. It draws in a fixed layer on top of the page, portaled to `body`, and never takes pointer events, so everything under it stays clickable.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="scope, hideNativeCursor, disabled (3)">
+
+### Props
+
+<PropsTable name="CursorFollower" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Position, shape, fill and label · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Position', note: 'follows the pointer', spring: 'snappy' },
+    { moment: 'Shape', note: 'width, height and corner radius', spring: 'smooth' },
+    { moment: 'Fill and label', note: 'crossfades between kinds', spring: 'snappy' },
+  ]}
+  reduced="Renders nothing. The native cursor does all the work."
+/>
+
+Position and shape run on separate springs, so moving feels immediate while a change of shape feels deliberate. The shape is one box scaled on each axis, with its corners counter-scaled so they stay round mid-morph, and the label sits outside the scaled box so its text never stretches. Every update happens in the pointer handler, with no React render per move. The follower appears where the pointer first enters, instead of flying in from a corner, and when the page scrolls it re-reads what's under the pointer.
+
+#### Reduced motion
+
+The follower renders nothing at all, as it also does on the low motion-budget tier: a cursor that trails the pointer is motion for its own sake, and there's no static version that says anything the native cursor doesn't. If `hideNativeCursor` is set, the native cursor stays visible.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The layer is `aria-hidden`, ignores the pointer and never takes focus. Keyboard users never see it, and every target keeps its own focus ring.
+- Labels like "View" and "See work" are visual only. Give every link and button a name of its own in its content or with `aria-label`.
+- It renders nothing for touch and other coarse pointers, or on the low [motion budget](/docs/motion/in-your-components#the-motion-budget) tier, and keeps the native cursor unless you ask otherwise with `hideNativeCursor`.
+
+</ReferenceRow>

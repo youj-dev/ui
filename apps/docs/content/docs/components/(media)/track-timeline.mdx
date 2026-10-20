@@ -1,0 +1,119 @@
+---
+title: Track Timeline
+description: "Arrange segments on tracks along a time ruler, and move, trim and snap them by pointer or keyboard, such as video clips."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="track-timeline/demo" height={300} />
+
+A podcast edit on three tracks: Host, Guest and Music bed.
+
+Moves and trims snap within 8px of another clip's edge, the playhead or either end; hold Alt to place freely, or pass `snap={false}`. The timeline opens with the whole of it in view (at least 8px a second); − and + (or Ctrl or ⌘ and the wheel) zoom about the playhead, and `zoom` controls it in pixels per second. Pass `playing` while your player runs: the level strips read each track at the playhead, and the lane turns the page as the playhead nears its end. The [Song Sketch](/docs/blocks/media#track-arranger) block puts it together with a transport, an inspector and simulated playback.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="track-timeline" noImport />
+
+Use a track timeline for an edit made of parts on tracks: a podcast cut, a song sketch, a video's voice-over, a meeting's highlights. Each track is a lane in its chart color with its name, mute and solo keys and a level strip; each clip is a rounded bar holding the slice of the track's sound it plays, drawn from loudness samples you pass (it decodes no audio) and scaled by its gain. Drag a clip to move it, or its edges to trim it. Both snap to the other clips' edges and to the playhead, and a guide shows the edge they caught. A ruler of mono timecodes runs along the top, with the playhead on it. For a single recording's seek bar, use a [Waveform Scrubber](/docs/components/waveform-scrubber).
+
+```tsx
+import { TrackTimeline } from '@youj/react'
+
+<TrackTimeline
+  tracks={[
+    { id: 'host', name: 'Host', caption: 'Mic 1', peaks: hostPeaks },
+    { id: 'music', name: 'Music bed', peaks: musicPeaks, muted: true },
+  ]}
+  clips={clips}
+  onClipsChange={setClips}
+  onTrackChange={(id, change) => updateTrack(id, change)}
+  duration={30}
+  position={time}
+  onPositionChange={setTime}
+  value={selected}
+  onValueChange={setSelected}
+/>
+```
+
+`clips` is controlled: every move and trim reports the whole list through `onClipsChange`. A clip sits from `start` to `end` on its `track`, plays its track's source from `offset`, and scales its wave by `gain` in decibels. A track's `peaks` are its whole source as loudness from 0 to 1, one sample every `resolution` seconds (0.1). A clip never moves into its neighbor on the same track, never trims past its source, and stays at least half a second long. `formatClipTime(seconds, locale)` formats times the way the timeline speaks them (0:12.5).
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="tracks, clips, duration… (21)">
+
+### Props
+
+<PropsTable name="TrackTimeline" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `track-timeline` (with `data-dragging`), `track-timeline-heads`, `track-timeline-zoom`, `track-timeline-track-head` (with `data-muted` and `data-solo`), `track-timeline-track-name`, `track-timeline-track-caption`, `track-timeline-mute`, `track-timeline-solo`, `track-timeline-meter`, `track-timeline-lane`, `track-timeline-ruler`, `track-timeline-ruler-control`, `track-timeline-ruler-track`, `track-timeline-time`, `track-timeline-playhead`, `track-timeline-tracks`, `track-timeline-track`, `track-timeline-clip` (with `data-selected` and `data-muted`), `track-timeline-clip-name`, `track-timeline-wave`, `track-timeline-handle` (with `data-edge`), `track-timeline-playhead-line` and `track-timeline-snap`. In [Bezel](/docs/looks) the track captions are mono capital eyebrows and the timecodes and clip names are mono. On a narrow timeline the heads keep the name, the keys and the level strip.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Playing, drag and trim, handles · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Playing', note: 'each level strip eases between readings as the playhead passes through the track’s clips', duration: 'fast', ease: 'standard' },
+    { moment: 'Drag and trim', note: 'the clip and its edges follow the pointer, never eased; a snap shows its guide at once' },
+    { moment: 'Handles', note: 'a trim handle thickens on hover', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The level strips jump to each reading; everything else was never eased."
+/>
+
+#### Reduced motion
+
+The level strips jump to each reading instead of easing. Dragging, trimming and the playhead are unchanged, since they never animate.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The timeline is a group named by `label` (default "Timeline"), and each track a group named by the track. Every clip is a button and a tab stop, named by its name, range and track ("answer, 0:06.5 to 0:12.5, Guest") and described by a hint that explains the keys.
+- Focusing a clip selects it (`aria-pressed`). Arrow keys move it by `step` (half a second), Shift ten times as far, stopping at the first snap point on the way; the new range is announced. Escape lets go of it.
+- The selected clip's edges come next in the tab order, as sliders named "Start of answer" and "End of answer" that trim it from the keyboard.
+- The playhead is a slider on the ruler, spoken as the time and the length ("0:09.0 of 0:30.0"). Mute and solo are toggle buttons named with their track ("Mute Guest").
+- Time runs left to right in every script, like a tape, so the lane keeps its direction under RTL, the arrow keys included; the heads and their text follow the page.
+- With sound on, catching a snap point while dragging plays `tick`.
+- Its words come from the labels (`trackTimeline`, `trackTimelineHint`, `trackTimelineClip`, `trackTimelineRange`, `trackTimelineClipStart`, `trackTimelineClipEnd`, `trackTimelineMute`, `trackTimelineSolo`, `trackTimelinePlayhead`, `zoomIn`, `zoomOut`), translated by the language packs.
+
+</ReferenceRow>

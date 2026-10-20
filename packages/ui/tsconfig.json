@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@youj/core": [
+        "../core/src/index.ts"
+      ],
+      "@youj/motion": [
+        "../motion/src/index.ts"
+      ],
+      "@youj/core/*": [
+        "../core/src/*"
+      ],
+      "@youj/motion/*": [
+        "../motion/src/*"
+      ],
+      "@youj/icons": [
+        "../icons/src/index.ts"
+      ],
+      "@youj/icons/*": [
+        "../icons/src/*"
+      ],
+      "@youj/illustrations": [
+        "../illustrations/src/index.ts"
+      ],
+      "@youj/illustrations/*": [
+        "../illustrations/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "vitest.config.ts",
+    "vite.config.ts"
+  ]
+}

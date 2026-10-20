@@ -1,0 +1,66 @@
+---
+title: List and detail
+description: "Screens that pair a list with a reading pane: notifications, a list with detail and a record drawer."
+---
+
+<BlockStories>
+
+<BlockStory id="notifications" label="Notifications" block="app-notification-inbox" story="Default" backdrop="heather">
+
+An inbox for mentions, replies and alerts, with filters, read states and the channels each kind reaches you on.
+
+</BlockStory>
+
+<BlockStory id="list-detail" label="List and detail" block="app-list-detail" story="Default" backdrop="heather">
+
+Read feature requests beside the list they come from: move with the arrow keys, drag rows into priority order, resize the panes, and open a request in a drawer on a phone.
+
+</BlockStory>
+
+<BlockStory id="record-drawer" label="Record drawer" block="app-record-drawer" story="Default" backdrop="heather">
+
+Open a deal from the pipeline in a floating drawer over the list: its owner, stage, odds, dates and value, then its meetings, progress, notes and activity.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, listbox, keyboard">
+
+### Accessibility
+
+Notifications has one `h1`, tabs for its filters, a live region for new items and a preferences table with a labelled switch per channel. List and detail moves through requests with Arrow Up and Down, Home, End and Enter, reorders with Alt plus the arrow keys, reports loading and errors in status and alert regions, and closes its phone drawer with Escape. Record drawer opens a sheet that traps focus and closes with Escape. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

@@ -1,0 +1,343 @@
+---
+title: Build a marketing site
+description: "Put a header, hero, features, pricing, testimonials, FAQ and footer together from the basic components."
+---
+
+<PageArt art="guides" />
+
+A marketing site is a stack of full-width bands, each with its content held to one column width. This guide builds one from basic components and plain Tailwind classes, section by section. Copy a section on its own, or all of them into one page.
+
+It assumes you ran `npx youj init`, which leaves the provider at its own roomy 100% size, the right one for marketing pages. The components are 13px text by default, so set your own text with the [type classes](/docs/theming#text-and-type) or the [Typography](/docs/components/typography) components, as below.
+
+## The page frame
+
+Hold every section's content to one width with a container class, and give each section the same vertical padding. Alternating bands (`bg-band`) separate sections without borders.
+
+```tsx title="components/marketing/section.tsx"
+import type { ComponentProps } from 'react'
+
+/** A full-width band; its content sits in a centered column. */
+export function Section({ band, children, ...props }: ComponentProps<'section'> & { band?: boolean }) {
+  return (
+    <section className={band ? 'bg-band' : undefined} {...props}>
+      <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 md:py-24">{children}</div>
+    </section>
+  )
+}
+```
+
+The sections below use `Section`. Header and footer use the same `max-w-6xl` column so every edge lines up.
+
+## The header
+
+A logo, links and a call to action. The links and the mobile menu are in [Navigation Menu](/docs/components/navigation-menu#a-header-with-a-mobile-menu); this is the shape around them:
+
+```tsx title="components/marketing/header.tsx"
+import Link from 'next/link'
+import { Button } from '@youj/react'
+
+export function Header() {
+  return (
+    <header className="border-b border-line">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <Link href="/" className="font-semibold text-fg">
+          Acme
+        </Link>
+        {/* The navigation: see Navigation Menu */}
+        <Button render={<Link href="/signup" />}>
+          Get started
+        </Button>
+      </div>
+    </header>
+  )
+}
+```
+
+## The hero
+
+An eyebrow, a title, a lead paragraph and two buttons, centered. Stack the eyebrow and title with `flex-col gap-*`; the title opens its container flush and has no margin of its own.
+
+```tsx title="components/marketing/hero.tsx"
+import Link from 'next/link'
+import { Button, Eyebrow, TypographyH1, TypographyLead } from '@youj/react'
+import { Section } from './section'
+
+export function Hero() {
+  return (
+    <Section>
+      <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+        <Eyebrow>New in 2.0</Eyebrow>
+        <TypographyH1 className="text-5xl">Ship pages people finish reading</TypographyH1>
+        <TypographyLead>Acme turns your docs into a site in minutes, with the same components your product uses.</TypographyLead>
+        <div className="mt-4 flex flex-wrap justify-center gap-3">
+          <Button size="lg" render={<Link href="/signup" />}>
+            Start free
+          </Button>
+          <Button size="lg" variant="outline" render={<Link href="/demo" />}>
+            Book a demo
+          </Button>
+        </div>
+      </div>
+    </Section>
+  )
+}
+```
+
+## A features grid
+
+Cards in a grid. The grid stretches them to one height; the footer is optional.
+
+```tsx title="components/marketing/features.tsx"
+import { Card, CardDescription, CardHeader, CardTitle, TypographyH2 } from '@youj/react'
+import { Section } from './section'
+
+const features = [
+  { title: 'Fast by default', text: 'Static pages that load before anyone blinks.' },
+  { title: 'Made to be edited', text: 'Change copy and layout without a developer.' },
+  { title: 'Accessible', text: 'Keyboard and screen reader support in every part.' },
+  { title: 'Themed', text: 'Your colors and fonts, applied everywhere at once.' },
+  { title: 'Responsive', text: 'Sections reflow from phone to widescreen.' },
+  { title: 'Analytics-ready', text: 'Add the tool you already use.' },
+]
+
+export function Features() {
+  return (
+    <Section band>
+      <TypographyH2 className="text-center">Everything a launch page needs</TypographyH2>
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((feature) => (
+          <Card key={feature.title}>
+            <CardHeader>
+              <CardTitle>{feature.title}</CardTitle>
+              <CardDescription>{feature.text}</CardDescription>
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  )
+}
+```
+
+## Pricing with a monthly and yearly toggle
+
+A [Segmented Control](/docs/components/segmented-control) switches the period. The state makes this a Client Component. Give the recommended plan a ring (see [Card](/docs/components/card#a-featured-card)) and keep the footers level with `mt-auto`.
+
+```tsx title="components/marketing/pricing.tsx"
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import {
+  Badge,
+  Button,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  SegmentedControl,
+  SegmentedControlItem,
+  TypographyH2,
+  TypographyList,
+} from '@youj/react'
+import { Section } from './section'
+
+const plans = [
+  { name: 'Starter', monthly: 0, yearly: 0, features: ['One site', 'Community support'], featured: false },
+  { name: 'Pro', monthly: 24, yearly: 20, features: ['Unlimited sites', 'Custom domains', 'Email support'], featured: true },
+  { name: 'Team', monthly: 64, yearly: 52, features: ['Everything in Pro', 'Roles and approvals', 'Priority support'], featured: false },
+]
+
+export function Pricing() {
+  const [period, setPeriod] = useState('yearly')
+  return (
+    <Section>
+      <div className="flex flex-col items-center gap-6">
+        <TypographyH2>Simple pricing</TypographyH2>
+        <SegmentedControl variant="pill" aria-label="Billing period" value={period} onValueChange={setPeriod}>
+          <SegmentedControlItem value="monthly">Monthly</SegmentedControlItem>
+          <SegmentedControlItem value="yearly">Yearly</SegmentedControlItem>
+        </SegmentedControl>
+      </div>
+      <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {plans.map((plan) => (
+          <Card key={plan.name} className={plan.featured ? 'ring-2 ring-accent' : undefined}>
+            <CardHeader>
+              <CardTitle>{plan.name}</CardTitle>
+              <CardDescription>
+                ${period === 'yearly' ? plan.yearly : plan.monthly} per month{period === 'yearly' && plan.yearly > 0 ? ', billed yearly' : ''}
+              </CardDescription>
+              {plan.featured && (
+                <CardAction>
+                  <Badge>Most popular</Badge>
+                </CardAction>
+              )}
+            </CardHeader>
+            <CardContent>
+              <TypographyList>
+                {plan.features.map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
+              </TypographyList>
+            </CardContent>
+            <CardFooter className="mt-auto">
+              <Button className="w-full" variant={plan.featured ? 'default' : 'outline'} render={<Link href="/signup" />}>
+                Choose {plan.name}
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  )
+}
+```
+
+## Testimonials
+
+Quotes with the person beneath, in cards.
+
+```tsx title="components/marketing/testimonials.tsx"
+import { Avatar, AvatarFallback, Card, CardContent, CardFooter, TypographyBlockquote, TypographyH2, TypographySmall, TypographyMuted } from '@youj/react'
+import { Section } from './section'
+
+const quotes = [
+  { quote: 'We launched in an afternoon.', name: 'Maya Chen', role: 'Founder, Loom & Co', initials: 'MC' },
+  { quote: 'The page finally looks like our product.', name: 'Jonas Weber', role: 'Head of Design, Northwind', initials: 'JW' },
+  { quote: 'Our marketing team edits it without asking us.', name: 'Priya Nair', role: 'CTO, Fieldnote', initials: 'PN' },
+]
+
+export function Testimonials() {
+  return (
+    <Section band>
+      <TypographyH2 className="text-center">Teams that shipped with Acme</TypographyH2>
+      <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {quotes.map((q) => (
+          <Card key={q.name}>
+            <CardContent>
+              <TypographyBlockquote>“{q.quote}”</TypographyBlockquote>
+            </CardContent>
+            <CardFooter className="mt-auto gap-3">
+              <Avatar>
+                <AvatarFallback>{q.initials}</AvatarFallback>
+              </Avatar>
+              <div>
+                <TypographySmall>{q.name}</TypographySmall>
+                <TypographyMuted>{q.role}</TypographyMuted>
+              </div>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  )
+}
+```
+
+## An FAQ
+
+An [Accordion](/docs/components/accordion) in a narrower column. Each trigger is an `h3`, so the section above it is an `h2`.
+
+```tsx title="components/marketing/faq.tsx"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, TypographyH2 } from '@youj/react'
+import { Section } from './section'
+
+const questions = [
+  { q: 'Can I use my own domain?', a: 'Yes, on Pro and Team. Point your DNS at us and we handle the certificate.' },
+  { q: 'Can I cancel any time?', a: 'Yes. Your site stays up until the end of the period you paid for.' },
+  { q: 'Do you offer refunds?', a: 'Within 30 days of your first payment, no questions asked.' },
+]
+
+export function Faq() {
+  return (
+    <Section>
+      <div className="mx-auto max-w-2xl">
+        <TypographyH2 className="text-center">Questions</TypographyH2>
+        <Accordion className="mt-8">
+          {questions.map((item) => (
+            <AccordionItem key={item.q} value={item.q}>
+              <AccordionTrigger>{item.q}</AccordionTrigger>
+              <AccordionContent>{item.a}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </Section>
+  )
+}
+```
+
+## The footer
+
+Link columns and a closing line, in the same column width as the rest.
+
+```tsx title="components/marketing/footer.tsx"
+import Link from 'next/link'
+import { Eyebrow, Separator, TypographyMuted } from '@youj/react'
+
+const columns = [
+  { title: 'Product', links: [['Features', '/features'], ['Pricing', '/pricing']] },
+  { title: 'Company', links: [['About', '/about'], ['Contact', '/contact']] },
+  { title: 'Legal', links: [['Privacy', '/privacy'], ['Terms', '/terms']] },
+]
+
+export function Footer() {
+  return (
+    <footer className="border-t border-line">
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div className="col-span-2 md:col-span-1">
+            <p className="font-semibold text-fg">Acme</p>
+            <TypographyMuted className="mt-2">Pages for products worth launching.</TypographyMuted>
+          </div>
+          {columns.map((column) => (
+            <nav key={column.title} aria-label={column.title} className="flex flex-col gap-2">
+              <Eyebrow>{column.title}</Eyebrow>
+              {column.links.map(([label, href]) => (
+                <Link key={href} href={href} className="text-ui text-fg-muted hover:text-fg">
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          ))}
+        </div>
+        <Separator className="my-8" />
+        <TypographyMuted>© 2026 Acme, Inc.</TypographyMuted>
+      </div>
+    </footer>
+  )
+}
+```
+
+## Put it together
+
+```tsx title="app/page.tsx"
+import { Faq } from '@/components/marketing/faq'
+import { Features } from '@/components/marketing/features'
+import { Footer } from '@/components/marketing/footer'
+import { Header } from '@/components/marketing/header'
+import { Hero } from '@/components/marketing/hero'
+import { Pricing } from '@/components/marketing/pricing'
+import { Testimonials } from '@/components/marketing/testimonials'
+
+export default function Home() {
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <Features />
+        <Pricing />
+        <Testimonials />
+        <Faq />
+      </main>
+      <Footer />
+    </>
+  )
+}
+```
+
+Only the pricing section needs `'use client'`, for its state. If you put the navigation's `navigationMenuTriggerStyle()` in the header, the header becomes a Client Component too.

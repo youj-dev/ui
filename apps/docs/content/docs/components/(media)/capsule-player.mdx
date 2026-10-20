@@ -1,0 +1,110 @@
+---
+title: Capsule Player
+description: "Show what's playing in a capsule, with a seek rail and play, previous and next."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="capsule-player/demo" height={180} />
+
+A capsule player with a cover, a title and artist, a seek rail and previous, play and next buttons, over two tracks.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="capsule-player" noImport />
+
+Use a capsule player as a compact now-playing bar: at the foot of a music app, over a video timeline, in the corner of a podcast page. It shows the cover, the title and artist, a thin progress rail you can seek, the time played, and the transport buttons.
+
+The player has no clock of its own. Pass it the playhead and the length from your audio or video element, and act on its callbacks.
+
+```tsx
+import { CapsulePlayer } from '@youj/react'
+
+<CapsulePlayer
+  title="Low Tide"
+  subtitle="Mara Quell"
+  artwork={<img src={cover} alt="" />}
+  playing={playing}
+  onPlayingChange={(next) => (next ? audio.play() : audio.pause())}
+  position={time}
+  duration={audio.duration}
+  onSeek={(seconds) => (audio.currentTime = seconds)}
+  onPrevious={previousTrack}
+  onNext={nextTrack}
+/>
+```
+
+Without `onSeek` the rail only shows progress. Without `onPrevious` or `onNext`, that button is disabled.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="title, playing, onPlayingChange… (12)">
+
+### Props
+
+<PropsTable name="CapsulePlayer" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `capsule-player` (with `data-playing`), `capsule-player-art`, `capsule-player-title`, `capsule-player-time`, `capsule-player-rail` and `capsule-player-progress`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Play and pause, new track, rail">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Play and pause', note: 'the triangle folds into the two pause bars', spring: 'snappy' },
+    { moment: 'New track', note: 'the new title rises in as the old one leaves upward', duration: 'base', ease: 'emphasized' },
+    { moment: 'Rail', note: 'the thumb grows in on hover and focus; the fill follows the time exactly', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="The icon and the title change at once."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard">
+
+### Accessibility
+
+- The play button is named for what it does next: "Play", or "Pause" while playing.
+- The rail is a slider named "Seek", spoken as the time and the length ("1:12 of 3:40"). The arrow keys move five seconds, and Home and End jump to the ends.
+- The cover is decorative.
+- The button names come from the labels (`play`, `pause`, `previousTrack`, `nextTrack`, `waveformSeek`, `waveformPosition`), which the language packs translate.
+
+</ReferenceRow>

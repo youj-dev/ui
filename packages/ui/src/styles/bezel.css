@@ -1,0 +1,1275 @@
+/* Bezel: a component style of @youj/react (Classic, with no recipes, is the default).
+ *
+ * A theme owns colour, type and the radius scale; a style owns how each
+ * component is built. Bezel builds them like an instrument panel: cards are
+ * sections split by hairlines under mono capital labels, actions are pills
+ * (the primary one in ink, so the accent is left to state), fields are filled
+ * wells with no outline at rest, tabs and toggle groups are a recessed track
+ * with a raised key, and figures are set in mono. It pairs with any theme;
+ * Basalt is the one it was measured against.
+ *
+ * HOW TO LOAD IT: compile it in the same Tailwind root, right after ui.css.
+ * @youj/react/styles.css already includes it. It applies wherever
+ * data-yj-look="bezel" is written (look="bezel" on YoujProvider or
+ * ThemeScope, or a theme whose style is built in it). The default,
+ * data-yj-look="classic" or no look at all, leaves these recipes out.
+ *
+ * HOW IT'S BUILT: every rule below hangs off one gate, the element being
+ * inside a bezel scope and not inside a
+ * scope that sets another style within it, and names its target by the components' own data-slot, data-variant
+ * and data-size hooks, so components carry no branches for it. The gate (&)
+ * closes each compound, `[data-slot='card']&`, never opens it: the browser
+ * checks a compound in the order written, and the gate walks the element's
+ * ancestors, so written last it runs only for elements the recipe already
+ * picked by their own attributes. Written first it ran for every data-slot
+ * element against every recipe, which tripled the cost of each full-page
+ * restyle (styles/bezel-gate.test.ts holds the order). The rules sit in
+ * the utilities.style layer (ui.css): above the classes a component files
+ * under `own:` (utilities.own), below every plain utility. So they win over
+ * a component's own classes, and your className wins over them.
+ *
+ * Shapes are not Bezel's: every control reads its corner from ui.css's
+ * family tokens (--radius-button, --radius-field, --radius-choice,
+ * --radius-chip, --radius-surface, --radius-overlay), the same ones Classic
+ * reads, so a theme's shape is one decision for both looks. Bezel only says
+ * which token a part of its anatomy takes (a track's key sits at the
+ * concentric corner, a dialog at the large overlay corner). Fields read the
+ * theme's field style (ui.css's --ui--field-*) the same way.
+ *
+ * Colours and shadows come from names every theme and tone scope redeclares
+ * (youj.css's --color-<role>, --ui-shadow-*), never from `@theme inline`
+ * bridges (--shadow-sm…): Tailwind declares those once on :root, so a light
+ * scope inside a dark page would inherit the page's dark value.
+ * styles/bezel-scope.test.ts guards this. */
+
+@layer utilities {
+  @layer style {
+    /* Helpers, declared on the root and again on every style, theme and
+     * scaling scope, so each resolves against its own palette and size (like
+     * youj.css's tokens). Only the recipes read them, so a classic scope
+     * ignores them. */
+    :where(:root, [data-yj-look='bezel'], [data-theme], [data-yj-theme], [data-yj-tone], [data-yj-scaling]) {
+      /* Hover for the well role (a track, a rail, an unchecked box, a corner
+       * disc): a step of ink over it, a smaller one in dark. */
+      --bz-well-hover: color-mix(in oklab, var(--color-fg) calc(4% - 2% * var(--yj-dark)), var(--color-well));
+      /* Hover for a field: its fill lifted a step, or the hover step where the
+       * theme's fields are soft (ui.css --ui--field-*). */
+      --bz-field-hover: color-mix(
+        in oklab,
+        var(--color-hover) calc(100% * var(--yj-field-soft)),
+        color-mix(in oklab, var(--color-fg) calc(3% - 1% * var(--yj-dark)), var(--color-field))
+      );
+      /* Hover and ring for the control role (a secondary button, a secondary
+       * badge): a step of ink over the control, and in light a hairline. */
+      --bz-secondary-hover: color-mix(in oklab, var(--color-fg) calc(4% + 2% * var(--yj-dark)), var(--color-control));
+      --bz-secondary-ring: color-mix(in oklab, var(--color-line) calc(100% - 100% * var(--yj-dark)), transparent);
+      /* The selected key's edge and ring in a choice track (tabs, segmented
+       * controls, toggle groups); the key itself is the key role: in light the
+       * white plane under a soft shadow, on a ring at the field border's
+       * strength, so the choice holds 3:1 against the gray track (WCAG 1.4.11);
+       * in dark the lit step, where the ring's alpha falls to nothing. Its top
+       * edge catches a faint light in both modes. */
+      --bz-key-edge: color-mix(in oklab, var(--yj-light) calc((12% - 7% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent);
+      --bz-key-ring: color-mix(in oklab, var(--color-line-control) calc(100% - 100% * var(--yj-dark)), transparent);
+      /* A lit plate that carries coloured text (StageRail's picked stage): the
+       * white surface in light, the key in dark. */
+      --bz-plate: color-mix(in oklab, var(--color-surface) calc(100% - 100% * var(--yj-dark)), var(--color-key));
+      /* A section band: a dialog's footer, in dark only; a light dialog is one white plane, its footer set off by its hairline. */
+      --bz-band: color-mix(in oklab, var(--color-fg) calc(3.5% * var(--yj-dark)), transparent);
+      /* The overlay role, lifted a breath in dark: a popover or menu by 3% of
+       * ink, a dialog by half that. */
+      --bz-popover: color-mix(in oklab, var(--color-fg) calc(3% * var(--yj-dark)), var(--color-overlay));
+      --bz-dialog: color-mix(in oklab, var(--color-fg) calc(1.5% * var(--yj-dark)), var(--color-overlay));
+      /* A capsule: floating chrome, a breath of ink over it in light. */
+      --bz-capsule: color-mix(in oklab, var(--color-fg) calc(1.5% * (1 - var(--yj-dark))), var(--color-chrome-float));
+      /* Basalt's label tracking, for the Figma kit; the recipes take the theme's own (--yj-label-*). */
+      --bz-eyebrow-tracking: 0.12em;
+      /* A nested well sits this far inside its shell. */
+      --bz-inset: calc(0.375rem * var(--yj-scale, 1));
+    }
+
+    :where([data-yj-look='bezel'] *):not(:where([data-yj-look='bezel'] [data-yj-look]:not([data-yj-look='bezel']) *)) {
+      /* ── Card ─────────────────────────────────────────────────────────────
+       * An instrument panel, not a padded box. The head is one line: a larger
+       * title, then its description as a muted "/ subtitle", and a disc at the
+       * end. Below it, each content block and the footer are sections with
+       * their own padding, split by full-bleed hairlines, and each steps a
+       * touch lighter than the one above (darker in light mode), so the panel
+       * is lit from below: head darkest, footer lightest.
+       * Its room follows the layout density (ui.css): 24px sides and bands,
+       * a 21px head; compact, 16px sides, 12px bands and heads, and a one-line
+       * head with the title at the working size. */
+      [data-slot='card']& {
+        --card-spacing: var(--ui--panel-x, calc(var(--spacing) * 6));
+        /* A section band's block padding. */
+        --card-band: var(--ui--panel-y, calc(var(--spacing) * 6));
+        /* Each section's step of ink, in dark only: a light card is one white plane. */
+        --bz-section-step: calc(1.8% - 1.8% * (1 - var(--yj-dark)));
+        gap: 0;
+        padding-block: 0;
+      }
+      /* Floats a little more than Classic's card, with the dark mode's lit top edge. */
+      [data-slot='card']:not([data-lift])& {
+        box-shadow: var(--ui-shadow-sm);
+      }
+      [data-slot='card'][data-size='sm']& {
+        /* 16px; 12px sides and 8px bands compact. */
+        --card-spacing: calc(var(--spacing) * (4 - var(--ui--compact, 0)));
+        --card-band: calc(var(--spacing) * (4 - 2 * var(--ui--compact, 0)));
+      }
+      /* Sections, stepping lighter downward. The head is the surface itself.
+       * Positions count only the card's laid-out children: a decorative layer
+       * (aria-hidden, such as the spotlight's two spans before the sections)
+       * or a screen-reader-only live region is no section, so it neither takes
+       * the first section's rounded corners nor shifts the steps. */
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-header'], [data-slot='card-content'], [data-slot='card-footer'])& {
+        background-color: color-mix(in oklab, var(--color-fg) calc(var(--bz-section-step) * var(--bz-section, 0)), var(--color-surface));
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer']):nth-child(2 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        --bz-section: 1;
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer']):nth-child(3 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        --bz-section: 2;
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer']):nth-child(4 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        --bz-section: 3;
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer']):nth-child(n + 5 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        --bz-section: 4;
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-header'], [data-slot='card-content'], [data-slot='card-footer']):nth-child(1 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        border-start-start-radius: calc(var(--card-radius, var(--radius-surface)) - var(--yj-stroke-width, 1px));
+        border-start-end-radius: calc(var(--card-radius, var(--radius-surface)) - var(--yj-stroke-width, 1px));
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-header'], [data-slot='card-content'], [data-slot='card-footer']):nth-last-child(1 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        border-end-start-radius: calc(var(--card-radius, var(--radius-surface)) - var(--yj-stroke-width, 1px));
+        border-end-end-radius: calc(var(--card-radius, var(--radius-surface)) - var(--yj-stroke-width, 1px));
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer'])& + :is([data-slot='card-content'], [data-slot='card-footer'])& {
+        border-top: var(--yj-stroke-width, 1px) solid var(--color-line);
+      }
+
+      /* The head: title, then "/ subtitle" in the room left on the line (a
+       * long one wraps within its column), then the action at the end. The
+       * title takes at most about three fifths of the line. On a narrow card
+       * the subtitle drops below the title and loses its slash. */
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > [data-slot='card-header']& {
+        display: grid;
+        grid-template-columns: fit-content(62%) minmax(0, 1fr) auto;
+        grid-auto-rows: auto;
+        align-items: baseline;
+        gap: calc(var(--spacing) * 0.5) 0;
+        padding-block: calc(var(--card-band) * (0.875 + 0.125 * var(--ui--compact, 0)));
+      }
+      [data-slot='card-header'] > [data-slot='card-title']& {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      [data-slot='card-header'] > [data-slot='card-title']:not(:has(~ [data-slot='card-description']))& {
+        grid-column: 1 / 3;
+      }
+      [data-slot='card-header'] > [data-slot='card-title'] ~ [data-slot='card-description']& {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      [data-slot='card-header'] > :not([data-slot='card-title'], [data-slot='card-description'], [data-slot='card-action'])& {
+        grid-column: 1 / -1;
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > [data-slot='card-header']:not(:nth-last-child(1 of :not([aria-hidden='true'], .sr-only, .own\:sr-only)))& {
+        border-bottom: var(--yj-stroke-width, 1px) solid var(--color-line);
+      }
+      [data-slot='card-header'] > [data-slot='card-title']& {
+        min-width: 0;
+        /* 18px on 28px; the working title size, 14px on 20px, compact. */
+        font-size: var(--ui--panel-title, 1.125rem);
+        line-height: var(--ui--panel-title-leading, 1.75rem);
+        font-weight: var(--yj-heading-weight, 500);
+        letter-spacing: -0.02em;
+      }
+      :is([data-slot='card'][data-size='sm'], [data-slot='card'][data-size='sm'] > :where(form)) > [data-slot='card-header'] > [data-slot='card-title']& {
+        font-size: var(--text-ui-lg);
+        line-height: calc(var(--spacing) * (6 - var(--ui--compact, 0)));
+      }
+      [data-slot='card-title'] > :is(h1, h2, h3, h4, h5, h6, p, div)& {
+        display: inline;
+        font: inherit;
+        letter-spacing: inherit;
+      }
+      [data-slot='card-header'] > [data-slot='card-description']& {
+        min-width: 0;
+        font-size: var(--text-ui);
+        line-height: var(--text-ui--line-height);
+      }
+      /* The slash hangs in the gutter, so a wrapped subtitle lines up under
+       * its first word. */
+      [data-slot='card-header'] > [data-slot='card-title'] ~ [data-slot='card-description']& {
+        padding-inline-start: 1.5em;
+        text-indent: -1.5em;
+      }
+      [data-slot='card-header'] > [data-slot='card-title'] ~ [data-slot='card-description']&::before {
+        content: '/' / '';
+        display: inline-block;
+        width: 1.5em;
+        text-indent: 0;
+        text-align: center;
+        color: var(--color-fg-subtle);
+      }
+      [data-slot='card-description'] > :is(p, div, span)& {
+        display: inline;
+      }
+      /* A narrow head stacks: the title takes the line up to the action, and
+       * the subtitle goes under it without its slash. */
+      @container card-header (width < 20rem) {
+        [data-slot='card-header'] > [data-slot='card-title']& {
+          grid-column: 1 / 3;
+        }
+        [data-slot='card-header'] > [data-slot='card-title'] ~ [data-slot='card-description']& {
+          grid-column: 1 / 3;
+          grid-row: 2;
+          padding-inline-start: 0;
+          text-indent: 0;
+        }
+        [data-slot='card-header'] > [data-slot='card-title'] ~ [data-slot='card-description']&::before {
+          content: none;
+        }
+      }
+      /* The head's action: a disc button (see Button), or text as a mono
+       * capital eyebrow ("CYCLE 12 · JUL"). */
+      [data-slot='card-header'] > [data-slot='card-action']& {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+        align-self: start;
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: calc(var(--spacing) * 2.5);
+        min-height: calc(var(--spacing) * 7);
+        padding-inline-start: calc(var(--spacing) * 3);
+        /* Compact, the disc overhangs the head's padding instead of growing
+         * it, centred on the title's line. */
+        margin-block: calc(var(--spacing) * -1.5 * var(--ui--compact, 0));
+      }
+      [data-slot='card-action'] > :is(span, p, small, time)& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > [data-slot='card-content']& {
+        padding-block: var(--card-band);
+      }
+      /* Content laid flush to the edges (a list of rows, a table) stays flush. */
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > [data-slot='card-content']:is(.p-0, .px-0, .own\:p-0, .own\:px-0)& {
+        padding-block: 0;
+      }
+      :is([data-slot='card'], [data-slot='card'] > :where(form)) > [data-slot='card-footer']& {
+        justify-content: flex-end;
+        gap: calc(var(--spacing) * 2);
+        /* 0.7 of a band: 16.8px; 8px compact. */
+        padding-block: calc(var(--card-band) * (21 - var(--ui--compact, 0)) / 30);
+      }
+      /* A status line at the footer's start: mono capitals, pushing the actions to the end. */
+      [data-slot='card-footer'] > :is(span, p, small, time)& {
+        margin-inline-end: auto;
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+
+      /* Inset: a shell with the head on it and the rest in a well inside, at
+       * the concentric radius. The shell is the page lifted a little in dark and
+       * set a step below it in light, so the white well inside reads; the well
+       * is the surface. */
+      [data-slot='card'][data-variant='inset']& {
+        background-color: color-mix(
+          in oklab,
+          var(--color-fg) calc(3% - 3% * var(--yj-dark)),
+          color-mix(in oklab, var(--color-surface) calc(30% * var(--yj-dark)), var(--color-canvas))
+        );
+        background-image: none;
+        padding-bottom: var(--bz-inset);
+      }
+      :is([data-slot='card'][data-variant='inset'], [data-slot='card'][data-variant='inset'] > :where(form)) > :not([data-slot='card-header'], [aria-hidden='true'], .sr-only, .own\:sr-only)& {
+        margin-inline: var(--bz-inset);
+        background-color: var(--color-surface);
+        border-radius: 0;
+      }
+      :is([data-slot='card'][data-variant='inset'], [data-slot='card'][data-variant='inset'] > :where(form)) > [data-slot='card-header']& {
+        border-bottom: 0;
+        background-color: transparent;
+      }
+      :is([data-slot='card'][data-variant='inset'], [data-slot='card'][data-variant='inset'] > :where(form)) > [data-slot='card-header'] + & {
+        border-start-start-radius: calc(var(--card-radius, var(--radius-surface)) - var(--bz-inset));
+        border-start-end-radius: calc(var(--card-radius, var(--radius-surface)) - var(--bz-inset));
+      }
+      :is([data-slot='card'][data-variant='inset'], [data-slot='card'][data-variant='inset'] > :where(form)) > :not([data-slot='card-header']):nth-last-child(1 of :not([aria-hidden='true'], .sr-only, .own\:sr-only))& {
+        border-end-start-radius: calc(var(--card-radius, var(--radius-surface)) - var(--bz-inset));
+        border-end-end-radius: calc(var(--card-radius, var(--radius-surface)) - var(--bz-inset));
+      }
+      :is([data-slot='card'][data-variant='inset'], [data-slot='card'][data-variant='inset'] > :where(form)) > [data-slot='card-footer']& {
+        background-color: color-mix(in oklab, var(--color-fg) calc(5% - 1.5% * var(--yj-dark)), var(--color-surface));
+      }
+
+      /* Panel: the inset's shell with a slim strip for a head (the title as a
+       * mono capital label, an info tip, a disc), and each part under it a
+       * raised surface at the concentric radius, a 4px step in. Card.tsx draws
+       * the same in Classic; these keep the Bezel head and sections out of it. */
+      [data-slot='card'][data-variant='panel']& {
+        gap: calc(var(--spacing) * 1);
+        padding: calc(var(--spacing) * 1);
+        background-color: color-mix(
+          in oklab,
+          var(--color-fg) calc(3% - 3% * var(--yj-dark)),
+          color-mix(in oklab, var(--color-surface) calc(30% * var(--yj-dark)), var(--color-canvas))
+        );
+        background-image: none;
+      }
+      :is([data-slot='card'][data-variant='panel'], [data-slot='card'][data-variant='panel'] > :where(form)) > [data-slot='card-header']&,
+      :is([data-slot='card'][data-variant='panel'], [data-slot='card'][data-variant='panel'] > :where(form)) > [data-slot='card-header']:not(:nth-last-child(1 of :not([aria-hidden='true'], .sr-only, .own\:sr-only)))& {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--spacing) * 1.5);
+        min-height: calc(var(--spacing) * 9);
+        padding-block: calc(var(--spacing) * 0.5);
+        padding-inline: calc(var(--spacing) * 2.5) calc(var(--spacing) * 0.5);
+        border-bottom: 0;
+        background-color: transparent;
+      }
+      [data-slot='card'][data-variant='panel'] > [data-slot='card-header'] > [data-slot='card-title']& {
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        letter-spacing: var(--yj-label-tracking);
+      }
+      [data-slot='card'][data-variant='panel'] > [data-slot='card-header'] > [data-slot='card-action']& {
+        min-height: 0;
+        margin-block: 0;
+        margin-inline-start: auto;
+        padding-inline-start: 0;
+      }
+      :is([data-slot='card'][data-variant='panel'], [data-slot='card'][data-variant='panel'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer'])&,
+      :is([data-slot='card'][data-variant='panel'], [data-slot='card'][data-variant='panel'] > :where(form)) > :is([data-slot='card-content'], [data-slot='card-footer'])& + :is([data-slot='card-content'], [data-slot='card-footer'])& {
+        border-top: 0;
+        border-radius: calc(var(--card-radius, var(--radius-surface)) - var(--spacing));
+      }
+      :is([data-slot='card'][data-variant='panel'], [data-slot='card'][data-variant='panel'] > :where(form)) > [data-slot='card-content']& {
+        background-color: var(--color-surface);
+        box-shadow: inset 0 0 0 var(--yj-stroke-width, 1px) var(--color-line-subtle);
+      }
+      :is([data-slot='card'][data-variant='panel'], [data-slot='card'][data-variant='panel'] > :where(form)) > [data-slot='card-footer']& {
+        background-color: transparent;
+      }
+
+      /* ── Button ───────────────────────────────────────────────────────────
+       * The corner is the theme's (--radius-button*, set by the component). The primary is ink with a faint top-down sheen, the same few
+       * steps of lightness in both modes (a light ink in dark stays a solid
+       * pill, not a gradient); secondary is a raised filled pill in dark and a
+       * white one on a hairline in light; icon buttons are discs. A link styled
+       * with buttonVariants() has no data-variant or
+       * data-size, so each rule also names the yj-button-* class it carries.
+       * The primary's fill is the theme's action (--color-action): ink where
+       * the theme says `actions: 'ink'` (Basalt), the accent where it says
+       * `'accent'`. Its sheen is an image over the fill, so a className that
+       * sets a fill (Button writes data-fill="custom") drops it, and the fill
+       * shows as given. */
+      :is([data-slot='button'], .group\/button):is([data-size='default'], .yj-button-md)& {
+        padding-inline: calc(var(--spacing) * 3.5);
+      }
+      :is([data-slot='button'], .group\/button):is([data-size='sm'], .yj-button-sm)& {
+        padding-inline: calc(var(--spacing) * 3);
+      }
+      :is([data-slot='button'], .group\/button):is([data-size='lg'], .yj-button-lg)& {
+        padding-inline: calc(var(--spacing) * 4.5);
+      }
+      :is([data-slot='button'], .group\/button):is([data-size='xs'], .yj-button-xs)& {
+        padding-inline: calc(var(--spacing) * 2.5);
+      }
+      /* An ink fill takes a sheen, a few steps of lightness top to bottom; an
+       * accent fill stays flat, so its label keeps AA. */
+      :is([data-slot='button'], .group\/button):is([data-variant='default'], .yj-button-default):not([data-fill='custom'])& {
+        --bz-action-sheen: linear-gradient(
+          to bottom,
+          oklch(from var(--color-action) calc(l + 0.03 * var(--yj-action-ink)) c h),
+          oklch(from var(--color-action) calc(l - 0.03 * var(--yj-action-ink)) c h)
+        );
+        background-image: var(--bz-action-sheen);
+      }
+      :is([data-slot='button'], .group\/button):is([data-variant='default'], .yj-button-default):not([data-fill='custom']):hover& {
+        background-image:
+          linear-gradient(color-mix(in oklab, var(--color-on-action) 10%, transparent), color-mix(in oklab, var(--color-on-action) 10%, transparent)),
+          var(--bz-action-sheen);
+      }
+      :is([data-slot='button'], .group\/button):is([data-variant='secondary'], .yj-button-secondary)& {
+        background-color: var(--color-control);
+        box-shadow: inset 0 0 0 1px var(--bz-secondary-ring), var(--ui--shadow-xs-soft), inset 0 1px 0 0 var(--ui--edge-highlight);
+      }
+      :is([data-slot='button'], .group\/button):is([data-variant='secondary'], .yj-button-secondary):is(:hover, [aria-expanded='true'])& {
+        background-color: var(--bz-secondary-hover);
+      }
+      /* A card's or dialog's corner button is a recessed disc (a rounded square
+       * beside rounded controls). */
+      :is([data-slot='card-action'], [data-slot='dialog-content'], [data-slot='popover-content'], [data-slot='sheet-content'])
+        > :is([data-slot='button'], .group\/button)[data-variant='ghost']:is([data-size='icon'], [data-size='icon-xs'], [data-size='icon-sm'], [data-size='icon-lg'])&,
+      [data-slot='dialog-close'][data-variant='ghost']& {
+        background-color: var(--color-well);
+        color: var(--color-fg-muted);
+      }
+      :is([data-slot='card-action'], [data-slot='dialog-content'], [data-slot='popover-content'], [data-slot='sheet-content'])
+        > :is([data-slot='button'], .group\/button)[data-variant='ghost']:is([data-size='icon'], [data-size='icon-xs'], [data-size='icon-sm'], [data-size='icon-lg']):hover&,
+      [data-slot='dialog-close'][data-variant='ghost']:hover& {
+        background-color: var(--bz-well-hover);
+        color: var(--color-fg);
+      }
+
+      /* ── Fields ───────────────────────────────────────────────────────────
+       * Filled wells on the theme's field edge (or none, where its fields are
+       * soft), at the theme's field corner (the components set it). Hover
+       * lifts the fill; focus keeps the kit's accent ring and halo; invalid
+       * keeps its danger edge, and takes the ring too when focused. Every
+       * InputGroup is found by its group class as well as its slot, since the
+       * fields built on one (PasswordInput, PhoneInput, NumberInput, the date,
+       * time and multi-select pickers) rename the slot; the other controls
+       * that share the Input's look are listed by their own slots. */
+      :is(
+          [data-slot='input'],
+          [data-slot='textarea'],
+          [data-slot='select-trigger'],
+          [data-slot='combobox-trigger'],
+          [data-slot='input-group'],
+          .group\/input-group,
+          [data-slot='sidebar-input'],
+          [data-slot='toolbar-input'],
+          [data-slot='native-select'],
+          [data-slot='color-picker-trigger'],
+          [data-slot='input-otp-slot']
+        )& {
+        border-color: var(--ui--field-line);
+        background-color: var(--ui--field-fill);
+      }
+      :is(
+          [data-slot='input'],
+          [data-slot='textarea'],
+          [data-slot='select-trigger'],
+          [data-slot='combobox-trigger'],
+          [data-slot='input-group'],
+          .group\/input-group,
+          [data-slot='sidebar-input'],
+          [data-slot='toolbar-input'],
+          [data-slot='native-select'],
+          [data-slot='color-picker-trigger']
+        ):hover& {
+        border-color: var(--ui--field-line);
+        background-color: var(--bz-field-hover);
+      }
+      :is([data-slot='input'], [data-slot='textarea'], [data-slot='sidebar-input'])& {
+        padding-inline: calc(var(--spacing) * 3);
+      }
+      [data-slot='textarea']& {
+        padding-block: calc(var(--spacing) * 2);
+      }
+      :is([data-slot='select-trigger'], [data-slot='combobox-trigger'])[data-size='default']&,
+      [data-slot='combobox-trigger']& {
+        padding-inline-start: calc(var(--spacing) * 3);
+      }
+      :is(
+          [data-slot='input'],
+          [data-slot='textarea'],
+          [data-slot='select-trigger'],
+          [data-slot='combobox-trigger'],
+          [data-slot='sidebar-input'],
+          [data-slot='toolbar-input'],
+          [data-slot='native-select']
+        ):focus-visible&,
+      :is([data-slot='input-group'], .group\/input-group):has([data-slot='input-group-control']:focus-visible)&,
+      :is([data-slot='select-trigger'], [data-slot='combobox-trigger'], [data-slot='color-picker-trigger'])[data-popup-open]& {
+        border-color: var(--color-focus);
+        background-color: var(--ui--field-fill);
+      }
+      :is([data-slot='input'], [data-slot='textarea'], [data-slot='select-trigger'], [data-slot='combobox-trigger'], [data-slot='native-select']):is([aria-invalid='true'], [data-invalid])&,
+      :is([data-slot='input-group'], .group\/input-group):has([data-slot='input-group-control']:is([aria-invalid='true'], [data-invalid]))& {
+        border-color: var(--color-danger);
+      }
+      /* A ghost select (SelectTrigger variant="ghost") is a quiet button, not a well. */
+      [data-slot='select-trigger'][data-variant='ghost']:not(:focus-visible)& {
+        border-color: transparent;
+        background-color: transparent;
+      }
+      [data-slot='select-trigger'][data-variant='ghost']:is(:hover, [data-popup-open])& {
+        background-color: var(--color-hover);
+      }
+      /* A soft select (variant="soft") is a filled well with no edge: a picker inside a card. */
+      [data-slot='select-trigger'][data-variant='soft']:not(:focus-visible, [aria-invalid='true'], [data-invalid])& {
+        background-color: var(--color-band);
+        border-color: transparent;
+      }
+      [data-slot='select-trigger'][data-variant='soft']:is(:hover, [data-popup-open])& {
+        background-color: var(--color-hover);
+      }
+      /* The control inside a group is the group's text; the group is the well. */
+      [data-slot='input-group'] > [data-slot='input-group-control']&,
+      .group\/input-group > [data-slot='input-group-control']& {
+        background-color: transparent;
+      }
+
+      /* ── Eyebrows ─────────────────────────────────────────────────────────
+       * The kit's short labels over figures, groups and sections (Eyebrow, or
+       * any element with data-slot="eyebrow", and a sidebar's section
+       * headings, so the nav's labels match the page's): mono capitals, small,
+       * tracked, muted, whatever size and weight the label had in Classic. */
+      [data-slot='eyebrow']&,
+      [data-slot='sidebar-group-label']& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+
+      /* ── Tabs, segmented controls, toggle groups ──────────────────────────
+       * The default look is the underline one, the same in every style (see
+       * tabs.tsx and toggle-group.tsx): plain labels on a hairline, the choice
+       * marked by a 2px accent bar. Only the `pill` variant is restyled here:
+       * a recessed track (the theme's choice corner, --radius-choice) with the choice as a raised key that glides (the same
+       * SlidingIndicator, restyled). A toggle group that is neither segmented
+       * nor pill is the track too. */
+      [data-slot='tabs-list-frame'][data-variant='pill'][data-orientation='horizontal']& {
+        box-shadow: none;
+      }
+      [data-slot='tabs-list'][data-variant='pill'][data-orientation='horizontal']& {
+        height: var(--spacing-control);
+        width: fit-content;
+        max-width: 100%;
+        align-items: stretch;
+        gap: 2px;
+        --ui--choice-inset: 3px;
+        padding: var(--ui--choice-inset);
+        border-radius: var(--radius-choice);
+        background-color: var(--color-well);
+      }
+      /* An inset list (TabsList `inset`) sets the track's edge on the content's inset. */
+      [data-slot='tabs-list'][data-variant='pill'][data-orientation='horizontal'][data-inset]& {
+        margin-inline: var(--tabs-inset-x);
+      }
+      [data-slot='tabs-list'][data-variant='pill'][data-orientation='horizontal'] > [data-slot='tabs-trigger']& {
+        height: 100%;
+        padding-inline: calc(var(--spacing) * 3);
+        border-radius: max(0px, calc(var(--radius-choice) - var(--ui--choice-inset)));
+        outline-offset: 0;
+      }
+      /* DataGrid's saved views: a size down, so label and count sit on the small track. */
+      [data-slot='tabs-trigger'][data-view-tab]& {
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+      }
+      [data-slot='tabs-list'][data-variant='pill'][data-orientation='horizontal'] > [data-slot='tabs-indicator']& {
+        height: calc(100% - 2 * var(--ui--choice-inset));
+        border-radius: max(0px, calc(var(--radius-choice) - var(--ui--choice-inset)));
+        background-color: var(--color-key);
+        box-shadow: 0 0 0 1px var(--bz-key-ring), var(--ui--shadow-xs-soft), inset 0 1px 0 0 var(--bz-key-edge);
+      }
+      /* The chosen label takes the key's lettering, the full text color; the others stay muted. */
+      [data-slot='tabs-list'][data-variant='pill'][data-orientation='horizontal'] > [role='tab'][data-active]& {
+        color: var(--color-fg);
+      }
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-orientation='horizontal']:not([data-variant='segmented'])& {
+        --ui--choice-inset: 3px;
+        padding: var(--ui--choice-inset);
+        gap: 2px;
+        border-radius: var(--radius-choice);
+        background-color: var(--color-well);
+      }
+      /* A small or large track takes the corner of its height, and its keys
+       * the concentric one inside it. */
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-size='sm']:not([data-variant='segmented'])& {
+        --radius-choice: var(--radius-choice-sm);
+      }
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-size='lg']:not([data-variant='segmented'])& {
+        --radius-choice: var(--radius-choice-lg);
+      }
+      /* Items are keyed by their group, not their own data-slot: a wrapper that
+       * renders the item (a TooltipTrigger's render prop) rewrites the slot. */
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-orientation='horizontal']:not([data-variant='segmented']) > :not([data-slot='toggle-group-indicator'])& {
+        border-radius: max(0px, calc(var(--radius-choice) - var(--ui--choice-inset)));
+        border-color: transparent;
+        padding-inline: calc(var(--spacing) * 3);
+      }
+      /* Joined keys keep Classic's rounded outer ends at a higher specificity;
+       * in the track every key sits 3px inside it, at the concentric corner. */
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-orientation='horizontal']:not([data-variant='segmented']) > [data-spacing='0']:is(:first-child, :last-child)& {
+        border-radius: max(0px, calc(var(--radius-choice) - var(--ui--choice-inset)));
+      }
+      /* The key: one gliding indicator in a single-select pill track (in
+       * either orientation), otherwise each pressed item raises itself. */
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-orientation='horizontal']:not([data-variant='segmented']) > [data-pressed]:not([data-variant='pill'])&,
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-multiple] > [data-variant='pill'][data-pressed]&,
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-variant='pill'] > [data-slot='toggle-group-indicator']& {
+        background-color: var(--color-key);
+        box-shadow: 0 0 0 1px var(--bz-key-ring), var(--ui--shadow-xs-soft), inset 0 1px 0 0 var(--bz-key-edge);
+      }
+      [data-orientation='horizontal'] > [data-slot='toggle-group-indicator']:not([data-yj-indicator='underline'])& {
+        border-radius: max(0px, calc(var(--radius-choice) - var(--ui--choice-inset)));
+      }
+      /* Every label riding the key takes its lettering, the full text color; the others stay muted. */
+      :is([data-slot='toggle-group'], [data-slot='segmented-control'])[data-orientation='horizontal']:not([data-variant='segmented']) > [data-pressed]:not([data-variant='pill'])&,
+      :is([data-slot='toggle-group'], [data-slot='segmented-control']) > [data-variant='pill'][data-pressed]& {
+        color: var(--color-fg);
+      }
+
+      /* ── Badge ────────────────────────────────────────────────────────────
+       * Soft tinted pills: the status tint behind its ink, a control chip
+       * (white on a hairline in light) for secondary, and a dot variant (a [data-slot=badge-dot] first
+       * inside any badge). */
+      [data-slot='badge']& {
+        height: calc(var(--spacing) * 5.5);
+        padding-inline: calc(var(--spacing) * 2.25);
+        font-weight: 500;
+      }
+      [data-slot='badge'][data-size='sm']& {
+        height: calc(var(--spacing) * 4.5);
+        padding-inline: calc(var(--spacing) * 1.75);
+      }
+      [data-slot='badge'][data-size='lg']& {
+        height: calc(var(--spacing) * 6.5);
+        padding-inline: calc(var(--spacing) * 2.75);
+      }
+      [data-slot='badge'][data-variant='secondary']& {
+        background-color: var(--color-control);
+        border-color: var(--bz-secondary-ring);
+        color: var(--color-fg-muted);
+      }
+      [data-slot='badge'][data-variant='outline']& {
+        border-color: var(--color-line-strong);
+      }
+      /* Solid is the accent's own tint too: a highlight ("Most popular"), never
+       * a saturated block. */
+      [data-slot='badge']:is([data-variant='default'], [data-variant='solid'])& {
+        background-color: var(--color-accent-subtle);
+      }
+      [data-slot='badge'][data-variant='solid']& {
+        color: var(--color-accent-text);
+      }
+      [data-slot='badge'][data-variant='success']& {
+        background-color: var(--color-success-subtle);
+      }
+      [data-slot='badge'][data-variant='warning']& {
+        background-color: var(--color-warning-subtle);
+      }
+      [data-slot='badge'][data-variant='danger']& {
+        background-color: var(--color-danger-subtle);
+      }
+      [data-slot='badge-dot']& {
+        width: calc(var(--spacing) * 1.5);
+        height: calc(var(--spacing) * 1.5);
+        flex: none;
+        border-radius: 999px;
+        background-color: currentColor;
+      }
+
+      /* ── Switch ───────────────────────────────────────────────────────────
+       * Flatter and wider: a longer track, a flat knob with no lift, the knob
+       * in the page color off and in the accent's contrast ink on. The liquid
+       * variant is its own look and keeps it. */
+      [data-slot='switch']:not([data-variant='liquid'])[data-size='default']& {
+        width: calc(var(--spacing) * 10);
+        height: calc(var(--spacing) * 5.5);
+        padding: 3px;
+      }
+      [data-slot='switch']:not([data-variant='liquid'])[data-size='sm']& {
+        width: calc(var(--spacing) * 7.5);
+        height: calc(var(--spacing) * 4.5);
+        padding: 2.5px;
+      }
+      [data-slot='switch']:not([data-variant='liquid'])[data-size='lg']& {
+        width: calc(var(--spacing) * 12.5);
+        height: calc(var(--spacing) * 6.5);
+        padding: 3px;
+      }
+      /* Off: a grey knob in a recessed track; the knob carries the state. */
+      [data-slot='switch']:not([data-variant='liquid']):not([data-checked])& {
+        background-color: var(--color-well);
+        box-shadow: inset 0 0 0 var(--yj-stroke-width, 1px) color-mix(in oklab, var(--color-fg) 8%, transparent);
+      }
+      [data-slot='switch']:not([data-variant='liquid']) > [data-slot='switch-thumb']& {
+        box-shadow: none;
+      }
+      [data-slot='switch']:not([data-variant='liquid']):not([data-checked]) > [data-slot='switch-thumb']& {
+        background-color: var(--color-fg-subtle);
+      }
+      [data-slot='switch']:not([data-variant='liquid'])[data-size='default'] > [data-slot='switch-thumb']& {
+        width: calc(var(--spacing) * 4);
+        height: calc(var(--spacing) * 4);
+        /* Travel: the track's inner width less the knob, not one knob width. */
+        translate: calc(var(--thumb-t) * (var(--spacing) * 6 - 6px)) 0;
+      }
+      [data-slot='switch']:not([data-variant='liquid'])[data-size='sm'] > [data-slot='switch-thumb']& {
+        width: calc(var(--spacing) * 3.25);
+        height: calc(var(--spacing) * 3.25);
+        translate: calc(var(--thumb-t) * (var(--spacing) * 4.25 - 5px)) 0;
+      }
+      [data-slot='switch']:not([data-variant='liquid'])[data-size='lg'] > [data-slot='switch-thumb']& {
+        width: calc(var(--spacing) * 5);
+        height: calc(var(--spacing) * 5);
+        translate: calc(var(--thumb-t) * (var(--spacing) * 7.5 - 6px)) 0;
+      }
+      [dir='rtl'] [data-slot='switch']:not([data-variant='liquid'])[data-size='default'] > [data-slot='switch-thumb']& {
+        translate: calc(var(--thumb-t) * (var(--spacing) * 6 - 6px) * -1) 0;
+      }
+      [dir='rtl'] [data-slot='switch']:not([data-variant='liquid'])[data-size='sm'] > [data-slot='switch-thumb']& {
+        translate: calc(var(--thumb-t) * (var(--spacing) * 4.25 - 5px) * -1) 0;
+      }
+      [dir='rtl'] [data-slot='switch']:not([data-variant='liquid'])[data-size='lg'] > [data-slot='switch-thumb']& {
+        translate: calc(var(--thumb-t) * (var(--spacing) * 7.5 - 6px) * -1) 0;
+      }
+      /* On: a light knob on the coloured track, edged in the page colour so it
+       * holds its shape on a pale accent. */
+      [data-slot='switch']:not([data-variant='liquid'])[data-checked] > [data-slot='switch-thumb']& {
+        background-color: color-mix(in oklab, var(--color-surface) calc(100% - 100% * var(--yj-dark)), var(--color-fg));
+        box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-canvas) 35%, transparent), 0 1px 2px color-mix(in oklab, var(--color-canvas) 40%, transparent);
+      }
+
+      /* ── Checkbox and radio ───────────────────────────────────────────────
+       * Soft squares (a 5px corner, square in a square theme) in a filled well
+       * at rest; the radio stays round, in the same well. */
+      :is([data-slot='checkbox'], [data-slot='checkbox-mark'])& {
+        width: calc(var(--spacing) * 4.5);
+        height: calc(var(--spacing) * 4.5);
+        border-radius: min(5px, calc(var(--yj-radius) * 100));
+      }
+      :is([data-slot='checkbox'], [data-slot='checkbox-mark'], [data-slot='radio-group-item']):not([data-checked], [data-indeterminate])& {
+        background-color: var(--color-well);
+      }
+      [data-slot='radio-group-item']& {
+        width: calc(var(--spacing) * 4.5);
+        height: calc(var(--spacing) * 4.5);
+      }
+
+      /* ── Table ────────────────────────────────────────────────────────────
+       * Dense rows on hairlines, no zebra, mono capital heads, and figures in
+       * mono at the end of their column. */
+      :is([data-slot='table-head'], [data-slot='data-table-header-row'] > th)& {
+        height: calc(var(--spacing) * 8);
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      :is([data-slot='table-head'], [data-slot='data-table-header-row'] > th) :is(button)& {
+        font: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+      }
+      /* The data grid's heads take the same mono capital voice; their height follows the grid's density. */
+      [data-slot='data-grid-header-row'] > :is(th)& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      [data-slot='data-grid-header-row'] > th :is(button)& {
+        font: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+      }
+      /* A plain table's head and rows tighten at the compact layout density
+       * (28px heads, 33px rows); the data table sizes its own from its density. */
+      [data-slot='table-head']& {
+        height: calc(var(--spacing) * (8 - var(--ui--compact, 0)));
+      }
+      [data-slot='table-cell']& {
+        padding-block: calc(var(--spacing) * (2 - 0.5 * var(--ui--compact, 0)));
+      }
+      :is([data-slot='table-cell'], [data-dt-cell]):is([data-numeric], .tabular-nums, .text-end, .text-right, .own\:tabular-nums, .own\:text-end, .own\:text-right)&,
+      :is([data-slot='table-head'], [data-slot='data-table-header-row'] > th):is([data-numeric], .text-end, .text-right, .own\:text-end, .own\:text-right)& {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+        text-align: end;
+      }
+      :is([data-slot='table-cell'], [data-dt-cell]):is([data-numeric], .tabular-nums, .text-end, .text-right, .own\:tabular-nums, .own\:text-end, .own\:text-right)& {
+        font-size: var(--text-ui-sm);
+      }
+
+      /* ── Figures ──────────────────────────────────────────────────────────
+       * Numbers in mono, tabular. A stat's value is big, with its unit and
+       * percent sign set small and muted and a currency's cents muted; its
+       * label is a mono eyebrow, and its change and its pictures' captions
+       * carry their figures in mono. */
+      /* CurrencySwap's received amount keeps the amount field's face, so its two figures match. */
+      [data-slot='counter']:not([data-slot='currency-swap'] *)&,
+      [data-slot='stat-value']& {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+      }
+      [data-slot='stat-value']& {
+        font-size: var(--text-3xl);
+        line-height: 1.1;
+        font-weight: 500;
+      }
+      [data-slot='stat-value'][data-size='sm']& {
+        font-size: var(--text-xl);
+      }
+      [data-slot='stat-value'][data-size='lg']& {
+        font-size: var(--text-4xl);
+      }
+      [data-slot='stat-label']&,
+      [data-slot='stat-action'] > :is(span, p, small, time)& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      :is([data-slot='stat-delta-value'], [data-slot='stat-meter-share'], [data-slot='stat-breakdown-value'])& {
+        font-family: var(--font-mono);
+        letter-spacing: -0.01em;
+      }
+      /* Units sit on the figure's foot, not at its cap height. */
+      :is([data-slot='counter'], [data-slot='stat-value']) > [dir='ltr']& {
+        align-items: flex-end;
+      }
+      :is([data-slot='counter'], [data-slot='stat-value']) :is([data-part='unit'], [data-part='percentSign'], [data-part='compact'])& {
+        font-size: 0.6em;
+        color: var(--color-fg-muted);
+        letter-spacing: 0;
+      }
+      /* Cents, not a compact figure's significant decimal ("$121.1K"). */
+      :is([data-slot='counter'], [data-slot='stat-value'])[data-format='currency']:not(:has([data-part='compact'])) :is([data-part='decimal'], [data-part='fraction'])& {
+        color: var(--color-fg-muted);
+      }
+
+      /* ── Overlays ─────────────────────────────────────────────────────────
+       * A slightly lifted surface at a larger radius; dialogs split into a head
+       * on a hairline, a body and a footer band of pill actions. Rows inside
+       * menus and lists take the popup's inner, concentric radius. */
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'])& {
+        gap: 0;
+        padding: 0;
+        /* The corner caps at 16px at the compact layout density (no cap roomy). */
+        border-radius: min(var(--radius-overlay-lg), calc(100rem - var(--ui--compact, 0) * (100rem - 1rem * var(--yj-scale, 1))));
+        background-color: var(--bz-dialog);
+        overflow: clip;
+      }
+      /* A form wrapping the whole dialog is transparent to the sections. */
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > :is(form)& {
+        gap: 0;
+        padding: 0;
+      }
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :is([data-slot='dialog-header'], [data-slot='alert-dialog-header'])& {
+        /* Sides and bands are 20px, 16px at the compact layout density. */
+        padding: calc(var(--spacing) * (5 - var(--ui--compact, 0)));
+        padding-inline-end: calc(var(--spacing) * (14 - 2 * var(--ui--compact, 0)));
+        border-bottom: var(--yj-stroke-width, 1px) solid var(--color-line);
+      }
+      /* The body: whatever sits between the head and the footer. The sibling,
+       * :first-child and :has() rules below repeat the parent test in a :where()
+       * inside the element's own compound, so only a dialog's children ever try
+       * them: otherwise every element in a Bezel scope is a candidate, and
+       * inserting one row restyles every row beside it (a virtualized grid's
+       * scroll frame, a sort). */
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :not([data-slot$='-header'], [data-slot$='-footer'], [data-slot$='-close'], form)& {
+        padding-inline: calc(var(--spacing) * (5 - var(--ui--compact, 0)));
+      }
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :is([data-slot$='-header']) + :where(:is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form) > *):not([data-slot$='-footer'], [data-slot$='-close'])&,
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :where(:is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form) > *):first-child:not([data-slot$='-header'], [data-slot$='-footer'], [data-slot$='-close'], form)& {
+        padding-top: calc(var(--spacing) * (5 - var(--ui--compact, 0)));
+      }
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :where(:is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form) > *):not([data-slot$='-header'], [data-slot$='-footer'], [data-slot$='-close'], form):is(:has(+ [data-slot$='-footer']), :last-child, :has(+ [data-slot$='-close']:last-child))& {
+        padding-bottom: calc(var(--spacing) * (5 - var(--ui--compact, 0)));
+      }
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :not([data-slot$='-header'], [data-slot$='-footer'], [data-slot$='-close'], form)
+        + :where(:is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form) > *):not([data-slot$='-header'], [data-slot$='-footer'], [data-slot$='-close'], form)& {
+        margin-top: calc(var(--spacing) * (4 - var(--ui--compact, 0)));
+      }
+      :is([data-slot='dialog-content'], [data-slot='alert-dialog-content'], :is([data-slot='dialog-content'], [data-slot='alert-dialog-content']) > form)
+        > :is([data-slot='dialog-footer'], [data-slot='alert-dialog-footer'])& {
+        /* All of it: Classic's alert footer bleeds to the popup's edges with
+         * negative margins, which here would push it past the clipped bottom. */
+        margin: 0;
+        padding: calc(var(--spacing) * (3.5 - var(--ui--compact, 0))) calc(var(--spacing) * (5 - var(--ui--compact, 0)));
+        border-top: var(--yj-stroke-width, 1px) solid var(--color-line);
+        background-color: var(--bz-band);
+      }
+      :is([data-slot='dialog-title'], [data-slot='alert-dialog-title'], [data-slot='sheet-title'])& {
+        /* A panel's title: 18px on 28px, 14px on 20px at the compact density. */
+        font-size: var(--ui--panel-title, calc(1.125rem * var(--yj-scale, 1)));
+        line-height: var(--ui--panel-title-leading, calc(var(--spacing) * 7));
+        font-weight: var(--yj-heading-weight, 500);
+        letter-spacing: -0.02em;
+      }
+      [data-slot='dialog-content'] > [data-slot='dialog-close']& {
+        inset-block-start: calc(var(--spacing) * (4 - var(--ui--compact, 0)));
+        inset-inline-end: calc(var(--spacing) * (4 - var(--ui--compact, 0)));
+      }
+      :is(
+          [data-slot='popover-content'],
+          [data-slot='dropdown-menu-content'],
+          [data-slot='dropdown-menu-sub-content'],
+          [data-slot='filter-builder-menu'],
+          [data-slot='select-content'],
+          [data-slot='context-menu-content'],
+          [data-slot='menubar-content']
+        )& {
+        border-radius: var(--radius-overlay);
+        background-color: var(--bz-popover);
+      }
+      :is([data-slot='dropdown-menu-content'], [data-slot='dropdown-menu-sub-content'], [data-slot='select-content'], [data-slot='context-menu-content'], [data-slot='menubar-content'], [data-slot='filter-builder-menu'])& {
+        padding: 5px;
+      }
+      :is([data-slot='dropdown-menu-content'], [data-slot='dropdown-menu-sub-content'], [data-slot='select-content'], [data-slot='context-menu-content'], [data-slot='menubar-content'], [data-slot='filter-builder-menu'])
+        :is([data-slot$='-item'], [data-slot$='-sub-trigger'], [data-yj-indicator])& {
+        border-radius: calc(var(--radius-overlay) - 5px);
+      }
+      :is([data-slot='dropdown-menu-label'], [data-slot='select-label'], [data-slot='context-menu-label'], [data-slot='menubar-label'])& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+      }
+      :is([data-slot='dropdown-menu-shortcut'], [data-slot='context-menu-shortcut'], [data-slot='menubar-shortcut'])& {
+        font-family: var(--font-mono);
+        letter-spacing: 0;
+      }
+      [data-slot='popover-content']& {
+        padding: calc(var(--spacing) * (4.5 - var(--ui--compact, 0)));
+      }
+      /* A sheet (presentation.tsx) is square where it meets the screen edge it
+       * rises from and keeps its own padding, the safe-area inset included:
+       * the rules above are written for a popover floating over the page. */
+      [data-sheet-popup]& {
+        border-radius: var(--radius-overlay-lg) var(--radius-overlay-lg) 0 0;
+        padding: 4px 6px calc(0.5rem + env(safe-area-inset-bottom));
+      }
+      /* A toast is a popover's lifted plane with the lit top edge, and its
+       * media stage a recessed well set into it, like a gauge in a panel. */
+      [data-slot='toast']& {
+        background-color: var(--bz-popover);
+        box-shadow: inset 0 1px 0 0 var(--ui--edge-highlight), var(--ui-shadow-lg);
+      }
+      [data-slot='toast-media']& {
+        border-color: transparent;
+        box-shadow:
+          inset 0 0 0 var(--yj-stroke-width, 1px) color-mix(in oklab, var(--color-fg) calc(7% - 2% * var(--yj-dark)), transparent),
+          inset 0 1px 2px 0 color-mix(in oklab, var(--color-fg) calc(6% + 10% * var(--yj-dark)), transparent);
+      }
+      [data-slot='toast-media-status']& {
+        background-color: var(--bz-popover);
+        box-shadow: 0 0 0 2px var(--bz-popover), var(--ui--shadow-xs-soft);
+      }
+      [data-slot='tooltip-content']& {
+        border-radius: calc(var(--spacing) * 2);
+        padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2.25);
+      }
+
+      /* ── Progress and slider ──────────────────────────────────────────────
+       * A thin recessed rail with the fill in the accent; the slider's thumb
+       * is an ink disc ringed in the page colour, like a knob on a fader. */
+      [data-slot='progress-track']& {
+        height: 4px;
+        background-color: var(--color-well);
+      }
+      /* A size other than the default keeps its own thickness. */
+      :where([data-slot='progress']:is([data-size='sm'], [data-size='lg'])) [data-slot='progress-track']& {
+        height: revert-layer;
+      }
+      /* A neutral ink fill by default; tone="accent" (or a block's own fill
+       * class, which is more specific) spends the accent on it. */
+      :where([data-slot='progress']:not([data-tone]), [data-slot='progress'][data-tone='neutral']) [data-slot='progress-indicator']:where(:not([data-indeterminate]))& {
+        background-color: color-mix(in oklab, var(--color-fg) 82%, var(--color-surface));
+      }
+      :where([data-slot='progress']:not([data-tone])) [data-slot='progress-tick-fill']& {
+        background-color: var(--color-fg);
+      }
+      /* Label and value: a mono capital eyebrow at the start, the figure in
+       * mono at the end. */
+      [data-slot='progress-label']& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      [data-slot='progress-value']& {
+        font-family: var(--font-mono);
+        font-size: var(--text-ui-sm);
+        font-variant-numeric: tabular-nums;
+        color: var(--color-fg);
+      }
+      /* A field's label over its control reads as the same eyebrow. A label
+       * beside a checkbox or switch stays a sentence. */
+      [data-slot='field'][data-orientation='vertical'] > [data-slot='field-label']&,
+      [data-slot='field'][data-orientation='vertical'] > :not([data-slot='field-content']) > [data-slot='field-label']& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      [data-slot='slider']:not([data-variant='liquid'], [data-variant='ticks']) [data-slot='slider-track']& {
+        background-color: var(--color-well);
+        box-shadow: inset 0 0 0 var(--yj-stroke-width, 1px) color-mix(in oklab, var(--color-fg) 6%, transparent);
+      }
+      [data-slot='slider']:not([data-variant='liquid'], [data-variant='ticks']) [data-slot='slider-track'][data-orientation='horizontal']& {
+        height: 4px;
+      }
+      [data-slot='slider']:not([data-variant='liquid'], [data-variant='ticks']) [data-slot='slider-thumb-knob']& {
+        border-width: 3px;
+        border-color: var(--color-canvas);
+        background-color: var(--color-fg);
+        box-shadow: 0 0 0 var(--yj-stroke-width, 1px) color-mix(in oklab, var(--color-fg) 22%, transparent), var(--ui--shadow-xs-soft);
+      }
+
+      /* ── Meters and ranges ────────────────────────────────────────────────
+       * Gauge, SegmentedMeter, LimitMeter, HistogramRange, RefillMeter,
+       * DistributionStrip, HistoryStrip and ForecastBand already draw
+       * instruments, as do CalendarHeatmap, AllocationMeter, DayRail,
+       * ProgressPath, SegmentedRing, SeatMap, Dial, ShareRing, SlotGrid,
+       * WaveformScrubber, FlowGraph and TrackTimeline.
+       * Bezel gives their labels the mono capital eyebrow and
+       * sets their figures in mono, whatever the theme's own label voice. The
+       * gauge's band word keeps its ink (it carries the state) as a mono
+       * capital a step smaller. */
+      :is(
+          [data-slot='segmented-meter-label'],
+          [data-slot='limit-meter-label'],
+          [data-slot='histogram-range-label'],
+          [data-slot='stage-rail-label'],
+          [data-slot='severity-timeline-label'],
+          [data-slot='lane-meter-label'],
+          [data-slot='day-ring-label'],
+          [data-slot='refill-meter-label'],
+          [data-slot='refill-meter-term'],
+          [data-slot='distribution-strip-label'],
+          [data-slot='distribution-strip-within-label'],
+          [data-slot='history-strip-axis-start'],
+          [data-slot='history-strip-axis-end'],
+          [data-slot='gauge-min'],
+          [data-slot='gauge-max'],
+          [data-slot='forecast-band-legend'],
+          [data-slot='forecast-band-flag-name'],
+          [data-slot='forecast-band-today-label'],
+          [data-slot='rollout-ruler-label'],
+          [data-slot='level-matrix-resource'],
+          [data-slot='calendar-heatmap-month'],
+          [data-slot='calendar-heatmap-weekday'],
+          [data-slot='streak-summary-milestone'],
+          [data-slot='allocation-meter-label'],
+          [data-slot='day-rail-label'],
+          [data-slot='progress-path-eyebrow'],
+          [data-slot='seat-map-row-label'],
+          [data-slot='share-ring-label'],
+          [data-slot='share-ring-unit'],
+          [data-slot='slot-grid-day'],
+          [data-slot='waveform-chapter'],
+          [data-slot='flow-graph-node-kind'],
+          [data-slot='track-timeline-track-caption']
+        )&,
+      [data-slot='limit-meter-stat'] > :is(dt)& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      /* The today chip takes the voice but sits on the ink: its words are the page. */
+      [data-slot='forecast-band-today-label']& {
+        color: var(--color-canvas);
+      }
+      :is(
+          [data-slot='gauge-value'],
+          [data-slot='segmented-meter-value'],
+          [data-slot='stage-rail-value'],
+          [data-slot='severity-timeline-value'],
+          [data-slot='lane-meter-value'],
+          [data-slot='day-ring-value'],
+          [data-slot='refill-meter-value'],
+          [data-slot='distribution-strip-value'],
+          [data-slot='forecast-band-flag-value'],
+          [data-slot='rollout-ruler-value'],
+          [data-slot='dot-map-tag'],
+          [data-slot='streak-summary-value'],
+          [data-slot='calendar-heatmap-readout'],
+          [data-slot='allocation-meter-value'],
+          [data-slot='day-rail-value'],
+          [data-slot='progress-path-value'],
+          [data-slot='segmented-ring-value'],
+          [data-slot='dial-value'],
+          [data-slot='share-ring-value'],
+          [data-slot='share-ring-focus-value'],
+          [data-slot='share-ring-amount'],
+          [data-slot='share-ring-share'],
+          [data-slot='slot-grid-time'],
+          [data-slot='slot-grid-date'],
+          [data-slot='slot-grid-value'],
+          [data-slot='waveform-time'],
+          [data-slot='waveform-value'],
+          [data-slot='flow-graph-node-meta'],
+          [data-slot='flow-graph-node-attempts'],
+          [data-slot='flow-graph-zoom'],
+          [data-slot='track-timeline-time'],
+          [data-slot='track-timeline-clip-name']
+        )& {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+      }
+      /* The dial's and segmented ring's captions keep their own size, in the mono capital voice. */
+      :is([data-slot='segmented-ring-label'], [data-slot='dial-label'])& {
+        font-family: var(--yj-label-font, inherit);
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+      }
+      [data-slot='gauge-value']& {
+        font-weight: 500;
+      }
+      [data-slot='gauge-label']& {
+        font-family: var(--yj-label-font, inherit);
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+      }
+      [data-slot='gauge'][data-size='default'] [data-slot='gauge-label']& {
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+      }
+      [data-slot='gauge'][data-size='lg'] [data-slot='gauge-label']& {
+        font-size: var(--text-ui-sm);
+        line-height: var(--text-ui-sm--line-height);
+      }
+
+      /* ── Operations instruments ───────────────────────────────────────────
+       * StageRail is a recessed track whose picked stage is the lit key, like
+       * a segmented control. The labels of StageRail, SeverityTimeline,
+       * LaneMeter and DayRing take the mono capital voice and their
+       * figures are mono, whatever the theme's label voice; each keeps its own
+       * size and ink (a stage's name stays bright, a lane's label muted). */
+      [data-slot='stage-rail']& {
+        background-color: var(--color-well);
+      }
+      [data-slot='stage-rail'] > [data-slot='stage-rail-indicator']& {
+        background-color: var(--bz-plate);
+        box-shadow: 0 0 0 1px var(--bz-key-ring), var(--ui--shadow-xs-soft), inset 0 1px 0 0 var(--ui--edge-highlight);
+      }
+      :is([data-slot='stage-rail-label'], [data-slot='severity-timeline-label'], [data-slot='lane-meter-label'], [data-slot='day-ring-label'])& {
+        font-family: var(--yj-label-font, inherit);
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+      }
+      :is([data-slot='stage-rail-value'], [data-slot='severity-timeline-value'], [data-slot='lane-meter-value'], [data-slot='day-ring-value'])& {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── Small parts ──────────────────────────────────────────────────────
+       * Keys are mono on a key; avatars in a group sit in a ring of
+       * the surface. (Breadcrumbs already split on a slanted hairline.) */
+      [data-slot='kbd']& {
+        height: calc(var(--spacing) * 5.5);
+        min-width: calc(var(--spacing) * 5.5);
+        padding-inline: calc(var(--spacing) * 1.5);
+        border-radius: calc(var(--spacing) * 1.5);
+        font-family: var(--font-mono);
+        background-color: var(--color-key);
+        box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--color-fg) 8%, transparent);
+      }
+      [data-slot='avatar-group'] > [data-slot='avatar']& {
+        box-shadow: 0 0 0 2px var(--color-surface);
+      }
+
+      /* ── Gradient slider ──────────────────────────────────────────────────
+       * The name over the track and the zones under it take the mono capital
+       * voice; the lit zone keeps full ink. The track is a touch thicker, so
+       * the spectrum reads as the instrument. */
+      :is([data-slot='gradient-slider-label'], [data-slot='gradient-slider-zone'])& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      [data-slot='gradient-slider-zone'][data-active]& {
+        color: var(--color-fg);
+      }
+      [data-slot='gradient-slider-track']& {
+        height: 10px;
+      }
+      [data-slot='gradient-slider-rail']& {
+        background-color: var(--color-well);
+      }
+
+      /* ── Capsules ─────────────────────────────────────────────────────────
+       * A floating pill (a rounded bar where the theme rounds its controls): a
+       * touch above the surface, on a hairline with a lit top edge, and
+       * everything nested in it (the icon disc, the cover, the value window,
+       * the toggle's keys) at the concentric radius. Its
+       * short labels are mono capital eyebrows. In a toggle the capsule is the
+       * track, so the segmented control drops its own well and the key glides
+       * inside the capsule. */
+      [data-capsule]& {
+        border-color: transparent;
+        border-radius: var(--radius-control-lg);
+        background-color: var(--bz-capsule);
+        box-shadow:
+          0 0 0 var(--yj-stroke-width, 1px) color-mix(in oklab, var(--color-fg) calc(8% - 2% * var(--yj-dark)), transparent),
+          inset 0 1px 0 0 var(--ui--edge-highlight),
+          var(--ui-shadow-sm);
+      }
+      [data-capsule]:is([data-slot='capsule-search']):focus-within& {
+        box-shadow:
+          0 0 0 var(--yj-stroke-width, 1px) var(--color-focus),
+          0 0 0 4px color-mix(in oklab, var(--color-focus) 18%, transparent),
+          var(--ui-shadow-sm);
+      }
+      [data-capsule] [data-slot='capsule-label']& {
+        font-family: var(--yj-label-font, inherit);
+        font-size: var(--text-ui-xs);
+        line-height: var(--text-ui-xs--line-height);
+        font-weight: 500;
+        text-transform: var(--yj-label-case, none);
+        letter-spacing: var(--yj-label-tracking, normal);
+        color: var(--color-fg-muted);
+      }
+      [data-capsule] :is([data-slot='stat-pill-icon'], [data-slot='capsule-player-art'], [data-slot='capsule-stepper-window'])& {
+        border-radius: max(0px, calc(var(--radius-control-lg) - 4px));
+      }
+      [data-capsule] > [data-slot='stat-pill-icon']& {
+        background-color: var(--color-well);
+      }
+      [data-slot='capsule-toggle'] > [data-slot='segmented-control']& {
+        padding: 0;
+        background-color: transparent;
+      }
+      [data-slot='capsule-toggle'] [data-slot='segmented-control'][data-orientation='horizontal'] > :not([data-slot='toggle-group-indicator'])& {
+        padding-inline: calc(var(--spacing) * 3.5);
+      }
+      [data-slot='capsule-toggle'] [data-slot='segmented-control'][data-orientation='horizontal'] > [aria-label]:not([data-slot='toggle-group-indicator'])& {
+        padding-inline: 0;
+      }
+    }
+  }
+}

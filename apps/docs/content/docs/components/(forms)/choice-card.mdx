@@ -1,0 +1,173 @@
+---
+title: Choice Card
+description: "Pick from options shown as cards, with an icon, a description and a radio, checkbox or switch."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="choice-card/demo" height={300} />
+
+An access-level picker as a two-column grid of radio cards, with Build chosen.
+
+The whole card is the target. When its control is on, the card's edge doubles in the accent and its icon tile tints. Tab lands on the chosen card and the arrow keys move the choice.
+
+</Story>
+
+<Story id="option-rows" label="Option rows">
+
+<ComponentPreview name="choice-card/options" height={260} />
+
+Three ways to handle an overage, one marked as suggested, each with what it means at the row's end.
+
+A string `badge` becomes a [Badge](/docs/components/badge) beside the title; pass a node for anything else. `note` sits at the end of a horizontal card, for a price, a limit or a consequence.
+
+</Story>
+
+<Story id="switch-cards" label="Switch cards">
+
+<ComponentPreview name="choice-card/switches" height={320} />
+
+Ways to save build minutes as vertical switch cards, each with its saving as a figure and a meter.
+
+`orientation="vertical"` puts the icon and the control on top and the text under them. Children go under the description, so a meter or a figure belongs to the card it describes. Each switch is its own tab stop.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="choice-card" noImport />
+
+Use Choice Cards when each option needs a sentence or a figure to be chosen well: plans, roles, strategies, settings. For short options a [Radio Group](/docs/components/radio-group) or [Checkboxes](/docs/components/checkbox) take less room.
+
+```tsx
+import { ChoiceCard, ChoiceCardGroup, FieldLegend, FieldSet } from '@youj/react'
+
+export function AccessLevel() {
+  return (
+    <FieldSet>
+      <FieldLegend variant="label">Access level</FieldLegend>
+      <ChoiceCardGroup defaultValue="build" name="access" columns={2}>
+        <ChoiceCard value="manage" title="Manage" description="Members, billing and every project" />
+        <ChoiceCard value="build" title="Build" description="Create, edit and publish projects" />
+      </ChoiceCardGroup>
+    </FieldSet>
+  )
+}
+```
+
+A plan picker uses the other slots. `title` and `description` name the plan, `badge` marks the suggested one, `note` puts the price at the row's end, and `children` go under the description, here the plan's limit. Horizontal cards (the default) are rows; `orientation="vertical"` makes them tall cards for a three-column pricing grid, and moves the price into `children`, since `note` is for rows:
+
+```tsx
+import { ChoiceCard, ChoiceCardGroup, FieldLegend, FieldSet } from '@youj/react'
+
+export function PlanPicker() {
+  return (
+    <FieldSet>
+      <FieldLegend variant="label">Plan</FieldLegend>
+      <ChoiceCardGroup defaultValue="pro" name="plan">
+        <ChoiceCard value="hobby" title="Hobby" description="For side projects" note="$0 / mo">
+          <p className="text-ui-sm text-fg-muted">3 projects</p>
+        </ChoiceCard>
+        <ChoiceCard value="pro" title="Pro" description="For a team shipping weekly" badge="Suggested" note="$20 / mo">
+          <p className="text-ui-sm text-fg-muted">Unlimited projects</p>
+        </ChoiceCard>
+      </ChoiceCardGroup>
+    </FieldSet>
+  )
+}
+```
+
+```tsx
+<ChoiceCardGroup defaultValue="pro" name="plan" columns={3}>
+  <ChoiceCard orientation="vertical" value="hobby" title="Hobby" description="For side projects">
+    <p className="text-ui-lg font-semibold">$0 / mo</p>
+  </ChoiceCard>
+  <ChoiceCard orientation="vertical" value="pro" title="Pro" description="For a team" badge="Suggested">
+    <p className="text-ui-lg font-semibold">$20 / mo</p>
+  </ChoiceCard>
+  <ChoiceCard orientation="vertical" value="scale" title="Scale" description="For a company">
+    <p className="text-ui-lg font-semibold">$90 / mo</p>
+  </ChoiceCard>
+</ChoiceCardGroup>
+```
+
+`ChoiceCardGroup` sets the control for its cards. `control="radio"` (the default) is one choice: `value`, `defaultValue` and `onValueChange` take a string. `control="checkbox"` is any number: they take the list of ticked values. `control="switch"` groups independent toggles, and each card takes its own `checked`, `defaultChecked` and `onCheckedChange`. A card outside a group is a checkbox unless its `control` says otherwise.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, control, title, description, icon, badge, note, orientation…">
+
+### Props
+
+<PropsTable name="ChoiceCard" />
+
+#### ChoiceCardGroup
+
+<PropsTable name="ChoiceCardGroup" />
+
+The group also takes the props of the group it renders: Base UI's RadioGroup for `radio`, CheckboxGroup for `checkbox`, and a `div` for `switch`. `columns` (1 to 4) lays the cards out from the `sm` breakpoint up.
+
+#### Data attributes
+
+The card and the group carry `data-yj-control` (`radio`, `checkbox` or `switch`), and the card's Field carries `data-orientation`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Card edge, icon tile · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Card edge', note: 'the border doubles in the accent when the control turns on', duration: 'fast', ease: 'standard' },
+    { moment: 'Icon tile', note: 'tints to the accent with the card', duration: 'fast', ease: 'standard' },
+    { moment: 'Hover', note: 'the card takes the hover tint', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The control drops its own motion (the radio's dot, the checkbox's draw, the switch's travel), and the card's tint still changes, so the choice reads the same."
+/>
+
+The control inside keeps its own motion and sound: see [Radio Group](/docs/components/radio-group), [Checkbox](/docs/components/checkbox) and [Switch](/docs/components/switch).
+
+#### Reduced motion
+
+The controls switch state without moving. The card's edge and the icon tile still change, so what is chosen stays clear.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Each card is a `label` around its control, so clicking anywhere on it operates the control, and the card's text names it.
+- A radio group is one tab stop: `Tab` lands on the chosen card, the arrow keys move the choice and wrap, and disabled cards are skipped. Checkbox and switch cards are each a tab stop, toggled with `Space`.
+- The card carries the focus ring for the control inside, which drops its own.
+- Name the group with a `FieldLegend` in a `FieldSet`, or `aria-label` on the `ChoiceCardGroup`. The icon is decorative and hidden from assistive technology.
+
+</ReferenceRow>

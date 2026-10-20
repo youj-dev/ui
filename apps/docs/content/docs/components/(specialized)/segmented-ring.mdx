@@ -1,0 +1,109 @@
+---
+title: Segmented Ring
+description: "Show a sequence of segments as arcs with the current one in the center, such as the intervals of a workout."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="segmented-ring/demo" height={440} />
+
+A workout of a warm-up, four rounds of work and rest, and a cool-down, with a clock you start, pause or skip.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="segmented-ring" noImport />
+
+Use an segmented ring for anything that runs in timed intervals: HIIT and Tabata, a pomodoro day, a breathing exercise. Each interval is an arc as long as it lasts, round the ring clockwise from the top inside a ruler of ten-second ticks. Work and rest take their own chart colors, and warm-up and cool-down share a third: intervals behind you are lit, the one running fills with a bright head at its edge, and the ones ahead wait in a dim wash of their color, so the shape of the whole session reads at a glance. The center holds the round in big mono, the phase and the time left in it. For a day of scheduled jobs, use a [Day Ring](/docs/components/day-ring).
+
+```tsx
+import { SegmentedRing, type SegmentedRingInterval } from '@youj/react'
+
+const intervals: SegmentedRingInterval[] = [
+  { kind: 'warmup', duration: 60 },
+  { kind: 'work', duration: 40, label: 'Kettlebell swings' },
+  { kind: 'rest', duration: 20 },
+  { kind: 'work', duration: 40, label: 'Goblet squats' },
+]
+
+<SegmentedRing intervals={intervals} elapsed={seconds} />
+```
+
+The ring keeps no clock of its own: `elapsed` is the seconds since the session started, so run your own timer and pause, skip or rewind it by changing `elapsed`. `duration` is in seconds, `kind` picks the phase and its color (or give an interval its own `tone`), and `label` names what's done in it, spoken as the interval starts. The round counts work intervals: a warm-up leads into round 1, and a rest belongs to the round before it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="intervals, elapsed, label… (5)">
+
+### Props
+
+<PropsTable name="SegmentedRing" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `segmented-ring` (with `data-phase`), `segmented-ring-svg`, `segmented-ring-ruler`, `segmented-ring-segment` (with `data-kind` and `data-state`), `segmented-ring-progress`, `segmented-ring-head`, `segmented-ring-center`, `segmented-ring-label`, `segmented-ring-value`, `segmented-ring-phase` and `segmented-ring-summary`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Clock, new round · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Clock', note: 'the running arc and its head follow `elapsed` directly', duration: 'instant', ease: 'standard' },
+    { moment: 'New round', note: 'the round number rolls up to the next', spring: 'snappy' },
+  ]}
+  reduced="The round changes in place; the ring follows the clock either way."
+/>
+
+#### Reduced motion
+
+The round number changes in place. The ring still follows the clock, since that's information, not decoration.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="announcements">
+
+### Accessibility
+
+- The ring is a group named by `label` (default: the labels' "Interval timer"), with a summary of the round, the phase and the time left ("Round 3 of 8. Work, 0:24 left").
+- As an interval starts, a polite live region announces its phase, its length and what follows ("Rest, 0:20. Next: Goblet squats."), and the end is announced too.
+- Sound: the notify cue plays as each interval starts, a tick in each of its last three seconds, and success at the end, behind `sound` (on by default). A rewind stays quiet.
+- Its words come from the labels (`intervalTimer`, `intervalWork`, `intervalRest`, `intervalWarmup`, `intervalCooldown`, `intervalRound`, `intervalRoundOf`, `intervalLeft`, `intervalStarted`, `intervalFinished`, `intervalNext`), translated by the language packs.
+- A dial turns clockwise in every script, so the ring keeps its direction under RTL; the center's text follows the page.
+
+</ReferenceRow>

@@ -1,0 +1,212 @@
+[
+  {
+    "name": "youj-locale-ar",
+    "type": "registry:lib",
+    "title": "Arabic labels",
+    "description": "Every built-in string of the Youj components in Arabic, for <YoujProvider labels={ar}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/ar.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-de",
+    "type": "registry:lib",
+    "title": "German labels",
+    "description": "Every built-in string of the Youj components in German, for <YoujProvider labels={de}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/de.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-es",
+    "type": "registry:lib",
+    "title": "Spanish labels",
+    "description": "Every built-in string of the Youj components in Spanish, for <YoujProvider labels={es}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/es.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-fr",
+    "type": "registry:lib",
+    "title": "French labels",
+    "description": "Every built-in string of the Youj components in French, for <YoujProvider labels={fr}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/fr.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-he",
+    "type": "registry:lib",
+    "title": "Hebrew labels",
+    "description": "Every built-in string of the Youj components in Hebrew, for <YoujProvider labels={he}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/he.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-it",
+    "type": "registry:lib",
+    "title": "Italian labels",
+    "description": "Every built-in string of the Youj components in Italian, for <YoujProvider labels={it}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/it.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-ja",
+    "type": "registry:lib",
+    "title": "Japanese labels",
+    "description": "Every built-in string of the Youj components in Japanese, for <YoujProvider labels={ja}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/ja.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-ko",
+    "type": "registry:lib",
+    "title": "Korean labels",
+    "description": "Every built-in string of the Youj components in Korean, for <YoujProvider labels={ko}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/ko.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-nl",
+    "type": "registry:lib",
+    "title": "Dutch labels",
+    "description": "Every built-in string of the Youj components in Dutch, for <YoujProvider labels={nl}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/nl.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-pl",
+    "type": "registry:lib",
+    "title": "Polish labels",
+    "description": "Every built-in string of the Youj components in Polish, for <YoujProvider labels={pl}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/pl.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-pt-br",
+    "type": "registry:lib",
+    "title": "Brazilian Portuguese labels",
+    "description": "Every built-in string of the Youj components in Brazilian Portuguese, for <YoujProvider labels={ptBR}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/pt-BR.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-sv",
+    "type": "registry:lib",
+    "title": "Swedish labels",
+    "description": "Every built-in string of the Youj components in Swedish, for <YoujProvider labels={sv}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/sv.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-tr",
+    "type": "registry:lib",
+    "title": "Turkish labels",
+    "description": "Every built-in string of the Youj components in Turkish, for <YoujProvider labels={tr}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/tr.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-locale-zh-cn",
+    "type": "registry:lib",
+    "title": "Simplified Chinese labels",
+    "description": "Every built-in string of the Youj components in Simplified Chinese, for <YoujProvider labels={zhCN}>.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/locales/zh-CN.ts",
+        "type": "registry:lib"
+      }
+    ]
+  }
+]

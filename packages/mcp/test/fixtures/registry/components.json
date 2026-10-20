@@ -1,0 +1,4 @@
+{
+  "registries": { "@youj": "https://www.youj.dev/r/{name}.json" },
+  "tailwind": { "css": "app/globals.css" }
+}

@@ -1,0 +1,179 @@
+---
+title: Spotlight
+description: "Add a light that follows the pointer across a surface and stays visible on keyboard focus."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="spotlight/demo" height={380} />
+
+Three plans in one group: the light follows the pointer and spills onto the neighboring cards.
+
+When a control inside a surface receives keyboard focus, the light parks at the center of that surface. Moving focus to the next surface glides the light across instead of jumping it. Tab into the plans in the demo, or use the arrow keys between them.
+
+The light follows a mouse or a pen. Touch doesn't move it, because on a touchscreen there's no pointer to follow between taps.
+
+</Story>
+
+<Story id="one-surface" label="One surface">
+
+<ComponentPreview name="spotlight/standalone" height={260} />
+
+An Enterprise surface that tracks the pointer on its own.
+
+Outside a group, a surface tracks the pointer itself. The light fades in over the surface under the pointer and glows along its border where it passes.
+
+</Story>
+
+<Story id="your-own-light" label="Your own light">
+
+<ComponentPreview name="spotlight/custom" height={340} />
+
+A dot grid that lights in the accent around the pointer, driven by useSpotlight.
+
+`useSpotlight(ref)` is the tracker without the look. It writes the light's position as `--yj-spot-x` and `--yj-spot-y`, in pixels from the top-left corner, onto the element in `ref` when it carries `data-yj-spot-card`, or else onto every `[data-yj-spot-card]` inside it. Use the variables in your own CSS. Here they move a mask that shows an accent copy of a dot grid.
+
+```tsx
+import { useRef } from 'react'
+import { useSpotlight } from '@youj/motion'
+
+function EdgeNetwork() {
+  const ref = useRef<HTMLDivElement>(null)
+  useSpotlight(ref)
+  return (
+    <div ref={ref} data-yj-spot-card="" className="relative overflow-hidden rounded-2xl border border-line">
+      <div
+        aria-hidden
+        className="absolute inset-0 [mask-image:radial-gradient(150px_circle_at_var(--yj-spot-x,-999px)_var(--yj-spot-y,-999px),black,transparent)] …"
+      />
+      …
+    </div>
+  )
+}
+```
+
+Give the variables a far-off fallback, as above, so nothing is lit before the pointer arrives. The hook also sets `data-yj-spot-active` on the root while the light is on, and `data-yj-spot-mode` to `pointer` or `focus`. Pass `false` as its second argument to switch it off.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="spotlight" noImport />
+
+Use it on surfaces people choose between: plans, integrations, templates. The light shows which one the pointer is on, and a group shows how close the neighbors are. Don't light surfaces that are read rather than chosen, like body text or tables, and don't light every card on a page. For the ready-made card look, use [Spotlight Card](/docs/components/spotlight-card).
+
+`SpotlightSurface` is a surface with the lit layers and no look of its own. Give it a radius, a border and a background.
+
+```tsx
+import { SpotlightSurface } from '@youj/motion'
+
+export function Announcement() {
+  return (
+    <SpotlightSurface className="rounded-2xl border border-line bg-surface p-5">
+      <p>Enterprise: SAML SSO, audit logs and a 99.99% SLA.</p>
+    </SpotlightSurface>
+  )
+}
+```
+
+Wrap several surfaces in a `SpotlightGroup` to share one light between them. The group tracks the pointer once and gives every surface the position in its own coordinates, so a card lights along the edge nearest the cursor even while the cursor is over its neighbor.
+
+```tsx
+import { SpotlightGroup, SpotlightSurface } from '@youj/motion'
+
+<SpotlightGroup className="grid grid-cols-3 gap-3">
+  {plans.map((plan) => (
+    <SpotlightSurface key={plan.id} className="rounded-2xl border border-line bg-surface">
+      <PlanOption plan={plan} />
+    </SpotlightSurface>
+  ))}
+</SpotlightGroup>
+```
+
+The group adds no layout, so bring your own grid or flex classes. `radius` sets the size of the light in pixels, 260 by default, on the group for every surface or on a single surface.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="radius, children, radius… (4)">
+
+### Props
+
+#### SpotlightSurface
+
+<PropsTable name="SpotlightSurface" />
+
+#### SpotlightGroup
+
+<PropsTable name="SpotlightGroup" />
+
+#### useSpotlight
+
+```ts
+function useSpotlight(root: RefObject<HTMLElement | null>, enabled?: boolean): void
+```
+
+| Argument | Type | Default | Description |
+| --- | --- | --- | --- |
+| `root` | `RefObject<HTMLElement \| null>` |  | The element to track over. Surfaces are `root` itself when it has `data-yj-spot-card`, otherwise every `[data-yj-spot-card]` inside it. |
+| `enabled` | `boolean` | `true` | Turns tracking off. It's also off under reduced motion. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pointer, keyboard glide, glow in and out · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Pointer', note: 'the light follows the pointer', value: 'one write per animation frame' },
+    { moment: 'Keyboard glide', note: 'the light moves to the focused surface', duration: 'slow', ease: 'standard' },
+    { moment: 'Glow in and out', note: 'surface glow and border glow, `opacity`', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="No tracking and no glow. The hovered or focused surface shows a static accent border instead."
+/>
+
+The light is a radial gradient moved with `transform`, and the border glow is the same gradient masked down to a 1px ring. Pointer moves are batched to one style write per frame, and nothing triggers layout.
+
+#### Reduced motion
+
+Nothing tracks the pointer. The hovered or focused surface shows a static accent border, so a reader still sees which surface they're on, and the light never moves. `useSpotlight` doesn't write its variables at all, so design your own CSS to stand on its own unlit, as the dot grid in the custom-light preview does.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The lit layers are `aria-hidden` and ignore the pointer. The effect adds no roles and no tab stops, so a surface reads exactly like its content.
+- Keyboard users get the same light as pointer users: focus parks it on the focused surface. Keep a visible focus ring on the control itself too, as the plans in the demo do with `has-focus-visible:ring-2`, because a glow alone isn't a focus indicator.
+- The light is decoration. Selection, state and meaning belong in the content, like the check on the chosen plan.
+
+</ReferenceRow>

@@ -1,0 +1,178 @@
+---
+title: Forms & inputs
+description: "Asking and setting: forms, filters, permission matrices, steppers, allocations, seat maps, controls, procedures and preferences."
+---
+
+<BlockStories>
+
+<BlockStory id="settings" label="Settings" block="forms-settings" story="Default" backdrop="heather">
+
+A settings section built from your groups of fields. A changed field gets a mark in the margin and its own Reset, and the card's footer turns into a save bar with the number of changes. The bar sticks to the bottom of the window while the card's end is out of view. ⌘S saves and Discard offers Undo. Closing the tab asks first, and a link elsewhere in the app waits until the changes are saved or discarded.
+
+</BlockStory>
+
+<BlockStory id="multi-step" label="Multi-step form" block="forms-multi-step" story="Default" backdrop="heather">
+
+A multi-step application whose steps follow the answers: a limited company goes on to its register details and the people who control it, a sole trader to their own details. Continue lists any problems at the top of the step, each linking to its field. Saving the draft keeps the answers to finish later, and Check your answers comes before the send.
+
+</BlockStory>
+
+<BlockStory id="payment" label="Payment details" block="forms-payment" story="Default" backdrop="heather">
+
+Card fields that recognize the brand and format the number to match, then move focus on as each field is complete. The billing address follows the country's order and terms, with a lookup on its first line. A business purchase adds the tax number, checked in that country's format. In production, your payment provider's element takes the card fields' place.
+
+</BlockStory>
+
+<BlockStory id="support" label="Support request" block="forms-support" story="Default" backdrop="heather">
+
+A support request where the topic decides the fields: a bug asks where it happened and how bad it is, and billing asks for the invoice. Help articles appear under the subject as it's typed, and screenshots upload with progress. The footer says when to expect a reply, based on the team's real hours and shown in the requester's own time.
+
+</BlockStory>
+
+<BlockStory id="chip-filters" label="Chip filters" block="app-chip-filters" story="Default" backdrop="heather">
+
+A search written first and refined after (orders, job listings or a catalog): filters as a query of chips you can type or edit, a histogram cut by a range, and groups as a checklist. The result count rolls to each change.
+
+</BlockStory>
+
+<BlockStory id="permission-matrix" label="Permission matrix" block="app-permission-matrix" story="Default" backdrop="heather">
+
+Who can do what in a workspace, a school or a clinic, read one role at a time: pick a role, then choose for each area whether it has no access, can view, can edit or has full access. Switch to the grid to see every role at once. Changes wait until you review them and save.
+
+</BlockStory>
+
+<BlockStory id="setup-stepper" label="Setup stepper" block="app-setup-stepper" story="Default" backdrop="umber">
+
+Setting something up in three steps (an AI assistant, a store or a course): a free-text step, a settings step (a name, a choice, a slider and pills you switch on) and who gets access. The TOML config it will save rebuilds beside the form, marking lines that differ from where it started.
+
+</BlockStory>
+
+<BlockStory id="split-allocation" label="Split allocation" block="app-split-allocation" story="Default" backdrop="sandstone">
+
+One amount split across categories, evenly or by hand: a bar that shows what is allocated and what is still open, rows whose amount and percent stay in step, and a status that says what is left before the split can be saved. The demo is a purchase; stories show roommates sharing the rent and a festival's volunteer hours across stations.
+
+</BlockStory>
+
+<BlockStory id="slot-sorter" label="Slot sorter" block="app-slot-sorter" story="Default" backdrop="umber">
+
+A setup step that sorts items into slots (an inbox, expenses or support tickets): a step count and a picture, today’s split as one bar with each slot’s count (an off slot is hatched), and the latest items with how sure the sorting is. Drag an item onto another slot to correct it, or use its slot menu or the number keys, and the counts and bar follow.
+
+</BlockStory>
+
+<BlockStory id="seat-plan" label="Seat plan" block="app-seat-plan" story="Default" backdrop="meadow">
+
+Seat picking on a plan: a seat map with tiers beside a live selection of seats, fees and total. A hold counts down and the seats go back on sale when it runs out. Concerts, flights and classrooms read the same way: tiers can carry a price or none, and the fee, the hold and the limit are props.
+
+</BlockStory>
+
+<BlockStory id="device-controls" label="Device controls" block="app-device-controls" story="Default" backdrop="meadow">
+
+A set of rooms at a glance: a tile per room with temperature, humidity and a light switch, and a thermostat dial for the room you pick with Heat, Cool, Auto and Off modes and the day's schedule, in °C or °F. The demo is a home; stories show an office floor of meeting rooms and a greenhouse in °F.
+
+</BlockStory>
+
+<BlockStory id="procedure" label="Procedure" block="app-procedure" story="Default" backdrop="meadow">
+
+A procedure with a share ring of what a yield amounts to, a yield stepper that rescales every quantity, a checklist of inputs, numbered steps with countdown timers, and an action that adds what is not ticked to a list. The demo is a recipe; stories show a lab protocol scaled by sample count and a cocktail batched by the drink in US ounces.
+
+</BlockStory>
+
+<BlockStory id="sound-settings" label="Sound settings" block="app-sound-settings" story="Default" backdrop="heather">
+
+Sound preferences: whether the app makes sounds, how loud, which pack and which events. Nothing plays on its own; Play on a row and the sound check are the only ways to hear anything.
+
+</BlockStory>
+
+<BlockStory id="effects-inspector" label="Effects inspector" block="app-effects-inspector" story="Default" backdrop="heather">
+
+A design tool's effects panel with the layer it styles beside it: a drop or inner shadow, a stroke, a fill and a layer blur (uniform or progressive), each a collapsible panel with a checkbox, an eye and a trash. A button and the CSS it comes to change as you edit. Drag a field's handle to scrub it, with Shift for ×10 and Alt for ×0.1, or type and use the arrow keys.
+
+</BlockStory>
+
+<BlockStory id="cookie-consent" label="Cookie consent" block="marketing-cookie-consent" story="Banner" backdrop="heather">
+
+A cookie banner that asks once. Accept all and Reject all save and the card sinks away, leaving a small button to reopen it; Customize opens a dialog with a switch per category and a table of its cookies.
+
+</BlockStory>
+
+<BlockStory id="cart" label="Cart drawer" block="commerce-cart-drawer" story="Open" backdrop="sandstone">
+
+The cart as a floating panel from the inline end, as tall as its lines: a photo, quantity stepper and remove per line, the road to free shipping in the header, and shipping, subtotal and checkout in the footer. An empty cart offers a way back to the shop. Use it as your cart panel.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="labels, errors, focus, keyboard, announcements">
+
+### Accessibility
+
+Every control sits in the kit's Field with its label, description and error, so it's named and described without extra wiring, and `aria-invalid` marks a field with a problem. Errors appear under their fields as soon as a field is left, and they're read out. Saving, sending or continuing checks every field and moves focus to the first problem. The application also gathers a step's problems in a summary at the top, which takes focus and links to each field.
+
+The settings save bar announces the number of changes. Each Reset says what it restores, and focus goes back to the control afterwards. ⌘S and Ctrl+S save, and when a link is held, the reason is read out and focus moves to Save. The payment address lookup follows the WAI-ARIA combobox pattern: arrow keys move through the matches while focus stays in the field, and the number of matches is read out. The support request's help articles open in a new tab and say so.
+
+Chip filters has a labelled search field, the result count is spoken once it settles, and the checklist is a labelled group with a tri-state box and a hidden summary of the range. Editing chips and moving controls stay in sync both ways.
+
+Permission matrix lists its roles as tabs (the arrow keys move between them) and names each level picker for its area and role ("Secrets access for Engineer"); a role's tab says how many unsaved changes it holds, and the footer's count is a polite live region. The grid view is a keyboard matrix: the arrow keys move between cells, Space steps a level, and a bar for bulk changes appears for the selected rows and columns. Review opens a dialog with the diff. The owner role is locked. The stories show other worlds, with their own names and words.
+
+Setup stepper is a Wizard with a Stepper. The config preview is a labelled region, and the option pills are a labelled group of toggles with `aria-pressed`.
+
+Split allocation names each row's category, amount and percent; the allocation bar is decorative, and the status line (a live region) says in words how much is allocated, left or over, and is the reason Save is unavailable. The split can be typed, added to and removed from entirely by keyboard.
+
+Slot sorter is a `section` named by its title. Every item has a slot button that names the item, its detail, the slot and how sure the sorting is, opens a menu of the slots and takes the number keys 1 to 4, so dragging is never the only way; a correction is announced with the new counts, the bar and its legend are one labelled image with the counts in text, and the picture is decorative. A slot that is off is dimmed in the menu and takes no item.
+
+Seat plan is one ARIA grid with one tab stop: arrow keys move between seats and rows, Home and End jump to a row's ends, Ctrl+Home and Ctrl+End to the first and last seat, and Space or Enter picks or releases. Each seat is named with row, number, price and availability. The selection's remove buttons are named per seat, and the hold is `role="timer"` with live announcements off.
+
+In Device controls each room tile is a button with `aria-pressed` and a name, and its lights are a switch labelled for the room. The thermostat is a Dial with a label and a hidden description; drag the knob or use the arrow keys. The mode switch is a labelled segmented control and the schedule marks the current slot with `aria-current="time"`.
+
+Procedure's share ring is an image whose label sums up the total and each part. The switch between one yield and all of it is a labelled segmented control, steps carry a hidden step number, and each timer is a toggle button with `aria-pressed` and a label that says whether it starts, pauses or resets and for how long. Save is a pressed toggle.
+
+Sound settings has a labelled master switch and volume slider, and a Play button named for each event. With sounds off the pack, volume and rows go inert. Under reduced motion the page says why sounds are quiet, and previews are silent without a provider.
+
+Effects inspector is a stack of panels, each a named section with an enable checkbox, an eye that says Hide or Show, and Remove. Every field is keyboard operable: the number fields are spinbuttons (arrow keys, with Shift and Alt for the pace, PageUp and PageDown, Home and End), the hex fields commit on Enter, and the shadow's kind and the blur's type are a menu and a segmented control. The preview is described as an image, and the CSS beside it is plain text. Under reduced motion the panels fold at once.
+
+Cookie consent opens its preferences in a dialog that traps focus and closes with Escape. Each category is a switch, Necessary stays on, each cookie table has a visually hidden header row, and saving is announced in a status region.
+
+The cart is a Sheet, so it traps focus and closes with Escape. Its trigger is named with the item count, and each line has a remove button and a quantity field named for its product, in a labelled list.
+
+Under reduced motion, steps swap in place, the save bar appears without rising or shaking, and fields appear and disappear instantly. Colors and messages still show every state.
+
+Under reduced motion pulses and pings stop and everything else changes in place.
+
+Under reduced motion numbers and the ring are drawn in place; the timers still count.
+
+Under reduced motion rows, rings and steps change in place, the chosen plan is simply built and the bar jumps to its new split.
+
+</ReferenceRow>
+
+</BlockStories>

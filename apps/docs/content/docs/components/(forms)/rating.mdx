@@ -1,0 +1,134 @@
+---
+title: Rating
+description: "Collect or display a rating with stars or custom icons, including half steps."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="rating/demo" height={420} />
+
+A review card with a half-step Rating and a readout that names what a click would set.
+
+</Story>
+
+<Story id="read-only" label="Read-only">
+
+<ComponentPreview name="rating/read-only" height={220} />
+
+Read-only ratings for lists and summaries.
+
+`readOnly` shows a rating without interaction, for lists and summaries. It's an image with a label such as "Rated 4.5 out of 5", so a screen reader hears one sentence and not five icons.
+
+</Story>
+
+<Story id="icons-scales-and-states" label="Icons, scales and states">
+
+<ComponentPreview name="rating/icons" height={380} />
+
+Custom icons, scales, sizes and states.
+
+The default star is Rating's own: plump points, rounded by the same stroke that draws its outline. `icon` takes a Youj icon such as `HeartIcon`, or a lucide-style one, filled with the current color, and `unit` names it in the value text ("4 of 5 hearts"). A filled key is the accent (its text color); tint it by setting the color of `[data-slot=rating-fill]`, as the hearts do here with `text-danger`. `max` sets the number of keys, 5 by default, and `size` is `sm`, `default` or `lg` (24, 28 and 32px keys). In a right-to-left layout the fill runs from the right and the arrow keys follow it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="rating" noImport />
+
+Use it to ask for a quick judgment on a fixed scale, such as a review, a satisfaction survey or a score, and to show one back in a list of products or results. It's one focusable control, so a keyboard user reaches it with one Tab and sets it with the arrows or a digit. When the scale has named steps that matter more than their position, such as "Not likely" to "Very likely", a [Radio Group](/docs/components/radio-group) says so more plainly. For an arbitrary number along a range, use a [Slider](/docs/components/slider).
+
+```tsx
+import { useState } from 'react'
+import { Rating } from '@youj/react'
+
+export function RateStay() {
+  const [rating, setRating] = useState(0)
+  return <Rating aria-label="Overall" value={rating} onValueChange={setRating} allowHalf />
+}
+```
+
+The value is a number from 0 to `max`, where 0 means no rating. Each icon sits in a small key of its own, in a row like a segmented control's segments. An empty key is a plain key with a muted outline; a filled one turns the accent, with the icon solid in the accent's contrast color, and a half step fills the left half of a key. Hovering previews the value under the pointer: the keys fill there one by one, the key under the pointer lifts, and keys of the value already set keep a faint accent tint while the preview sits below them. Leaving restores it. Clicking commits it, and clicking the current value again clears it. `allowHalf` rates half a key at a time. With a `name`, the value is submitted with a form.
+
+### A readout
+
+Rating draws no text of its own beyond what it says to a screen reader. `onPreviewChange` reports the value under the pointer, or `null` when it leaves, so a readout beside it can say what a click would set, as the demo's "4.5 of 5 · Excellent" does. Hide that readout from assistive tech (`aria-hidden`): the slider already speaks its value.
+
+```tsx
+const [rating, setRating] = useState(0)
+const [preview, setPreview] = useState<number | null>(null)
+const shown = preview ?? rating
+
+<Rating aria-label="Overall" value={rating} onValueChange={setRating} onPreviewChange={setPreview} />
+<span aria-hidden>{shown ? `${shown} of 5` : 'Tap to rate'}</span>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (16)">
+
+### Props
+
+<PropsTable name="Rating" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Preview sweep, lift, commit press and glint · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Preview sweep', note: 'each key’s fill slides to its share, one tight stagger step per key from the edge it moves from', duration: 'fast', ease: 'standard' },
+    { moment: 'Lift', note: 'the key under the pointer rises 2px and scales to 1.05', duration: 'fast', ease: 'standard' },
+    { moment: 'Commit press', note: 'the committed key presses to 0.86 and springs back with a little overshoot', spring: 'settle' },
+    { moment: 'Ripple', note: 'the filled keys before it rise to 1.06 and back, a tight stagger step apart', duration: 'base', ease: 'emphasized' },
+    { moment: 'Glint', note: 'five short accent rays open just outside the committed key and fade', duration: 'slow', ease: 'enter' },
+  ]}
+  reduced="The fill snaps to the new value; nothing lifts, presses or glints."
+/>
+
+#### Reduced motion
+
+The fill moves to the new value at once, and nothing lifts, presses or glints. The hover preview still shows what a click will commit, with the keys of the value already set faintly tinted.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's one `slider` with a value text such as "3.5 of 5 stars", or "No rating" at 0. Name it with `aria-label` or `aria-labelledby`, as the demo does with the Field's label.
+- ArrowRight and ArrowUp step up, ArrowLeft and ArrowDown step down (mirrored in right-to-left layouts), Home and Backspace clear it, End sets the maximum and a digit jumps to that value.
+- The hit area reaches a few pixels past the keys, and the focus ring hugs the row.
+- Disabled, it leaves the tab order and reports `aria-disabled`.
+- `readOnly` renders `role="img"` with a label ("Rated 4.5 out of 5", or your `aria-label`), and takes no focus.
+- Empty keys are edged in the control line tone, which holds 3:1 against the surface, so the scale reads before anything is filled. A filled key's icon is the accent's contrast color on the accent.
+
+</ReferenceRow>

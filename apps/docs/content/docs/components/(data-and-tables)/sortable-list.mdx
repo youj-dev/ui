@@ -1,0 +1,139 @@
+---
+title: Sortable List
+description: "Reorder a list by dragging or using the keyboard, with each move announced."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="sortable-list/demo" height={400} />
+
+Q4 priorities as a ranked list: each row has a drag handle, a rank counter and a team badge.
+
+</Story>
+
+<Story id="whole-row" label="Whole row">
+
+<ComponentPreview name="sortable-list/whole-row" height={320} />
+
+A playlist where the whole row is the handle.
+
+With `asHandle`, the row is its own grip: it takes focus, and a drag can start anywhere on it except its buttons, links and fields. Use it for short rows with nothing else to press. Rows with actions keep a separate `SortableListHandle`, so a press on an action never starts a drag.
+
+On touch screens, a handle doesn't scroll the page, so a list whose rows are all handles can't be scrolled by swiping over it. Prefer a grip in long lists.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="sortable-list" noImport />
+
+Use a sortable list when the order itself is the data: priorities, a playlist, the steps of a pipeline, the columns of a table. The list owns dragging, focus and announcements; you render what's inside each row. When items also move between groups, use a [Kanban](/docs/components/kanban) board. When people sort by a field rather than by hand, use a [data table](/docs/blocks/tables-and-lists).
+
+Each item has a `value`, and the list's value is those values in order. Control it with `value` and `onValueChange`, and render the items in that order.
+
+```tsx
+import { useState } from 'react'
+import { SortableList, SortableListHandle, SortableListItem } from '@youj/react'
+
+export function Priorities({ items }: { items: { id: string; title: string }[] }) {
+  const [order, setOrder] = useState(items.map((i) => i.id))
+  const byId = new Map(items.map((i) => [i.id, i]))
+  return (
+    <SortableList aria-label="Priorities" value={order} onValueChange={setOrder}>
+      {order.map((id) => (
+        <SortableListItem key={id} value={id} textValue={byId.get(id)!.title}>
+          <SortableListHandle />
+          {byId.get(id)!.title}
+        </SortableListItem>
+      ))}
+    </SortableList>
+  )
+}
+```
+
+`onValueChange` fires once, when a row is dropped somewhere new. It doesn't fire on each step of a drag or when a move is canceled, so it's a safe place to save. Without `value`, the list keeps its own order, starting from `defaultValue` or the children's order.
+
+Give each item a `textValue`. Announcements use it ("Picked up Audit log export, position 3 of 5."), and so does the handle's name ("Reorder Audit log export"). Without one, announcements read the row's text.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (10)">
+
+### Props
+
+#### SortableList
+
+<PropsTable name="SortableList" />
+
+#### SortableListItem
+
+<PropsTable name="SortableListItem" />
+
+#### SortableListHandle
+
+<PropsTable name="SortableListHandle" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Neighbors make room, drop, grip… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Neighbors make room', note: 'rows glide aside as the dragged row passes them, and on each keyboard step', spring: 'smooth' },
+    { moment: 'Drop', note: 'the row settles into its slot from wherever the pointer let go', spring: 'smooth' },
+    { moment: 'Grip', note: 'its dots fuse into bars while the row is held', spring: 'snappy' },
+    { moment: 'Lift', note: 'the row scales to 1.015 and gains a shadow and a ring-colored border', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Rows jump to their new places and the lifted row doesn't scale. A pointer drag still follows the pointer."
+/>
+
+The dragged row stays in the list (a drag on the row itself with `layout` on its neighbors, the same motion layer the [Kanban](/docs/components/kanban) board uses, not motion's `Reorder`), so screen readers and the DOM order always agree with what's on screen.
+
+#### Reduced motion
+
+Rows move to their new places at once, keyboard moves included, and the lifted row doesn't scale. Dragging with a pointer still follows the pointer, because that movement is the person's own.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The list is a `list` of `listitem`s. Name it with `aria-label` or `aria-labelledby`.
+- The handles are a single tab stop. `↑` and `↓` move focus between them, and `Home` and `End` jump to the first and last.
+- `Space` or `Enter` picks the focused row up. While it's lifted, `↑` and `↓` move it one place, `Home` and `End` move it to either end, `Space` or `Enter` drops it, and `Escape` puts it back. Moving focus away also puts it back.
+- A handle is a `<button>` with `aria-pressed` while its row is lifted, and describes these keys through `aria-describedby`.
+- A polite live region announces each pick-up, move, drop and cancel with the row's position.
+- `Escape` also cancels a pointer drag: the row settles back into its old slot.
+
+</ReferenceRow>

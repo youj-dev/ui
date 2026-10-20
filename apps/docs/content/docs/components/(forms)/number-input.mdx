@@ -1,0 +1,125 @@
+---
+title: Number Input
+description: "Enter or step through a number, formatted for your locale, currency or unit."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="number-input/demo" height={240} />
+
+A monthly budget formatted as US dollars, stepping by 100, or by 1,000 with Shift.
+
+Arrow keys and the buttons move by `step`. Shift with an arrow moves by `largeStep`, which defaults to 10. Pressing and holding a button repeats, and Home and End jump to `min` and `max`. The mouse wheel doesn't change the value unless you set `allowWheelScrub`, because a page scrolling past a focused field shouldn't edit a form.
+
+</Story>
+
+<Story id="formats" label="Formats">
+
+<ComponentPreview name="number-input/formats" height={280} />
+
+Currency, percent and unit formats.
+
+`format` takes `Intl.NumberFormat` options, so currency, percent and units come from the platform: the symbol, the separators and the placement all follow the locale. A percent value is a fraction, so `0.15` shows as 15%. `unit` and `prefix` add a plain text addon instead, for units Intl doesn't know, like `req/min`.
+
+</Story>
+
+<Story id="states-and-locales" label="States and locales">
+
+<ComponentPreview name="number-input/states" height={320} />
+
+Invalid and disabled fields, a locale and the steppers option.
+
+Inside an invalid Field the group takes the error treatment, and a disabled Field disables the input and both buttons. `locale` sets the parsing and display locale (default: the YoujProvider's locale, en-US without one), and `steppers={false}` drops the buttons for a plain formatted field.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="number-input" noImport />
+
+Use a number input when the answer is a quantity people adjust: a budget, a replica count, a timeout, a discount. It parses what they type in the locale it formats in, clamps it to `min` and `max`, and formats it back with `Intl.NumberFormat`. For a value picked along a range by feel, use a [Slider](/docs/components/slider). For digits that aren't a quantity, such as a verification code or a phone number, use [Input OTP](/docs/components/input-otp) or [Phone Input](/docs/components/phone-input).
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel, NumberInput } from '@youj/react'
+
+export function Replicas() {
+  const [replicas, setReplicas] = useState<number | null>(3)
+  return (
+    <Field>
+      <FieldLabel>Replicas</FieldLabel>
+      <NumberInput value={replicas} onValueChange={setReplicas} min={1} max={20} />
+    </Field>
+  )
+}
+```
+
+The value is a `number`, or `null` when the field is empty. It's built on Base UI's NumberField and rendered as an [Input Group](/docs/components/input-group), so it takes a [Field](/docs/components/field)'s label, description, error and `required` with no extra wiring.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (23)">
+
+### Props
+
+<PropsTable name="NumberInput" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Step, stepper press · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Step', note: 'the number nudges 3px from the direction it moved: up for more, down for less', duration: 'fast', ease: 'enter' },
+    { moment: 'Stepper press', note: 'the − and + buttons press like every Button', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="The number changes in place with no nudge."
+/>
+
+A held button fires a step on every repeat, and each one restarts the nudge, so a fast count reads as movement rather than a flicker. Typing a value never nudges: only steps from the keyboard, the buttons or the wheel do.
+
+#### Reduced motion
+
+Steps change the number in place, with no nudge. Formatting, clamping and press-and-hold are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- It's Base UI's NumberField: a text input described as a number field, inside a group, so screen readers hear the formatted value as it changes.
+- ArrowUp and ArrowDown step by `step`, Shift with an arrow by `largeStep`, and Home and End go to the bounds.
+- The steppers are named "Decrease" and "Increase". They stay out of the tab order, because the arrow keys already do their job from the input.
+- Name it with a Field's label, or with `aria-label` on its own. A `unit` addon is visible text, so the label doesn't need to repeat it.
+
+</ReferenceRow>

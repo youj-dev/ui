@@ -1,0 +1,127 @@
+---
+title: Textarea
+description: "Collect multi-line text in a field that grows with its content, then scrolls."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="textarea/demo" height={340} />
+
+A feedback form whose Textarea counts down to a 280-character limit and turns the count into an error once it is exceeded.
+
+Count in the description line and turn the count into an error once it's exceeded, as the demo does. Announce only the last stretch: a live region that speaks on every keystroke drowns out what's being typed.
+
+```tsx
+<span aria-live="polite" className="sr-only">
+  {left >= 0 && left <= 20 ? `${left} characters left` : ''}
+</span>
+```
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="textarea/states" height={380} />
+
+A textarea growing with its content, and its states.
+
+It starts three lines tall and grows with its content up to 16rem, then scrolls. Growth is CSS `field-sizing: content`. In browsers without it, the box keeps its starting height and you can drag it taller. Border, hover, focus and invalid match Input.
+
+</Story>
+
+<Story id="fixed-height" label="Fixed height">
+
+<ComponentPreview name="textarea/fixed" height={360} />
+
+A textarea that keeps a fixed height.
+
+Pasted text, like a `.env` file or a certificate, is easier to check in a box that stays put. Add the `field-sizing-fixed` class and set `rows` to hold the height, and set `wrap="off"` so long lines scroll sideways instead of wrapping.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="textarea" noImport />
+
+Use Textarea for comments, feedback, descriptions and other multi-line text. Use an [Input](/docs/components/input) for a single line. Wrap the textarea in an [Input Group](/docs/components/input-group) when you need a toolbar or send button inside its frame.
+
+```tsx
+import { Field, FieldDescription, FieldLabel, Textarea } from '@youj/react'
+
+export function ProjectDescription() {
+  return (
+    <Field>
+      <FieldLabel>Description</FieldLabel>
+      <Textarea name="description" placeholder="What does this project do?" />
+      <FieldDescription>Shown on the project page and in search.</FieldDescription>
+    </Field>
+  )
+}
+```
+
+It renders a real `<textarea>` through Base UI's field control, so inside a [Field](/docs/components/field) it's labeled, described, validated and made `required` exactly like an Input. `rows`, `cols` and `wrap` go to the element.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue (2)">
+
+### Props
+
+<PropsTable name="Textarea" />
+
+`value` and `defaultValue` take strings. Every other native textarea attribute passes through, including `onChange`, `rows` and `maxLength`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Hover and focus · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[{ moment: 'Hover and focus', note: 'border color, fill and the focus halo', duration: 'fast', ease: 'standard' }]}
+  reduced="There is nothing to reduce: growing with its content is instant, and colors change on the fast token."
+/>
+
+#### Reduced motion
+
+The textarea doesn't animate. It grows line by line as you type, with or without reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a native `<textarea>`: `Enter` adds a new line and `Tab` moves focus on.
+- Label it through a Field, or with `aria-label` when the context names it.
+- If you use `maxLength`, say so in the description. The browser stops accepting input silently, which reads as a broken keyboard.
+- Text is 16px on touch screens, so iOS doesn't zoom the page on focus.
+
+</ReferenceRow>

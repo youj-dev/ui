@@ -1,0 +1,14 @@
+.next
+.source
+generated
+next-env.d.ts
+*.tsbuildinfo
+public/r
+public/samples
+out
+.wrangler
+.cloudflare
+.dev.vars*
+.secrets.json
+.secrets.*.json
+.build-static.json

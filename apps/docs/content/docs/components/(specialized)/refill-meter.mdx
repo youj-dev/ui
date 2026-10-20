@@ -1,0 +1,116 @@
+---
+title: Refill Meter
+description: "Show capacity that drains with use and refills over time, such as a rate limit’s token bucket."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="refill-meter/demo" height={300} />
+
+A gateway's bucket of 60 tokens refilling 10 a second, with buttons that spend 10 requests or a burst of 40.
+
+</Story>
+
+<Story id="burst-and-empty" label="Burst and empty">
+
+<ComponentPreview name="refill-meter/burst" height={260} />
+
+Two buckets: one under its burst marker, and one empty with no refill.
+
+`burst` puts a marker in the bucket: the burst allowance, the most a client may send at once. While the level is under it, a full burst would be partly refused, so the lit cells turn to the warning tone and the value is spoken with "under the burst of 20". An empty bucket tints its track danger; with no refill it reads "Empty".
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="refill-meter" noImport />
+
+Use a refill meter where a client, a key or an endpoint spends from a token bucket: how much it can still send right now, and how fast that room comes back. Each cell is a token (or a share of a large bucket), lit while it's in the bucket. Requests drain cells from the edge; between the updates you give it, the bucket refills on its own at `refillRate`, and the edge cell charges from its foot as the next token accrues. For a quota that only resets with the period, use an [Limit Meter](/docs/components/limit-meter); for usage of a resource, a [Segmented Meter](/docs/components/segmented-meter).
+
+```tsx
+import { RefillMeter } from '@youj/react'
+
+// What the gateway reported: 38 tokens left at `measuredAt`, refilling 10 a second.
+<RefillMeter value={38} updatedAt={measuredAt} capacity={60} refillRate={10} burst={20} />
+```
+
+Give it what you measured: `value` tokens at `updatedAt` (a `Date.now()` time; by default, when `value` last changed). It counts the refill from there, so there's no need to poll to keep it moving, and a new measurement simply resets the count. The refill stops at `capacity`, while the meter is off screen and in a hidden tab, and catches up when it's back.
+
+It draws a cell a token up to 60 cells; a larger bucket shares its capacity across 60 (set `segments` for another count), and the charging cell fills by its share.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, capacity, refillRate… (8)">
+
+### Props
+
+<PropsTable name="RefillMeter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `refill-meter`, `refill-meter-header`, `refill-meter-label`, `refill-meter-value`, `refill-meter-capacity`, `refill-meter-gauge`, `refill-meter-flags`, `refill-meter-burst-flag`, `refill-meter-track`, `refill-meter-cell`, `refill-meter-fill`, `refill-meter-burst`, `refill-meter-reserve`, `refill-meter-footer`, `refill-meter-refill`, `refill-meter-eta` and `refill-meter-term` (the words in the footer). The root has `data-state` (`ok`, `low` or `empty`) and `data-full`; each cell has `data-state` (`on`, `charging` or `off`). The labels take the theme's label voice, and mono capitals in Bezel.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Refill, spend, each cell… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Refill', note: 'the edge cell fills from its foot as the next token accrues, then locks in; the clock follows the time scale and stops while full, off screen or hidden', value: 'the refill rate' },
+    { moment: 'Spend', note: 'the cells drain from the edge inward at a constant rate, the whole row spanning the deliberate token, each falling to its foot', duration: 'deliberate' },
+    { moment: 'Each cell', note: 'falls or rises, and takes its tone', duration: 'fast', ease: 'standard' },
+    { moment: 'New value mid-drain', note: 'carries on from the edge on screen, so a burst of updates never jumps', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The bucket still refills (it's data), a whole token at a time, with no charging cell and no drain: cells change in place."
+/>
+
+#### Reduced motion
+
+The level still refills, a whole token at a time; there's no charging cell and no drain, and cells change in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels and assistive technology">
+
+### Accessibility
+
+- It's a `meter` (Base UI Meter) named by its visible `label` (by default the labels' "Tokens").
+- Its value is spoken as "42 of 60 tokens, refilling 10 a second", with "under the burst of 20" while under the marker and "Empty" when there's nothing left. It updates a whole token at a time, never every frame.
+- The cells, the marker and the charging fill are hidden from assistive tech. The bucket fills from the inline start, so right to left in RTL; its figures keep their order.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

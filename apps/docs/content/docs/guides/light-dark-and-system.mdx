@@ -1,0 +1,125 @@
+---
+title: Light, dark and system in Next.js
+description: "Let people choose light, dark or the operating system's setting, with no flash on load."
+---
+
+<PageArt art="guides" />
+
+Youj's palette follows `data-theme` on `<html>`. This recipe gives an app a switch for it that remembers the choice, follows the operating system until someone picks, and paints the right theme on the first frame. It needs no library.
+
+## Set it up
+
+Two pieces do the work: `ThemeScript`, a tiny script in `<head>` that sets the theme before the page paints, and `ThemeToggle`, the switch. `npx youj init` writes the first in a Next.js app.
+
+<Steps>
+<Step>
+
+### Add the script to the layout
+
+Render `ThemeScript` in `<head>`, and put `suppressHydrationWarning` on `<html>`: the script sets an attribute the server couldn't know, and React would otherwise report it. Don't write `data-theme` yourself.
+
+```tsx title="app/layout.tsx"
+import { basalt, YoujProvider, themeProps } from '@youj/core'
+import { ThemeScript } from '@youj/react'
+import './globals.css'
+
+export default function RootLayout({ children }: LayoutProps<'/'>) {
+  return (
+    <html lang="en" suppressHydrationWarning {...themeProps(basalt)}>
+      <head>
+        <ThemeScript />
+      </head>
+      <body>
+        <YoujProvider theme={basalt}>{children}</YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+</Step>
+<Step>
+
+### Add the toggle
+
+A [ThemeToggle](/docs/components/theme-toggle) with no props is complete. Use the `button` variant in a header, where one press flips light and dark, and `segmented` in settings, where Light, Dark and System are all offered:
+
+```tsx title="components/header.tsx"
+import { ThemeToggle } from '@youj/react'
+
+export function Header() {
+  return (
+    <header>
+      <ThemeToggle />
+    </header>
+  )
+}
+```
+
+</Step>
+</Steps>
+
+That's all. The first visit follows the operating system. A choice is stored in `localStorage` under `theme`, shared by every toggle on the page and by other tabs, and applied by the script on the next load, before anything paints.
+
+## From your own control
+
+To change the mode from something that isn't a ThemeToggle, such as a menu item or a shortcut, use `useThemeMode()` from `@youj/core`. It returns the choice (`mode`: `'light'`, `'dark'` or `'system'`), the scheme on screen (`scheme`: `'light'` or `'dark'`) and `setMode`. It reads and writes the same store as the toggle, so the two stay in step. `setThemeMode(mode)` does the same outside a component.
+
+```tsx
+'use client'
+
+import { useThemeMode } from '@youj/core'
+
+export function DarkModeItem() {
+  const { scheme, setMode } = useThemeMode()
+  return <button onClick={() => setMode(scheme === 'dark' ? 'light' : 'dark')}>Dark mode: {scheme === 'dark' ? 'on' : 'off'}</button>
+}
+```
+
+## No flash in system or light mode
+
+The server can't know the operating system's scheme or the visitor's, so for `system` or `light` put `ModeScript` in `<head>` with the same mode. It sets the visitor's stored choice, or else that mode, as `data-theme` and `color-scheme` on `<html>` before the page paints, and the provider takes over after hydration. For `dark`, the default, with no toggle, you don't need it.
+
+```tsx title="app/layout.tsx"
+import { ModeScript, YoujProvider } from '@youj/core'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ModeScript mode="system" />
+      </head>
+      <body>
+        <YoujProvider mode="system">{children}</YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+`ModeScript` takes a `nonce` for a strict Content-Security-Policy. `<html>` needs `suppressHydrationWarning` because the script writes `data-theme` before React hydrates.
+
+## Reading the mode
+
+`useMode()` returns the mode in effect and the scheme it draws:
+
+```tsx
+import { useMode } from '@youj/core'
+
+function SchemeNote() {
+  const { mode, scheme } = useMode() // 'system' | 'light' | 'dark', and 'light' | 'dark'
+  return <p>{mode === 'system' ? `Following your system: ${scheme}` : `Fixed to ${scheme}`}</p>
+}
+```
+
+`mode` is `dark` when no provider sets one. `scheme` is that mode resolved: with `system` it is the operating system's, and on the server and during hydration it is `dark`, the palette's default, then corrects on mount. With no mode set it reads `data-theme` on `<html>`, so it follows `next-themes` too. Use it for what a component shows or does, and the `dark:` variant for styling.
+
+ThemeScript, from the ThemeToggle page, is the other half: it restores a choice the visitor made and stored. `ModeScript` applies a choice the app made.
+
+## If you use next-themes
+
+Keep next-themes as the owner of `data-theme` and leave `ThemeScript` out; it brings its own script. [Installation](/docs/installation#alternative-next-themes) has the layout, and the toggle takes next-themes' `theme` and `setTheme`.
+
+## Without Next.js
+
+In a single-page app, put the script inline in `index.html`; [Installation](/docs/installation#manual) has it. The toggle needs nothing else.

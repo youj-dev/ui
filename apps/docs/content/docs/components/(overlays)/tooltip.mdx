@@ -1,0 +1,160 @@
+---
+title: Tooltip
+description: "Show a short visual label on hover or keyboard focus."
+aliases: ["hint", "hover label"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tooltip/demo" height={300} />
+
+A formatting toolbar whose buttons show a name and keyboard shortcut, with neighbors opening at once after the first.
+
+Wrap a toolbar, or your whole app, in one `TooltipProvider`. The first tooltip waits for the pointer to rest (500ms here, Base UI's `delay`). Once one is showing, its neighbors open at once and skip their entrance, so sweeping across a toolbar reads as one continuous label. Moving on within 400ms (the provider's `timeout`) keeps the group warm. Try it on the formatting toolbar above.
+
+Tooltips can hold a [Kbd](/docs/components/kbd) or a `KbdGroup`. The keycaps pick up the tooltip's colors in both modes.
+
+</Story>
+
+<Story id="sides" label="Sides">
+
+<ComponentPreview name="tooltip/sides" height={260} />
+
+A tooltip on each side of its trigger.
+
+`side` picks the edge (`top` by default) and `align` the alignment along it. The tooltip drifts 3px in from the trigger, so its motion always points back at the control it names, and it flips when the preferred side runs out of room. Logical sides, `inline-start` and `inline-end`, follow the writing direction.
+
+</Story>
+
+<Story id="disabled-controls" label="Disabled controls">
+
+<ComponentPreview name="tooltip/disabled" height={260} />
+
+A disabled button that still explains itself in a tooltip.
+
+A disabled button that explains itself should stay focusable, or keyboard users never reach the reason. Pass `focusableWhenDisabled` to the [Button](/docs/components/button) and let it take pointer events back so hover works too. Presses still do nothing. The tooltip isn't announced, so the example also points `aria-describedby` at the same sentence for screen readers.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="tooltip" noImport />
+
+Use Tooltip to show an icon-only control’s name or keyboard shortcut. It is visual only: it does not open on touch (unless you turn on `longPress`) and screen readers do not read it. Give the control its own accessible name and keep essential information visible. For an explanation people can open, use a [Popover](/docs/components/popover) with `openOnHover`. For a link preview, use a [Hover Card](/docs/components/hover-card).
+
+```tsx
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@youj/react'
+import { ArchiveIcon } from '@youj/icons'
+
+export function ArchiveButton() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger render={<Button variant="ghost" size="icon" aria-label="Archive" />}>
+          <ArchiveIcon />
+        </TooltipTrigger>
+        <TooltipContent>Archive</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+```
+
+Give an icon-only trigger an `aria-label` that matches the tooltip text. The tooltip doesn't name or describe its trigger, so the label is what assistive technology reads.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="TooltipProvider passes through to Base UI's provider (delay, which…">
+
+### Props
+
+#### TooltipContent
+
+<PropsTable name="TooltipContent" />
+
+`TooltipProvider` passes through to Base UI's provider (`delay`, which defaults to 500 here, `closeDelay` and `timeout`). `Tooltip` takes the root props (`open`, `defaultOpen`, `onOpenChange`, `disabled`) and `longPress`, and `TooltipTrigger` takes the trigger's (`delay`, `closeDelay`, `closeOnClick`, `render`).
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="Touch has no hover, so a tooltip doesn't open there">
+
+### Touch
+
+Touch has no hover, so a tooltip doesn't open there. A tap is a press, and Base UI opens a tooltip on focus only when the focus comes from a keyboard, so a tap never leaves one stuck on screen. Anything a tooltip says must therefore reach people another way: an icon-only control needs an `aria-label`, and anything people need in order to act (why a control is disabled, a limit, a warning) belongs in visible text next to the control. On a phone, prefer a visible label under an icon when there's room for one.
+
+`longPress` on `Tooltip` adds what Android does for icon buttons: holding the trigger for half a second shows the tooltip, and that press doesn't activate the control. The tooltip hides 1.5 seconds after the finger lifts or at the next touch anywhere, and a finger that moves, as in a scroll, cancels it. Keyboard shortcuts inside it are left out on touch. It helps someone who wonders what an icon means; it doesn't replace the label.
+
+```tsx
+<Tooltip longPress>
+  <TooltipTrigger render={<Button variant="ghost" size="icon" aria-label="Archive" />}>
+    <ArchiveIcon />
+  </TooltipTrigger>
+  <TooltipContent>Archive</TooltipContent>
+</Tooltip>
+```
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Show, hide, neighbor in a group, keyboard focus, Escape… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Show', note: '3px drift from the trigger, scale .97 → 1, fade (`yj-tooltip`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Hide', duration: 'instant', ease: 'exit' },
+    { moment: 'Neighbor in a group, keyboard focus, Escape', note: 'Base UI sets `data-instant`', value: '0ms' },
+    { moment: 'Open delay', note: 'hover intent, not motion: Speed leaves it alone', value: '500ms in a provider' },
+    { moment: 'Long press (touch, `longPress`)', note: 'how long to hold, then how long it stays after the finger lifts', value: '500ms, 1.5s' },
+  ]}
+  reduced="Tooltips appear and disappear at once, with no drift. Delays are unchanged."
+/>
+
+#### Reduced motion
+
+Tooltips appear in place, without the drift or the fade, and hide at once. Hover delays stay the same, because they measure intent rather than animate anything.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Tooltips are visual only. Base UI doesn't describe the trigger with them, so the trigger's own name (its text or `aria-label`) must carry the meaning.
+- Keyboard focus opens the tooltip without waiting for the delay. Hover opens it after the delay.
+- They don't open on touch, since there's no way to reveal them before tapping. With `longPress`, holding the trigger shows one, and that press doesn't activate the control.
+
+| Key | Action |
+| --- | --- |
+| `Tab` | Focusing a trigger shows its tooltip. |
+| `Escape` | Hides the tooltip and leaves focus on the trigger. |
+
+</ReferenceRow>

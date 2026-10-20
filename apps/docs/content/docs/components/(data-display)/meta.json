@@ -1,0 +1,16 @@
+{
+  "title": "Data display",
+  "pages": [
+    "---Text---",
+    "typography",
+    "code-block",
+    "diff-viewer",
+    "kbd",
+    "---People and labels---",
+    "avatar",
+    "avatar-stack",
+    "badge",
+    "---Time---",
+    "countdown"
+  ]
+}

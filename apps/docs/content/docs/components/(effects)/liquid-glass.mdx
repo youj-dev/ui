@@ -1,0 +1,122 @@
+---
+title: Liquid Glass
+description: "Put a pane of liquid glass behind a button, pill or toolbar that leans toward the pointer and squishes when pressed."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="liquid-glass/demo" height={440} />
+
+Two glass buttons over a live aurora. Each leans toward the pointer, its highlight follows, and a press squishes it.
+
+</Story>
+
+<Story id="floating-toolbar" label="Floating toolbar">
+
+<ComponentPreview name="liquid-glass/toolbar" height={320} />
+
+A formatting toolbar floating over the text it edits.
+
+The glass blurs and saturates what's behind it, so the bar stays readable over text, images or a gradient without hiding them. The whole bar leans and squishes as one pane, so wrap the bar, not each button.
+
+`bulge` sets how far the pane leans toward the pointer, 4px by default; 0 keeps it still while the highlight still follows. `blur` sets the backdrop blur, 12px by default. `squish={false}` turns off the press.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="liquid-glass" noImport />
+
+Use it for a few floating controls over rich content: a hero's buttons over a background, a toolbar over a canvas, a player's controls over video. Keep it off dense forms and lists, where a pane of glass behind every control is noise, and off plain flat surfaces, where there's nothing for the glass to bend.
+
+Wrap the control and put the radius on LiquidGlass itself, so the glass takes the same shape.
+
+```tsx
+import { LiquidGlass } from '@youj/motion/interactions'
+
+export function GlassButton() {
+  return (
+    <LiquidGlass className="rounded-full">
+      <button type="button" className="h-11 rounded-full px-5 text-sm font-medium">
+        Start free
+      </button>
+    </LiquidGlass>
+  )
+}
+```
+
+The glass is a layer behind the content, so the content keeps its own size, padding and focus ring. Other props pass through to the wrapper's `div`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="bulge, blur, squish (3)">
+
+### Props
+
+<PropsTable name="LiquidGlass" />
+
+| Data attribute | Values |
+| --- | --- |
+| `data-slot` | `liquid-glass` |
+| `data-yj-reduced` | present under reduced motion |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Lean, highlight, press · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Lean', note: 'the pane moves up to `bulge` px toward the pointer and swells along that direction', spring: 'settle' },
+    { moment: 'Highlight', note: 'the specular and the brightest stretch of rim slide to the pointer, and back to the top left on leave', spring: 'settle' },
+    { moment: 'Press', note: 'the whole glass, content included, widens 4% and flattens 8%, then springs back', spring: 'settle' },
+  ]}
+  reduced="Static glass: the blur, rim and highlight stay, and nothing leans, follows or squishes."
+/>
+
+The glass springs on `settle`, the kit's one spring that overshoots, so it lags the pointer a little and wobbles into place like something with mass. The pointer is read once per move, and everything else is a transform or a custom property on two layers, so it never triggers layout. There's no WebGL and no SVG filter: the refraction is drawn with `backdrop-filter`, gradients and inset shadows.
+
+#### Reduced motion
+
+The glass is still: the highlight rests at the top left, and the pane doesn't lean or squish. The blur, rim and drop shadow stay, so the control looks the same at rest.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The glass layers are `aria-hidden`, and the wrapper adds no role and no tab stop. The button or link inside carries the name, the role and the focus ring.
+- It follows a mouse or pen only. Touch taps and scrolls as usual.
+- Text on glass sits on whatever is behind it. Check the contrast over the busiest part of your background, and darken or lighten the backdrop if it drops below 4.5:1.
+
+</ReferenceRow>

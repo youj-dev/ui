@@ -1,0 +1,146 @@
+---
+title: Banner
+description: "Show an announcement across the top of your app, with an action link and optional dismissal."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="banner/demo" height={300} />
+
+A dismissible inverse banner above a page; the page glides up when it's dismissed.
+
+`dismissible` adds a dismiss button at the end, outside the flow, so the message stays centered on the page. The banner collapses through [Collapse](/docs/motion/collapse): its height eases to zero while the content fades out faster, and the page below glides up. If focus was inside the banner, it moves on to the next focusable element.
+
+Passing `onOpenChange` also makes a banner dismissible. Control it with `open` to remember the choice, for example in local storage, so a dismissed announcement stays dismissed. Starting closed and opening after mount keeps the server render and the first client render the same, and the banner expands into place:
+
+```tsx
+import { useEffect, useState } from 'react'
+import { Banner, BannerTitle } from '@youj/react'
+
+export function PreviewsBanner() {
+  const [open, setOpen] = useState(false)
+  useEffect(() => setOpen(localStorage.getItem('banner:previews') !== 'dismissed'), [])
+
+  return (
+    <Banner
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next)
+        if (!next) localStorage.setItem('banner:previews', 'dismissed')
+      }}
+    >
+      <BannerTitle>Deploy previews now comment on every pull request.</BannerTitle>
+    </Banner>
+  )
+}
+```
+
+</Story>
+
+<Story id="looks" label="Looks">
+
+<ComponentPreview name="banner/variants" height={320} />
+
+Banners in several looks, one with an icon.
+
+`variant` is `default`, a recessed strip with a hairline; `inverse`, the foreground ink; `accent`, the theme's accent; or `warning`, an amber tint for maintenance and incidents. `icon` puts an icon before the message: a Youj icon with `trigger="mount"` plays once as the banner appears.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="banner" noImport />
+
+Use a banner for news that concerns the whole product rather than one part of the page: a launch, an event, a trial running out, a maintenance window. It sits above everything, full bleed, and says one thing. For something that belongs to a section of the page, use an [Alert](/docs/components/alert). For feedback on something the user just did, use a [Toast](/docs/components/toast).
+
+```tsx
+import { Banner, BannerAction, BannerTitle } from '@youj/react'
+
+export function LaunchBanner() {
+  return (
+    <Banner variant="inverse" dismissible>
+      <BannerTitle>
+        <strong>Deploy previews</strong> <span>now comment on every pull request.</span>
+      </BannerTitle>
+      <BannerAction href="/changelog">Read the changelog</BannerAction>
+    </Banner>
+  )
+}
+```
+
+`BannerTitle` holds the message. A `<strong>` inside it leads in, and a `<span>` after it is set a step quieter. `BannerAction` is a link whose arrow nudges out and back on hover or focus. Anything else you put in the banner, like a badge, sits in the same centered row.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="icon, dismissible, open… (7)">
+
+### Props
+
+<PropsTable name="Banner" />
+
+`BannerTitle` takes the props of a `p`, and `BannerAction` those of an `a`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Action arrow, dismiss, height, dismiss, content… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Action arrow', note: 'on hover or focus of the link', value: 'the arrow icon’s own nudge' },
+    { moment: 'Dismiss, height', note: 'the page below glides up', duration: 'base', ease: 'standard' },
+    { moment: 'Dismiss, content', note: 'fades out ahead of the height', duration: 'fast', ease: 'exit' },
+    { moment: 'Reopen', note: 'height and content together', duration: 'base', ease: 'standard' },
+    { moment: 'Link underline', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="A dismissed banner leaves at once and a reopened one appears at once. The arrow and any mount icon hold still."
+/>
+
+A banner that renders with the page appears in place, without expanding. Reversing mid-collapse (setting `open` back to `true`) opens from the current height.
+
+#### Reduced motion
+
+A dismissed banner leaves at once and the page below moves up in the same frame. The action's arrow and any mount icon stay at rest. The look and the message don't change.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- The banner is a `region` landmark named "Announcement", so screen-reader users can find it or skip it. Pass `aria-label` to name it better, like "Maintenance".
+- It isn't a live region: a banner that renders with the page is read in place. If one appears later and has to be heard, announce it yourself.
+- The dismiss button is named by `dismissLabel`, "Dismiss announcement" by default.
+- When a dismissed banner collapses, focus inside it moves to the next focusable element, never to the body.
+- The icon is decorative. The message carries the meaning.
+
+</ReferenceRow>

@@ -1,0 +1,82 @@
+---
+title: Hero
+description: "Opening sections for a landing page, from a centered headline to a terminal demo or a pointer-reactive motion panel."
+---
+
+<BlockStories>
+
+<BlockStory id="centered" label="Centered" block="marketing-hero-centered" story="Default" backdrop="own" accent>
+
+Open with a centered headline, a badge and calls to action over a soft animated background. Pick it when the words should carry the page.
+
+</BlockStory>
+
+<BlockStory id="split" label="Split" block="marketing-hero-split" story="Default" backdrop="cinnabar">
+
+Put the pitch on one side and the product in a window on the other, and let the selling points steer it: pick a point, or let them tour, and the window’s camera glides to that part of the screen while it plays its moment. Point at the window to see all of it. Pick it when visitors should see what they get right away.
+
+</BlockStory>
+
+<BlockStory id="product" label="Product" block="marketing-hero-product" story="Default" backdrop="cinnabar">
+
+Show the product itself in a browser frame beneath the headline. Pick it for a product whose screen sells it.
+
+</BlockStory>
+
+<BlockStory id="terminal" label="Terminal" block="marketing-hero-terminal" story="Default" backdrop="cinnabar">
+
+Introduce a command-line tool with a copyable install command beside an animated terminal session that deploys, then lands what it deployed on the terminal’s corner: the live site, in a window of its own. Pick it when the product is used from a shell.
+
+</BlockStory>
+
+<BlockStory id="motion" label="Motion" block="marketing-hero-motion" story="Default" backdrop="cinnabar">
+
+A headline that rises word by word over a pointer-reactive dot matrix, beside a live panel where visitors change speed, reduced motion and theme and watch a checklist respond. Pick it to show the kit’s motion settings working.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, motion, keyboard">
+
+### Accessibility
+
+Each hero is a `<section>` named by its own heading (`aria-labelledby`). The heading is an `h1` by default and an `h2` when you set `embedded`; set `headingLevel` to `1`, `2` or `3` where the page around it needs another.
+
+The product shots, browser frames, terminal sessions and Terminal’s landed site in Split, Product and Terminal are decorative: they are `inert` (Split’s demo screen and Product also `aria-hidden`), so the headline and copy have to carry the meaning; a `media` you pass to Split is read as you give it, so give an image its `alt`. Split’s points are a named list of buttons, with `aria-current` on the one on show; its tour has a Play and Pause button in the window’s title bar and holds while keyboard focus is on the points. Motion’s control panel uses labelled controls (a select and switches) under its own headings.
+
+The animated heroes (Split, Terminal, Product, Motion) check the reduced-motion setting and hold a still frame when it is on: Split shows its whole window, with no tour and no camera. The buttons and links are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

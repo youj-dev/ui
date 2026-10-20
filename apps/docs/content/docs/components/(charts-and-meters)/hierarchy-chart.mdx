@@ -1,0 +1,130 @@
+---
+title: Hierarchy Chart
+description: "Draw an org chart, a team of teams or any parent-and-children structure as a tidy tree that folds, pans and zooms."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="hierarchy-chart/demo" height={480} />
+
+A company's org chart. Select a person to light their reporting line, and close a branch with the chip on a card's foot to fold it into a count ("+3").
+
+The chart opens fitted to its canvas, but never below 60%, so names stay legible; a bigger chart opens on its root and pans instead. Drag anywhere to pan (a click that doesn't move still picks a node), use the wheel, or one finger across; zoom with Ctrl or ⌘ and the wheel, a pinch, the corner buttons or + and −, and press 0 to fit the whole chart.
+
+</Story>
+
+<Story id="teams" label="Team of teams">
+
+<ComponentPreview name="hierarchy-chart/teams" height={440} />
+
+`orientation="horizontal"` grows the tree along the reading direction (right to left under RTL). `renderNode` draws each card's contents (here the team, its mission and its headcount) inside the chart's card frame, which still draws focus, selection and the path.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="hierarchy-chart" noImport />
+
+Use a hierarchy chart when the shape of a tree is the point: who reports to whom, which teams sit under which group, how a product breaks down. For a tree people browse and pick from (files, settings, categories), use a [Tree View](/docs/components/tree-view); for steps that depend on each other, a [Flow Graph](/docs/components/flow-graph).
+
+```tsx
+import { HierarchyChart } from '@youj/react'
+
+<HierarchyChart
+  nodes={{
+    id: 'maya',
+    name: 'Maya Lindqvist',
+    role: 'CEO',
+    children: [
+      { id: 'jonas', name: 'Jonas Okafor', role: 'VP Engineering', badge: 'Hiring', children: [/* … */] },
+      { id: 'elena', name: 'Elena Petrova', role: 'VP Product' },
+    ],
+  }}
+  selected={selected}
+  onSelectedChange={setSelected}
+/>
+```
+
+`nodes` is one root or an array of them, each `{ id, name, role?, avatar?, badge?, children? }`; the default card shows the avatar (or the name's initials), the name, the role and the badge. Pass your own type that extends `HierarchyNode` and a `renderNode(node, state)` to draw the card yourself; `state` says its depth, whether it's selected, on the selected path, a branch and open, and how many nodes sit below it. Every card has one size, `nodeSize` (224 × 64 by default).
+
+The layout is a tidy tree (Reingold–Tilford, in Walker's linear form): every parent is centered over its children, subtrees pack as close as the gaps allow without overlapping, and identical subtrees are drawn identically. It handles a few hundred nodes at once; `layoutHierarchy(nodes, options)` returns the same layout for drawing your own.
+
+Branches are all open by default; `defaultExpanded` or `expanded` with `onExpandedChange` take the open ids. To find someone, hold a `ref`: `ref.current.focusNode(id)` opens the branches above them, focuses their card and centers it, and `ref.current.fit()` fits the chart.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="nodes, renderNode, orientation… (14)">
+
+### Props
+
+<PropsTable name="HierarchyChart" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `hierarchy-chart` (with `data-orientation`), `hierarchy-chart-viewport` (with `data-dragging`), `hierarchy-chart-world`, `hierarchy-chart-edges`, `hierarchy-chart-edge` (with `data-active` on the selected path), `hierarchy-chart-nodes`, `hierarchy-chart-node` (with `data-yj-node` holding its id, `data-selected`, `data-yj-path` on the selection's ancestors, and `data-state` `open` or `closed` on a branch), `hierarchy-chart-name`, `hierarchy-chart-role`, `hierarchy-chart-toggle` (with `data-state`), `hierarchy-chart-controls` and `hierarchy-chart-zoom`. Connectors use the theme's strong line, and the accent on the selected path.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open and close, zoom and fit, pan · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open and close', note: 'the toggled node stays put while the others glide to their new places; children grow out of their parent and shrink back into it, and the connectors redraw as they move', spring: 'smooth' },
+    { moment: 'Zoom, fit and focus', note: 'the view glides to its new place and scale', duration: 'slow', ease: 'standard' },
+    { moment: 'Pan', note: 'the view follows the pointer, the wheel and the pinch, never eased' },
+  ]}
+  reduced="Nothing glides: branches open and close in place, and zoom, fit and focus land at once."
+/>
+
+#### Reduced motion
+
+Branches open and close in place, connectors are redrawn at once, and zoom, fit and focus jump to their view. Panning is unchanged, since it never animates.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The chart is a WAI-ARIA `tree` named by `label` (default "Hierarchy chart") and described by a hint that explains the keys. Each card is a `treeitem` with `aria-level`, `aria-setsize`, `aria-posinset`, `aria-selected` and, on a branch, `aria-expanded`. It's named by the node's `name` and described by its role, its badge and, when closed, how many it hides ("3 hidden below").
+- One Tab stop. ↑ and ↓ move through the nodes in reading order, → opens a branch or steps into it, ← closes it or steps out to its parent (mirrored under RTL), Home and End go to the first and last node, and * opens every sibling branch. Enter opens or closes a branch, Space selects. +, − and 0 zoom and fit.
+- Focus from the keyboard brings its node into view, and closing a branch that holds the focus hands it to the branch.
+- The open/close chip is a pointer shortcut for Enter, hidden from assistive technology; selection is shown by a border and a ring as well as the path's color.
+- With sound on, selecting plays `select`, opening a branch `open` and closing it `close`.
+- Its words come from the labels (`hierarchyChart`, `hierarchyChartHint`, `hierarchyChartHidden`, `hierarchyChartExpand`, `hierarchyChartCollapse`, `zoomIn`, `zoomOut`, `zoomToFit`), translated by the language packs.
+
+</ReferenceRow>

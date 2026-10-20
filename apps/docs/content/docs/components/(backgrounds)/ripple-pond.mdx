@@ -1,0 +1,123 @@
+---
+title: Ripple Pond
+description: "Show a calm dot lattice where moving and clicking drop ripples that spread and fade."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="ripple-pond/demo" full height={400} />
+
+A hero section over the pond; move the pointer across it to leave a wake, or click to drop a stone.
+
+`colors` takes two CSS colors: the dots at rest, then the color they take on a crest. The defaults are `--color-fg-subtle` and `--color-accent`. Token references follow the theme, and the pond rereads them when the theme changes.
+
+</Story>
+
+<Story id="spacing" label="Spacing">
+
+<ComponentPreview name="ripple-pond/spacing" full height={340} />
+
+A switch between three lattice pitches.
+
+`spacing` is the distance between dots in CSS pixels. A finer pitch resolves the ring and its trailing wavelets more clearly and draws more dots; a wide one reads as a loose, graphic texture. The ripples keep their size and speed in pixels, so only the sampling changes.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="ripple-pond" noImport />
+
+Use it where the idea is calm with a response: a sign-in page, a settings landing, a quiet empty state. It does nothing loud on its own, so it suits pages that should feel still until someone touches them. Keep it to one per page.
+
+The pond fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { RipplePond } from '@youj/motion/backgrounds'
+
+export function CalmHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <RipplePond />
+      <p className="relative text-5xl font-semibold">Every action leaves a ripple</p>
+    </section>
+  )
+}
+```
+
+Moving the pointer drops a soft ripple every 110 pixels of travel. A press or a tap drops a strong one right where it lands, which is what makes the pond work on touch screens. Each ring travels outward as a wave packet with wavelets trailing it, and fades over about three seconds. With `ambient` on (the default), an idle pond lets a drop fall every few seconds, each from the next point of a fixed spread across the field. Turn it off where the pond sits behind something people work in.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (7)">
+
+### Props
+
+<PropsTable name="RipplePond" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="Canvas 2D; work follows the rings, not the lattice">
+
+### Performance
+
+It's drawn with Canvas 2D, not WebGL. Each ripple only visits the dots near its ring, so the cost follows the number of live ripples (at most 28) and not the size of the lattice, and the dots are batched into nine paths by wave height. The canvas renders at a device-pixel ratio capped at 2. On the low motion-budget tier the pitch widens by 30%, which keeps about 60% of the dots, and the loop runs at 30 fps. The loop pauses when the pond is offscreen or the tab is hidden, and it stops and cleans up on unmount. If the browser can't create a 2D context, it falls back to a static CSS wash of the accent color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Rings, wake, ambient drops · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Ring', note: 'a wave packet with trailing wavelets, losing height as it spreads', value: 'speed ÷ time scale' },
+    { moment: 'Wake', note: 'a soft ripple every 110px the pointer travels', value: 'distance-based' },
+    { moment: 'Press', note: 'a strong ripple where it lands', value: 'on press' },
+    { moment: 'Ambient drop', note: 'one every few seconds while nobody is interacting', value: 'clock-based' },
+  ]}
+  reduced="Draws one still pond with two rings caught mid-spread: the same composition every time. Nothing moves and nothing responds, and it redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The pond shows two rings frozen mid-spread, so it's the same on every visit and in every screenshot, and it still shows what a ripple looks like. Only the travel, the wake and the ambient drops are gone. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- The lattice is faint at rest, and crests brighten it, so check your text's contrast where a ripple can pass behind it, or lower `intensity`.
+- With `ambient` on, a drop falls every few seconds. Turn it off where even that is too much. Under reduced motion nothing moves at all.
+
+</ReferenceRow>

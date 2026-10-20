@@ -1,0 +1,128 @@
+---
+title: Mesh Gradient
+description: "Add a slowly shifting, theme-aware gradient behind a hero section."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="mesh-gradient/demo" full height={380} />
+
+A hero section over the gradient field, which leans toward the pointer.
+
+</Story>
+
+<Story id="color" label="Color">
+
+<ComponentPreview name="mesh-gradient/colors" full height={320} />
+
+A field in success, accent and warning colors with a lower intensity and some grain.
+
+By default the colors come from your tokens: a family of the accent's neighbors (a violet, a cool cyan and a deep rose, each quieter than the accent) over `--color-canvas`. Switch between light and dark and the field reads them again. Pass up to four CSS colors to set your own. Token references keep them mode-aware.
+
+</Story>
+
+<Story id="tuning" label="Tuning">
+
+<ComponentPreview name="mesh-gradient/tuning" full height={340} />
+
+Buttons for the intensity and grain of the field.
+
+- `intensity`, from 0 to 1.5, sets how much of the field is color and how much is canvas. Keep it below 1 behind long copy.
+- `speed` multiplies the drift. It stacks with the time scale, which slows everything together.
+- `grain` adds film grain. Dithering against 8-bit banding is always on.
+- `interactive` leans the field toward the pointer.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="mesh-gradient" noImport />
+
+Use it for a hero, a launch page or a sign-up screen that should feel warm and premium without saying anything specific. It's color without line work, so it sits behind a headline more calmly than any other background. Don't use it behind long text or tables, and give it one section per page: a second gradient dilutes the first.
+
+The gradient fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { MeshGradient } from '@youj/motion/backgrounds'
+
+export function Hero() {
+  return (
+    <section className="relative isolate min-h-[640px]">
+      <MeshGradient />
+      <h1 className="relative">The workspace that moves as fast as you think</h1>
+    </section>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (6)">
+
+### Props
+
+<PropsTable name="MeshGradient" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's one WebGL2 fragment shader on a single full-screen triangle,…">
+
+### Performance
+
+It's one WebGL2 fragment shader on a single full-screen triangle, rendered at a device-pixel ratio capped at 2. The loop pauses offscreen and in hidden tabs, survives a lost GL context, and releases the context on unmount. Without WebGL2 it falls back to a static CSS gradient in the same colors.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drift, pointer lean · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drift', note: 'continuous shader clock', value: 'speed ÷ time scale' },
+    { moment: 'Pointer lean', note: 'eases in and out with the pointer', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one composed still frame and stops. There's no drift and no pointer response, and the frame redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The gradient draws one composed frame and holds it, with the film grain halved for the still image. The colors and the composition stay the same, so the section looks as designed, only still. It redraws when the size, the props or the theme change. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+It's decorative, so it's `aria-hidden` and ignores pointer events. Check your text's contrast over the brightest part of the field. A lower `intensity` keeps it calm behind copy.
+
+</ReferenceRow>

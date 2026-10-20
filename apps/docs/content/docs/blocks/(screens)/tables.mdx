@@ -1,0 +1,60 @@
+---
+title: Tables
+description: "Table screens for any list of records: customers and a virtualized orders grid."
+---
+
+<BlockStories>
+
+<BlockStory id="customers" label="Customers" block="app-customers" story="Default" backdrop="umber">
+
+Browse every customer account with health, revenue, seats, usage trends and owners in one grid, then assign, tag or archive them in bulk.
+
+</BlockStory>
+
+<BlockStory id="orders" label="Records grid" block="app-records-grid" story="Default" backdrop="umber">
+
+Work through every order in one virtualized grid: filter by payment, fulfillment or channel, open an order in a side sheet, and pack, ship or print labels in bulk.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, grid, keyboard">
+
+### Accessibility
+
+Each screen has a `header` and one heading (`headingLevel` changes it). The records sit in the [Data grid](/docs/blocks/tables-and-lists#data-grid) block, a `role="grid"` that reports `aria-sort` on sorted columns and `aria-multiselectable` when rows can be selected. Records grid opens a record in a sheet that traps focus and closes with Escape. Records grid shows an order’s progress as an ordered list with the current stage marked by `aria-current`. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

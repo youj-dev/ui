@@ -1,0 +1,94 @@
+---
+title: Product showcase
+description: "Interactive and informational sections that show the product off: a guided tour, a live theme playground, role-based solutions, integrations, release news and a comparison table."
+---
+
+<BlockStories>
+
+<BlockStory id="tour" label="Product tour" block="marketing-product-tour" story="Default" backdrop="cinnabar">
+
+Let visitors try the product instead of watching it: a rail of steps beside a live window of real components, a beacon pinging on the control each step asks them to try, each step checked off as they do it and a progress line that fills.
+
+</BlockStory>
+
+<BlockStory id="theme-playground" label="Theme playground" block="marketing-theme-playground" story="Default" backdrop="cinnabar">
+
+Let visitors re-theme a small landing page live with a preset, accent, corners, control size and style. Pick it to show how far the theme goes.
+
+**Demo only.** Its content is fixed in the block: it takes no data or `copy` props, only the few settings and callbacks listed in its props. Copy the source to build on it.
+
+</BlockStory>
+
+<BlockStory id="solutions" label="Solutions" block="marketing-solutions" story="Default" backdrop="cinnabar">
+
+Speak to each buyer on one page: pick a role and an industry, and the pitch, a customer quote, the call to action, the live numbers and the activity feed change to match.
+
+</BlockStory>
+
+<BlockStory id="integrations" label="Integrations" block="marketing-integrations" story="Default" backdrop="cinnabar">
+
+Show what the product connects to with searchable, categorized cards that each carry a status, and a detail sheet with the connection’s health and sync history.
+
+</BlockStory>
+
+<BlockStory id="whats-new" label="What’s new" block="marketing-whats-new" story="Default" backdrop="cinnabar">
+
+Show that the product keeps moving: the newest change as a feature card, earlier changes as a dated list with kind tags and expandable details, an area filter and a way to load more.
+
+</BlockStory>
+
+<BlockStory id="comparison" label="Comparison" block="marketing-product-comparison" story="Default" backdrop="cinnabar">
+
+Put the product beside the alternatives in one table: yours raised on a panel of its own, a sticky head with price, coverage and a call to action, grouped features that explain themselves, a switch for only the differences, and one alternative at a time on a phone.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, tabs, dialogs, tables">
+
+### Accessibility
+
+Every section here is a `<section>` named by its own heading (`aria-labelledby`). The heading is an `h2` by default and `headingLevel` changes it; the pieces with items below the title (Product tour, Solutions, What’s new) set theirs one level deeper.
+
+Product tour and Solutions are built on Tabs: the tab list is named, Left and Right Arrow move between tabs, Home and End jump to the ends, and the panel follows the selected tab. Product tour announces a finished tour in a polite status region; Solutions announces the role and industry in view the same way. Product tour’s beacon is decoration (`aria-hidden`, and it never takes a click): the step’s “Try it” prompt says the same in words, and under reduced motion the beacon is a still dot.
+
+Integrations has a labelled search field, a categories `nav` whose buttons use `aria-pressed`, and a result count in a status region; its detail sheet traps focus and closes with Escape. What’s new’s area filter and Product comparison’s alternative picker and “only differences” switch are named controls, and Product comparison is a real `table` with visually hidden text in its cells and a labelled coverage bar. Theme playground groups its controls under a label, announces the applied recipe in a status region, and renders its preview as a decorative frame (`inert`) around a real page.
+
+The links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>
+
+App logos in the Integrations demo are trademarks of their owners, shown for illustration only.

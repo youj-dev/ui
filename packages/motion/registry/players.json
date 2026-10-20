@@ -1,0 +1,32 @@
+[
+  {
+    "name": "player-env",
+    "type": "registry:lib",
+    "title": "Player environment hooks",
+    "description": "Shared hooks for the Lottie player. useInView reports viewport visibility through an IntersectionObserver. useThemeChange fires when data-theme or class changes on the element or any of its ancestors, or when the OS color scheme changes.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core"],
+    "files": [{ "path": "src/components/youj/players/use-player-env.ts", "type": "registry:lib" }]
+  },
+  {
+    "name": "lottie-player",
+    "type": "registry:component",
+    "title": "Lottie player",
+    "description": "A dotLottie player for .lottie and Lottie .json files. It supports autoplay, loop, playOnHover (plays forward on enter and in reverse on leave, and can be interrupted), playOnView, segments and a controlled playing prop. Speed is speed / timeScale. Under reduced motion it shows a poster frame. It pauses offscreen. Color slots bind to youj tokens and re-theme live.",
+    "dependencies": ["@lottiefiles/dotlottie-react@^0.19.16"],
+    "registryDependencies": ["youj-core", "player-env"],
+    "files": [{ "path": "src/components/youj/players/lottie-player.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "lottie-samples",
+    "type": "registry:file",
+    "title": "Youj Lottie samples",
+    "description": "Original Lottie JSON animations generated from the youj motion tokens, with color slots named after the color tokens: success-check and an upload-progress loader. The binary logo-sting.lottie isn't included because registry files are text. Copy it from public/samples or regenerate it with scripts/lottie/generate.mjs.",
+    "dependencies": [],
+    "registryDependencies": [],
+    "files": [
+      { "path": "public/samples/success-check.json", "type": "registry:file", "target": "public/samples/success-check.json" },
+      { "path": "public/samples/upload-progress.json", "type": "registry:file", "target": "public/samples/upload-progress.json" }
+    ]
+  }
+]

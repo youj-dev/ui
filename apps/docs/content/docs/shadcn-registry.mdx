@@ -1,0 +1,141 @@
+---
+title: Using with shadcn
+description: "Add Youj items with the shadcn CLI, and what they need to render right."
+---
+
+<PageArt art="shadcn-registry" />
+
+Every Youj component, block, example, icon, illustration and sound is also an item in a shadcn registry, under the `@youj` namespace. If your app already runs on the shadcn CLI, you can add Youj items with it, next to shadcn's own items and those of other registries. The files are the same ones `npx youj add` copies.
+
+<Callout type="note" title="Most apps are better served by the Youj CLI">
+  The npm packages are the recommended way to use Youj, and `npx youj add` is the recommended way to copy source in. The shadcn CLI works, but it skips a few fixes the Youj CLI makes. See [When to use the Youj CLI instead](#when-to-use-the-youj-cli-instead).
+</Callout>
+
+## 1. Set the app up
+
+The quickest route is one command:
+
+```bash
+npx youj init --mode registry
+```
+
+It adds the `@youj` namespace to `components.json` (or writes one), sets up the `@/` alias where it's missing, copies the core in, imports the stylesheets after Tailwind, removes what `shadcn init` left in them that would override Youj (see [The stylesheets](#the-stylesheets)) and wraps the app in `YoujProvider`. It never stops at a prompt, even without a terminal: your `lib/utils.ts` is merged (see [Your lib/utils.ts](#your-libutilsts)), and if the core can't be copied completely it exits with code 1 before pointing your stylesheet or layout at it. From then on, either CLI can add items. To do it by hand instead, follow steps 2 to 4.
+
+## 2. Add the namespace
+
+Map `@youj` to the registry in `components.json`. Pin it to the version of Youj you're on, so the items you copy match the packages and the docs for that version:
+
+```json title="components.json"
+{
+  "registries": {
+    "@youj": "https://www.youj.dev/r/v0.1.0/{name}.json"
+  }
+}
+```
+
+The registry is served at two addresses:
+
+| URL | What it serves |
+| --- | --- |
+| `https://www.youj.dev/r/v<version>/{name}.json` | One release's items, unchanged after it ships. Their dependencies on other Youj items name the same version. `npx youj` reads its own version's, and `init --mode registry` writes this URL. |
+| `https://www.youj.dev/r/{name}.json` | The latest alias: whatever the newest release is. The shadcn registry directory lists this one, so `npx shadcn add @youj/<item>` without a namespace of your own uses it. |
+
+Items copied from the latest alias can change from one release to the next. Prefer the versioned URL in an app, and move it to a newer version when you upgrade, the same way you'd bump the packages. Each item's npm dependencies carry a range (`motion@^14`, `@base-ui/react@~1.8.0`: inside the ranges the packages support, Motion 13.4.4 or later and 14, Base UI 1.8 and 1.9), so a copy installs the versions its source was written for.
+
+## 3. Add items
+
+Name an item as its page shows it, with the namespace in front:
+
+```bash
+npx shadcn@latest add @youj/button
+npx shadcn@latest add @youj/app-analytics-overview
+```
+
+Add `--dry-run` to see the files and dependencies first. The first item brings the core with it: the tokens, provider, themes and `cn` in `lib/youj/`, the Youj stylesheet `styles/youj.css` and the UI token bridge `styles/ui.css`. After that, items land where `npx youj add` puts them:
+
+| Item | Where it lands |
+| --- | --- |
+| UI components (`button`, `data-table`) | `components/ui/` |
+| Motion components and icons (`reveal`, `icon-bell`) | `components/youj/` |
+| Illustration scenes (`illustration-coffee`) | `components/youj/graphics/` |
+| Blocks (`app-analytics-overview`) | `blocks/<group>/` |
+
+### Your lib/utils.ts
+
+Every UI item imports `cn` and a few helpers (`formatBytes`, `numberFormat`, `initials`) from `lib/utils.ts`, which a shadcn app has its own of, so the first item asks to overwrite it. Answer no and the Youj items that use a helper don't compile. Answer yes and helpers of your own in that file are gone. `npx youj init --mode registry` and `npx youj add` merge it instead: shadcn's stock file (only `cn`) is replaced by Youj's, whose `cn` does the same and knows Youj's tokens, and a file with helpers of your own moves to `lib/utils.local.ts`, which Youj's re-exports. With the shadcn CLI, move your helpers out first.
+
+Your other shadcn files, such as `components/ui/button.tsx` and `dialog.tsx`, sit where Youj's go too, and Youj's components import each other. Keep shadcn's `dialog.tsx` and Youj's `alert-dialog.tsx` won't compile. Replace the shared ones together (`npx youj add button input label dialog select --overwrite`); `npx youj add` stops with exit code 1, naming them, rather than leave a mix.
+
+## 4. What items need to render right
+
+### The `@/` alias
+
+UI components and blocks import each other through `@/` (`@/components/ui/button`), as shadcn's own items do, so the alias must point at your source folder. shadcn reads it from `paths` in `tsconfig.json`. On Vite, set `resolve.alias` in the Vite config too. Motion items use relative imports and work without it.
+
+### The stylesheets
+
+Import the copied stylesheets right after Tailwind, in the stylesheet that imports it:
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '../styles/youj.css';
+@import '../styles/ui.css';
+```
+
+For the Bezel [look](/docs/looks), add `@import '../styles/bezel.css';` after `ui.css`: it comes from its own item, `@youj/youj-look-bezel`. Then remove three things `shadcn init` generated, which `init --mode registry` removes for you (it shows the diff):
+
+- `@custom-variant dark (&:is(.dark *));`. Tailwind keeps the last `dark` variant, so it would replace Youj's, and Youj's `dark:` classes would match nothing.
+- The color and radius lines in `@theme inline`, `--color-accent: var(--accent)` above all: it would make every `bg-accent` transparent. Youj's stylesheet maps the same names.
+- The `:root` and `.dark` variable blocks. Loaded after the bridge, they override it, and the palette splits in two.
+
+`npx youj doctor` fails while any of them is there. [Coming from shadcn/ui](/docs/guides/shadcn) explains the bridge and the one renamed color, `accent` to `hover`.
+
+### The provider
+
+Wrap the app in `YoujProvider` and spread the theme on the server-rendered `<html>`, so nothing flashes on load:
+
+```tsx title="app/layout.tsx"
+import { YoujProvider } from '@/lib/youj/provider'
+import { basalt, themeProps } from '@/lib/youj/theme'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" {...themeProps(basalt)} data-theme="dark" data-yj-look="classic">
+      <body>
+        <YoujProvider theme={basalt}>
+          {children}
+        </YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+Youj's palette follows `data-theme` on `<html>`, not shadcn's `.dark` class. With `next-themes`, set `attribute="data-theme"`.
+
+### The look
+
+Classic is the default [look](/docs/looks), and has no stylesheet. A root `YoujProvider` writes `data-yj-look="classic"` itself, and the same attribute on `<html>` covers what's portaled outside the provider. For Bezel, pass `look="bezel"` to the provider, put `data-yj-look="bezel"` on `<html>` and import `bezel.css` after `ui.css`.
+
+## When to use the Youj CLI instead
+
+On the registry, `npx youj add` runs shadcn's installer underneath, so the files it writes are the same. It adds what the shadcn CLI doesn't do:
+
+- **Apps on the packages.** When `@youj/react` is installed, `youj add` doesn't copy a component the package ships. For a block, it copies only the block's own files and points its imports at the packages. The shadcn CLI copies everything, which leaves the app with two copies of each component.
+- **Several items at once.** The shadcn CLI resolves an import by its last segment, so one block's `…/data` can land on another block's `data.ts`. `youj add` puts those imports back.
+- **The alias.** `youj add` checks the `@/` alias first and names the file to fix. Without the alias, the shadcn CLI writes into a literal `./@/` folder.
+- **Your files.** `youj add` never prompts. It merges `lib/utils.ts`, and when a Youj item needs Youj's version of a file you have your own of, it asks in a terminal and otherwise stops with exit code 1 and the command to run, rather than leave an app that doesn't compile.
+- **Sound.** `npx youj add sound` also gives your `YoujProvider` `sound={beacon}`; on the Next.js App Router it does that in a `'use client'` `app/providers.tsx`, because a pack can't be passed from the server layout.
+- **The version.** `youj add` copies from its own version's registry, so the items match the packages it installs. Pass `--latest` for the latest alias.
+- **A private registry.** With `YOUJ_REGISTRY_TOKEN` or a registry of your own, `youj add` fetches every item from that registry, including dependencies that name another origin.
+
+The shadcn CLI suits an app that is all copied source and adds one item at a time. Either way, `npx youj doctor` checks the result: the stylesheet order, shadcn's dark variant and color variables, the alias, copied imports that point at missing files, and Youj components importing a shadcn file in place of Youj's. `npx youj doctor --strict` also typechecks the app.
+
+## Related
+
+<Cards>
+  <Card title="CLI" href="/docs/cli">Every command and flag of `npx youj`.</Card>
+  <Card title="Installation" href="/docs/installation">The packages, the recommended route.</Card>
+  <Card title="Coming from shadcn/ui" href="/docs/guides/shadcn">The token bridge and the renamed color.</Card>
+  <Card title="Looks" href="/docs/looks">Classic and Bezel.</Card>
+</Cards>

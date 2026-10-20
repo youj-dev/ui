@@ -1,0 +1,115 @@
+---
+title: TextEffect
+description: "Render any text with a reveal: a split-flap board, a terminal, a decode, a blur-in or rolling reels."
+---
+
+<ComponentPreview name="text-effect/demo" height={360} />
+
+Use it wherever a short piece of text arrives or changes and the change is worth seeing: a hero headline, a stat, a status line, a departures row. Pick the effect by what the text is. A board or a code reads well as `split-flap` or `roll`, a command or log line as `terminal`, a technical label as `decode`, and a headline or sentence as `blur-in`. Keep it to a few words or one sentence, and don't animate text people need to read at once, like an error message.
+
+## Installation
+
+<InstallTabs name="text-effect" />
+
+## Usage
+
+```tsx
+import { TextEffect } from '@youj/motion'
+
+export function Hero() {
+  return <TextEffect as="h1" text="Interfaces that move with intent" />
+}
+```
+
+It plays when half of it is on screen (`inView`; `inView={false}` plays on mount) and again whenever `text` changes, from the text it showed to the new one. The final text holds its box from the first frame, so nothing around it moves.
+
+## Examples
+
+<Examples>
+
+<Example id="effects" label="Effects">
+
+### Effects
+
+`effect` picks one of five:
+
+- `blur-in`, the default: word by word, each sharpening out of a blur as it rises a little.
+- `split-flap`: each character on a tile that flips through its alphabet to land, top half then bottom, across a hinge.
+- `terminal`: typed out a keystroke at a time behind an optional `prompt`, with a block cursor that blinks while it waits.
+- `decode`: random glyphs resolving into place. This is [ScrambleText](/docs/motion/scramble-text), with TextEffect's box and timing.
+- `roll`: each character on a reel that rolls up to it, like a slot or an odometer.
+
+`split-flap` and `roll` pass through the target's own digits or letters (A–Z, a–z or 0–9), or through `glyphs` when you set one. A space or punctuation mark changes in one step, and a character that stays the same doesn't move.
+
+</Example>
+
+<Example id="departures-board" label="Departures board">
+
+### Departures board
+
+Each cell of a board is its own `split-flap`. Pad each field to a fixed number of characters (`padEnd`) so the board never changes size, and a new page flips only the characters that changed.
+
+<ComponentPreview name="text-effect/board" height={300} />
+
+The tiles are `bg-well` with your text color; style them through `[&_[data-yj-flap]]:bg-…` on a parent.
+
+</Example>
+
+<Example id="status-line" label="Status line">
+
+### Status line
+
+With `erase`, a terminal line deletes back to what the old and new text share before it types the rest, so `deploy: building` becomes `deploy: ready` by deleting `building` only. Style the prompt through `[&_[data-yj-prompt]]`.
+
+<ComponentPreview name="text-effect/terminal" height={300} />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="text, effect, as, inView… (11)">
+
+### Props
+
+<PropsTable name="TextEffect" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Per effect · reduced motion">
+
+### Motion
+
+`duration` is one unit's motion and `stagger` the gap between units. Each effect has its own defaults:
+
+<MotionSpec
+  rows={[
+    { moment: 'Split-flap flip', note: 'each flip; up to six per character, characters staggered', duration: 'fast', stagger: 'base' },
+    { moment: 'Roll', note: 'each reel, characters staggered', duration: 'deliberate', stagger: 'tight', ease: 'enter' },
+    { moment: 'Blur-in', note: 'each word: blur, rise and fade, words staggered', duration: 'slow', stagger: 'loose', ease: 'enter' },
+    { moment: 'Terminal keystroke', note: 'uneven per key, longer after punctuation; erase deletes at twice the speed', stagger: 'loose' },
+    { moment: 'Decode', note: 'the whole decode', duration: 'deliberate' },
+  ]}
+  reduced="The final text shows at once, and new text swaps in place. The cursor holds still."
+/>
+
+A long text keeps its stagger within the `deliberate` token, so twenty tiles land about as soon as five. Every effect runs on one animation frame loop per instance and moves only transforms, opacity and filter; the cursor blinks only while it's on screen.
+
+#### Reduced motion
+
+The text renders as it is, with no flips, typing, glyphs, blur or reels, and `onComplete` is called at once. A board shows its tiles and a terminal its prompt and a still cursor, so the look stays.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, selection, direction">
+
+### Accessibility
+
+- The text is rendered once in a visually hidden span, and the animated layer is `aria-hidden`. A screen reader reads the text, never the tiles, keystrokes or noise.
+- To announce a change, put TextEffect inside a live region such as `role="status"`, as the status line above does.
+- At rest the visible text is plain text you can select and copy; the hidden copy is left out of the selection.
+- `blur-in` and `terminal` follow the reading direction, so a right-to-left line types and sharpens from the right. `split-flap` and `roll` animate each character on its own tile or reel, which breaks the joining of connected scripts such as Arabic: use `blur-in` or `terminal` there.
+- `data-state` on the root is `idle`, `playing` or `done`, and `data-yj-effect` names the effect.
+
+</ReferenceRow>

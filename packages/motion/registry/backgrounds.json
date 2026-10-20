@@ -1,0 +1,145 @@
+[
+  {
+    "name": "youj-gl",
+    "type": "registry:lib",
+    "title": "Youj GL",
+    "description": "Shared plumbing for canvas and WebGL2 backgrounds. It covers compiling with readable errors, a full-screen triangle, a DPR-capped resize observer, a rAF loop on speed / timeScale, pausing offscreen and in hidden tabs, context loss and restore, a single coalesced frame under reduced motion, token colors read from computed CSS and re-read on theme change, pointer tracking, and a CSS gradient fallback.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/gl.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/backgrounds/render-loop.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/backgrounds/webgl.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/backgrounds/resolve-colors.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/backgrounds/use-background-canvas.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/backgrounds/color.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/backgrounds/common.glsl.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "mesh-gradient",
+    "type": "registry:component",
+    "title": "Mesh Gradient",
+    "description": "A slow, luxurious flowing mesh gradient. Four color masses drift through a domain-warped field and blend in OKLab, with film grain and dither against banding. Colors default to an analogous family derived from the accent token. Pointer-reactive.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/mesh-gradient.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/backgrounds/mesh-gradient.glsl.ts", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "noise-field",
+    "type": "registry:component",
+    "title": "Noise Field",
+    "description": "Domain-warped flow noise read as a topographic survey. It has anti-aliased contour lines with every fifth line emphasised, accent-tinted summits, and a grid of survey marks. The pointer raises a mound that bunches the contours.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/noise-field.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/backgrounds/noise-field.glsl.ts", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "aurora",
+    "type": "registry:component",
+    "title": "Aurora",
+    "description": "Layered curtains of light for a hero backdrop: bright lower edges, rays hanging upward, and pulses travelling along each ribbon. It adds light on dark canvases and tints on light ones, and keeps the lower frame quiet for content.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/aurora.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/backgrounds/aurora.glsl.ts", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "particle-constellation",
+    "type": "registry:component",
+    "title": "Particle Constellation",
+    "description": "Drifting particles linked by hairlines when near each other, with density that adapts to area. The pointer attracts particles (or repels them) and lights nearby links in the accent. It is drawn in Canvas 2D with a spatial grid and batched strokes, and holds 60fps at 1440p.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/particle-constellation.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "flow-field",
+    "type": "registry:component",
+    "title": "Flow Field",
+    "description": "Streaks drifting on a smooth noise current, each leaving a fading trail. The pointer stirs a vortex in the current and lights the streaks it catches in the accent. Trails are redrawn from a short history, so nothing ghosts, in Canvas 2D with batched strokes.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/flow-field.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "swarm",
+    "type": "registry:component",
+    "title": "Swarm",
+    "description": "A flock that roams the canvas, then gathers and circles the pointer. Boids steer by separation, alignment and cohesion with a slow wander, with neighbors from a spatial hash. It is drawn in Canvas 2D as darts batched into alpha tiers.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/swarm.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "dot-matrix-wave",
+    "type": "registry:component",
+    "title": "Dot Matrix Wave",
+    "description": "A precise lattice of dots whose size and brightness ripple from the pointer and from clicks. It has a pointer lens, a wake of soft rings, click ripples and occasional ambient pulses. The dots are anti-aliased discs on a device-pixel grid.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/dot-matrix-wave.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/backgrounds/dot-matrix-wave.glsl.ts", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "magnetic-field",
+    "type": "registry:component",
+    "title": "Magnetic Field",
+    "description": "A grid of dots that bends away from the pointer and springs back. Each dot follows a target on a damped spring, so the field flows around the cursor and rebounds when it leaves; a press shoves the dots near it, and dots take the accent as they are pushed. It is drawn in Canvas 2D with batched paths.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/magnetic-field.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "ripple-pond",
+    "type": "registry:component",
+    "title": "Ripple Pond",
+    "description": "A calm dot lattice that behaves like a pond. Moving the pointer drops soft ripples, a press drops a strong one, and an idle field lets a drop fall now and then. Each ring is a travelling wave packet: dots rise and brighten on a crest and sink in the trough. It is drawn in Canvas 2D with batched paths.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/ripple-pond.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "warp-grid",
+    "type": "registry:component",
+    "title": "Warp Grid",
+    "description": "A line grid that sags toward the pointer like mass bending space. Lines bunch and curve around the well and stay put far away; the nearest take the accent. With no pointer the well eases to the middle and breathes. It is drawn in Canvas 2D with batched paths.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/warp-grid.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "atmosphere",
+    "type": "registry:component",
+    "title": "Atmosphere",
+    "description": "A painted, grainy ground for a card to float on: a panned meadow, lit dunes with a suede grain, a dark ground glowing into English red, or a dusk. Each scene has its own palette for light and dark (from Sanzo Wada's A Dictionary of Color Combinations) and pairs with the theme preset of its name; the middle stays quiet so the card is the hero. One fragment shader at up to 24 fps, a still frame under reduced motion, and a CSS still without WebGL2.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-gl"],
+    "files": [
+      { "path": "src/components/youj/backgrounds/atmosphere.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/backgrounds/atmosphere.glsl.ts", "type": "registry:component" }
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+{
+  "title": "Transitions",
+  "pagesIndex": "transitions",
+  "pages": ["sliding-indicator", "morph-label", "collapse", "content-swap", "presence-list", "page-transition"]
+}

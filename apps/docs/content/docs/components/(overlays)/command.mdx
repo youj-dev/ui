@@ -1,0 +1,189 @@
+---
+title: Command
+description: "Search and choose commands or options inline, in a popover or in a dialog."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="command/demo" height={520} />
+
+A command menu with grouped actions and shortcuts; choosing one reports what ran below.
+
+</Story>
+
+<Story id="in-a-popover" label="In a popover">
+
+<ComponentPreview name="command/filter" height={400} />
+
+A status filter: Command inside a Popover, with checked rows you can toggle.
+
+Command in a Popover makes a picker or a faceted filter, the shape a data table toolbar uses. Give rows a `checked` state and each gets a trailing check that draws itself in, plus `aria-checked` for assistive technology, so the list works as a multi-select.
+
+</Story>
+
+<Story id="results-from-a-server" label="Results from a server">
+
+<ComponentPreview name="command/async" height={400} />
+
+Results that arrive from a request, with a loading row while it runs.
+
+When results come from a request, turn off cmdk's filtering with `shouldFilter={false}`, control the search, and show a `CommandLoading` row while the request runs. `CommandEmpty` waits while a loading row is shown, since nothing having arrived yet isn't the same as no results.
+
+</Story>
+
+<Story id="in-a-dialog" label="In a dialog">
+
+<ComponentPreview name="command/dialog" height={260} />
+
+A command palette in a dialog, opened from a button.
+
+`CommandDialog` puts a Command in a [Dialog](/docs/components/dialog) that hangs from the top third of the screen, so the input never moves as the list grows and shrinks. It's named "Command palette" for screen readers unless you pass a `title`. This one opens from a button: this site already uses ⌘K (Ctrl K on Windows and Linux) for its own search. For the full palette, with pages and a global shortcut, use [Command Palette](/docs/components/command-palette).
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="command" noImport />
+
+Requires `cmdk`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/command`.
+
+Use Command to search a list of actions or options. Place it inline, in a [Popover](/docs/components/popover), or in `CommandDialog`. Use [Command Palette](/docs/components/command-palette) for an app-wide shortcut with nested pages and back navigation. For short lists, use [Select](/docs/components/select) or [Dropdown Menu](/docs/components/dropdown-menu).
+
+```tsx
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@youj/react/command'
+
+export function CommandMenu() {
+  return (
+    <Command label="Command menu" className="rounded-xl border">
+      <CommandInput placeholder="Type a command or search…" />
+      <CommandList>
+        <CommandEmpty>No commands match.</CommandEmpty>
+        <CommandGroup heading="Project">
+          <CommandItem onSelect={deploy}>
+            Deploy to production
+            <CommandShortcut>⌘⇧D</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Go to">
+          <CommandItem onSelect={openInbox}>Inbox</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  )
+}
+```
+
+Command is [cmdk](https://cmdk.paco.me), restyled. Typing filters and ranks the rows and keeps the first match active. `onSelect` runs on click and on `Enter`. A row's `value` is what the search matches (its text by default), and `keywords` add more terms. `label` names the search field for screen readers ("Search" by default). Arrow keys wrap around from the last row to the first.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="checked, indicator, wrapperClassName… (14)">
+
+### Props
+
+#### CommandItem
+
+<PropsTable name="CommandItem" />
+
+#### CommandInput
+
+<PropsTable name="CommandInput" />
+
+#### CommandLoading
+
+<PropsTable name="CommandLoading" />
+
+#### CommandSeparator
+
+<PropsTable name="CommandSeparator" />
+
+#### CommandDialog
+
+<PropsTable name="CommandDialog" />
+
+`Command` passes its props to cmdk's root: `label`, `shouldFilter`, `filter`, `value` and `onValueChange` for the active row, and `loop`, which is on here. `CommandList`, `CommandGroup` (`heading`), `CommandEmpty` and `CommandShortcut` take cmdk's or plain element props.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="Inside a bottom sheet (a Combobox, a MultiSelect or a CommandDialog…">
+
+### Touch
+
+Inside a bottom sheet (a Combobox, a MultiSelect or a `CommandDialog` on touch) the parts restyle themselves: the search row becomes a filled search field that stays at the top while the list scrolls under it, rows are 48px with 16px text, and `CommandShortcut` hints are hidden. The highlight only shows while the field has focus, when Enter would pick it; otherwise a row darkens under the finger.
+
+On a touch device `CommandDialog` is a tall bottom sheet instead of a dialog in the middle of the screen. Its height stays the same as results change, and while the on-screen keyboard is up the sheet sits on top of it, so the search field stays visible. Pull it down, tap outside it or press Escape to close it. It opens with the list in view and the keyboard down. If it opens from a search button, where people expect to type right away, pass `autoFocusField`. iOS only raises the keyboard for a focus that happens during the tap itself, and the field appears a moment later, so also call `primeKeyboard()` from `@youj/react` in that button's handler before you open the dialog.
+
+`presentation` on `CommandDialog` chooses: `auto` (the default) is a dialog under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the dialog on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Active row, list height, check… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Active row', note: 'one `SlidingIndicator` glides between rows and retargets while a key repeats', spring: 'smooth' },
+    { moment: 'List height', note: 'eases as results come and go, up to `--command-list-max`', duration: 'base', ease: 'standard' },
+    { moment: 'Check', note: '`checked` rows, draws in', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Dialog open', note: '`CommandDialog`, rise and scale (`yj-dialog`)', duration: 'base', ease: 'enter' },
+    { moment: 'Dialog close', duration: 'fast', ease: 'exit' },
+  ]}
+  reduced="The highlight jumps to the active row, the list snaps to its new height, checks appear drawn and the dialog appears at once."
+/>
+
+While you type, the highlight stays still: filtering keeps the first result active, so only the list around it changes height. The list is capped at 20rem by default and scrolls past that. Change the cap with the `--command-list-max` custom property on `CommandList`, as the examples above do.
+
+#### Reduced motion
+
+The active row's highlight jumps instead of gliding, and the list snaps to its new height. Checks appear already drawn, and `CommandDialog` opens and closes at once. Filtering, announcements and keyboard behavior don't change.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The input is a `combobox` that controls a `listbox`. The active row is tracked with `aria-activedescendant`, so focus stays in the input while you move through the results.
+- Groups are `group`s named by their headings. Separators, the loading row and the highlight are hidden from assistive technology, because a listbox may only contain options and groups.
+- The list keeps a status region beside it. It announces "no results" and the loading label, which the listbox itself can't.
+- `CommandDialog` is a named dialog that focuses the input when it opens and returns focus to its trigger when it closes.
+
+| Key | Action |
+| --- | --- |
+| `↑` / `↓` | Moves the active row, wrapping at the ends. Disabled rows are skipped. |
+| `Home` / `End` | Jumps to the first or last row. |
+| `Ctrl+N` / `Ctrl+P` | Next and previous row, for Emacs and Vim habits. |
+| `Enter` | Runs the active row. |
+| `Escape` | Closes `CommandDialog`. |
+
+</ReferenceRow>

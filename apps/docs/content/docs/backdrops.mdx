@@ -1,0 +1,62 @@
+---
+title: Backdrops
+description: "Painted, grainy grounds to show your blocks on, each with a theme preset drawn from the same colors."
+---
+
+<BackdropGallery />
+
+Some blocks in these docs stand on a backdrop: a soft, grainy ground where the card is the only sharp thing, the way a launch page would show it. Each backdrop has a light and a dark version, each designed for its mode, and a preset of the same name. The preset's accent, neutrals and chart colors come from the same combination as the backdrop, so the block and its ground read as one scheme. Switch the site to dark to see the other side.
+
+Palettes drawn from Sanzo Wada's *A Dictionary of Color Combinations* (1933–34).
+
+| Backdrop | Made with | Wada combination | Preset | Shown under |
+| --- | --- | --- | --- | --- |
+| Meadow | Code: a meadow under sky, panned so the grass streaks | No. 294: Sulpher Yellow, Cream Yellow, Cossack Green, Salvia Blue | `meadow` | [Metric chart](/docs/blocks/trends-and-comparisons#metric-chart) |
+| Sandstone | Code: broad dunes lit from the top left, with a fine suede grain | No. 279: Raw Sienna, Vinaceous Cinnamon, Ecru, Dark Tyrian Blue | `sandstone` | [Breakdown](/docs/blocks/trends-and-comparisons) |
+| Cinnabar | Code: near-black glowing into English red, crossed by soft bands | No. 190: Ivory Buff, English Red, Black | `cinnabar` | [Retention](/docs/blocks/trends-and-comparisons#retention) |
+| Umber | Code: a dusk from a pale sky to umber, with a coarse stipple | No. 160: Sulphine Yellow, Pale Raw Umber, Dark Medici Blue | `umber` | [Orders](/docs/blocks/tables-and-lists#bulk-actions) |
+| Seaglass | A photograph: a long-exposure sea, softened and graded | No. 302: Cream Yellow, Ecru, Nile Blue, Antwarp Blue | `seaglass` | [KPI cards](/docs/blocks/trends-and-comparisons#kpi-cards) |
+| Heather | A photograph: heather on a moor, softened and graded | No. 162: Old Rose, Rainette Green, Lilac | `heather` | [Goals](/docs/blocks/meters-and-limits#goals) |
+
+In a block's preview, the Appearance menu still switches the block to any other preset; the backdrop stays.
+
+## Use one
+
+The ones drawn in code ship as [Atmosphere](/docs/components/atmosphere), in `@youj/motion/backgrounds`. Put it in a positioned section behind your card, and wear the preset of the same name:
+
+```tsx
+import { meadow, YoujProvider } from '@youj/core'
+import { Atmosphere } from '@youj/motion/backgrounds'
+
+export function Launch() {
+  return (
+    <YoujProvider theme={meadow}>
+      <section className="relative isolate grid min-h-dvh place-items-center p-6">
+        <Atmosphere scene="meadow" />
+        <YourCard />
+      </section>
+    </YoujProvider>
+  )
+}
+```
+
+It follows light and dark on its own, holds one still frame under reduced motion, and is a CSS gradient with grain where WebGL2 isn't available.
+
+Seaglass and Heather are photographs, so they stay on this site; their presets ship like the others. To do the same with a photograph of your own, soften it and grade it toward the preset's colors, keep it small (these are 2400 × 1500 WebP files of about 20 KB), and lay it behind the card as a background image.
+
+## The presets
+
+Meadow, Sandstone, Cinnabar, Umber, Seaglass and Heather are full presets, exported by their ids from `@youj/core` and listed in [Theming](/docs/theming#presets) with the others. Each is its palette in the Clean style (Inter, rounded corners, precise motion), and each passes `checkTheme` in light and dark: text at 4.5:1 on every surface, chart series at 3:1, with neighboring series apart for readers with red-green color blindness. Wada's swatches were moved in OKLCH only as far as those checks needed, keeping their hues.
+
+## Credits
+
+The palettes are Sanzo Wada's, from *A Dictionary of Color Combinations* (1933–34). Only the color data was used, from the community dataset [mattdesl/dictionary-of-colour-combinations](https://github.com/mattdesl/dictionary-of-colour-combinations).
+
+The photographs are used under the [Unsplash License](https://unsplash.com/license):
+
+| Backdrop | Photograph | Photographer |
+| --- | --- | --- |
+| Seaglass, light | [Calm sea under golden clouds](https://unsplash.com/photos/calm-sea-under-golden-clouds-ywnnwzcdR5o) | [Jonathan Bean](https://unsplash.com/@jonathanbean) |
+| Seaglass, dark | [Body of water](https://unsplash.com/photos/body-of-water-OSKCUpGVXv4) | [Regine Tholen](https://unsplash.com/@designbytholen) |
+| Heather, light | [A field of heather with the sun behind it](https://unsplash.com/photos/a-field-full-of-purple-flowers-with-the-sun-shining-in-the-background-_YIhjRB16aU) | [Jisca Lucia](https://unsplash.com/@wanderlandjournal) |
+| Heather, dark | [A field of heather](https://unsplash.com/photos/a-field-of-purple-flowers-p_RHVffaclk) | [Chiara Wolf](https://unsplash.com/@wanderwolves) |

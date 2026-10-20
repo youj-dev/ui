@@ -1,0 +1,139 @@
+---
+title: Toggle
+description: "Turn an option on or off with a button that stays pressed."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="toggle/demo" height={300} />
+
+Build log options: Timestamps and Wrap toggles with labels, and an icon-only Pin toggle.
+
+</Story>
+
+<Story id="state-icons" label="State icons">
+
+<ComponentPreview name="toggle/icons" height={240} />
+
+Four icon toggles whose icons morph between their two states as you press.
+
+A Youj state icon inside a toggle can follow the pressed state through its `active` prop. It morphs to its second state as the toggle presses, and a quick second press reverses it from wherever it is.
+
+```tsx
+<Toggle aria-label="Pin project" pressed={pinned} onPressedChange={setPinned}>
+  <PinIcon active={pinned} />
+</Toggle>
+```
+
+</Story>
+
+<Story id="variants-and-sizes" label="Variants and sizes">
+
+<ComponentPreview name="toggle/variants" height={320} />
+
+The default and outline variants, a labeled toggle, the three sizes and a disabled toggle.
+
+`default` is borderless, for toolbars that already have a frame. `outline` adds a border and suits toggles that stand alone. Three sizes, `sm`, `default` and `lg`, match the button heights (28, 32 and 40px).
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="toggle" noImport />
+
+Use a toggle for a view or formatting option that applies at once and is read from the button itself: pressed means on. For a setting in a form or a settings list, use a [Switch](/docs/components/switch). For a set of related options, use a [Toggle Group](/docs/components/toggle-group), and for a one-off action, a [Button](/docs/components/button).
+
+```tsx
+import { useState } from 'react'
+import { Toggle } from '@youj/react'
+import { CornerDownLeftIcon } from '@youj/icons'
+
+export function WrapLines() {
+  const [wrap, setWrap] = useState(false)
+  return (
+    <Toggle variant="outline" pressed={wrap} onPressedChange={setWrap}>
+      <CornerDownLeftIcon />
+      Wrap
+    </Toggle>
+  )
+}
+```
+
+Use `pressed` and `onPressedChange` to control it, or `defaultPressed` to let it hold its own state. Pressed reads as a filled neutral key with full-strength text. The accent stays reserved for actions.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="sound, variant, size (3)">
+
+### Props
+
+<PropsTable name="Toggle" />
+
+The state comes from Base UI's Toggle, and these are the props you'll reach for:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `pressed` | `boolean` | Controlled state. |
+| `defaultPressed` | `boolean` | Initial state when uncontrolled. Default `false`. |
+| `onPressedChange` | `(pressed: boolean, details) => void` | Called when the user toggles it. |
+| `disabled` | `boolean` | Ignores presses. |
+| `value` | `string` | Identifies it inside a Toggle Group. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Press, release, hover and pressed fill · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Press', note: 'scales to 0.97 while held', duration: 'instant', ease: 'standard' },
+    { moment: 'Release, hover and pressed fill', note: 'scale back, background and text colors', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="No press scale. The fill and text colors still change on the fast token, since nothing moves."
+/>
+
+#### Reduced motion
+
+The press doesn't scale. Colors still change, so the pressed state reads the same, and a state icon switches to its second state instantly instead of morphing.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- It's a `<button>` with `aria-pressed`. `Space` and `Enter` toggle it.
+- Keep the name constant and let `aria-pressed` carry the state: a toggle named "Pin project" is announced as pressed or not pressed. Don't swap the label between "Pin" and "Unpin".
+- Icon-only toggles need an `aria-label`. A Youj icon inside is decorative unless you label it.
+- For a group of related toggles, use a [Toggle Group](/docs/components/toggle-group), which gives them one tab stop and arrow-key navigation.
+
+</ReferenceRow>

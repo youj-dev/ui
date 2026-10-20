@@ -1,0 +1,104 @@
+---
+title: Item Pager
+description: "Step to the next or previous record of a list from its detail panel."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="item-pager/demo" height={260} />
+
+A item pager in a drawer header, moving through four support tickets.
+
+</Story>
+
+<Story id="shortcuts" label="Shortcuts">
+
+<ComponentPreview name="item-pager/shortcuts" height={240} />
+
+Keyboard shortcuts for stepping between records.
+
+By default J, K and the arrow keys step while focus is in the stepper. `shortcuts="global"` also listens for J and K on the whole page, which is what an open record drawer wants. Keys typed into a field, a combobox or editable text stay there. `shortcuts="none"` turns keys off. The buttons' tooltips show the keys.
+
+
+The page-wide arrows are left alone: they scroll the page and move through lists.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="item-pager" noImport />
+
+Use a item pager in the header of a detail panel or drawer that shows one row of a list: a deal, a ticket, a message. ↓ opens the next row, ↑ the previous one, and "2 of 4" says where you are, so people work through a list without closing the panel. To move between pages of results, use [Pagination](/docs/components/pagination). For the steps of a process, use a [Stepper](/docs/components/stepper).
+
+```tsx
+'use client'
+
+import { useState } from 'react'
+import { ItemPager } from '@youj/react'
+
+export function TicketHeader({ tickets }: { tickets: Ticket[] }) {
+  const [index, setIndex] = useState(0)
+  return <ItemPager index={index} total={tickets.length} onIndexChange={setIndex} />
+}
+```
+
+`index` counts from 0 and the position shows it from 1. The stepper owns no state: `onIndexChange` receives the index to open, and you show that record. It never steps past either end.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="index, total, onIndexChange, shortcuts, locale (5)">
+
+### Props
+
+<PropsTable name="ItemPager" />
+
+Other props go to the `div` that groups the buttons and the position. The position is formatted with `locale`, or the app's locale from `YoujProvider`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Labels" summary="records, previousRecord, nextRecord, recordOf">
+
+### Labels
+
+The group's name and the buttons' names are `records`, `previousRecord` and `nextRecord` in `YoujProvider`'s `labels`; the position is `recordOf(position, total)`, which receives both numbers already formatted. All fourteen built-in locales translate them.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It is a `group` named "Records" with two buttons, "Next record" and "Previous record", each with `aria-keyshortcuts`.
+- At either end the button is disabled but stays focusable (`aria-disabled`), so stepping onto the last record with the keyboard keeps focus where it was.
+- The position is a polite live region: "6 of 48" is announced as it changes.
+- The keys don't steal typing: in a field, J and K type.
+
+</ReferenceRow>

@@ -1,0 +1,95 @@
+---
+title: Icons in your components
+description: "Add icons to controls with the right triggers, sizes and accessible labels."
+---
+
+Add icons to your buttons, menus, tabs and fields. They animate when someone hovers or keyboard-focuses the control. This guide covers placement, sizing, triggers, state and accessible labels.
+
+## Picking an icon
+
+Browse the [explorer](/icons) and search by name or keyword; each icon describes its choreography. Pick for meaning first. Motion reinforces an icon that already fits, and a lively choreography can't rescue one that doesn't.
+
+- **Actions** (save, share, delete) take an icon that plays on hover, as a preview of the action.
+- **States** (muted, pinned, expanded) take a [state icon](/docs/icons/morphs) driven by your state.
+- **Two different icons for one control** (notify and muted) take an [IconSwap](/docs/icons/icon-swap).
+- **An icon Youj doesn't draw** can use the optional [YoujIcon wrapper](/docs/icons/youj-icon) with an icon from Lucide.
+
+## In buttons
+
+Put the icon inside the button, before the label. The button is its trigger, so hover and keyboard focus play it, and the icon inherits the button's text color through `currentColor`.
+
+<ComponentPreview name="icons-in-components/buttons" height={260} />
+
+Youj's [Button](/docs/components/button) sizes its icons to the control: 16px at most sizes, 14px at `xs` and `icon-xs`, and 20px at `icon-lg`. It also pulls a leading or trailing icon 2px toward its edge, because a glyph reads as more padding than text does. So pass only the stroke: 1.75 keeps 14–16px icons crisp next to 13px text, and the default 1.5 suits 20px and up.
+
+An icon-only button needs a name, and the icon stays decorative:
+
+```tsx
+<Button variant="ghost" size="icon" aria-label="Delete project">
+  <TrashIcon strokeWidth={1.75} />
+</Button>
+```
+
+## In menus and tabs
+
+Menu items and tabs are triggers too, since they carry the `menuitem` and `tab` roles. Highlighting a row with the pointer or the arrow keys plays its icon. Youj's menu rows and tabs size icons to 16px, and a menu row keeps its icon muted until the row is highlighted.
+
+<ComponentPreview name="icons-in-components/menu" height={320} />
+
+The trigger above uses a state icon: `MoreHorizontalIcon active={open}` turns the dots into a close mark while the menu is open. The pin row does the same with its checked state.
+
+<ComponentPreview name="icons-in-components/tabs" height={220} />
+
+## In fields, rows and cards
+
+An icon plays for its closest button, link, `summary`, `label`, or element with a button, link, menu item, tab, switch or option role. A field group, a list row or a card is none of those, so its icon would only play when the pointer is right over the glyph. Mark the container with `data-yj-trigger` and it becomes the trigger: hovering anywhere on it, or focusing anything inside it, plays the icon.
+
+<ComponentPreview name="icons-in-components/groups" height={360} />
+
+```tsx
+<InputGroup data-yj-trigger>
+  <InputGroupAddon>
+    <SearchIcon strokeWidth={1.75} />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="Search settings" aria-label="Search settings" />
+</InputGroup>
+```
+
+Focus counts from anywhere inside the container, so tabbing to a row's switch plays that row's icon. An explicit `data-yj-trigger` also wins over a closer control, so a whole card can be the trigger for an icon inside one of its buttons.
+
+## Driven by state
+
+When an icon shows a state, bind `active` to it. A controlled icon ignores hover and follows only your state, so it can't show a preview that contradicts it. Here the arrow folds to point down when the newest deployments are first, and the column header carries `aria-sort`.
+
+<ComponentPreview name="icons-in-components/sort" height={300} />
+
+```tsx
+<th aria-sort={newestFirst ? 'descending' : 'ascending'}>
+  <button type="button" onClick={() => setNewestFirst(!newestFirst)}>
+    Updated
+    <ArrowUpIcon active={newestFirst} size={14} strokeWidth={2} />
+  </button>
+</th>
+```
+
+Don't leave a state icon on hover inside a control that changes that state. A copy button whose icon previews "copied" on hover says the copy already happened. Drive it with `active`, or hold it with `trigger="none"`. For toggle buttons, [useIconState](/docs/icons/use-icon-state) wires the state, the icon and the ARIA together.
+
+## Labels
+
+- **Inside a named control, the icon is decorative.** Youj icons are `aria-hidden` by default, so the control's text or `aria-label` is its one name. Don't also label the icon.
+- **An icon that stands alone and means something gets `aria-label`.** It becomes `role="img"` with that name, like a status mark with no text beside it.
+- **State lives on the control.** Use `aria-pressed`, `aria-expanded`, `aria-sort` or a name that changes. The icon's morph is only what sighted users see.
+
+## Adding icons one at a time
+
+Copying source in instead of using the package, add only the icons you use. Each icon is its own item, `icon-<name>`, and the CLI brings the icon engine with the first one.
+
+```bash
+npx youj add icon-search icon-trash icon-arrow-up
+```
+
+The files land in `components/youj/icons/`, one per icon, and import each other relatively, so they work wherever your components live.
+
+## Reduced motion
+
+Nothing to wire up. Under reduced motion every icon holds its resting pose, loops stop, and a controlled `active` switches state instantly, so the sort arrow still points the right way and the menu trigger still shows its close mark. Test with the Reduced motion switch on any preview above.

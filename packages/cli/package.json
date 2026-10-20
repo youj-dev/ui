@@ -1,0 +1,51 @@
+{
+  "name": "youj",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) Set up Youj in a React app with one command: npx youj init.",
+  "homepage": "https://www.youj.dev/docs/installation",
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "keywords": [
+    "alpha",
+    "cli",
+    "scaffold",
+    "init",
+    "shadcn-registry",
+    "nextjs",
+    "vite",
+    "youj"
+  ],
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/cli"
+  },
+  "bin": {
+    "youj": "./dist/cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage.enabled",
+    "verify": "pnpm typecheck && pnpm build && pnpm test"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.8.1"
+  }
+}

@@ -1,0 +1,121 @@
+---
+title: Cell Bar
+description: "Show a total built from its periods: a cell per month, each as wide as its amount, settled or projected, against a target."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="cell-bar/demo" height={220} />
+
+A made-up bakery's year of ingredients on one scale, each against its plan. Flour runs past its plan's dashed tick, butter shrinks under it; the last three months of each are forecast, so they are hatched.
+
+</Story>
+
+<Story id="quarters" label="Captions and a named target">
+
+<ComponentPreview name="cell-bar/quarters" height={200} />
+
+`captions` writes each cell's label and amount under it, for a few wide cells like quarters, and `targetLabel` names the tick.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="cell-bar" noImport />
+
+Use a cell bar where a total's length and its rhythm both matter: spend by month against a budget, hours by week against a plan, a quarter's revenue by month. Rows of them on one `max` compare totals, and each bar still shows how its total grew. For shares of a whole use a [Share Bar](/docs/components/share-bar); for one settled or pending amount, a [Hatched Bar](/docs/components/hatched-bar). The [Plan vs actual](/docs/blocks/rankings-and-breakdowns#plan-vs-actual) card is built on it.
+
+```tsx
+import { CellBar } from '@youj/react'
+
+<CellBar
+  label="nightly-summarizer, by month"
+  cells={[
+    { label: 'Aug', value: 980 },
+    { label: 'Sep', value: 1060 },
+    { label: 'Oct', value: 1120, projected: true },
+  ]}
+  max={10000}
+  target={6240}
+  tone="warning"
+  formatValue={(v) => `$${v.toLocaleString('en-US')}`}
+/>
+```
+
+Each cell is as wide as its `value`, with a 2px gap between cells; the bar runs to its total on a scale that ends at `max` (by default the total, or the target if larger). `projected` cells are hatched in the tone. `target` puts a dashed tick on the same scale, and `targetLabel` names it over the tick. `formatValue` writes amounts in the tooltips, captions and summary.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="cells, max, target, targetLabel, tone, captions, formatValue…">
+
+### Props
+
+<PropsTable name="CellBar" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `cell-bar`, `cell-bar-track`, `cell-bar-cells`, `cell-bar-cell`, `cell-bar-target`, `cell-bar-target-label`, `cell-bar-captions`, `cell-bar-caption`, `cell-bar-tooltip` and `cell-bar-summary`. The root has `data-tone`, and a projected cell `data-yj-projected`. The tone is `--cell-bar-tone`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, reflow · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'the cells open from the inline start when half the bar scrolls into view (a clip, so they never stretch)', spring: 'smooth' },
+    { moment: 'Reflow', note: 'a new amount widens or narrows its cell and the bar', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="Drawn at its values; changes land at once."
+/>
+
+#### Reduced motion
+
+The cells are drawn at their widths, and a new amount lands at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Cell bar") described by its total, the part that is projected and the target ("$9,710 in all. $3,540 of it projected. Target $6,240.").
+- The cells are a list; each is read with its period and amount, and says when it is projected ("Oct: $1,120, projected").
+- One tab stop. The arrow keys walk the cells (mirrored in RTL), `Home` and `End` go to the ends, and focus shows the same tooltip as hovering.
+- Projected cells are hatched as well as tinted, and the target is a dashed tick, so neither leans on color alone.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

@@ -1,0 +1,122 @@
+---
+title: Rankings & breakdowns
+description: "How a total splits and what ranks first: rings and bars, waterfalls, cause rings, budgets, forecasts and plan against actual."
+---
+
+<BlockStories>
+
+<BlockStory id="breakdown" label="Breakdown" block="app-breakdown" story="Default" backdrop="seaglass">
+
+How a total splits, as a ring beside a ranked bar list, with the long tail folded into Other. Press a part to zoom the ring into it and see its own parts. The breadcrumb, or Escape, takes you back up, and a reversal partway through runs smoothly back.
+
+</BlockStory>
+
+<BlockStory id="share-gauge" label="Share gauge" block="app-share-gauge" story="Default" backdrop="seaglass">
+
+Where a total went, as a half-donut over a ranked list with the tail folded into Other. Point at a segment or a row, or arrow through the list, and both light up with a tag over the segment. Switch the period and the segments move to their new places while the total counts.
+
+</BlockStory>
+
+<BlockStory id="loss-waterfall" label="Loss waterfall" block="app-loss-waterfall" story="Default" backdrop="umber">
+
+A start amount worn down to a result, as an isometric waterfall: the start as the first, tall bar, each loss hanging from where the last one left the level, and what is left standing as the green bar at the end. The biggest loss is called out in your unit, a legend picks another, and a row below says where to look into the one you picked. Shown with a machine's day; stories also use take-home pay and a signup funnel.
+
+</BlockStory>
+
+<BlockStory id="cause-rings" label="Cause rings" block="app-cause-rings" story="Default" backdrop="umber">
+
+Why something was lost, as a total and its change, then a two-ring donut. The inner ring is the causes; the outer ring splits each cause into where its share came from (lines, plans, channels), the three largest hatched with lines, dots and crosses so it reads without color and in print. The legend lists each cause's figure, and a pill says how few causes make up most of the total. Shown with a plant's line stops; stories also use churn reasons and ticket reasons.
+
+</BlockStory>
+
+<BlockStory id="pace-budget" label="Pace budget" block="app-pace-budget" story="Default" backdrop="sandstone">
+
+A period's budget read map first: a treemap of where it went, what is used and left, and the day it runs out at this pace. A plan of switches outlines the categories it trims. The demo is a household's month; stories show a marketing budget and a week of calories.
+
+</BlockStory>
+
+<BlockStory id="month-forecast" label="Month forecast" block="app-month-forecast" story="Default" backdrop="sandstone">
+
+A month's running total read as where it will land: the projection against the budget, its likely range and the day it crosses, and the parts it is made of. Switch between your own scenarios, adjust the budget or set an alert. The demo is a cloud bill; stories show a home's electricity and a support team's tickets, in your own format.
+
+</BlockStory>
+
+<BlockStory id="portfolio" label="Portfolio" block="app-portfolio" story="Default" backdrop="sandstone">
+
+A value, how it moved and what it is made of. Switch the period and the chart morphs while the change counts to its new figure; hover the chart, or arrow along it, to read the value on a date. The demo is an investment portfolio; stories show revenue by product line and spend by campaign.
+
+</BlockStory>
+
+<BlockStory id="plan-vs-actual" label="Plan vs actual" block="app-plan-vs-actual" story="Default" backdrop="heather">
+
+What each row of a set adds up to this year, against its plan; the default is a team's agent spend, and department budgets or a harvest by field read the same way. A row of month cells per big one and one for the rest, on one scale: settled months solid and forecast ones hatched, in the warning ink when the year runs past its plan (the dashed tick) and the success ink when under. Below them, the year by quarter against the plan. Beside them, the total to date against the plan to date, the projected year, a few facts and the biggest movers with why; the foot carries the insight with Set budget and the next step. Your own formats write the figures in any unit. It has loading, error and empty states that keep its size.
+
+</BlockStory>
+
+<BlockStory id="estimate-builder" label="Estimate builder" block="app-estimate-builder" story="Default" backdrop="heather">
+
+What anything priced by the amount will cost; the default is usage pricing for a log platform, and a catering quote or a move reads the same way. The estimate leads, for one period or twelve with the discount on the longer segment, and its all-in price per unit of the first line. A bar and its key split it by line; pointing at a key row, a line or a ruler lights its part. Below, a preset switch (Hobby, Startup, Scale in the demo) and a ruler of ticks per line in its color, each with its cost and unit price. The picker in the head scales every price, and Save estimate sends the usage, region, billing and totals. It has loading, error and empty states that keep its size.
+
+</BlockStory>
+
+<BlockStory id="lollipop-ranking" label="Lollipop ranking" block="app-lollipop-ranking" story="Default" backdrop="umber">
+
+Where every item of a set stands against a line; the default is a company's error budgets, and school attendance or supplier ratings read the same way. The items as a table with their owner, 90 days of trend in the status ink, the signed value, when it crosses the line and the alert, filtered by status tabs that count each one, a group and a search. Beside it, the index: every item as a dot on a stem from zero, from the lowest to the highest. Picking a row picks its dot and the other way round, and the panel names it with its target, period and owner. Your own statuses set the bands, their words and colors. It has loading, error and empty states that keep its size.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="images, tables, switches, motion">
+
+### Accessibility
+
+Each chart has a name and a one-sentence summary, and the metric chart's numbers are also in a real table behind View data. Wherever you can scrub a chart (the KPI tiles and the metric chart), it is a slider: Left and Right step a bucket, Home and End jump to either end, Escape lets go, and each position is read out as a sentence with the date, the figures and the change. The tile and chart headers update with it.
+
+Loss waterfall draws the isometric bars as an image whose text gives the start, every loss with its figure and the result left. The legend repeats every loss as a button (`aria-pressed`) that moves the callout, and the drill-in row is a button named by its title.
+
+Cause rings draws the donut as an image whose text lists every cause with its figure and share, and the legend repeats it as buttons (`aria-pressed`) that light a cause and list where its share came from. Patterns and a hairline edge carry the meaning, never color alone.
+
+The forecast chart is an image with a text alternative and a summary, the scenario switch is labelled, and each series row has a hidden sentence of spent against projected. Limit tracker's rules are switches.
+
+Plan vs actual lists its rows in order of size; each bar is a named group described by its total, the projected part and the plan, and its months are a list one tab stop deep, each read with its amount and whether it is projected. Over and under plan are said in the head's badge and with signed amounts, not by color alone, and the facts are a description list.
+
+Estimate builder names its billing switch, region picker and preset switch. The bar is a `meter` whose value text names every line with its share, and the key repeats them as a list that is one tab stop walked with the arrow keys. Each line is a `slider` named by the line and spoken in its unit ("60 GB / day"); the ruler's ticks are decorative. A new preset or billing period announces the new total in a polite live region.
+
+Lollipop ranking filters with status tabs (each counting its items), a labelled search and a group select. The table is named, its value column has `aria-sort` and sorts from its header button, and each item's name is a button pressed while it is picked; owners are spoken by name, and each trend is an image named for its item. The index is a listbox, one tab stop walked with the arrows, its options named with the item and its value and `aria-selected` when picked; the picked item's line above it is a polite live region. Statuses are signed amounts and words as well as inks.
+
+Each card is a `section` named by its title. Under reduced motion the figures, bars, the fan and its particles are drawn in place.
+
+</ReferenceRow>
+
+</BlockStories>

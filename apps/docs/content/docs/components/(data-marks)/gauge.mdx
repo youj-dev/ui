@@ -1,0 +1,125 @@
+---
+title: Gauge
+description: "Show a score or resource level on a fine half-ring scale, with its value and status."
+aliases: ["progress ring", "circular progress", "speedometer", "meter", "radial progress"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="gauge/demo" height={340} />
+
+A health index gauge with zones and a status, and buttons for 38, 74 and 91 that move it.
+
+`gradient` lays the bands under the fill as zones: each band faint in its own tone, split from the next by a hairline gap, so the whole scale reads at once, like the zones on a dial, while the fill keeps the one tone of the band the value is in. Without thresholds the zones are danger, warning and success thirds. Use it for scores where high is good; the band still names the value.
+
+</Story>
+
+<Story id="thresholds" label="Thresholds">
+
+<ComponentPreview name="gauge/thresholds" height={220} />
+
+Three load gauges at 34, 76 and 95 percent, in different sizes.
+
+Each threshold starts a band that runs up to the next one. The fill takes the band's `tone`, and the band's `label` becomes the sub-label under the value (pass children to write your own). A value crossing into the next band crossfades the fill to the new tone.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="gauge" noImport />
+
+Use a gauge for a single score between known ends that people read at a glance: a health index, a load, a quota. The value sits in the bowl and the word for its band sits under it, between the range's two ends, so "74, Strained" reads before anyone looks at the arc. The arc is a thin band on a scale of ticks, and a fine needle across the band marks the value. For several resources side by side, use [Segmented Meter](/docs/components/segmented-meter); for a trend, use a [Sparkline](/docs/components/sparkline).
+
+```tsx
+import { Gauge } from '@youj/react'
+
+<Gauge
+  value={74}
+  label="Health index"
+  gradient
+  thresholds={[
+    { value: 0, tone: 'danger', label: 'Critical' },
+    { value: 50, tone: 'warning', label: 'Strained' },
+    { value: 80, tone: 'success', label: 'Nominal' },
+  ]}
+/>
+```
+
+`min` and `max` default to 0 and 100. `format` takes `Intl.NumberFormat` options, so units and percentages follow the locale. `size` is `sm`, `default` or `lg`; `sm` leaves the range's ends out.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, min, max… (11)">
+
+### Props
+
+<PropsTable name="Gauge" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Every part carries a `data-slot`: `gauge`, `gauge-arc`, `gauge-scale` (the ticks), `gauge-track` (or `gauge-zone` with `gradient`), `gauge-indicator`, `gauge-index`, `gauge-value`, `gauge-footer`, `gauge-min`, `gauge-max` and `gauge-label`. The root also has `data-size` and `data-tone` (a tone, or `gradient`).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, number and index, new value… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the fill sweeps up from the minimum when 40% of the gauge scrolls into view, once', spring: 'smooth' },
+    { moment: 'Number and index', note: 'follow the fill frame by frame on the same spring, so they never drift apart', spring: 'smooth' },
+    { moment: 'New value', note: 'retargets mid-flight with its velocity; pressing quickly never jumps', spring: 'smooth' },
+    { moment: 'Band change', note: 'the fill crossfades to the new tone', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Drawn at its value, with the index and the number in place; changes jump."
+/>
+
+#### Reduced motion
+
+The fill, the needle and the number are drawn at the value, and a new value replaces the old one at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's a `meter` (Base UI Meter) with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`. Name it with `label`, or point `aria-labelledby` at a visible heading.
+- The value is spoken with its band: "74, Strained". A warning or danger band without a label is spoken as "Warning" or "Critical" (translated through `labels`), so color is never the only signal.
+- The arc and the animated number are hidden from assistive tech; the meter's value text carries both.
+- A dial turns clockwise in every script, so the arc keeps its direction in right-to-left layouts.
+
+</ReferenceRow>

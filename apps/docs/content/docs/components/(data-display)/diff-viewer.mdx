@@ -1,0 +1,126 @@
+---
+title: Diff Viewer
+description: "Show the difference between two versions of a file, unified or side by side, with what changed inside each line marked."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="diff-viewer/demo" height={560} />
+
+A CI workflow moved to a newer runner and Node, and run on pull requests too.
+
+Pass `before` and `after` and the diff is computed in the component (Myers' algorithm, line by line). Inside each pair of removed and added lines, the words that changed take a stronger tint. Press J and K (or Alt+↓ and Alt+↑) anywhere in the diff to step through the changes.
+
+</Story>
+
+<Story id="split" label="Split view">
+
+<ComponentPreview name="diff-viewer/split" height={640} />
+
+One file of a pull request, side by side: before on one side, after on the other, each removal paired with its addition.
+
+The split view always wraps long lines, so both sides stay in view. In the unified view, the wrap button chooses between wrapping and scrolling sideways.
+
+</Story>
+
+<Story id="patch" label="Patch input">
+
+<ComponentPreview name="diff-viewer/patch" height={520} />
+
+A unified diff as `git diff` prints it. Each hunk opens on its `@@` header, and the file name comes from the patch.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="diff-viewer" noImport />
+
+Use a diff viewer wherever someone reviews a change to code or config: a pull request, a deploy's changes, a config history, an AI edit waiting for approval. For a snippet that isn't a change, use [Code Block](/docs/components/code-block).
+
+```tsx
+import { DiffViewer } from '@youj/react'
+
+export function ConfigChange({ previous, current }: { previous: string; current: string }) {
+  return <DiffViewer before={previous} after={current} filename="config/app.json" language="json" />
+}
+```
+
+- **Two versions or a patch.** `before` and `after` are compared line by line. Line endings don't count (CRLF reads as LF), but a missing newline at the end of the file does, as in git. Or pass `patch`, a unified diff; only its first file is shown, and the lines between its hunks can't be opened because the patch doesn't carry them.
+- **Highlighting** is CodeBlock's built-in tokenizer, so `language` takes the same values (`ts`, `tsx`, `json`, `yaml`, `css`, `py`, `go`…). It produces tokens, never HTML.
+- **Unchanged lines** fold beyond `context` lines on each side of a change (3 by default) into a row that opens in place. `context={Infinity}` shows every line.
+- **View and wrap** are `view`/`defaultView`/`onViewChange` and `wrap`/`defaultWrap`/`onWrapChange`, so an app can remember them.
+- **Copy** copies `after`, or the patch when you passed one.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="before, after, patch, language, filename, view, wrap, context…">
+
+### Props
+
+<PropsTable name="DiffViewer" />
+
+#### Data attributes
+
+The root carries `data-yj-view` (`unified` or `split`) and `data-yj-wrap` when lines wrap. Each line's code cell carries `data-yj-line` (`add`, `del` or `context`), and the row of the change you stepped to carries `data-yj-current`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Stepping, view switch, copy · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Step to a change', note: 'the change glides to the middle of the view and an accent bar marks its first line', value: 'smooth scroll' },
+    { moment: 'View switch', note: 'the segmented control’s indicator glides to the pressed view', spring: 'smooth' },
+    { moment: 'Copied', note: 'the copy icon’s check, then back to rest after a beat', value: '3 × deliberate' },
+  ]}
+  reduced="Stepping jumps to the change, the view indicator moves at once and the copy icon swaps to its check."
+/>
+
+#### Reduced motion
+
+Every state shows at once; the diff reads the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Table, keyboard, announcements">
+
+### Accessibility
+
+- The viewer is a `figure` named by the file name, and the diff is a table whose caption names the file and counts the additions and deletions.
+- Each changed line reads its change and number first: "Added line 12: …", "Removed line 9: …". Line numbers and the +/− signs are decorative and can't be selected, so copying by hand takes only the code. In the split view, the columns are headed Before and After.
+- The diff is a focusable region. J and K, or Alt+↓ and Alt+↑, step to the next and previous change (described on the region, and as `aria-keyshortcuts`); the header's position, "Change 3 of 7", is announced politely. Previous and Next change are buttons too.
+- A folded run is a button, "12 unchanged lines"; opening it keeps focus in the diff.
+- The view is a segmented control and wrap a toggle button, each named. Copy announces its result, and a refused clipboard says so.
+- On a right-to-left page the header follows the page while the code stays left to right, as code does.
+
+</ReferenceRow>

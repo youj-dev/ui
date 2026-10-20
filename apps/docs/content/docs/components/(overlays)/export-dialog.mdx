@@ -1,0 +1,169 @@
+---
+title: Export Dialog
+description: "Choose a date range, a format and the columns, see what the export holds, then run it and watch it finish or arrive by email."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Payments export">
+
+<ComponentPreview name="export-dialog/demo" height={260} />
+
+A payments export: a summary that follows the range, the ranges with their days, and the file's options.
+
+The summary at the top says what the choice holds ("412 payments", "€18,240") and which days. It is a polite status region: when you pick another range it keeps the old figures, dims them while your `summary` function answers, and announces the new ones. Each range in the list shows the days it stands for, computed from today, so "Last 7 days" reads "Sep 23 – 29" and can be checked at a glance.
+
+Export is an [Async Button](/docs/components/button#async-button): it works, then says Done, or Failed with the reason under it. While it works the choices are locked, and changing any of them afterwards clears the outcome.
+
+</Story>
+
+<Story id="emailed" label="Large export, emailed">
+
+<ComponentPreview name="export-dialog/emailed" height={260} />
+
+A year of payments is too much to build while the dialog waits.
+
+When `onExport` resolves `{ emailed: true }` the button says Queued and the dialog says "We’ll email it to you when it’s ready", naming the address when you pass `email`. The note is a polite status region, so it is read out. Nothing else changes: the person can close the dialog, and the file arrives where you said it would.
+
+</Story>
+
+<Story id="custom-range" label="Custom range">
+
+<ComponentPreview name="export-dialog/custom" height={260} />
+
+Custom opens the Date Range Picker inline, and the dialog grows to fit it.
+
+Choosing Custom reveals the picker under its row, with a smooth height change and no scroll box: a form that scrolls hides its last field. Until both ends are chosen the summary asks for them and Export stays off. This example keeps the choice in the app (`value` and `onValueChange`), so the dialog opens on the range it was left on.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="export-dialog" noImport />
+
+Use an Export Dialog when a person leaves a list or report with a file: it asks the three questions an export needs (which days, which format, which columns) in one place and shows the result of the choice before anything runs. For a dialog of your own content use a [Dialog](/docs/components/dialog); for the range field alone, a [Date Range Picker](/docs/components/date-range-picker).
+
+```tsx
+'use client'
+
+import { Button } from '@youj/react'
+import { ExportDialog } from '@youj/react/date'
+
+const COLUMNS = [
+  { id: 'id', label: 'Payment ID' },
+  { id: 'amount', label: 'Amount' },
+  { id: 'status', label: 'Status' },
+]
+
+export function ExportPayments() {
+  return (
+    <ExportDialog
+      title="Export payments"
+      trigger={<Button variant="outline">Export</Button>}
+      columns={COLUMNS}
+      summary={async ({ from, to }) => {
+        const { count, total } = await countPayments(from, to)
+        return { count, total: formatEuros(total) }
+      }}
+      countLabel={(count) => `${count} payments`}
+      onExport={async (request) => {
+        const job = await startExport(request)
+        return job.large ? { emailed: true, email: job.email } : undefined
+      }}
+    />
+  )
+}
+```
+
+`onExport` receives what was chosen: `{ period, from, to, format, timeZone, columns }`, with `from` and `to` as the first and last day (start of day, local time, both included). Resolve for done, resolve `{ emailed: true }` for an export that will arrive by email, and reject or throw for failed; the error's message is shown. `timeZone` is the value of the option chosen (`local` or `utc` by default): your export applies it.
+
+`summary` gets the same request without waiting for the person to press anything, once when the dialog opens and again when the range or the time zone changes. A late answer to a range that was since left is dropped. Without `summary` the panel shows the days alone.
+
+It lives in the date entry, `@youj/react/date`, with the Date Range Picker it is built on.
+
+### Date ranges
+
+`presets` is a list of ids (`today`, `yesterday`, `last7Days`, `last30Days`, `thisMonth`, `lastMonth`, `yearToDate`), shown in that order with the provider’s names for them. `custom={false}` leaves out Custom. The range behind each id is a pure function you can use yourself:
+
+```ts
+import { presetRange } from '@youj/react/date'
+
+presetRange('last7Days', new Date(2026, 8, 29), 'en-US')
+// { from: Sep 23, to: Sep 29, text: 'Sep 23 – 29' }
+```
+
+`text` is how the locale writes the range, with the year only when the range is not in the current one. The clock is the second argument, so a range never depends on when it runs: pass `now` to the dialog to fix it in tests and stories.
+
+### Format, time zone and columns
+
+`formats` is a list of `{ value, label }` (CSV, XLSX and JSON by default), shown as a select, and the first is chosen. `timeZones` is a pair, shown as a two-option switch: your local zone and UTC by default. `columns` is every column the file can hold, `{ id, label }`; the button next to Columns says "All 12", "8 of 12" or "None", and its popover has a checkbox per column with All and None above them. With no column chosen, Export is off.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="trigger, columns, presets, formats, timeZones, summary, onExport, value…">
+
+### Props
+
+<PropsTable name="ExportDialog" />
+
+#### Data attributes
+
+The dialog carries `data-slot="export-dialog"`. The summary is `export-dialog-summary` and carries `data-yj-pending` while your `summary` function is answering. The columns button is `export-dialog-columns`. The rest are the [Dialog](/docs/components/dialog)’s, the [Radio Group](/docs/components/radio-group)’s, the [Select](/docs/components/select)’s and the [Async Button](/docs/components/button#async-button)’s own.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Dialog entrance, height change, figures dimming · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'the dialog rises and fades in over its scrim, as every Dialog does' },
+    { moment: 'Custom range', note: 'the picker’s row grows open and the dialog grows with it; choosing a preset folds it away', duration: 'base', ease: 'standard' },
+    { moment: 'Summary updating', note: 'the old figures dim while the new ones are asked for, then take their place', duration: 'fast', ease: 'standard' },
+    { moment: 'Outcome note', note: 'grows open under the options when an export is queued or fails', duration: 'base', ease: 'standard' },
+    { moment: 'Export button', note: 'the Async Button’s pending, success and error states' },
+  ]}
+  reduced="The dialog and the picker’s row appear at once, the figures change without dimming and the note shows without growing."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Focus, radio group, live regions, keyboard">
+
+### Accessibility
+
+- Focus starts on the chosen date range. The ranges are a radio group named "Date range": the arrow keys move and choose, Tab goes on to the options. Each radio is named by its range and described by its days ("Last 7 days", "Sep 23 – 29").
+- Choosing Custom does not move focus; Tab reaches the start and end fields, which are named "Start date" and "End date", and the calendar button opens the range picker.
+- The summary is a `status` region, so a changed count, total or period is announced politely, and `aria-busy` while it is being asked for.
+- The columns button is named by its row ("Columns") and its text ("All 12"); its popover is a labelled group of checkboxes, with the count repeated as a status line above them.
+- The outcome is announced twice over: a queued export politely ("We’ll email it to you when it’s ready"), a failure assertively with its message. The Async Button announces working and done as it always does.
+- While an export runs, the choices and Cancel are disabled, and Escape closes the dialog only when it is not running. On a touch screen the dialog is a bottom sheet, like every Dialog, and focus starts on the sheet so the keyboard stays down.
+
+</ReferenceRow>

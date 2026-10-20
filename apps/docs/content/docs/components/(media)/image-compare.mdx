@@ -1,0 +1,121 @@
+---
+title: Image Compare
+description: "Compare two pictures in one frame: drag the divider to reveal one over the other."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="image-compare/demo" height={460} />
+
+One illustration twice: the kit's gray on the start side, the theme's hues past the divider.
+
+Drag the handle, or press anywhere on the picture to spring the divider there and keep dragging. The tags in the corners fade as the divider comes close to them.
+
+</Story>
+
+<Story id="vertical" label="Vertical, on hover">
+
+<ComponentPreview name="image-compare/vertical" height={520} />
+
+A sky before and after grading, stacked, with `orientation="vertical"` and `hover`.
+
+With `hover` the divider follows a mouse across the picture with no press; touch and pen still drag. Vertical puts `before` on top and runs the divider across.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="image-compare" noImport />
+
+Use an Image Compare to show what changed between two versions of the same picture: an edit, a redesign, a model's output against its input, a site before and after a fix. For pictures to step through one at a time, use a [Carousel](/docs/components/carousel).
+
+```tsx
+import { ImageCompare } from '@youj/react'
+
+<ImageCompare
+  before={{ src: '/room-before.jpg', alt: 'The room before the renovation' }}
+  after={{ src: '/room-after.jpg', alt: 'The room after the renovation' }}
+  beforeLabel="Before"
+  afterLabel="After"
+  className="aspect-video"
+/>
+```
+
+`before` and `after` take `{ src, alt }` for an image (drawn cover-fit) or any node: an illustration, a canvas, a rendered component. `after` sits underneath and sets the size; `before` is cut off at the divider. Give both the same aspect, or set one on the component with `className`.
+
+The position is a number from 0 to 100: how much of `before` shows. It is uncontrolled with `defaultValue` (50), or controlled with `value` and `onValueChange`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="before, after, value, orientation, beforeLabel, afterLabel, hover…">
+
+### Props
+
+<PropsTable name="ImageCompare" />
+
+#### Data attributes
+
+The root carries `data-orientation` (`horizontal` or `vertical`), plus `data-dragging` while a pointer holds it and `data-disabled` when disabled. Its parts are `image-compare-before`, `image-compare-after`, `image-compare-divider`, `image-compare-handle` and `image-compare-label` (with `data-side`). The drawn position is `--ui--compare`, from 0 to 100.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drag, press, keys · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drag and hover', note: 'the divider follows the pointer 1:1, never eased in time' },
+    { moment: 'Press to jump', note: 'a press away from the handle springs the divider to the pointer', spring: 'snappy' },
+    { moment: 'Value from outside', note: 'a new controlled `value` springs the divider there', spring: 'snappy' },
+    { moment: 'Key step', note: 'each arrow, Page, Home or End step glides', duration: 'fast', ease: 'standard' },
+    { moment: 'Handle press', note: 'the held handle shrinks to 90% and its shadow tightens', duration: 'fast', ease: 'standard' },
+    { moment: 'Corner tags', note: 'a tag fades out as the divider comes near it', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Dragging is the same. A press, a key or a new value puts the divider there at once, and the handle and tags change without easing."
+/>
+
+#### Reduced motion
+
+Dragging works the same. Presses, keys and new values move the divider at once, and the handle and tags change without easing.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Slider role, keyboard, value text">
+
+### Accessibility
+
+- The handle is a `slider` (0 to 100) with `aria-orientation`, named "Comparison divider". Its value text says how much of each side shows ("Before 60%, After 40%"), using `beforeLabel` and `afterLabel` when they are strings.
+- Arrow keys step by 5 and Page Up and Page Down by 20; Home and End go to either end. Keys move the divider the way it looks: right (left in right-to-left) or down is up the scale.
+- A press anywhere on the picture moves focus to the handle, so the keys carry on from there. The handle has a visible focus ring.
+- Touch drags along the divider's axis and still scrolls the page across it. Each pointer is captured, so a drag keeps going outside the picture.
+- Give each `{ src, alt }` image an `alt` that says what is different about it. `disabled` takes the handle out of the tab order and sets `aria-disabled`.
+
+</ReferenceRow>

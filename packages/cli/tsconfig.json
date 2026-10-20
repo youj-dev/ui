@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2022"
+    ],
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "noUncheckedIndexedAccess": true,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@youj/core/*": [
+        "../core/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test",
+    "tsdown.config.ts"
+  ],
+  "exclude": [
+    "test/fixtures"
+  ]
+}

@@ -1,0 +1,118 @@
+---
+title: Score Ring
+description: "Show a score out of a range as a full ring of ticks lit up to it, with its letter grade in the middle."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="score-ring/demo" height={260} />
+
+A security score with letter grades from F to A, and buttons for 34, 62, 77 and 94 that move it. The ring takes the tone of the band the score is in, and the grade in the middle changes with it.
+
+</Story>
+
+<Story id="grades" label="Without grades, busy">
+
+<ComponentPreview name="score-ring/grades" height={240} />
+
+Without `grades` the middle shows the score and the ring takes `tone`; `max` sets any range (a credit score out of 850). `busy` circles a soft sweep inside the ring while a scan or a check runs.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="score-ring" noImport />
+
+Use a score ring when one score carries a verdict: a security or health score with its letter grade, a compliance rating, a quality bar. The whole ring is the range and the lit ticks are the score, clockwise from the top, so how far round it reaches reads before the number; the tick at the score reaches past the rest. Pair it with the number itself (a [Stat Card](/docs/components/stat-card)'s `StatValue`) when the exact score matters. For a value on a scale with named bands and both ends shown, use a [Gauge](/docs/components/gauge). The [Score overview](/docs/blocks/status-and-health#score-overview) card is built on it.
+
+```tsx
+import { ScoreRing, type ScoreGrade } from '@youj/react'
+
+const grades: ScoreGrade[] = [
+  { from: 0, label: 'F', tone: 'danger' },
+  { from: 60, label: 'C', tone: 'warning' },
+  { from: 75, label: 'B', tone: 'success' },
+  { from: 90, label: 'A', tone: 'success' },
+]
+
+<ScoreRing value={77} grades={grades} label="Security score" />
+```
+
+Each grade starts a band at `from` that runs up to the next one, in any order; the ring takes the band's `tone` and shows its `label`. Without grades it shows the score in `tone` (the accent by default). `min` and `max` set the range (0 to 100 by default) and the score is held inside it. `ticks` sets how many make the ring (40 by default), `size` is `sm` (64px), `default` (96px) or `lg` (128px), and `children` replaces what sits in the middle.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, max, grades, tone, ticks, size, busy…">
+
+### Props
+
+<PropsTable name="ScoreRing" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `score-ring`, `score-ring-ticks`, `score-ring-tick`, `score-ring-sweep` and `score-ring-center`. The root has `data-size`, `data-tone` (the band's tone, or `tone`) and `data-yj-busy`; a lit tick has `data-yj-lit`. The lit ticks' color is `--score-ring-tone`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, relight, sweep · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the ticks light one after another up to the score when it scrolls into view', duration: 'deliberate', ease: 'standard' },
+    { moment: 'New score', note: 'the ticks between the old and the new score relight at once', duration: 'fast', ease: 'standard' },
+    { moment: 'Busy', note: 'a soft sweep turns inside the ring, once every six deliberate beats', duration: 'deliberate', ease: 'linear' },
+  ]}
+  reduced="Drawn at its score, with no sweep."
+/>
+
+#### Reduced motion
+
+The ring is drawn at its score, a new score lands at once, and `busy` draws no sweep (the ring still says it is busy).
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Meter, value text, busy">
+
+### Accessibility
+
+- A `meter` (your `label`, or the labels' "Score") with `aria-valuemin`, `aria-valuemax` and `aria-valuenow`, and a value text of the score of the maximum, then its grade: "77 of 100, grade B".
+- `busy` sets `aria-busy`, so assistive tech knows the reading may change.
+- The ticks and the sweep are decorative; the value text says the score. A grade is a letter as well as a tone, never color alone.
+- A dial turns clockwise in every script, so the ring keeps its direction under RTL.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

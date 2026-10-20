@@ -1,0 +1,139 @@
+---
+title: Morphs
+description: "Show a control’s state with icons that morph between meanings, such as play and pause."
+---
+
+<IconGallery type="morph" />
+
+Use a state icon when the icon itself should show which state a control is in: a menu that opens, a track that plays, a microphone that's muted, a page that's saved. When the two states are two different icons with no state icon between them, use [IconSwap](/docs/icons/icon-swap). For a one-off confirmation, like a check after a save, a plain icon with `trigger="mount"` says it with less.
+
+## Installation
+
+State icons ship with the rest of the set.
+
+```bash
+pnpm add @youj/icons
+```
+
+Or copy one in with the Youj CLI. Each is its own item and brings the icon engine with it.
+
+```bash
+npx youj add icon-menu
+```
+
+## Usage
+
+Pass your state to `active`. `false` is the first state, `true` the second.
+
+```tsx
+import { useState } from 'react'
+import { MenuIcon } from '@youj/icons'
+
+export function NavToggle() {
+  const [open, setOpen] = useState(false)
+  return (
+    <button type="button" aria-expanded={open} aria-controls="site-nav" aria-label="Menu" onClick={() => setOpen(!open)}>
+      <MenuIcon active={open} />
+    </button>
+  )
+}
+```
+
+Each icon names its two states in `meta.states`, for example `MenuIcon.meta.states` is `['menu', 'close']`. The morph shows the state, and the button carries it for assistive technology, here with `aria-expanded`.
+
+## Examples
+
+<Examples>
+
+<Example id="three-kinds-of-morph" label="Three kinds of morph">
+
+### Three kinds of morph
+
+Every pair is choreographed on its own, and the choreographies fall into three kinds.
+
+- **Shared-structure path morphs.** The two states share strokes, and the rest reshape. Play folds into pause, a plus swings into a check, a sun's rays retract as the moon's bite sweeps in.
+- **Sequenced choreography.** One move after another: the menu's outer bars converge before they cross, the phone's signal arcs retract before the handset turns to hang up, an upload arrow launches before its cloud seals.
+- **Masked slashes.** For off states, a slash is drawn through the icon and a matching gap is cut behind it with a mask, so the strokes never collide: the eye, the microphone, the bell and the camera.
+
+Success and arrival states, such as saved, added, invited and verified, land with the `settle` spring, the one overshoot Youj allows.
+
+</Example>
+
+<Example id="reversal" label="Reversal">
+
+### Reversal
+
+Turning a state off plays the opposite choreography, not the same one backwards: the menu's bars uncross before they separate. Toggle again mid-morph and the icon turns back from wherever it is, without a jump. Set the preview to ¼ speed and interrupt the morph to watch it.
+
+<ComponentPreview name="icons/reversal" height={300} />
+
+</Example>
+
+<Example id="driving-them-from-state" label="Driving them from state">
+
+### Driving them from state
+
+A state icon follows your state; it doesn't hold its own. That keeps it honest when the state changes from somewhere else, like a keyboard shortcut or the server. In this editor, each toolbar button is a pressed toggle, and its icon shows the formatting it applies.
+
+<ComponentPreview name="icons/editor" height={320} />
+
+[useIconState](/docs/icons/use-icon-state) builds the state, the button props and the icon props in one call:
+
+```tsx
+import { BoldIcon, useIconState } from '@youj/icons'
+
+const bold = useIconState({ label: 'Bold' })
+
+<button {...bold.buttonProps}>
+  <BoldIcon {...bold.iconProps} />
+</button>
+```
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, strokeWidth, aria-label… (8)">
+
+### Props
+
+State icons take the same props as every icon. `active` is the one that matters here: it overrides the trigger and holds the icon in its second state while it's `true`.
+
+<PropsTable name="IconProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Morph steps, second beat, snaps and flips… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Morph steps', note: 'each move in a sequence', duration: 'fast', ease: 'standard' },
+    { moment: 'Second beat', note: 'starts one `fast` step after the first', duration: 'base', ease: 'standard' },
+    { moment: 'Snaps and flips', note: 'parts that turn or click into place', spring: 'snappy' },
+    { moment: 'Success and arrival', note: 'saved, added, invited, verified', spring: 'settle' },
+    { moment: 'Draw on', note: 'checks, slashes and marks writing themselves', duration: 'slow', ease: 'emphasized' },
+  ]}
+  reduced="The icon switches straight to its new state, with no morph."
+/>
+
+Each icon's choreography is its own, built from these tokens. The [explorer's Morph view](/icons?type=morph) describes what each one does, and toggles them all in a wave.
+
+#### Reduced motion
+
+The icon switches to its new state instantly. The state is still visible, since the slash, the pause bars or the close mark all appear, just without the morph.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- A state icon is decorative. It shows the state; it doesn't announce it. Put the state on the control: `aria-pressed` for a toggle with one name (mute, bold, save), a name that changes for an action that flips (play and pause), or `aria-expanded` for a disclosure (menu).
+- Keep the control's name in step with what the icon shows. A button whose icon shows "close" should be named for closing, or carry `aria-expanded="true"`.
+- Toggling from the keyboard morphs the icon the same way as a click.
+
+</ReferenceRow>

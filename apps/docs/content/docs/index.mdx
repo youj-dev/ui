@@ -1,0 +1,81 @@
+---
+title: Introduction
+description: "Accessible components, animated icons, illustrations and themes that move together."
+---
+
+<ComponentPreview name="intro/upload-dialog" />
+
+Youj is accessible components, animated icons, illustrations and themes that move together. Use it to build React interfaces. One provider sets the theme, speed and reduced motion for all of them.
+
+<Callout type="note" title="Alpha">Youj is in alpha (0.x): APIs can change between minor versions. <a href="/docs/versioning">What that promises</a>.</Callout>
+
+## Quick start
+
+You need Node 22 or later and a React 19 app. Don't have one yet? Run `npx create-next-app@latest my-app --ts --tailwind --app`, then `cd my-app` (or `npm create vite@latest my-app -- --template react-ts` for Vite).
+
+1. In your app, run `npx youj init`. It installs the packages and wires the provider and the stylesheet.
+2. Import a component and render it:
+
+```tsx
+import { Button } from '@youj/react'
+
+export default function Page() {
+  return <Button>Save</Button>
+}
+```
+
+3. Start your dev server. A Youj button appears on the page.
+
+In the Next.js App Router, a component that takes an event handler or holds state needs `'use client'` at the top of its file. A plain `<Button>` doesn't. [Server rendering](/docs/guides/ssr) covers the rest.
+
+[Installation](/docs/installation) has the details, and the manual route.
+
+<Cards>
+  <Card title="@youj/react" href="/docs/components">
+    Accessible components on shadcn and Base UI. They own the things people click, type into and read, and move only through @youj/motion.
+  </Card>
+  <Card title="@youj/core" href="/docs/theming">
+    The provider, themes, tokens and labels every other package builds on.
+  </Card>
+  <Card title="@youj/motion" href="/docs/motion">
+    Motion primitives, transitions, effects, WebGL backgrounds, and a Lottie player.
+  </Card>
+  <Card title="@youj/icons" href="/docs/icons">
+    Original animated icons, with state morphs and transitions between any two.
+  </Card>
+  <Card title="Illustrations" href="/docs/illustrations">
+    Animated scenes drawn from your theme, with an explorer and an experimental builder.
+  </Card>
+  <Card title="Themes" href="/docs/theming">
+    Presets in light and dark, styles and two component looks, with contrast checked against WCAG AA.
+  </Card>
+  <Card title="@youj/sound" href="/docs/sound">
+    Optional interface sounds that components cue as their motion starts.
+  </Card>
+  <Card title="CLI and MCP" href="/docs/cli">
+    <code>npx youj</code> sets up and adds to your app, and an MCP server gives AI coding tools the docs.
+  </Card>
+</Cards>
+
+<IntroFilm />
+
+## One contract
+
+Use `useYouj()` to read shared durations, curves, springs and stagger steps. Components use these timing tokens and semantic color tokens, so changing a token updates the library consistently.
+
+Set speed and reduced motion through `YoujProvider`. The speed setting applies to tweens, springs, loops and shaders. Reduced motion replaces animation with a static state. Every preview on this site has both controls.
+
+## Principles
+
+<PrincipleCards />
+
+Read [Motion principles](/docs/motion/principles) to see each one side by side with the way it usually goes wrong.
+
+## Two ways in
+
+| Compare | Package | Registry |
+| --- | --- | --- |
+| Install | `npx youj init` | `npx youj init --mode registry` |
+| You get | Components to import | Their source files, in your app |
+| Updates | Bump the version | Add the item again, or edit it freely |
+| Best for | Using Youj as it is | Owning and tuning the code |

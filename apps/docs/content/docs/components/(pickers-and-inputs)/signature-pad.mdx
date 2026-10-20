@@ -1,0 +1,139 @@
+---
+title: Signature Pad
+description: "Draw or type a signature on one surface, accept it to lock it, and export it as SVG or PNG."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="signature-pad/demo" height={400} />
+
+An agreement's signature field: sign, then Accept files it, and the signature locks, its line turning green with a small tick.
+
+The pad is one surface: Draw | Sign by typing tabs across the top, the signing area, and a footer with Undo and Clear and the Accept button. Each stroke is one filled path that swells and thins: a pen's own pressure, or for a mouse or a finger a pressure taken from speed (fast is thin). Accept is the kit's AsyncButton: it awaits `onAccept(value)` (spinner), draws its check, and the signature locks: read-only, its line in the success ink with a small tick at the end, its ink settled onto the line. A rejection shows its message on the button and leaves the pad open; Re-sign unlocks a locked signature.
+
+</Story>
+
+<Story id="type-instead" label="Sign by typing">
+
+<ComponentPreview name="signature-pad/type-instead" height={320} />
+
+A signature typed rather than drawn, set in a script face.
+
+Sign by typing is the way to sign without a pointer: its tab, or Enter on the focused drawing area. Each mode keeps its own draft, so switching back brings the drawing back. The face is a stack of the script fonts systems ship, ending in `cursive`; pass `typeFont` to use one your app loads.
+
+</Story>
+
+<Story id="in-a-form" label="In a form">
+
+<ComponentPreview name="signature-pad/form" height={440} />
+
+A native form with a required signature: submitting before the signature is accepted stops the form and shows the Field's error.
+
+`name` submits the accepted signature as a PNG data URL with the form, and `required` (or a required Field) blocks submit until a signature is accepted: a draft doesn't count. In a Field the pad takes its label, description and invalid state.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="signature-pad" noImport />
+
+Use a Signature Pad where a person consents or confirms by signing: agreements, deliveries, check-ins. Take the signature in `onAccept`: the button waits for it, and the pad locks once it resolves.
+
+```tsx
+import { useRef, useState } from 'react'
+import { Field, FieldLabel, SignaturePad, type SignaturePadHandle, type SignatureValue } from '@youj/react'
+
+export function Agreement() {
+  const pad = useRef<SignaturePadHandle>(null)
+  const [signature, setSignature] = useState<SignatureValue | null>(null)
+  return (
+    <Field>
+      <FieldLabel>Signature</FieldLabel>
+      <SignaturePad
+        ref={pad}
+        value={signature}
+        onValueChange={setSignature}
+        onAccept={() => upload(pad.current!.toSVG())}
+      />
+    </Field>
+  )
+}
+```
+
+The value is `{ kind: 'drawn', strokes }` or `{ kind: 'typed', text }`, and `null` while the pad is empty. A stroke is a list of `[x, y, pressure]` points, x and y as fractions of the pad's width, so the pad can resize (it keeps `aspectRatio`, 3 by default) and the signature scales with it. The ref's `toSVG()` returns a standalone SVG document and `toDataURL(scale)` a PNG on a transparent ground, both in the ink color of the moment; `clear()` and `undo()` work the pad. `locked`, `defaultLocked` and `onLockedChange` hold the lock from outside, say to show a signature on file already accepted.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, onAccept, locked, typeInstead, aspectRatio, name, required, readOnly…">
+
+### Props
+
+<PropsTable name="SignaturePad" />
+
+#### Data attributes
+
+The root carries `data-yj-mode` (`draw` or `type`), and `data-yj-empty`, `data-yj-locked`, `data-disabled` and `data-readonly` when they hold.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Tabs · accept · tick · settle · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Tabs', note: 'the indicator glides between Draw and Sign by typing; the new area fades in (the Tabs motion)', spring: 'smooth' },
+    { moment: 'Sign here', note: 'the placeholder fades out as the first ink arrives, and back when the pad is cleared', duration: 'fast', ease: 'standard' },
+    { moment: 'Ink', note: 'follows the pointer sample by sample, never eased in time' },
+    { moment: 'Accept', note: 'the AsyncButton lifecycle: spinner, then a drawn check (or a shake and the error), then Re-sign', spring: 'snappy' },
+    { moment: 'Accepted', note: 'the signing line eases to the success ink and a small tick draws at its end', duration: 'slow', ease: 'standard' },
+    { moment: 'Settle', note: 'the locked ink eases a touch smaller onto its line', duration: 'slow', ease: 'emphasized' },
+  ]}
+  reduced="The tick, the line color, the settle, the tab indicator and the placeholder swap at once. Ink is drawn the same."
+/>
+
+#### Reduced motion
+
+Each state shows at once, so the pad reads the same. With sound on, choosing a tab and the Accept outcome sound as the rest of the kit does (`sound={false}` silences the pad).
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, typing instead">
+
+### Accessibility
+
+- Draw and Sign by typing are tabs: arrow keys move between them, Enter or Space chooses one. Choosing Sign by typing puts the caret in its field.
+- The drawing area is a focusable group named by its Field label (or `label`) and described by a hint: draw with a pointer, or press Enter to type the name instead. ⌘Z or Ctrl+Z on it undoes a stroke.
+- Sign by typing is a text field, so a signature never needs a pointer: type, then Tab to Accept.
+- Undo and Clear are named buttons with tooltips; a clear is announced in a polite live region.
+- Accept announces its progress and outcome (an error assertively); once it settles, the lock is announced politely, and the locked pad reads "Signed" with the time. Re-sign's unlock is announced too.
+- With `required`, a pad without an accepted signature stops a native submit and moves focus to the pad (or to Accept when there is a draft); the Field's error explains why.
+
+</ReferenceRow>

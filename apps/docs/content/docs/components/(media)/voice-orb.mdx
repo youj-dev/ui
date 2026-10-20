@@ -1,0 +1,129 @@
+---
+title: Voice Orb
+description: "Show a voice agent's state and sound as a softly lit sphere in your theme's accent, with rings that carry the voice."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="voice-orb/demo" height={360} />
+
+A cooking assistant cycling through listening, thinking and speaking on a simulated voice.
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="voice-orb/states" height={380} />
+
+Pick a state and drag the level, as an app that measures its own audio would set it.
+
+</Story>
+
+<Story id="palettes" label="Palettes">
+
+<ComponentPreview name="voice-orb/palettes" height={420} />
+
+The same orb under six presets. Every color comes from the theme's accent.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="voice-orb" noImport />
+
+Use a voice orb as the face of a voice agent: in a call screen, a dictation sheet or an assistant's panel, wherever people talk to software and need to see whether it's listening. The sphere stays round and calm; the sound shows as rings and as its size. `state` says what the agent is doing: `idle` breathes slowly, `listening` draws rings in from the edge and swells with the input, `thinking` turns a gentle swirl inside, and `speaking` sends pulses out with the output. Every change springs, so a state never jumps. For a whole call card with mute, volume and End call, see the [Voice call](/docs/blocks/activity-and-conversations#voice-call) block.
+
+```tsx
+import { VoiceOrb } from '@youj/react'
+
+// Your app measures the audio: pass how loud it is, 0 to 1.
+<VoiceOrb state={agent.state} level={agent.level} muted={micOff} label="Sous-chef" />
+
+// Or let the orb analyze a source itself.
+<VoiceOrb state="listening" audio={micStream} />
+<VoiceOrb state="speaking" audio={audioElement} />
+```
+
+`level` is the input level while listening and the output level while speaking. Add `bands` (`{ low, mid, high }`, each 0 to 1) to split the work: low swells the sphere, mid drives the rings. Without them every band follows `level`. `muted` says the person's microphone is off: the sphere grays and stops reacting while it listens, and still shows the agent speaking.
+
+The colors are the theme's: a light tint, the accent and a deep shade of it, with `chart-2` as a hint. They are read again whenever the theme or mode changes, so each preset gives its own orb. The halo and rings stay inside the orb's box, with the sphere at 62% of it; `spill` lets them reach half the size again past the box, for a hero or a call screen with room around it.
+
+`audio` takes a `MediaStream` (a microphone or a call), an `<audio>` or `<video>` element, or an `AudioNode` from your own graph, and analyzes it with a Web Audio `AnalyserNode` made only while it is set. It never plays anything and never stops your tracks. A stream gets a silent context of its own, closed on unmount. A node is tapped on its own context, which is left alone. A media element's sound runs through Web Audio from its first use on (the browser allows that once per element), so its context stays with the element and resumes when it plays. While `audio` is set, `level` and `bands` are ignored.
+
+It draws in WebGL2, falls back to a Canvas2D sphere, and to a CSS disc where neither is available. It renders at most two device pixels per CSS pixel and 60 frames a second, and pauses offscreen and in hidden tabs.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="state, level, bands, audio, muted, spill… (8)">
+
+### Props
+
+<PropsTable name="VoiceOrb" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `voice-orb` (with `data-state`, `data-size`, `data-yj-muted` and `data-yj-renderer`: `webgl`, `canvas` or `css`), `voice-orb-body` (the image) and `voice-orb-fallback` (the CSS disc, shown until a canvas draws). Sizes are `sm`, `default`, `lg` and `xl`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="States, sound · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'State change', note: 'breath, flow, rings, swirl, swell and halo spring to the new state with no overshoot', duration: 'deliberate' },
+    { moment: 'Ring', note: 'out from the sphere while speaking, in from the edge while listening; at most one per fast step', duration: 'deliberate', value: 'twice the token' },
+    { moment: 'Level rises', note: 'the envelope follows a rising level quickly', duration: 'instant' },
+    { moment: 'Level falls', note: 'and lets it go more slowly, so speech reads as phrases', duration: 'slow' },
+  ]}
+  reduced="A still sphere that only scales gently with the level; no rings."
+/>
+
+#### Reduced motion
+
+The sphere is drawn once and holds still, with no rings; only its size follows the level, up to 8% larger. The clock everywhere runs at 1 / the provider's `timeScale`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Name, announcements">
+
+### Accessibility
+
+- The orb is an image named by the agent and its state ("Sous-chef: Listening", "Sous-chef: Listening, microphone off"); `label` names the agent, by default the labels' "Voice agent".
+- A change of state is announced politely ("Thinking"); the first state is not.
+- It is not focusable and has no controls of its own: put the mic toggle, the End call button and the captions beside it, as the Voice call block does.
+- Its words come from the labels (`voiceOrb`, `voiceOrbIdle`, `voiceOrbListening`, `voiceOrbThinking`, `voiceOrbSpeaking`, `voiceOrbMuted`, `voiceOrbState`), translated by the language packs.
+
+</ReferenceRow>

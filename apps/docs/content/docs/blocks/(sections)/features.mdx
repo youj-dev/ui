@@ -1,0 +1,84 @@
+---
+title: Features
+description: "Feature sections that explain what your product does, as a bento, grid, spotlight, steps or tabs."
+---
+
+<BlockStories>
+
+<BlockStory id="bento" label="Bento" block="marketing-feature-bento" story="Default" backdrop="cinnabar">
+
+Show what your product does with a grid of varied tiles and small working demos. Each tile spans the columns and rows you give it.
+
+</BlockStory>
+
+<BlockStory id="grid" label="Grid" block="marketing-feature-grid" story="Default" backdrop="cinnabar">
+
+List your features in a ruled grid, each read off a live instrument that takes a new reading when it is pointed at.
+
+</BlockStory>
+
+<BlockStory id="spotlight" label="Spotlight" block="marketing-feature-spotlight" story="Default" backdrop="cinnabar">
+
+Show your features in action with alternating text and interactive demos, each with a link to learn more.
+
+</BlockStory>
+
+<BlockStory id="steps" label="Steps" block="marketing-feature-steps" story="Default" backdrop="cinnabar">
+
+Explain how your product works as a release visitors can watch: a lens rides the track from step to step, its ring running down while each step’s picture plays its moment, and anyone can pick a step to jump there.
+
+</BlockStory>
+
+<BlockStory id="tabs" label="Tabs" block="marketing-feature-tabs" story="Default" backdrop="cinnabar">
+
+Let visitors explore your features in tabs with a large demo for each choice. The tabs tour themselves until someone picks one.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, images, keyboard">
+
+### Accessibility
+
+Every section in this family is a `<section>` named by its own heading (`aria-labelledby`), so it shows up as a labelled region. The heading is an `h2` by default; set `headingLevel` to `1` or `3` where the page around it needs another. Feature spotlight sets its items’ headings one level deeper.
+
+The pictures beside the text are decorative in Feature grid, Feature steps and Feature tabs: they are `aria-hidden` and `inert`, and a feature’s title and description carry the meaning, so say in the text whatever a `media` shows. Feature bento and Feature spotlight pass `media` through as you give it, so what you put there is read: give an image its `alt`, and keep a demo’s controls labelled. Feature steps is a named ordered list, so a screen reader announces the count; each number is a button named for its step (“Step 2 of 4: Push a branch”), with `aria-current="step"` on the step in play. Its tour has a Play and Pause button beside the call to action, holds while keyboard focus is in the steps, off screen or in a hidden tab, and never runs under reduced motion, where every step shows its finished picture.
+
+Feature tabs is built on Tabs: the tab list is named (`copy.listLabel`), Left and Right Arrow move between tabs, Home and End jump to the ends, and the panel follows the selected tab. It tours itself until someone picks a tab, and pauses while the pointer or focus is inside it, while the page is hidden or the section is out of view; it never tours under reduced motion.
+
+Everything animated stands still under reduced motion, and the links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

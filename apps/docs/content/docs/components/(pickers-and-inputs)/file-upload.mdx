@@ -1,0 +1,134 @@
+---
+title: File Upload
+description: "Upload files with clear rules, validation, progress and retry controls."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="file-upload/demo" height={380} />
+
+A card of attachments that takes PNG, JPEG and PDF files up to 5 MB, six at most, uploaded by a simulated endpoint that fails every third file.
+
+`onUpload(file, { signal, onProgress })` uploads one file. Report progress from 0 to 100 through `onProgress`, resolve when the upload is done, and reject or throw to show the error on the row with a Retry button. Removing a file while it uploads aborts `signal`, so pass it on to `fetch` or your storage client. Try the preview: every third file fails.
+
+Files are checked against `accept` (extensions, MIME types or wildcards like `image/*`), `maxSize` in bytes, `maxFiles` and duplicates. Every rejected file is listed with its reason in one alert that grows in under the zone, so dropping ten files at once gives one explanation and not ten. `multiple={false}` keeps the picker to one file.
+
+</Story>
+
+<Story id="gallery" label="Gallery">
+
+<ComponentPreview name="file-upload/gallery" height={320} />
+
+The gallery variant for images up to 8 MB, eight at most, with simulated upload progress.
+
+`variant="gallery"` is for images: accepted files become square tiles in a grid with their thumbnails, and once there are files, the zone becomes the last tile.
+
+</Story>
+
+<Story id="collect-for-a-form" label="Collect for a form">
+
+<ComponentPreview name="file-upload/collect" height={260} />
+
+A single-spreadsheet picker with no upload handler, so the file is only collected and a form button imports it.
+
+Without `onUpload`, files are only collected. Read them from `onFilesChange` and send them with the form, as this import does. `useFileUpload` exposes the same state and rules for a layout of your own, and `useFileDrop` the drop target alone.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="file-upload" noImport />
+
+Use it wherever people attach files: receipts on an expense, screenshots on a bug report, a spreadsheet to import, photos for a listing. The zone states the rules before anyone picks a file, a rejection says which file broke which rule, and each accepted file shows its own progress, a check when it's done, or the error with a Retry. For a single profile photo with cropping, use [Avatar Upload](/docs/components/avatar-upload).
+
+```tsx
+import { FileUpload } from '@youj/react'
+
+export function Attachments() {
+  return (
+    <FileUpload
+      accept=".png,.jpg,.jpeg,.pdf"
+      maxSize={5 * 1024 * 1024}
+      maxFiles={6}
+      onUpload={(file, { signal, onProgress }) => uploadToStorage(file, { signal, onProgress })}
+    />
+  )
+}
+```
+
+The zone is a button and a drop target: click it, press Enter or Space, or drag files onto it. Its second line is generated from the rules, such as "PNG, JPG or PDF · up to 5 MB each", and `hint` replaces it. `title` sets the main line.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, multiple, title… (10)">
+
+### Props
+
+<PropsTable name="FileUpload" />
+
+The `onUpload`, `onFilesChange`, `accept`, `maxSize` and `maxFiles` options are the same for `useFileUpload`. Each file in `onFilesChange` is an `UploadFile`: the `File`, its `status` (`uploading`, `done` or `error`), `progress`, `error` and an image `preview` URL.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drag over, file joins, rows make room… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drag over', note: 'the zone’s border turns accent and the upload icon lifts', duration: 'fast', ease: 'standard' },
+    { moment: 'File joins', note: 'the row fades in with a 6px drop while the rows below glide (Presence List)', duration: 'base', ease: 'enter' },
+    { moment: 'Rows make room', spring: 'smooth' },
+    { moment: 'Progress', note: 'the bar glides to each report, retargeting mid-glide', spring: 'smooth' },
+    { moment: 'Done', note: 'the row settles into a drawn check', duration: 'slow', ease: 'enter' },
+    { moment: 'Rejections', note: 'the alert grows in under the zone, as a Field error does', duration: 'base', ease: 'standard' },
+    { moment: 'File removed', note: 'fades in place, then the rest close up', duration: 'fast', ease: 'exit' },
+  ]}
+  reduced="Rows and tiles appear and go at once, progress jumps to each value and the check is already drawn."
+/>
+
+#### Reduced motion
+
+Rows and tiles appear and disappear without fading or gliding, progress bars jump to each value and the done check shows already drawn. Drag-over still changes the border.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The drop zone is a real button, so Enter and Space open the file picker, and its description reads the rules.
+- Every change is announced politely: files added, rejections, each upload finishing or failing, and removals.
+- Rejections are listed through a Field error under the zone, one line per file with its reason.
+- Each row's buttons are named with the file name: "Cancel upload of receipt.pdf" while it uploads, then "Remove receipt.pdf", and "Retry receipt.pdf" after a failure.
+- Focus never drops to the page: removing a row moves focus to the next row's button, or back to the zone when the list empties.
+
+</ReferenceRow>

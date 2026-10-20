@@ -1,0 +1,163 @@
+---
+title: Breadcrumb
+description: "Show where a page sits in your site and link back to its parent pages."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="breadcrumb/demo" height={280} />
+
+A path from an organization down to a deployment, ending on the current page.
+
+</Story>
+
+<Story id="long-paths" label="Long paths">
+
+<ComponentPreview name="breadcrumb/collapsed" height={200} />
+
+A long path folded into an ellipsis button that unfolds the hidden crumbs.
+
+Give the list `maxItems` and a path longer than that folds its middle crumbs into an ellipsis button, named for what it holds ("Show 3 more"). Pressing it unfolds the crumbs in place and moves focus to the first one it revealed. `itemsBeforeCollapse` (default 1) and `itemsAfterCollapse` (default 2, the page and its parent) choose what stays visible. A new path starts folded again.
+
+
+When crumbs come from data, return each crumb with the separator after it, in a fragment or a small component, and the list folds them as one unit.
+
+</Story>
+
+<Story id="separators" label="Separators">
+
+<ComponentPreview name="breadcrumb/separator" height={180} />
+
+A chevron in place of the default separator, and a static ellipsis.
+
+`BreadcrumbSeparator` draws a slanted hairline by default. Pass any mark as its children instead, such as a chevron. A static `BreadcrumbEllipsis` marks a gap the app decided not to show, and it isn't interactive.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="breadcrumb" noImport />
+
+Use a breadcrumb when pages nest several levels deep, like a workspace, a project, a section and an item, and people need to step back up. Don't use it as the main navigation, on a flat site, or to show progress through the steps of a task. It describes where a page lives, not how someone got there.
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@youj/react'
+
+export function DeploymentBreadcrumb() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/acme">Acme</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/acme/web">web</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Deployments</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  )
+}
+```
+
+The current page is a `BreadcrumbPage`: plain text marked `aria-current="page"`, not a link to itself. Crumbs can lead with an icon or a logo, and labels longer than 12rem truncate with an ellipsis. The full text stays in the link's accessible name.
+
+To render your router's link, pass it through `render`. It keeps the crumb's look and focus ring:
+
+```tsx
+import Link from 'next/link'
+
+<BreadcrumbLink render={<Link href="/acme/web" />}>web</BreadcrumbLink>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="maxItems, itemsBeforeCollapse, itemsAfterCollapse (3)">
+
+### Props
+
+#### BreadcrumbList
+
+<PropsTable name="BreadcrumbList" />
+
+#### Other parts
+
+`Breadcrumb` is a `nav`, `BreadcrumbItem` and `BreadcrumbSeparator` are `li` elements, and `BreadcrumbPage` is a `span`. Each takes the props of its element. `BreadcrumbLink` and `BreadcrumbEllipsis` also take `render`, to swap the element they render.
+
+<PropsTable name="BreadcrumbLink" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Unfold, width, unfold, fade, fade offset… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Unfold, width', note: 'each folded crumb grows from zero, so the ones after it glide aside', duration: 'base', ease: 'standard' },
+    { moment: 'Unfold, fade', note: 'each crumb fades in once its width is under way', duration: 'base', ease: 'enter' },
+    { moment: 'Fade offset', note: 'from a crumb’s width to its fade', stagger: 'base' },
+    { moment: 'Cascade', note: 'from one unfolding crumb to the next', stagger: 'tight' },
+    { moment: 'Link color', note: 'on hover', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Folded crumbs appear at once, in place. Links change color without easing."
+/>
+
+A crumb clips only while it grows. Once it has unfolded, the clip comes off, so its focus ring has room.
+
+#### Reduced motion
+
+The folded crumbs appear at once when the ellipsis is pressed, and focus still moves to the first of them. Nothing else changes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- `Breadcrumb` is a `nav` landmark named "Breadcrumb". If a page has more than one, give each its own `aria-label`.
+- The crumbs are an ordered list. Separators are `role="presentation"` and `aria-hidden`, so the list announces only the crumbs.
+- The current page carries `aria-current="page"` and isn't a link.
+- The fold is a real button named for the crumbs it holds. It unfolds on Enter or Space, and focus moves to the first crumb it reveals, so keyboard users don't lose their place.
+- An icon-only crumb needs an `aria-label`, like the home link in the separators example.
+
+</ReferenceRow>

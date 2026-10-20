@@ -1,0 +1,112 @@
+---
+title: Countdown
+description: "Count down to a launch, a sale or a deadline in days, hours, minutes and seconds."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="countdown/demo" height={260} />
+
+A countdown to a launch six days and four hours away.
+
+</Story>
+
+<Story id="finishing" label="Finishing">
+
+<ComponentPreview name="countdown/complete" height={280} />
+
+A countdown that runs out after 8 seconds, flips a badge to "Doors are open" and can be restarted.
+
+When time runs out the digits settle to muted zeros, the root's `data-state` turns to `complete` and `onComplete` fires once. If `to` has already passed when the component mounts, it fires straight after mount. That makes the callback the place to swap in what comes next: a "We're live" badge, a reload, or the real page.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="countdown" noImport />
+
+Use Countdown when the moment itself matters: a launch, the end of an offer, a maintenance window closing. Give it the moment as `to`. It works out the rest in the browser, ticks on the second boundary and lands on zero exactly at `to`. For a date people read rather than watch, write it out instead, and for time since something happened use relative text such as "5 min ago".
+
+```tsx
+import { Countdown } from '@youj/react'
+
+export function Launch() {
+  return <Countdown to="2026-10-07T16:00:00Z" onComplete={() => location.reload()} />
+}
+```
+
+`to` takes a `Date`, milliseconds since the epoch or an ISO string. Each unit sits in its own tile with its name underneath. The names come from `Intl`, so they follow the locale ("days", "Tage", "jours"). The digits are tabular, so the row never shifts while it counts. Set the size with a text class, such as `className="text-6xl"`: the tiles and gaps scale with it.
+
+Nothing time-based is rendered on the server. The server and hydration renders show held zeros with `data-state="pending"`, and the component reads the clock only once it's mounted, so server markup and the first client render always match. A static page built days ahead shows the right time as soon as it loads.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="to, onComplete, formatLabel… (4)">
+
+### Props
+
+<PropsTable name="Countdown" />
+
+`formatLabel` receives `{ days, hours, minutes, seconds, total }` and returns the text screen readers hear. Use it to translate that text or to change how coarse it is.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="A digit changes, the old digit leaves, several digits change · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'A digit changes', note: 'the new digit rolls down into its slot from above as the old one falls away and fades', duration: 'slow', ease: 'enter' },
+    { moment: 'The old digit leaves', note: 'it drops and fades, a little faster than the new one arrives', duration: 'base', ease: 'exit' },
+    { moment: 'Several digits change', note: 'they roll right to left, one step apart, as 10:00 turns to 09:59', stagger: 'tight' },
+  ]}
+  reduced="Digits change in place with no roll."
+/>
+
+Each roll is two small Web Animations on transform and opacity, so the component doesn't need the Motion runtime. If a digit changes again before its roll ends, the digit still arriving leaves from where it is instead of jumping.
+
+#### Reduced motion
+
+Digits change in place with no roll or fade. The time left stays exact to the second.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="announcements">
+
+### Accessibility
+
+- The root is a `timer`. The digit tiles are hidden from assistive technology, and one polite live region carries the time as words.
+- The spoken text is coarse on purpose: "6 days, 4 hours left" while there are days, hours and minutes under a day, minutes under an hour, then "Under a minute left". It changes at most once a minute, so a screen reader isn't interrupted every second.
+- Nothing is announced when the page loads. The region starts announcing after the first reading, and "Time's up" is announced at zero.
+- The default spoken text is English. Pass `formatLabel` for other languages. The unit names under the tiles already follow the locale.
+
+</ReferenceRow>

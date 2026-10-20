@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "baseBranch": "main",
+  "access": "public",
+  "ignore": ["docs", "promo"],
+  "fixed": [["@youj/core", "@youj/motion", "@youj/loaders", "@youj/sound", "@youj/icons", "@youj/illustrations", "@youj/miniatures", "@youj/react", "youj", "@youj/mcp"]],
+  "linked": [],
+  "updateInternalDependencies": "patch",
+  "privatePackages": { "version": true, "tag": true },
+  "commit": false,
+  "changelog": "@changesets/cli/changelog"
+}

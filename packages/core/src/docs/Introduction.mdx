@@ -1,0 +1,66 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks'
+import { IntroHero } from './components/intro-hero'
+import { PrincipleCards, RegistryUrl, ToolbarGuide } from './components/intro-blocks'
+
+<Meta title="Introduction" />
+
+<Unstyled>
+  <IntroHero />
+</Unstyled>
+
+## What Youj is
+
+Youj is two sibling libraries that share one design language. **@youj/motion** holds the **animated icons**, the **motion primitives** (Reveal, Stagger, Magnetic, TextSplit, …), the **blocks and effects** that UI components are built from (SlidingIndicator, MorphLabel, Collapse, Spotlight, …) and the **signature pieces** (shaders, particles, buttons, transitions). **@youj/react** holds accessible components on shadcn and Base UI, animated through @youj/motion. Install them as versioned packages (`@youj/react`, `@youj/motion`, `@youj/icons`), or copy single items in as source through the [shadcn registry](https://ui.shadcn.com/docs/registry), so you own the code and can tune it in place. Interface sounds are **@youj/sound**: components emit cues as their motion starts, and its YoujProvider's `sound` plays them (see Sound/Board).
+
+Everything shares one contract: semantic color tokens, and a small set of motion tokens read through `useYouj()`. Change a token and the whole library moves differently, on purpose.
+
+## Principles
+
+<Unstyled>
+  <PrincipleCards />
+</Unstyled>
+
+## Install from the registry
+
+Every item is published as JSON at <RegistryUrl name="<name>" />. Start with `youj-core`, which holds the tokens, the provider, `cn` and the CSS. Almost every item depends on it, and the CLI installs it for you.
+
+```bash
+# once: set the app up (tokens, stylesheet, provider)
+npx youj init
+
+# then any item by name
+npx youj add reveal stagger
+```
+
+`youj add` fetches each item from the registry at <RegistryUrl name="<name>" /> and copies its source into your app. [Installation](https://www.youj.dev/docs/installation) covers the manual route.
+
+## Wire it up
+
+Import the CSS once, and optionally wrap the app in `YoujProvider`. Without a provider, components run at 1× speed and follow the OS reduced-motion setting.
+
+```tsx
+import '../styles/youj.css'
+import { YoujProvider } from '../lib/youj/provider'
+
+export function App({ children }) {
+  return <YoujProvider reducedMotion="user">{children}</YoujProvider>
+}
+```
+
+Inside components, timing always comes from the hook and never from literals:
+
+```tsx
+const k = useYouj()
+
+<motion.div
+  initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={k.reduced ? { duration: 0 } : k.tween('base', 'enter')}
+/>
+```
+
+## Reviewing in Storybook
+
+<Unstyled>
+  <ToolbarGuide />
+</Unstyled>

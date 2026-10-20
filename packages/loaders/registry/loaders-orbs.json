@@ -1,0 +1,464 @@
+[
+  {
+    "name": "loader-gores",
+    "type": "registry:component",
+    "title": "Gores loader",
+    "description": "Longitudinal shell gores peel from a globe into a flat interrupted map, each strip a beat behind its neighbour. The latitude rulings straighten, a map frame and equator register the sheet, and the seams close in reverse around the globe. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "gores",
+      "component": "LoaderGores",
+      "category": "orbs",
+      "technique": "planes",
+      "order": 1,
+      "title": "Gores",
+      "tags": [
+        "cartography",
+        "globe",
+        "projection",
+        "unwrap",
+        "longitude"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Register",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/gores.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lamina",
+    "type": "registry:component",
+    "title": "Lamina loader",
+    "description": "A sphere separates into horizontal laminae in a rising wave. Each cut face shows the section of the core inside, fine registration pins bridge the gaps as the slices sway, and the slices settle back into one spherical envelope. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "lamina",
+      "component": "LoaderLamina",
+      "category": "orbs",
+      "technique": "planes",
+      "order": 2,
+      "title": "Lamina",
+      "tags": [
+        "sphere",
+        "slices",
+        "tomography",
+        "stack",
+        "section"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Sections",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/lamina.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-vesicle",
+    "type": "registry:component",
+    "title": "Vesicle loader",
+    "description": "A glass orb hangs in front of a ruled sheet that rocks to and fro. Around the orb the rulings run straight; through it they are traced by Snell’s law at both surfaces, so the sheet appears inverted, bowed and swept the other way, while a reflection slides across the glass. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "vesicle",
+      "component": "LoaderVesicle",
+      "category": "orbs",
+      "technique": "lines",
+      "order": 3,
+      "title": "Vesicle",
+      "tags": [
+        "orb",
+        "glass",
+        "refraction",
+        "bubble",
+        "optics",
+        "lens"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Lens",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/vesicle.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-cleave",
+    "type": "registry:component",
+    "title": "Cleave loader",
+    "description": "A liquid Cassini surface narrows at its waist and cleaves into two rounded lobes. An accent waist ring pinches to nothing on a registered cleavage plane, the lobes turn through depth with contours that follow the changing topology, and surface tension draws them back together. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "cleave",
+      "component": "LoaderCleave",
+      "category": "orbs",
+      "technique": "planes",
+      "order": 4,
+      "title": "Cleave",
+      "tags": [
+        "orb",
+        "liquid",
+        "metaball",
+        "split",
+        "merge"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Plane",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/cleave.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-chordal",
+    "type": "registry:component",
+    "title": "Chordal loader",
+    "description": "An icosahedral sphere refines in a travelling wave as it turns. Edge midpoints lift onto the spherical surface with their hubs, triangular braces appear behind them, and the refined geodesic skin relaxes back to its coarse chords. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "chordal",
+      "component": "LoaderChordal",
+      "category": "orbs",
+      "technique": "lines",
+      "order": 5,
+      "title": "Chordal",
+      "tags": [
+        "sphere",
+        "geodesic",
+        "icosahedron",
+        "subdivision",
+        "triangles"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Refinement",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/chordal.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-armature",
+    "type": "registry:component",
+    "title": "Armature loader",
+    "description": "A spherical exoskeleton assembles around a softly lit core as it slowly turns. Paired meridian ribs swing shut on their pole hubs, latitude ties seat in succession and rivet to every rib, and a short inspection arc runs round before the cage opens again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "armature",
+      "component": "LoaderArmature",
+      "category": "orbs",
+      "technique": "mixed",
+      "order": 6,
+      "title": "Armature",
+      "tags": [
+        "sphere",
+        "lattice",
+        "assembly",
+        "cage",
+        "core"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Ties",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/armature.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-brim",
+    "type": "registry:component",
+    "title": "Brim loader",
+    "description": "A glass sphere fills in three measured pours from a nozzle above its neck, each stream landing in ripples and a settling slosh. A level witness rides the meniscus up its scale, each calibration stroke lights as it is reached, and a valve below drains it back down. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "brim",
+      "component": "LoaderBrim",
+      "category": "orbs",
+      "technique": "mixed",
+      "order": 7,
+      "title": "Brim",
+      "tags": [
+        "orb",
+        "gauge",
+        "fill",
+        "progress",
+        "liquid"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Liquid",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/brim.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-cincture",
+    "type": "registry:component",
+    "title": "Cincture loader",
+    "description": "A lit planet carries a broad inclined annulus through a slow nod. Gaps between the ring bands breathe, an inset arc counterturns, and a small moon passes behind the planet and back across the foreground. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "cincture",
+      "component": "LoaderCincture",
+      "category": "orbs",
+      "technique": "planes",
+      "order": 8,
+      "title": "Cincture",
+      "tags": [
+        "sphere",
+        "planet",
+        "rings",
+        "orbit",
+        "moon"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Ring",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/cincture.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-respire",
+    "type": "registry:component",
+    "title": "Respire loader",
+    "description": "A meridian skin, drawn in hidden-line style, breathes through two elastic modes while paired satellites orbit in opposed inclined planes, passing behind it and across it. Their approaches pull the poles outward, and a short equatorial pressure front circles the returning skin. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "respire",
+      "component": "LoaderRespire",
+      "category": "orbs",
+      "technique": "lines",
+      "order": 9,
+      "title": "Respire",
+      "tags": [
+        "orb",
+        "breathing",
+        "elastic",
+        "satellites",
+        "pressure"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Trails",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/respire.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-pith",
+    "type": "registry:component",
+    "title": "Pith loader",
+    "description": "Nested spherical shells swing open in staggered pairs on hinges at their backs, like a case opening, to expose a small turning inner orb. Lit inner walls and half-ring cut rims show the thickness of each layer before the halves close from the inside outward. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "orbs"
+    ],
+    "meta": {
+      "loader": "pith",
+      "component": "LoaderPith",
+      "category": "orbs",
+      "technique": "planes",
+      "order": 10,
+      "title": "Pith",
+      "tags": [
+        "sphere",
+        "shells",
+        "cutaway",
+        "peel",
+        "interior",
+        "hinge"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Rims",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/orbs/pith.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/orbs/sphere.ts",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

@@ -1,0 +1,106 @@
+---
+title: Hatched Bar
+description: "Distinguish pending, projected or baseline amounts from settled values with hatching."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="hatched-bar/demo" height={260} />
+
+Pass-rate bars for a run of builds: those under the gate are hatched, the latest is highlighted, and a dashed line marks the gate.
+
+</Story>
+
+<Story id="pending" label="A pending segment">
+
+<ComponentPreview name="hatched-bar/pending" height={180} />
+
+A quota bar whose last segment is hatched to show what a cleanup will free.
+
+`Hatch` fills whatever box you give it, so a stacked bar can end in what a job is about to free, or what a forecast adds.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="hatched-bar" noImport />
+
+A hatch says "not settled": a baseline to compare against, an amount that's pending, projected or reserved, a run that missed its gate. `HatchedBar` is a bar of it that grows to a value, and `Hatch` is the fill on its own, for legend swatches and for a pending segment inside another bar. Keep solid for the actual amount beside it, so the two read as a pair.
+
+```tsx
+import { Hatch, HatchedBar } from '@youj/react'
+
+<HatchedBar value={0.64} className="h-32 w-6" label="Projected usage" />
+<HatchedBar value={0.72} fill="solid" tone="accent" orientation="horizontal" />
+<Hatch className="size-3" />
+```
+
+`value` is out of `max` (default 1). A bar grows up from the bottom, or from the inline start when `orientation="horizontal"`; size it with classes. `fill="solid"` draws the settled amount: in `neutral` tone that's a quiet fill, so a colored bar beside it stands out. The hatch is diagonal stripes of the tone over a faint wash of it, so it follows the theme in both modes.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, max, fill… (8)">
+
+### Props
+
+<PropsTable name="HatchedBar" />
+
+<PropsTable name="Hatch" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Grow, new value · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Grow', note: 'from its base when a third of it scrolls into view, once; a clip, so the stripes never stretch', spring: 'smooth' },
+    { moment: 'New value', note: 'retargets from where it is', spring: 'smooth' },
+  ]}
+  reduced="Drawn at its value; a new value jumps."
+/>
+
+#### Reduced motion
+
+Bars are drawn at their value, and changes land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels and assistive technology">
+
+### Accessibility
+
+- With `label` the bar is a `meter` with its orientation, and speaks its share of `max` as a percentage (or your `valueText`). Without, it's hidden from assistive technology.
+- `Hatch` is always decorative: say what it marks in a legend or in the text beside it.
+- A pattern is not a color, so hatched and solid stay apart in grayscale and for color-blind readers.
+
+</ReferenceRow>

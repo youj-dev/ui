@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "---Get started---",
+    "index",
+    "installation",
+    "cli",
+    "choosing-a-level",
+    "(theming)",
+    "mcp",
+    "(more)",
+    "---Guides---",
+    "...guides",
+    "---Components---",
+    "...components",
+    "---Blocks---",
+    "...blocks",
+    "---Visuals---",
+    "icons",
+    "illustrations",
+    "miniatures",
+    "loaders",
+    "---Motion---",
+    "...motion",
+    "---Sound---",
+    "...sound"
+  ]
+}

@@ -1,0 +1,62 @@
+---
+title: Styling hooks
+description: "The data attributes and CSS variables you can target from your own CSS, which ones are Youj's, and which are private."
+---
+
+<PageArt art="composing" />
+
+Write selectors and overrides against the names on this page. Anything else, in particular a CSS variable that starts with `--ui--`, is private and can change in any release. A rename of a name on this page is a breaking change.
+
+## One prefix rule
+
+Youj's own attributes all start with `data-yj-`. Attributes from Base UI, shadcn/ui and next-themes keep their own names and are not prefixed.
+
+| Attribute | Set by | Values | Meaning |
+| --- | --- | --- | --- |
+| `data-yj-theme` | `YoujProvider` with a `theme` | the theme id | Marks a subtree whose derived tokens are recomputed. |
+| `data-yj-look` | `YoujProvider` | `bezel`, `classic` | The look of the components. |
+| `data-yj-motion` | `YoujProvider` with a theme | `precise`, `calm`, `lively` | The theme's motion personality. |
+| `data-yj-scope` | `YoujProvider`, `ThemeScope`, `useYoujScope()` | empty | Marks an element that carries Speed (`--yj-time-scale`) and reduced motion (`--yj-motion`); the duration tokens resolve again on it. |
+| `data-yj-reduced` | `YoujProvider` with `reducedMotion="always"` | empty | Forces reduced motion in the subtree, whatever the OS says. |
+| `data-yj-scaling` | `YoujProvider` with `scaling` | `75` to `120` | The interface scale, in percent. |
+| `data-yj-density` | `YoujProvider` with `density` | `roomy`, `compact` | The layout room. |
+| `data-yj-device` | `YoujProvider` | `touch`, `pointer` | The input device the components size for. |
+| `data-yj-tone` | You, on a surface | `chrome`, `overlay`, `inverse` | Re-derives the color roles for that surface. |
+| `data-yj-trigger` | You, on a parent | empty | Plays the icons inside it on hover and keyboard focus. |
+
+The page color mode is `data-theme`, with `light` or `dark`. It keeps that name because next-themes sets it. The preset is `data-yj-theme`.
+
+## Standard attributes
+
+These come from Base UI and shadcn/ui, and the components pass them through unchanged: `data-slot` (every component part), `data-state`, `data-open`, `data-closed`, `data-checked`, `data-unchecked`, `data-disabled`, `data-highlighted`, `data-selected`, `data-pressed`, `data-orientation`, `data-side`, `data-align`, `data-starting-style`, `data-ending-style`, `data-popup-open`, `data-variant`, `data-size`, `data-tone`, `data-status` and `data-loading`.
+
+## CSS variables
+
+Variables that you may read or set:
+
+- The color roles, as `--color-<role>` (`--color-canvas`, `--color-fg`, `--color-accent`…).
+- The theme contract, as `--yj-*`.
+- The shadow scale `--ui-shadow-xs`, `--ui-shadow-sm`, `--ui-shadow-md` and `--ui-shadow-lg`, the skeleton `--ui-shimmer` color, and the scrollbar thumb colors `--ui-scrollbar-thumb`, `--ui-scrollbar-thumb-hover` and `--ui-scrollbar-thumb-active`.
+
+Variables that start with `--ui--` (the panel padding, the press depth, the compact switch…) are internal to the components. Don't read or set them.
+
+`pnpm check:api` records both lists in `api/youj-surface.md`, so a change to a public name shows up in review.
+
+## Canvas, WebGL and Lottie
+
+Code that draws with token colors resolves them once, so it has to hear about theme changes. Youj's backgrounds and players already do. For your own canvas code, `observeThemeChange(element, callback)` calls back whenever the theme above `element` changes: a light/dark switch, a preset, or a changed theme on a scope.
+
+```ts
+import { observeThemeChange } from '@youj/core'
+
+// Tokens are formulas, so let the browser resolve one: read the color back
+// from an element inside the same scope that uses it.
+const probe = document.createElement('span')
+probe.hidden = true
+probe.style.color = 'var(--color-accent)'
+canvas.after(probe)
+
+const paint = () => redraw(getComputedStyle(probe).color)
+paint()
+const stop = observeThemeChange(canvas, paint) // call stop() on teardown
+```

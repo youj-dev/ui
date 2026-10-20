@@ -1,0 +1,125 @@
+---
+title: Sheet Presentation
+description: "Present an overlay as a bottom sheet on touch and keep the popover under a pointer."
+---
+
+Menus, selects and pickers are popovers under a mouse. Under a thumb they are bottom sheets: they rise from the bottom edge where the hand already is, rows are 48px, and a pull down dismisses them. Dropdown Menu, Select, Popover, Combobox, Multi-select, Command, Context Menu and the date and color pickers do this on their own. This page is for building your own overlay the same way.
+
+The same Base UI primitive drives both presentations, so roles, focus order, typeahead, controlled state and events do not change. Only the placement, the surface and the way it is dismissed do.
+
+## Installation
+
+<InstallTabs name="presentation" />
+
+## Examples
+
+<Examples>
+
+<Example id="choosing-the-presentation" label="Choosing the presentation">
+
+### Choosing the presentation
+
+Every overlay in the library takes `presentation` on its content part.
+
+| Value | Behavior |
+|---|---|
+| `auto` (default) | A sheet on touch, a popover under a pointer. |
+| `sheet` | Always a sheet. |
+| `popover` | Always a popover, also on touch. |
+
+`auto` follows the device: the primary pointer, or the `device` you set on [`YoujProvider` or `ThemeScope`](/docs/guides/touch-mode). It never follows the width of the window. A narrow desktop window is not touch, and a wide tablet is.
+
+</Example>
+
+<Example id="building-a-sheet" label="Building a sheet">
+
+### Building a sheet
+
+`useSheetPresentation` tells a component which branch to render. The sheet branch keeps Base UI's `Portal`, `Positioner` and `Popup`, and changes only their classes and one wrapper. The class strings are internal to the package, not exports of `@youj/react`: run `npx youj add presentation` and import them from your copy.
+
+Install `@base-ui/react` in your app (`pnpm add @base-ui/react`) to import its primitives directly, as pnpm won't resolve it through Youj.
+
+```tsx
+import type { ReactNode } from 'react'
+import { Menu } from '@base-ui/react/menu'
+import { useYoujScope, usePortalContainer } from '@youj/core'
+import { SheetHandle, SheetLayer, useSheetPresentation, type OverlayPresentation } from '@youj/react'
+import { sheetPopupClass, sheetPositionerClass, sheetScrimClass } from '@/components/ui/presentation'
+
+function ActionsContent({ children, presentation = 'auto' }: { children: ReactNode; presentation?: OverlayPresentation }) {
+  const scope = useYoujScope()
+  const container = usePortalContainer()
+  const sheet = useSheetPresentation(presentation)
+  if (!sheet) return <PopoverBranch>{children}</PopoverBranch>
+  return (
+    <Menu.Portal container={container} {...scope}>
+      <SheetLayer>
+        <Menu.Backdrop data-sheet-scrim="" className={sheetScrimClass} />
+        <Menu.Positioner className={sheetPositionerClass}>
+          <Menu.Popup data-sheet-popup="" className={sheetPopupClass}>
+            <SheetHandle />
+            {children}
+          </Menu.Popup>
+        </Menu.Positioner>
+      </SheetLayer>
+    </Menu.Portal>
+  )
+}
+```
+
+| Export | What it is |
+|---|---|
+| `useSheetPresentation(presentation)` | `true` when the overlay should be a sheet. |
+| `SheetLayer` | Wraps the scrim and the popup. It owns no box and carries the drag. |
+| `SheetHandle` | The grab handle. Decorative: Escape still dismisses. |
+| `sheetPositionerClass`, `sheetPopupClass`, `sheetScrimClass` | In your copy of `presentation`: the classes for the positioner, the popup and the scrim. |
+| `sheetRowClass`, `sheetLabelClass` | In your copy: a 48px row with a press state, and a group caption that lines up with it. |
+
+Put `touch:hidden` on keyboard-shortcut hints, and use the `touch:` and `fine:` variants for anything else that only makes sense for one input.
+
+</Example>
+
+<Example id="dismissing" label="Dismissing">
+
+### Dismissing
+
+A sheet is dismissed the ways a popover is (Escape, a press outside) and by pulling it down. The sheet follows the finger from the handle, or from anywhere on it once its list is scrolled to the top. A flick, or a drag past a quarter of its height, dismisses it; a shorter drag springs back, and the scrim thins as it leaves. Dismissal sends the same Escape the keyboard would, so focus returns to the trigger.
+
+Mark an element that has its own drag, such as a color area or a slider, with `data-sheet-no-drag`. A drag that starts inside it never moves the sheet.
+
+</Example>
+
+<Example id="sheets-with-a-text-field" label="Sheets with a text field">
+
+### Sheets with a text field
+
+The on-screen keyboard covers the bottom of a bottom sheet, and the viewport units do not shrink for it on iOS. These helpers follow `window.visualViewport` instead.
+
+| Export | What it does |
+|---|---|
+| `useVisualViewportInset()` | Tracks the visible area and writes `--yj-sheet-inset` and `--yj-sheet-visible` on the popup. |
+| `sheetKeyboardClass` | Lifts the sheet onto the keyboard and caps its height to what is visible. |
+| `useKeyboardSheet()` | Combines the two, keeps the sheet's tallest height while the list filters, and focuses the sheet instead of the field when it opens by touch. |
+| `primeKeyboard()` | Call it inside the tap that opens a search sheet. iOS only raises the keyboard for a focus that happens in that tap, so it focuses a hidden field first. It does nothing elsewhere. |
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Reduced motion" summary="With reduced motion the sheet appears and leaves instantly, and a…">
+
+### Reduced motion
+
+With reduced motion the sheet appears and leaves instantly, and a drag still tracks the finger.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+The primitive keeps its roles and its focus management. The handle is `aria-hidden`: pulling down is a shortcut for Escape, never the only way out.
+
+</ReferenceRow>

@@ -1,0 +1,537 @@
+{
+  "home": {
+    "dark": "home-film-v2",
+    "light": "home-film-v2-light"
+  },
+  "videos": {
+    "home-film-v2": {
+      "title": "A release card drafts itself from the primitives (layout, radius, surface, type, an isometric rocket on its pad, a pull request icon morphing out of its keyline circle, a spring, the accent) and deploys from its action island while an animation of a branch merging runs, its sounds drawn as waveforms. A theme passes through it, and the camera pulls back to the whole system, components, motion, sound and themes, moving and re-theming as one, under the line “Designed as one.”",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 25.167,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/home-film-v2-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 281953,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/home-film-v2-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 416360,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/home-film-v2-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 564791,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/home-film-v2.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 451094
+        },
+        {
+          "src": "/promo/home-film-v2.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 684993
+        },
+        {
+          "src": "/promo/home-film-v2.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 941023
+        }
+      ],
+      "poster": {
+        "src": "/promo/home-film-v2.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 59822,
+        "srcset": {
+          "avif": "/promo/home-film-v2-sm.avif 854w, /promo/home-film-v2.avif 1280w",
+          "webp": "/promo/home-film-v2-sm.webp 854w, /promo/home-film-v2.webp 1280w",
+          "jpg": "/promo/home-film-v2-sm.jpg 854w, /promo/home-film-v2.jpg 1280w"
+        }
+      }
+    },
+    "home-film-v2-light": {
+      "title": "A release card drafts itself from the primitives (layout, radius, surface, type, an isometric rocket on its pad, a pull request icon morphing out of its keyline circle, a spring, the accent) and deploys from its action island while an animation of a branch merging runs, its sounds drawn as waveforms. A theme passes through it, and the camera pulls back to the whole system, components, motion, sound and themes, moving and re-theming as one, under the line “Designed as one.”",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 25.167,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/home-film-v2-light-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 313065,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/home-film-v2-light-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 465883,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/home-film-v2-light-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 608435,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/home-film-v2-light.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 506452
+        },
+        {
+          "src": "/promo/home-film-v2-light.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 761819
+        },
+        {
+          "src": "/promo/home-film-v2-light.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 1004439
+        }
+      ],
+      "poster": {
+        "src": "/promo/home-film-v2-light.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 63785,
+        "srcset": {
+          "avif": "/promo/home-film-v2-light-sm.avif 854w, /promo/home-film-v2-light.avif 1280w",
+          "webp": "/promo/home-film-v2-light-sm.webp 854w, /promo/home-film-v2-light.webp 1280w",
+          "jpg": "/promo/home-film-v2-light-sm.jpg 854w, /promo/home-film-v2-light.jpg 1280w"
+        }
+      }
+    },
+    "loop-icons": {
+      "title": "Icons on their drawing boards: menu turns to close, play to pause, a bell rings, a check draws, a battery charges and an arrow hits its target. Then the camera pulls back to the whole set as waves of their choreographies pass through it.",
+      "width": 1280,
+      "height": 720,
+      "fps": 60,
+      "duration": 12,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-icons-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 449285,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-icons-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 650140,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-icons-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 582326,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-icons.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 734945
+        },
+        {
+          "src": "/promo/loop-icons.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 1061129
+        },
+        {
+          "src": "/promo/loop-icons.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 974697
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-icons.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 30241,
+        "srcset": {
+          "avif": "/promo/loop-icons-sm.avif 854w, /promo/loop-icons.avif 1280w",
+          "webp": "/promo/loop-icons-sm.webp 854w, /promo/loop-icons.webp 1280w",
+          "jpg": "/promo/loop-icons-sm.jpg 854w, /promo/loop-icons.jpg 1280w"
+        }
+      }
+    },
+    "loop-themes": {
+      "title": "A usage and billing screen takes on Cinnabar in the Brutal style one layer of the theme at a time, each carried by its own line: colour, the chart palette, radius and density, type, stroke and shadow, then the component style. Then Youj, Heather, Seaglass and Cinnabar sit side by side on the one screen, each in a style of its own, while its chart switches to seven days and back, the lower half switches between light and dark to show each palette tuned for the mode, and a last line brings Youj home.",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 12,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-themes-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 276664,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-themes-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 389947,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-themes-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 550411,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-themes.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 448968
+        },
+        {
+          "src": "/promo/loop-themes.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 723234
+        },
+        {
+          "src": "/promo/loop-themes.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 927224
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-themes.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 81996,
+        "srcset": {
+          "avif": "/promo/loop-themes-sm.avif 854w, /promo/loop-themes.avif 1280w",
+          "webp": "/promo/loop-themes-sm.webp 854w, /promo/loop-themes.webp 1280w",
+          "jpg": "/promo/loop-themes-sm.jpg 854w, /promo/loop-themes.jpg 1280w"
+        }
+      }
+    },
+    "loop-motion": {
+      "title": "Motion in the components, close up: a button saves, a tab underline glides, a switch flips, a dialog opens, toasts stack and a list re-sorts. Then the same list with motion and with reduced motion, side by side.",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 12,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-motion-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 87642,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-motion-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 117738,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-motion-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 133229,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-motion.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 134001
+        },
+        {
+          "src": "/promo/loop-motion.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 194505
+        },
+        {
+          "src": "/promo/loop-motion.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 234822
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-motion.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 23404,
+        "srcset": {
+          "avif": "/promo/loop-motion-sm.avif 854w, /promo/loop-motion.avif 1280w",
+          "webp": "/promo/loop-motion-sm.webp 854w, /promo/loop-motion.webp 1280w",
+          "jpg": "/promo/loop-motion-sm.jpg 854w, /promo/loop-motion.jpg 1280w"
+        }
+      }
+    },
+    "loop-components": {
+      "title": "A security settings screen comes apart into its components (tabs, segmented controls, a switch, a table and buttons), which fly back in and compose it again.",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 10,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-components-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 68133,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-components-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 94486,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-components-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 129084,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-components.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 111887
+        },
+        {
+          "src": "/promo/loop-components.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 164011
+        },
+        {
+          "src": "/promo/loop-components.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 227631
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-components.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 41374,
+        "srcset": {
+          "avif": "/promo/loop-components-sm.avif 854w, /promo/loop-components.avif 1280w",
+          "webp": "/promo/loop-components-sm.webp 854w, /promo/loop-components.webp 1280w",
+          "jpg": "/promo/loop-components-sm.jpg 854w, /promo/loop-components.jpg 1280w"
+        }
+      }
+    },
+    "loop-illustrations": {
+      "title": "Isometric illustrations on one floor. A house gives way to a present, which assembles piece by piece, lifts its lid and closes again. The camera pulls back as the library assembles around it, each scene with one part in the accent, and lines sweep the floor: every scene takes the theme each brings, Graphite, Terminal, Brutal and Basalt again, before the camera settles on the house.",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 12,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-illustrations-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 398402,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-illustrations-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 524684,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-illustrations-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 779700,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-illustrations.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 714508
+        },
+        {
+          "src": "/promo/loop-illustrations.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 953880
+        },
+        {
+          "src": "/promo/loop-illustrations.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 1174820
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-illustrations.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 57028,
+        "srcset": {
+          "avif": "/promo/loop-illustrations-sm.avif 854w, /promo/loop-illustrations.avif 1280w",
+          "webp": "/promo/loop-illustrations-sm.webp 854w, /promo/loop-illustrations.webp 1280w",
+          "jpg": "/promo/loop-illustrations-sm.jpg 854w, /promo/loop-illustrations.jpg 1280w"
+        }
+      }
+    },
+    "loop-sound": {
+      "title": "Sound made visible. A button, a switch, a segmented control, a publish button and a toast each play their cue from the Glass pack, and the real waveform of each sound lights where it passes the playhead: a press, a toggle, a choice, a success, an arrival and an error, each on the beat. The camera pulls back to the whole score, every part playing in one key.",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 12,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-sound-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 68580,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-sound-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 114609,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-sound-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 185207,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-sound.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 111057
+        },
+        {
+          "src": "/promo/loop-sound.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 215886
+        },
+        {
+          "src": "/promo/loop-sound.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 301558
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-sound.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 19676,
+        "srcset": {
+          "avif": "/promo/loop-sound-sm.avif 854w, /promo/loop-sound.avif 1280w",
+          "webp": "/promo/loop-sound-sm.webp 854w, /promo/loop-sound.webp 1280w",
+          "jpg": "/promo/loop-sound-sm.jpg 854w, /promo/loop-sound.jpg 1280w"
+        }
+      }
+    },
+    "loop-entrances": {
+      "title": "One dashboard built in a relay of entrance looks. Its frame is drafted in Blueprint pencil; a Trace signal runs out of it into the sidebar and lights it; the stat cards lock in with Prism; the chart builds through the render passes; the list rows appear through the Inspector's box models; then the camera tilts into Layers and the stack collapses into the finished dashboard.",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration": 12,
+      "loop": true,
+      "muted": true,
+      "sources": [
+        {
+          "src": "/promo/loop-entrances-sm.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.04M.08\"",
+          "bytes": 171634,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-entrances-sm.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 242915,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-entrances-sm.mp4",
+          "type": "video/mp4; codecs=\"avc1.640028\"",
+          "bytes": 278960,
+          "media": "(max-width: 640px)"
+        },
+        {
+          "src": "/promo/loop-entrances.av1.webm",
+          "type": "video/webm; codecs=\"av01.0.05M.08\"",
+          "bytes": 328777
+        },
+        {
+          "src": "/promo/loop-entrances.webm",
+          "type": "video/webm; codecs=\"vp9\"",
+          "bytes": 465309
+        },
+        {
+          "src": "/promo/loop-entrances.mp4",
+          "type": "video/mp4; codecs=\"avc1.640032\"",
+          "bytes": 518310
+        }
+      ],
+      "poster": {
+        "src": "/promo/loop-entrances.jpg",
+        "width": 1280,
+        "height": 720,
+        "bytes": 58241,
+        "srcset": {
+          "avif": "/promo/loop-entrances-sm.avif 854w, /promo/loop-entrances.avif 1280w",
+          "webp": "/promo/loop-entrances-sm.webp 854w, /promo/loop-entrances.webp 1280w",
+          "jpg": "/promo/loop-entrances-sm.jpg 854w, /promo/loop-entrances.jpg 1280w"
+        }
+      }
+    }
+  },
+  "loops": {
+    "icons": {
+      "wide": "loop-icons"
+    },
+    "themes": {
+      "wide": "loop-themes"
+    },
+    "motion": {
+      "wide": "loop-motion"
+    },
+    "components": {
+      "wide": "loop-components"
+    },
+    "illustrations": {
+      "wide": "loop-illustrations"
+    },
+    "sound": {
+      "wide": "loop-sound"
+    },
+    "entrances": {
+      "wide": "loop-entrances"
+    }
+  },
+  "images": {
+    "og": {
+      "src": "/promo/og.png",
+      "width": 1200,
+      "height": 630,
+      "bytes": 239943,
+      "alt": "Youj: Components, motion and icons, designed as one. Beside it, the tokens specimen: type, colour ramps, control sizes and the motion durations and easings of the Basalt theme, on one sheet."
+    }
+  },
+  "og": "og",
+  "note": "Rendered from apps/promo (Remotion) with the real @youj/motion and @youj/react source. Silent by design."
+}

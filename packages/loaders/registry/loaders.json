@@ -1,0 +1,17 @@
+[
+  {
+    "name": "loader-kit",
+    "type": "registry:component",
+    "title": "Loader kit",
+    "description": "What every Youj loader (beta) draws with: LoaderRoot (a polite status with one API: size, color and accentColor (and colors, for a multicolored loader's parts), speed, label (one or several, taking turns), labelEvery, showLabel, labelPosition, labelEffect, paused), the shown label’s effects (pulse, wave, type, scramble, slide), the engine (a perspective camera, flat lighting, a depth-sorted buffer of particles, dots, hairlines, dashed paths and solid planes, and one shared ticker that runs only while a loader is on screen), the youj letterforms, and the categories. Each loader-<id> item installs one loader on top of it.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "youj-labels-spinner"],
+    "files": [
+      { "path": "src/components/youj/loaders/kit.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/loaders/label.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/loaders/field.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/loaders/glyphs.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/loaders/categories.ts", "type": "registry:lib" }
+    ]
+  }
+]

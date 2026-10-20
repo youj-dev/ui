@@ -1,0 +1,117 @@
+---
+title: Spinner
+description: "Show that work is running during a short wait."
+aliases: ["loading", "loader", "activity indicator", "busy"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="spinner/demo" height={220} />
+
+An import row with a spinner, a status line and a Cancel button.
+
+</Story>
+
+<Story id="sizes-and-color" label="Sizes and color">
+
+<ComponentPreview name="spinner/sizes" height={200} />
+
+The ring at several sizes, on an accent surface and in a muted color.
+
+`size` sets the ring's width and height in pixels, and defaults to 16. The stroke holds at 1.5px up to 24px, then grows with the ring. The spinner draws in `currentColor`, so it takes the color of the text around it, on any surface.
+
+</Story>
+
+<Story id="in-a-row" label="In a row">
+
+<ComponentPreview name="spinner/inline" height={200} />
+
+A domains list where a small spinner marks the domain being checked.
+
+Next to the thing that's waiting, a small spinner can carry the status on its own. Here its label names the domain it's checking, and the short visible text is hidden from assistive technology so it isn't read twice.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="spinner" noImport />
+
+Use a spinner for a wait of a few seconds whose length you can't measure: a sync, a lookup, a check. If you know how far along the work is, use [Progress](/docs/components/progress). If you know the shape of what's loading, a [Skeleton](/docs/components/skeleton) holds its place. On a button, use the button's own `loading` state instead of placing a spinner inside it.
+
+```tsx
+import { Spinner } from '@youj/react'
+
+export function Syncing() {
+  return <Spinner label="Syncing issues" />
+}
+```
+
+On its own, a spinner announces its `label` politely. The default is "Loading". Inside something that already announces the wait, such as a loading Button or an `aria-busy` region with its own status, pass `label={null}` to keep it silent: two announcements for one wait are worse than none.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="label, size (2)">
+
+### Props
+
+<PropsTable name="Spinner" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Turn, arc · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Turn', note: 'a constant-rate rotation', duration: 'deliberate', ease: 'linear', value: '× 1.25 per turn' },
+    { moment: 'Arc', note: 'the arc breathes between 12% and 60% of the ring', duration: 'deliberate', ease: 'standard', value: '× 2.2 per breath' },
+  ]}
+  reduced="A still quarter arc on a faint track. The label is still announced."
+/>
+
+The turn and the breath run on different periods, so the loop never visibly repeats. It's Youj's `LoaderRingIcon`, so it follows the Speed control and pauses when it's offscreen or the tab is hidden.
+
+#### Reduced motion
+
+The ring stops turning and holds a quarter arc on a faint track, which still reads as "in progress". The spoken label doesn't change.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- With a `label`, the spinner is a `status` role holding the label as visually hidden text, so the wait is announced politely.
+- With `label={null}` it has no role, and its ring is `aria-hidden`.
+- Say what's happening, not just that something is. "Checking DNS for docs.youj.io" is better than "Loading".
+
+</ReferenceRow>

@@ -1,0 +1,169 @@
+---
+title: Slider
+description: "Adjust a value or range along a track."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="slider/demo" height={280} />
+
+A monthly spend limit Slider with its value read out in US dollars beside the label.
+
+</Story>
+
+<Story id="ranges" label="Ranges">
+
+<ComponentPreview name="slider/range" height={240} />
+
+A slider with two thumbs.
+
+Pass two values and the slider draws a range with two thumbs. Name each one with `thumbLabels`, and use `minStepsBetweenValues` to keep them apart.
+
+</Story>
+
+<Story id="liquid" label="Liquid">
+
+<ComponentPreview name="slider/liquid" height={280} />
+
+A tank level Slider whose fill is a liquid.
+
+`variant="liquid"` draws the track as a tube, the thumb as a glass droplet and the fill as a liquid. Drag fast and the surface leans back behind the thumb; stop and it sloshes forward, then settles. Arrow keys make small waves. Everything else is the same slider: the role, the keyboard, the props and the Field wiring. Use it where the value is a level or an amount, like a tank, a budget or a volume, and keep one variant per screen.
+
+</Story>
+
+<Story id="ticks" label="Ticks">
+
+<ComponentPreview name="slider/ticks" height={280} />
+
+A seat count read off a ruler.
+
+`variant="ticks"` swaps the rail for a ruler: fine ticks across the thumb's travel, a taller one every fifth, lit in `tone` up to a slim fader cap and quiet past it. Use it for a value people read off a scale, like the lines of an estimate builder. There is a tick per step while that's at most 61 (so 1 to 40 seats shows 40), else 41; `ticks` sets the count. A range lights the ticks between its two thumbs. It is horizontal only.
+
+</Story>
+
+<Story id="without-a-visible-label" label="Without a visible label">
+
+<ComponentPreview name="slider/width" height={200} />
+
+A slider named by `aria-label`.
+
+When the slider sits in a toolbar with no label of its own, `aria-label` names the thumb. Base UI would otherwise name a thumb only from a `Field` or slider label, so Youj's `Slider` passes it through to the thumb for you.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="slider" noImport />
+
+Use Slider to adjust a value within a range, such as a threshold or zoom level. Show the current value beside it. Add an [Input](/docs/components/input), or use one instead, when people need to enter an exact number.
+
+Inside a `Field`, the `FieldLabel` names the thumb.
+
+```tsx
+import { Field, FieldLabel, Slider } from '@youj/react'
+
+export function Volume() {
+  return (
+    <Field>
+      <FieldLabel>Volume</FieldLabel>
+      <Slider defaultValue={60} />
+    </Field>
+  )
+}
+```
+
+`min` and `max` default to 0 and 100. `step` sets the increment, and `format` takes `Intl.NumberFormat` options, so the value is announced as "$400" rather than "400". Use `onValueChange` for what follows the drag, like a readout, and Base UI's `onValueCommitted` for work that should wait until the thumb is released, like a save.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="aria-label, thumbLabels, getAriaValueText, variant, tone, ticks, sound (7)">
+
+### Props
+
+<PropsTable name="Slider" />
+
+| Data attribute | Values |
+| --- | --- |
+| `data-variant` | `default`, `liquid`, `ticks` |
+| `data-tone` | the `tone` |
+| `data-orientation`, `data-dragging`, `data-disabled` | Base UI's state |
+
+It also takes Base UI's `value`, `defaultValue`, `onValueChange`, `onValueCommitted`, `min`, `max`, `step`, `largeStep`, `minStepsBetweenValues`, `format`, `locale`, `orientation`, `disabled` and `name`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Thumb, halo · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Thumb', note: 'tracks the pointer 1:1, and keyboard steps land at once', value: 'no easing' },
+    { moment: 'Halo', note: 'grows behind the thumb on hover, focus and drag', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="The halo fades in without growing. The thumb follows the pointer and the keyboard exactly as before."
+/>
+
+A slider is direct manipulation, so the thumb never eases toward the pointer. The motion is in the halo, a disc that grows behind the thumb on transform and opacity.
+
+#### Liquid
+
+<MotionSpec
+  rows={[
+    { moment: 'Lean', note: 'the surface tilts back from the thumb with the value’s speed', spring: 'snappy' },
+    { moment: 'Slosh', note: 'once the value rests, the surface swings past level and settles', spring: 'settle' },
+    { moment: 'Swell', note: 'the middle of the surface bulges with the speed of the lean, a second wave on the first', spring: 'settle' },
+  ]}
+  reduced="The surface stays level. The thumb and the fill follow the value exactly as on the plain slider."
+/>
+
+The thumb and the length of the fill stay direct; only the liquid's surface moves. With sound on, the liquid slider plays `tick` as its value changes (the sound pack keeps a fast drag from repeating it), and `sound={false}` keeps one silent.
+
+#### Ticks
+
+The lit ticks follow the value with no easing, like the thumb; only the halo moves.
+
+#### Reduced motion
+
+The halo appears without scaling. Everything else is already direct: the thumb moves with the pointer, and the value changes as it moves. The liquid's surface stays level.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- Each thumb is a `slider` with `aria-valuenow`, and `aria-valuetext` formatted with `format`.
+- The arrow keys step. `Page Up`, `Page Down` and `Shift` with an arrow take large steps, and `Home` and `End` jump to the ends.
+- Name it with a `FieldLabel`, with `aria-label` for a single thumb, or with `thumbLabels` for a range.
+- The liquid and the ruler's ticks are decorative and hidden from assistive tech; the thumb's value says the same thing.
+- The thumb has a 32px hit area, and 40px on touch screens. Under right-to-left, the range fills from the right and the arrow keys follow the reading direction.
+
+</ReferenceRow>

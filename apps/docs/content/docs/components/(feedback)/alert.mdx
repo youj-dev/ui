@@ -1,0 +1,172 @@
+---
+title: Alert
+description: "Show a message that needs attention within the page, with optional dismissal."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="alert/demo" height={400} />
+
+A dismissible bandwidth warning with two actions; the card below glides up when it goes.
+
+</Story>
+
+<Story id="severity" label="Severity">
+
+<ComponentPreview name="alert/variants" height={440} />
+
+The four severities.
+
+`variant` is `info`, the default, `success`, `warning` or `danger`. Each tints the surface and brings its own [Youj icon](/docs/icons), which plays once as the alert appears. Info draws its stem and drops the dot, success draws its ring and check, warning rocks on its base, and danger shakes.
+
+`danger` is the same name [Button](/docs/components/button), [Badge](/docs/components/badge), the menu items and the charts and meters (`tone`) use, and it is the name of the color role (`--yj-danger`), so one word means "failed, or can't be undone" everywhere.
+
+Links in the title or description are underlined in the foreground color, so they read as links on every tint.
+
+</Story>
+
+<Story id="dismissing" label="Dismissing">
+
+<ComponentPreview name="alert/dismissible" height={440} />
+
+A set of alerts you can dismiss, with a button that resets them.
+
+`dismissible` adds a dismiss button in the corner. The alert collapses through [Collapse](/docs/motion/collapse): its height eases to zero while the content fades out faster, so what follows glides up instead of jumping. If focus was inside the alert, it moves on to the next focusable element rather than dropping to the top of the page.
+
+Passing `onOpenChange` also makes an alert dismissible. Control it with `open` to remember the choice or to bring the alert back.
+
+```tsx
+import { useState } from 'react'
+import { Alert, AlertDescription } from '@youj/react'
+
+export function MaintenanceAlert() {
+  const [open, setOpen] = useState(true)
+  return (
+    <Alert variant="info" open={open} onOpenChange={setOpen}>
+      <AlertDescription>Maintenance on October 3, from 02:00 to 02:20 UTC.</AlertDescription>
+    </Alert>
+  )
+}
+```
+
+Give an alert its spacing as a margin on the alert itself, such as `className="mb-4"`, rather than as a gap on its parent. The margin collapses with the alert, so no empty gap is left behind.
+
+</Story>
+
+<Story id="icons" label="Icons">
+
+<ComponentPreview name="alert/icons" height={300} />
+
+An alert with a custom icon that plays on mount, and one with the icon removed.
+
+`icon` replaces the variant's icon with any node, and `icon={false}` removes it. A Youj icon with `trigger="mount"` plays as the alert appears, like the built-in ones. Any icon takes the variant's color.
+
+</Story>
+
+<Story id="insight" label="Insight">
+
+<ComponentPreview name="alert/insight" height={200} />
+
+One-line insights under a figure, each with a link to the reasoning.
+
+A sparkle in place of the severity icon and a link at the row's end make an alert an inline insight. Lay the text and the link out in the `AlertDescription`. The second row sits on the band (`bg-band`, with `--alert-icon` set to keep the sparkle in the accent), for a panel that already carries color.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="alert" noImport />
+
+Use Alert for a condition that stays on the page until resolved or dismissed, such as a usage limit or failed payment. Use [Toast](/docs/components/toast) for brief feedback, or [Alert Dialog](/docs/components/alert-dialog) for a decision that must be made before continuing.
+
+```tsx
+import { Alert, AlertAction, AlertDescription, AlertTitle, Button } from '@youj/react'
+
+export function BandwidthAlert() {
+  return (
+    <Alert variant="warning" dismissible>
+      <AlertTitle>You’ve used 82% of this month’s bandwidth</AlertTitle>
+      <AlertDescription>Raise the limit or upgrade to avoid overage.</AlertDescription>
+      <AlertAction>
+        <Button size="sm">Upgrade</Button>
+      </AlertAction>
+    </Alert>
+  )
+}
+```
+
+The title is optional. A lone `AlertDescription` is enough for a one-line notice. `AlertAction` sets a button or two, or a link, under the message.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, icon, dismissible… (7)">
+
+### Props
+
+<PropsTable name="Alert" />
+
+`AlertTitle`, `AlertDescription` and `AlertAction` take the props of a `div`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Icon, dismiss, height, dismiss, content… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Icon', note: 'plays once as the alert mounts', value: 'each icon’s own choreography' },
+    { moment: 'Dismiss, height', note: 'what follows glides up', duration: 'base', ease: 'standard' },
+    { moment: 'Dismiss, content', note: 'fades out ahead of the height', duration: 'fast', ease: 'exit' },
+    { moment: 'Reopen', note: 'height and content together', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Icons appear at rest. A dismissed alert leaves at once, and a reopened one appears at once."
+/>
+
+An alert that mounts appears in place without expanding. Only its icon plays. The collapse animates height on purpose, because the content below has to move with it.
+
+#### Reduced motion
+
+The icon appears in its resting pose. A dismissed alert leaves at once, and the content below moves up in the same frame. The severity, the tint and the message don't change.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- Warning and danger alerts have `role="alert"`, so screen readers announce them at once, interrupting. Info and success alerts have `role="status"` and wait for a pause. Pass `role` to override, such as `role="status"` on a danger alert that isn't urgent.
+- Screen readers announce an alert when it's added to the page. One that renders with the page is read in place, with the rest of the content.
+- The dismiss button is named by `dismissLabel`, "Dismiss" by default. With several alerts on screen, name each one, like `dismissLabel="Dismiss payment alert"`.
+- When a dismissed alert collapses, focus inside it moves to the next focusable element, or to the previous one at the end of the page. It never falls to the body.
+- The icon is decorative. The title and description carry the message.
+
+</ReferenceRow>

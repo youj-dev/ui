@@ -1,0 +1,64 @@
+name: Bug report
+description: Something in a Youj component, block, the CLI or the docs does not work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Don't use this form for a security vulnerability: report it privately, as [SECURITY.md](https://github.com/youj-dev/ui/blob/main/SECURITY.md) describes.
+  - type: input
+    id: component
+    attributes:
+      label: Component or block
+      description: The component, block or page, for example `Dialog` or `tables-data-grid`.
+      placeholder: Dialog
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Youj version
+      description: Run `npx youj doctor`, or read the version in `package.json`.
+      placeholder: 0.x.y
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest reproduction you can make. A link to a sandbox or repository helps most.
+      placeholder: |
+        1. Render `<Dialog>` with ...
+        2. Press ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the error message or a screenshot if there is one.
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, framework (Next.js, Vite, other) and the theme or direction (light, dark, RTL) if it matters.

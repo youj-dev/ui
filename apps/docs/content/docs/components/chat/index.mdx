@@ -1,0 +1,123 @@
+---
+title: Chat
+description: "Build AI chat interfaces with components that handle streaming answers."
+status: new
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="chat/demo" height={600} full />
+
+A full conversation: a short history, a streamed answer with reasoning and a tool call, and a composer.
+
+In the preview, a question goes out on load. The answer thinks out loud, calls a tool, then streams markdown with code and a table while the list follows it. Scroll up mid-answer to take over, or press stop.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatMessageList, ChatMessage, PromptInput" noImport />
+
+The whole kit is one registry item and one import. It's built on Youj's own [Scroll Area](/docs/components/scroll-area), [Button](/docs/components/button), [Input Group](/docs/components/input-group), [Hover Card](/docs/components/hover-card) and [Collapsible](/docs/components/collapsible), and on motion's [Presence List](/docs/motion/presence-list), [Collapse](/docs/motion/collapse), [Morph Label](/docs/motion/morph-label) and [Stagger](/docs/motion/stagger).
+
+The chat kit is the set of parts an assistant is made of: a conversation that stays with a streaming answer, messages with actions, streamed markdown, a composer, thinking and reasoning, tool calls, citations, suggestions and a first-run greeting. It doesn't talk to a model. You bring the stream from any SDK and hand it to the parts, and they handle the hard details: following the answer without fighting the reader, announcing a reply once instead of token by token, and keeping a model's output from ever becoming markup.
+
+A screen is a `ChatMessageList` of keyed `ChatMessage`s over a `PromptInput`. Whatever the assistant does before its text (thinking, reasoning, tool calls) goes inside its message as children.
+
+```tsx
+import { ChatMessage, ChatMessageList, ChatToolCall, PromptInput } from '@youj/react'
+
+export function Assistant({ messages, status, send, stop }: AssistantProps) {
+  return (
+    <div className="flex h-dvh flex-col">
+      <ChatMessageList>
+        {messages.map((m) => (
+          <ChatMessage key={m.id} role={m.role} content={m.text} streaming={m.streaming}>
+            {m.tools.map((t) => (
+              <ChatToolCall key={t.id} name={t.name} args={t.args} status={t.status} result={t.result} />
+            ))}
+          </ChatMessage>
+        ))}
+      </ChatMessageList>
+      <PromptInput status={status} onStop={stop} onSubmit={({ text }) => send(text)} />
+    </div>
+  )
+}
+```
+
+`content` takes a string, or a `ChatTextSource`: any object with `getSnapshot()` and `subscribe()`. Pass a string and every token re-renders the message. Pass a source and a token re-renders only the text that reads it, not the message, its siblings or the list. `createTextStream()` is the smallest source you can write to.
+
+```tsx
+import { createTextStream } from '@youj/react'
+
+const stream = createTextStream()
+for await (const token of reply) stream.append(token)
+```
+
+Keep one stream per reply, created when the reply starts, and set `streaming` to `false` when it ends. That's when the list announces the whole answer.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="The parts" summary="Message List, Message, Markdown… (10 parts)">
+
+<Cards>
+  <Card title="Message List" href="/docs/components/chat/message-list">The scrolling conversation: follows a streaming answer, lets go when you scroll, groups by author.</Card>
+  <Card title="Message" href="/docs/components/chat/message">One message: an answer, a bubble or a notice, with copy, regenerate, rating and edit.</Card>
+  <Card title="Markdown" href="/docs/components/chat/markdown">Streamed markdown that's safe by construction, with code, tables and a caret.</Card>
+  <Card title="Prompt Input" href="/docs/components/chat/prompt-input">The composer: a growing field, attachments, a toolbar, and send that morphs into stop.</Card>
+  <Card title="Thinking" href="/docs/components/chat/thinking">A typing indicator, and reasoning that folds away when it's done.</Card>
+  <Card title="Tool Call" href="/docs/components/chat/tool-call">A tool the assistant called: its arguments, its status and what came back.</Card>
+  <Card title="Tool Approval" href="/docs/components/chat/tool-approval">An agent asks before a risky action: the arguments, the risk, and Allow once, Always allow or Deny.</Card>
+  <Card title="Citation" href="/docs/components/chat/citation">Numbered sources in the text, previewed on hover, and a row of chips under the answer.</Card>
+  <Card title="Suggestions" href="/docs/components/chat/suggestions">A few good prompts, as chips or cards, arriving in sequence.</Card>
+  <Card title="Chat Empty State" href="/docs/components/chat/empty-state">A new conversation: a greeting and ways in.</Card>
+</Cards>
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="The list jumps instead of gliding, messages appear in place, and…">
+
+### Reduced motion
+
+The list jumps instead of gliding, messages appear in place, and streamed text arrives in whole sentences instead of word by word. Loops (the shimmer, the dots, the caret's blink) hold still, and every fold and morph is instant.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- The conversation is a `log` that stays silent while an answer streams. The list speaks for it: "Youj is responding…" once, the whole answer when it's complete, and failures assertively.
+- Every message is an `article` named by its author and time, so screen reader users can move between messages by landmark or heading.
+- Actions on a message sit in one toolbar: a single tab stop, with arrow keys inside it.
+- Enter sends and Shift+Enter breaks the line, and neither cuts an IME composition short.
+
+</ReferenceRow>

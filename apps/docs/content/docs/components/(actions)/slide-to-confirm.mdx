@@ -1,0 +1,135 @@
+---
+title: Slide to Confirm
+description: "Confirm a costly action with a deliberate gesture: drag the thumb to the end of the track."
+---
+
+<ComponentStories>
+<Story id="demo" label="Confirm payment">
+
+<ComponentPreview name="slide-to-confirm/demo" height={260} />
+
+A checkout's last step: slide to pay, then the thumb spins while the payment runs and lands on a check.
+
+Drag the thumb past 90% of the track and let go to confirm; short of that it springs back. The track label fades as the thumb passes over it, and a wash fills in behind the thumb. Once confirmed, `onConfirm` runs: the thumb shows a spinner and `confirmingLabel`, then the whole track takes the success fill, the thumb shows a check and the label becomes `confirmedLabel`, as an Async Button confirms. It stays confirmed.
+
+</Story>
+
+<Story id="danger" label="Danger">
+
+<ComponentPreview name="slide-to-confirm/danger" height={260} />
+
+Deleting a workspace, with `tone="danger"`.
+
+Use the danger tone for an action that deletes or can't be undone: the thumb takes the danger fill and the track a danger wash.
+
+</Story>
+
+<Story id="failure" label="Async failure">
+
+<ComponentPreview name="slide-to-confirm/failure" height={200} />
+
+A transfer that fails, in the small size.
+
+When `onConfirm` rejects (or throws), the thumb turns to a cross and springs back to the start, and the error's message shows in the track and is announced. After `resetAfter` the label returns, and the person can slide again. Pass `errorLabel` to name the failure yourself.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="slide-to-confirm" noImport />
+
+Use a Slide to Confirm for an action that is costly to trigger by mistake, such as a payment, a transfer or a deletion, where a dialog would interrupt more than it helps. For a lighter guard on a button, use `hold` on an [Async Button](/docs/components/button#hold).
+
+```tsx
+'use client'
+
+import { SlideToConfirm } from '@youj/react'
+
+export function PayInvoice({ invoice }: { invoice: Invoice }) {
+  return (
+    <SlideToConfirm
+      label={`Slide to pay ${invoice.total}`}
+      confirmingLabel="Paying…"
+      confirmedLabel="Paid"
+      onConfirm={() => pay(invoice.id)}
+    />
+  )
+}
+```
+
+`onConfirm` is awaited: resolve for success, reject or throw for an error. It runs once per confirmation, and a second confirm while it runs is ignored. Once confirmed the control stays confirmed; give it a new `key` to offer it again. It sizes to its container up to `max-w-sm`; pass a `className` to change that.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="onConfirm, label, confirmingLabel, confirmedLabel, errorLabel, size, tone…">
+
+### Props
+
+<PropsTable name="SlideToConfirm" />
+
+#### Data attributes
+
+The root carries `data-state` (`idle`, `confirming`, `confirmed` or `error`), `data-size` (`sm`, `default` or `lg`) and `data-tone` (`default` or `danger`), plus `data-dragging` while the thumb is held and `data-disabled` when disabled. The thumb's position is `--ui--slide`, from 0 to 1.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drag, spring back, outcome · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drag', note: 'the thumb follows the pointer 1:1, never eased in time' },
+    { moment: 'Spring back', note: 'released short of 90%, the thumb returns to the start', spring: 'smooth' },
+    { moment: 'Snap to the end', note: 'released past 90%, the thumb lands at the end', spring: 'snappy' },
+    { moment: 'Label', note: 'fades as the thumb passes; swaps to each state', duration: 'fast', ease: 'standard' },
+    { moment: 'Thumb mark', note: 'chevron, spinner, check or cross swap with a scale from 0.75 and a fade', duration: 'fast', ease: 'standard' },
+    { moment: 'Check landing', note: 'the check scales in on the spring', spring: 'smooth' },
+    { moment: 'Success fill', note: 'the track washes to the success fill, as an Async Button’s tint', duration: 'fast', ease: 'standard' },
+    { moment: 'Error hold', note: 'before the track returns to rest, unless `resetAfter` is set', duration: 'deliberate', value: '× 3' },
+  ]}
+  reduced="The thumb still follows the pointer, but it is back at the start, or at the end, at once. The thumb's marks swap at once, and the spinner holds a still quarter arc."
+/>
+
+#### Reduced motion
+
+Dragging works the same. The spring back and the snap are instant, the marks swap at once, and the spinner holds still.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Slider role, keyboard, announcements">
+
+### Accessibility
+
+- The thumb is a `slider` (0 to 100) named by `label` and described by a hint: use the arrow keys or End to reach the end, then press Enter.
+- Arrow keys step by 10, Home and End jump to either end, and Enter at the end (90% or more) confirms. In right-to-left, the arrow keys follow the mirrored track. A thumb left short of the end goes back when it loses focus.
+- While confirming and once confirmed, the slider is read-only and its value text is the state's label. Confirming and confirmed are announced politely, an error assertively.
+- `disabled` takes the thumb out of the tab order and sets `aria-disabled`.
+
+</ReferenceRow>

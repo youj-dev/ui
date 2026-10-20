@@ -1,0 +1,173 @@
+---
+title: App Header
+description: "Bring your app’s navigation, search and account controls into a header that condenses on scroll."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="app-header/demo" height={500} />
+
+A header with a brand, navigation, a search button that opens a command palette, an account menu and a phone menu, over a scrolling page.
+
+The header is sticky and starts flat, on the page's own background. Once content scrolls under it, it condenses: 8px shorter, a translucent blurred surface, a hairline and a soft shadow, so what passes beneath reads as beneath. It condenses past 24px and relaxes under 8px. That gap keeps it from flickering when someone scrolls back and forth around the threshold, and a reversal mid-transition carries on from where it is.
+
+The bar's height is the control height plus padding, so a compact or comfortable [theme](/docs/theming) scales it with its controls. It tracks the page by default. Pass `scrollContainer` when the content scrolls inside an element, as the preview does, and `condense={false}` to keep it flat.
+
+`AppHeaderSearch` looks like a field, but it's a button: the palette is the field. On wide screens it shows its placeholder and the shortcut, `⌘K` on Apple platforms and `Ctrl K` elsewhere. Below `md` it becomes an icon button. It's named "Search" at every size and announces its shortcut through `aria-keyshortcuts`. Set `shortcut` to the same key as the palette's own `shortcut` (the preview uses `j`, because this site's search already owns `⌘K`), or `false` to hide it.
+
+Below `md`, the hamburger's bars morph into a cross as the sheet slides in from the inline end, and the sheet's own cross lands exactly where the hamburger was. `header` sits at the top of the sheet (the brand, or a [Workspace Switcher](/docs/components/workspace-switcher)) and `footer` is pinned to the bottom. Every `AppHeaderMenuLink` closes the sheet as it's followed, and the sheet closes itself if the window widens past `md`. Open this page on a phone, or narrow the window, to try it.
+
+</Story>
+
+<Story id="signed-out-and-not-sticky" label="Signed out and not sticky">
+
+<ComponentPreview name="app-header/signed-out" height={420} />
+
+A header that isn't sticky, with a Mega Menu and sign-up actions for visitors who are signed out.
+
+`sticky={false}` lets the bar scroll away with the page. It keeps its surface from the start, since nothing will pass under it. Here it carries a [Mega Menu](/docs/components/mega-menu) and the sign-up actions, which hide below `md` and reappear in the phone menu's `footer`.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="app-header" noImport />
+
+Use it as the one bar across the top of an app or a marketing site: the logo, the primary navigation (plain links or a [Mega Menu](/docs/components/mega-menu)), a search button for the [Command Palette](/docs/components/command-palette), a few actions and the [Account Menu](/docs/components/account-menu). An app whose navigation lives down the side wants a [Sidebar](/docs/components/sidebar) instead, often with a slimmer header beside it. On phones, where the primary destinations belong under the thumb, pair it with a [Bottom Tab Bar](/docs/components/bottom-tab-bar).
+
+```tsx
+import {
+  AccountMenu,
+  AppHeader,
+  AppHeaderActions,
+  AppHeaderBrand,
+  AppHeaderMenu,
+  AppHeaderMenuLink,
+  AppHeaderNav,
+  AppHeaderSearch,
+} from '@youj/react'
+import { CommandGroup, CommandItem, CommandPalette } from '@youj/react/command'
+import { useState } from 'react'
+
+export function Header() {
+  const [palette, setPalette] = useState(false)
+  return (
+    <AppHeader>
+      <AppHeaderBrand href="/">
+        <Logo />
+        Northwind
+      </AppHeaderBrand>
+      <AppHeaderNav>
+        <MainNavigation />
+      </AppHeaderNav>
+      <AppHeaderActions>
+        <AppHeaderSearch onClick={() => setPalette(true)} />
+        <AccountMenu user={user} onSignOut={signOut} />
+        <AppHeaderMenu header="Northwind">
+          <AppHeaderMenuLink href="/deployments" active>
+            Deployments
+          </AppHeaderMenuLink>
+          <AppHeaderMenuLink href="/analytics">Analytics</AppHeaderMenuLink>
+        </AppHeaderMenu>
+      </AppHeaderActions>
+      <CommandPalette open={palette} onOpenChange={setPalette}>
+        <CommandGroup heading="Go to">
+          <CommandItem onSelect={() => setPalette(false)}>Deployments</CommandItem>
+        </CommandGroup>
+      </CommandPalette>
+    </AppHeader>
+  )
+}
+```
+
+The parts are slots in one row. `AppHeaderBrand` is a link (pass `render` for your router's link), `AppHeaderNav` holds the wide-screen navigation and hides below `md`, and `AppHeaderActions` pushes everything after it to the inline end. `AppHeaderMenu` is the phone navigation: a hamburger that only shows below `md`, opening a [Sheet](/docs/components/sheet). Put the same destinations in both.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="sticky, condense, scrollContainer… (26)">
+
+### Props
+
+<PropsTable name="AppHeader" />
+
+#### AppHeaderSearch
+
+<PropsTable name="AppHeaderSearch" />
+
+It takes the rest of [Button](/docs/components/button)'s props, such as `onClick`.
+
+#### AppHeaderMenu
+
+<PropsTable name="AppHeaderMenu" />
+
+#### AppHeaderMenuLink
+
+<PropsTable name="AppHeaderMenuLink" />
+
+`AppHeaderBrand` takes an anchor's props and `render`. `AppHeaderNav` and `AppHeaderActions` are `div`s.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Condense, relax, thresholds… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Condense', note: 'height 8px shorter, surface, blur, hairline and shadow, together', duration: 'base', ease: 'standard' },
+    { moment: 'Relax', note: 'the same properties back, from wherever they are', duration: 'base', ease: 'standard' },
+    { moment: 'Thresholds', note: 'condenses past 24px, relaxes under 8px', value: 'hysteresis' },
+    { moment: 'Hamburger to cross', note: 'the outer bars slide to the middle as the middle one fades (`MenuIcon`)', duration: 'fast', ease: 'standard' },
+    { moment: 'Cross turns', note: '45° each way, once the bars have met', duration: 'base', ease: 'standard' },
+    { moment: 'Sheet in', note: 'from the inline end (`yj-sheet-*`)', duration: 'slow', ease: 'enter' },
+    { moment: 'Sheet out', duration: 'base', ease: 'exit' },
+    { moment: 'Menu link hover', note: 'background and text colors', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The bar condenses and relaxes at once. The hamburger swaps to a cross and the sheet appears without sliding."
+/>
+
+#### Reduced motion
+
+The bar takes its condensed or relaxed state at once, with no height, blur or shadow transition. On phones the hamburger turns straight into a cross and the sheet appears without sliding in. Focus handling and the thresholds are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a `header` element, so it's the page's banner landmark when it sits outside `main`. Give the navigation inside it its own `aria-label` ("Main").
+- The search button is named "Search" at every width, and announces its shortcut with `aria-keyshortcuts` (`Meta+K` or `Control+K`).
+- The hamburger is named "Open menu" (from `title`), and the sheet is a modal dialog named by its header. Focus is trapped inside while it's open, Escape closes it, and focus returns to the hamburger. The sheet's cross is named "Close menu".
+- The sheet's links sit in a `nav` named by `title`, and the current one carries `aria-current="page"` when you set `active`.
+- Every control in the bar meets the control-height target, which grows by 8px on touch screens.
+
+</ReferenceRow>

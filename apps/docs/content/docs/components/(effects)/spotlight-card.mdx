@@ -1,0 +1,149 @@
+---
+title: Spotlight Card
+description: "Light cards under the pointer, with a shared glow across neighboring cards."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="spotlight-card/demo" height={520} />
+
+An integrations grid where one pointer lights every card, and neighboring edges share the glow.
+
+</Story>
+
+<Story id="standalone-cards" label="Standalone cards">
+
+<ComponentPreview name="spotlight-card/standalone" height={260} />
+
+Three metric cards that each track the pointer on their own.
+
+A `SpotlightCard` outside a grid tracks the pointer by itself. Its light stays inside it, and its neighbors stay dark. Use standalone cards when they sit apart, like metrics in a row, and a grid when they read as one set.
+
+`radius` sets the size of the light in pixels, 260 by default. Use a smaller light on smaller cards, as the metric cards in the preview do with 180, so the glow stays a highlight rather than a wash.
+
+</Story>
+
+<Story id="selectable-cards" label="Selectable cards">
+
+<ComponentPreview name="spotlight-card/selectable" />
+
+A function-region picker with a radio in each card and the light following the selection.
+
+For a choice, put a radio in each card and let its label fill the card: the arrow keys move the selection, and the light glides with it.
+
+Mark the selected card in its content, here with an accent border and a check, not with the glow. `radius` on the grid sets the size of the light for every card in it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="spotlight-card" noImport />
+
+Use it for a grid of choices people scan with the pointer: integrations, templates, plans. The light tells them where they are, and the shared glow along neighboring edges makes the grid feel like one surface. Keep it off dense dashboards, where every card is read rather than chosen. `SpotlightCard` is the [Spotlight](/docs/components/spotlight) effect with a card look, so reach for the effect when you need your own look.
+
+`SpotlightGrid` lays out its cards and shares one light across them. It's a CSS grid, so add your own columns and gaps.
+
+```tsx
+import { SpotlightCard, SpotlightGrid } from '@youj/motion/interactions'
+
+export function Integrations({ items }: { items: Integration[] }) {
+  return (
+    <SpotlightGrid className="grid-cols-3 gap-3">
+      {items.map((item) => (
+        <SpotlightCard key={item.slug}>
+          <a href={`/integrations/${item.slug}`} className="block h-full rounded-xl p-4">
+            {item.name}
+          </a>
+        </SpotlightCard>
+      ))}
+    </SpotlightGrid>
+  )
+}
+```
+
+A card brings the look: a 12px radius, a hairline border and the surface color. Pass `className` to change any of it. When the whole card is one link or button, put the control inside the card and let it fill the card, as the demo does, so the card and its target are the same size.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="radius, children, radius… (4)">
+
+### Props
+
+#### SpotlightCard
+
+<PropsTable name="SpotlightCard" />
+
+Other props pass through to the card's `div`.
+
+#### SpotlightGrid
+
+<PropsTable name="SpotlightGrid" />
+
+Other props pass through to the grid's `div`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Keyboard" summary="Tab through the grid">
+
+### Keyboard
+
+Tab through the grid in the demo. Keyboard focus parks the light at the center of the focused card, and moving focus to the next card glides it across. Touch doesn't move the light.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pointer, keyboard glide, glow in and out · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Pointer', note: 'the light follows the pointer', value: 'one write per animation frame' },
+    { moment: 'Keyboard glide', note: 'the light moves to the focused card', duration: 'slow', ease: 'standard' },
+    { moment: 'Glow in and out', note: 'surface glow and border glow, `opacity`', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="No tracking and no glow. The hovered or focused card shows a static accent border instead."
+/>
+
+#### Reduced motion
+
+The light doesn't follow the pointer. The card under the pointer, or the one holding keyboard focus, shows a static accent border, so the grid still marks where the reader is, without movement.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The light's layers are `aria-hidden`, and the cards add no roles or tab stops. Put the link or button inside the card, and give it a visible focus ring.
+- Keyboard focus lights the focused card just as the pointer does, so the effect is never pointer-only.
+- The glow is decoration. Say what the card is, and whether it's installed or selected, in its content.
+
+</ReferenceRow>

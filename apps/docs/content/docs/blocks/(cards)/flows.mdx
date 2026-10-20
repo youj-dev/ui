@@ -1,0 +1,88 @@
+---
+title: Flows
+description: "Where things go: splits, routes, loops and switchovers, with what moves along each path."
+---
+
+<BlockStories>
+
+<BlockStory id="flow" label="Flow" block="app-flow" story="Default">
+
+Where things go, as a sankey. Each path is a ribbon of its own in its source's colour all the way to the end, so a source can be followed past the first step. Point at a step to light every path through it, press it to keep them lit, or point at a ribbon to follow one path. A new range morphs the flow, and View data swaps in the table.
+
+</BlockStory>
+
+<BlockStory id="routing-flow" label="Routing flow" block="app-routing-flow" story="Draft" backdrop="heather">
+
+How a stream is routed across the places it can go, and what that costs; the default is a team's LLM traffic, and card payments or a water network read the same way. The blended cost leads, with how far a draft moves it from the live policy and the throughput, slow time and failure rate it blends to. Your own strategies (Cost, Balanced and Quality in the demo) reshape the split: the source fans out to each route as a stream as dense as its share. Below, the routes with share, typical / slow time, cost and failures, each lighting its lane, and the fallback rule as a sentence; Deploy policy makes the draft the next live version. It has loading, error and empty states that keep its size.
+
+</BlockStory>
+
+<BlockStory id="queue-flow" label="Queue flow" block="app-queue-flow" story="Default" backdrop="umber">
+
+Work moving through steps, live: arrivals, triage and teams with items riding the routes between them, shown as a support desk, an emergency room and a parcel sorter. Pick a lens (volume, wait time, rejects), add people to a team over target or clear the rejects.
+
+</BlockStory>
+
+<BlockStory id="loop-route" label="Loop route" block="app-loop-route" story="Default" backdrop="umber">
+
+A vehicle's loop as a route map (the demo: a plant's milk run, with a school bus and a campus shuttle in the stories): stops done, the next one ringed, the rest hollow, and the vehicle where it is now, with the loop count and what is on board in the middle. Below it the stops still to come with what each gets and its arrival time, then Skip stop and Rush delivery. `format.time` reads the times, and loading, error and empty states take the map's place.
+
+</BlockStory>
+
+<BlockStory id="switchover" label="Switchover" block="app-switchover" story="Default" backdrop="meadow">
+
+A primary source handing over to its backup, told live. Simulate an outage and watch the primary fail its checks, the load move onto the backup and then Switch back; every step lands on a timeline. The demo is a home riding through a power cut; stories show a database failing over and a branch office's fiber falling back to a cellular link.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="groups, keyboard, live regions, motion">
+
+### Accessibility
+
+The flow's ribbons are decorative. Its steps are buttons on one tab stop: Up and Down move along a stage, Left and Right go to the nearest step of the next or last stage, and each is named with its figure, its share and where its people went next (or, at the end, where they came from). Enter pins a step and Escape lets it go. A new range is announced with its total, and View data shows every step to step as a table.
+
+Routing flow names its strategy switch (a segmented control whose segments are pressed buttons) and announces the new blended cost in a polite live region. The flow is a named group described by its source and total, with each route in a list read with its rate and share; the drawing is decorative. The routes are a table with a header per column, and the fallback rule is a labelled switch and two named selects that turn off with it. The head's badge and the foot's caption say in words whether the policy is live or a draft, and a failed deploy says why in its button.
+
+Queue flow lays steps out as a labelled group of buttons with `aria-pressed`, spoken with their name, kind, health and figure; the arrow keys move along the flow. The lens switch is labelled, the overview is a labelled stat group, and a hidden table lists every figure.
+
+Loop route draws the map as an image whose text gives how many stops are done and how many bins are on board, and the list under it names each stop's state in words (the ring and the filled dots only echo it). Skip stop and Rush delivery announce their result, and the vehicle's ring holds still under reduced motion.
+
+Switchover announces each step as it is logged. The four stages are an ordered list with `aria-current="step"` on the current one, the timeline is a labelled group, each source's carried power is a labelled group and its checks are an image with a spoken label. The simulation holds while it is off screen or the tab is hidden.
+
+Under reduced motion pulses and pings stop and everything else changes in place.
+
+</ReferenceRow>
+
+</BlockStories>

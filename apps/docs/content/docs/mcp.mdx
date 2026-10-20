@@ -1,0 +1,364 @@
+---
+title: AI & MCP
+description: "Give your AI coding tool access to Youj components, icons, themes and installation guidance: connect the MCP server, run it yourself, and read every tool it has."
+status: new
+---
+
+<PageArt art="ai" />
+
+**Which one?** Local (`npx youj mcp`) knows your project (package manager, install route) and your Youj version: use it with Claude Code and Cursor. Hosted is for zero-install; it can't see your project and answers from the latest release.
+
+Connect your AI coding tool to the Youj MCP server, a [Model Context Protocol](https://modelcontextprotocol.io) server, to search components, read props and accessibility notes, find icon morphs, check theme contrast and get installation guidance. It's hosted at `https://mcp.youj.dev`: one line connects it, with nothing to install and no key. The same server is on npm as `@youj/mcp`, to run on your own machine (see [Run it yourself](#run-it-yourself)).
+
+The first half of this page is the overview: connecting, what the server can do and how to ask it. The second half is the reference: running it yourself, and every tool, resource and prompt.
+
+## Connect
+
+Point your client at `https://mcp.youj.dev`. It speaks Streamable HTTP, needs no account or key, is read-only and keeps no session. It answers from the index of the latest Youj release.
+
+### Claude Code, Codex and Gemini CLI
+
+Each has a command that adds the server for every project. Pick yours:
+
+<McpConnect />
+
+Or put it in the tool's config file. Codex reads `~/.codex/config.toml` (or `.codex/config.toml` in a project), which is TOML:
+
+```toml
+[mcp_servers.youj]
+url = "https://mcp.youj.dev"
+```
+
+Gemini CLI reads `~/.gemini/settings.json` (or `.gemini/settings.json` in a project), where a Streamable HTTP server is `httpUrl`:
+
+```json
+{
+  "mcpServers": {
+    "youj": { "httpUrl": "https://mcp.youj.dev" }
+  }
+}
+```
+
+### Cursor
+
+In `.cursor/mcp.json` (this project) or `~/.cursor/mcp.json` (every project):
+
+```json
+{
+  "mcpServers": {
+    "youj": { "url": "https://mcp.youj.dev" }
+  }
+}
+```
+
+### VS Code
+
+In `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "youj": { "type": "http", "url": "https://mcp.youj.dev" }
+  }
+}
+```
+
+### Windsurf
+
+In `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "youj": { "serverUrl": "https://mcp.youj.dev" }
+  }
+}
+```
+
+### Zed
+
+In `~/.config/zed/settings.json` (every project) or `.zed/settings.json` (this one):
+
+```json
+{
+  "context_servers": {
+    "youj": { "url": "https://mcp.youj.dev" }
+  }
+}
+```
+
+### JetBrains AI Assistant
+
+In **Settings → Tools → AI Assistant → Model Context Protocol (MCP)**, choose **Add** and paste:
+
+```json
+{
+  "mcpServers": {
+    "youj": { "url": "https://mcp.youj.dev" }
+  }
+}
+```
+
+### Claude.ai and Claude Desktop
+
+In **Settings → Connectors**, choose **Add custom connector**, name it Youj and enter `https://mcp.youj.dev` as its URL. It's then available in every chat, from the tools menu.
+
+### Other clients
+
+Any client that takes a remote server's URL connects the same way: the URL is `https://mcp.youj.dev`, the transport Streamable HTTP. Opening the URL in a browser shows a short note on how to connect. A client that only runs local servers can [run it yourself](#run-it-yourself).
+
+Restart the editor, or reload its MCP servers, after changing its config.
+
+## What it can do
+
+| Tool | Ask it for |
+| --- | --- |
+| `search` | "a loading spinner", "delete confirmation", "settings page": components, blocks, icons, hooks and docs, by meaning |
+| `get_component` | What it's for and what to use instead, install, usage, props, motion tokens, reduced motion and accessibility |
+| `search_icons`, `get_icon` | Icons by meaning, static, morphing or swapping, with triggers and the accessible button pattern |
+| `suggest_icon_morph` | "play → pause", "menu → close", "copy → check": the state icon made for the pair, or an IconSwap with the transition that fits |
+| `list_components`, `list_loaders`, `list_miniatures` | Every component by category with its package and stability, every loading animation, every interactive miniature; `get_component` reads one |
+| `list_blocks`, `get_block` | Cards, sections and screens, with the components they use and their source |
+| `list_illustrations` | The ready-made isometric scenes by category, with their ids and tags; one scene in detail through `get_component("illustration-<id>")` |
+| `get_illustration_guide` | How to compose a new isometric illustration: the builder's parts, presets, shades and grid, rules that read at small sizes, and worked examples |
+| `draw_illustration` | "an empty inbox", drawn as a scene: checked (every problem comes back with its fix), then the component, where to put it, the install command and a link that opens it in the [illustration builder](/illustrations/build) |
+| `get_tokens` | Color, type, radius, control size, motion and character (stroke, shadow, title and label voice, icon weight) tokens for any preset |
+| `create_theme` | A theme from a brand color, with `defineTheme`, checked so muted text and field borders keep their contrast |
+| `motion_guidance` | "toast enters", "list reorders", "button success": the piece that already does it, with its tokens and reduced motion |
+| `get_project_info` | Local server only: read the framework, package manager, install route, Youj/React/Tailwind versions and setup warnings; optional `cwd` (defaults to the server's working directory) |
+| `get_add_command` | Exact install command and imports for component, block or illustration scene names, using the project's route and package manager, including optional peers |
+| `setup` | Setup steps for your framework, and doctor's checks on a pasted `package.json` or stylesheet |
+
+The project tools are read-only and keep reads inside `cwd`, including symlink targets. Hoisted packages outside it are not inspected; declared ranges are labeled separately from installed versions. Registry configuration takes precedence when both routes are present. Package commands omit dependencies already declared or installed; blocks still need their source copied with `get_block`.
+
+It also serves every docs page as a resource (`youj://docs/<slug>`), and two prompts: `build-screen` and `brand-theme`.
+
+## Ask it like this
+
+```text
+Build a settings page with Youj: profile, notifications and billing tabs.
+Make the mute button morph between speaker and muted.
+Theme the app for our brand color, #ff5a1f.
+Which Youj piece should animate new rows into this table?
+```
+
+Morphing icons are where it earns its keep. Asked for "play → pause", it finds that `PlayIcon` is choreographed for exactly that pair and hands back the accessible button:
+
+```tsx
+import { PlayIcon, useIconState } from '@youj/icons'
+
+const play = useIconState({ labels: ['Play', 'Pause'] })
+
+<button {...play.buttonProps}>
+  <PlayIcon {...play.iconProps} />
+</button>
+```
+
+## Docs for any model
+
+Every page is also plain Markdown, for tools without MCP:
+
+- [/llms.txt](/llms.txt): an index of the docs and blocks, in the [llms.txt](https://llmstxt.org) format.
+- [/llms-small.txt](/llms-small.txt): every component's import, one-line description and main props.
+- [/llms-full.txt](/llms-full.txt): every docs page in one file.
+- Any page's URL plus `.md`, such as [/docs/components/button.md](/docs/components/button.md): that page, with its examples, props and motion tokens as text.
+
+
+## Run it yourself
+
+The hosted server can't see your project. Run the server on your machine when you want your tool to inspect the app you're working in, or to work offline:
+
+- **Your project.** Only the local server has `get_project_info`, and its `get_add_command` writes the command for your package manager and install route (the hosted one shows npm and says to use your own).
+- **Your version.** The local server answers from an index bundled with the package, so it describes exactly the Youj version it ships with. Pin it to your app's version and the answers match what you have installed.
+- **Offline.** Once it's installed, it needs no network.
+
+The quickest way is the CLI, run in your app:
+
+```bash
+npx youj mcp
+```
+
+It asks which editor, writes that editor's config file and pins the server to the Youj version your app has installed. `--client` picks the editor without asking, and `--print` prints the config instead of writing it. The [CLI reference](/docs/cli#mcp) lists every option.
+
+To add it by hand, put this in your editor's config:
+
+<McpSetup />
+
+The snippets use `@latest`. To match an app on a fixed version, pin the server to it, as the CLI does: `@youj/mcp@<version>`.
+
+To run the server directly over stdio, for another MCP client or to inspect it:
+
+```bash
+npx -y @youj/mcp
+```
+
+It needs Node.js 22 or later. When the app in the server's working folder has a different Youj version from the server, the server says so in its instructions and names the matching server to run.
+
+## Tools
+
+Every tool is read-only: none of them writes files or installs anything. They return Markdown sized for a model's context. A name the index doesn't know comes back as an error.
+
+### Find
+
+**`search`**: searches by meaning across components, blocks, icons, illustration scenes, loaders (`npx youj add loader-<id>`), hooks and docs, and gives each result the tool to call next and the exact way in: the package import, or `npx youj add` for what's copied in.
+
+| Input | Type | Default | Description |
+| --- | --- | --- | --- |
+| `query` | string | required | What you need, in plain words: "loading spinner", "delete confirmation", "settings page". |
+| `kinds` | `component`, `block`, `icon`, `illustration`, `miniature`, `loader`, `hook`, `docs` (list) | all | Only these kinds. |
+| `limit` | 1 to 25 | `8` | How many results. |
+
+**`get_component`**: everything needed to use one component, motion piece, illustration scene (`illustration-coffee`) or the illustration kit: what it's for and what to use instead, install, usage, props, motion tokens, reduced motion and accessibility.
+
+| Input | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | string | required | Registry name (`alert-dialog`), title or export (`AlertDialogContent`). |
+| `part` | string | | A sub-component export to show props for, such as `DialogContent`. |
+| `sections` | `install`, `usage`, `props`, `motion`, `a11y`, `related` (list) | all | Only these sections. |
+
+**`list_components`**: every component (UI, core, motion, sound) by docs category, with its package, stability and a one-line summary. Optional `kind` (`ui`, `core`, `motion` or `sound`) and `category` (such as `"forms"`).
+
+**`list_loaders`**: every loading animation by category, with its id, component and technique. Optional `category`. Install one with `npx youj add loader-<id>`.
+
+**`list_miniatures`**: every miniature (an interactive isometric object) by category, with its id and component. Optional `category`.
+
+### Icons
+
+**`search_icons`**: Youj icons, brand marks and, optionally, Lucide icons by meaning, with synonyms, typos and prefixes. Returns names, a JSX snippet each and the import line.
+
+| Input | Type | Default | Description |
+| --- | --- | --- | --- |
+| `query` | string | required | "notification", "delete", "loading". |
+| `type` | `all`, `static`, `morph`, `swap` | `all` | `static` icons have one pose and animate on hover. `morph` icons morph between two meanings. `swap` lists IconSwap pairs. |
+| `category` | a Youj icon category | | Only this category. |
+| `source` | `all`, `youj`, `lucide` | `all` | Which set. |
+| `limit` | 1 to 30 | `12` | How many results. |
+
+**`get_icon`**: one icon in detail: its choreography, its states (for a morphing icon), its triggers, the accessible button pattern, props, install and IconSwap partners. For a Lucide icon, how to animate it with `YoujIcon`.
+
+| Input | Type | Description |
+| --- | --- | --- |
+| `name` | string | `bell-off`, `BellOffIcon` or `lucide:rocket`. |
+
+**`suggest_icon_morph`**: the best way to animate between two meanings. Returns the state icon made for the pair when one exists, otherwise an IconSwap between the two best icons with the transition that fits, plus the accessible button code.
+
+| Input | Type | Description |
+| --- | --- | --- |
+| `pair` | string | `"from → to"`, such as `"play → pause"`. |
+| `from`, `to` | string | The two meanings, instead of `pair`. |
+
+### Blocks
+
+Blocks are the copy-in [levels](/docs/choosing-a-level) card, section and screen (an app frame is built in [Create](/create)). Results name the level.
+
+**`list_blocks`**: every block, grouped by domain and tagged with its level, with a one-line summary. Optional `group` (such as `"Auth"`) lists one group, and `level` (`card`, `section` or `screen`) lists one level.
+
+**`get_block`**: one block: its description, the components it uses, its install command and its files as `npx youj add` writes them.
+
+| Input | Type | Description |
+| --- | --- | --- |
+| `slug` | string | The block, such as `app-auth-flow`. |
+| `source` | boolean | Returns the source code instead of the summary. |
+| `file` | string | Which file, from the summary's file list. |
+| `offset` | number | Character offset, to page through a long file. Source comes 12,000 characters at a time. |
+
+### Illustrations
+
+**`list_illustrations`**: the ready-made isometric scenes by category, with their ids and tags. Without `category`, every category and its scene ids. Read one scene with `get_component("illustration-<id>")`.
+
+**`get_illustration_guide`**: how to compose a new scene in the [illustration builder](/illustrations/build)'s JSON format: the volume and grid, every part type, preset, shade, variant and base, rules that keep a scene readable at small sizes, and worked examples. Takes no input.
+
+**`draw_illustration`**: checks a scene in that format. A valid scene comes back as a component for your project's install route, the file to write it to, the install command and a link that opens it in the builder. An invalid scene comes back with every problem and its fix.
+
+| Input | Type | Description |
+| --- | --- | --- |
+| `scene` | object or JSON string | `{ "name", "base", "parts": [...], "groups"?: [...] }`, as the guide describes. |
+| `name` | string | The component's name: "Empty inbox" becomes `IllustrationEmptyInbox`. Default: the scene's name. |
+| `cwd` | string | The app's folder, to pick the install route. |
+
+### Tokens, themes and motion
+
+**`get_tokens`**: a preset's tokens: color (light and dark, with the class to use), type, radius, control size and control heights, motion (durations, easings, springs and staggers), and character (stroke, shadow, title and label voice, icon weight).
+
+| Input | Type | Default | Description |
+| --- | --- | --- | --- |
+| `preset` | `graphite`, `terminal`, `brutal`, `basalt`, `meadow`, `sandstone`, `cinnabar`, `umber`, `seaglass`, `heather` | `basalt` | Which preset. |
+| `groups` | `color`, `type`, `radius`, `spacing`, `motion`, `character` (list) | all | Only these groups. |
+| `mode` | `light`, `dark`, `both` | `both` | Which color mode. |
+
+**`create_theme`**: a theme from a brand color, built with `defineTheme` over a preset and checked with `checkTheme`: every text pair at least 4.5:1 and field borders at least 3:1 on every surface, in both modes. A theme that fails WCAG AA is refused unless `allowLowContrast` is set. Returns the code, how to apply it, the derived colors and any issues.
+
+| Input | Description |
+| --- | --- |
+| `accent` | Required. The brand color: hex, `rgb()`, `hsl()` or `oklch()`. |
+| `name` | The theme's name. |
+| `base` | The preset to extend. Default `basalt`. |
+| `neutral` | The neutral tint: `hue` (0 to 360), `chroma` (0 to 0.04), `wash` and `lift` (0 to 1; `lift` is how far raised surfaces stand above the page in dark mode). Default: toward the accent's hue. |
+| `success`, `warning`, `danger` | Status colors. |
+| `radius` | `none`, `sm`, `md`, `lg` or `full`. |
+| `controlSize` | Control heights: `compact`, `default` or `comfortable`. |
+| `motionPersonality` | The motion personality: `precise`, `calm` or `lively`. |
+| `fonts` | `sans`, `mono` and `display` font stacks. `display` is for titles and defaults to `sans`. |
+| `stroke` | `width` (border width in px, 0.5 to 4), `ink` (0, a quiet hairline, to 1, lines in the text color) and `icons` (icon stroke multiplier, 0.5 to 2). |
+| `shadow` | `soft` (blurred elevation), `hard` (solid offset shadows) or `none`. |
+| `actions` | What fills primary buttons: `accent` (default) or `ink`, the text color. |
+| `headings` | `weight` (100 to 900) and `tracking`. |
+| `labels` | For badges, column heads, field labels, tabs and keys: `case` (`none` or `upper`), `font` (`sans` or `mono`) and `tracking`. |
+| `allowLowContrast` | Accepts pairs that miss WCAG AA. |
+| `look` | The [look](/docs/looks) to apply it with: `classic` (default) or `bezel`. |
+
+**`motion_guidance`**: names the primitive, preset or token that already does an interaction ("toast enters", "list reorders", "button success", "tabs indicator"), with a snippet, its [tokens](/docs/motion/tokens) and its reduced-motion behavior. One input: `interaction`, in plain words.
+
+### Your project
+
+These tools read the app on disk, so they're on the [local server](#run-it-yourself) only (the hosted one has `get_add_command` without the project). Reads stay inside `cwd`, including symlink targets, so packages hoisted above it aren't inspected. `cwd` defaults to the server's working folder.
+
+**`get_project_info`**: the framework, package manager, install route (the packages or the `@youj` registry), Youj, React and Tailwind versions, and setup warnings. Installed versions are labeled separately from the ranges in `package.json`. When an app has both routes, the registry wins. Optional input: `cwd`.
+
+**`get_add_command`**: the exact install command and imports for components, blocks or illustration scenes, for the project's route and package manager, including optional peers and the entry to import from. It leaves out dependencies the app already has. Blocks and scenes get an `npx youj add` command, which copies them in. Each name is answered on its own: an unknown one comes back as "Skipped" with suggestions beside the commands for the others (an error only when none is known).
+
+| Input | Type | Description |
+| --- | --- | --- |
+| `items` | list of names | 1 to 50 names, matched exactly, ignoring case. |
+| `cwd` | string | The app's folder. |
+
+**`setup`**: how to add Youj to an app: `npx youj init` and the manual steps for the framework and mode, in a component style when given. Paste `package.json` or the global stylesheet to check versions and stylesheet order, as [`youj doctor`](/docs/cli#doctor) does.
+
+| Input | Description |
+| --- | --- |
+| `framework` | `next-app`, `next-pages`, `vite`, `react-router` or `astro`. |
+| `mode` | `package` or `registry`. |
+| `look` | `classic` (default) or `bezel`. |
+| `packageJson` | The app's `package.json`, as text. |
+| `css` | The global stylesheet, as text. |
+
+## Resources
+
+| URI | What |
+| --- | --- |
+| `youj://docs/{slug}` | Every docs page as Markdown, such as `youj://docs/components/button`. The Introduction is `youj://docs/index`. |
+| `youj://components` | Every component, one line each. |
+| `youj://tokens` | Basalt's tokens: color, type, radius, control size and motion. |
+
+## Prompts
+
+| Prompt | Arguments | What it does |
+| --- | --- | --- |
+| `build-screen` | `screen`, optional `framework` | Plans and builds a screen: starts from a block that fits, reads each component before using it, picks icons and morphs, and keeps to the tokens. |
+| `brand-theme` | `accent`, optional `name` | Creates a theme from a brand color, fixes what the contrast check reports, applies it app-wide and compares it with the closest preset. |
+
+## The rules it follows
+
+The server tells your tool to import each thing from the package that owns it, to copy source in only with `npx youj add`, to use semantic color classes and Youj sizes rather than raw colors, to take timing from `useYouj()` or `var(--yj-duration-*)` rather than hard-coded durations, and to give every animation a reduced-motion equivalent.
+
+
+## Related
+
+<Cards>
+  <Card title="CLI" href="/docs/cli">`npx youj mcp` and the other commands.</Card>
+  <Card title="Installation" href="/docs/installation">Set up Youj with one command, or by hand.</Card>
+  <Card title="Icons" href="/docs/icons">The animated set, its triggers and its morphs.</Card>
+  <Card title="Theming" href="/docs/theming">Presets, and themes of your own.</Card>
+  <Card title="Motion tokens" href="/docs/motion/tokens">The values `get_tokens` and `motion_guidance` return.</Card>
+  <Card title="Illustration builder" href="/illustrations/build">Where `draw_illustration`'s links open.</Card>
+</Cards>

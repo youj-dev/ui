@@ -1,0 +1,60 @@
+---
+title: Checkout
+description: "Checkout screens for a one-off order or a subscription, with an order summary in view."
+---
+
+<BlockStories>
+
+<BlockStory id="subscription" label="Subscription checkout" block="commerce-subscription-checkout" story="Default" backdrop="sandstone">
+
+Take customers from choosing a subscription plan to payment, with a running order summary that updates as they choose.
+
+</BlockStory>
+
+<BlockStory id="checkout" label="Checkout" block="commerce-checkout" story="Default" backdrop="sandstone">
+
+Guide shoppers through contact details, shipping and payment with the order summary beside the form. Pick it for a one-off order.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, forms">
+
+### Accessibility
+
+Checkout has one `h1` and puts the order summary under its own `h2`, with the order as a real list; fields are labelled. Subscription checkout wraps the page in `main` under a `header`, labels its plan choices, and announces the changing total in a live region (`aria-live`). Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

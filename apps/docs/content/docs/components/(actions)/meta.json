@@ -1,0 +1,4 @@
+{
+  "title": "Actions",
+  "pages": ["button", "button-group", "toggle", "toggle-group", "segmented-control", "inline-confirm", "slide-to-confirm", "theme-toggle", "toolbar", "action-island"]
+}

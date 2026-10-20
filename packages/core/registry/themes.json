@@ -1,0 +1,167 @@
+[
+  {
+    "name": "youj-theme-brutal",
+    "type": "registry:lib",
+    "title": "Brutal theme stylesheet",
+    "description": "The Brutal theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"brutal\" on <html>, as a Vite or Astro app does). The preset itself (brutal) is in the core already: import styles from lib/youj/theme/themes/brutal.css after youj.css. A theme set with <YoujProvider theme={brutal}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/brutal.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-terminal",
+    "type": "registry:lib",
+    "title": "Terminal theme stylesheet",
+    "description": "The Terminal theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"terminal\" on <html>, as a Vite or Astro app does). The preset itself (terminal) is in the core already: import styles from lib/youj/theme/themes/terminal.css after youj.css. A theme set with <YoujProvider theme={terminal}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/terminal.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-check",
+    "type": "registry:lib",
+    "title": "Theme check",
+    "description": "Development guardrails for themes: checkTheme, themeErrors, checkRoles and the console warning YoujProvider logs for a theme that misses contrast. The core ships a no-op in its place, since production builds strip the check. Import from lib/youj/theme/check.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/check.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-meadow",
+    "type": "registry:lib",
+    "title": "Meadow theme stylesheet",
+    "description": "The Meadow theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"meadow\" on <html>, as a Vite or Astro app does). The preset itself (meadow) is in the core already: import styles from lib/youj/theme/themes/meadow.css after youj.css. A theme set with <YoujProvider theme={meadow}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/meadow.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-sandstone",
+    "type": "registry:lib",
+    "title": "Sandstone theme stylesheet",
+    "description": "The Sandstone theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"sandstone\" on <html>, as a Vite or Astro app does). The preset itself (sandstone) is in the core already: import styles from lib/youj/theme/themes/sandstone.css after youj.css. A theme set with <YoujProvider theme={sandstone}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/sandstone.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-cinnabar",
+    "type": "registry:lib",
+    "title": "Cinnabar theme stylesheet",
+    "description": "The Cinnabar theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"cinnabar\" on <html>, as a Vite or Astro app does). The preset itself (cinnabar) is in the core already: import styles from lib/youj/theme/themes/cinnabar.css after youj.css. A theme set with <YoujProvider theme={cinnabar}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/cinnabar.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-umber",
+    "type": "registry:lib",
+    "title": "Umber theme stylesheet",
+    "description": "The Umber theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"umber\" on <html>, as a Vite or Astro app does). The preset itself (umber) is in the core already: import styles from lib/youj/theme/themes/umber.css after youj.css. A theme set with <YoujProvider theme={umber}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/umber.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-seaglass",
+    "type": "registry:lib",
+    "title": "Seaglass theme stylesheet",
+    "description": "The Seaglass theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"seaglass\" on <html>, as a Vite or Astro app does). The preset itself (seaglass) is in the core already: import styles from lib/youj/theme/themes/seaglass.css after youj.css. A theme set with <YoujProvider theme={seaglass}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/seaglass.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-theme-heather",
+    "type": "registry:lib",
+    "title": "Heather theme stylesheet",
+    "description": "The Heather theme's stylesheet, for an app that themes with attributes (data-yj-theme=\"heather\" on <html>, as a Vite or Astro app does). The preset itself (heather) is in the core already: import styles from lib/youj/theme/themes/heather.css after youj.css. A theme set with <YoujProvider theme={heather}> or themeProps needs no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/themes/heather.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-palettes",
+    "type": "registry:lib",
+    "title": "Palettes stylesheet",
+    "description": "Every palette as a stylesheet, for an app that themes with attributes (data-yj-palette=\"meadow\" next to data-yj-theme on <html>, as a Vite or Astro app does): import lib/youj/theme/palettes.css after youj.css. A palette and style set with <YoujProvider palette={…} style={…}> or themeProps need no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/palettes.css",
+        "type": "registry:file"
+      }
+    ]
+  },
+  {
+    "name": "youj-styles",
+    "type": "registry:lib",
+    "title": "Styles stylesheet",
+    "description": "Every style as a stylesheet, for an app that themes with attributes (data-yj-style=\"bezel\" next to data-yj-theme on <html>, as a Vite or Astro app does): import lib/youj/theme/styles.css after youj.css. A palette and style set with <YoujProvider palette={…} style={…}> or themeProps need no stylesheet.",
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/theme/styles.css",
+        "type": "registry:file"
+      }
+    ]
+  }
+]

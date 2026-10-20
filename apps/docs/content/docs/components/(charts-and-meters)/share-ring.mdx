@@ -1,0 +1,116 @@
+---
+title: Share Ring
+description: "Show how a total divides into parts, with each amount and share beside the ring."
+aliases: ["progress ring", "circular progress", "donut", "pie chart", "radial progress"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="share-ring/demo" height={320} />
+
+A bowl's calories split into protein, carbs and fat, with the grams in the legend.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="share-ring" noImport />
+
+Use a share ring when the question is what a whole is made of and the parts are few: a dish's calories by protein, carbs and fat, a month's spending by category, a day's hours by activity. The cells run clockwise from twelve o'clock, each lit in the tone of the part it falls in, so the split reads at a glance and the cells can be counted. The total sits in the bowl in big mono figures that count to each new value, with its unit under it, and the legend gives each part its amount and its share. For many parts, or parts inside parts, use a [Treemap](/docs/components/treemap); for one quantity against a limit, a [Segmented Meter](/docs/components/segmented-meter).
+
+```tsx
+import { ShareRing } from '@youj/react'
+
+<ShareRing
+  unit="kcal"
+  // `value` sizes each part; `amount` is what the legend shows for it.
+  segments={[
+    { id: 'protein', label: 'Protein', value: 152, amount: 38 },
+    { id: 'carbs', label: 'Carbs', value: 256, amount: 64 },
+    { id: 'fat', label: 'Fat', value: 198, amount: 22 },
+  ]}
+  amountFormat={{ style: 'unit', unit: 'gram', unitDisplay: 'short' }}
+/>
+```
+
+Each part takes whole cells by the largest remainder, so the parts always fill exactly the cells they're due and the shares in the legend always add up to 100%. `value` sizes a part on the ring and `amount` is what its row shows, so a macro can take its share of the calories while the legend lists its grams. Parts take the chart colors in turn, or a `tone` of their own.
+
+`max` sets the ring's full scale: above the total, the rest of the ring stays dark (606 kcal of a 2,000 kcal day). `value` puts a different figure in the bowl, `format` formats it, and `children` replaces the bowl altogether. Pointing at a part, on the dial or in the legend, dims the others and puts its amount and share in the bowl; `highlight` does the same from your own state.
+
+The legend sits beside the dial when the ring has the room and under it when it hasn't (`legend="side"`, the default), always under it with `legend="below"`, or not at all with `legend={false}`, when the parts are still spoken. At `size="xs"` the ring is 28px across, with no bowl and no legend: small enough to sit in a pill, as the timers in the [Procedure](/docs/blocks/forms-and-inputs) block do.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="segments, max, value… (12)">
+
+### Props
+
+<PropsTable name="ShareRing" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `share-ring` (with `data-size` and `data-legend`), `share-ring-dial`, `share-ring-rule`, `share-ring-cell` (with `data-state` and `data-segment`), `share-ring-center`, `share-ring-value`, `share-ring-focus-value`, `share-ring-unit`, `share-ring-legend`, `share-ring-item` (with `data-highlighted`), `share-ring-swatch`, `share-ring-label`, `share-ring-amount` and `share-ring-share`. In Bezel the labels and the unit are mono capital eyebrows and every figure is mono.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, new values, pointing at a part · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'the cells light one after another round the dial', duration: 'deliberate', ease: 'standard' },
+    { moment: 'New values', note: 'cells recolor in place and the total counts to its new value', duration: 'fast', ease: 'standard' },
+    { moment: 'Pointing at a part', note: 'the others dim and the bowl cross-fades to the part', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The ring is drawn lit and the total jumps to each new value."
+/>
+
+#### Reduced motion
+
+The cells are drawn lit from the first frame, and the total and the bowl change in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels and assistive technology">
+
+### Accessibility
+
+- The dial is an image named by its total and each part's share, in order ("606 kcal: Protein 25%, Carbs 42%, and Fat 33%"), or by the total and "No data" when every part is zero.
+- The legend is a list of plain text rows, so each part's amount and share are read as they're shown.
+- Its words come from the labels (`shareRingPart`, `shareRingSummary`, `noData`), translated by the language packs.
+- A dial turns clockwise in every script, so the ring keeps its direction under RTL; the bowl and the legend follow the page.
+
+</ReferenceRow>

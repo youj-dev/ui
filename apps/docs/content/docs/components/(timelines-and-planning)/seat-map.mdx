@@ -1,0 +1,116 @@
+---
+title: Seat Map
+description: "Choose seats from a venue plan, with price tiers, availability and keyboard navigation."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="seat-map/demo" height={520} />
+
+A theater with three price tiers and two aisles, a running total, and two seats chosen to start.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="seat-map" noImport />
+
+Use a seat map when where someone sits is the choice: a concert, a cinema, a flight, a table plan. The stage sits at the top and the rows bend gently round it, split by aisles, with each row's letter at both ends. Seats take their price tier's color, taken seats are dimmed and hatched, and picked seats fill with their tier and spring in with a check. Pointing at or focusing a seat raises a chip over it with its row, number, tier and price, and the chip glides from seat to seat.
+
+```tsx
+import { SeatMap, type SeatMapRow, type SeatMapTier } from '@youj/react'
+
+const tiers: SeatMapTier[] = [
+  { id: 'front', name: 'Front stalls', price: 68 },
+  { id: 'rear', name: 'Rear', price: 32 },
+]
+const rows: SeatMapRow[] = ['A', 'B'].map((letter) => ({
+  id: letter,
+  label: letter,
+  seats: Array.from({ length: 10 }, (_, i) => ({ id: `${letter}${i + 1}`, number: i + 1, tier: letter === 'A' ? 'front' : 'rear' })),
+}))
+
+<SeatMap rows={rows} tiers={tiers} aisles={[5]} value={picked} onValueChange={setPicked} max={6} />
+```
+
+`rows` run from the stage back, each with its seats in order along the row; a seat names its `tier` and can be `unavailable`. `aisles` lists the seat positions after which an aisle runs. `value` and `onValueChange` hold the picked seat ids (or use `defaultValue`), and `max` caps how many can be picked. Prices format in `currency` (EUR by default) and the provider's locale. `stage` changes the stage's word, or `false` leaves the stage out, for a table plan or a classroom. The legend under the map lists the tiers with their prices.
+
+Seats shrink with the room down to about 17px. On a narrower screen the plan scrolls sideways instead, so seats stay big enough to tap. It opens on its center, where the stage is, and its edges fade by how far there is left to scroll. Each seat's hit area fills the gaps around it, and a seat you arrow to scrolls clear of the fades.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="rows, tiers, aisles… (12)">
+
+### Props
+
+<PropsTable name="SeatMap" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `seat-map`, `seat-map-stage`, `seat-map-grid`, `seat-map-row`, `seat-map-row-label`, `seat-map-seat` (with `data-state`), `seat-map-aisle`, `seat-map-inspector` and `seat-map-legend`. The seat size is `--seat`, fitted to the width between 1.0625rem and 1.75rem.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pick, let go, point or focus · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Pick', note: 'the seat fills with its tier and the check springs in', spring: 'settle' },
+    { moment: 'Let go', note: 'the check shrinks away', duration: 'fast', ease: 'exit' },
+    { moment: 'Point or focus', note: 'the chip glides to the seat', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The check and the chip appear in place."
+/>
+
+#### Reduced motion
+
+A picked seat's check appears in place, and the chip moves to the next seat without gliding.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- The map is a grid named by `label` (default: the labels' "Seat map") and described by how to use it; each row is a row headed by its letter.
+- Each seat is a grid cell named by its row, number, price and status ("Row F, seat 12, €48, available"), with `aria-selected` when picked and `aria-disabled` when taken.
+- The grid is one tab stop. Arrows move seat to seat and row to row (skipping aisles), Home and End jump to a row's ends, Ctrl+Home and Ctrl+End to the first and last seat, and Space or Enter picks or lets go.
+- Picking and letting go are announced ("Row F, seat 12 added"), with the toggle cues; at the limit the pick is refused with the error cue and "You can pick up to 6 seats".
+- A venue plan is a physical map, so it isn't mirrored in RTL: seat 1 stays where the venue put it, and the arrow keys keep their direction. The text around it follows the page.
+- Its words come from the labels (`seatMap`, `seatMapHint`, `seatMapStage`, `seatItem`, `seatAvailable`, `seatUnavailable`, `seatSelected`, `seatRow`, `seatNumber`, `seatAdded`, `seatRemoved`, `seatLimit`), translated by the language packs.
+
+</ReferenceRow>

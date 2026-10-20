@@ -1,0 +1,135 @@
+---
+title: Radial Menu
+description: "A ring of actions that fans out around the pointer: hold, drag toward one and let go."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Canvas tools">
+
+<ComponentPreview name="radial-menu/demo" height={400} />
+
+A design canvas where pressing and holding anywhere opens a ring of tools around the pointer.
+
+Drag toward a tool and let go to pick it, in one gesture. The slot is chosen by direction, as in a pie menu, so the pointer only has to head the right way. Letting go in the middle leaves the ring open, so you can click a tool instead. A quick click does nothing, so the canvas keeps its own clicks.
+
+</Story>
+
+<Story id="arc" label="Arc at an edge">
+
+<ComponentPreview name="radial-menu/arc" height={340} />
+
+A button in a bottom bar whose actions fan upward in a half ring.
+
+`startAngle={-90}` and `sweep={180}` make the arc run from the start side, over the top, to the end side. A full ring opened near an edge does this by itself: it shifts inward, and if it would have to move far from the pointer it becomes a half ring facing away from the edge.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="radial-menu" noImport />
+
+Use a radial menu for a handful of actions people repeat often on a surface: tools on a canvas, quick actions on a card. Directions are quick to learn and fast to repeat, but only up to about eight slots; for more, or for actions that need words, use a [Context Menu](/docs/components/context-menu) or a [Dropdown Menu](/docs/components/dropdown-menu). Like any gesture-only menu, give the same actions a visible control too.
+
+```tsx
+import { CodeIcon, FrameIcon, PenToolIcon, ShapesIcon, TypeIcon } from '@youj/icons'
+import { RadialMenu, type RadialMenuItem } from '@youj/react'
+
+const tools: RadialMenuItem[] = [
+  { id: 'frame', label: 'Frame', icon: <FrameIcon /> },
+  { id: 'text', label: 'Text', icon: <TypeIcon /> },
+  { id: 'shape', label: 'Shape', icon: <ShapesIcon /> },
+  { id: 'pen', label: 'Pen', icon: <PenToolIcon /> },
+  { id: 'code', label: 'Code', icon: <CodeIcon /> },
+]
+
+export function Canvas({ onTool }: { onTool: (id: string) => void }) {
+  return (
+    <RadialMenu items={tools} onSelect={(item) => onTool(item.id)} label="Tools" aria-label="Canvas" className="h-96">
+      {/* the canvas */}
+    </RadialMenu>
+  )
+}
+```
+
+`RadialMenu` renders the trigger itself: a `div` with your `children`, `className` and props, or your own element through `render` (`render={<Button />}`). `trigger` says how a pointer opens it: `hold` (the default) after a press held still, `click`, or `contextmenu` for a right-click, where holding the button down and letting go on a slot picks it too. From the keyboard, Enter, Space, the context menu key and Shift+F10 open it on any trigger, centered on the trigger.
+
+Each item is `{ id, label, icon, onSelect?, disabled? }`. The item's own `onSelect` runs first, then the menu's `onSelect` with the item. `open` can be controlled (`onOpenChange`), `radius` sets the distance to the slots (crowded slots push it out), `holdDelay` the hold in ms, and `sound={false}` silences its cues.
+
+To keep the ring inside part of the page, as these previews do, pass that element as `container` and give it `contain: paint` (or a `transform`).
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, trigger, radius, startAngle, sweep, open, onSelect, container…">
+
+### Props
+
+<PropsTable name="RadialMenu" />
+
+`RadialMenu` also takes a `div`'s props (or those of the element you `render`) for the trigger.
+
+#### Data attributes
+
+The trigger is `data-slot="radial-menu-trigger"` with `data-state` (`open` or `closed`), `data-yj-trigger` (its `trigger`) and `data-disabled`. The ring is `data-slot="radial-menu"` inside `radial-menu-layer`, the middle `radial-menu-hub`, and each slot `radial-menu-item` with `data-highlighted` while it's aimed at or focused and `data-disabled` when it can't be chosen.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fan out · highlight · hub · collapse · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fan out', note: 'the slots spring out from the center to the ring, one after another', spring: 'smooth', stagger: 'tight' },
+    { moment: 'Hub', note: 'the middle pops in and names the highlighted action; the name fades up as it changes', spring: 'snappy' },
+    { moment: 'Highlight', note: 'the slot aimed at grows and fills with the accent, and an accent arc on the hub turns to point at it', spring: 'snappy' },
+    { moment: 'Collapse', note: 'the slots fall back into the center in reverse order and fade', duration: 'fast', ease: 'exit' },
+  ]}
+  reduced="The ring is there at once and gone at once; the highlight and the hub's label still change."
+/>
+
+#### Sound
+
+With sound on in the provider, the ring plays `open`, a `tick` for each slot it passes, `select` when an action is chosen and `close` when it's dismissed. `sound={false}` silences it.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Menu, roving focus, keyboard, announcement">
+
+### Accessibility
+
+- The trigger is a button (`aria-haspopup="menu"`, `aria-expanded`) unless you render your own element. Name it with `aria-label` when its content doesn't say what it is.
+- The ring is a `menu` named by `label` (default "Actions") and described by a hint on the keys; each slot is a `menuitem` named by its label.
+- Focus moves into the ring when it opens: onto the first slot from the keyboard, onto the ring from a pointer. Focus follows the highlight, so pointer and keyboard share one place.
+- ← and → (swapped in right-to-left) and ↑ and ↓ go around the ring, skipping disabled slots; Home and End go to the first and last. Enter or Space chooses.
+- Escape, Tab or a click outside closes the ring and returns focus to the trigger.
+- The chosen action is announced politely: "Pen chosen".
+- In right-to-left the ring is mirrored, so the slots run counterclockwise from the start.
+
+</ReferenceRow>

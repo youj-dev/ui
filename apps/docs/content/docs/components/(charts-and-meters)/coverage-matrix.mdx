@@ -1,0 +1,116 @@
+---
+title: Coverage Matrix
+description: "Show how deep each row is covered by each column, with gaps hatched and a selectable row whose gaps turn red."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="coverage-matrix/demo" height={420} />
+
+A made-up app's features against the platforms they ship on. Each cell fills by how complete the feature is there, and a feature that hasn't started on a platform is hatched. Pick a row (click it, or Enter on one of its cells) and its gaps turn red; the line under it reacts to the pick.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="coverage-matrix" noImport />
+
+Use a coverage matrix when the question is "where are the gaps": detection rules by tactic and source, features by platform, tests by module and browser, translations by page and language. A cell's fill is how deep the coverage goes, so thin spots read as well as empty ones. For who may do what, use a [Level Matrix](/docs/components/level-matrix); for one value over a calendar, a [Calendar Heatmap](/docs/components/calendar-heatmap). The [Coverage grid](/docs/blocks/trends-and-comparisons#coverage-grid) card is built on it.
+
+```tsx
+import { CoverageMatrix } from '@youj/react'
+
+<CoverageMatrix
+  label="Detection coverage"
+  columns={[
+    { id: 'identity', label: 'Identity', tone: 'chart-3' },
+    { id: 'network', label: 'Network', tone: 'chart-2' },
+  ]}
+  rows={[
+    { id: 'access', label: 'Initial access', values: [4, 2] },
+    { id: 'lateral', label: 'Lateral movement', values: [1, 0] },
+  ]}
+  defaultValue="lateral"
+  formatValue={(n) => `${n} rules`}
+  noneLabel="No rules"
+/>
+```
+
+Each row gives one value per column, in the order of `columns`; 0 or `null` is no coverage and draws the hatch. A cell fills from the bottom by its value out of `max` (by default the largest value, one scale for every cell), never less than a sliver when it has any. Columns take the chart colors in order unless they set a `tone`. The selected row is `value`/`defaultValue`/`onValueChange`; in it the gaps take the danger tone, so it's the row your suggestion or action is about. `formatValue`, `noneLabel` and `depthLabel` word the cells and the key; `legend={false}` drops the key. No rows or columns shows the empty state.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="rows, columns, max, value, formatValue, noneLabel…">
+
+### Props
+
+<PropsTable name="CoverageMatrix" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `coverage-matrix`, `coverage-matrix-grid`, `coverage-matrix-columns`, `coverage-matrix-row`, `coverage-matrix-label`, `coverage-matrix-cell`, `coverage-matrix-fill`, `coverage-matrix-legend`, `coverage-matrix-tooltip`, `coverage-matrix-summary` and `coverage-matrix-empty`. A row has `data-state="selected"` when it is chosen; a cell has `data-state` (`covered` or `none`). The cell size is `--coverage-matrix-cell` (32px).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, new values · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the fills rise from the bottom of their cells, row after row, when a third of the grid scrolls into view', duration: 'slow', ease: 'emphasized' },
+    { moment: 'New values', note: 'a fill eases to its new depth', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Selecting a row', note: 'the row band and its gaps change color', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; changes land at once."
+/>
+
+#### Reduced motion
+
+The fills are drawn in place, and new values land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `grid` (your `label`, or the labels' "Coverage matrix") described by a summary of how many cells are covered, of how many.
+- A row per row, its header the row's name, and the chosen one `aria-selected`. Every cell is named with its column and value ("Cloud: 3 rules", or `noneLabel`), so the decorative column names over the grid aren't needed to read it.
+- One tab stop. The arrows move between the row names and the cells (mirrored in RTL), Home and End go to a row's name and its last cell, and Enter or Space selects the row. Focus shows the cell's tooltip, as hovering does.
+- A gap is hatched and dashed as well as colored, and its value is spoken, so color is never the only cue.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

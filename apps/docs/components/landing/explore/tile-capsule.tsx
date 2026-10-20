@@ -1,0 +1,36 @@
+'use client'
+
+import { useState } from 'react'
+import { CpuIcon, LayersIcon, MaximizeIcon, ScissorsIcon, WandIcon } from '@youj/icons'
+import { Button, Capsule, CapsuleSearch, CapsuleStepper, CapsuleToggle, StatPill } from '@youj/react'
+import { Demo } from './demo'
+
+/** The capsules, a studio's toolbar: a tool picker, a tempo stepper, a live DSP reading, search and a bare capsule. */
+export default function CapsuleTile() {
+  const [tool, setTool] = useState('cut')
+  return (
+    <Demo>
+      <div className="explore-box flex max-w-xl flex-wrap items-center justify-center gap-2">
+        <CapsuleToggle
+          aria-label="Tool"
+          iconOnly
+          value={tool}
+          onValueChange={setTool}
+          options={[
+            { value: 'cut', label: 'Blade', icon: <ScissorsIcon size={16} /> },
+            { value: 'layer', label: 'Layers', icon: <LayersIcon size={16} /> },
+            { value: 'fx', label: 'Effects', icon: <WandIcon size={16} /> },
+          ]}
+        />
+        <CapsuleStepper label="Tempo" defaultValue={124} min={60} max={200} unit="BPM" />
+        <StatPill label="DSP" value={38} unit="%" icon={<CpuIcon />} trend={[22, 30, 26, 35, 31, 38]} />
+        <CapsuleSearch shortcut="/" placeholder="Find a sample" />
+        <Capsule>
+          <Button variant="ghost" size="icon" aria-label="Full screen">
+            <MaximizeIcon size={16} />
+          </Button>
+        </Capsule>
+      </div>
+    </Demo>
+  )
+}

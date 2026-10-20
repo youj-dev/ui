@@ -1,0 +1,4 @@
+# Raw renders, frame sequences and review sheets. The finished web assets are copied to apps/docs/public/promo/.
+out/
+# What the site doesn't play (the social cuts, the film, the tile strips), published by `render publish`. Local only.
+exports/

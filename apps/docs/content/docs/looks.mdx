@@ -1,0 +1,154 @@
+---
+title: Looks
+description: "Choose how your components look with Classic or Bezel, paired with any theme."
+---
+
+<LookComparison />
+
+A [theme](/docs/theming) sets colors, type, spacing, corners and motion. A **look** sets the shape and structure of each component: sectioned or padded cards, pill or rectangular buttons, filled or outlined fields, and segmented or underlined tabs. Each [style](/docs/theming#palette-and-style) names the look it's built in (Bezel and Terminal in Bezel; Clean, Classic and Brutal in Classic), and a `look` prop overrides it. Classic and Bezel are names on both axes: the Bezel style is built in the Bezel look, and Clean, Classic and Brutal are built in the Classic look. A style picks its look; `look` overrides it.
+
+|  | Theme | Look |
+| --- | --- | --- |
+| Decides | color, type, radius scale, density, motion, character | the anatomy of each component |
+| Set with | `theme={basalt}` or a custom theme | `look="classic"` or `look="bezel"` |
+| Lives in | `@youj/core` (the tokens and the presets) | `@youj/react` (component looks) |
+| Default | Basalt, in dark | Classic |
+
+Classic is the default look: thin-bordered panels, rounded-rectangle controls, outlined fields and underline tabs, with no CSS rules of its own. Bezel builds components as instrument panels. It was designed alongside the Bezel style, but uses the colors, type and corners of your chosen theme. Selecting Bezel brings in its CSS rules, described below.
+
+## The anatomy
+
+These shared rules keep Bezel components consistent across a screen. Two of them speak in the theme's voice: labels take its `labels` setting and the primary action its `actions` fill, so the Bezel style's mono capitals are its own, and a theme in another style under Bezel keeps its plain labels.
+
+- **A card's head is one line.** The title, then its description inline as a muted "/ subtitle", then a disc at the end for the card's one action. On a narrow card the subtitle drops below the title. Built with: `CardTitle`, `CardDescription`, and a ghost icon `Button` in `CardAction`. Text in the action reads as a mono status line.
+- **Sections step lighter.** Under the head, each content block and the footer is a section on a full-bleed hairline, each a step lighter than the one above (a touch darker in light), so the panel is lit from below. Built with: One `CardContent` per section, then `CardFooter`. `variant="inset"` puts them in a well at the concentric radius.
+- **Labels are eyebrows, values sit right in mono.** The short name over a figure, a group or a column is small and set in the theme's label voice (the Bezel style's: tracked mono capitals). Its value sits at the end of the same row in mono. Built with: `Eyebrow` (or `data-slot="eyebrow"`), a field's label over its control, `ProgressLabel` and `ProgressValue`.
+- **Numbers are mono, units are muted.** Figures are set in mono with tabular digits. A unit, a percent sign and a currency's cents are set small and muted beside them. Built with: `Counter`, `StatCard`, the meters' values.
+- **Meters are segmented or ruled.** A quantity reads against a scale: cells that fill, a rule with ticks, or a thin recessed rail. Never a fat bar. Built with: `SegmentedMeter`, `LimitMeter`, `Gauge`, `HistogramRange`, `Progress`.
+- **Fields are filled wells.** A recessed fill with about 12px corners on the field border, which holds 3:1 against the page in both modes; in light mode the field is white, as cards and menus are. Focus brings the accent ring and halo; an invalid field keeps its danger edge. Built with: `Input`, `Textarea`, `Select`, `Combobox`, `NumberInput`, `InputGroup`.
+- **Actions are pills.** The primary action takes the theme's action fill (the palette's accent in every shipped style; `actions: 'ink'` leaves the accent to state and selection); a secondary one is a raised filled pill; an icon button is a disc. Built with: `Button`: `default`, `secondary`, and the `icon` sizes.
+- **Tables are dense, with mono capital heads.** Rows on hairlines with no zebra, column heads in small mono capitals, figures in mono at the end of their column. Built with: `Table` and the data tables (a numeric column marks its cells `data-numeric`).
+- **Status is a soft tinted pill with a dot.** A state is its color at low strength behind its own ink, led by a dot, never a saturated block. Built with: `Badge` in `success`, `warning` or `danger`, with `BadgeDot` first.
+
+These rules follow the theme’s [shapes](/docs/theming#shapes), which both looks read: Bezel decides the anatomy, never the corner. A pill is the control radius scaled up, so a square theme such as Terminal or Brutal stays square, and a theme that rounds its controls (`controls: 'rounded'`, as the Clean and Classic styles do) draws every button, field, track and key at its control radius instead, in proportion to each control’s height. And the accent is spent on state, not decoration: the selected key, the focus ring, a live value, the fill that matters.
+
+## Set a look
+
+### The whole app
+
+For Classic there's nothing to set: a root `YoujProvider` writes `data-yj-look="classic"` on its subtree without being asked, and carries it onto everything the subtree portals, such as menus, dialogs and toasts, as it does the theme. For Bezel, pass `look="bezel"`:
+
+```tsx title="app/providers.tsx"
+import { basalt, YoujProvider } from '@youj/core'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  // Classic by default; look="bezel" for the instrument-panel anatomy.
+  return <YoujProvider theme={basalt} look="bezel">{children}</YoujProvider>
+}
+```
+
+`useYoujLook()` reads the look in effect.
+
+### On the server, or without JavaScript
+
+The recipes key on the `data-yj-look` attribute, so no JavaScript is needed. Without a provider and without the attribute, components draw Classic. Writing `data-yj-look="bezel"` on `<html>` switches the whole document to Bezel, overlays included. `npx youj init` writes the attribute for you.
+
+```tsx title="app/layout.tsx"
+import { basalt, themeProps } from '@youj/core'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" data-theme="dark" data-yj-look="bezel" {...themeProps(basalt)}>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+### Bezel, for all or part of a page
+
+`look="bezel"` on the provider, on a `ThemeScope`, or on `<html>` as `data-yj-look="bezel"`:
+
+```tsx
+import { ThemeScope } from '@youj/core'
+
+<ThemeScope look="bezel">
+  <Dashboard />
+</ThemeScope>
+```
+
+A Classic scope inside a Bezel one puts its subtree back to Classic. A Bezel scope inside that one isn't supported: its subtree stays Classic.
+
+### In JavaScript
+
+```ts
+import { DEFAULT_LOOK, isYoujLook, LOOKS, lookById, looks, useYoujLook } from '@youj/core'
+
+LOOKS // ['classic', 'bezel']
+looks // the same, each with a name and a one-line description, for a picker
+lookById('bezel').name // 'Bezel'; an unknown id falls back to Classic
+isYoujLook(localStorage.getItem('look')) // checks a stored or linked value
+DEFAULT_LOOK // 'classic'
+useYoujLook() // the look in effect where it's called
+```
+
+## The stylesheet
+
+From the package, there's nothing to add: `@youj/react/styles.css` carries Bezel's recipes, and they apply wherever `data-yj-look="bezel"` is written.
+
+From the registry, Bezel's recipes are an item of their own, `youj-look-bezel`, imported right after `ui.css`. `npx youj init --look bezel` copies it with the core, and a [Create](/create) link in Bezel (`look=bezel`) installs it with the frame:
+
+```bash
+npx youj add youj-look-bezel
+```
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '../styles/youj.css';
+@import '../styles/ui.css';
+@import '../styles/bezel.css';
+```
+
+## Component by component
+
+| Component | In Bezel |
+| --- | --- |
+| Card | The head is one line: a larger title, its description as a muted "/ subtitle" (under the title on a narrow card), and a disc at the end. The head, each content block and the footer are sections split by full-bleed hairlines, each a step lighter than the one above, so the footer is the lightest. Text in the head's action, and at the footer's start, reads as a mono capital status line. `variant="inset"` puts everything under the head in a well at the concentric radius. |
+| Eyebrow, field labels | The short labels over figures, groups and sections (`Eyebrow`, or any element with `data-slot="eyebrow"`) and a field's label over its control are mono capitals, small and tracked. In Classic an `Eyebrow` keeps whatever classes you give it. |
+| Button | Pills. The primary takes the theme's action fill (the accent in every shipped style; `actions: 'ink'` leaves the accent to state); secondary is a raised filled pill; icon buttons are discs. |
+| Input, Textarea, Select, Combobox, NumberInput | Filled wells with about 12px corners on the field border (3:1 in both modes), a white field in light mode. Focus keeps the accent ring, and an invalid field keeps its danger edge. |
+| Tabs, ToggleGroup, SegmentedControl, with `variant="pill"` | A recessed track with the choice as a key that glides: white on a ring at the field border's strength in light (3:1 against the track), a clearly lighter step in dark. The default underline look is not restyled. |
+| Badge | Soft tinted pills, a raised neutral chip for `secondary`, and a status dot (`BadgeDot`, first inside the badge). |
+| Switch | Flatter and wider: a gray knob in a recessed track when off, a light knob on the accent when on. |
+| Checkbox, Radio | Soft squares in a filled well; the radio stays round. |
+| Table, data tables | Dense rows on hairlines, no zebra, mono capital column heads, and figures in mono at the end of their column. |
+| StatCard, Counter | Figures in mono. A stat's label is a mono eyebrow, its unit and percent sign are small and muted, and a currency's cents are muted. |
+| Dialog, Popover, menus | A slightly lifted surface at a larger radius. A dialog's head sits on a hairline, and its footer is a band of pill actions. |
+| Progress, Slider | A thin recessed rail. Progress fills in a neutral ink, keeping the accent for emphasis (`tone="accent"`), with its label as a mono eyebrow and its value in mono; the slider's range is the accent and its thumb an ink disc. |
+| Gauge, SegmentedMeter, LimitMeter, HistogramRange, RefillMeter, DistributionStrip, HistoryStrip, ForecastBand | Labels are eyebrows in the theme's label voice and figures are mono. The gauge's band word is a mono capital in its own ink. |
+| Kbd, Avatar | Keys in mono on a raised chip, and grouped avatars ringed in the surface. |
+
+## Building a component
+
+Design it in Classic first, then check it in Bezel. Compose the kit's own parts (`Card` and its sections, `Eyebrow`, `Button`, `Badge`, the fields) so the rules above reach it without any work, and give any new part a `data-slot` of its own so a look can find it. A part the kit doesn't have yet gets its Bezel recipe beside the others, keyed on that slot. In Classic, the default, it must render cleanly on its own: nothing it needs to be legible may exist only in Bezel.
+
+## Overriding a recipe
+
+Your `className` wins, as in shadcn. A component writes the classes a recipe also sets with an `own:` variant, which files them in Tailwind's `utilities.own` layer; the recipes sit in `utilities.style` above it; every other utility, yours included, sits directly in `utilities`, above both. So the recipe restyles the component, and a plain utility of yours on the same property beats the recipe:
+
+```tsx
+<Button className="rounded-md bg-red-500">Delete everything</Button>
+<Card className="gap-4 py-8">…</Card>
+```
+
+A fill you set on a `Button` also drops Bezel's sheen, so it shows as given. To restyle a part everywhere, write a selector on its `data-slot` in your own CSS (unlayered CSS beats every layer):
+
+```css title="app/globals.css"
+[data-yj-look='bezel'] [data-slot='card'] {
+  border-radius: var(--radius-lg);
+}
+```
+
+<Callout title="Previews on this site">
+  Previews are built in the Clean style, in Classic, unless you pick another: with the style switch in a component preview's toolbar (that preview only) or in a block preview's. The site's own chrome stays Classic, and a [Create](/create) link carries a style of its own.
+</Callout>

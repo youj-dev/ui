@@ -1,0 +1,206 @@
+---
+title: Stat Card
+description: "Analytics tiles: a figure, how it moved, and one picture of its data, on a card or joined in a panel."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="stat-card/demo" height={520} />
+
+A dashboard of stat tiles for revenue, orders, latency and health that take a new live reading.
+
+Give a tile the one picture its data calls for, drawn from real values:
+
+- **`StatBars`**: recent readings as thin bars on a baseline, the latest lit and the rest a quiet tint of its `tone`. With `previous`, last period's readings sit on each bar as ticks, so you see where this period beat it. Counts and sums read best as bars.
+- **`StatMeter`**: a share of a whole, or progress to a target. The caption leads with the share; `marker` puts a notch on the track (where the pace says you should be by now), and the fill turns warning behind it and success once the target is met.
+- **`StatBreakdown`**: how a total splits, one bar in parts from the inline start with a key of names and figures. A neutral part is the quiet gray, so the parts that need attention carry the color, and any part with a value keeps a sliver you can see.
+
+For a rate or an average, a [Sparkline](/docs/components/sparkline) reads better than bars.
+
+</Story>
+
+<Story id="stat-cards" label="Stat cards">
+
+<ComponentPreview name="stat-card/cards" height={260} />
+
+Three stat cards, each with its own picture in the chart slot.
+
+`StatCard` is a tile on its own Card, with its parts as props: `value`, `format`, `delta` (or `previous`, which it works the change out from), `comparison` and one picture in `chart`. It takes the Card's props too, `spotlight` included.
+
+```tsx
+import { StatBars, StatCard } from '@youj/react'
+
+<StatCard
+  label="Visitors"
+  value={48210}
+  previous={42891}
+  comparison="vs. last week"
+  chart={<StatBars data={[31, 33, 32, 36, 38, 37, 41, 44, 48]} tone="chart-1" />}
+/>
+```
+
+</Story>
+
+<Story id="down-is-good" label="Down is good">
+
+<ComponentPreview name="stat-card/invert" height={220} />
+
+A churn rate and a cloud spend where a fall reads as good news.
+
+For latency, churn and cost, a fall is good news. `invert` colors the change by the news (green when it fell), while the triangle still follows the number.
+
+</Story>
+
+<Story id="deltas" label="Deltas">
+
+<ComponentPreview name="stat-card/deltas" height={200} />
+
+A list of deltas, up, down, inverted, flat and as a count.
+
+`StatDelta` works on its own too, in a table cell or beside a heading.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="stat-card" noImport />
+
+Use stat tiles for the handful of numbers a dashboard opens with: revenue, orders, latency, accounts. Each one is built like an instrument readout: a small label, one big figure with its unit set small and muted, how it moved (a triangle and the change in the good or bad ink, then what it's compared against), and at most one picture of its data underneath. For a trend people need to read values from, use a [Chart](/docs/components/chart).
+
+```tsx
+import { Stat, StatBars, StatDelta, StatGroup, StatMeter, StatValue } from '@youj/react'
+
+<StatGroup aria-label="This week" className="sm:grid-cols-2">
+  <Stat label="Monthly recurring revenue">
+    <StatValue value={121140} format={{ style: 'currency', currency: 'USD', notation: 'compact', maximumFractionDigits: 1 }} />
+    <StatDelta value={0.064}>vs. last month</StatDelta>
+    <StatMeter value={121140} max={130000} marker={120000}>of the $130K target</StatMeter>
+  </Stat>
+  <Stat label="Orders" action={<span>7 days</span>}>
+    <StatValue value={1502} />
+    <StatDelta value={0.08}>vs. last week</StatDelta>
+    <StatBars data={[182, 204, 197, 221, 236, 214, 248]} previous={[171, 188, 201, 194, 210, 205, 219]} />
+  </Stat>
+</StatGroup>
+```
+
+- **`Stat`** is one tile: a group named by its `label`, with an `action` at the end of the label's line (a period, a live marker, a small menu) and `loading`.
+- **`StatGroup`** joins tiles into one panel, split by hairlines at the theme's stroke. Any number of tiles wraps cleanly; set the columns with `grid-cols-*`.
+- **`StatValue`** is the figure. `format` takes `Intl.NumberFormat` options, so currencies, percentages, compact numbers and units format in the YoujProvider's locale (en-US without one), or the `locale` you pass; `unit` adds words Intl has no unit for ("seats").
+- **`StatDelta`** is the change: a fraction by default (`0.124` is 12.4%), or in the value's own terms with `format`. Its children are the comparison. **`StatNote`** is a muted line for when there's no change to show.
+
+Press Next reading in the preview: each figure rolls to its new value, each change counts to its own, the bars morph and a triangle turns when its change does. Refetch shows `loading`: the label stays, and the figures wait behind a skeleton.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="label, action, loading… (51)">
+
+### Props
+
+#### Stat
+
+<PropsTable name="Stat" />
+
+#### StatGroup
+
+`StatGroup` takes [Card](/docs/components/card)'s props. Its columns auto-fit at 11rem and up; set your own with `grid-cols-*`.
+
+#### StatValue
+
+<PropsTable name="StatValue" />
+
+#### StatDelta
+
+<PropsTable name="StatDelta" />
+
+#### StatBars
+
+<PropsTable name="StatBars" />
+
+#### StatMeter
+
+<PropsTable name="StatMeter" />
+
+#### StatBreakdown
+
+<PropsTable name="StatBreakdown" />
+
+#### StatCard
+
+<PropsTable name="StatCard" />
+
+`StatCard` passes the rest of its props to [Card](/docs/components/card), at `size="sm"`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Right to left" summary="Labels, figures and captions follow the page's direction; the…">
+
+### Right to left
+
+Labels, figures and captions follow the page's direction; the hairlines between tiles move to the inline end, and meters and breakdowns fill from the inline start. Bars and sparklines keep time running left to right.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Value changes, change changes, change turns… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Value changes', note: 'motion’s Counter rolls each digit to the new number, a tight stagger step per place from the right', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Change changes', note: 'the figure counts to its new value', duration: 'slow', ease: 'standard' },
+    { moment: 'Change turns', note: 'the triangle turns to face the new direction', spring: 'snappy' },
+    { moment: 'Bars arrive', note: 'each rises from the baseline in turn, left to right, when they scroll into view (a clip, so the rounded tops stay round)', duration: 'deliberate', ease: 'enter' },
+    { moment: 'New readings', note: 'bars and ticks morph from where they are', duration: 'slow', ease: 'standard' },
+    { moment: 'Meter fills', note: 'ShareBar’s edge travels to the share; a new value retargets from where it is', spring: 'smooth' },
+    { moment: 'Breakdown opens', note: 'the parts open from the inline start in turn; a new split glides', duration: 'slow', ease: 'standard' },
+    { moment: 'Figures arrive', note: 'ContentSwap: rise out of a light blur while the height follows', duration: 'base', ease: 'enter' },
+  ]}
+  reduced="Figures, bars, meters and breakdowns are drawn at their values: nothing rolls, rises or opens."
+/>
+
+#### Reduced motion
+
+Values swap to the new number without rolling, the triangle shows its new direction at once, bars, meters and breakdowns are drawn at their values, and loaded figures replace the skeleton without a fade or blur.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- Each tile is a group (`role="group"`) named by its label, so "Monthly recurring revenue, $121.1K, up 6.4% vs. last month" is read as one thing.
+- `StatDelta` says "Up", "Down" or "No change" in words before the figure. The triangle and its color are decorative.
+- The pictures are decorative by default: the figures and words beside them say the same. Give `StatBars` a `label` to make it an image with a name ("Orders by day this week, rising"). `StatBreakdown`'s key is a list of each part's name and figure.
+- While `loading`, a tile sets `aria-busy`, keeps its label, and announces "Loading" and the label (or `loadingLabel`); the new figures are read when they arrive.
+- An `action` needs its own name, such as `aria-label="Revenue options"`.
+
+</ReferenceRow>

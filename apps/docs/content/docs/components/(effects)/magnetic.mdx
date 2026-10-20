@@ -1,0 +1,133 @@
+---
+title: Magnetic
+description: "Pull an element toward a nearby pointer and return it when the pointer leaves."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="magnetic/demo" height={320} />
+
+A hero with a primary and a secondary call to action that pull toward the pointer, the label inside lagging behind.
+
+</Story>
+
+<Story id="strength-and-radius" label="Strength and radius">
+
+<ComponentPreview name="magnetic/strength" height={320} />
+
+Buttons at different strengths, each inside a dashed outline that shows where the pull begins.
+
+The pull starts `radius` pixels outside the element's box and grows linearly to full strength at the box's edge, so there's no jump when the pointer crosses into range. `strength` is the fraction of the pointer's offset from the center that the element follows: at 0.35, a pointer 20px right of center moves the element 7px. Keep it between about 0.15 and 0.5.
+
+The dashed outlines show each zone. It's measured from the element's rectangle, so a round button still has a rounded-square zone.
+
+</Story>
+
+<Story id="depth" label="Depth">
+
+<ComponentPreview name="magnetic/depth" height={240} />
+
+The same button with no inner layer and with MagneticInner at different ratios.
+
+`MagneticInner` goes inside the control, around its label or icon, and travels `ratio` as far as the shell. The default, 0.5, lets the label lag behind the button, which reads as depth. At 0 the label holds still while the button slides beneath it, and above 1 it runs ahead.
+
+`MagneticInner` reads the nearest Magnetic around it. Outside one it renders a plain `inline-block` span.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="magnetic" noImport />
+
+Use it on one or two calls to action that should feel alive: a hero's primary button, a floating action. It rewards the pointer on its way to the target. Keep it out of dense interfaces like toolbars, forms, menus and tables, where targets must stay exactly where they are, and don't put it on text.
+
+Wrap the control. Magnetic is an `inline-block` wrapper that moves by transform, so the control keeps its layout, its semantics and its focus ring.
+
+```tsx
+import { Magnetic, MagneticInner } from '@youj/motion'
+import { Button } from '@youj/react'
+
+export function Cta() {
+  return (
+    <Magnetic strength={0.3} radius={48}>
+      <Button size="lg">
+        <MagneticInner>Start deploying</MagneticInner>
+      </Button>
+    </Magnetic>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="strength, radius, spring… (6)">
+
+### Props
+
+<PropsTable name="Magnetic" />
+
+#### MagneticInner
+
+<PropsTable name="MagneticInner" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pull, return, magneticInner · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Pull', note: '`strength` × the pointer offset, fading to zero at `radius`', spring: 'smooth' },
+    { moment: 'Return', note: 'the pointer leaves the zone or the page, or the window loses focus', spring: 'smooth' },
+    { moment: 'MagneticInner', note: 'rides the same spring at `ratio` of the travel', spring: 'smooth' },
+  ]}
+  reduced="No pull. The element stays in place and works as usual."
+/>
+
+`spring` swaps the default for another spring token. `snappy` tracks the pointer more tightly, and `settle` adds a small overshoot on the way home. Only `transform` moves, so the pull never triggers layout.
+
+#### Reduced motion
+
+Magnetic doesn't listen to the pointer at all, and the control sits exactly where the layout put it. Nothing else changes: the button is fully usable, and `MagneticInner` renders its content in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Magnetic adds no roles and doesn't take focus. The control inside keeps its own name, keyboard behavior and focus ring.
+- The pull moves the element toward the pointer, so the target gets closer, never harder to hit.
+- It's off when the primary pointer is coarse, as on phones and tablets. Keyboard focus never pulls, so for keyboard users the control stays put.
+- Keep the pull small. A button that travels far from its label, or away from the pointer, feels unstable, and moving targets are hard to use for people with motor impairments.
+
+</ReferenceRow>

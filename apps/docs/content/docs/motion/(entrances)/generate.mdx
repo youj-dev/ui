@@ -1,0 +1,132 @@
+---
+title: Generate
+description: "Build real UI in part by part, in its real colors: regions dragged out, text typed in, controls popped, icons drawn."
+---
+
+<ComponentPreview name="generate/demo" height={460} />
+
+Use it for an entrance that shows a screen being made: a hero demo, a product tour, an AI-builds-your-UI moment. The demo's own frame is dragged out first, then its main regions, each with a selection outline. Then every part arrives in build order, each its own way: a surface drags out, text types in line by line, a control pops, an icon draws its strokes, a chart and an image wipe in, a rule extends and a row slides up. It needs no script. Keep it to one moment on a page: it asks to be watched.
+
+## Installation
+
+<InstallTabs name="generate" />
+
+## Usage
+
+Wrap the UI in `GenerateEntrance`. It builds its first child and plays on mount.
+
+```tsx
+import { GenerateEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <GenerateEntrance>
+      <SignInCard />
+    </GenerateEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the engine. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { generate } from '@youj/motion'
+
+const run = generate(document.querySelector('#pricing')!, { speed: 1.5 })
+await run.finished
+```
+
+## Pacing
+
+The build goes through three stages: **frame** (the demo's box and its main regions are dragged out, with selection outlines), **build** (every part arrives, in build order, starting once its region is half open) and **settle** (anything floating, like an open popover, fades in).
+
+The length grows with the demo: about 2 seconds for a button, 3 for a card and up to 9 for a large screen. Three options tune it:
+
+- `duration` fixes the whole run, in milliseconds.
+- `speed` scales it: `2` plays twice as fast. It applies on top of `duration` and the provider's speed.
+- `phases` shares the run out between the three stages. The values are weights, so they are normalized and never change the total; a stage left out keeps its default (`{ frame: 16, build: 72, settle: 12 }`), and `0` skips it.
+
+```tsx
+// a quick run that is nearly all build
+<GenerateEntrance duration={1400} phases={{ frame: 8, build: 84, settle: 8 }}>
+  <PricingCard />
+</GenerateEntrance>
+```
+
+## Regions
+
+With no options, the regions dragged out first are the demo's largest boxes. To choose them, give `order` selectors (relative to the demo) in the order they should appear, and `names` to label a region on its tab while it is dragged out. A selector that matches nothing is skipped.
+
+```tsx
+<GenerateEntrance order={['[data-slot=sidebar]', 'main']} names={{ '[data-slot=sidebar]': 'Navigation', main: 'Content' }}>
+  <Dashboard />
+</GenerateEntrance>
+```
+
+## What it reads
+
+The parts come from the real DOM, read once before the first frame: roles, tags and `data-slot` first, then geometry. Each is built in its real colors, so a primary button arrives in your accent. Open popovers simply fade in at the end.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, order, names, onFinish">
+
+### Props
+
+<PropsTable name="GenerateEntrance" />
+
+#### generate
+
+```ts
+function generate(node: HTMLElement, options?: GenerateOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `GeneratePhases` | `{ frame: 16, build: 72, settle: 12 }` | Each stage's share of the run, as weights. |
+| `order` | `string[]` | the demo's largest boxes | Selectors for the regions to drag out first, in this order. |
+| `names` | `Record<string, string>` |  | A name for a region, by its selector in `order`, shown on its tab. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the entrance. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Frame, build, settle · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Frame', note: 'the demo’s box, then its regions, dragged out from the reading corner with selection outlines', value: '16% of the run', ease: 'emphasized' },
+    { moment: 'Build', note: 'each part arrives its own way, in build order', value: '72%' },
+    { moment: 'Settle', note: 'open popovers fade in', value: '12%' },
+    { moment: 'Drag out', note: '`clip-path` from the reading corner, with `opacity`: surfaces and fields', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Type', note: 'a `clip-path` that shows the lines done and the current one, a character at a time', duration: 'slow', ease: 'linear' },
+    { moment: 'Pop', note: '`scale` from 0.86 and `opacity`: controls', duration: 'base', ease: 'enter' },
+  ]}
+  reduced="No build: the UI is just there, and nothing is added to the page."
+/>
+
+The demo is never restyled. While a part waits it is held by its inline opacity (no animation, so no compositor layer), and it arrives by a Web Animation that replaces the hold, created just before its moment. When the run ends, or `cancel()` is called, the animations are cancelled, the holds are put back exactly and the selection outlines are removed, so the page is exactly as it was. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `generate()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The selection outlines and tabs are `aria-hidden` and never take the pointer. The demo stays in the accessibility tree the whole time, so a screen reader reads the real UI.
+- Tabbing into the demo, or pressing on it, ends the run at once, so nobody uses a part that hasn't arrived yet.
+- Nothing flashes: parts fade, wipe and pop once, and the outlines are thin and fade out.
+
+</ReferenceRow>

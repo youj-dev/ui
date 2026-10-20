@@ -1,0 +1,64 @@
+---
+title: Upgrading to 0.5
+description: "What breaks between 0.4 and 0.5, why, and how to move your app across: the codemod, then what's left by hand."
+---
+
+{/*
+  Upgrade guide template. Copy it to
+  apps/docs/content/docs/upgrade-guides/<from>-to-<to>.mdx (for example 0-4-to-0-5.mdx),
+  fill every section, delete what doesn't apply, and link it from the
+  "Upgrade guides" section of apps/docs/content/docs/releases.mdx (and give the
+  folder a meta.json and an entry after "releases" in content/docs/meta.json
+  the first time). Write one for a minor release whose
+  breaking changes an app is likely to hit; the changelog alone covers the rest.
+  Plain English, US spelling, short sentences, no em dashes.
+*/}
+
+0.5 changes <one-line summary of the breaking changes>. Most apps need <the codemod / ten minutes / nothing beyond the codemod>. Upgrade every Youj package together:
+
+```bash
+pnpm up "@youj/*" --latest
+npx youj doctor
+```
+
+## What changed
+
+| Change | Who it affects | Deprecated since |
+| --- | --- | --- |
+| `Badge` `tone` is now `variant` | Apps that pass `tone` | 0.3.0 |
+
+## Why
+
+<What the old API got wrong, in a sentence or two: the bug it caused, the
+inconsistency with the rest of Youj, what the new one makes possible.>
+
+## Before and after
+
+```tsx
+// Before
+<Badge tone="success">Paid</Badge>
+
+// After
+<Badge variant="success">Paid</Badge>
+```
+
+## Codemod
+
+```bash
+<the codemod's command, when there is one>
+```
+
+<What it rewrites, what it leaves for you (it can't see dynamic values, for
+example), and to commit before running it. Delete this section when there's
+no codemod.>
+
+## By hand
+
+1. <Each step the codemod doesn't do, in the order to do them.>
+2. <How to tell it worked: the warning that stops, the test that passes.>
+
+## Copied-in code
+
+<If registry items changed: which ones, what to re-add (`npx youj add <item>`)
+and what to look for in the diff. Code you copied in doesn't change on its
+own. Delete this section when no item changed.>

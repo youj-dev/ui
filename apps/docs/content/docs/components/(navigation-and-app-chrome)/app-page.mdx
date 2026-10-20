@@ -1,0 +1,91 @@
+---
+title: App Page
+description: "Give every page of your app the same header and gutter, so each one starts at the same place."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="app-page/demo" height={420} />
+
+A page with its title, a line under it, two actions at the end, and its sections on the page's gutter.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="app-page" noImport />
+
+Put each page of your app in AppPage, inside your frame's content area. [Build an app frame](/docs/guides/build-an-app-frame) puts the sidebar, top bar, account menu and search around it. The in-app screens use it, so a page of your own sits beside them with the same header and the same edges.
+
+```tsx
+import { AppPage, Button } from '@youj/react'
+
+export function Invoices() {
+  return (
+    <AppPage title="Invoices" description="Everything you've billed this year." actions={<Button>New invoice</Button>} width="fill">
+      {/* your sections */}
+    </AppPage>
+  )
+}
+```
+
+`width` sets how far the body runs. `page` (the default) stops at 1280px at 100% scale and centers, so a wide screen gets margins. `fill` takes the whole width, for a dashboard, a table, a board or a canvas. `readable` stops at 1024px and centers, for a page that is one form, such as settings. A page of tables, cards or lists fills; cap a field's own width rather than the page's.
+
+The page is a container, so what's inside lays out by the page's width rather than the window's: use `@3xl:` and `@6xl:` in your sections. The gutter is 16px, 24px from a 48rem page and 32px from 72rem; the frame's top bars (see [Build an app frame](/docs/guides/build-an-app-frame#the-ready-made-frame)) follow the same gutter.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="title, description, actions, width…">
+
+### Props
+
+<PropsTable name="AppPage" />
+
+`data-slot` marks its parts: `app-page`, `app-page-body`, `app-page-header`, `app-page-title`, `app-page-description` and `app-page-actions`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="AppPage is static">
+
+### Reduced motion
+
+AppPage is static. Nothing changes under reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Heading level, landmarks">
+
+### Accessibility
+
+- The title is an `h1` by default. Set `headingLevel` when the page sits under another heading, and give your sections the level below it.
+- AppPage draws no landmark of its own: the frame's `main` holds it. Under a top bar that already names the page, the frame's `AppFrame` (the copy-in `frame-shell`) hides the title visually and keeps it for screen readers, so the page still has its heading.
+
+</ReferenceRow>

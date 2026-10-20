@@ -1,0 +1,135 @@
+---
+title: Menubar
+description: "Group app commands in familiar menus such as File, Edit and View."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="menubar/demo" height={380} />
+
+A document menu bar with File, Edit and View menus, including a submenu, checkbox items and a radio group.
+
+Once a menu is open, the bar behaves like a desktop menu bar: hovering another trigger, or pressing `←` or `→`, closes the open menu and opens its neighbor without another click. The open trigger is marked by one [Sliding Indicator](/docs/motion/sliding-indicator), so the mark glides along the bar as you scrub, and retargets if you change direction mid-glide. With no menu open, triggers light up on hover on their own.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="menubar" noImport />
+
+Use a menubar for the command surface of a document-style app: an editor, a design tool, an IDE in the browser, where people expect menus they can scrub across. For one menu behind a button, use a [Dropdown Menu](/docs/components/dropdown-menu). For site navigation between pages, use a [Navigation Menu](/docs/components/navigation-menu).
+
+```tsx
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from '@youj/react'
+
+export function EditorMenubar() {
+  return (
+    <Menubar>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            New document <MenubarShortcut>⌘N</MenubarShortcut>
+          </MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Print…</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Undo</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  )
+}
+```
+
+Each `MenubarMenu` is a menu whose trigger sits in the bar. Its content takes everything a [Dropdown Menu](/docs/components/dropdown-menu) does, under Menubar names: `MenubarItem` (with `variant="danger"` and `inset`), `MenubarCheckboxItem`, `MenubarRadioGroup` and `MenubarRadioItem`, `MenubarLabel`, `MenubarGroup`, `MenubarSeparator`, `MenubarShortcut`, and submenus with `MenubarSub`, `MenubarSubTrigger` and `MenubarSubContent`. The API matches shadcn/ui's Menubar, so its examples paste in.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="container, presentation (2)">
+
+### Props
+
+#### Menubar
+
+<PropsTable name="Menubar" />
+
+Base UI's Menubar takes `orientation` (`'horizontal'` by default, which sets the arrow keys), `loopFocus` (default `true`), `modal` and `disabled`.
+
+#### MenubarContent
+
+<PropsTable name="MenubarContent" />
+
+It defaults to `align="start"` with the first row under the trigger's label, `sideOffset={6}`, and takes Dropdown Menu's `side`, `align`, `alignOffset`, `collisionPadding` and `container`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open-menu mark, mark appears and leaves, menu opens… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open-menu mark', note: 'glides to the trigger whose menu opened', spring: 'smooth' },
+    { moment: 'Mark appears and leaves', note: 'when the first menu opens and the last one closes', duration: 'fast', ease: 'standard' },
+    { moment: 'Menu opens', note: 'yj-pop from the trigger, as Dropdown Menu', duration: 'fast', ease: 'enter' },
+    { moment: 'Row highlight', note: 'one highlight glides between rows, as Dropdown Menu', spring: 'smooth' },
+  ]}
+  reduced="The mark jumps to the open trigger, menus appear without the pop, and the row highlight jumps."
+/>
+
+#### Reduced motion
+
+The mark moves straight to the open trigger, menus open in place and rows highlight without gliding. Which menu is open reads exactly the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The bar is a `menubar` and each trigger a `menuitem` with `aria-haspopup` and `aria-expanded`. It's a single tab stop; `←` and `→` move between triggers and wrap, mirrored in right-to-left layouts.
+- `↓`, `Enter` or `Space` opens a menu and focuses its first row; inside, the arrow keys, typeahead, `Home` and `End` work as in any menu. `Escape` closes it and returns focus to its trigger.
+- The gliding mark is decorative (`aria-hidden`). In forced-colors mode the open trigger gets an outline instead.
+
+</ReferenceRow>

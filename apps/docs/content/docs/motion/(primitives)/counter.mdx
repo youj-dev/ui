@@ -1,0 +1,102 @@
+---
+title: Counter
+description: "A number that counts up, down or rolls to its new value, formatted for the provider's locale."
+---
+
+<ComponentPreview name="counter/demo" />
+
+Use it where a number's change is the news: a price switching billing periods, a metric on a dashboard, a stat as it scrolls into view. Don't animate numbers people read in bulk or compare across rows, like table cells, and don't count a value the reader needs immediately, like a balance at checkout. Show those as plain text.
+
+## Installation
+
+<InstallTabs name="counter" />
+
+## Usage
+
+```tsx
+import { Counter } from '@youj/motion'
+
+export function Revenue({ total }: { total: number }) {
+  return <Counter value={total} format={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }} />
+}
+```
+
+Formatting is plain `Intl.NumberFormat`, so currency, percent, compact notation, units and fraction digits all work, in any `locale`. Without one, it formats in the YoujProvider's locale (en-US without a provider). Numerals are tabular, so the width holds steady while the digits change.
+
+## Examples
+
+<Examples>
+
+<Example id="two-modes" label="Two modes">
+
+### Two modes
+
+`tween`, the default, counts through every value in between. It suits a number's first arrival.
+
+`roll` spins each digit in its own column, like an odometer. Columns are keyed by place value, so they keep their position as the number grows a digit. It suits values that update while you watch.
+
+<ComponentPreview name="counter/roll" />
+
+</Example>
+
+<Example id="changing-values" label="Changing values">
+
+### Changing values
+
+Pass a new `value` at any time. The count retargets from the value it's showing, so there's no jump even mid-animation. Press the buttons below a few times in a row to see it.
+
+<ComponentPreview name="counter/live" height={300} />
+
+In this demo the counter sits in a `role="status"` region, so a screen reader hears each settled total once. The counter doesn't add one itself.
+
+</Example>
+
+<Example id="when-it-plays" label="When it plays">
+
+### When it plays
+
+The first play waits until half the number is on screen (`inView`), so a stat below the fold still gets its moment. Use `inView={false}` for numbers that are visible from the start, and `from` to set where the first count begins.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, from, mode… (8)">
+
+### Props
+
+<PropsTable name="Counter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Count, roll, column offset · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Count', note: '`tween` mode', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Roll', note: '`roll` mode, each digit column', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Column offset', note: 'per place value, ones first', stagger: 'tight' },
+  ]}
+  reduced="Shows the formatted value immediately. New values swap in place."
+/>
+
+The `emphasized` curve winds up briefly, moves fast through the middle and lands slowly, so the final digits are readable before the number stops.
+
+#### Reduced motion
+
+The formatted value shows at once, with no count and no roll. A new value swaps in place. The number is the information, and it's never delayed.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- The formatted value is always in the document, in a visually hidden span, and the moving digits are `aria-hidden`. A screen reader hears "$48,210", never a run of intermediate numbers.
+- A counter doesn't announce changes on its own. If a live value matters, wrap it in a live region such as `role="status"`, and it's announced once, at its final value.
+
+</ReferenceRow>

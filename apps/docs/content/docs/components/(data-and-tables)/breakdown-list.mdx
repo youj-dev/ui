@@ -1,0 +1,113 @@
+---
+title: Breakdown List
+description: "Show how a total splits: each part's color, name, value and share, keyed to a split bar."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="breakdown-list/demo" height={420} />
+
+Bookings by channel under a split Share Bar. Point at a row, or move focus onto it, and its segment lights.
+
+</Story>
+
+<Story id="columns" label="Two columns">
+
+<ComponentPreview name="breakdown-list/columns" height={380} />
+
+Six accounts in two columns, each with a bar marker and a line of detail.
+
+`columns={2}` sets the rows side by side while each column can be 14rem wide; narrower, they stack in one column. `marker="bar"` draws each marker as a bar the row's height, which reads better beside a two-line row.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="breakdown-list" noImport />
+
+Use a breakdown list as the key to a split bar: revenue by category, cash by account, seats by status. Each row is a color marker, a name, a value and its share of the total. For a few parts inside a stat tile use [StatBreakdown](/docs/components/stat-card); for one row's share of a whole, a [Share Bar](/docs/components/share-bar) on its own.
+
+```tsx
+import { useState } from 'react'
+import { BreakdownList, ShareBar } from '@youj/react'
+
+const [active, setActive] = useState<number | null>(null)
+
+<ShareBar parts={channels.map((c) => ({ value: c.value }))} active={active} />
+<BreakdownList items={channels} format={{ style: 'currency', currency: 'EUR' }} active={active} onActiveChange={setActive} />
+```
+
+Both take the chart colors in order, so give them the same items and the rows match the segments without naming a tone; a `tone` on an item (the accent, a status, a chart color or `neutral`) colors both when you pass it to both. Shares are out of the items' sum, or your `total`. `variant="tiles"` leads each row with its value in a small panel, for counts; `showShare={false}` drops the percentages.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, total, format… (12)">
+
+### Props
+
+<PropsTable name="BreakdownList" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `breakdown-list` (with `data-variant`: `rows` or `tiles`), `breakdown-list-item` (with `data-index`, and `data-state` `active` or `inactive` while a row is pointed at), `breakdown-list-marker`, `breakdown-list-label`, `breakdown-list-detail`, `breakdown-list-value` and `breakdown-list-share`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pointing · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Point at a row', note: 'the row takes the hover panel; the paired bar’s other parts quiet', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The same: a color change, nothing moves."
+/>
+
+#### Reduced motion
+
+Nothing moves: pointing only changes colors.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="List, keyboard">
+
+### Accessibility
+
+- It is a list; each row reads its name, detail, value and share in order. Name the list with `aria-label` when nothing visible names it.
+- The rows are one tab stop. The arrow keys, Home and End move between them, and focus makes a row the active one, so a keyboard lights the bar's segments as a pointer does. Focus leaving the list clears it.
+- The markers are decorative (`aria-hidden`); the name says which part is which.
+
+</ReferenceRow>

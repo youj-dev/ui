@@ -1,0 +1,109 @@
+---
+title: Button Group
+description: "Join related buttons, inputs and menus into one strip."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="button-group/demo" height={260} />
+
+Nested groups of icon and text buttons, and a split Merge button with a menu half.
+
+Filled buttons have no border, so put a `ButtonGroupSeparator` between them to draw the seam. The menu half is a [Dropdown Menu](/docs/components/dropdown-menu) whose trigger renders as a `Button`.
+
+</Story>
+
+<Story id="with-inputs" label="With inputs">
+
+<ComponentPreview name="button-group/inputs" height={280} />
+
+A search input with its button, a URL input with a text prefix, and a vertical zoom pair.
+
+Inputs, selects and a `ButtonGroupText` join the same strip. `ButtonGroupText` renders any element through `render`, so a prefix can be the input's `label`. Set `orientation="vertical"` to stack the members.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="button-group" noImport />
+
+Use a button group when a few actions belong together and should read as one control: previous and next, a split button with its options, a search field with its button. For a set of options where one is chosen, use a [Toggle Group](/docs/components/toggle-group). For a long, dense row of controls that should be one tab stop, use a [Toolbar](/docs/components/toolbar).
+
+```tsx
+import { Button, ButtonGroup } from '@youj/react'
+
+export function Pager() {
+  return (
+    <ButtonGroup aria-label="Pages">
+      <Button variant="outline">Previous</Button>
+      <Button variant="outline">Next</Button>
+    </ButtonGroup>
+  )
+}
+```
+
+The group takes away the inner corners and the doubled border where members meet, and a focused member rises above its neighbors so its ring isn't clipped. Corners are start and end, not left and right, so a group mirrors in right-to-left layouts. Nest groups to make clusters with a gap between them. The API matches shadcn/ui's Button Group.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="orientation (1)">
+
+### Props
+
+#### ButtonGroup
+
+<PropsTable name="ButtonGroup" />
+
+#### ButtonGroupSeparator
+
+<PropsTable name="ButtonGroupSeparator" />
+
+`ButtonGroupText` takes `render` and any `div` props.
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="The group itself doesn't move">
+
+### Reduced motion
+
+The group itself doesn't move. Its buttons keep their own behavior: under reduced motion they don't scale when pressed.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The group is a `group`; give it an `aria-label` when its purpose isn't obvious from its buttons.
+- Every member keeps its own role, name and tab stop. If the group is long and dense enough that tabbing through it is a chore, use a [Toolbar](/docs/components/toolbar) instead, which is one tab stop.
+- The separator is a `separator` with `aria-orientation`. Name icon-only buttons with `aria-label`.
+
+</ReferenceRow>

@@ -1,0 +1,309 @@
+---
+title: Chart
+description: "Build charts with theme colors, shared motion and a table of the underlying values."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="chart/demo" height={500} />
+
+A revenue and expenses chart with a six or twelve month range.
+
+`ChartTooltip` is Recharts' `Tooltip` with Youj timing: it glides between points instead of jumping. Give it `ChartTooltipContent`, which reads labels from the config and formats each value with `valueFormatter`. `indicator` sets the swatch (`dot`, `line` or `dashed`), and `hideLabel` drops the heading for single-series charts. `ChartLegend` lists series in the order they're drawn, not alphabetically, and `ChartLegendContent` renders them with their config labels.
+
+```tsx
+<ChartTooltip content={<ChartTooltipContent indicator="line" valueFormatter={(v) => `$${Number(v).toLocaleString()}`} />} />
+<ChartLegend content={<ChartLegendContent />} />
+```
+
+</Story>
+
+<Story id="lines" label="Lines">
+
+<ComponentPreview name="chart/line" height={440} />
+
+Three latency percentiles over 24 hours sharing one axis.
+
+Several series share one axis. `motion.draw(i)` staggers each later series a step behind the one before, so the lines arrive in the order the legend reads.
+
+The `ChartDataTable` under this chart is visually hidden: screen readers get the numbers as a real table, sighted readers get the lines. The demo shows the other mode, `mode="toggle"`, a View data button that opens the table in place.
+
+</Story>
+
+<Story id="series-color-and-trend" label="Series color and trend">
+
+<ComponentPreview name="chart/trend" height={520} />
+
+Two years of inbound leads with a Month or Quarter view, a Display menu, a linear trend and a color for each series.
+
+The trend is a plain Recharts `Line` over a second field in each row: a least-squares line fitted to that series, drawn dashed in its color and left out of the tooltip with `tooltipType="none"`. The fit is a small pure function, `linearTrend(values)`, in the example's source, so the line follows whichever period is on show. Each swatch in the footer is a `ColorPicker` with `swatchOnly`: the series color goes into the `ChartConfig`, so the area, the line, the trend and the tooltip all follow, and reset puts back the theme's chart color. The tooltip heading carries the change on the year before.
+
+</Story>
+
+<Story id="bars-and-live-data" label="Bars and live data">
+
+<ComponentPreview name="chart/bar" height={440} />
+
+Weekly builds as bars, with a Refresh button that morphs the bars to new readings.
+
+Bars grow from the baseline with `motion.grow()`. When the data changes, every mark morphs from where it stands to its new value on the same timing, and a change that lands mid-morph continues from where the bars are. Press Refresh a few times in a row.
+
+</Story>
+
+<Story id="donuts" label="Donuts">
+
+<ComponentPreview name="chart/donut" height={440} />
+
+Traffic sources as a donut with the total in the middle.
+
+Pies, donuts and radial bars sweep round with `motion.sweep()`. Put the color on each datum (`fill: 'var(--color-direct)'`) and name slices with `nameKey`. A `Label` inside the `Pie` holds the total.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chart" noImport />
+
+Requires `recharts`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/chart`.
+
+The chart parts come from Recharts itself, so import them from `recharts` in your app.
+
+Use a chart when the shape of the numbers is the point: a trend over time, a comparison between groups, a share of a whole. It's shadcn's chart, so you still write Recharts (`AreaChart`, `Bar`, `Pie`) and the kit supplies the container, the tooltip, the legend, the theme colors and the timing. For a trend the size of a word, in a KPI or a table cell, use a [Sparkline](/docs/components/sparkline). For one number and how it moved, use a [Stat Card](/docs/components/stat-card). When people need to sort, filter or copy the values, give them a [data table](/docs/blocks/tables-and-lists).
+
+A `ChartConfig` names each series and gives it a color. `ChartContainer` exposes each one as `--color-<key>`, so the marks read `var(--color-revenue)`. Spread `useChartMotion()` onto each series for Youj timing.
+
+```tsx
+import { Area, AreaChart, XAxis } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent, useChartMotion, type ChartConfig } from '@youj/react/chart'
+
+const config = {
+  revenue: { label: 'Revenue', color: 'var(--color-chart-1)' },
+} satisfies ChartConfig
+
+export function Revenue({ data }: { data: { month: string; revenue: number }[] }) {
+  const motion = useChartMotion()
+  return (
+    <ChartContainer config={config} className="h-56 w-full" title="Revenue by month" summary="Revenue doubled since April.">
+      <AreaChart data={data}>
+        <XAxis dataKey="month" tickLine={false} axisLine={false} />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <Area dataKey="revenue" stroke="var(--color-revenue)" fill="var(--color-revenue)" fillOpacity={0.2} {...motion.draw(0)} />
+      </AreaChart>
+    </ChartContainer>
+  )
+}
+```
+
+Point the config at the chart colors, `var(--color-chart-1)` to `var(--color-chart-5)`. They come from the theme: its own [chart palette](/docs/theming#chart-palette), which every preset tunes (Basalt's neon series, Graphite's calm blue, rose, violet, amber and teal), else one drawn from its accent. Either way light and dark and every [theme preset](/docs/theming) re-color the chart with no change to your code, and every series reads at 3:1 against the surface. Axes, grid lines and cursors take the ink ramp on their own.
+
+### Size
+
+`ChartContainer` is full width and `aspect-video` (16:9) by default, and it shrinks with its column, so a chart in a CSS grid or a flex row never pushes a phone page wider than the screen. A height class gives it a fixed height instead (`className="h-64"`), and an aspect class another shape (`aspect-square`).
+
+### Series keys
+
+Each config key becomes a CSS variable name. A key that isn't a CSS name, like `PM2.5` or `Net revenue`, has each character a name can't hold written as `-` (`--color-PM2-5`), and development warns once. `chartColor(key)` gives you a series' color for any key, so you never spell the variable yourself:
+
+```tsx
+import { chartColor, type ChartConfig } from '@youj/react/chart'
+
+const config = {
+  'PM2.5': { label: 'Fine particles', color: 'var(--color-chart-1)' },
+} satisfies ChartConfig
+
+<Bar dataKey="PM2.5" fill={chartColor('PM2.5')} />
+```
+
+### Donut center labels
+
+A Recharts `Label` inside the `Pie` draws in the hole. Its `content` gets the hole's center as `viewBox`; write the total and its unit as two `tspan`s on the theme's text roles:
+
+```tsx
+<Pie data={traffic} dataKey="visitors" nameKey="source" innerRadius="62%" {...motion.sweep()}>
+  <Label
+    content={({ viewBox }) =>
+      viewBox && 'cx' in viewBox ? (
+        <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
+          <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) - 6} className="fill-fg text-2xl font-semibold tabular-nums">
+            {total.toLocaleString()}
+          </tspan>
+          <tspan x={viewBox.cx} y={(viewBox.cy ?? 0) + 16} className="fill-fg-muted text-ui-xs">
+            visitors
+          </tspan>
+        </text>
+      ) : null
+    }
+  />
+</Pie>
+```
+
+### Pie legends and tooltips
+
+A pie's series are its rows, not its fields, so tell the legend and the tooltip which field names a slice: `nameKey`, the same one the `Pie` takes. Each slice's name is then looked up in the config for its label.
+
+```tsx
+<ChartTooltip content={<ChartTooltipContent nameKey="source" hideLabel />} />
+<ChartLegend content={<ChartLegendContent nameKey="source" />} />
+```
+
+### A period filter that drives the charts
+
+Keep the period in one piece of state: a `SegmentedControl` sets it from presets, a `DateRangePicker` sets a custom range, and every chart reads the rows inside it. A preset fills the picker; picking a range clears the preset.
+
+```tsx
+'use client'
+
+import { useMemo, useState } from 'react'
+import { SegmentedControl, SegmentedControlItem } from '@youj/react'
+import { DateRangePicker, type DateRange } from '@youj/react/date'
+
+const DAY = 86_400_000
+const PRESETS = { '7d': 7, '30d': 30, '90d': 90 } as const
+
+export function Overview({ rows, latest }: { rows: { date: Date; value: number }[]; latest: Date }) {
+  const [preset, setPreset] = useState<keyof typeof PRESETS | ''>('30d')
+  const [range, setRange] = useState<DateRange>({ from: new Date(latest.getTime() - 29 * DAY), to: latest })
+  const shown = useMemo(() => rows.filter((r) => r.date >= range.from! && r.date <= range.to!), [rows, range])
+  return (
+    <>
+      <div className="flex flex-wrap items-end gap-3">
+        <SegmentedControl
+          aria-label="Period"
+          value={preset}
+          onValueChange={(value) => {
+            if (!(value in PRESETS)) return
+            const key = value as keyof typeof PRESETS
+            setPreset(key)
+            setRange({ from: new Date(latest.getTime() - (PRESETS[key] - 1) * DAY), to: latest })
+          }}
+        >
+          <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
+          <SegmentedControlItem value="30d">30 days</SegmentedControlItem>
+          <SegmentedControlItem value="90d">90 days</SegmentedControlItem>
+        </SegmentedControl>
+        <DateRangePicker
+          value={range}
+          maxDate={latest}
+          onValueChange={(next) => {
+            if (!next?.from || !next.to) return
+            setPreset('')
+            setRange(next)
+          }}
+        />
+      </div>
+      <TrendChart rows={shown} />
+      <BreakdownChart rows={shown} />
+    </>
+  )
+}
+```
+
+Anchor the presets to the newest row (`latest`), not to the clock: the page renders the same on the server and in the browser, and a prerender never reads the time.
+
+### Loading
+
+While the rows load, show a `Skeleton` the chart's size in its place, so nothing moves when the chart arrives:
+
+```tsx
+import { Skeleton } from '@youj/react'
+
+{loading ? <Skeleton className="aspect-video w-full" /> : <ChartContainer config={config}>…</ChartContainer>}
+```
+
+### Heatmaps: a value per cell
+
+There's no general heatmap. For a value in each cell of a grid, pick the one that fits the grid:
+
+- **A value by hour (or any column) for a few kinds:** [Density Lanes](/docs/components/density-lanes), one lane of dots per kind, swelling where it's busy.
+- **A value by day, as a streak or a habit:** [Calendar Heatmap](/docs/components/calendar-heatmap), a day grid by week.
+- **How well each row is covered by each column:** [Coverage Matrix](/docs/components/coverage-matrix), with the gaps hatched.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="config, children, title… (29)">
+
+### Props
+
+#### ChartContainer
+
+<PropsTable name="ChartContainer" />
+
+#### ChartTooltipContent
+
+<PropsTable name="ChartTooltipContent" />
+
+#### ChartLegendContent
+
+<PropsTable name="ChartLegendContent" />
+
+#### ChartDataTable
+
+<PropsTable name="ChartDataTable" />
+
+`ChartTooltip` and `ChartLegend` take Recharts' `Tooltip` and `Legend` props. `useChartMotion()` returns `draw(i)`, `grow(i)` and `sweep(i)` for series, `tooltip` for the tooltip, and `reduced`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Lines and areas enter, bars enter, pies and radials enter… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Lines and areas enter', note: '`motion.draw()`: the stroke draws in and the area wipes in', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Bars enter', note: '`motion.grow()`: from the baseline', duration: 'slow', ease: 'enter' },
+    { moment: 'Pies and radials enter', note: '`motion.sweep()`: round from the start angle', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Later series', note: 'each one a stagger step behind the one before', stagger: 'loose' },
+    { moment: 'Data change', note: 'every mark morphs from where it is, with its entrance timing' },
+    { moment: 'Tooltip', note: 'glides between points', duration: 'fast', ease: 'standard' },
+    { moment: 'View data', note: 'the table opens with Collapse: height and opacity', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Marks render in place, a data change jumps to the new values and the tooltip moves without gliding. The data table opens at once."
+/>
+
+Recharts animates the marks itself. `useChartMotion()` replaces its 1.5s default ease with the token durations and curves, scaled by the Speed control, so a chart moves on the same clock as the rest of the page. The values it returns are plain numbers and strings, stable across renders, because Recharts restarts an animation whenever they change.
+
+#### Reduced motion
+
+Every mark is drawn in its final place, updates replace the old values at once, and the tooltip jumps to the pointer. The chart carries exactly the same information: only the transitions go.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- `ChartContainer` is a figure (`role="figure"`) named by `title`. `summary` is read after the name, so say what the chart shows: the trend, the peak, the outlier.
+- The plot is one Tab stop. The arrow keys walk the points and open the tooltip on each, and the ring shows on keyboard focus only.
+- `ChartDataTable` gives the same numbers as a real table with a caption, column headers and row headers. Keep it hidden for screen readers, or put it behind View data, which is a disclosure button with `aria-expanded`.
+- Color is never the only key: the legend and the tooltip name every series, and the table holds every value.
+
+</ReferenceRow>

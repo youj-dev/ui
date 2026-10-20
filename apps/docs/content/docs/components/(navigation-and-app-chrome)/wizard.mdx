@@ -1,0 +1,134 @@
+---
+title: Wizard
+description: "Guide people through a task with step validation and an async finish action."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="wizard/demo" height={520} />
+
+A vertical, four-step workspace setup with required fields, a slug that's checked asynchronously and a final launch button.
+
+The default, horizontal wizard puts a compact stepper above the content; below the `sm` breakpoint it shows only discs. `orientation="vertical"`, as in the Demo story, puts the stepper in a column beside the content from `sm` up, which suits longer flows with descriptions.
+
+</Story>
+
+<Story id="validation" label="Validation">
+
+<ComponentPreview name="wizard/checkout" height={420} />
+
+A checkout wizard where the Payment step blocks Continue until a card number is entered.
+
+`validate` runs when someone leaves a step forwards. Return `true` to move on, `false` to stay (the step's own field errors explain why), or a message, which appears under the step and is announced. It can be async: Continue shows a spinner while it runs. A failed step is marked in the stepper until it passes.
+
+In the Demo story, the workspace name "acme" is taken, which the step finds out after a short async check.
+
+
+Here, continuing past Payment with an empty card number returns a message instead of `false`. `footerStart` puts a Cancel button at the inline start of the footer, away from the forward actions.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="wizard" noImport />
+
+Use a wizard when a task is long enough to split but each part depends on the one before: creating a workspace, a checkout, importing data. It draws a [Stepper](/docs/components/stepper), shows one step's content, and handles Back, Continue, Skip and Finish. When every field fits on one screen, a single [Form](/docs/components/form) is quicker to fill in. When people need to compare the steps, don't hide them: lay them out as sections of one page.
+
+```tsx
+import { Wizard, WizardStep } from '@youj/react'
+
+export function CreateProject() {
+  return (
+    <Wizard onComplete={() => createProject(values)} finishLabel="Create project">
+      <WizardStep id="name" title="Name" validate={() => values.name.length > 0}>
+        <NameFields />
+      </WizardStep>
+      <WizardStep id="repo" title="Repository" optional>
+        <RepoPicker />
+      </WizardStep>
+      <WizardStep id="review" title="Review">
+        <Summary />
+      </WizardStep>
+    </Wizard>
+  )
+}
+```
+
+Each `WizardStep` is a step: its `title` goes in the stepper and heads the content, and its children show while it's current. The wizard keeps the step index itself, or pass `step` and `onStepChange` to control it. On the last step, Finish runs `onComplete` through the [Button](/docs/components/button)'s `onAction`, so it shows a spinner and then a drawn check with `finishSuccessLabel`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="children, step, defaultStep… (18)">
+
+### Props
+
+<PropsTable name="Wizard" />
+
+#### WizardStep
+
+<PropsTable name="WizardStep" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Step enter, step exit, panel height… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Step enter', note: 'drifts 24px in from the side you travel to and fades in', duration: 'base', ease: 'standard' },
+    { moment: 'Step exit', note: 'drifts 24px out the other way as it fades', duration: 'base', ease: 'standard' },
+    { moment: 'Panel height', note: "glides between the two steps' heights", spring: 'smooth' },
+    { moment: 'Stepper', note: 'the connector fills or drains, see Stepper', duration: 'slow', ease: 'standard' },
+    { moment: 'Finish', note: "the button's spinner, then a drawn check", duration: 'slow', ease: 'emphasized' },
+  ]}
+  reduced="Steps swap in place and the panel takes its new height at once."
+/>
+
+The drift follows the reading direction, so under RTL forwards comes in from the left. The outgoing step is popped out of the layout while it leaves, so rapid Back and Continue presses retarget the height without a jump.
+
+#### Reduced motion
+
+Steps replace each other in place with no drift or fade, and the panel height changes at once. Focus, announcements and validation are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- "Step 2 of 4" above the content is a polite live region that also speaks the step's title, so each move is announced.
+- After Back or Continue, focus moves to the new step's heading, so a screen reader starts reading from the top of the step and a keyboard user tabs on into its fields.
+- A validation message has `role="alert"`, and the failed step is spoken as "has an error" in the stepper.
+- Done steps in the stepper are buttons that go back to them. Later steps can only be reached by Continue, so validation can't be skipped.
+- Continue sets `aria-busy` while an async validation runs, and ignores presses until it settles.
+
+</ReferenceRow>

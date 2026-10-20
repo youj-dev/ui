@@ -1,0 +1,60 @@
+---
+title: Product and order
+description: "Screens for the shopper: a product detail page and an order detail with delivery progress."
+---
+
+<BlockStories>
+
+<BlockStory id="product-detail" label="Product detail" block="commerce-product-detail" story="Default" backdrop="sandstone">
+
+Let shoppers see a product from every side in the color they pick, choose a size and know when it will arrive.
+
+</BlockStory>
+
+<BlockStory id="order-detail" label="Order detail" block="commerce-order-detail" story="Default" backdrop="sandstone">
+
+Help customers check an order and see where it is on its way to them, with its items, details, a return flow in a dialog and a menu of actions.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="headings, controls, dialogs">
+
+### Accessibility
+
+Product detail has one `h1`. The size choices are radio inputs with a label each (a sold-out size says so in its label), the gallery is a labelled carousel whose slides are labelled by position, and the rating is read as text. Order detail is a `main` under a `header` with labelled sections for items, details and shipment, and the shipment progress is a list with a status region. The return flow opens in a dialog that closes with Escape, and row actions sit in a menu with arrow-key navigation. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

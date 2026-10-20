@@ -1,0 +1,54 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@youj/core": [
+        "../../packages/core/src/index.ts"
+      ],
+      "@youj/motion": [
+        "../../packages/motion/src/index.ts"
+      ],
+      "@youj/core/*": [
+        "../../packages/core/src/*"
+      ],
+      "@youj/motion/*": [
+        "../../packages/motion/src/*"
+      ],
+      "@youj/icons": [
+        "../../packages/icons/src/index.ts"
+      ],
+      "@youj/icons/*": [
+        "../../packages/icons/src/*"
+      ],
+      "@youj/illustrations": [
+        "../../packages/illustrations/src/index.ts"
+      ],
+      "@youj/illustrations/*": [
+        "../../packages/illustrations/src/*"
+      ],
+      "@youj/react/*": [
+        "../../packages/ui/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "remotion.config.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "out"
+  ]
+}

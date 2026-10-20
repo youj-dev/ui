@@ -1,0 +1,118 @@
+---
+title: Citation
+description: "Link an answer to its sources with numbered markers and source previews."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="citation/demo" height={300} />
+
+An assistant answer whose [1] and [2] become citation chips, with its sources listed underneath.
+
+</Story>
+
+<Story id="on-their-own" label="On their own">
+
+<ComponentPreview name="citation/standalone" height={280} />
+
+Citations in plain text with a row of sources below; a source that isn't http(s) is shown but not linked.
+
+`ChatCitation` and `ChatSources` also work outside a message, anywhere text rests on sources. `ChatSources` takes a `label` (default "Sources"). A source whose URL isn't `http(s)` or `mailto:` is shown, but not linked and not previewed.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatCitation, ChatSources" noImport />
+
+Use citations whenever an answer draws on documents, search results or a knowledge base, so people can check a claim without leaving the conversation. Most of the time you don't render them yourself: pass `sources` to a [Chat Message](/docs/components/chat/message) and `[1]` in the text becomes `ChatCitation` for `sources[0]`, with `ChatSources` under the finished answer. Hover or focus a number in the preview to see its source.
+
+```tsx
+import { ChatMessage, type ChatSource } from '@youj/react'
+
+const sources: ChatSource[] = [
+  { title: 'Regions and pricing', url: 'https://youj.io/docs/regions', snippet: 'Per-region pricing for functions…' },
+]
+
+<ChatMessage role="assistant" content="fra1 is the cheapest at 10M requests a month [1]." sources={sources} />
+```
+
+A `ChatSource` has a `title` and a `url`, with an optional `snippet` for the preview and an `icon` (a favicon, say) to replace the domain's monogram. [Chat Markdown](/docs/components/chat/markdown) takes the same `sources` prop.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="index, source, defaultOpen… (9)">
+
+### Props
+
+<PropsTable name="ChatCitation" />
+
+#### ChatSources
+
+<PropsTable name="ChatSources" />
+
+#### ChatSource
+
+Each entry in `sources`:
+
+<PropsTable name="ChatSource" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Preview opens, preview closes, open and close delays… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Preview opens', note: 'scale .96 → 1 and fade, out of the chip (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Preview closes', duration: 'instant', ease: 'exit' },
+    { moment: 'Open and close delays', note: 'hover intent, not motion; it stays while the pointer travels onto it', value: '500ms, 250ms' },
+    { moment: 'Chip hover', note: 'background and text take the accent', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The preview appears and disappears at once."
+/>
+
+#### Reduced motion
+
+The preview opens and closes without scaling or fading. The hover delays are unchanged, since they're about intent, not motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- Each marker is a link that opens its source in a new tab, named by its number and the source's title ("1, Regions and pricing"). The preview is a sighted convenience: the link carries everything.
+- `ChatSources` is a list named by its `label`. A chip that already shows its title isn't named twice.
+- Keyboard focus opens the preview like hover does, and Escape closes it.
+
+</ReferenceRow>

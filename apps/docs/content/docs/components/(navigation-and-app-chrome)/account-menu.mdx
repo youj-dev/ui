@@ -1,0 +1,156 @@
+---
+title: Account Menu
+description: "Give signed-in users a menu for their account, workspaces, theme and sign-out action."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="account-menu/demo" height={420} />
+
+An avatar menu with workspaces, theme and appearance choices, and a sign-out action; choosing a theme or mode restyles the card beside it.
+
+The Theme submenu lists every preset `@youj/core` ships (`themes`), and the current one's name sits beside the row. The menu only reports what was chosen. Apply it where your app keeps its theme, with a [Youj Provider](/docs/theming) or, as the preview does, a `ThemeScope` around part of the page:
+
+```tsx
+import { useState } from 'react'
+import { AccountMenu, type AccountMenuUser } from '@youj/react'
+import { ThemeScope, presetById, type ColorMode } from '@youj/core'
+
+export function ThemedAccount({ user }: { user: AccountMenuUser }) {
+  const [theme, setTheme] = useState('basalt')
+  const [mode, setMode] = useState<ColorMode>('dark')
+
+  return (
+    <ThemeScope theme={presetById(theme)}>
+      <AccountMenu user={user} theme={theme} onThemeChange={setTheme} colorMode={mode} onColorModeChange={setMode} />
+    </ThemeScope>
+  )
+}
+```
+
+Pass only `colorMode` for an appearance choice without presets, or only `theme` for presets without it.
+
+</Story>
+
+<Story id="minimal" label="Minimal">
+
+<ComponentPreview name="account-menu/minimal" height={280} />
+
+A menu with only a user and a sign-out action, using a very long name and address.
+
+With just a user and `onSignOut`, it's who you are and a way out. Long names and addresses truncate instead of widening the menu.
+
+
+`align` and `side` place the menu against the avatar. It aligns to the end by default, which suits the corner of a header. Choose `side="top"` at the foot of a sidebar.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="account-menu" noImport />
+
+Use it at the end of an [App Header](/docs/components/app-header) or at the foot of a [Sidebar](/docs/components/sidebar): the one place a person finds their profile, settings, theme and the way out. It's a [Dropdown Menu](/docs/components/dropdown-menu) with the account parts already laid out, so build your own dropdown when the menu isn't about the signed-in user. When switching workspaces is a main job in the app, give it a [Workspace Switcher](/docs/components/workspace-switcher) of its own.
+
+```tsx
+import {
+  AccountMenu,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  type AccountMenuUser,
+} from '@youj/react'
+
+export function Account({ user, onSignOut }: { user: AccountMenuUser; onSignOut: () => void }) {
+  return (
+    <AccountMenu user={user} onSignOut={onSignOut}>
+      <DropdownMenuGroup>
+        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>
+          Settings
+          <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+    </AccountMenu>
+  )
+}
+```
+
+The trigger is the user's avatar, with their initials until the image loads (or if it fails). The menu opens with a profile header: a larger avatar, the name and the email, each truncated when it runs long. Then, in order and each behind a separator:
+
+1. **Workspaces**, when you pass `workspaces`: a radio group of logos and names, with a check on `workspace`. `onWorkspaceChange` reports a choice.
+2. **Your items**: `children`, any [Dropdown Menu](/docs/components/dropdown-menu) rows and groups.
+3. **Theme**, when you pass `theme` or `colorMode`: a submenu with the built-in presets, each wearing its accent, and an appearance choice of light, dark or system.
+4. **Sign out**, when you pass `onSignOut`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="user, workspaces, workspace… (14)">
+
+### Props
+
+<PropsTable name="AccountMenu" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, highlight… · reduced motion">
+
+### Motion
+
+The motion is the [Dropdown Menu](/docs/components/dropdown-menu)'s.
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'grows out of the avatar: scale .96 → 1 and fade (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Highlight', note: 'one Sliding Indicator glides between rows', spring: 'smooth' },
+    { moment: 'Check', note: 'draws in on the chosen workspace, preset or appearance', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Trigger ring', note: 'appears around the avatar while the menu is open', duration: 'fast', ease: 'standard' },
+    { moment: 'Theme and Sign out icons', note: 'play as their row is highlighted', value: 'per icon' },
+  ]}
+  reduced="The menu and its submenu appear at once, the highlight jumps between rows, and checks appear already drawn."
+/>
+
+#### Reduced motion
+
+The menu opens and closes at once, the highlight moves from row to row without gliding, and checks appear already drawn. Keyboard handling and submenus work the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The trigger is a button named "Account: " and the user's name. The avatars inside are decorative.
+- Everything else is the Dropdown Menu's: roving focus with ↑ and ↓, typeahead, Home and End, and Escape to close and return focus to the avatar.
+- The Theme row opens its submenu on → (← to come back), mirrored in right-to-left layouts. Workspaces, presets and appearance are radio groups, so the chosen one is announced as checked.
+- Each preset's color dot is decorative; its name is the label.
+
+</ReferenceRow>

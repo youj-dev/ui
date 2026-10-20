@@ -1,0 +1,186 @@
+/* Long-form typography for docs pages (Fumadocs' DocsBody sets `.prose`).
+ * Zero-specificity selectors, and anything inside `.not-prose` (every custom
+ * docs block) is left alone. */
+
+@layer components {
+  .prose {
+    color: var(--color-fg-muted);
+    font-size: 16px;
+    line-height: 1.75;
+    overflow-wrap: break-word;
+  }
+
+  .prose :where(p, ul, ol, blockquote, table):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 1.1em;
+  }
+
+  .prose > :where(:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) {
+    color: var(--color-fg);
+    scroll-margin-top: 5.5rem;
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 4rem 1.25rem;
+    font: var(--type-heading);
+    /* A step up from the scale's heading, so a section, a sub-section and a group read as three layers. */
+    font-size: 1.75rem;
+    line-height: 1.2;
+    letter-spacing: var(--type-display-tracking);
+  }
+
+  /* The first section needs no space above it. */
+  .prose > :where(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 2.5rem 0.75rem;
+    font: var(--type-subheading);
+    font-size: 1.3125rem;
+    line-height: 1.3;
+    letter-spacing: var(--type-display-tracking);
+  }
+
+  .prose :where(h4):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 2rem 0.5rem;
+    font: var(--type-body-strong);
+    /* Inter semibold a hair over the text it heads (Youj Display has one weight, so the layer is set by weight here). */
+    font-size: 1.0625rem;
+  }
+
+  .prose :where(strong):not(:where(.not-prose, .not-prose *)) {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)) {
+    color: var(--color-fg);
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklch, var(--color-accent) 45%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--yj-duration-fast) var(--ease-standard);
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+    text-decoration-color: var(--color-accent);
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)):focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Inline code. Block code is rendered by the CodeBlock component. */
+  .prose :where(code):not(:where(pre *, .not-prose, .not-prose *)) {
+    @apply code-inline;
+    white-space: break-spaces;
+  }
+
+  .prose :where(a code):not(:where(.not-prose, .not-prose *)) {
+    color: inherit;
+  }
+
+  /* Lists: square markers, the brand's particle. */
+  .prose :where(ul):not(:where(.not-prose, .not-prose *)) {
+    padding-inline-start: 1.375rem;
+    list-style: none;
+  }
+
+  .prose :where(ul > li):not(:where(.not-prose, .not-prose *)) {
+    position: relative;
+  }
+
+  .prose :where(ul > li):not(:where(.not-prose, .not-prose *))::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -1.125rem;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 1px;
+    background: var(--color-line-strong);
+  }
+
+  .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+    padding-inline-start: 1.625rem;
+    list-style: none;
+    counter-reset: prose-ol;
+  }
+
+  .prose :where(ol > li):not(:where(.not-prose, .not-prose *)) {
+    position: relative;
+    counter-increment: prose-ol;
+  }
+
+  .prose :where(ol > li):not(:where(.not-prose, .not-prose *))::before {
+    content: counter(prose-ol, decimal-leading-zero);
+    position: absolute;
+    inset-inline-start: -1.625rem;
+    top: 0.26em;
+    color: var(--color-fg-muted);
+    font: 500 12px/1.75 var(--font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose :where(li):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.4em;
+    padding-inline-start: 0.125rem;
+  }
+
+  .prose :where(li > ul, li > ol):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.4em;
+  }
+
+  .prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 3rem;
+    border-color: var(--color-line);
+  }
+
+  .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+    padding-inline-start: 1rem;
+    border-inline-start: 2px solid var(--color-line-strong);
+    color: var(--color-fg-muted);
+  }
+
+  /* Tables: hairlines, quiet sentence-case headers, no zebra. */
+  .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .prose :where(thead th):not(:where(.not-prose, .not-prose *)) {
+    padding: 0 1rem 0.625rem 0;
+    border-bottom: 1px solid var(--color-line);
+    @apply type-label;
+    text-align: start;
+  }
+
+  .prose :where(tbody td):not(:where(.not-prose, .not-prose *)) {
+    padding: 0.625rem 1rem 0.625rem 0;
+    border-bottom: 1px solid var(--color-line);
+    vertical-align: top;
+  }
+
+  .prose :where(tbody tr:last-child td):not(:where(.not-prose, .not-prose *)) {
+    border-bottom: 0;
+  }
+
+  .prose :where(img, video):not(:where(.not-prose, .not-prose *)) {
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+  }
+
+  .prose :where(kbd):not(:where(.not-prose, .not-prose *)) {
+    @apply code-inline;
+    box-shadow: inset 0 -1px 0 var(--code-line);
+  }
+}

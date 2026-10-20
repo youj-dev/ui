@@ -1,0 +1,233 @@
+---
+title: Field
+description: "Connect a form control to its label, description and error messages."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="field/demo" height={560} />
+
+An API token form: a required name whose error grows in on submit, and a group of scopes as horizontal fields.
+
+</Story>
+
+<Story id="validation" label="Validation">
+
+<ComponentPreview name="field/validation" height={420} />
+
+Errors from children, from an `errors` list, or from the control's own validation, easing open and closed.
+
+FieldError shows what you pass it. Give it children for one message, or `errors` for several, in react-hook-form's `{ message }` shape: duplicates collapse, and several messages become a list. With neither, it shows the control's own validation message whenever Base UI marks the field invalid, from native constraints such as `required` or from a `validate` function, checked when `validationMode` says.
+
+A message grows the layout open. Its panel eases from zero height while the text fades in, so the fields below move down with it instead of jumping. When the error clears, the panel closes over the last message. An error that's already there when the Field first renders simply appears, as the taken handle in the preview does.
+
+</Story>
+
+<Story id="orientation" label="Orientation">
+
+<ComponentPreview name="field/orientation" height={340} />
+
+The same field stacked, side by side, and responsive to its group's width.
+
+`vertical`, the default, stacks label, control and description: the shape for forms. `horizontal` puts the control beside a FieldContent of label and description: the shape for settings rows. `responsive` stacks inside a narrow FieldGroup and sits side by side once the group is at least 28rem wide. It's a container query, so it follows the group's width, not the viewport's.
+
+</Story>
+
+<Story id="choice-cards" label="Choice cards">
+
+<ComponentPreview name="field/choices" height={380} />
+
+A whole Field wrapped in a FieldLabel: the card is the click target, and it tints when checked.
+
+Wrap a whole Field in a FieldLabel and it becomes a choice card. The entire card is the click target, it tints when its checkbox or radio is checked, and it carries the focus ring for the control inside. Use FieldTitle for the card's heading, because the FieldLabel around it already names the control.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="field" noImport />
+
+Wrap form controls in Field to connect their labels, descriptions and errors for assistive technology. Group controls that answer one question with FieldSet and FieldLegend. A search or toolbar input already named by `aria-label` does not need a Field.
+
+```tsx
+import { Field, FieldDescription, FieldError, FieldLabel, Input } from '@youj/react'
+
+export function WorkspaceName({ error }: { error?: string }) {
+  return (
+    <Field required invalid={!!error}>
+      <FieldLabel>Workspace name</FieldLabel>
+      <Input name="workspace" />
+      <FieldError>{error}</FieldError>
+      <FieldDescription>Shown in the sidebar and in invite emails.</FieldDescription>
+    </Field>
+  )
+}
+```
+
+Field is Base UI's Field, so the wiring is correct by construction. FieldLabel names the control, FieldDescription and a visible FieldError describe it, and `invalid` and `disabled` reach it. `required` is Youj's addition: set it once on the Field and the label shows the mark while the control becomes required. Every Youj control works inside a Field: Input, Textarea, Input Group, Checkbox, Radio Group, Switch, Slider and Select.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Structure" summary="Field, FieldLabel, FieldSet… (10 parts)">
+
+### Structure
+
+| Part | Renders | Use it for |
+| --- | --- | --- |
+| `Field` | `div` | One control with its label, description and error. |
+| `FieldLabel` | `label` | The control's name. Wrapping a whole Field makes a choice card. |
+| `FieldDescription` | `p` | Help text, added to the control's description. |
+| `FieldError` | `div` | Errors, shown in a panel that grows in and collapses out. |
+| `FieldContent` | `div` | The label-and-description column beside a horizontal control. |
+| `FieldTitle` | `div` | A label-styled heading that doesn't label anything, for choice cards. |
+| `FieldSet` | `fieldset` | A group of controls that answer one question. |
+| `FieldLegend` | `div` | The group's name, linked to its fieldset. `variant="label"` sets it at label size. |
+| `FieldGroup` | `div` | Stacks fields and sets. It's the container that `responsive` measures. |
+| `FieldSeparator` | `div` | A hairline between groups, with optional text in the middle. |
+
+Outside a Field, the label, description and error parts render as plain elements with the same look, so you can compose them freely.
+
+</ReferenceRow>
+
+<ReferenceRow title="Label" summary="a label outside a Field">
+
+### Label
+
+Outside a Field, use Label: a plain `<label>` with the same type, linked to its control by `htmlFor`. `required` shows the same decorative mark. It ships as its own registry item, `label`, which Field installs for you.
+
+```tsx
+import { Checkbox, Label } from '@youj/react'
+
+<div className="flex items-center gap-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms">Accept the terms</Label>
+</div>
+```
+
+</ReferenceRow>
+
+<ReferenceRow title="Custom control" summary="useFieldControl, useFieldRequired">
+
+### Custom control
+
+A control Base UI doesn't know, such as a popover trigger or a row of segments, joins the surrounding Field with `useFieldControl`. It returns `id` (what the FieldLabel's `htmlFor` points at), `labelId` (for `aria-labelledby` on roles a native label can't name), `describedBy` (the Field's description and error), and the Field's `invalid`, `disabled` and `required`. Outside a Field it returns a stable `id` and nothing else. Pass `{ labelable: false }` for a group whose first input already claims the label. `useFieldRequired` reads only the Field's `required`.
+
+```tsx
+import { useFieldControl } from '@youj/react'
+
+function ColorSwatch({ value }: { value: string }) {
+  const { id, describedBy, invalid, disabled } = useFieldControl()
+  return (
+    <button id={id} type="button" aria-describedby={describedBy} aria-invalid={invalid || undefined} disabled={disabled}>
+      {value}
+    </button>
+  )
+}
+```
+
+</ReferenceRow>
+
+<ReferenceRow title="Props" summary="required, orientation, required… (7)">
+
+### Props
+
+#### Field
+
+<PropsTable name="Field" />
+
+These Base UI Field props do the rest:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `name` | `string` | Names the control's value when the form is submitted. |
+| `invalid` | `boolean` | Marks the field invalid, for validation you run yourself. |
+| `disabled` | `boolean` | Disables the control and dims the label. |
+| `validate` | `(value, formValues) => string \| string[] \| null` | Custom validation. Return the message, or nothing when valid. It can be async. |
+| `validationMode` | `'onSubmit' \| 'onBlur' \| 'onChange'` | When `validate` and native constraints run. Default `'onSubmit'`. |
+| `validationDebounceTime` | `number` | Waits this many milliseconds between `onChange` validations. Default `0`. |
+
+#### FieldLabel
+
+<PropsTable name="FieldLabel" />
+
+#### FieldError
+
+<PropsTable name="FieldError" />
+
+#### FieldLegend
+
+<PropsTable name="FieldLegend" />
+
+#### FieldSeparator
+
+<PropsTable name="FieldSeparator" />
+
+#### Label
+
+<PropsTable name="Label" />
+
+FieldDescription, FieldContent, FieldTitle, FieldSet and FieldGroup add no props of their own.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Error in, error out, height, error out, text… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Error in', note: 'the panel grows from 0 height while the text fades in', duration: 'base', ease: 'standard' },
+    { moment: 'Error out, height', note: 'the panel closes over the last message', duration: 'base', ease: 'standard' },
+    { moment: 'Error out, text', note: 'fades before the height finishes', duration: 'fast', ease: 'exit' },
+    { moment: 'Choice card', note: 'hover, background and border tint', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Errors appear and disappear at once. Nothing else in a Field moves."
+/>
+
+The panel clips only while it moves, so focus rings inside it are never cut off at rest.
+
+#### Reduced motion
+
+Errors appear and disappear instantly, so the layout below moves in one step instead of easing. The message, its alert and its link to the control are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- FieldLabel names the control: with `htmlFor` for inputs, and with `aria-labelledby` for composite controls such as Checkbox and Switch.
+- FieldDescription and a shown FieldError are added to the control's `aria-describedby`, and `invalid` sets `aria-invalid` on it.
+- FieldError is `role="alert"`, so an error announces itself when it appears. On submit, move focus to the first invalid control, as the first preview does.
+- The required asterisk is `aria-hidden`. The control's own `required` is what assistive technology announces.
+- FieldSet and FieldLegend make a named `group`, so a screen reader reads "Scopes, group" before the first checkbox.
+
+</ReferenceRow>

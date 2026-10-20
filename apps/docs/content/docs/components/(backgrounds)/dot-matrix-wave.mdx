@@ -1,0 +1,140 @@
+---
+title: Dot Matrix Wave
+description: "Add a dot-grid background that ripples on hover and click."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="dot-matrix-wave/demo" full height={400} />
+
+A hero section over the dot matrix, which swells in the background; click anywhere in the field to send a ripple.
+
+When nobody is interacting, the matrix sends a gentle pulse from a point in the middle of the field every few seconds of its clock. The points follow a fixed sequence, not a random one. Turn the pulses off with `ambient={false}` when the page already has something moving.
+
+</Story>
+
+<Story id="pointer-and-clicks" label="Pointer and clicks">
+
+<ComponentPreview name="dot-matrix-wave/listening" height={420} />
+
+An empty state for a webhook endpoint, where the matrix reacts to the pointer and to the Send test event button.
+
+With `interactive` on (the default), the dots under the pointer rise into a tight lens, and moving the pointer leaves a wake of soft rings, one for every 120 pixels traveled. A press anywhere in the field sends a strong ring from that point, including a press on a button that sits above the matrix.
+
+Here the matrix is an empty state for a webhook endpoint. The ambient pulses say it's listening, and pressing **Send test event** sends a ring out from the button. The pointer is tracked on the window, so the matrix responds under the content above it.
+
+</Story>
+
+<Story id="tuning" label="Tuning">
+
+<ComponentPreview name="dot-matrix-wave/tuning" full height={320} />
+
+Controls for the dot spacing and for the ambient pulses.
+
+- `spacing` is the grid pitch in CSS pixels. It defaults to 22. Smaller values read as a fine texture, and larger values as a bold graphic.
+- `intensity`, from 0 to 1.5, sets the dots' contrast against the canvas.
+- `speed` multiplies the clock that drives the swell and the rings' travel. It stacks with the time scale.
+
+`colors` takes two CSS colors: the dots at rest, then the excited color they heat toward. The defaults are `--color-fg` and `--color-accent`. Token references follow the theme.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="dot-matrix-wave" noImport />
+
+Use it for products that sell precision: design tools, developer platforms, anything about pixels and grids. It's also a good "listening" state, because its idle pulses read as something waiting for input. Don't use it behind long text or dense UI, and don't pair it with another animated background on the same page.
+
+The matrix fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { DotMatrixWave } from '@youj/motion/backgrounds'
+
+export function PrecisionHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <DotMatrixWave />
+      <p className="relative text-5xl font-semibold">Built to the last pixel</p>
+    </section>
+  )
+}
+```
+
+Every dot is a single anti-aliased disc on a grid snapped to device pixels, evaluated at its center, so the lattice stays crisp at any pixel ratio. Untouched, the matrix breathes with a slow, low swell. Dots grow and brighten toward the excited color as a wave passes through them.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (7)">
+
+### Props
+
+<PropsTable name="DotMatrixWave" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's one WebGL2 fragment shader on a single full-screen triangle,…">
+
+### Performance
+
+It's one WebGL2 fragment shader on a single full-screen triangle, rendered at a device-pixel ratio capped at 2. It tracks at most eight rings at a time, and the oldest gives way to a new one. The loop pauses when the matrix is offscreen or the tab is hidden, recovers from a lost GL context, and releases the context on unmount. Without WebGL2, it falls back to a static CSS dot pattern at the same spacing.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Swell, rings, pointer lens · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Swell', note: 'idle breathing of the whole lattice', value: 'speed ÷ time scale' },
+    { moment: 'Rings', note: 'clicks, the pointer wake and ambient pulses', value: '380 px per clock second' },
+    { moment: 'Pointer lens', note: 'follows the pointer, fades in and out', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one still frame with a single ring frozen mid-flight, so the matrix still reads as something that responds. There's no lens, no wake and no ambient pulse."
+/>
+
+Ring travel is measured in the matrix's own clock, so it slows with the Speed control like everything else.
+
+#### Reduced motion
+
+The matrix holds one composed frame, with a single ring frozen in the middle of the field. There's no swell, no lens and no pulse, but the lattice and its colors stay the same, and the frozen ring still hints at what the matrix does. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events, so presses pass through to the content above it.
+- A ring is visual feedback only. If a press does something, like sending a test event, confirm it in text as well. The Pointer and clicks story does this with a status message.
+- Keep a quiet pool of canvas behind the copy, and check your text's contrast over the brightest rings.
+
+</ReferenceRow>

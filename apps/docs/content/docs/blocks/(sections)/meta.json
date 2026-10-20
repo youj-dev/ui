@@ -1,0 +1,14 @@
+{
+  "title": "Sections",
+  "pages": [
+    "cta",
+    "company",
+    "features",
+    "hero",
+    "navigation",
+    "pricing",
+    "product-grid",
+    "showcase",
+    "proof"
+  ]
+}

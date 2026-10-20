@@ -1,0 +1,111 @@
+---
+title: Time Picker
+description: "Enter a time using your locale’s clock format."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="time-picker/demo" height={240} />
+
+A daily standup time on a 12-hour clock, in 15-minute steps.
+
+Type digits and the picker moves on by itself once a segment can't take another: "7" in the hours means 07, while "1" waits for a second digit. A colon or ArrowRight moves on too, so "245p" types 2:45 PM. ArrowUp and ArrowDown step, wrapping around, and minutes step by `step`. Home and End jump to a segment's ends, Backspace clears it, and A or P sets the period. A typed minute that falls between steps snaps to the nearest step when you leave the field.
+
+</Story>
+
+<Story id="clocks-and-locales" label="Clocks and locales">
+
+<ComponentPreview name="time-picker/clocks" height={300} />
+
+Clocks that follow the locale.
+
+The clock follows the locale: `locale="de-DE"` gives a 24-hour clock, `en-US` a 12-hour one with its own AM and PM words. `hourCycle` overrides the locale when a time is always shown one way, such as UTC maintenance windows on a 24-hour clock.
+
+Default: the YoujProvider's locale (en-US without one), never the runtime's, so the server and the browser render the same clock and AM/PM words.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="time-picker" noImport />
+
+Use a time picker for a time of day: a standup, a maintenance window, a reminder. It works like the platform's own time field, with hours, minutes and, on a 12-hour clock, AM or PM, but it's styled and stepped like the rest of the kit. Pair it with a [Date Picker](/docs/components/date-picker) when the moment needs a day too. For a duration, use a [Number Input](/docs/components/number-input). Where a time is spun rather than typed (a touch-first form, an alarm), a [Wheel Picker](/docs/components/wheel-picker) with hour and minute columns is the alternative.
+
+```tsx
+import { Field, FieldLabel, TimePicker } from '@youj/react'
+
+export function Standup() {
+  const [time, setTime] = useState<string | null>('09:30')
+  return (
+    <Field>
+      <FieldLabel>Daily standup</FieldLabel>
+      <TimePicker value={time} onValueChange={setTime} step={15} />
+    </Field>
+  )
+}
+```
+
+The value is a 24-hour `"HH:mm"` string, like `<input type="time">`, once both hours and minutes are set, and `null` otherwise. Each segment is a spinbutton in one [Input Group](/docs/components/input-group) frame.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (13)">
+
+### Props
+
+<PropsTable name="TimePicker" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Segment focus · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[{ moment: 'Segment focus', note: 'the focused segment takes a soft accent tint', duration: 'fast', ease: 'standard' }]}
+  reduced="Nothing else moves, so reduced motion changes nothing: the tint still marks the focused segment."
+/>
+
+#### Reduced motion
+
+The only motion is the focused segment's tint, which stays, because it shows where you're typing.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The segments sit in a group named by the Field's label, or by `aria-label`. Each is a `spinbutton` named "Hours", "Minutes" or "AM/PM", with its range and a value text that reads "Empty" while it's unset.
+- The Field's description and error describe every segment, and `aria-invalid` and `aria-required` follow the Field.
+- Tab moves between segments like any other field. The arrows, digits, Home, End, Backspace, A and P work as described above.
+- With `name`, a hidden input submits the `"HH:mm"` value with a native form.
+
+</ReferenceRow>

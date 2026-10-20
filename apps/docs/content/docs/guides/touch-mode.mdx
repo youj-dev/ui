@@ -1,0 +1,77 @@
+---
+title: Touch mode
+description: "Components present and behave for how they are operated: a popover under a mouse, a bottom sheet under a thumb."
+status: new
+---
+
+<PageArt art="composing" />
+
+Youj does not shrink a desktop interface to fit a phone. A component changes how it is presented and operated depending on the input.
+
+- Under a **pointer**, a picker is a popover that grows out of its trigger.
+- Under a **thumb**, the same picker is a bottom sheet with a grab handle and 48px rows. Controls are 44px or taller (a small control keeps its look and takes an invisible 44px hit area), text fields are 16px so iOS does not zoom, and nothing depends on hover.
+
+This is separate from responsive layout. A layout follows the width of the window. Touch mode follows how the page is operated, so a wide tablet is touch and a narrow desktop window is not.
+
+## What changes on touch
+
+| Component | Pointer | Touch |
+|---|---|---|
+| [Dropdown Menu](/docs/components/dropdown-menu), [Context Menu](/docs/components/context-menu) | Popover; right-click | Action sheet; long press |
+| [Select](/docs/components/select) | Popover over the trigger | Bottom sheet |
+| [Combobox](/docs/components/combobox), [Multi-select](/docs/components/multi-select) | Popover with a search field | Sheet with the search field on top, above the keyboard |
+| [Command](/docs/components/command), [Command Palette](/docs/components/command-palette) | Centered dialog | Tall sheet |
+| [Popover](/docs/components/popover), [Date Picker](/docs/components/date-picker), [Date Range Picker](/docs/components/date-range-picker), [Color Picker](/docs/components/color-picker) | Popover | Sheet; 44px day cells and swatches |
+| [Dialog](/docs/components/dialog) | Centered window | Bottom sheet that is pulled down to dismiss, above the keyboard |
+| [Alert Dialog](/docs/components/alert-dialog) | Centered window | Stays centered and is not draggable; actions stack at 44px |
+| [Sheet](/docs/components/sheet) | Panel on an edge | Full width up to 28rem, with a 44px close button |
+| [Tooltip](/docs/components/tooltip) | Hover and focus | Does not open by default; opt in to a long press with `longPress` |
+| [Hover Card](/docs/components/hover-card) | Hover and focus | A tap opens it; a second tap follows the link |
+| Controls ([Button](/docs/components/button), [Input](/docs/components/input), Tabs, Toggle) | 24 to 40px | 8px taller, default 44px, small sizes with a 44px hit area; inputs at 16px |
+| Keyboard shortcut hints | Shown | Hidden |
+
+Each component's page has a Touch section with the details. [Sheet Presentation](/docs/components/presentation) covers building your own.
+
+## Setting the device
+
+The default is `auto`: the primary pointer decides (`(pointer: coarse)` is touch). Force one for a subtree, and for everything it portals, with `device` on `YoujProvider` or `ThemeScope`.
+
+```tsx
+import { YoujProvider, ThemeScope } from '@youj/core'
+
+<YoujProvider>
+  {/* follows the hardware */}
+  <ThemeScope device="touch">
+    <Page /> {/* sheets and touch sizes, even on a desktop */}
+  </ThemeScope>
+</YoujProvider>
+```
+
+Set it once, near the root of what it governs. A scope nested inside a forced one can force the other way for its own parts, but it cannot hand the choice back to `auto`.
+
+`portalContainer` on the provider sends the overlays of a subtree to an element you choose instead of the end of `<body>`. The docs use it to show a phone's sheets inside a phone-sized frame on a desktop (see below).
+
+## In your own components
+
+```tsx
+import { useDevice, useDeviceSetting, usePortalContainer } from '@youj/core'
+
+const device = useDevice() // 'touch' | 'pointer'
+const setting = useDeviceSetting() // 'auto' | 'touch' | 'pointer'
+```
+
+`useDevice` says what a component should do when it opens. The server and the hydration render say `pointer` and the client corrects on mount, so use it for behavior at open time, not for markup that is on the page at load. For styling use the `touch:` and `fine:` variants, which follow the hardware or a forced device (use these rather than Tailwind's `pointer-coarse:`, which cannot see a forced one).
+
+`@youj/core` also exports the building blocks the provider uses: `DEVICE_SETTINGS`, `DEFAULT_DEVICE_SETTING`, `isDeviceSetting` and `resolveDevice(setting, coarse)`.
+
+## Previewing touch on a desktop
+
+Every demo in these docs has a Pointer and Touch control. On a desktop, Touch shows the demo in a phone-sized screen, where menus, selects and dialogs rise as sheets from the bottom of that screen, and a mouse drag works as a finger would. The choice is remembered, and it defaults to your hardware. In Storybook, the toolbar's Device control does the same for every story.
+
+## What is not done
+
+- A sheet has one height. Half and full detents are not built.
+- A submenu opens as another sheet above its parent. Native menus push inside one sheet.
+- There is no haptic feedback. The web has no equivalent on iOS.
+- On an iPad, native menus are popovers. Pass `presentation="popover"` to keep one.
+- Real keyboards cannot be emulated, so the keyboard handling is verified against a simulated visual viewport.

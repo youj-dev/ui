@@ -1,0 +1,110 @@
+---
+title: Dot Map
+description: "Show where activity happens on a world map made of dots."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="dot-map/demo" height={380} />
+
+Requests by region as dots on a world map, with a region list that lights the same region.
+
+`active` highlights one region: it brightens, the others dim, and a crosshair runs through it with its name and value on an ink tag. Hovering the map reports the nearest region through `onActiveChange`, so a list beside it can light the same row; setting `active` from the list's hover and focus moves the crosshair, which glides from one region to the next.
+
+```tsx
+import { useState } from 'react'
+const [active, setActive] = useState<string | null>(null)
+
+<DotMap regions={regions} active={active} onActiveChange={setActive} />
+<RegionList regions={regions} active={active} onHover={setActive} />
+```
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="dot-map" noImport />
+
+Use a dot map when the question is "where": requests by point of presence, customers by city, incidents by region. Each region lights the land dots around it like LEDs, the reach and strength growing with its share of the largest value, under a soft halo in its tone. Pair it with a list or table that holds the figures: the map shows where, the list says how much.
+
+```tsx
+import { DotMap } from '@youj/react'
+
+<DotMap
+  label="Requests by region"
+  regions={[
+    { id: 'iad', name: 'iad', lon: -77.04, lat: 38.9, value: 12_400 },
+    { id: 'fra', name: 'fra', lon: 8.68, lat: 50.11, value: 9_800 },
+    { id: 'gru', name: 'gru', lon: -46.63, lat: -23.55, value: 2_700, tone: 'warning' },
+  ]}
+/>
+```
+
+Regions take a longitude and latitude in degrees and a `value`; a region's `tone` colors its dots and halo (the accent by default, a status or a chart color). The land is a committed equirectangular grid of 3° cells from 78°N to 57°S, derived once from Natural Earth's public-domain land polygons, so nothing geographic loads at runtime and the map stays west to east in any text direction.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="regions, active, defaultActive… (6)">
+
+### Props
+
+<PropsTable name="DotMap" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, update, highlight · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'a scan sweeps the grid in from the west; each region lights as the scan reaches it, outward from its center', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Update', note: 'each region whose value changed sends one ring that opens and fades, and its dots brighten or dim outward', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Highlight', note: 'the crosshair and tag glide to the region', spring: 'smooth' },
+  ]}
+  reduced="Drawn in place: no scan, no pulses; changes land at once."
+/>
+
+#### Reduced motion
+
+The map is drawn in place without the scan or pulses, and new values land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- The map is a labeled image (your `label`, or the labels' "World map") described by a summary: how many regions it marks and the largest. The drawing itself is hidden from assistive technology.
+- It isn't keyboard-operable on purpose: the list or table beside it is the source of truth, and focusing a row there moves the map's highlight.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

@@ -1,0 +1,17 @@
+{
+  "title": "Data & tables",
+  "pages": [
+    "table",
+    "data-table",
+    "filter-chips",
+    "filter-builder",
+    "property-list",
+    "action-list",
+    "breakdown-list",
+    "contribution-list",
+    "tree-view",
+    "sortable-list",
+    "kanban",
+    "import-mapper"
+  ]
+}

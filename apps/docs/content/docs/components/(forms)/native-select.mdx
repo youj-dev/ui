@@ -1,0 +1,99 @@
+---
+title: Native Select
+description: "Use the browser’s built-in picker with Youj field styling."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="native-select/demo" height={220} />
+
+A Region select with options grouped under Europe and Americas, and a description beneath it.
+
+</Story>
+
+<Story id="sizes-and-states" label="Sizes and states">
+
+<ComponentPreview name="native-select/states" height={320} />
+
+Native selects in each size and state.
+
+`size` is `sm`, `default` or `lg`, matching the control heights of inputs and buttons. An empty value reads as a placeholder, `aria-invalid` turns the border red, and `disabled` dims it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="native-select" noImport />
+
+Use a native select when the operating system's picker serves people better than a custom popup: long option lists on phones, where the OS wheel or sheet is faster; forms that must work before JavaScript loads; plain server-rendered forms. When you need custom rows, icons, search or motion in the popup, use [Select](/docs/components/select) or a [Combobox](/docs/components/combobox).
+
+```tsx
+import { NativeSelect, NativeSelectOption } from '@youj/react'
+
+export function Priority() {
+  return (
+    <NativeSelect name="priority" aria-label="Priority" defaultValue="high">
+      <NativeSelectOption value="urgent">Urgent</NativeSelectOption>
+      <NativeSelectOption value="high">High</NativeSelectOption>
+      <NativeSelectOption value="low">Low</NativeSelectOption>
+    </NativeSelect>
+  )
+}
+```
+
+`NativeSelect` takes every `<select>` prop: `value` and `onChange`, `name`, `required`, `disabled`, `aria-invalid`. `className` sizes the wrapper, so `className="w-full"` makes it fill its column. Group options with `NativeSelectOptGroup`. Put it in a [Field](/docs/components/field) for a label, a description and an error. The API matches shadcn/ui's Native Select.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size (1)">
+
+### Props
+
+<PropsTable name="NativeSelect" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="The picker is the operating system's, so there's no motion to reduce">
+
+### Reduced motion
+
+The picker is the operating system's, so there's no motion to reduce. The field's colors ease on hover and focus in both modes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- It's a real `<select>`, so keyboards, screen readers, autofill and form submission all work the platform's way, before and after hydration.
+- Name it with a `FieldLabel` or `aria-label`. The chevron is decorative (`aria-hidden`).
+- Option colors follow the popover tokens where the browser lets a page style them; elsewhere the picker is the system's own and follows the page's color scheme.
+
+</ReferenceRow>

@@ -1,0 +1,88 @@
+---
+title: Youj vs other libraries
+description: "How Youj relates to shadcn/ui, Magic UI, Aceternity UI, HeroUI and Kibo UI, and when each is the better fit."
+---
+
+<PageArt art="comparison" />
+
+Youj is built on shadcn/ui, and it sits among several good React libraries. This page sets out what Youj ships and how it relates to five others. For the others it states only well-known public facts, and they change often, so check their docs for the current picture. As of October 2026.
+
+## What Youj ships
+
+| | Youj 0.1 |
+| --- | --- |
+| Components | UI components on Base UI, in shadcn's `base-nova` style, and motion components: primitives, effects, interactions, backgrounds and players |
+| Blocks | Cards, sections and screens, copied in as source |
+| Icons | Animated icons in `@youj/icons`, whose state icons morph between their two states, and a few static brand marks |
+| Illustrations | Illustration scenes in `@youj/illustrations`, the kit they're drawn with, and a builder for your own |
+| Motion system | Tokens for duration, easing, springs and stagger, three motion personalities, a motion budget and overlay presets that reverse mid-flight. See [Motion](/docs/motion) |
+| Reduced motion | The provider follows the system setting. Each animated component has an instant or still alternative, described on its page |
+| Sound | Optional interface sounds in `@youj/sound`, silent until you add its provider. See [Sound](/docs/sound) |
+| Themes | Presets, each tuned for light and dark, or your own derived from a few inputs. `checkTheme` holds every color pair to WCAG AA, and the CLI and MCP server refuse a theme that misses it. See [Theming](/docs/theming) |
+| Styles | Classic (the default) and Bezel, with any theme. See [Looks](/docs/looks) |
+| Languages | Built-in strings in a set of locales besides English, and right-to-left layouts |
+| How you get it | npm packages, or source through `npx youj add` or the [shadcn CLI](/docs/shadcn-registry) |
+| CLI | `init`, `add`, `create`, `doctor` and `mcp`. See [CLI](/docs/cli) |
+| AI tools | An [MCP server](/docs/mcp) with the docs, props, icons and install commands, and `llms.txt` |
+| Figma | A [plugin](/docs/figma) that builds the kit in Figma from the same tokens |
+| License | MIT |
+
+## At a glance
+
+| Library | How you get it | Built on | Focus |
+| --- | --- | --- | --- |
+| Youj | npm packages, or source through its CLI or the shadcn CLI | Base UI, Tailwind CSS v4, Motion | A full set with one motion system, plus icons, illustrations, sound and themes |
+| shadcn/ui | Source copied in with the shadcn CLI | Radix UI or Base UI, Tailwind CSS | The foundation components and the registry format others build on |
+| Magic UI | Source through the shadcn CLI | Tailwind CSS, Motion | Animated components and effects for landing pages |
+| Aceternity UI | Source copied from its site or through the shadcn CLI | Tailwind CSS, Motion | Animated, visual sections for marketing pages |
+| HeroUI | npm packages | React Aria, Tailwind CSS | A packaged component library, formerly NextUI |
+| Kibo UI | Source through its own CLI or the shadcn CLI | shadcn/ui, Tailwind CSS | Larger composable components on top of shadcn/ui |
+
+## shadcn/ui
+
+shadcn/ui is Youj's base, and Youj stays grateful to it (see [Credits](/docs/contributing#credits-and-licenses)). It gives you well-made components as source you own, a choice of Radix UI or Base UI underneath, and the registry format that Youj and many others publish to. It animates with Tailwind utility classes.
+
+Youj keeps shadcn's component names and, where Base UI allows, its props, and adds a motion system the whole set shares, npm packages next to copy-in, animated icons, illustrations, sound, themes derived and checked for contrast, two component styles and `npx youj doctor`. Moving over from a Radix-based shadcn style changes some props (`asChild` becomes `render`, menu items take `onClick`, `Select` takes `items`): [Coming from shadcn/ui](/docs/guides/shadcn) walks through it and lists every change.
+
+Choose shadcn/ui alone when you want the smallest starting point and plan to design the motion and the rest yourself.
+
+## Magic UI
+
+Magic UI is a set of animated components and effects, often used on landing pages, installed through the shadcn CLI. It is open source, with paid templates on top.
+
+Its items use shadcn's color variables, which Youj's stylesheet maps onto Youj tokens, so a section from Magic UI can sit in a Youj app. The difference is scope: Magic UI focuses on eye-catching effects, while Youj's motion runs through every component, from a button press to a dialog, with shared tokens and a reduced-motion state for each.
+
+## Aceternity UI
+
+Aceternity UI offers animated, visual components for marketing pages. You copy them from its site or install them through the shadcn CLI, and it sells paid templates and blocks alongside the free components.
+
+Like Magic UI, it is a good source of standout hero and feature sections. Youj covers the application side too: forms, data tables, overlays, navigation, app frames and the blocks built from them.
+
+## HeroUI
+
+HeroUI, formerly NextUI, is a packaged component library built on React Aria and Tailwind CSS. You install it from npm and import its components, as you can with Youj.
+
+It isn't built on shadcn/ui, so its components don't share shadcn's names or variables, and using it beside a shadcn-based set such as Youj means two sets of tokens to keep in step. Choose between the two by the primitives you prefer (React Aria or Base UI) and by what ships with each.
+
+## Kibo UI
+
+Kibo UI is an open-source set of larger composable components, such as a Kanban board and a Gantt chart, built on top of shadcn/ui. You add them with its own CLI or the shadcn CLI.
+
+It complements a shadcn-based app with components that shadcn/ui doesn't have. Youj's set is broader and animated throughout. Where Kibo has a component Youj doesn't, it can be added beside Youj through the same shadcn CLI.
+
+## When Youj fits
+
+- You want motion that's consistent across every component, with reduced motion handled for you.
+- You want versioned npm packages, source you own, or both in one app.
+- You want icons, illustrations, themes and sound in the same design language as the components.
+
+Another library may fit better when you want only a minimal base (shadcn/ui), a single standout landing section (Magic UI, Aceternity UI), React Aria underneath (HeroUI), or one specific complex component (Kibo UI). Youj is also new, at version 0.1, while the others have been in use longer.
+
+## Related
+
+<Cards>
+  <Card title="Installation" href="/docs/installation">Set Youj up in your app.</Card>
+  <Card title="Coming from shadcn/ui" href="/docs/guides/shadcn">Move a shadcn/ui app onto Youj.</Card>
+  <Card title="Using with shadcn" href="/docs/shadcn-registry">Add Youj items with the shadcn CLI.</Card>
+  <Card title="Credits" href="/docs/contributing#credits-and-licenses">The work Youj builds on.</Card>
+</Cards>

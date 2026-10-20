@@ -1,0 +1,9 @@
+# Committed on purpose (CI checks them for drift) but written by tools, not by hand.
+api/** linguist-generated
+packages/*/registry/*.json linguist-generated
+packages/*/test/__snapshots__/** linguist-generated
+packages/figma/assets/** linguist-generated
+apps/docs/lib/media.json linguist-generated
+surface-baseline.json linguist-generated
+tint-baseline.json linguist-generated
+pnpm-lock.yaml linguist-generated

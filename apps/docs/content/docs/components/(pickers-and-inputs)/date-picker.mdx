@@ -1,0 +1,167 @@
+---
+title: Date Picker
+description: "Type a date in your locale’s format or choose it from a calendar."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="date-picker/demo" height={260} />
+
+A due date that starts twelve days out, with a description that reads the chosen date back.
+
+Typing a complete date selects it as you go, and on blur or Enter the text settles into the canonical form. It also reads any separator ("9-27-2026"), two-digit years once you leave the field, month names ("Sep 27, 2026"), ISO dates (2026-09-27), and today, tomorrow and yesterday. Text that isn't a date, or falls outside the bounds, marks the field invalid and clears the value.
+
+The calendar button, whose icon tears off a day on hover, opens a [Popover](/docs/components/popover) with the Calendar focused on the chosen day. ArrowDown in the field opens it too. Picking a day closes it and returns focus to the field.
+
+</Story>
+
+<Story id="bounds" label="Bounds">
+
+<ComponentPreview name="date-picker/bounds" height={260} />
+
+A launch date limited to weekdays in the next 60 days.
+
+`minDate` and `maxDate` bound both the calendar and the typing, and `disabledDates` takes react-day-picker matchers, such as date-fns's `isWeekend` or `{ dayOfWeek: [0, 6] }`. A typed date that breaks them is marked invalid instead of being accepted.
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="date-picker/states" height={260} />
+
+An invalid, required field beside a disabled one.
+
+Inside a [Field](/docs/components/field), `required` and `invalid` reach the input, and `disabled` disables both the input and the calendar button.
+
+</Story>
+
+<Story id="ghost" label="Ghost">
+
+<ComponentPreview name="date-picker/ghost" height={240} />
+
+Start and due dates in a row of properties, each a quiet button.
+
+`variant="ghost"` trades the typed field for a button that shows the date ("Sep 21, 2026") and opens the same calendar: the same look as `SelectTrigger variant="ghost"`, so a row of pickers (status, assignee, dates) reads as one. `size="sm"` matches a small select. Give it an `aria-label`: its accessible name is the label, then the date ("Due date, Sep 21, 2026"), and `placeholder` is what it shows with no date. There's no typing in this variant; use the default field where people enter dates by hand.
+
+```tsx
+<DatePicker variant="ghost" size="sm" aria-label="Due date" placeholder="No due date" value={due} onValueChange={setDue} />
+```
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="date-picker" noImport />
+
+Requires `date-fns` and `react-day-picker`, [optional dependencies](/docs/installation#optional-dependencies). Import it from `@youj/react/date`.
+
+Use Date Picker for a due date, launch date or birthday. People can type the date or choose it from the calendar. Use [Date Range Picker](/docs/components/date-range-picker) for a start and end, [Calendar](/docs/components/calendar) for an always-visible month, or add [Time Picker](/docs/components/time-picker) for the time of day.
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel } from '@youj/react'
+import { DatePicker } from '@youj/react/date'
+
+export function DueDate() {
+  const [date, setDate] = useState<Date | null>(null)
+  return (
+    <Field>
+      <FieldLabel>Due date</FieldLabel>
+      <DatePicker value={date} onValueChange={setDate} />
+    </Field>
+  )
+}
+```
+
+The field is an [Input Group](/docs/components/input-group) text input in the locale's short format, such as 09/27/2026 in en-US or 27.09.2026 in German, with the order spelled out in the placeholder. The value is a `Date`, or `null` while the field is empty or doesn't hold a date.
+
+Without a `locale`, the picker follows `YoujProvider`'s: `<YoujProvider locale="de-DE">` gives 27.09.2026, German month and day names, and weeks from Monday. The order and names come from `Intl`, and the first day of the week from `Intl.Locale`'s week info where the browser has it (Monday where it doesn't). The same goes for Calendar and Date Range Picker; `dateLocale(tag)` returns the locale they build.
+
+`locale` takes a date-fns locale, which is also react-day-picker's, and wins over the provider's. It sets the field's order and separator, the placeholder, the calendar's month and day names, and the first day of the week, and it lets the field read typed month names in that language ("5. Sept. 2026"), which the Intl-built locale reads only in English.
+
+```tsx
+import { de } from 'date-fns/locale'
+
+<DatePicker locale={de} />
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (18)">
+
+### Props
+
+<PropsTable name="DatePicker" />
+
+The package also exports the helpers the picker uses, for your own parsing and display: `parseDate(text, locale)`, `formatDate(date, locale)`, `datePattern(locale)`, `datePlaceholder(locale)` and `dateAllowed(date, min, max, disabled)`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the field is still a text field you can type in,…">
+
+### Touch
+
+On a touch device the field is still a text field you can type in, set at 16px so the page doesn't zoom when it's focused. The calendar button has a 44px target and opens the calendar in a bottom sheet with 44px days. Picking a day closes the sheet, and so do pulling it down, tapping outside it and Escape.
+
+`presentation` chooses: `auto` (the default) is a popover under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the popover on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, month change… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'the calendar grows out of the field (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Month change', note: 'the Calendar\'s slide from the side it comes from', duration: 'base', ease: 'enter' },
+    { moment: 'Icon hover', note: 'the calendar icon tears off a day', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The popover opens and closes at once, the month changes in place and the icon stays still."
+/>
+
+#### Reduced motion
+
+The popover and the month change happen at once, and the icon doesn't animate. Typing, parsing and keyboard handling are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The input is named by its `FieldLabel`, or by `aria-label`, and carries `aria-invalid` when the text isn't an allowed date.
+- The calendar button is named "Choose date", and so is the popup. Focus moves into the calendar on the chosen day, and returns to the input when a day is picked or Escape closes it.
+- In the calendar, arrows move by day, PageUp and PageDown by month and Home and End by week.
+- With `name`, a hidden input submits the date as `yyyy-MM-dd`.
+
+</ReferenceRow>

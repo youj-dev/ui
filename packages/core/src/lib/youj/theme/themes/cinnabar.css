@@ -1,0 +1,69 @@
+/* Cinnabar: One English red, with ivory in the data. Dark first. Clean style.
+ *
+ * A youj theme is only its contract: these variables. Every token, in light
+ * and dark, is derived from them. Apply the file with data-yj-theme="cinnabar" on
+ * <html> or any element (scopes nest), or copy the block onto :root.
+ * Motion is an attribute: data-yj-motion="precise" next to data-yj-theme;
+ * the look too: data-yj-look="classic". */
+[data-yj-theme='cinnabar'] {
+  --yj-neutral-hue: 50;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.8;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.535 0.17 38);
+  --yj-accent-dark: oklch(0.71 0.17 42);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.1 155);
+  --yj-success-dark: oklch(0.8 0.13 155);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.53 0.11 82);
+  --yj-warning-dark: oklch(0.84 0.13 86);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.52 0.19 10);
+  --yj-danger-dark: oklch(0.7 0.17 6);
+  --yj-info: initial;
+  --yj-info-light: initial;
+  --yj-info-dark: initial;
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.54 0.17 38);
+  --yj-chart-1-dark: oklch(0.73 0.17 42);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.37 0.13 28);
+  --yj-chart-2-dark: oklch(0.56 0.16 28);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.61 0.11 82);
+  --yj-chart-3-dark: oklch(0.9 0.07 86);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.41 0.022 60);
+  --yj-chart-4-dark: oklch(0.61 0.017 60);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.57 0.036 229);
+  --yj-chart-5-dark: oklch(0.77 0.042 229);
+  --yj-radius: 0.625rem;
+  --yj-density: 0;
+  --yj-font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --yj-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-font-display: initial;
+  --yj-stroke-width: 1px;
+  --yj-stroke-ink: 0;
+  --yj-icon-weight: 1;
+  --yj-shadow-soft: 1;
+  --yj-shadow-hard: 0;
+  --yj-action-ink: 0;
+  --yj-pill: 0;
+  --yj-field-soft: 0;
+  --yj-surface-gradient: 0;
+  --yj-tone-chrome-fixed: 0;
+  --yj-tone-chrome-dark: 0;
+  --yj-tone-bars-chrome: 1;
+  --yj-tone-header-chrome: 1;
+  --yj-tone-overlay-chrome: 0;
+  --yj-tone-overlay-ink: 0;
+  --yj-heading-weight: 600;
+  --yj-heading-tracking: -0.025em;
+  --yj-label-case: initial;
+  --yj-label-font: initial;
+  --yj-label-tracking: initial;
+}

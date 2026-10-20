@@ -1,0 +1,148 @@
+---
+title: Carousel
+description: "Browse slides by swiping, dragging or stepping through controls, with optional autoplay."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="carousel/demo" height={520} />
+
+A carousel of five product shots with a thumbnail strip and Previous and Next buttons.
+
+`CarouselThumbs` holds one `CarouselThumb` per slide, and `CarouselDots` renders one dot per snap. Both wear a [Sliding Indicator](/docs/motion/sliding-indicator) that glides to the current slide, and the thumbnail strip scrolls the current thumbnail into view.
+
+</Story>
+
+<Story id="autoplay" label="Autoplay">
+
+<ComponentPreview name="carousel/autoplay" height={380} />
+
+A carousel that advances on a timer, with a play and pause toggle.
+
+`autoplay` advances on a timer: `true` for five seconds a slide, or a number of milliseconds. It pauses while the pointer is over the carousel, while focus is inside it, while it's dragged and while the tab is hidden. `CarouselAutoplayToggle` is its play and pause button, and draws the slide's elapsed time as a ring that fills until the next slide. `CarouselCaption` rises into place as its slide arrives.
+
+Autoplay never starts under reduced motion. The toggle still starts it, because pressing play is a choice.
+
+</Story>
+
+<Story id="slides-per-view" label="Slides per view">
+
+<ComponentPreview name="carousel/slides-per-view" height={300} />
+
+Several slides in view at once.
+
+Give `CarouselItem` a basis to show several slides at once, such as `sm:basis-1/2 lg:basis-1/3`. With `slidesToScroll: 'auto'`, each snap moves by a page, and the dots count pages.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="carousel" noImport />
+
+Requires `embla-carousel-react`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/carousel`.
+
+It's shadcn's carousel on Embla, so swipe, drag, flick and looping use Embla's physics.
+
+Use a carousel when there are more things than fit and seeing one at a time is the point: product photos, a gallery, a few featured stories. Everything after the first slide is easy to miss, so don't put anything people must see on slide three. For content people should scan and compare, lay it out in a grid or a [Scroll Area](/docs/components/scroll-area) instead.
+
+```tsx
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@youj/react/carousel'
+
+export function Photos({ photos }: { photos: Photo[] }) {
+  return (
+    <Carousel aria-label="Product photos" opts={{ loop: true }}>
+      <CarouselContent>
+        {photos.map((photo) => (
+          <CarouselItem key={photo.id}>
+            <img src={photo.src} alt={photo.alt} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  )
+}
+```
+
+`opts` goes to Embla (`loop`, `align`, `slidesToScroll`, `dragFree`…). `setApi` hands you Embla's API, so anything can drive the carousel: the color swatches in the demo call `api.scrollTo(i)`. `onSlideChange` reports the current slide however it changed. The Previous and Next buttons sit outside the slides by default; move them inside with a class, as the demo does.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="opts, plugins, orientation… (8)">
+
+### Props
+
+<PropsTable name="Carousel" />
+
+#### CarouselThumb
+
+<PropsTable name="CarouselThumb" />
+
+`CarouselContent`, `CarouselItem`, `CarouselCaption`, `CarouselDots` and `CarouselThumbs` are styled `div`s. `CarouselPrevious`, `CarouselNext` and `CarouselAutoplayToggle` take [Button](/docs/components/button) props, with `variant` and `size` defaulting to `outline` and `icon-sm` (`ghost` for the toggle). `useCarousel()` reads the carousel's state from inside it.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Slide travel, drag and flick, dot and thumbnail indicator… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Slide travel', note: "buttons, dots, thumbnails and arrow keys; Embla's integrator is tuned to land on the token", duration: 'slow' },
+    { moment: 'Drag and flick', note: "follows the finger, then Embla's own momentum", value: 'pointer-driven' },
+    { moment: 'Dot and thumbnail indicator', note: 'glides to the current slide (SlidingIndicator)', spring: 'smooth' },
+    { moment: 'Caption', note: 'rises 8px and fades in after a `loose` stagger as its slide arrives', duration: 'base', ease: 'enter' },
+    { moment: 'Caption leaves', duration: 'instant', ease: 'exit' },
+    { moment: 'Autoplay ring', note: 'draws the dwell; it is the timer', value: 'the autoplay interval' },
+  ]}
+  reduced="Buttons, dots and keys jump to the slide; drags still follow the finger. Captions are simply there, and autoplay doesn't start."
+/>
+
+A Speed change re-initializes Embla with the new travel, so the Speed control reaches the slides too.
+
+#### Reduced motion
+
+Buttons, dots, thumbnails and keys jump straight to the slide, captions don't rise and autoplay doesn't start on its own. Dragging still follows the finger, because that movement is the person's own.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The carousel is a region with `aria-roledescription="carousel"`. Name it with `aria-label`.
+- Each slide is a group with `aria-roledescription="slide"`, labeled with its position ("3 of 8") unless you give it an `aria-label` of your own, such as "Moss, 2 of 5".
+- With focus inside the carousel (on a slide's control or the arrows), use Left and Right (Up and Down when vertical), Home and End. The arrows flip under RTL, and keys typed into a field inside a slide are left alone.
+- A polite live region names the slide that's showing. It's silent while autoplay rotates, so it doesn't talk over the page every few seconds (WAI-ARIA APG).
+- Previous and Next stay focusable when disabled at either end, so focus isn't dropped onto the page.
+- Dots are buttons named "Slide 3", with `aria-current` on the current one, and each has a 24px hit area.
+
+</ReferenceRow>

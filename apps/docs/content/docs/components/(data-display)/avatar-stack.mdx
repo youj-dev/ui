@@ -1,0 +1,118 @@
+---
+title: Avatar Stack
+description: "Show a group of people as overlapping avatars, with presence and an expandable list."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="avatar-stack/demo" height={260} />
+
+A roadmap card whose collaborators sit in a stack, with a button that cycles one person's status.
+
+</Story>
+
+<Story id="sizes" label="Sizes and overflow">
+
+<ComponentPreview name="avatar-stack/sizes" height={300} />
+
+The stack at sm, default and lg with different limits, and one that fits without a +N.
+
+`size` follows the [Avatar](/docs/components/avatar) sizes, and `max` sets how many faces show before "+N". When only one person would be hidden, the stack shows them instead: a "+1" would take the same space as their face.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="avatar-stack" noImport />
+
+Use an avatar stack to show who is in a document, a project or a call, when the faces matter more than the details. It shows the first `max` people and puts everyone else behind a "+N" button that opens the full list with each person's role and status. For a single person, use an [Avatar](/docs/components/avatar). For a list people manage (roles, removal), use a table or a list, not a stack.
+
+```tsx
+import { AvatarStack, type AvatarStackUser } from '@youj/react'
+
+const people: AvatarStackUser[] = [
+  { id: 'mira', name: 'Mira Chen', src: '/avatars/mira.jpg', presence: 'online', description: 'Design lead' },
+  { id: 'jonas', name: 'Jonas Weber', presence: 'away' },
+  // …
+]
+
+export function Collaborators() {
+  return <AvatarStack users={people} label="Collaborators" />
+}
+```
+
+Each person needs an `id` and a `name`. Without a `src`, the avatar shows their initials. `presence` adds a status dot (`online`, `away`, `busy` or `offline`), and `description` is the second line in the full list. `label` names the group ("Collaborators: Mira Chen, Jonas Weber and 5 others") and heads the list.
+
+On a card, set the rings that cut the overlaps out to the card's color, as the demo does: `*:data-[slot=avatar]:ring-surface`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="users, max, size… (4)">
+
+### Props
+
+<PropsTable name="AvatarStack" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fan out, lift, presence dot… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fan out', note: 'hovering the stack spreads each avatar 3px per position towards the inline end (`translate`)', duration: 'fast', ease: 'standard' },
+    { moment: 'Lift', note: 'the avatar under the pointer rises 2px above its neighbors', duration: 'fast', ease: 'standard' },
+    { moment: 'Presence dot', note: 'pops in from scale 0 when a status changes', duration: 'base', ease: 'enter' },
+    { moment: 'Name tooltip', note: 'drifts off the avatar (`yj-tooltip`), after a 200ms hover delay' },
+    { moment: 'Full list', note: 'scales from "+N" as it fades in (`yj-pop`)' },
+  ]}
+  reduced="No fan and no lift; status dots appear without the pop."
+/>
+
+Only transforms move, so the stack never reflows the line it sits in.
+
+#### Reduced motion
+
+The stack doesn't fan out on hover, the hovered avatar doesn't lift and status dots appear in place. Tooltips and the list still open, with the overlay presets' reduced behavior.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- The stack is a `group` named with everyone in it: the first two names and a count of the rest.
+- Each avatar shows the person's name and status in a tooltip on hover. Avatars aren't in the tab order, so keyboard and screen reader users get the names from the group's label and the "+N" list.
+- "+N" is a button named "Show all 7 collaborators". It opens the list in a Popover, where each status is written out, not only shown as a color.
+- Presence dots are decorative; the status text is in the tooltip and the list.
+
+</ReferenceRow>

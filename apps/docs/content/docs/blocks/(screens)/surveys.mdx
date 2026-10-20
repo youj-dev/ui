@@ -1,0 +1,118 @@
+---
+title: Surveys
+description: "Both sides of a survey: the builder where it's written, branched, styled and published, and the ways people answer it (one question at a time, a single page, a deck of cards for the phone, a widget in your product), all from one survey definition, with its results at a glance."
+---
+
+<BlockStories>
+
+<BlockStory id="builder" label="Builder" block="surveys-builder" story="Default" backdrop="glass">
+
+The admin's side. The outline holds every question in order: drag a row by its grip, or Tab to the grips and move one with Space and the arrows. Add question opens a palette of fourteen kinds, from single and multiple choice to NPS, a star rating, faces, a slider, a matrix and a ranking, and the new one lands after the selected question. The middle edits it in place: its kind, its words, its answers (paste a list to make options), whether it's required, and show-if logic on earlier answers. The preview beside it is the real question on a phone or a desktop, in the survey's design. Every change is a step of ⌘Z and saves itself a beat later. Publish picks a link, an embed or in-app (with its audience and the share of it asked), when it opens and closes, and ends on the live link with a share card. Keep the survey with `value` and `onValueChange` or `onSave`, publish through `onPublish`.
+
+</BlockStory>
+
+<BlockStory id="conversational" label="Conversational" block="surveys-conversational" story="Default" backdrop="glass">
+
+One question at a time, as fast as the keyboard: a letter picks a choice, a digit a point on a scale or a face, Y or N answers yes or no, and Enter goes on. A pick on a single-answer question goes on by itself after a beat. It opens on a welcome, each question fills the screen in large type, and the bar at the top counts only the questions this person's answers lead to. It ends on a review of every answer, each with an Edit that comes back to the review, then the thanks. On a phone the action sits at the foot of the screen, in the thumb's reach.
+
+</BlockStory>
+
+<BlockStory id="single-page" label="Single page" block="surveys-form" story="Default" backdrop="glass">
+
+Every question on one page, numbered, the way people fill in a form they can see the end of. A question an answer reveals rises into its place and the rest are renumbered; the header counts what's answered. Enter moves on to the next question. Send checks every answer, says each problem under its question and gathers them in a summary at the top that takes focus and links to each one. The questions scroll under a header that stays, so the page never jumps.
+
+</BlockStory>
+
+<BlockStory id="card-deck" label="Card deck" block="surveys-deck" story="Default" backdrop="glass">
+
+For the phone in your hand: a deck of question cards with answers as large as a thumb, the cards still ahead peeking out below the one on top. Throw the card towards the reading start to go on and the other way to go back, or use the two buttons where the thumb rests. A throw that can't go on springs back and shakes, and the reason is said under the question. Progress fills in segments along the top, one per question this person will be asked.
+
+</BlockStory>
+
+<BlockStory id="widget" label="In-app widget" block="surveys-widget" story="Default" backdrop="glass">
+
+A short survey in a corner of your product, the way in-app research asks: it rises in without taking focus, asks one question at a time and keeps one size while it does, and thanks you in place. Minimize folds it into a pill that remembers where you were; × and Escape dismiss it and the app hears it through `onOpenChange`. On a phone it's a sheet along the bottom edge.
+
+</BlockStory>
+
+<BlockStory id="results" label="Results" block="surveys-results" story="Default">
+
+What a survey heard: responses, completion and the median time, then any question's answers in the shape its type calls for, bars for choices and ratings, the average place for a ranking, NPS as its score over the split of detractors, passives and promoters, with every score drawn out. It's computed from the raw responses, so pass them as they're stored; moving between questions keeps the card's size.
+
+</BlockStory>
+
+<BlockStory id="question" label="Question" block="surveys-question" story="Default">
+
+One question anywhere: a rating under an article, a poll, a check-in after a chat, in any of the fourteen kinds. A pick that needs nothing more sends itself and the thanks takes its place. Its folder is the kit the other blocks share: the survey definition and its show-if logic, validation, and the question renderers, so a survey answers the same way in every layout.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="The survey definition" summary="one JSON shape, show-if logic, fourteen kinds">
+
+### The survey definition
+
+Every block here reads the same `Survey`: a title, a description, its `questions`, an `ending` and an optional `design`. It's plain data, so it can be stored as JSON and sent anywhere. A question has an `id`, a `type` and a `title`, may be optional (`required: false`) and may carry `showIf`: conditions on earlier answers (`is`, `isNot`, `includes`, `excludes`, `lte`, `gte`, `answered`, `skipped`), matched all or any. A condition only reads a question that comes earlier and was itself asked, so the count and the progress always follow this person's path. The types are `choice` (single or `multiple`, with `max`, `other` and `randomize`), `text` (short or `long`, with `maxLength`), `email`, `nps`, `scale`, `rating`, `emoji`, `slider`, `matrix`, `ranking`, `yesno` and `date`. Answers are keyed by question id: an option's value, a list of them, a number, true or false, text, a date as `YYYY-MM-DD`, or a matrix's row → column.
+
+</ReferenceRow>
+
+<ReferenceRow title="Keyboard" summary="answering, the builder, the deck">
+
+### Keyboard
+
+| Where | Keys | What they do |
+| --- | --- | --- |
+| A choice | A, B, C… | Pick an option (toggle it in a multiple choice); the next letter is “Other” |
+| A scale, NPS or faces | 0–9 | Pick a point; 1 then 0 is ten |
+| Yes or no | Y, N | Answer |
+| Any question | Enter | Go on (in Single page, move to the next question) |
+| A long answer | ⌘/Ctrl + Enter | Go on |
+| A ranking or the outline | Space, ↑ ↓, Space | Pick a row up, move it, drop it (Esc puts it back) |
+| An option in the builder | Enter, Backspace | Add the next option; remove an empty one |
+| The builder | ⌘/Ctrl + Z, ⇧⌘/Ctrl + Z | Undo, redo (outside a text field) |
+| The widget | Esc | Dismiss it |
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="labelled groups, focus, live regions, drag alternatives, motion">
+
+### Accessibility
+
+Each question is named by its title and described by its description and its problem: a choice is a radio group or a group of checkboxes, a scale and the faces are radio groups, each matrix row is a radio group named by its statement, a ranking is a sortable list, and a slider says its value with its unit. Shortcuts only work while focus is on the question's answers, never in a text field or with a modifier key, and arrow keys move a pick without going on. Focus moves to each new question (its field, or its heading) and a polite status says which question it is; the review's Edit buttons name the question they change. Single page's summary takes focus and links to each problem. The deck's throws have buttons beside them, and the widget never takes focus when it appears.
+
+In the builder every reorder has a keyboard twin with each step announced, every icon button is named (with its shortcut in a tooltip), undo and redo are announced, a deleted question offers Undo in a toast, and the publish steps are labelled with focus moved into each. Under reduced motion questions and steps swap in place, the deck's cards cross-fade, the widget appears and folds without travelling, and the results are drawn at their values.
+
+</ReferenceRow>
+
+</BlockStories>

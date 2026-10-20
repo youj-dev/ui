@@ -1,0 +1,242 @@
+{
+  "3d-printer": {
+    "light": "/thumbs/miniatures/3d-printer.webp?v=9eb7e7e305",
+    "dark": "/thumbs/miniatures/3d-printer.dark.webp?v=2b8c7de081"
+  },
+  "aquarium": {
+    "light": "/thumbs/miniatures/aquarium.webp?v=89e85a4a46",
+    "dark": "/thumbs/miniatures/aquarium.dark.webp?v=fe9c45af37"
+  },
+  "cell-tower": {
+    "light": "/thumbs/miniatures/cell-tower.webp?v=853db58e99",
+    "dark": "/thumbs/miniatures/cell-tower.dark.webp?v=956180850e"
+  },
+  "coffee-grinder": {
+    "light": "/thumbs/miniatures/coffee-grinder.webp?v=e7e52c1f24",
+    "dark": "/thumbs/miniatures/coffee-grinder.dark.webp?v=2a21c97998"
+  },
+  "cooling-unit": {
+    "light": "/thumbs/miniatures/cooling-unit.webp?v=0c899cfc97",
+    "dark": "/thumbs/miniatures/cooling-unit.dark.webp?v=7429964765"
+  },
+  "crt-television": {
+    "light": "/thumbs/miniatures/crt-television.webp?v=f802626a3d",
+    "dark": "/thumbs/miniatures/crt-television.dark.webp?v=ea2278559f"
+  },
+  "cuckoo-clock": {
+    "light": "/thumbs/miniatures/cuckoo-clock.webp?v=631d395c9d",
+    "dark": "/thumbs/miniatures/cuckoo-clock.dark.webp?v=0f502cc97c"
+  },
+  "desk-fan": {
+    "light": "/thumbs/miniatures/desk-fan.webp?v=43c8dee123",
+    "dark": "/thumbs/miniatures/desk-fan.dark.webp?v=5fa9f12c88"
+  },
+  "drone-dock": {
+    "light": "/thumbs/miniatures/drone-dock.webp?v=bc01fd1124",
+    "dark": "/thumbs/miniatures/drone-dock.dark.webp?v=18d164bb9e"
+  },
+  "drum-machine": {
+    "light": "/thumbs/miniatures/drum-machine.webp?v=ce99db290b",
+    "dark": "/thumbs/miniatures/drum-machine.dark.webp?v=4a78835757"
+  },
+  "espresso": {
+    "light": "/thumbs/miniatures/espresso.webp?v=ecd98e1bc9",
+    "dark": "/thumbs/miniatures/espresso.dark.webp?v=0e98c0b0ed"
+  },
+  "film-projector": {
+    "light": "/thumbs/miniatures/film-projector.webp?v=f06f2c988d",
+    "dark": "/thumbs/miniatures/film-projector.dark.webp?v=daa47c0b87"
+  },
+  "firewall-appliance": {
+    "light": "/thumbs/miniatures/firewall-appliance.webp?v=690a4df09c",
+    "dark": "/thumbs/miniatures/firewall-appliance.dark.webp?v=098bf151c3"
+  },
+  "greenhouse": {
+    "light": "/thumbs/miniatures/greenhouse.webp?v=57cabc0afb",
+    "dark": "/thumbs/miniatures/greenhouse.dark.webp?v=8abff6f0cc"
+  },
+  "ground-station": {
+    "light": "/thumbs/miniatures/ground-station.webp?v=e95ac35b3b",
+    "dark": "/thumbs/miniatures/ground-station.dark.webp?v=3cb31d0488"
+  },
+  "guitar-amp": {
+    "light": "/thumbs/miniatures/guitar-amp.webp?v=c3de6f21b9",
+    "dark": "/thumbs/miniatures/guitar-amp.dark.webp?v=4f81430530"
+  },
+  "home-battery": {
+    "light": "/thumbs/miniatures/home-battery.webp?v=c0143c90f8",
+    "dark": "/thumbs/miniatures/home-battery.dark.webp?v=f733e7609b"
+  },
+  "home-router": {
+    "light": "/thumbs/miniatures/home-router.webp?v=1073d950bf",
+    "dark": "/thumbs/miniatures/home-router.dark.webp?v=2f849440cb"
+  },
+  "hourglass": {
+    "light": "/thumbs/miniatures/hourglass.webp?v=f2922c1f6e",
+    "dark": "/thumbs/miniatures/hourglass.dark.webp?v=dc87fe68bc"
+  },
+  "instant-camera": {
+    "light": "/thumbs/miniatures/instant-camera.webp?v=032e9dd2ed",
+    "dark": "/thumbs/miniatures/instant-camera.dark.webp?v=3090cd7493"
+  },
+  "letterpress": {
+    "light": "/thumbs/miniatures/letterpress.webp?v=c5dc48c3fe",
+    "dark": "/thumbs/miniatures/letterpress.dark.webp?v=2492519b01"
+  },
+  "lighthouse": {
+    "light": "/thumbs/miniatures/lighthouse.webp?v=81c77a27ed",
+    "dark": "/thumbs/miniatures/lighthouse.dark.webp?v=25545d9c5f"
+  },
+  "mainframe": {
+    "light": "/thumbs/miniatures/mainframe.webp?v=a9dad35ab4",
+    "dark": "/thumbs/miniatures/mainframe.dark.webp?v=3a13d1d1e3"
+  },
+  "metronome": {
+    "light": "/thumbs/miniatures/metronome.webp?v=357c44da69",
+    "dark": "/thumbs/miniatures/metronome.dark.webp?v=68538ff939"
+  },
+  "microscope": {
+    "light": "/thumbs/miniatures/microscope.webp?v=d3b21dc7d9",
+    "dark": "/thumbs/miniatures/microscope.dark.webp?v=dd3e80f249"
+  },
+  "mixing-desk": {
+    "light": "/thumbs/miniatures/mixing-desk.webp?v=3a8c985914",
+    "dark": "/thumbs/miniatures/mixing-desk.dark.webp?v=ac40aafcd9"
+  },
+  "nas": {
+    "light": "/thumbs/miniatures/nas.webp?v=5cdecd9811",
+    "dark": "/thumbs/miniatures/nas.dark.webp?v=224be31c36"
+  },
+  "network-switch": {
+    "light": "/thumbs/miniatures/network-switch.webp?v=31b53268d7",
+    "dark": "/thumbs/miniatures/network-switch.dark.webp?v=0dec17ffb5"
+  },
+  "nixie-clock": {
+    "light": "/thumbs/miniatures/nixie-clock.webp?v=d5de826e7a",
+    "dark": "/thumbs/miniatures/nixie-clock.dark.webp?v=f422a394aa"
+  },
+  "orrery": {
+    "light": "/thumbs/miniatures/orrery.webp?v=207a07ec04",
+    "dark": "/thumbs/miniatures/orrery.dark.webp?v=66eef94411"
+  },
+  "oscilloscope": {
+    "light": "/thumbs/miniatures/oscilloscope.webp?v=fe7ffd5018",
+    "dark": "/thumbs/miniatures/oscilloscope.dark.webp?v=a46da5ba3c"
+  },
+  "packaging-line": {
+    "light": "/thumbs/miniatures/packaging-line.webp?v=13272cfcdb",
+    "dark": "/thumbs/miniatures/packaging-line.dark.webp?v=f59565347b"
+  },
+  "parcel-locker": {
+    "light": "/thumbs/miniatures/parcel-locker.webp?v=e3ed8201d3",
+    "dark": "/thumbs/miniatures/parcel-locker.dark.webp?v=e397d8204c"
+  },
+  "pinball": {
+    "light": "/thumbs/miniatures/pinball.webp?v=36cb3d8f5b",
+    "dark": "/thumbs/miniatures/pinball.dark.webp?v=613a6332b8"
+  },
+  "pipe-organ": {
+    "light": "/thumbs/miniatures/pipe-organ.webp?v=34e52aa43c",
+    "dark": "/thumbs/miniatures/pipe-organ.dark.webp?v=0d7fe57ec8"
+  },
+  "quantum-fridge": {
+    "light": "/thumbs/miniatures/quantum-fridge.webp?v=ccdff26215",
+    "dark": "/thumbs/miniatures/quantum-fridge.dark.webp?v=15a7270a60"
+  },
+  "receipt-printer": {
+    "light": "/thumbs/miniatures/receipt-printer.webp?v=b9fdf43908",
+    "dark": "/thumbs/miniatures/receipt-printer.dark.webp?v=d9184ed721"
+  },
+  "repair-bench": {
+    "light": "/thumbs/miniatures/repair-bench.webp?v=8fc185bbbe",
+    "dark": "/thumbs/miniatures/repair-bench.dark.webp?v=3549cd756e"
+  },
+  "retro-fridge": {
+    "light": "/thumbs/miniatures/retro-fridge.webp?v=3c49028a0e",
+    "dark": "/thumbs/miniatures/retro-fridge.dark.webp?v=3895ed3e3b"
+  },
+  "robot-arm": {
+    "light": "/thumbs/miniatures/robot-arm.webp?v=eeb8137b5c",
+    "dark": "/thumbs/miniatures/robot-arm.dark.webp?v=61b45d2a5f"
+  },
+  "rotary-phone": {
+    "light": "/thumbs/miniatures/rotary-phone.webp?v=e96d1c4465",
+    "dark": "/thumbs/miniatures/rotary-phone.dark.webp?v=a99e71e9ee"
+  },
+  "sbc-cluster": {
+    "light": "/thumbs/miniatures/sbc-cluster.webp?v=abd6c4d6d9",
+    "dark": "/thumbs/miniatures/sbc-cluster.dark.webp?v=1ed592976a"
+  },
+  "server-cabinet": {
+    "light": "/thumbs/miniatures/server-cabinet.webp?v=f2fb78a26a",
+    "dark": "/thumbs/miniatures/server-cabinet.dark.webp?v=b1e35c4c7a"
+  },
+  "sewing-machine": {
+    "light": "/thumbs/miniatures/sewing-machine.webp?v=a2e2d5b621",
+    "dark": "/thumbs/miniatures/sewing-machine.dark.webp?v=37e236d3a9"
+  },
+  "smart-trainer": {
+    "light": "/thumbs/miniatures/smart-trainer.webp?v=4ede3df188",
+    "dark": "/thumbs/miniatures/smart-trainer.dark.webp?v=b8baa28d0b"
+  },
+  "stage-synth": {
+    "light": "/thumbs/miniatures/stage-synth.webp?v=504e34a370",
+    "dark": "/thumbs/miniatures/stage-synth.dark.webp?v=20d91a4474"
+  },
+  "stand-mixer": {
+    "light": "/thumbs/miniatures/stand-mixer.webp?v=7b83836cf8",
+    "dark": "/thumbs/miniatures/stand-mixer.dark.webp?v=6284117ac6"
+  },
+  "tape-library": {
+    "light": "/thumbs/miniatures/tape-library.webp?v=36ca4bdf90",
+    "dark": "/thumbs/miniatures/tape-library.dark.webp?v=754e20a8e9"
+  },
+  "telescope": {
+    "light": "/thumbs/miniatures/telescope.webp?v=3a08d6c9a2",
+    "dark": "/thumbs/miniatures/telescope.dark.webp?v=c8f82b5560"
+  },
+  "thermostat-boiler": {
+    "light": "/thumbs/miniatures/thermostat-boiler.webp?v=4965a13f74",
+    "dark": "/thumbs/miniatures/thermostat-boiler.dark.webp?v=91d4af5217"
+  },
+  "toaster": {
+    "light": "/thumbs/miniatures/toaster.webp?v=5aac8693fc",
+    "dark": "/thumbs/miniatures/toaster.dark.webp?v=5691d3fcf8"
+  },
+  "tube-radio": {
+    "light": "/thumbs/miniatures/tube-radio.webp?v=9ac8b148cf",
+    "dark": "/thumbs/miniatures/tube-radio.dark.webp?v=2227e4f1a3"
+  },
+  "turntable": {
+    "light": "/thumbs/miniatures/turntable.webp?v=cd9f83fa96",
+    "dark": "/thumbs/miniatures/turntable.dark.webp?v=84d44949ec"
+  },
+  "typewriter": {
+    "light": "/thumbs/miniatures/typewriter.webp?v=d03b258175",
+    "dark": "/thumbs/miniatures/typewriter.dark.webp?v=f0d6a4af6a"
+  },
+  "ups-cabinet": {
+    "light": "/thumbs/miniatures/ups-cabinet.webp?v=240bd763f6",
+    "dark": "/thumbs/miniatures/ups-cabinet.dark.webp?v=3a8c65bf8d"
+  },
+  "vintage-camera": {
+    "light": "/thumbs/miniatures/vintage-camera.webp?v=ac1fbfffb9",
+    "dark": "/thumbs/miniatures/vintage-camera.dark.webp?v=cc605ace06"
+  },
+  "vinyl-jukebox": {
+    "light": "/thumbs/miniatures/vinyl-jukebox.webp?v=87291024dc",
+    "dark": "/thumbs/miniatures/vinyl-jukebox.dark.webp?v=0f42fd1d91"
+  },
+  "washing-machine": {
+    "light": "/thumbs/miniatures/washing-machine.webp?v=1a7ffec9ba",
+    "dark": "/thumbs/miniatures/washing-machine.dark.webp?v=b61dfb1a55"
+  },
+  "weather-station": {
+    "light": "/thumbs/miniatures/weather-station.webp?v=720eeff40e",
+    "dark": "/thumbs/miniatures/weather-station.dark.webp?v=71987b556f"
+  },
+  "workstation": {
+    "light": "/thumbs/miniatures/workstation.webp?v=1def4ab489",
+    "dark": "/thumbs/miniatures/workstation.dark.webp?v=6220baa6fb"
+  }
+}

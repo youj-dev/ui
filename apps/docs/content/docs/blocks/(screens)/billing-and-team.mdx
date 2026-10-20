@@ -1,0 +1,66 @@
+---
+title: Billing and team
+description: "Screens for the paying workspace: plan and invoices, usage and charges, and members with roles and seats."
+---
+
+<BlockStories>
+
+<BlockStory id="billing" label="Billing" block="app-billing" story="Default" backdrop="heather">
+
+Give customers a place to manage their plan, payment details and invoices, with a dialog for changing plan and another for the card.
+
+</BlockStory>
+
+<BlockStory id="usage-charges" label="Usage and charges" block="app-usage-charges" story="Default" backdrop="heather">
+
+Show what the workspace used and what it was charged: a date range, a project filter and Export CSV over the total, the days as stacked bars by SKU with a tooltip, and a table of SKUs with usage against the allowance as a ring, the part past it, the charge and a total row.
+
+</BlockStory>
+
+<BlockStory id="team-members" label="Team members" block="app-team-members" story="Default" backdrop="heather">
+
+Manage workspace members, roles and pending invitations with seat usage in view.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, dialogs, tables, status">
+
+### Accessibility
+
+The screens are a `main` with a `header` and labelled sections. The dialogs (change plan, payment method, invite) trap focus and close with Escape; payment errors appear in an alert and a plan change is announced in a live region. The members table has a label, a member’s role is a select labelled with their name, and each member’s actions are a menu labelled the same way. Seat usage is a labelled meter. Usage and charges names its chart and gives the same days as a table for screen readers; focus the chart and the arrow keys walk the days, opening the tooltip, and each SKU row says its usage and whether it is over the allowance in words, with the ring only decorative. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

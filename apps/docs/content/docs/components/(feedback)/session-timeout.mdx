@@ -1,0 +1,151 @@
+---
+title: Session Timeout
+description: "Warn people before an inactive session signs out: a live countdown, Stay signed in, and a signed-out page when time runs out."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Bank account">
+
+<ComponentPreview name="session-timeout/demo" height={360} />
+
+A banking session with shortened timers. Press Simulate idle, or leave the page alone for 10 seconds.
+
+After `timeout` without activity the warning opens `warnBefore` early with a live countdown ("You'll be signed out in 0:09"), **Stay signed in** and **Sign out now**. Stay signed in awaits `onExtend`, so a failed renewal keeps the warning up. If nobody answers, `onTimeout` fires and the app is replaced by the signed-out page: nothing from the session stays on screen.
+
+</Story>
+
+<Story id="hook" label="Hook only">
+
+<ComponentPreview name="session-timeout/hook" height={220} />
+
+`useSessionTimeout` is the clock without the dialog, drawing the warning as a banner.
+
+It returns `status` (`active`, `warning` or `signedOut`), `secondsLeft`, `extend`, `signOut`, `reset` and `simulateIdle`, for an app that wants its own warning.
+
+</Story>
+
+<Story id="signed-out" label="Signed out">
+
+<ComponentPreview name="session-timeout/signed-out" height={380} />
+
+The page a session ends on, with its own copy.
+
+`SessionSignedOut` stands alone too: a warning band, the reason and a Sign in again button. Focus lands on its heading, since the dialog the person was in has just gone.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="session-timeout" noImport />
+
+Use a Session Timeout where a session is sensitive enough to end by itself (banking, admin consoles, health records) and the person must be told before it does. Wrap the app: the signed-out page replaces it once the session ends.
+
+```tsx
+'use client'
+
+import { SessionTimeout } from '@youj/react'
+
+export function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionTimeout
+      timeout={15 * 60_000}
+      warnBefore={2 * 60_000}
+      onExtend={() => fetch('/api/session/extend', { method: 'POST' })}
+      onTimeout={() => fetch('/api/session/end', { method: 'POST' })}
+      onSignOut={() => fetch('/api/session/end', { method: 'POST' })}
+      onSignIn={() => location.assign('/sign-in')}
+    >
+      {children}
+    </SessionTimeout>
+  )
+}
+```
+
+`warnBefore` defaults to 2 minutes, as the UK government's session-timeout pattern recommends. `onTimeout` fires when inactivity ends the session and `onSignOut` when the person chooses **Sign out now**; both usually end the session on the server. The clock only knows about the page: renewing the session server-side stays in `onExtend`.
+
+**What counts as activity.** Pointer, key, scroll and a tab being shown again, throttled to once a `throttle` (1 second). Narrow it with `events`. Once the warning is up activity is ignored: only Stay signed in extends, so a stray mouse move can't hide a sign-out the person hasn't read.
+
+**Hidden tabs.** The clock stores the time of the last activity and works out what is left from `Date.now()`, never by counting ticks. A tab that was asleep past the deadline signs out the moment it wakes.
+
+**Several tabs.** Tabs on the same `channel` share one clock over a BroadcastChannel: activity or Stay signed in in any tab resets all of them, and a sign-out in one signs out the rest (without calling `onTimeout` again; the tab that ended it did). Give each app its own `channel`, or pass `false` to keep tabs apart. Where BroadcastChannel isn't available each tab times out on its own.
+
+**The page as a function.** `children` may be a function of the session (`status`, `secondsLeft`, `extend`, `simulateIdle`…), for a header that shows the time left or a button that simulates idling in a demo.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="timeout, warnBefore, events, throttle, channel, onExtend, onTimeout…">
+
+### Props
+
+<PropsTable name="SessionTimeout" />
+
+#### Signed out
+
+<PropsTable name="SessionSignedOut" />
+
+#### Data attributes
+
+The warning dialog is an Alert Dialog; its content carries `data-slot="session-timeout-dialog"`, with `session-timeout-countdown` (the visible line), `session-timeout-sign-out` and `session-timeout-stay` on its parts. The hidden live region is `session-timeout-announcer`. The signed-out page is `session-signed-out`, its button `session-sign-in`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Dialog, countdown · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Warning opens and closes', note: 'the Alert Dialog’s own pop over a fading scrim', duration: 'normal', ease: 'enter' },
+    { moment: 'Countdown', note: 'the digits change once a second, with no animation of their own' },
+    { moment: 'Stay signed in', note: 'an Async Button: spinner, then a check, while `onExtend` runs' },
+  ]}
+  reduced="The dialog appears at once, and the visible line is a static phrase (“2 minutes”) that changes only when it is spoken, instead of a ticking clock."
+/>
+
+#### Reduced motion
+
+The visible countdown is static: it shows the same phrase screen readers hear, updated at the start, each minute and at 30 and 15 seconds.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Focus, Escape, announcements, labels">
+
+### Accessibility
+
+Follows the GOV.UK and DWP session-timeout guidance.
+
+- The warning is an `alertdialog` named by its title. Focus moves into it, onto **Stay signed in**, and returns to where it was once the person stays.
+- **Escape means stay signed in**, not dismiss into nowhere. The dialog doesn't close on a press outside.
+- The ticking line is hidden from screen readers. The dialog's description says the time as it opens ("2 minutes"), and a polite live region speaks it again each minute and at 30 and 15 seconds, never every second.
+- Times are spoken as words in the person's language ("1 minute, 42 seconds") and shown as a clock ("1:42").
+- When the session ends, focus moves to the signed-out page's heading, and **Sign in again** is a button.
+- The words (title, warning, reason, both buttons, the signed-out page) are Youj labels in every built-in locale; pass `labels` to the provider to change them.
+
+</ReferenceRow>

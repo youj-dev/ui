@@ -1,0 +1,145 @@
+---
+title: Date Range Picker
+description: "Choose a date range by typing, selecting a preset or using a calendar."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="date-range-picker/demo" height={260} />
+
+A reporting period that starts as the last seven days, with no date after today.
+
+The defaults are Today, Yesterday, Last 7 days, Last 30 days, This month, Last month and Year to date, exported as `dateRangePresets`. The preset matching the current range carries a pill that glides between presets, and choosing one moves the calendar to it with the month slide, so you see the band land. Pass your own list, or `presets={false}` to hide them.
+
+```tsx
+import { addDays, startOfWeek } from 'date-fns'
+import { dateRangePresets, type DateRangePreset } from '@youj/react/date'
+
+const presets: DateRangePreset[] = [
+  { label: 'This sprint', range: (today) => ({ from: startOfWeek(today), to: addDays(startOfWeek(today), 13) }) },
+  ...dateRangePresets.slice(2, 4),
+]
+```
+
+Each preset's `range` receives today at the start of the day, in local time.
+
+</Story>
+
+<Story id="bounds" label="Bounds">
+
+<ComponentPreview name="date-range-picker/planning" height={260} />
+
+A freeze window with the presets off, no past dates and no weekends.
+
+`minDate`, `maxDate` and `disabledDates` bound the calendar, the typing and the presets: a range can't span a disabled day, and a preset that falls outside the bounds is disabled. This one plans ahead, with no weekends and no presets.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="date-range-picker" noImport />
+
+Requires `date-fns` and `react-day-picker`, [optional dependencies](/docs/installation#optional-dependencies). Import it from `@youj/react/date`.
+
+Use a date range picker for a period: a reporting window, a freeze, a trip, a billing cycle. Presets cover the common spans, and the calendar covers the rest. For a single date, use a [Date Picker](/docs/components/date-picker). When the range is the focus of the page, show a [Calendar](/docs/components/calendar) in `range` mode instead.
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel } from '@youj/react'
+import { DateRangePicker, type DateRange } from '@youj/react/date'
+
+export function ReportingPeriod() {
+  const [range, setRange] = useState<DateRange | null>(null)
+  return (
+    <Field>
+      <FieldLabel>Reporting period</FieldLabel>
+      <DateRangePicker value={range} onValueChange={setRange} maxDate={new Date()} />
+    </Field>
+  )
+}
+```
+
+The field holds two inputs, start and end, under one label. Each reads text the way the [Date Picker](/docs/components/date-picker) does: the locale's order with any separator, month names, ISO dates. An end typed before the start swaps them. The value is react-day-picker's `{ from, to }`, or `null`.
+
+The calendar button opens a [Popover](/docs/components/popover) with presets beside a two-month range Calendar. On a narrow screen it shows one month, with the presets wrapped above it. On touch it's a sheet (see [Touch](#touch)). The footer says how many days are chosen and is announced as it changes. Clicking a day after a full range starts a new one.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (18)">
+
+### Props
+
+<PropsTable name="DateRangePicker" />
+
+`DateRangePreset` is `{ label: string; range: (today: Date) => { from: Date; to: Date } }`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the two fields are still text fields, set at 16px">
+
+### Touch
+
+On a touch device the two fields are still text fields, set at 16px. The calendar button opens a bottom sheet with the presets in one row of 44px chips that scrolls sideways, one month with 44px days, the day count, and a Done button. A range takes two taps, so the sheet stays open until you press Done, pull it down, tap outside it or press Escape.
+
+`presentation` chooses: `auto` (the default) is a popover under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the popover on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, preset pill… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'the popover grows out of the field (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Preset pill', note: 'glides to the preset matching the range', spring: 'smooth' },
+    { moment: 'Month change', note: 'from the arrows or a preset: slides in from the side it comes from', duration: 'base', ease: 'enter' },
+  ]}
+  reduced="The pill jumps to its preset, the months swap in place and the popover opens and closes at once."
+/>
+
+#### Reduced motion
+
+The preset pill moves without gliding, the calendar changes month in place, and the popover appears at once. Presets, typing and announcements are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- The Field's label names the group, and the two inputs are named by it together with `startLabel` and `endLabel` ("Start date", "End date"). Each carries `aria-invalid` when its text isn't an allowed date.
+- The calendar button and the popup are named "Choose dates". Presets are toggle buttons with `aria-pressed`, in a group named "Presets". Focus starts on the presets, or on the calendar when there are none.
+- The footer ("7 days: Sep 21, 2026 – Sep 27, 2026") is announced politely as the range changes.
+- With `name`, hidden inputs submit `${name}From` and `${name}To` as `yyyy-MM-dd`.
+
+</ReferenceRow>

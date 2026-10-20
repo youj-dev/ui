@@ -1,0 +1,149 @@
+---
+title: Input OTP
+description: "Enter and verify a one-time code, with a countdown before resending."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="input-otp/demo" height={420} />
+
+A two-factor card: a six-slot code in two groups of three, verified when the last digit is entered, with a resend button.
+
+`InputOTPResend` holds "Resend code" behind a countdown ("Resend in 0:24") that starts straight away and restarts after each send. The send runs through AsyncButton's `onAction`, so it shows a spinner and then a check or an error in place. `seconds` sets the wait, 30 by default. While waiting, the button stays focusable, so keyboard users can read how long is left. `useCountdown` is exported for your own timers.
+
+</Story>
+
+<Story id="lengths-and-groups" label="Lengths and groups">
+
+<ComponentPreview name="input-otp/lengths" height={300} />
+
+Codes of different lengths, groups and modes.
+
+`length` sets 4 to 8 slots, 6 by default. `groups` splits a long code into readable chunks with a dash between them, such as `[3, 3]` or `[4, 4]`. `mode="alphanumeric"` accepts letters and digits and upper-cases them, for recovery and invite codes.
+
+Pasting a code fills every slot at once. Spaces and dashes in the pasted text are dropped, so `424 242` and `424-242` both work.
+
+</Story>
+
+<Story id="status" label="Status">
+
+<ComponentPreview name="input-otp/states" height={320} />
+
+The verifying, success and error statuses.
+
+Drive `status` yourself when verification lives somewhere else. `verifying` makes the field read-only with a spinner beside it, `success` turns the slots green from the inline start and draws a check, and `error` shakes the row and marks it invalid. `statusLabels` renames what's announced for each.
+
+</Story>
+
+<Story id="auto-submit" label="Auto-submit">
+
+<ComponentPreview name="input-otp/auto-submit" height={200} />
+
+A code that submits its form once it is complete.
+
+Without verification in JavaScript, `autoSubmit` submits the owning form once the code is complete, and `onComplete` fires once each time the last slot fills.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="input-otp" noImport />
+
+Use it for short codes people copy from somewhere else: an authenticator app, an email, a text message, a recovery sheet. It's one real input, laid over 4 to 8 slots that only draw it, so SMS autofill and password managers work, paste fills the whole code, and a screen reader meets one labeled field instead of six. For a secret people choose themselves, use a [Password Input](/docs/components/password-input). For a quantity, use a [Number Input](/docs/components/number-input).
+
+```tsx
+import { Field, FieldLabel, InputOTP, useOTPVerification } from '@youj/react'
+
+export function VerifyCode() {
+  const otp = useOTPVerification(async (code) => {
+    const res = await fetch('/api/verify', { method: 'POST', body: code })
+    return res.ok
+  })
+  return (
+    <Field invalid={otp.status === 'error'}>
+      <FieldLabel>Authentication code</FieldLabel>
+      <InputOTP groups={[3, 3]} {...otp.field} />
+    </Field>
+  )
+}
+```
+
+`useOTPVerification(verify)` runs `verify` once the last slot fills and drives `status` through verifying to success or error. Resolve `true`, or nothing, for success. Resolve `false`, or throw, for an error: the row shakes, and the code clears once the shake has played so the next attempt starts empty. Spread its `field` onto `InputOTP`, and call `reset()` to start over.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="length, value, defaultValue… (28)">
+
+### Props
+
+<PropsTable name="InputOTP" />
+
+Other Base UI Input props pass through, such as `name`, `aria-label` and `onFocus`.
+
+#### InputOTPResend
+
+<PropsTable name="InputOTPResend" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Caret frame, character in, caret blink… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Caret frame', note: 'one focus frame glides from slot to slot as you type or arrow (Sliding Indicator)', spring: 'smooth' },
+    { moment: 'Character in', note: 'each character rises 4px into its slot', duration: 'fast', ease: 'enter' },
+    { moment: 'Caret blink', note: 'in an empty active slot', duration: 'deliberate', ease: 'linear', value: '× 2 per blink' },
+    { moment: 'Success', note: 'slot borders turn green from the inline start, one tight stagger step apart', duration: 'fast', ease: 'standard' },
+    { moment: 'Success check', note: 'draws on beside the slots', duration: 'slow', ease: 'enter' },
+    { moment: 'Error shake', note: '4, 3 and 2px, decaying', duration: 'slow', ease: 'standard' },
+    { moment: 'Clear after error', note: 'with `useOTPVerification`, once the shake has played', duration: 'slow' },
+  ]}
+  reduced="The frame jumps between slots, characters appear in place, the caret holds still, success tints every slot at once and errors don't shake."
+/>
+
+#### Reduced motion
+
+The focus frame jumps to the active slot, characters appear with no rise, the caret doesn't blink, success tints every slot at once and the check appears drawn, and an error marks the field without a shake. With `useOTPVerification`, the code clears straight after an error.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a single `<input>` with `autocomplete="one-time-code"`, `inputmode="numeric"` (or `text` in alphanumeric mode) and a pattern. The slots are hidden from assistive technology, so the field has one label and one value.
+- Arrow keys move between slots (mirrored in right-to-left layouts), Home and ArrowUp go to the first, End and ArrowDown to the last, and typing over a filled slot replaces it.
+- While verifying, the input is read-only and `aria-busy`. An error sets `aria-invalid`, so a surrounding Field shows its message.
+- Verifying and success are announced politely, and errors assertively, through a live region beside the field.
+- On touch screens the hidden text is 16px, so iOS doesn't zoom into the field on focus.
+
+</ReferenceRow>

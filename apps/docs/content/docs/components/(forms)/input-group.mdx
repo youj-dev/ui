@@ -1,0 +1,145 @@
+---
+title: Input Group
+description: "Put icons, text, shortcuts and buttons inside an input or textarea’s frame."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="input-group/demo" height={380} />
+
+Input groups holding a search icon, a shortcut hint and a copy button for an API key.
+
+</Story>
+
+<Story id="addons" label="Addons">
+
+<ComponentPreview name="input-group/addons" height={300} />
+
+Addons on each edge of the control.
+
+An addon sits on an edge set by `align`: `inline-start` (the default) or `inline-end` beside the control, or `block-start` or `block-end` above or below it. The edges are logical, so they swap sides under right-to-left text. Put icons straight in, and wrap text in InputGroupText.
+
+</Story>
+
+<Story id="textarea-and-toolbars" label="Textarea and toolbars">
+
+<ComponentPreview name="input-group/composer" height={280} />
+
+A textarea with a toolbar under it and an async send button.
+
+InputGroupTextarea grows with its content like a [Textarea](/docs/components/textarea). A `block-end` addon under it becomes a toolbar. InputGroupButton is a [Button](/docs/components/button) sized for the frame. For work the button runs itself, put an [Async Button](/docs/components/button#async-actions) in the addon: the send button in the preview spins, lands on a check and announces "Comment posted", while staying square.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="input-group" noImport />
+
+Use an input group when something belongs inside the field's border: a search icon, a `https://` prefix, a unit, a copy button, a shortcut hint. If the extra piece is its own action next to the field, like a Send button after an email address, put a [Button](/docs/components/button) beside a plain [Input](/docs/components/input) instead.
+
+```tsx
+import { InputGroup, InputGroupAddon, InputGroupInput, Kbd, KbdGroup } from '@youj/react'
+import { SearchIcon } from '@youj/icons'
+
+export function Search() {
+  return (
+    <InputGroup>
+      <InputGroupAddon>
+        <SearchIcon />
+      </InputGroupAddon>
+      <InputGroupInput aria-label="Search" placeholder="Search projects…" />
+      <InputGroupAddon align="inline-end">
+        <KbdGroup>
+          <Kbd>⌘</Kbd>
+          <Kbd>K</Kbd>
+        </KbdGroup>
+      </InputGroupAddon>
+    </InputGroup>
+  )
+}
+```
+
+The group is the frame. The InputGroupInput or InputGroupTextarea inside it is bare, and the frame takes its hover, focus halo, invalid and disabled treatment. Clicking an addon's empty space focuses the control, as it would on a native field. Buttons inside keep their own clicks and their own focus ring.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="align, status, variant… (14)">
+
+### Props
+
+#### InputGroup
+
+<PropsTable name="InputGroup" />
+
+#### InputGroupAddon
+
+<PropsTable name="InputGroupAddon" />
+
+#### InputGroupButton
+
+<PropsTable name="InputGroupButton" />
+
+It defaults to the `ghost` variant, `type="button"` and the `xs` size, so it never submits a form by accident and fits inside a 32px frame.
+
+#### InputGroupInput and InputGroupTextarea
+
+InputGroupInput takes every Input prop, and InputGroupTextarea every Textarea prop. InputGroupText is a styled `<span>`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Hover and focus, buttons · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Hover and focus', note: 'the frame: border color and the focus halo', duration: 'fast', ease: 'standard' },
+    { moment: 'Buttons', note: 'press and hover, as on Button', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The frame only changes color. Buttons inside follow Button's reduced motion: no press scale, and async states swap instantly."
+/>
+
+#### Reduced motion
+
+The frame's border and halo change color as usual, since nothing moves. Buttons in the group lose their press scale, and async buttons swap states instantly.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The frame is a `group`. The control inside is the labeled element: put the InputGroup inside a [Field](/docs/components/field) and the FieldLabel names the control, or give the control an `aria-label`.
+- Icon-only buttons inside need an `aria-label`, like any icon-only button.
+- A reveal button, like the password eye above, keeps one name and reports its state with `aria-pressed`.
+- Keyboard hints such as <kbd>⌘</kbd> <kbd>K</kbd> are visual. If the shortcut matters, say it in the control's description too.
+- Addons are `select-none` text. Anything in them that people need to read, like a unit, belongs in the label or description as well.
+
+</ReferenceRow>

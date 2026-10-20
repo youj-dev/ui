@@ -1,0 +1,85 @@
+---
+title: Aspect Ratio
+description: "Keep media at a fixed aspect ratio and reserve its space before it loads."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="aspect-ratio/demo" height={280} />
+
+Placeholders for media at different ratios, each captioned with its ratio.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="aspect-ratio" noImport />
+
+Use an aspect ratio around images, video, embeds and their placeholders in fluid layouts. The box reserves its height from its width before the media arrives, so nothing below it jumps when it does.
+
+```tsx
+import { AspectRatio } from '@youj/react'
+
+export function Thumbnail() {
+  return (
+    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
+      <img src="/keynote.jpg" alt="The keynote stage" className="size-full object-cover" />
+    </AspectRatio>
+  )
+}
+```
+
+`ratio` is width over height as a number: `16 / 9`, `1`, `4 / 5`. It's the CSS `aspect-ratio` property, so it needs no JavaScript and renders the same on the server. Give the child `size-full` (and `object-cover` for media) to fill the box. The API matches shadcn/ui's Aspect Ratio.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="ratio (1)">
+
+### Props
+
+<PropsTable name="AspectRatio" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="Aspect Ratio is static">
+
+### Reduced motion
+
+Aspect Ratio is static. Nothing changes under reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- The box is a plain `div` with no role. Give the media inside it its own text alternative: `alt` on an image, a `title` on an iframe.
+
+</ReferenceRow>

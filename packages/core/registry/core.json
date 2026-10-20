@@ -1,0 +1,220 @@
+[
+  {
+    "name": "youj-core",
+    "type": "registry:lib",
+    "title": "Youj core",
+    "description": "Motion tokens, YoujProvider/useYouj, cn(), the sound options (`sound`, useSound, useSoundCue; @youj/sound's packs play the cues), the theme contract and derivation, the Basalt and Graphite themes, and the color/ease/duration token stylesheet. Locales (youj-locale-<id>), the other themes' stylesheets (youj-theme-<id>), the theme check (youj-theme-check) and useLabels (youj-labels) are items of their own.",
+    "dependencies": [
+      "motion",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "files": [
+      {
+        "path": "src/lib/youj/tokens.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/provider.tsx",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/provider-context.tsx",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/provider-hooks.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/use-youj.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/scope.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/document.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/direction.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/store.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/device.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/look.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/features.tsx",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/features-animation.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/features-max.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/budget.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/cn.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/mode.tsx",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme-mode.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme-script.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/settings.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/vocabulary.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/in-view.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/on-screen.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/sound-cue.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/sound-scope.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "registry/generated/youj.css",
+        "type": "registry:file",
+        "target": "styles/youj.css"
+      },
+      {
+        "path": "src/lib/youj/theme/color.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/contract.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/derive.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/layers.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/styles.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "registry/stubs/theme-index.ts",
+        "type": "registry:lib",
+        "target": "lib/youj/theme/index.ts"
+      },
+      {
+        "path": "src/lib/youj/theme/observe.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/basalt.css",
+        "type": "registry:file"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/basalt.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/brutal.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/graphite.css",
+        "type": "registry:file"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/graphite.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/youj.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/meadow.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/sandstone.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/cinnabar.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/umber.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/seaglass.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/heather.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/index.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "src/lib/youj/theme/themes/terminal.ts",
+        "type": "registry:lib"
+      },
+      {
+        "path": "registry/stubs/labels-types.ts",
+        "type": "registry:lib",
+        "target": "lib/youj/labels-types.ts"
+      },
+      {
+        "path": "registry/stubs/use-component-labels.ts",
+        "type": "registry:lib",
+        "target": "lib/youj/use-component-labels.ts"
+      },
+      {
+        "path": "registry/stubs/theme-check.ts",
+        "type": "registry:lib",
+        "target": "lib/youj/theme/check.ts"
+      }
+    ]
+  }
+]

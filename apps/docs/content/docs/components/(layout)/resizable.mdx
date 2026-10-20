@@ -1,0 +1,140 @@
+---
+title: Resizable
+description: "Let people resize or collapse panels with a pointer or keyboard, and save the layout."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="resizable/demo" height={460} />
+
+An editor workspace: a sidebar that snaps shut to an icon rail when dragged past its minimum, beside a code panel and a terminal.
+
+A `collapsible` panel snaps shut when it's dragged below its `minSize`, to `collapsedSize` (zero by default), and snaps open again when dragged back. Enter on its separator collapses or restores it. `onCollapsedChange` tells you when it changes, and the panel carries `data-collapsed` while shut, so what's inside can switch to a compact layout, like the demo's icon rail.
+
+</Story>
+
+<Story id="vertical" label="Vertical">
+
+<ComponentPreview name="resizable/vertical" height={360} />
+
+A vertical group with a grip on its separator.
+
+`orientation="vertical"` stacks the panels. `withHandle` adds a grip to the separator, for layouts where the line alone doesn't read as something to drag. Its dots fuse into bars while it's held.
+
+</Story>
+
+<Story id="persisting-a-layout" label="Persisting a layout">
+
+<ComponentPreview name="resizable/persisted" height={340} />
+
+A layout that is saved and comes back after a reload.
+
+`onLayoutChanged` fires once a drag or key press settles, not on every pointer move, so it's safe to save from. Pass the saved layout back as `defaultLayout`. Resize the panels, reload the page and they come back as you left them.
+
+Read storage after hydration, as the example does, so the server and the first client render agree.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="resizable" noImport />
+
+It's shadcn's resizable on react-resizable-panels 4, which installs with it and owns the behavior: pointer and touch drags, limits, collapsing and the keyboard separator.
+
+Use resizable panels for workspaces where people decide how much room each part gets: an editor and its terminal, a mail list and its reading pane, a board and a detail panel. Drag the sidebar past its minimum and it snaps shut to an icon rail. For a sidebar that opens and closes but never resizes, use the [Sidebar](/docs/components/sidebar). For content that overflows a fixed box, use a [Scroll Area](/docs/components/scroll-area).
+
+```tsx
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@youj/react'
+
+export function Mail() {
+  return (
+    <ResizablePanelGroup orientation="horizontal">
+      <ResizablePanel id="list" defaultSize="32%" minSize="16rem">
+        <MessageList />
+      </ResizablePanel>
+      <ResizableHandle aria-label="Resize message list" />
+      <ResizablePanel id="thread" minSize="40%">
+        <Thread />
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  )
+}
+```
+
+The group fills its parent, so give the parent a height. Sizes take pixels as numbers, or strings in `%`, `px` or `rem`. Groups nest: put a vertical group inside a panel of a horizontal one, as the demo's editor and terminal do.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="onCollapsedChange, withHandle (2)">
+
+### Props
+
+<PropsTable name="ResizablePanel" />
+
+#### ResizableHandle
+
+<PropsTable name="ResizableHandle" />
+
+`ResizablePanelGroup` takes react-resizable-panels' `Group` props: `orientation`, `defaultLayout`, `onLayoutChange`, `onLayoutChanged` and `groupRef`. `ResizablePanel` also takes the library's `Panel` props, such as `defaultSize`, `minSize`, `maxSize`, `collapsible`, `collapsedSize` and `panelRef`, whose handle (`ResizablePanelHandle`) can `collapse()`, `expand()` and `resize()` from code.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Keyboard and imperative resize, pointer drag, separator wakes… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Keyboard and imperative resize', note: 'the panels glide (`flex-grow`), including Enter to collapse or restore', duration: 'base', ease: 'standard' },
+    { moment: 'Pointer drag', note: 'follows the pointer exactly, snap included', value: 'pointer-driven' },
+    { moment: 'Separator wakes', note: "the 1px line grows a 3px rail after a beat of hover, so crossing it doesn't flash", duration: 'fast', ease: 'standard' },
+    { moment: 'Dragged or focused', note: 'the rail turns the ring color at once', duration: 'fast', ease: 'standard' },
+    { moment: 'Grip', note: 'scales to 1.1 while held, and its dots fuse into bars (GripIcon)', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Every resize is instant, and the grip doesn't scale while held."
+/>
+
+#### Reduced motion
+
+Keyboard, Enter and imperative resizes jump to their new sizes, and the grip holds its size while held. Dragging is unchanged, because it follows the pointer either way.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Each separator is a focusable `role="separator"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`, and an orientation. Name it with `aria-label` ("Resize sidebar") when its purpose isn't obvious from the layout.
+- Arrow keys resize in 5% steps, Home and End go to the limits, and Enter collapses or restores a collapsible panel. F6 moves to the next separator.
+- A double-click on the separator resets the panels to their default sizes.
+- The visible line is 1px, but the hit area is 27px wide, and 37px on touch screens.
+- Focus shows as the accent rail, the same as a drag.
+
+</ReferenceRow>

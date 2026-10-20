@@ -1,0 +1,160 @@
+---
+title: Filter Builder
+description: "Compose AND/OR queries from typed rules, with a draft you apply."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Deals list">
+
+<ComponentPreview name="filter-builder/demo" height={760} />
+
+A CRM deals list. The builder holds "Stage is not Lost and (Owner is Ada or Amount > 100000)": each rule is a sentence of tokens, and a click on one opens its menu or editor. Change a rule and press Apply, and the table narrows.
+
+The list is filtered with `matchFilter(deal, filter)`, in the browser. The filter itself is plain JSON, so the same value can be saved with a view or sent to a server to run there.
+
+</Story>
+
+<Story id="nested" label="Nested groups">
+
+<ComponentPreview name="filter-builder/nested" height={820} />
+
+A log filter three groups deep, with the applied value shown as JSON. Each nested group hangs off a guide line with its own Where and and/or column; its menu duplicates it, ungroups it (its rules move up into the parent) or removes it.
+
+`maxDepth` counts the outer group, so the default 2 allows one group inside it and `3` allows this. At the limit a group offers Add filter but not Add group.
+
+</Story>
+
+<Story id="summary" label="Summary">
+
+<ComponentPreview name="filter-builder/summary" height={620} />
+
+Saved views described with `describeFilter` on their own, and the read-only summary at the top of the builder.
+
+The summary always shows the applied filter, not the draft. "Show as chips" shows each top-level part as a chip in the rules' token style. Pass `summary={false}` to leave it out.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="filter-builder" noImport />
+
+Use a Filter Builder where people need to ask real questions of a list: analysts slicing a table, admins finding CRM records, support reading logs. For a few independent filters, use the [Data Table](/docs/components/data-table) toolbar; to type a query as text, use [Filter Chips](/docs/components/filter-chips).
+
+```tsx
+import { FilterBuilder, matchFilter, type FilterField, type FilterGroup } from '@youj/react'
+
+const fields: FilterField[] = [
+  { id: 'name', label: 'Deal', type: 'text' },
+  { id: 'stage', label: 'Stage', type: 'select', options: ['Lead', 'Proposal', 'Won', 'Lost'] },
+  { id: 'amount', label: 'Amount', type: 'number' },
+  { id: 'closes', label: 'Close date', type: 'date' },
+]
+
+export function Deals({ deals }: { deals: Deal[] }) {
+  const [filter, setFilter] = useState<FilterGroup>({ type: 'group', combinator: 'and', children: [] })
+  return (
+    <>
+      <FilterBuilder fields={fields} value={filter} onValueChange={setFilter} />
+      <DealTable deals={deals.filter((deal) => matchFilter(deal, filter))} />
+    </>
+  )
+}
+```
+
+`fields` is the schema: an `id` (the key on a row), a `label`, a `type` (`text`, `number`, `date`, `select`, `multiselect` or `boolean`) and, for the two select types, `options` (strings, or `{ value, label }`). The type decides the operators and the editor:
+
+| Type | Operators |
+| --- | --- |
+| `text` | is, is not, contains, starts with, is empty, is not empty |
+| `number` | is, is not, is greater than, is less than, is between, is empty, is not empty |
+| `date` | is, is before, is after, is between, is in the last N days, is empty, is not empty |
+| `select` | is, is not, is any of, is empty, is not empty |
+| `multiselect` | has any of, has all of, is empty, is not empty |
+| `boolean` | is yes, is no |
+
+The value is a `FilterGroup`: `{ type: 'group', combinator: 'and' | 'or', children }`, where a child is a rule (`{ type: 'rule', field, operator, value }`) or another group. Dates are `YYYY-MM-DD` strings. Ids are optional; the builder adds them while editing.
+
+Each rule reads as a sentence of tokens: the field, an operator that suits its type, and the value. A click on a token opens a small menu (a search narrows a list of eight or more) or, for text, numbers and dates, a field; Enter closes it. A new rule opens its field menu, and picking a field or operator that needs a value goes on to the value. The × after a rule, or Delete on any of its tokens, removes it; with a [Toaster](/docs/components/toast) in the app, a toast offers Undo.
+
+`onValueChange` is called when Apply succeeds, with the draft. Reset throws the draft away. While the draft differs from the applied filter, the footer says "Changes not applied". A rule that is missing its value is flagged once it has been left, or when Apply refuses it; the first such rule takes focus.
+
+#### Running the filter
+
+`matchFilter(row, group)` returns whether a row passes. An empty group and a rule that isn't complete yet don't narrow anything. Text compares without case, dates by day, and numbers as numbers. For rows that aren't flat objects, pass `{ get: (row, field) => … }`; `{ now }` fixes what "in the last N days" counts back from.
+
+`describeFilter(group, fields)` writes the filter as a sentence, such as `Stage is not Lost and (Owner is Ada or Amount > 100000)`. It takes the labels as a third argument when you need another language.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="fields, value, defaultValue, onValueChange, maxDepth, summary…">
+
+### Props
+
+<PropsTable name="FilterBuilder" />
+
+#### Data attributes
+
+The root carries `data-slot="filter-builder"` and `data-yj-dirty` while the draft differs from the applied filter. Each group is `data-slot="filter-group"` with `data-yj-depth` (the outer group is 1) and `data-yj-combinator`; its and/or token is `data-slot="filter-combinator"`. Each rule is `data-slot="filter-rule"`, with `data-invalid` while it is flagged; its tokens sit in `data-slot="filter-rule-tokens"`, each `data-slot="filter-token"` with `data-yj-token` (`field`, `operator` or `value`) and `data-popup-open` while its menu is open. The summary's chips are `data-slot="filter-builder-chip"`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Rows enter and leave · menus · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Row enters', note: 'a rule or group fades in from a few px above while the rows below make room (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Row leaves', note: 'fades where it stands, then the rest close up', duration: 'fast', ease: 'exit' },
+    { moment: 'Rows reflow', note: 'glide to their new places', spring: 'smooth' },
+    { moment: 'Token menu opens', note: 'grows out of its token (yj-pop); instant when opened from the keyboard', duration: 'fast', ease: 'enter' },
+    { moment: 'Menu highlight', note: 'glides between options (Sliding Indicator); keyboard moves land at once', spring: 'smooth' },
+    { moment: 'Remove button', note: 'fades in on hover or focus of its rule', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Rows appear and leave in one frame, with no glide. Menus open at once and the highlight jumps."
+/>
+
+#### Reduced motion
+
+Nothing moves; the hint, the flags and the announcements still appear.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Groups, keyboard, focus, announcements">
+
+### Accessibility
+
+- Every group is a `role="group"` named for its place: the outer one "Filter" (or `aria-label`), the nested ones "Group 2". Every rule is a group too ("Rule 1"). Each token is a button named for what it is and what it holds ("Field: Stage", "Operator: is not", "Value: Lost"), so it is heard with its rule; the and/or token is "Combine rules with: and".
+- Tab walks it in reading order: each group's and/or token, each rule's tokens and its remove button, then Add filter, Add group (and a nested group's menu), Reset and Apply. Enter, Space or ArrowDown opens a token. Its menu is a listbox: the arrow keys, Home and End move, a letter jumps, Enter or Space picks, and a search field narrows a long list while the arrows still move. Escape closes and returns focus to the token. The remove button shows on hover and whenever its rule holds focus, and Delete or Backspace on a token removes its rule.
+- Adding a rule opens its field menu. Removing a row moves focus to the next row, else the previous, else the group's Add filter, so focus is never lost to the page; Undo puts the row back and focuses it.
+- Additions, removals, Apply and Reset are announced politely. A rule flagged as incomplete marks its value token `aria-invalid`, described by "Choose a value", and a refused Apply announces it and focuses the first one.
+- The summary is a labelled group; in chips form it is a list.
+
+</ReferenceRow>

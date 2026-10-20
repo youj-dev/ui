@@ -1,0 +1,7 @@
+{
+  "@next/next/no-img-element": 13,
+  "@typescript-eslint/no-explicit-any": 2,
+  "react-hooks/exhaustive-deps": 44,
+  "react-hooks/incompatible-library": 2,
+  "react-hooks/set-state-in-effect": 2
+}

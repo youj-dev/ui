@@ -1,0 +1,128 @@
+---
+title: Anchor Nav
+description: "Navigate a long page with a table of contents that highlights the current section."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="anchor-nav/demo" height={440} />
+
+A guide with its section list beside it; the current section is marked as you scroll.
+
+</Story>
+
+<Story id="sticky-headers" label="Sticky headers">
+
+<ComponentPreview name="anchor-nav/offset" height={400} />
+
+A page under a sticky header, with an offset that keeps a chosen section clear of it.
+
+A sticky header covers the top of the page, so a section that scrolls to the very top lands behind it. `offset` is the space kept above a chosen section, and the reading line starts below it too. Set it to the header's height plus a little air.
+
+
+`title` is the caption above the list. It defaults to "On this page", and `null` removes it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="anchor-nav" noImport />
+
+Use it beside a long page people read and come back to: a guide, a policy, release notes, a settings page with many groups. It shows where the reader is and takes them to any section in one click. It's a scrollspy over one page. To move between pages, use a [Sidebar](/docs/components/sidebar) or [Tabs](/docs/components/tabs), and for a flow of steps, a [Stepper Nav](/docs/components/stepper-nav).
+
+```tsx
+import { AnchorNav, type AnchorNavItem } from '@youj/react'
+
+const items: AnchorNavItem[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'install', label: 'Installation' },
+  { id: 'npm', label: 'From npm', depth: 1 },
+  { id: 'theming', label: 'Theming' },
+]
+
+export function Guide() {
+  return (
+    <div className="grid gap-10 lg:grid-cols-[1fr_14rem]">
+      <article>
+        <section id="overview">…</section>
+        <section id="install">…</section>
+      </article>
+      <aside className="hidden lg:block">
+        <AnchorNav items={items} className="sticky top-20" offset={64} />
+      </aside>
+    </div>
+  )
+}
+```
+
+Each item points at the `id` of a section on the page, and `depth` indents a sub-section (up to two levels). The section in view is the last one whose top has passed a reading line a quarter of the way down the window. At the very bottom of the page, the last section counts as in view, even if it's too short to reach the line.
+
+Choosing a link scrolls smoothly to its section, moves focus there without scrolling again, and puts its id in the URL. While that scroll runs, the bar goes straight to the destination instead of stepping through every section on the way. A wheel or touch mid-scroll hands control back to the reader. The page tracks the window by default. Pass `scrollContainer` when the sections scroll inside an element, as in the previews.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, title, scrollContainer… (4)">
+
+### Props
+
+<PropsTable name="AnchorNav" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Current bar, link color, scroll to a section · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Current bar', note: 'one Sliding Indicator on the list’s start edge glides to the section in view', spring: 'smooth' },
+    { moment: 'Link color', note: 'the current link and hovered links turn to ink', duration: 'fast', ease: 'standard' },
+    { moment: 'Scroll to a section', note: 'the browser’s smooth scroll; the bar goes straight to the destination', value: 'native smooth' },
+  ]}
+  reduced="The page jumps to the chosen section and the bar jumps with it."
+/>
+
+#### Reduced motion
+
+The page jumps straight to the chosen section instead of scrolling, and the bar moves at once. Focus, the URL and the tracking work the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a `nav` landmark named by `title` ("On this page"), or by `aria-label` when there's no text title.
+- The link for the section in view carries `aria-current="location"`, so screen readers announce it as the current location.
+- Following a link moves focus to the section (giving it `tabindex="-1"` if it can't take focus), so the next Tab continues from there and a screen reader starts reading it. Give sections a visible focus style.
+- The links are plain anchors with `href="#id"`: ⌘-click or middle-click opens them the browser's way, and they work before the page hydrates.
+
+</ReferenceRow>

@@ -1,0 +1,240 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  checks:
+    name: Checks, tests and package builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0 # check:changesets diffs api/ against origin/main
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+
+      # @youj/react's density-browser test measures sidebar rows in Chromium, and in
+      # Chromium 141 (Playwright 1.56's build), whose calc() once collapsed them while newer
+      # engines drew them right. The current browsers come from the lockfile's Playwright; the
+      # old build needs the 1.56 CLI, which is pinned here by exact version (it can't be in the
+      # lockfile without a second Playwright dependency).
+      - name: Browsers for the layout tests
+        run: pnpm exec playwright install --with-deps chromium && pnpm dlx playwright@1.56.1 install chromium-headless-shell
+      # Exactly what a contributor runs locally: Biome lint, the repo-level gates (imports, labels,
+      # affected-package map, changesets, taxonomy, tints, sleeps, public API) and every workspace's
+      # own verify (typecheck, token lint, registries, tests), then the packed-package check.
+      - name: Verify (pnpm verify)
+        run: pnpm verify
+      # The packages run with coverage: each fails under the floor in its vitest.config.ts.
+      - name: Tests and coverage floor (packages)
+        run: pnpm test:coverage
+      - name: Coverage summary
+        if: always()
+        run: node scripts/coverage-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+      - name: Package builds, packed (npm publish --dry-run)
+        run: pnpm release:dry
+      # What an app pays for Button, Dialog, an icon, 15 components and the
+      # full import, built with Vite against the dist release:dry just built.
+      - name: Bundle size budgets
+        run: pnpm -F @youj/react size
+      # A high or critical advisory in what ships fails the build. The dev-only `braces` advisory
+      # (GHSA-vfj7-8cjw-p6xm, via shadcn > fast-glob) has no patched release and is outside --prod.
+      - name: Dependency audit (production, high and critical)
+        run: pnpm audit --prod --audit-level=high
+
+  # Packs the packages, installs the tarballs into fresh Next.js and Vite apps,
+  # builds both and renders them in Chromium, once on the oldest motion and Base
+  # UI the peer ranges allow and once on the newest.
+  smoke:
+    name: Consumer smoke test (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: oldest motion and Base UI
+            args: --motion 13.4.4 --base-ui 1.8.0
+          - name: newest motion and Base UI
+            args: --motion ^14 --base-ui ~1.9.0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm smoke ${{ matrix.args }}
+
+  storybook:
+    name: Storybook build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build-storybook
+      # The stories with a play() function, run in Chromium through the same Storybook config.
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:stories
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: storybook-static
+          path: storybook-static
+          retention-days: 7
+
+  docs:
+    name: Docs build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      # The export that ships (Cloudflare serves out/), with the page-weight and JS budgets. The
+      # static build needs no secret.
+      - run: pnpm -F docs build:static --mode staging --budgets
+      - name: The export exists (the out/ scans skip silently without it)
+        run: test -f apps/docs/out/_headers && test -f apps/docs/out/index.html
+      - name: Docs tests, including the out/ scans
+        run: pnpm -F docs test
+
+  # Both suites run in the Playwright image the baselines were rendered in
+  # (keep its tag in step with @playwright/test), against the Storybook build.
+  visual:
+    name: Visual regression
+    needs: storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: storybook-static
+          path: storybook-static
+      - run: pnpm test:visual --shard=${{ matrix.shard }}/4
+      - name: Upload the diff report
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: visual-report-${{ matrix.shard }}
+          path: playwright-report
+          retention-days: 14
+
+  a11y:
+    name: Accessibility (axe, every story, light, dark and RTL; target size)
+    needs: storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: storybook-static
+          path: storybook-static
+      - run: pnpm test:a11y --shard=${{ matrix.shard }}/4
+      - name: Upload the report
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: a11y-report-${{ matrix.shard }}
+          path: playwright-report
+          retention-days: 14
+
+  # Runs on main only: pull requests don't wait on a noisy shared runner.
+  # Report-only for now: numbers from a shared runner are noisy, and budgets are
+  # per environment, so the first runs only upload results. Commit one with
+  # `pnpm perf:compare <results> --update` to start flagging >20% regressions.
+  perf:
+    name: Performance budget (report-only)
+    needs: storybook
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    continue-on-error: true
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: storybook-static
+          path: storybook-static
+      - run: pnpm perf --profile desktop-4x,mobile-4x --runs 1 --out perf-results.json
+      - run: pnpm perf:compare perf-results.json
+      - name: Upload the results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: perf-results
+          path: perf-results.json
+          retention-days: 30

@@ -1,0 +1,10 @@
+{
+  "icons-in-context--communication (dark)": ["aria-required-parent"],
+  "icons-in-context--communication (light)": ["aria-required-parent"],
+  "motion-marquee--vertical-testimonials (dark)": ["scrollable-region-focusable"],
+  "motion-marquee--vertical-testimonials (light)": ["scrollable-region-focusable"],
+  "motion-parallax--hero (dark)": ["scrollable-region-focusable"],
+  "motion-parallax--hero (light)": ["scrollable-region-focusable"],
+  "motion-parallax--reduced-motion (dark)": ["scrollable-region-focusable"],
+  "motion-parallax--reduced-motion (light)": ["scrollable-region-focusable"]
+}

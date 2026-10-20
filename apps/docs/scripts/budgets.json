@@ -1,0 +1,20 @@
+{
+  "note": "The one place the page-weight and JS budgets live, all in KB. A limit is a ceiling to notice a regression by, not a target: lower it when pages get lighter. Read by page-weight.ts and js-budget.ts. pageWeight: the first entry whose match fits a page's path is its budget (the last must match every page); each limit was set from the heaviest page of its kind with about 30% to grow. js: gzipped JavaScript on arrival per kind of page, set from the build of 2026-09-30 with ~10% headroom; the heaviest page of a kind must fit max, and the kind's median page median where one is set.",
+  "pageWeight": [
+    { "kind": "demo (/view)", "match": "^view\\/", "html": 90, "gzip": 20, "rsc": 70, "note": "view/create 65 KB, 13 KB gzip; 50 KB of payload." },
+    { "kind": "docs", "match": "^docs(\\/|$)", "html": 850, "gzip": 98, "rsc": 450, "note": "Median 277 KB; draw-your-own 679 KB and 344 KB of payload; theming ~96 KB gzip since the shape-tokens section (2026-10-13), which documents the family radius, field and switch tokens; budget raised from 95 to 97; 2026-10-17 it reached 101 KB with the color-mode and labels docs, the mode-from-code and canvas sections moved to guides (back to 97.x), budget 98." },
+    { "kind": "home", "match": "^index$", "html": 390, "gzip": 55, "rsc": 93, "note": "Every page carries the header's menus (Docs, Components, Discover, links as [title, slug] pairs, lib/nav-links.ts); the film on R2 puts a content-hashed media.youj.dev URL per source and poster in the HTML and again in the payload, and ten-character hashes don't compress. About 54 KB gzipped (2026-10-05), a few dozen bytes either side of the line: 55 KB." },
+    { "kind": "other", "match": ".", "html": 400, "gzip": 80, "rsc": 260, "note": "The explorers, Create, about, FAQ: illustrations/build 298 KB; icons 61 KB gzip and 196 KB of payload." }
+  ],
+  "js": {
+    "home": { "max": 390 },
+    "docs": { "max": 490, "median": 368, "note": "The median page was 366.5 KB on 2026-10-07, before and after the page-weight fixes alike." },
+    "icons": { "max": 620 },
+    "illustrations": { "max": 665 },
+    "loaders": { "max": 470, "note": "The loaders showroom (2026-10-07: 427 KB): only the loader on stage and its neighbors load, each its own chunk." },
+    "miniatures": { "max": 370, "note": "The miniatures showroom (2026-10-06: 333 KB): the stage's shell, its toolbar and tooltips, the install field. Every miniature, and the engine they share, is a chunk fetched after it." },
+    "create": { "max": 575 },
+    "view": { "max": 580, "median": 320, "note": "Median raised from 315 to 320 (2026-10-13): the 20 chunks every /view page loads (~300 KB gzip) grew by under 1 KB through the theme shape tokens and new kit variants; none of it is entrance or generation code (checked: no shared chunk contains it), and the median page is just those shared chunks." },
+    "pages": { "max": 270 }
+  }
+}

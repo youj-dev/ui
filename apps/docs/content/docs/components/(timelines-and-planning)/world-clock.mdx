@@ -1,0 +1,134 @@
+---
+title: World Clock
+description: "Compare several time zones side by side and find a time that works for everyone."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="world-clock/demo" height={360} />
+
+A team in four cities, following the clock. Drag the cursor, or use the arrow keys, to propose a time.
+
+Each row reads the cursor's moment in its own zone, and its strip shows the first row's day an hour per cell: working hours, the waking hours around them, and night. The ring shows the hours when everyone is working.
+
+</Story>
+
+<Story id="find-a-meeting-time" label="Find a meeting time">
+
+<ComponentPreview name="world-clock/meeting" height={380} />
+
+A meeting being planned on half hours. The app keeps the proposed time and shows it beside the title.
+
+`value` and `onValueChange` make the chosen moment the app's, ready to send as an invite. Now sets it back to `null`, which follows the clock.
+
+</Story>
+
+<Story id="compact" label="Compact">
+
+<ComponentPreview name="world-clock/compact" height={240} />
+
+Three offices, one line each, for a sidebar or a card.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="world-clock" noImport />
+
+Use a world clock wherever people in different places have to meet: a team page, a meeting planner, a support rota, a booking that crosses borders. Each row is a zone or a person, with its name, its offset from UTC and from the first row, the time there with a sun or a moon, and a strip of the day. For one place's day as a ring, use [Day Ring](/docs/components/day-ring); for shifts across a week, [Time Lanes](/docs/components/time-lanes).
+
+```tsx
+import { WorldClock, type WorldClockZone } from '@youj/react'
+
+const zones: WorldClockZone[] = [
+  { timeZone: 'Europe/London', label: 'Ada · London' },
+  { timeZone: 'America/New_York', label: 'Grace · New York' },
+  { timeZone: 'Asia/Singapore', label: 'Lin · Singapore', workingHours: [8.5, 17.5] },
+]
+
+const [value, setValue] = useState<Date | null>(null)
+
+<WorldClock zones={zones} value={value} onValueChange={setValue} step={30} />
+```
+
+A zone is an IANA `timeZone`, a `label`, and its `workingHours` as local hours from 0 to 24 (`[9, 17]` by default; `[9, 17.5]` ends at 17:30, and `[22, 6]` is a night shift). The waking hours outside work run from 07:00 to 22:00, and the rest is night.
+
+The rows share one time axis: the first zone's day, midnight to midnight. On the days its clocks change that day is 23 or 25 hours long, and every offset is read from each zone's own clock at each moment, so the gap between two zones follows their changes too. Where a zone's date turns over, a line marks it and the cell names the new day.
+
+The cursor is the chosen moment. With no `value` it follows the clock (`now`, by default the device's, ticking every second once the page is live); drag it, click a strip, or use the keys, and it snaps to `step` minutes (15 by default). `onValueChange` gets a `Date`, or `null` when Now is pressed. Moving past either end of the day moves the axis to the next or the previous one. Times read in 12 or 24 hours by the locale, unless `hourCycle` says otherwise; `compact` keeps one line per zone and drops the legend.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="zones, value, now… (11)">
+
+### Props
+
+<PropsTable name="WorldClock" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `world-clock` (with `data-state`: `live` or `set`, `data-yj-compact`, and `data-yj-overlap` while the cursor is in hours everyone shares), `world-clock-header`, `world-clock-overlap-summary`, `world-clock-now`, `world-clock-scroll`, `world-clock-grid`, `world-clock-ruler`, `world-clock-zone` (with `data-state`: the period at the cursor, `work`, `evening` or `night`), `world-clock-info`, `world-clock-daylight` (with `data-state`: `day` or `night`), `world-clock-label`, `world-clock-time`, `world-clock-offset`, `world-clock-date`, `world-clock-strip`, `world-clock-hour` (with `data-state`: `work`, `evening` or `night`), `world-clock-day-line`, `world-clock-track` (with `data-dragging`), `world-clock-overlap`, `world-clock-cursor`, `world-clock-handle` (with `data-state`) and `world-clock-legend`. Working hours are the accent's subtle tint, the hours around them the band, night the well, and the shared hours a ring in success. Below 40rem (30rem compact) the rows scroll sideways.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Cursor, clock tick · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Cursor moves', note: 'from a key, a click or Now, the cursor glides to its new time; while dragged it follows the pointer with no lag', spring: 'snappy' },
+    { moment: 'Clock tick', note: 'each time ticks over letter by letter: the digits that change leave and arrive, the rest stay', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The cursor jumps to each new time and the times change in place."
+/>
+
+#### Reduced motion
+
+The cursor jumps to each new time instead of gliding, and the times change in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- The whole is a group named by `label` (default: the labels' "World clock"). Each zone is a list item that reads its name, then its time, day, offset and whether it's day or night ("05:00, Tue 13 Jan, GMT-5, Night"); the strips are hidden from screen readers.
+- The cursor's handle is a slider named "Proposed time", described by how to move it, and its value reads the moment in the first zone ("Tue 13 Jan, 10:00 in London").
+- Left and right move it a step (mirrored in RTL), as do up and down; Shift with an arrow, or Page Up and Page Down, an hour; Home and End go to the ends of the day. Now returns to the clock and puts focus back on the handle.
+- After every change a polite live region says the moment in every zone: "10:00 in London is 05:00 in New York and 18:00 in Singapore", with "tomorrow" or "yesterday" where a zone is on another day.
+- Its words come from the labels (`worldClock`, `worldClockCursor`, `worldClockHint`, `worldClockTime`, `worldClockSummary`, `worldClockOverlap`, `worldClockNoOverlap`, `worldClockWorkingHours`, `worldClockOutsideHours`, `worldClockNight`, `worldClockDaytime`, `worldClockEveryone` and `now`), translated by the language packs; dates, offsets and "tomorrow" come from Intl in the locale.
+
+</ReferenceRow>

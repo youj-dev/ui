@@ -1,0 +1,134 @@
+---
+title: Color Picker
+description: "Choose a color with sliders, swatches, hex or OKLCH values, or an eyedropper."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="color-picker/demo" height={280} />
+
+A brand color field with a live preview of a button and a link in the chosen color.
+
+- **The area** sets saturation across and brightness up and down. Click or drag anywhere in it. The thumb follows the pointer exactly, and glides to a new place when the color changes from a swatch or a field.
+- **The hue** is a [Slider](/docs/components/slider) on a spectrum track, from 0 to 359 degrees.
+- **The eyedropper** samples any pixel on screen, in browsers that have one. Elsewhere the button isn't shown.
+- **The fields** take hex and OKLCH. They commit on Enter or when they lose focus. Something they can't read is marked invalid, and put back on blur.
+- **Swatches** default to the theme presets' accents, and the selected one is ringed.
+
+</Story>
+
+<Story id="oklch-and-your-own-swatches" label="OKLCH and your own swatches">
+
+<ComponentPreview name="color-picker/oklch" height={200} />
+
+A picker in OKLCH with five label swatches of your own, and the value it holds shown under it.
+
+`format="oklch"` makes `onValueChange` report OKLCH strings, which suit a theme built on perceptual lightness. `swatches` replaces the presets with your own `{ value, label }` pairs, and `swatches={[]}` removes the row.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="color-picker" noImport />
+
+Use it when people choose any color: a brand accent, a label, a chart series, a theme. The trigger shows the swatch and hex in the width of a text field, and the popover holds every way in: drag in the area, slide the hue, type a hex or OKLCH value, pick a swatch, or sample the screen with the browser's eyedropper. When the choice is one of a few named colors, a [Toggle Group](/docs/components/toggle-group) or a [Radio Group](/docs/components/radio-group) of swatches is quicker.
+
+```tsx
+import { useState } from 'react'
+import { ColorPicker, Field, FieldLabel } from '@youj/react'
+
+export function BrandColor() {
+  const [color, setColor] = useState('#3554fc')
+  return (
+    <Field>
+      <FieldLabel>Brand color</FieldLabel>
+      <ColorPicker value={color} onValueChange={setColor} aria-label="Brand color" />
+    </Field>
+  )
+}
+```
+
+`value` takes a hex or OKLCH string. The color is held as hue, saturation and brightness inside, so dragging to gray or black and back keeps the hue you had.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (10)">
+
+### Props
+
+<PropsTable name="ColorPicker" />
+
+`presetSwatches`, the theme presets' accents, is exported for building on.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the picker opens in a bottom sheet">
+
+### Touch
+
+On a touch device the picker opens in a bottom sheet. The area is taller and its thumb larger, swatches are 44px targets, and the fields use 16px text so the page doesn't zoom. Dragging in the area or along the hue slider changes the color and never pulls the sheet down; pull from the handle or the space around the controls to close it, or tap outside it.
+
+`presentation` chooses: `auto` (the default) is a popover under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the popover on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Popover opens, area thumb, swatch ring… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Popover opens', note: 'scales from 96% and fades in from the trigger (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Area thumb', note: 'glides when the color changes from a swatch or a field; follows a drag 1:1', duration: 'fast', ease: 'standard' },
+    { moment: 'Swatch ring', note: 'glides to the selected swatch (Sliding Indicator)', spring: 'smooth' },
+    { moment: 'Hue thumb', note: 'tracks the pointer 1:1, as every Slider', value: 'no easing' },
+    { moment: 'Popover closes', duration: 'instant', ease: 'exit' },
+  ]}
+  reduced="The area thumb and the swatch ring jump to their new places, and the popover opens at once."
+/>
+
+#### Reduced motion
+
+The area thumb and the swatch ring move straight to their new places, and the popover appears without scaling. Dragging, typing and the eyedropper work the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The trigger reads its label and the current value, such as "Brand color, #3554fc".
+- The area is one focusable `slider` thumb whose value text names both axes. ArrowLeft and ArrowRight step saturation, ArrowUp and ArrowDown step brightness, and Shift steps by 10.
+- The hue slider is named "Hue" and reads its value in degrees.
+- Swatches are toggle buttons in a group named "Swatches", each named by its `label` and marked `aria-pressed` when selected.
+- Escape closes the popover and returns focus to the trigger, as every [Popover](/docs/components/popover) does.
+
+</ReferenceRow>

@@ -1,0 +1,556 @@
+[
+  {
+    "name": "loader-prism",
+    "type": "registry:component",
+    "title": "Prism loader",
+    "description": "A ray of light crosses a wireframe prism and comes out as a fan of three colors, each landing on a screen as a band; the prism sways and the bands sweep. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "prism",
+      "component": "LoaderPrism",
+      "category": "color",
+      "technique": "lines",
+      "order": 1,
+      "title": "Prism",
+      "tags": [
+        "light",
+        "ray",
+        "dispersion",
+        "spectrum",
+        "optics",
+        "refraction",
+        "wireframe"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "First ray",
+          "mono": "ink"
+        },
+        {
+          "part": "Second ray",
+          "mono": "ink"
+        },
+        {
+          "part": "Third ray",
+          "mono": "ink",
+          "role": "c4"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/prism.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-overprint",
+    "type": "registry:component",
+    "title": "Overprint loader",
+    "description": "Three print plates, each a square in its own color, slide in from three sides and settle into register, their tints overlapping into one; the registration mark flashes in the accent, and the plates drift apart again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "overprint",
+      "component": "LoaderOverprint",
+      "category": "color",
+      "technique": "planes",
+      "order": 2,
+      "title": "Overprint",
+      "tags": [
+        "print",
+        "registration",
+        "plates",
+        "layers",
+        "tint",
+        "press",
+        "cmyk"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "First plate",
+          "mono": "ink"
+        },
+        {
+          "part": "Second plate",
+          "mono": "ink"
+        },
+        {
+          "part": "Third plate",
+          "mono": "ink",
+          "role": "c4"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/overprint.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-spectrum",
+    "type": "registry:component",
+    "title": "Spectrum loader",
+    "description": "An isometric grid of the brand’s square particles, a gradient sliding through it once a loop: each square lifts and passes from the ink through two colors and back, the accent corner leading. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "spectrum",
+      "component": "LoaderSpectrum",
+      "category": "color",
+      "technique": "particles",
+      "order": 3,
+      "title": "Spectrum",
+      "tags": [
+        "gradient",
+        "hue",
+        "wave",
+        "grid",
+        "isometric",
+        "swatch",
+        "shimmer"
+      ],
+      "beats": 4,
+      "colors": [
+        {
+          "part": "Leading hue",
+          "mono": "ink"
+        },
+        {
+          "part": "Trailing hue",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/spectrum.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-gyre",
+    "type": "registry:component",
+    "title": "Gyre loader",
+    "description": "Three tilted rings turn around the accent particle, each carrying particles in a color of its own, crossing in depth so the colors weave through each other. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "gyre",
+      "component": "LoaderGyre",
+      "category": "color",
+      "technique": "particles",
+      "order": 4,
+      "title": "Gyre",
+      "tags": [
+        "orbit",
+        "rings",
+        "atom",
+        "gyroscope",
+        "weave",
+        "depth",
+        "particles"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "First ring",
+          "mono": "ink"
+        },
+        {
+          "part": "Second ring",
+          "mono": "ink"
+        },
+        {
+          "part": "Third ring",
+          "mono": "ink",
+          "role": "c4"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/gyre.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-bloom",
+    "type": "registry:component",
+    "title": "Bloom loader",
+    "description": "The accent particle drops onto a grid of tiles and color spreads out from it like dye in water, separating into an inner and an outer ring, then fades back to the ink before the next drop. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "bloom",
+      "component": "LoaderBloom",
+      "category": "color",
+      "technique": "planes",
+      "order": 5,
+      "title": "Bloom",
+      "tags": [
+        "dye",
+        "diffuse",
+        "spread",
+        "drop",
+        "chromatography",
+        "grid",
+        "ink"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Core",
+          "mono": "ink"
+        },
+        {
+          "part": "Edge",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/bloom.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-litmus",
+    "type": "registry:component",
+    "title": "Litmus loader",
+    "description": "A test strip dips into a glass of reagent; color wicks up the paper and turns as the reaction completes, the strip lifts, an accent marker reads the result, and the color fades for the next test. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "litmus",
+      "component": "LoaderLitmus",
+      "category": "color",
+      "technique": "planes",
+      "order": 7,
+      "title": "Litmus",
+      "tags": [
+        "test strip",
+        "reaction",
+        "indicator",
+        "chemistry",
+        "wick",
+        "dip",
+        "result"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Reagent",
+          "mono": "ink"
+        },
+        {
+          "part": "Reaction",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/litmus.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-weave",
+    "type": "registry:component",
+    "title": "Weave loader",
+    "description": "A loom in the isometric view: warp threads in one color part into a shed, the accent shuttle carries a weft thread of another color across, the reed beats it in, and the cloth grows row by row. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "weave",
+      "component": "LoaderWeave",
+      "category": "color",
+      "technique": "lines",
+      "order": 8,
+      "title": "Weave",
+      "tags": [
+        "loom",
+        "textile",
+        "warp",
+        "weft",
+        "shuttle",
+        "interlace",
+        "cloth"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Warp",
+          "mono": "ink"
+        },
+        {
+          "part": "Weft",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/weave.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-swatch",
+    "type": "registry:component",
+    "title": "Swatch loader",
+    "description": "A fan deck of swatch cards, each a ramp of chips from the ink to one of the theme’s colors, fans open around its pin, holds, and closes; the top card’s tab is the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "swatch",
+      "component": "LoaderSwatch",
+      "category": "color",
+      "technique": "planes",
+      "order": 9,
+      "title": "Swatch",
+      "tags": [
+        "palette",
+        "swatches",
+        "fan deck",
+        "color",
+        "tones",
+        "design",
+        "chips"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "First ramp",
+          "mono": "ink"
+        },
+        {
+          "part": "Second ramp",
+          "mono": "ink"
+        },
+        {
+          "part": "Third ramp",
+          "mono": "ink",
+          "role": "c4"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/swatch.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-beacon",
+    "type": "registry:component",
+    "title": "Beacon loader",
+    "description": "A column of status lights works through its jobs one by one: each waits as an outline, pulses while it runs, and settles into done, the accent pointing at the one at work, until the column clears for the next run. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "beacon",
+      "component": "LoaderBeacon",
+      "category": "color",
+      "technique": "planes",
+      "order": 10,
+      "title": "Beacon",
+      "tags": [
+        "status",
+        "queue",
+        "steps",
+        "jobs",
+        "progress",
+        "checklist",
+        "state"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Running",
+          "mono": "ink"
+        },
+        {
+          "part": "Done",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/beacon.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-chord",
+    "type": "registry:component",
+    "title": "Chord loader",
+    "description": "Three sine waves on stacked planes, each in a color of its own, and their sum in ink in front, the amplitudes breathing in turn; the accent rides the sum’s crest. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "chord",
+      "component": "LoaderChord",
+      "category": "color",
+      "technique": "paths",
+      "order": 11,
+      "title": "Chord",
+      "tags": [
+        "waves",
+        "sum",
+        "harmonics",
+        "interference",
+        "layers",
+        "signal",
+        "audio"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Low tone",
+          "mono": "ink"
+        },
+        {
+          "part": "Middle tone",
+          "mono": "ink"
+        },
+        {
+          "part": "High tone",
+          "mono": "ink",
+          "role": "c4"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/chord.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-isotherm",
+    "type": "registry:component",
+    "title": "Isotherm loader",
+    "description": "A terrain drawn in contour lines, stacked in perspective at their heights and graded in color from the valleys to the peaks, while a warm front passes across it; the accent marks the summit. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "color"
+    ],
+    "meta": {
+      "loader": "isotherm",
+      "component": "LoaderIsotherm",
+      "category": "color",
+      "technique": "lines",
+      "order": 12,
+      "title": "Isotherm",
+      "tags": [
+        "contour",
+        "terrain",
+        "topography",
+        "height",
+        "map",
+        "front",
+        "isometric"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Peaks",
+          "mono": "ink"
+        },
+        {
+          "part": "Valleys",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/color/isotherm.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]
