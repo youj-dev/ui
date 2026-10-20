@@ -29,7 +29,8 @@ const render = (imports, tree) =>
 
 /* budget: KB gzipped over React, initial load: about 5% over what each case
  * measured when set (Button 21.2, Dialog 40.2, icon 25.6, 15 components
- * 119.3, full import 323.3), so a real regression fails and noise doesn't.
+ * 119.3, full import 323.3; raised to 635 on 2026-10-20 at 603.4, after the blocks
+ * moved into the library), so a real regression fails and noise doesn't.
  * The async Button, spinner and Motion's features are lazy chunks, reported
  * but not budgeted. */
 const CASES = [
@@ -54,7 +55,7 @@ const CASES = [
   },
   {
     name: 'full import',
-    budget: 355, // the whole library; grows with each component. Per-component budgets catch regressions.
+    budget: 635, // the whole library; grows with each component. Per-component budgets catch regressions.
     code: `import * as ui from '@youj/react'\nimport * as icons from '@youj/icons'\nconsole.log(ui, icons)\n`,
   },
 ]
@@ -62,10 +63,11 @@ const CASES = [
 /* budget: KB of minified CSS / KB gzipped, from `@import 'tailwindcss'` plus
  * @youj/react/styles.css. Button-only and nothing-imported compile to the same
  * sheet: Tailwind scans dist/, not the app's imports. About 3% over when set
- * (537.8 KB, 68.5 KB gzipped); raise it with the library, on purpose. */
+ * (537.8 KB, 68.5 KB gzipped); raise it with the library, on purpose. Raised on
+ * 2026-10-20 to 610 / 77 at 592.7 / 74.9, after the blocks' classes joined dist/. */
 const CSS_CASES = [
-  { name: 'CSS, nothing imported', budget: { min: 555, gz: 71 }, code: render('', `h('button', null, 'hi')`) },
-  { name: 'CSS, Button only', budget: { min: 555, gz: 71 }, code: render(`import { Button } from '@youj/react'`, `h(Button, null, 'hi')`) },
+  { name: 'CSS, nothing imported', budget: { min: 610, gz: 77 }, code: render('', `h('button', null, 'hi')`) },
+  { name: 'CSS, Button only', budget: { min: 610, gz: 77 }, code: render(`import { Button } from '@youj/react'`, `h(Button, null, 'hi')`) },
 ]
 
 const alias = [
