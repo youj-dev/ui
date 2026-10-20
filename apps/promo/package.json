@@ -24,7 +24,7 @@
     "@youj/motion": "workspace:*",
     "@youj/react": "workspace:*",
     "@remotion/cli": "4.0.529",
-    "motion": "^13.4.4",
+    "motion": "^14.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "remotion": "4.0.529"

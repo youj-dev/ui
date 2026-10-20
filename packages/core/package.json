@@ -86,7 +86,7 @@
   },
   "devDependencies": {
     "lucide-react": "^1.48.0",
-    "motion": "^13.4.4"
+    "motion": "^14.3.0"
   },
   "peerDependencies": {
     "motion": "^13.4.4 || ^14",
