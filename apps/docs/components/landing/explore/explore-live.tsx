@@ -138,7 +138,7 @@ function ExploreLive({ id }: { id: ExploreId }) {
   )
 }
 
-/** The `npx youj add` name a tile's piece installs by, read from its docs link; none for the icon set and miniatures. */
+/** The `npx @youj/cli add` name a tile's piece installs by, read from its docs link; none for the icon set and miniatures. */
 function installName(href: string) {
   const [path, query = ''] = href.split('?')
   const hash = href.split('#')[1]
@@ -156,7 +156,7 @@ function ExploreTile({ tile }: { tile: (typeof EXPLORE_TILES)[number] }) {
   const name = installName(tile.href)
   const copy = () => {
     if (!name) return
-    void navigator.clipboard?.writeText(`npx youj add ${name}`).then(() => {
+    void navigator.clipboard?.writeText(`npx @youj/cli add ${name}`).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 1600)
     })
@@ -172,7 +172,7 @@ function ExploreTile({ tile }: { tile: (typeof EXPLORE_TILES)[number] }) {
       </h3>
       <div className="explore-actions">
         {name && (
-          <button type="button" onClick={copy} aria-label={copied ? 'Copied' : `Copy npx youj add ${name}`} className="explore-icon">
+          <button type="button" onClick={copy} aria-label={copied ? 'Copied' : `Copy npx @youj/cli add ${name}`} className="explore-icon">
             {copied ? <CheckIcon size={19} strokeWidth={1.75} /> : <CopyIcon size={19} strokeWidth={1.75} />}
           </button>
         )}

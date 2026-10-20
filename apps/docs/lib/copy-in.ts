@@ -10,7 +10,7 @@ export interface CopyIn {
 }
 
 /** What the package command assumes, since it names only the package: the peers and the provider come from `init`. */
-export const PACKAGE_SETUP = 'For an app already set up with `npx youj init`, which installs the peers (`@youj/core`, `@youj/motion`, `motion` and Base UI) and wires the provider. New app? Start at [Installation](/docs/installation).'
+export const PACKAGE_SETUP = 'For an app already set up with `npx @youj/cli init`, which installs the peers (`@youj/core`, `@youj/motion`, `motion` and Base UI) and wires the provider. New app? Start at [Installation](/docs/installation).'
 
 const SHOWN = 10
 

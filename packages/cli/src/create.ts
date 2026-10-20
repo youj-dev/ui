@@ -117,7 +117,7 @@ export async function create(options: CreateOptions, runner: Runner, ui: Ui, env
   const link = options.link.trim()
   const params = createParams(link)
   if (!params)
-    throw new CliError(`${link ? `"${link}" isn't a link from Create.` : 'Pass the link from Create.'} Copy it from ${CREATE_URL}, in quotes: npx youj create '${CREATE_URL}?sidebar=rail&…'`)
+    throw new CliError(`${link ? `"${link}" isn't a link from Create.` : 'Pass the link from Create.'} Copy it from ${CREATE_URL}, in quotes: npx @youj/cli create '${CREATE_URL}?sidebar=rail&…'`)
   if (options.mode && !MODES.includes(options.mode)) throw new CliError(`--mode takes ${MODES.join(', ')}; got "${options.mode}".`)
   const frame = readFrame(params)
   // A typo in a link makes a different app than the one meant, and the reader ignores it silently: say so.

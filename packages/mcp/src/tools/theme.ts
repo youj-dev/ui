@@ -276,7 +276,7 @@ export function createTheme(request: ThemeRequest): string {
     '',
     style === DEFAULT_LOOK
       ? `${lookById(style).name} is the default component style, not part of the theme: any theme pairs with any style. ${lookById(style).description} A root YoujProvider writes data-yj-look="${style}" itself, and it needs no stylesheet of its own. For instrument panels (mono capital labels, pill actions), pass look: 'bezel'.`
-      : `The ${style} style is not part of the theme: any theme pairs with any style. ${lookById(style).description} On the package, @youj/react/styles.css has it already; on the registry, \`npx youj add youj-look-${style}\` copies styles/${style}.css in and imports it right after ui.css.`,
+      : `The ${style} style is not part of the theme: any theme pairs with any style. ${lookById(style).description} On the package, @youj/react/styles.css has it already; on the registry, \`npx @youj/cli add youj-look-${style}\` copies styles/${style}.css in and imports it right after ui.css.`,
     '',
     `Leave data-theme off for light. Or for one section: \`<ThemeScope theme={${v}}${lookProp}>…</ThemeScope>\`. Plain CSS instead of JS (and data-yj-look="${style}" on the same element):`,
     code('css', themeCss(input).trim()),

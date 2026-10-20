@@ -1,5 +1,5 @@
 /* How each editor adds the Youj MCP server, for the AI & MCP page and its
- * Markdown twin. `npx youj mcp` writes the same files
+ * Markdown twin. `npx @youj/cli mcp` writes the same files
  * (packages/cli/src/mcp.ts). No imports, so lib/markdown.ts can use it
  * anywhere it runs. */
 

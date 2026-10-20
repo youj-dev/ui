@@ -1,9 +1,9 @@
 {
-  "name": "youj",
+  "name": "@youj/cli",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "(alpha) Set up Youj in a React app with one command: npx youj init.",
+  "description": "(alpha) Set up Youj in a React app with one command: npx @youj/cli init.",
   "homepage": "https://www.youj.dev/docs/installation",
   "author": {
     "name": "louis-henry",
@@ -29,7 +29,7 @@
     "directory": "packages/cli"
   },
   "bin": {
-    "youj": "./dist/cli.mjs"
+    "youj": "dist/cli.mjs"
   },
   "files": [
     "dist"

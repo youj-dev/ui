@@ -52,7 +52,7 @@ Connect an MCP client to https://mcp.youj.dev (Streamable HTTP):
   VS Code:      { "servers": { "youj": { "type": "http", "url": "https://mcp.youj.dev" } } }
   Claude.ai and Claude Desktop: Settings > Connectors > Add custom connector, URL https://mcp.youj.dev
 
-It searches and explains Youj components, blocks, icons, illustrations, loaders, miniatures, themes and motion. To inspect your own project or work offline, run the server yourself: npx youj mcp
+It searches and explains Youj components, blocks, icons, illustrations, loaders, miniatures, themes and motion. To inspect your own project or work offline, run the server yourself: npx @youj/cli mcp
 Docs: https://www.youj.dev/docs/mcp
 `
 

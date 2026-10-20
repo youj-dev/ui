@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { fr } from '@youj/core/locales/fr'
- *   (copied in with npx youj add youj-locale-fr: import { fr } from '@/locales/fr')
+ *   (copied in with npx @youj/cli add youj-locale-fr: import { fr } from '@/locales/fr')
  *   <YoujProvider locale="fr-FR" labels={fr}>
  *
  * Register: infinitives on buttons ("Enregistrer"), "vous" in sentences, a narrow

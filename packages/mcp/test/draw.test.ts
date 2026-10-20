@@ -45,7 +45,7 @@ describe('draw_illustration', () => {
     expect(drawn.code).toBe(generateCode(desk, { link: drawn.link }))
     expect(drawn.text).toContain(drawn.code!.trimEnd())
     expect(drawn.link).toBe(`${catalog.index.meta.site}/illustrations/build?name=Desk&s=${drawn.link!.split('s=')[1]}`)
-    expect(drawn.text).toContain('npx youj add illustration-kit iso-shapes')
+    expect(drawn.text).toContain('npx @youj/cli add illustration-kit iso-shapes')
     expect(drawn.text).toContain('`components/illustrations/desk.tsx`')
   })
 
@@ -53,7 +53,7 @@ describe('draw_illustration', () => {
     const drawn = drawIllustration(catalog, json(template('workshop')), { cwd: join(fixtures, 'package') })
     expect(drawn.code).toBe(generateCode(template('workshop'), { link: drawn.link }))
     expect(drawn.code).not.toContain('@youj/illustrations/builder')
-    expect(drawn.text).toContain('npx youj add illustration-kit')
+    expect(drawn.text).toContain('npx @youj/cli add illustration-kit')
     expect(drawn.text).toContain('`src/components/illustrations/workshop.tsx`')
   })
 

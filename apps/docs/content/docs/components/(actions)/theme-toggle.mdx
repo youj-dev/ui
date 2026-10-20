@@ -102,7 +102,7 @@ On the server `theme` is `undefined`, but on the client's first render next-them
 
 ### Without next-themes
 
-An uncontrolled ThemeToggle needs the same early script. Render `ThemeScript` in `<head>`. It sets `data-theme` and `color-scheme` from the stored choice before the page paints, so `<html>` needs `suppressHydrationWarning` too, or React reports the attributes the server couldn't know. `npx youj init` writes both in a Next.js or React Router app; add them by hand otherwise.
+An uncontrolled ThemeToggle needs the same early script. Render `ThemeScript` in `<head>`. It sets `data-theme` and `color-scheme` from the stored choice before the page paints, so `<html>` needs `suppressHydrationWarning` too, or React reports the attributes the server couldn't know. `npx @youj/cli init` writes both in a Next.js or React Router app; add them by hand otherwise.
 
 ```tsx title="app/layout.tsx"
 import { basalt, themeProps } from '@youj/core'

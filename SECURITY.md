@@ -19,7 +19,7 @@ Report it privately by email to [support@youj.dev](mailto:support@youj.dev), wit
 
 A useful report has:
 
-- the package and version (`npx youj doctor` prints them),
+- the package and version (`npx @youj/cli doctor` prints them),
 - what an attacker can do, and under which conditions,
 - the smallest reproduction you can make: a repository, a sandbox or the steps.
 
@@ -62,7 +62,7 @@ Out of scope:
 
 **The MCP server (`@youj/mcp`)**, run locally, sends no telemetry and makes no network requests. It talks to your editor over stdio and answers from an index bundled with its version. Its setup checks read files inside the directory it runs in (links that lead outside are refused) and never write.
 
-**The hosted MCP server (`https://mcp.youj.dev`)** runs the same server on Cloudflare. Your editor sends it your queries, and Cloudflare keeps standard request logs. Run `npx youj mcp` instead to keep everything on your machine.
+**The hosted MCP server (`https://mcp.youj.dev`)** runs the same server on Cloudflare. Your editor sends it your queries, and Cloudflare keeps standard request logs. Run `npx @youj/cli mcp` instead to keep everything on your machine.
 
 **Sound (`@youj/sound`)** is local. The built-in packs' audio is part of the package, so nothing is fetched from a third party, and the player and the pack only load, as chunks of your own app, once you give `YoujProvider` a `sound` pack. A custom pack loads the files you point it at.
 

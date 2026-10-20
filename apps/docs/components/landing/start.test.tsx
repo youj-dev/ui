@@ -16,7 +16,7 @@ async function renderStart(reducedMotion: 'always' | 'never' = 'never') {
   await act(async () => {
     render(
       <YoujProvider reducedMotion={reducedMotion}>
-        <Start install="npx youj init" componentsUrl="/docs/components" screensUrl="/docs/blocks/checkout" />
+        <Start install="npx @youj/cli init" componentsUrl="/docs/components" screensUrl="/docs/blocks/checkout" />
       </YoujProvider>,
     )
   })
@@ -43,7 +43,7 @@ describe('Start', () => {
     await renderStart()
     const piece = screen.getByRole('img', { name: brings('button') })
     expect(lifted(piece).sort()).toEqual(['button', ...dependencyClosure('button')].sort())
-    expect(commands()).toContain('npx youj add button')
+    expect(commands()).toContain('npx @youj/cli add button')
   })
 
   it('shows the finished pictures under reduced motion', async () => {
@@ -58,8 +58,8 @@ describe('Start', () => {
     await user.click(screen.getByRole('button', { name: 'dock' }))
     const piece = screen.getByRole('img', { name: brings('dock') })
     expect(lifted(piece).sort()).toEqual(['dock', ...dependencyClosure('dock')].sort())
-    expect(commands()).toContain('npx youj add dock')
-    expect(commands()).not.toContain('npx youj add button')
+    expect(commands()).toContain('npx @youj/cli add dock')
+    expect(commands()).not.toContain('npx @youj/cli add button')
     expect(screen.getByRole('button', { name: 'dock' })).toHaveAttribute('aria-pressed', 'true')
   })
 
@@ -91,7 +91,7 @@ describe('Start', () => {
     const user = userEvent.setup()
     await renderStart()
     await user.click(screen.getByRole('button', { name: 'loader-build' }))
-    expect(commands()).toContain('npx youj add loader-build')
+    expect(commands()).toContain('npx @youj/cli add loader-build')
     const piece = screen.getByRole('img', { name: brings('loader-build') })
     expect(lifted(piece).sort()).toEqual(['loader-build', ...dependencyClosure('loader-build')].sort())
     const plane = piece.querySelector<HTMLElement>('[data-stack-layer="loaders"]')!
@@ -113,7 +113,7 @@ describe('Start', () => {
   it('starts from a whole screen as a third way in: a block’s command and the gallery', async () => {
     await renderStart()
     const page = screen.getByRole('heading', { name: 'A whole screen' }).closest('article')!
-    expect(commands(page)).toContain('npx youj add app-analytics-overview')
+    expect(commands(page)).toContain('npx @youj/cli add app-analytics-overview')
     expect(registryItems().has('app-analytics-overview')).toBe(true)
     expect(within(page).getByRole('link', { name: 'Browse screens' })).toHaveAttribute('href', '/docs/blocks/checkout')
     // Its app frame is a picture: the words beside it say what it shows.

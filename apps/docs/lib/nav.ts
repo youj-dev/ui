@@ -58,7 +58,7 @@ export interface NavEntry extends NavLink {
 }
 
 /** The whole kit, set up in an app: the package, its stylesheet and the provider. */
-export const KIT_INSTALL = `npx youj init`
+export const KIT_INSTALL = `npx @youj/cli init`
 
 export type PillarId = 'ui' | 'motion' | 'loaders' | 'icons' | 'illustrations' | 'sound' | 'themes' | 'blocks'
 

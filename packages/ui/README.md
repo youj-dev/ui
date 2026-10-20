@@ -13,7 +13,7 @@ Accessible React components, built on shadcn/ui and Base UI, that move together 
 The quickest route sets everything up for you:
 
 ```bash
-npx youj init
+npx @youj/cli init
 ```
 
 Or by hand, in an app with React 19 and Tailwind CSS v4:
@@ -27,7 +27,7 @@ pnpm add @youj/react @youj/core @youj/motion @youj/icons
 @import '@youj/react/styles.css';
 ```
 
-`@youj/core` (the provider, themes and tokens) and `@youj/motion` (the motion components) are peer dependencies: list them in your app, so there's one copy of `YoujProvider`. Some components use optional peer dependencies (`recharts`, `react-hook-form`, `cmdk`...) and import from their own entry, such as `@youj/react/chart`. `npx youj add <component>` installs what a component needs.
+`@youj/core` (the provider, themes and tokens) and `@youj/motion` (the motion components) are peer dependencies: list them in your app, so there's one copy of `YoujProvider`. Some components use optional peer dependencies (`recharts`, `react-hook-form`, `cmdk`...) and import from their own entry, such as `@youj/react/chart`. `npx @youj/cli add <component>` installs what a component needs.
 
 ## Use
 

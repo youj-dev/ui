@@ -52,7 +52,7 @@ export async function getAddCommand(catalog: Catalog, names: string[], cwd?: str
     const targets = [...new Set([...[...animations].map((a) => a.registry), ...[...objects].map((m) => m.registry), ...[...selected].flatMap((item) => isScene(item) ? [item.registry] : isComponent(item) ? [item.name] : item.registry ? [item.registry] : item.stack ?? [])])]
     const unsupported = [...selected].filter((item) => !isScene(item) && !isComponent(item) && !item.registry && !item.stack?.length)
     if (unsupported.length) throw new NotFound(`No registry install for ${unsupported.map(nameOf).join(', ')}. Use get_block for source.`)
-    return [code('bash', `npx youj add ${targets.join(' ')}`), ...skipped].join('\n\n')
+    return [code('bash', `npx @youj/cli add ${targets.join(' ')}`), ...skipped].join('\n\n')
   }
 
   const packages = new Set<string>()
@@ -110,7 +110,7 @@ export async function getAddCommand(catalog: Catalog, names: string[], cwd?: str
   for (const a of animations) {
     packages.add('@youj/loaders')
     imports.add(`import { ${a.component} } from '@youj/loaders/${a.id}'`)
-    notes.add(`loader ${a.id}: the package ships it. To own the source instead, \`npx youj add ${a.registry}\` copies it into components/youj/loaders/${a.category}/${a.id}.tsx.`)
+    notes.add(`loader ${a.id}: the package ships it. To own the source instead, \`npx @youj/cli add ${a.registry}\` copies it into components/youj/loaders/${a.category}/${a.id}.tsx.`)
   }
   for (const m of objects) {
     packages.add('@youj/miniatures')
@@ -121,7 +121,7 @@ export async function getAddCommand(catalog: Catalog, names: string[], cwd?: str
   imports.delete('')
   return [
     needed.length ? [code('bash', `${pm} ${pm === 'npm' ? 'install' : 'add'} ${needed.join(' ')}`), ...(pmKnown ? [] : ['(npm shown because the project\'s package manager isn\'t known: use your own, e.g. `pnpm add`, `yarn add` or `bun add`.)'])].join('\n') : copy.size ? '' : 'No add command needed: dependencies are already declared or installed.',
-    ...(copy.size ? [code('bash', `npx youj add ${[...copy].join(' ')}`)] : []),
+    ...(copy.size ? [code('bash', `npx @youj/cli add ${[...copy].join(' ')}`)] : []),
     ...(imports.size ? [code('tsx', [...imports].join('\n'))] : []),
     ...notes,
     ...skipped,

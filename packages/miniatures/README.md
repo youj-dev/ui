@@ -16,7 +16,7 @@ export function Hero() {
 }
 ```
 
-`npx youj add miniature-<id>` does the same install and prints the import: miniatures are npm only, there's no source to copy in.
+`npx @youj/cli add miniature-<id>` does the same install and prints the import: miniatures are npm only, there's no source to copy in.
 
 Each miniature is its own entry, so an app bundles only the ones it imports, plus the engine they share once (about 8 KB gzipped). Each miniature adds 7 to 13 KB gzipped (`pnpm -F @youj/miniatures size` measures them).
 

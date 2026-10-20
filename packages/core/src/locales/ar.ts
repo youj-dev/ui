@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { ar } from '@youj/core/locales/ar'
- *   (copied in with npx youj add youj-locale-ar: import { ar } from '@/locales/ar')
+ *   (copied in with npx @youj/cli add youj-locale-ar: import { ar } from '@/locales/ar')
  *   <html lang="ar" dir="rtl">
  *   <YoujProvider locale="ar" labels={ar}>
  *

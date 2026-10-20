@@ -42,10 +42,10 @@ Then add the package's stylesheet to your global CSS, after Tailwind and the tok
 
 ### One scene, as source
 
-To own and edit a single scene, copy it in with the Youj CLI in an app set up from source (`npx youj init --mode registry`). Every scene is its own item, `illustration-<id>`. It brings the kit the scenes are drawn with (`illustration-kit`) and the shapes it uses, and nothing else. In an app on the packages, the same command installs `@youj/illustrations` and adds its stylesheet instead:
+To own and edit a single scene, copy it in with the Youj CLI in an app set up from source (`npx @youj/cli init --mode registry`). Every scene is its own item, `illustration-<id>`. It brings the kit the scenes are drawn with (`illustration-kit`) and the shapes it uses, and nothing else. In an app on the packages, the same command installs `@youj/illustrations` and adds its stylesheet instead:
 
 ```bash
-npx youj add illustration-coffee
+npx @youj/cli add illustration-coffee
 ```
 
 It lands in `components/youj/graphics/illustrations/scenes/<id>.tsx`, and you import it from there through your `@/` alias:
@@ -72,7 +72,7 @@ From the package, everything on this page comes from `@youj/illustrations` (`pnp
 @import '@youj/illustrations/styles.css';
 ```
 
-Its sheet points Tailwind at the built scenes, so it generates the classes they use; it goes after the tokens, in the same file. `npx youj add` adds it for you.
+Its sheet points Tailwind at the built scenes, so it generates the classes they use; it goes after the tokens, in the same file. `npx @youj/cli add` adds it for you.
 
 From the registry, the `illustrations` item copies every scene into `@/components/youj/graphics/illustrations/`, with the kit's shapes they're built from.
 

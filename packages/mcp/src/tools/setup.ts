@@ -6,7 +6,7 @@ import { DEFAULT_PRESET } from '@youj/core/lib/youj/theme/themes/index'
 import type { Catalog } from '../catalog'
 import { code } from '../format'
 
-/* Setup: `npx youj init` is the route; the manual steps are here for
+/* Setup: `npx @youj/cli init` is the route; the manual steps are here for
  * when a tool can't run it. With a pasted package.json and stylesheet it runs
  * the doctor's checks that don't need the disk, with the CLI's own helpers. */
 
@@ -103,11 +103,11 @@ export function checkSetup(packageJson: string | undefined, css: string | undefi
     else if (reactProblem) checks.push({ level: 'error', message: reactProblem, fix: 'npm install react@^19 react-dom@^19' })
     else checks.push({ level: 'ok', message: `React ${majorOf(deps.react) ?? deps.react}` })
     const tw = majorOf(deps.tailwindcss)
-    if (tw === null) checks.push({ level: 'error', message: 'Tailwind CSS isn’t a dependency', fix: 'npx youj init installs Tailwind v4' })
+    if (tw === null) checks.push({ level: 'error', message: 'Tailwind CSS isn’t a dependency', fix: 'npx @youj/cli init installs Tailwind v4' })
     else if (tw < 4) checks.push({ level: 'error', message: `Tailwind CSS ${tw}: Youj needs v4`, fix: 'npx @tailwindcss/upgrade@latest (commit first)' })
     else checks.push({ level: 'ok', message: `Tailwind CSS v${tw}` })
     const kit = Object.values(PACKAGES).filter((name) => deps[name])
-    if (!kit.length) checks.push({ level: 'error', message: 'No Youj package in package.json (the registry route needs none)', fix: 'npx youj init' })
+    if (!kit.length) checks.push({ level: 'error', message: 'No Youj package in package.json (the registry route needs none)', fix: 'npx @youj/cli init' })
     else {
       const ranges = new Set(kit.map((name) => deps[name]))
       if (ranges.size > 1) checks.push({ level: 'error', message: `The Youj packages are on different versions (${kit.map((n) => `${n}@${deps[n]}`).join(', ')}); they release together`, fix: 'Put them on one version.' })
@@ -143,13 +143,13 @@ export function setup(catalog: Catalog, input: SetupInput): string {
   const flags = `${mode === 'registry' ? ' --mode registry' : ''}${style === DEFAULT_LOOK ? '' : ` --look ${style}`}`
   // Classic has no stylesheet; every other style is one, imported right after ui.css.
   const sheet = style === 'classic' ? null : `styles/${style}.css`
-  const out = [`# Set up Youj${framework ? ` in ${NAMES[framework]}` : ''}`, '', `Needs React 19 and Tailwind CSS v4. Youj ${catalog.index.meta.version}.`, '', '## One command (recommended)', '', code('bash', `npx youj init${flags}`), '', `It detects the framework (${Object.values(NAMES).join(', ')}), the package manager and Tailwind, installs Tailwind v4 if missing, asks for the mode, a theme preset (${THEMES.join(', ')}; ${DEFAULT_PRESET} by default), the component style (${DEFAULT_LOOK} by default), the motion personality and quality, then installs, adds the stylesheet after Tailwind, wraps the app in YoujProvider and starts it dark. It shows each change as a diff; re-running changes nothing. \`--yes\` takes the defaults; \`--dry-run\` changes nothing. Then \`npx youj doctor\` checks the setup any time.`]
+  const out = [`# Set up Youj${framework ? ` in ${NAMES[framework]}` : ''}`, '', `Needs React 19 and Tailwind CSS v4. Youj ${catalog.index.meta.version}.`, '', '## One command (recommended)', '', code('bash', `npx @youj/cli init${flags}`), '', `It detects the framework (${Object.values(NAMES).join(', ')}), the package manager and Tailwind, installs Tailwind v4 if missing, asks for the mode, a theme preset (${THEMES.join(', ')}; ${DEFAULT_PRESET} by default), the component style (${DEFAULT_LOOK} by default), the motion personality and quality, then installs, adds the stylesheet after Tailwind, wraps the app in YoujProvider and starts it dark. It shows each change as a diff; re-running changes nothing. \`--yes\` takes the defaults; \`--dry-run\` changes nothing. Then \`npx @youj/cli doctor\` checks the setup any time.`]
 
   out.push('', '## By hand')
   if (mode === 'registry') {
     const lookItem = sheet ? ` youj-look-${style}` : ''
     const styleImport = sheet ? `\n@import '../${sheet}';` : ''
-    out.push('', 'Copy the source in with the Youj CLI (it registers the `@youj` namespace in components.json itself):', code('bash', `npx youj add youj-core youj-ui-core${lookItem}`), code('css', `/* ${framework ? STYLESHEET[framework] : 'your global stylesheet'} */\n@import 'tailwindcss';\n@import '../styles/youj.css';\n@import '../styles/ui.css';${styleImport}`), 'Then add items by name: `npx youj add button dialog`.')
+    out.push('', 'Copy the source in with the Youj CLI (it registers the `@youj` namespace in components.json itself):', code('bash', `npx @youj/cli add youj-core youj-ui-core${lookItem}`), code('css', `/* ${framework ? STYLESHEET[framework] : 'your global stylesheet'} */\n@import 'tailwindcss';\n@import '../styles/youj.css';\n@import '../styles/ui.css';${styleImport}`), 'Then add items by name: `npx @youj/cli add button dialog`.')
   } else {
     out.push('', code('bash', `npm install @youj/react @youj/core @youj/motion @youj/icons motion@${MOTION_INSTALL} @base-ui/react@${BASE_UI_INSTALL}`), code('css', `/* ${framework ? STYLESHEET[framework] : 'your global stylesheet'}: right after Tailwind, same file */\n@import 'tailwindcss';\n@import '@youj/react/styles.css';`), "That's it: `import { Button } from '@youj/react'`.")
   }
@@ -173,7 +173,7 @@ export function setup(catalog: Catalog, input: SetupInput): string {
     const icon = { ok: '✓', warn: '!', error: '✗' } as const
     out.push('', '## Checks', '', ...checks.map((c) => `- ${icon[c.level]} ${c.message}${c.fix ? ` → ${c.fix}` : ''}`))
     const errors = checks.filter((c) => c.level === 'error').length
-    out.push('', errors ? `${errors} to fix. \`npx youj doctor\` also checks installed versions, duplicate copies and the provider on disk.` : 'Nothing to fix in what was pasted.')
+    out.push('', errors ? `${errors} to fix. \`npx @youj/cli doctor\` also checks installed versions, duplicate copies and the provider on disk.` : 'Nothing to fix in what was pasted.')
   }
   return out.join('\n')
 }

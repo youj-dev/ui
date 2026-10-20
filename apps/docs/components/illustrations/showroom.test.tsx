@@ -221,7 +221,7 @@ describe('the illustrations page', { timeout: 30_000 }, () => {
     expect(within(dialog).getByRole('group', { name: 'The component' })).toHaveTextContent('<IllustrationCoffee />')
     // Copied in: the CLI's command, and the component from where it writes it.
     fireEvent.click(within(within(dialog).getByRole('group', { name: 'Take it as' })).getByRole('button', { name: 'Copy in' }))
-    expect(within(dialog).getByRole('group', { name: 'Copy-in command' })).toHaveTextContent('npx youj add illustration-coffee')
+    expect(within(dialog).getByRole('group', { name: 'Copy-in command' })).toHaveTextContent('npx @youj/cli add illustration-coffee')
     expect(within(dialog).getByRole('group', { name: 'The copied component' })).toHaveTextContent("from '@/components/youj/graphics/illustrations/scenes/coffee'")
     fireEvent.click(within(dialog).getByRole('tab', { name: 'Download' }))
     expect(within(dialog).getByRole('button', { name: 'Download youj-coffee.svg' })).toBeInTheDocument()

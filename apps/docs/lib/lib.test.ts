@@ -118,7 +118,7 @@ describe('installInfo', () => {
     const info = installInfo('marketing-cta-banner', () => [])
     expect(info.packageCommand).toBeUndefined()
     expect(info.packageImport).toBeUndefined()
-    expect(info.registryCommand).toBe('npx youj add marketing-cta-banner')
+    expect(info.registryCommand).toBe('npx @youj/cli add marketing-cta-banner')
     expect(info.registryImport).toBe("import { CtaBanner } from '@/blocks/marketing/cta-banner'")
     expect(installInfo('app-error', () => []).registryImport).toBe("import { ErrorScreen } from '@/blocks/app/error'")
   })
@@ -154,7 +154,7 @@ describe("the docs' add commands", () => {
     const content = join(process.cwd(), 'content/docs')
     const named = (readdirSync(content, { recursive: true }) as string[])
       .filter((f) => f.endsWith('.mdx'))
-      .flatMap((f) => [...readFileSync(join(content, f), 'utf8').matchAll(/npx youj add ((?:[\w@/<>-]+ ?)+)/g)].map((m) => ({ page: f, args: m[1]!.trim().split(' ') })))
+      .flatMap((f) => [...readFileSync(join(content, f), 'utf8').matchAll(/npx @youj\/cli add ((?:[\w@/<>-]+ ?)+)/g)].map((m) => ({ page: f, args: m[1]!.trim().split(' ') })))
     expect(named.length).toBeGreaterThan(10)
     const items = registryItems()
     const unknown = named.flatMap(({ page, args }) =>

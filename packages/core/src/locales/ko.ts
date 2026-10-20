@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { ko } from '@youj/core/locales/ko'
- *   (copied in with npx youj add youj-locale-ko: import { ko } from '@/locales/ko')
+ *   (copied in with npx @youj/cli add youj-locale-ko: import { ko } from '@/locales/ko')
  *   <YoujProvider locale="ko-KR" labels={ko}>
  *
  * Register: nouns on buttons ("저장", "닫기"), 합니다/하세요 in sentences. */

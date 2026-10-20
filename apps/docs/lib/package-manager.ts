@@ -8,7 +8,7 @@ export const PACKAGE_MANAGERS: PackageManager[] = ['pnpm', 'npm', 'yarn', 'bun']
 
 /**
  * A pnpm install in another package manager's words: `npm install`, `yarn add`,
- * `bun add` (`-d` for a dev dependency). Anything else, such as `npx youj add`,
+ * `bun add` (`-d` for a dev dependency). Anything else, such as `npx @youj/cli add`,
  * which runs the same under every one of them, is returned as it is.
  */
 export function forManager(command: string, pm: PackageManager): string {

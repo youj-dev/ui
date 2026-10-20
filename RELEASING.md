@@ -1,6 +1,6 @@
 # Releasing
 
-The workspace packages publish to the public npm registry under the `@youj` scope, and the CLI as `youj`. They version together, as a fixed group in [changesets](https://github.com/changesets/changesets), so the CLI installs the kit at its own version and an app keeps every Youj package on one version.
+The workspace packages publish to the public npm registry under the `@youj` scope, and the CLI as `@youj/cli` (its command is `youj`). They version together, as a fixed group in [changesets](https://github.com/changesets/changesets), so the CLI installs the kit at its own version and an app keeps every Youj package on one version.
 
 Youj is in **alpha (0.x)** until its API settles; then it goes to 1.0. Versions stay plain (0.1.0, not 0.1.0-alpha) and publish to `latest`, so `npm install @youj/react` works. What a version promises users, what counts as breaking and the stability labels are on the docs' [Versioning and stability](https://www.youj.dev/docs/versioning) page. This file is how to make a release that keeps that promise.
 
@@ -24,7 +24,7 @@ pnpm version-packages   # when releasing: apply the changesets to versions and C
 | `@youj/miniatures` | The interactive isometric miniatures, one entry per miniature (`@youj/miniatures/<id>`); React is its only peer |
 | `@youj/sound` | Interface sounds: the built-in packs for `YoujProvider`'s `sound` (Beacon, plus Halo, Rill, Glyph, Zephyr and Glass) and `definePack` with its built-in candidates, playing the cues the components emit on core's cue bus. Its audio is rendered by `pnpm -F @youj/sound render` (needs ffmpeg) and committed, so packing it needs neither |
 | `@youj/react` | The components and their optional-peer entries; its stylesheet imports core's and the icons' |
-| `youj` | The CLI: `npx youj init`, `add`, `create`, `doctor`, `mcp` |
+| `@youj/cli` | The CLI: `npx @youj/cli init`, `add`, `create`, `doctor`, `mcp` |
 | `@youj/mcp` | The MCP server for AI coding tools, `npx @youj/mcp`. Its index of the docs, components and icons is generated from this version, and its dependencies are bundled in |
 
 The workspace packages carry their published names, so what's packed is what's published.
@@ -102,7 +102,7 @@ pnpm version-packages            # 0.5.0-next.0, with CHANGELOG entries
 YOUJ_NPM_TAG=next pnpm release --to npm
 ```
 
-Testers install with `pnpm add @youj/react@next` (or `npx youj@next init`); everyone else stays on `latest`. Each further round is `pnpm version-packages` (→ `-next.1`) and the same publish. When it's ready:
+Testers install with `pnpm add @youj/react@next` (or `npx @youj/cli@next init`); everyone else stays on `latest`. Each further round is `pnpm version-packages` (→ `-next.1`) and the same publish. When it's ready:
 
 ```bash
 pnpm changeset pre exit
@@ -148,7 +148,7 @@ All packages move to the same new version, each package gets its `CHANGELOG.md` 
 
 One-time setup:
 
-1. Own the `@youj` organisation and the unscoped `youj` name on npmjs.com (publish the CLI first to reserve it).
+1. Own the `@youj` organisation on npmjs.com.
 2. Name the copyright holder: `node scripts/set-license-holder.mjs "<Legal Name>"` sets the root and every package's LICENSE and the packages' `author`; `--check` confirms it.
 3. Create an npm automation or granular token that can publish to both.
 4. For GitHub Actions, store it as the `NPM_TOKEN` secret of a `release` environment (Settings → Environments, with yourself as required reviewer). The repository must be public for provenance.
@@ -163,7 +163,7 @@ pnpm changeset git-tag && git push --tags
 
 Or from GitHub: **Actions → Release → Run workflow** with registry **npm** and channel **latest** (or **next** for a prerelease). It runs only from `main`, waits for a reviewer to approve the `release` environment, then runs the checks (including `pnpm check:changelog`, which needs a dated `## <version> - <date>` heading in CHANGELOG.md), the consumer smoke tests and the docs build, then the release, CLI first; leave **dry run** ticked to rehearse. From Actions the script adds `--provenance` automatically (the job has `id-token: write`); local publishes carry none.
 
-Then deploy the docs site from the release commit, so the docs, the `/changelog` page and the registry at `/r` describe the version that's out. Keep the time between the npm publish and the docs deploy short: `npx youj add` reads the registry on the docs site.
+Then deploy the docs site from the release commit, so the docs, the `/changelog` page and the registry at `/r` describe the version that's out. Keep the time between the npm publish and the docs deploy short: `npx @youj/cli add` reads the registry on the docs site.
 
 The packages' `repository`, `bugs` and README links point at `https://github.com/youj-dev/ui`. If the repository has moved, set `YOUJ_REPO_URL` to its https URL for the release (and the dry run), and the published copies link there instead; the dry run prints the URL it used.
 
@@ -182,12 +182,12 @@ The packages' `repository`, `bugs` and README links point at `https://github.com
 - [ ] Published on the right channel: `latest` for a release, `next` for a prerelease.
 - [ ] Tags pushed (`pnpm changeset git-tag && git push --tags`).
 - [ ] The docs site shipped from the release commit.
-- [ ] A fresh `npx youj@<version> init` works in an empty app.
+- [ ] A fresh `npx @youj/cli@<version> init` works in an empty app.
 - [ ] `pnpm e2e:install` passes: a fresh Next.js and Vite app set up as the docs say, with every block, example, icon, illustration, loader, miniature and sound pack (about an hour, with the network; `scripts/e2e/install.mjs` lists what it accepts as known).
 
 ## Rehearsing locally
 
-`YOUJ_NPM_REGISTRY` points the script at any other registry, for example a local [Verdaccio](https://verdaccio.org) to rehearse the whole install.  The CLI reads the same variable: `YOUJ_NPM_REGISTRY=<url> npx --registry <url> youj init` points the app's `@youj` scope there in its `.npmrc`, and `YOUJ_REGISTRY_URL` points `init --mode registry` and `add` at a locally built registry.
+`YOUJ_NPM_REGISTRY` points the script at any other registry, for example a local [Verdaccio](https://verdaccio.org) to rehearse the whole install.  The CLI reads the same variable: `YOUJ_NPM_REGISTRY=<url> npx --registry <url> @youj/cli init` points the app's `@youj` scope there in its `.npmrc`, and `YOUJ_REGISTRY_URL` points `init --mode registry` and `add` at a locally built registry.
 
 To rehearse that local registry, build it with `NEXT_PUBLIC_SITE_URL` set to the origin you'll serve it from, so the items' dependency URLs point there too (without it they name production's `https://www.youj.dev/r`), then serve `apps/docs/public` and point the CLI at it:
 
@@ -195,14 +195,14 @@ To rehearse that local registry, build it with `NEXT_PUBLIC_SITE_URL` set to the
 NEXT_PUBLIC_SITE_URL=http://localhost:4000 node apps/docs/scripts/registry.ts
 node scripts/serve-static.mjs apps/docs/public 4000
 # in the test app
-YOUJ_REGISTRY_URL=http://localhost:4000/r npx youj add sidebar
+YOUJ_REGISTRY_URL=http://localhost:4000/r npx @youj/cli add sidebar
 ```
 
 Serve it statically rather than with `pnpm -F docs dev`, whose `generate` step rebuilds `public/r` without the variable. Run the registry script again without it when you're done.
 
 ## Installing in an app
 
-The full guide is the docs site's Installation page. Public npm needs no registry setup or token: `npx youj init`, or by hand `pnpm add @youj/react @youj/core @youj/motion @youj/icons` and one stylesheet line after Tailwind:
+The full guide is the docs site's Installation page. Public npm needs no registry setup or token: `npx @youj/cli init`, or by hand `pnpm add @youj/react @youj/core @youj/motion @youj/icons` and one stylesheet line after Tailwind:
 
 ```css
 @import 'tailwindcss';

@@ -35,7 +35,7 @@ export function listComponents(catalog: Catalog, options: { kind?: string; categ
   if (!all.length) throw new NotFound(`No components of kind "${options.kind}". Kinds: ui, core, motion, sound.`)
   const list = inCategory('components', all, options.category).sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name))
   return [
-    `${list.length} components (a package import, or \`npx youj add <name>\` to copy one in):`,
+    `${list.length} components (a package import, or \`npx @youj/cli add <name>\` to copy one in):`,
     ...grouped(list, (c) => `- \`${c.name}\` (${c.kind}, ${c.package}, ${c.stability}) ${c.title}: ${oneLine(c.description)}`),
     '',
     'Details: get_component("<name>").',
@@ -45,7 +45,7 @@ export function listComponents(catalog: Catalog, options: { kind?: string; categ
 export function listLoaders(catalog: Catalog, category?: string): string {
   const list = inCategory('loaders', catalog.index.loaders, category)
   return [
-    `${list.length} loaders (\`npx youj add loader-<id>\`, or \`import { Loader<Name> } from '@youj/loaders/<id>'\`):`,
+    `${list.length} loaders (\`npx @youj/cli add loader-<id>\`, or \`import { Loader<Name> } from '@youj/loaders/<id>'\`):`,
     ...grouped(list, (a) => `- \`${a.id}\` (\`${a.component}\`, ${a.technique}) ${oneLine(a.description)}`),
     '',
     'search finds loaders by meaning, e.g. "uploading".',

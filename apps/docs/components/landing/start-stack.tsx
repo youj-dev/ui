@@ -222,7 +222,7 @@ export function PiecePath({ planes, pieces }: { planes: Plane[]; pieces: Piece[]
     <Path
       label="Just what you need"
       mood="umber"
-      command={`npx youj add ${piece.name}`}
+      command={`npx @youj/cli add ${piece.name}`}
       controls={
         pieces.length > 1 && (
           <Segmented

@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { es } from '@youj/core/locales/es'
- *   (copied in with npx youj add youj-locale-es: import { es } from '@/locales/es')
+ *   (copied in with npx @youj/cli add youj-locale-es: import { es } from '@/locales/es')
  *   <YoujProvider locale="es-ES" labels={es}>
  *
  * Register: infinitives on buttons ("Guardar"), "usted" in sentences, ¿…? around questions. */

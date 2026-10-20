@@ -21,7 +21,7 @@ export type CodeFile = {
 )
 
 export interface CodeInstall {
-  /** `npx youj add app-billing` */
+  /** `npx @youj/cli add app-billing` */
   command: string
   /** Registry items that come with it. */
   deps: string[]

@@ -26,7 +26,7 @@ describe('CodeBlock', () => {
   })
 
   test('a filename leads the header, with the language beside it, and names the scroll region', () => {
-    render(<CodeBlock code="pnpm dlx youj init" language="sh" filename="terminal" />)
+    render(<CodeBlock code="pnpm dlx @youj/cli init" language="sh" filename="terminal" />)
     expect(screen.getByText('terminal')).toHaveAttribute('data-slot', 'code-block-filename')
     expect(screen.getByText('sh')).toBeInTheDocument()
     expect(screen.getByLabelText('terminal')).toBeInTheDocument()

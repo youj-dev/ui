@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { ja } from '@youj/core/locales/ja'
- *   (copied in with npx youj add youj-locale-ja: import { ja } from '@/locales/ja')
+ *   (copied in with npx @youj/cli add youj-locale-ja: import { ja } from '@/locales/ja')
  *   <YoujProvider locale="ja-JP" labels={ja}>
  *
  * Register: short noun or verb stems on buttons ("保存", "閉じる"), です/ます in sentences. */

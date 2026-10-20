@@ -426,5 +426,5 @@ export function createItems(config: FrameConfig, style: YoujLook = DEFAULT_LOOK)
 }
 
 export function youjAddCommand(config: FrameConfig, style: YoujLook = DEFAULT_LOOK): string {
-  return `npx youj add ${createItems(config, style).join(' ')}`
+  return `npx @youj/cli add ${createItems(config, style).join(' ')}`
 }

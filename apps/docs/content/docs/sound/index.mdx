@@ -21,7 +21,7 @@ The sounds are rendered offline and checked for loudness and harshness. Audio do
 pnpm add @youj/sound
 ```
 
-Or `npx youj add sound`, which installs the package in an app on the packages and copies the source in an app on the registry.
+Or `npx @youj/cli add sound`, which installs the package in an app on the packages and copies the source in an app on the registry.
 
 ## Usage
 
@@ -39,7 +39,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
-A pack is an object of functions, so in the Next.js App Router it must reach the provider from a Client Component: that's why the file starts with `'use client'`, and the root layout (a Server Component) renders `<Providers>` instead of passing `sound={beacon}` itself. A theme such as `theme={basalt}` is plain data and can stay on the layout's provider. `npx youj add sound` writes this file and wires the layout for you. Vite and Pages Router apps need no directive.
+A pack is an object of functions, so in the Next.js App Router it must reach the provider from a Client Component: that's why the file starts with `'use client'`, and the root layout (a Server Component) renders `<Providers>` instead of passing `sound={beacon}` itself. A theme such as `theme={basalt}` is plain data and can stay on the layout's provider. `npx @youj/cli add sound` writes this file and wires the layout for you. Vite and Pages Router apps need no directive.
 
 That's all the components need. Button, Switch, Checkbox, Toggle, Tabs, Segmented Control, Dialog, Sheet, Toaster and the copy buttons play their cue as their motion starts. To silence one, pass `sound={false}`, as in `<Switch sound={false} />`. To silence part of the page, nest a `<YoujProvider sound={false}>` around it.
 

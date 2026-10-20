@@ -26,7 +26,7 @@
     "check:changelog": "node scripts/check-changelog.mjs",
     "check:taxonomy": "node --test --test-reporter=dot scripts/taxonomy.test.mjs && node scripts/taxonomy.mjs",
     "lint:ladder": "node scripts/taxonomy.mjs --ladder",
-    "api:update": "node scripts/api-snapshot.mjs && node scripts/surface-snapshot.mjs && pnpm -F @youj/mcp generate && pnpm -F youj -F @youj/mcp exec vitest run test/surface.test.ts -u",
+    "api:update": "node scripts/api-snapshot.mjs && node scripts/surface-snapshot.mjs && pnpm -F @youj/mcp generate && pnpm -F @youj/cli -F @youj/mcp exec vitest run test/surface.test.ts -u",
     "verify": "pnpm lint && pnpm check:imports && pnpm check:labels && pnpm check:affected && pnpm check:changesets && pnpm check:taxonomy && pnpm check:tints && pnpm check:sleeps && pnpm check:api && pnpm lint:copy-in && pnpm -r verify && pnpm check:packages",
     "prestorybook": "pnpm -r --filter \"./packages/*\" registry:build > /dev/null",
     "prebuild-storybook": "pnpm -r --filter \"./packages/*\" registry:build > /dev/null",

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// What `npx youj add` copies into an app (every block with its parts, and the illustration kit)
+// What `npx @youj/cli add` copies into an app (every block with its parts, and the illustration kit)
 // lints clean under create-next-app's ESLint config: eslint-config-next's core-web-vitals and
 // typescript sets, React Compiler's rules among them. A new Next app runs `npm run lint` over
 // whatever was copied in, so any error or warning here is one a beginner meets. Fix the code;

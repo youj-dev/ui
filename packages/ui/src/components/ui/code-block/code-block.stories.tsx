@@ -44,7 +44,7 @@ export const Hero: Story = {
 
 /** A one-line command: the language labels the header. */
 export const Command: Story = {
-  args: { code: 'pnpm dlx youj@latest init', language: 'sh' },
+  args: { code: 'pnpm dlx @youj/cli@latest init', language: 'sh' },
   render: (args) => (
     <div className="w-full max-w-[420px]">
       <CodeBlock {...args} />

@@ -325,7 +325,7 @@ function installed(root: string, versions: Record<string, string>, at = 'node_mo
 describe('doctor', () => {
   it('says to run init in an app without Youj', () => {
     const checks = doctor(fixture('next-app'), {})
-    expect(checks.at(-1)).toMatchObject({ level: 'error', fix: 'npx youj init' })
+    expect(checks.at(-1)).toMatchObject({ level: 'error', fix: 'npx @youj/cli init' })
   })
 
   it('passes an app init set up', async () => {

@@ -15,11 +15,11 @@ describe('InstallField', () => {
 
   it('shows the npm command with a copy button', () => {
     renderField()
-    expect(screen.getByRole('group', { name: 'Install command' })).toHaveTextContent('npx youj init')
+    expect(screen.getByRole('group', { name: 'Install command' })).toHaveTextContent('npx @youj/cli init')
     expect(screen.getByRole('button', { name: 'Copy install command' })).toBeVisible()
   })
 
-  it.each([['pnpm', 'pnpm dlx youj init'], ['yarn', 'yarn dlx youj init'], ['bun', 'bunx youj init'], ['npm', 'npx youj init']])('words the command for %s when picked in the menu', async (name, command) => {
+  it.each([['pnpm', 'pnpm dlx @youj/cli init'], ['yarn', 'yarn dlx @youj/cli init'], ['bun', 'bunx @youj/cli init'], ['npm', 'npx @youj/cli init']])('words the command for %s when picked in the menu', async (name, command) => {
     const user = userEvent.setup()
     renderField()
     await user.click(screen.getByRole('button', { name: 'Install options' }))

@@ -34,7 +34,7 @@ function hitLine(hit: Hit, i: number): string {
       return `${n} **${hit.item.group}: ${hit.item.title}** (${hit.item.level} block \`${hit.item.slug}\`, ${hit.item.stability}): ${oneLine(hit.item.summary)} → get_block("${hit.item.slug}")${showcaseInstall(hit.item)}`
     case 'illustration': {
       const s = hit.item
-      return `${n} **${s.name}** (illustration scene \`${s.id}\`, ${s.category}; tags: ${s.tags.join(', ')}): ${oneLine(s.description, 100)} → get_component("${s.registry}") · \`npx youj add ${s.registry}\``
+      return `${n} **${s.name}** (illustration scene \`${s.id}\`, ${s.category}; tags: ${s.tags.join(', ')}): ${oneLine(s.description, 100)} → get_component("${s.registry}") · \`npx @youj/cli add ${s.registry}\``
     }
     case 'icon': {
       const i = hit.item
@@ -47,7 +47,7 @@ function hitLine(hit: Hit, i: number): string {
     }
     case 'loader': {
       const a = hit.item
-      return `${n} **${a.title}** (${a.categoryTitle} loader \`${a.id}\`, ${a.technique}; tags: ${a.tags.join(', ')}): ${oneLine(a.description, 100)} → \`npx youj add ${a.registry}\` · \`import { ${a.component} } from '@youj/loaders/${a.id}'\``
+      return `${n} **${a.title}** (${a.categoryTitle} loader \`${a.id}\`, ${a.technique}; tags: ${a.tags.join(', ')}): ${oneLine(a.description, 100)} → \`npx @youj/cli add ${a.registry}\` · \`import { ${a.component} } from '@youj/loaders/${a.id}'\``
     }
     case 'hook':
       return `${n} **${hit.item.name}** (hook): ${oneLine(hit.item.description || hit.item.signature)} — \`${hit.item.import}\``
@@ -93,7 +93,7 @@ export function getComponent(catalog: Catalog, name: string, options: { part?: s
       else if (i.packageStylesheet) out.push('Nothing to import: it\'s CSS utilities in the package stylesheet. Add the stylesheet once to your global CSS, then use the utility classes:', code('css', i.packageStylesheet))
     }
     if (i.peerDependencies?.length) out.push(`Needs ${i.peerDependencies.map((d) => `\`${d}\``).join(', ')}: optional peers of \`${c.package}\` that the command installs. Import it from the entry above, not \`${c.package}\`.`)
-    if (!i.copyOnly) out.push('', `Or copy the source into the app with the Youj CLI: \`npx youj add ${c.name}\`${i.registryDeps.length ? ` (brings ${i.registryDeps.join(', ')})` : ''}. Import from the package unless you copy in.`)
+    if (!i.copyOnly) out.push('', `Or copy the source into the app with the Youj CLI: \`npx @youj/cli add ${c.name}\`${i.registryDeps.length ? ` (brings ${i.registryDeps.join(', ')})` : ''}. Import from the package unless you copy in.`)
   }
 
   if (want('usage') && c.usage) out.push('', '## Usage', '', code('tsx', cap(c.usage, 2400)))

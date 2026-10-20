@@ -17,15 +17,15 @@ import { LOOKS } from '@youj/core/lib/youj/look'
 
 /* The Youj MCP server: tools, resources and prompts over the bundled index. */
 
-const INSTRUCTIONS = `Youj is a React 19 + Tailwind v4 UI kit: accessible components (@youj/react), the provider, tokens and themes (@youj/core), motion (@youj/motion), loading animations (@youj/loaders), miniatures (@youj/miniatures), icons (@youj/icons: animated ones that morph between states, plus static brand marks), isometric illustrations (@youj/illustrations), themes with contrast checked against WCAG AA, and the same source to copy in, only with \`npx youj add\`. Import each thing from the package that owns it: components from \`@youj/react\`, the provider, tokens, themes and presets from \`@youj/core\`, motion (interactions, backgrounds, players) from \`@youj/motion\`, loaders from \`@youj/loaders/<id>\` (one entry each), miniatures from \`@youj/miniatures\`, icons from \`@youj/icons\`, scenes from \`@youj/illustrations\`, sounds from \`@youj/sound\`.
+const INSTRUCTIONS = `Youj is a React 19 + Tailwind v4 UI kit: accessible components (@youj/react), the provider, tokens and themes (@youj/core), motion (@youj/motion), loading animations (@youj/loaders), miniatures (@youj/miniatures), icons (@youj/icons: animated ones that morph between states, plus static brand marks), isometric illustrations (@youj/illustrations), themes with contrast checked against WCAG AA, and the same source to copy in, only with \`npx @youj/cli add\`. Import each thing from the package that owns it: components from \`@youj/react\`, the provider, tokens, themes and presets from \`@youj/core\`, motion (interactions, backgrounds, players) from \`@youj/motion\`, loaders from \`@youj/loaders/<id>\` (one entry each), miniatures from \`@youj/miniatures\`, icons from \`@youj/icons\`, scenes from \`@youj/illustrations\`, sounds from \`@youj/sound\`.
 - Find things by meaning with \`search\` (components, blocks, icons, illustrations, miniatures, loaders, hooks, docs); read one with \`get_component\` before using it.
 - Icons: \`search_icons\`, \`get_icon\`; for an icon that changes state (play → pause, menu → close, copy → check) call \`suggest_icon_morph\`.
-- Copy-in levels: cards, sections and screens are blocks (\`list_blocks\`, filter by \`level\`; \`get_block\`). Components (simple or composite) are imported from the packages instead. \`get_block\` shows the files as \`npx youj add\` writes them, a file at a time.
-- An app's frame (sidebar, top bar, account, search) is built in Create (youj.dev/create), which adds in-app screens to it as the pages of its nav; \`npx youj create '<link>'\` installs it, screens and all.
+- Copy-in levels: cards, sections and screens are blocks (\`list_blocks\`, filter by \`level\`; \`get_block\`). Components (simple or composite) are imported from the packages instead. \`get_block\` shows the files as \`npx @youj/cli add\` writes them, a file at a time.
+- An app's frame (sidebar, top bar, account, search) is built in Create (youj.dev/create), which adds in-app screens to it as the pages of its nav; \`npx @youj/cli create '<link>'\` installs it, screens and all.
 - Illustrations (isometric scenes for empty states, onboarding and heroes): \`list_illustrations\` by category, \`search\` by name or tag, \`get_component("illustration-coffee")\`. When none fits, draw one: \`get_illustration_guide\`, then \`draw_illustration\`.
 - Styling: \`get_tokens\`; a brand theme: \`create_theme\`. Motion: \`motion_guidance\` names the piece that already does it.
 - Sound: components emit cues as they move; a pack from \`@youj/sound\`, passed as \`<YoujProvider sound={beacon}>\`, plays them (opt-in). \`motion_guidance("interface sounds")\` has the setup.
-- Project: \`get_project_info\`; install commands: \`get_add_command\`. Setup: \`setup\` (prefer \`npx youj init\`).
+- Project: \`get_project_info\`; install commands: \`get_add_command\`. Setup: \`setup\` (prefer \`npx @youj/cli init\`).
 Rules: use semantic colour classes (bg-canvas, text-fg, text-fg-muted, bg-accent…) and \`h-control*\`/\`text-ui*\`, never raw colours or hard-coded durations; take timing from useYouj() or var(--yj-duration-*); every animation needs a reduced-motion equivalent.`
 
 type Result = { content: { type: 'text'; text: string }[]; isError?: boolean }
@@ -64,7 +64,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
     'get_add_command',
     {
       title: 'Get an install command',
-      description: 'Resolve component, block or illustration scene names (`illustration-coffee`) exactly (case-insensitive), then return the project’s package-manager command for missing dependencies and package imports, or npx youj add for the registry route. Includes optional peers and subpath imports. Unknown names are errors with suggestions. Does not install anything.',
+      description: 'Resolve component, block or illustration scene names (`illustration-coffee`) exactly (case-insensitive), then return the project’s package-manager command for missing dependencies and package imports, or npx @youj/cli add for the registry route. Includes optional peers and subpath imports. Unknown names are errors with suggestions. Does not install anything.',
       inputSchema: { items: z.array(z.string().trim().min(1).max(80)).min(1).max(50), cwd: cwdSchema },
       annotations: readOnly,
     },
@@ -90,7 +90,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
     'get_component',
     {
       title: 'Get a component',
-      description: 'Everything needed to use one Youj component (UI, core or motion), the illustration kit and its parts, or one illustration scene (`illustration-coffee`): what it is for and what to use instead, install (package and `npx youj add`), a usage example, props, motion tokens, reduced-motion behaviour and accessibility. Accepts a registry name (`alert-dialog`), title or export (`AlertDialogContent`).',
+      description: 'Everything needed to use one Youj component (UI, core or motion), the illustration kit and its parts, or one illustration scene (`illustration-coffee`): what it is for and what to use instead, install (package and `npx @youj/cli add`), a usage example, props, motion tokens, reduced-motion behaviour and accessibility. Accepts a registry name (`alert-dialog`), title or export (`AlertDialogContent`).',
       inputSchema: {
         name: z.string().min(1).max(80).describe('Registry name, title or export name'),
         part: z.string().max(80).optional().describe('A sub-component export to show props for, e.g. "DialogContent"'),
@@ -342,7 +342,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
     'setup',
     {
       title: 'Set up Youj',
-      description: 'How to add Youj to an app: `npx youj init` and the manual route for the framework, package or registry mode, in a component style when one is given. Paste package.json and/or the global stylesheet to check versions and stylesheet order like `youj doctor`.',
+      description: 'How to add Youj to an app: `npx @youj/cli init` and the manual route for the framework, package or registry mode, in a component style when one is given. Paste package.json and/or the global stylesheet to check versions and stylesheet order like `youj doctor`.',
       inputSchema: {
         framework: z.enum(FRAMEWORKS).optional(),
         mode: z.enum(['package', 'registry']).optional(),
@@ -410,7 +410,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
 4. Motion: use what the components already do; for anything else ask \`motion_guidance\`. Every animation keeps a reduced-motion equivalent.
 5. Style only with Youj tokens (\`get_tokens\`): semantic colour classes, h-control*, text-ui*, no raw colours or durations.
 6. If Youj isn't set up yet, follow \`setup\`.
-Then write the code, and list what to install (\`npx youj add …\` or the package).`,
+Then write the code, and list what to install (\`npx @youj/cli add …\` or the package).`,
           },
         },
       ],

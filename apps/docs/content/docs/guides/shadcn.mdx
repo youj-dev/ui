@@ -12,7 +12,7 @@ You install and import from `@youj/react`, not from files copied into your app, 
 ## 1. Install the package and its token bridge
 
 ```bash
-npx youj init
+npx @youj/cli init
 ```
 
 This installs `@youj/react`, adds its stylesheet after Tailwind and wraps the app in `YoujProvider`. [Installation](/docs/installation) covers doing it by hand.
@@ -31,7 +31,7 @@ Without the bridge, your existing shadcn components (`bg-background`, `bg-primar
 - **The color lines in `@theme inline`**, above all `--color-accent: var(--accent)`. Once shadcn's variables are gone, it makes `bg-accent` transparent, in your code and in Youj's components. Youj's stylesheet maps the same names itself, and sizes the radii (the `--radius-*` lines). Lines of your own in the block, such as `--font-sans`, stay.
 - **The `:root` and `.dark` variable blocks.** Loaded after the bridge, they win, and the palette splits in two. A variable of your own in them stays.
 
-`npx youj doctor` fails on any of the three. Your components keep their class names; only the values behind them change:
+`npx @youj/cli doctor` fails on any of the three. Your components keep their class names; only the values behind them change:
 
 <ComponentPreview name="shadcn/bridge" height={420} />
 
@@ -74,7 +74,7 @@ import { Button } from '@/components/ui/button'
 import { Button } from '@youj/react'
 ```
 
-Components that need an optional peer come from their own entry: `@youj/react/chart`, `/data-table`, `/form`, `/date`, `/carousel` and `/command`. Each component's page shows its install command and import, and `npx youj add chart` installs the peer for you.
+Components that need an optional peer come from their own entry: `@youj/react/chart`, `/data-table`, `/form`, `/date`, `/carousel` and `/command`. Each component's page shows its install command and import, and `npx @youj/cli add chart` installs the peer for you.
 
 ## What changes
 
@@ -106,7 +106,7 @@ Youj's components are built on Base UI, like shadcn's `base-nova` style. Coming 
 You can still own the source. Copy it in with the Youj CLI, which handles imports and dependencies:
 
 ```bash
-npx youj add button dialog
+npx @youj/cli add button dialog
 ```
 
 In an app on the package, `add` installs what a component needs instead of copying files it already ships. Blocks have no package entry, so copying them in is the only route. The shadcn CLI can add Youj items too, with fewer of those fixes: see [Using with shadcn](/docs/shadcn-registry).
@@ -114,14 +114,14 @@ In an app on the package, `add` installs what a component needs instead of copyi
 In an app that copies source, your shadcn files sit where Youj's go: `components/ui/button.tsx`, `dialog.tsx`, `lib/utils.ts`. Youj's components import each other, so a Youj item can't use shadcn's `dialog.tsx` in place of its own. `add` keeps a file you've edited, but when a Youj item it copies imports one of yours that can't stand in for Youj's (a shadcn component, or one without a name the item imports), it asks in a terminal whether to replace it, and otherwise stops with exit code 1 and the command to run. Replace the shared ones together:
 
 ```bash
-npx youj add button input label dialog select --overwrite
+npx @youj/cli add button input label dialog select --overwrite
 ```
 
-`lib/utils.ts` is merged, with or without `--overwrite`. shadcn's stock file, only `cn`, is replaced by Youj's, whose `cn` does the same and knows Youj's tokens. A file with helpers of your own moves to `lib/utils.local.ts`, and Youj's re-exports it, so `import { formatDate } from '@/lib/utils'` keeps working. `npx youj doctor --strict` typechecks the app afterwards.
+`lib/utils.ts` is merged, with or without `--overwrite`. shadcn's stock file, only `cn`, is replaced by Youj's, whose `cn` does the same and knows Youj's tokens. A file with helpers of your own moves to `lib/utils.local.ts`, and Youj's re-exports it, so `import { formatDate } from '@/lib/utils'` keeps working. `npx @youj/cli doctor --strict` typechecks the app afterwards.
 
 ## Checklist
 
-- One Tailwind root: Tailwind, then the components' stylesheet, then the shadcn bridge. shadcn's `@custom-variant dark`, its `@theme inline` color lines and its `:root` and `.dark` variable blocks are gone (`npx youj doctor` fails while they're there).
+- One Tailwind root: Tailwind, then the components' stylesheet, then the shadcn bridge. shadcn's `@custom-variant dark`, its `@theme inline` color lines and its `:root` and `.dark` variable blocks are gone (`npx @youj/cli doctor` fails while they're there).
 - The theme is set with `data-theme` on `<html>`.
 - No `accent` class means "hover surface" anywhere. That's `hover` now.
 - No tw-animate classes remain on overlays.

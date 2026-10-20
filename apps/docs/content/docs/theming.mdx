@@ -7,7 +7,7 @@ description: "Choose a preset or set your own colors, type and motion for light 
 
 Choose your colors, corners, spacing, typefaces and motion. You can also set line weight, shadows, surface shading, title and label styles, and chart colors. Youj uses these choices to calculate the tokens for light and dark modes.
 
-Pick your own preset and style: Youj has no brand look you're meant to keep. Without a theme, components draw the Youj palette in the **Clean style** (Inter and JetBrains Mono, rounded rectangles, sentence-case labels), in dark, so a bare page looks right; `npx youj init` and Create ask you to choose. This site wears **Graphite in light and Basalt in dark**, both the Youj palette in Clean: that pairing is only the docs' own choice. Every preset is tuned for both schemes: its light colors are chosen for light surfaces, not darkened copies of its dark ones.
+Pick your own preset and style: Youj has no brand look you're meant to keep. Without a theme, components draw the Youj palette in the **Clean style** (Inter and JetBrains Mono, rounded rectangles, sentence-case labels), in dark, so a bare page looks right; `npx @youj/cli init` and Create ask you to choose. This site wears **Graphite in light and Basalt in dark**, both the Youj palette in Clean: that pairing is only the docs' own choice. Every preset is tuned for both schemes: its light colors are chosen for light surfaces, not darkened copies of its dark ones.
 
 A theme sets colors, type and shared sizing. A [look](/docs/looks) sets how components are built. Classic, the default, gives you bordered panels, rounded-rectangle buttons and outlined fields. Bezel gives you sectioned cards, pill buttons and filled fields. Pair either look with any theme.
 
@@ -83,7 +83,7 @@ With `overlays: 'chrome'` the menus follow the chrome as well:
 
 <TwoToneExample overlays="chrome" />
 
-In CSS, `tone` is six switches, which a complete theme resets so nothing leaks from an outer scope: `--yj-tone-chrome-fixed` and `--yj-tone-chrome-dark` (each `0` or `1`), `--yj-tone-bars-chrome`, `--yj-tone-header-chrome`, `--yj-tone-overlay-chrome` and `--yj-tone-overlay-ink`. A highlighted row paints `bg-cursor` and wears `yj-on-cursor`, which letters it in `on-cursor` and turns the text roles inside to match. `checkTheme` runs its role matrix under every tone (match, chrome dark, chrome light, chrome dark with chrome overlays, a top bar alone with chrome overlays, and content bars with chrome or ink overlays), so a two-tone theme is held to AA like any other. In [Create](/create), **Chrome**, **Bars** and **Overlays** sit in the theme's basics, and the link and `npx youj create` carry them.
+In CSS, `tone` is six switches, which a complete theme resets so nothing leaks from an outer scope: `--yj-tone-chrome-fixed` and `--yj-tone-chrome-dark` (each `0` or `1`), `--yj-tone-bars-chrome`, `--yj-tone-header-chrome`, `--yj-tone-overlay-chrome` and `--yj-tone-overlay-ink`. A highlighted row paints `bg-cursor` and wears `yj-on-cursor`, which letters it in `on-cursor` and turns the text roles inside to match. `checkTheme` runs its role matrix under every tone (match, chrome dark, chrome light, chrome dark with chrome overlays, a top bar alone with chrome overlays, and content bars with chrome or ink overlays), so a two-tone theme is held to AA like any other. In [Create](/create), **Chrome**, **Bars** and **Overlays** sit in the theme's basics, and the link and `npx @youj/cli create` carry them.
 
 ### Coming from shadcn
 
@@ -97,7 +97,7 @@ Youj's names are not shadcn's, and Youj's own source never reads shadcn's. An ap
 
 It maps each shadcn name onto the role it means, per theme scope and tone: `background` to `canvas`, `card` to `surface`, `popover` to `overlay`, `primary` to `accent`, `muted` to `band`, `border`, `input` and `ring` to `line`, `line-control` and `focus`, `sidebar` to `chrome`.
 
-One name can't map: shadcn's `accent` is a hover surface, and in Youj `accent` is the brand ink. `npx youj add` rewrites shadcn's `accent` to `hover` (and `accent-foreground` to `fg`) in code it copies in; in your own code, make the same change. [Coming from shadcn/ui](/docs/guides/shadcn) covers the move step by step.
+One name can't map: shadcn's `accent` is a hover surface, and in Youj `accent` is the brand ink. `npx @youj/cli add` rewrites shadcn's `accent` to `hover` (and `accent-foreground` to `fg`) in code it copies in; in your own code, make the same change. [Coming from shadcn/ui](/docs/guides/shadcn) covers the move step by step.
 
 ## The contract
 
@@ -405,10 +405,10 @@ import { brutal, ThemeScope } from '@youj/core'
 
 ### Copy in a theme
 
-An app that copies the core (`npx youj init --mode registry`) gets the theme contract, every preset as a JavaScript export and the stylesheets of Basalt and Graphite. The stylesheets of the other presets are items of their own, since only an app that themes with `<html>` attributes (Vite, Astro) imports one:
+An app that copies the core (`npx @youj/cli init --mode registry`) gets the theme contract, every preset as a JavaScript export and the stylesheets of Basalt and Graphite. The stylesheets of the other presets are items of their own, since only an app that themes with `<html>` attributes (Vite, Astro) imports one:
 
 ```bash
-npx youj add theme terminal   # also brutal, meadow, sandstone, cinnabar, umber, seaglass, heather
+npx @youj/cli add theme terminal   # also brutal, meadow, sandstone, cinnabar, umber, seaglass, heather
 ```
 
 This copies `lib/youj/theme/themes/terminal.css` and, in a Vite or Astro app, imports it after `youj.css`. `init` adds the stylesheet of the preset you pick on its own. A theme set through `<YoujProvider theme={terminal}>`, `ThemeScope` or `themeProps` needs no stylesheet.
@@ -461,7 +461,7 @@ The theme's `controlSize` is a third, separate setting: the control height (`--y
 
 Both are props of `YoujProvider` and `ThemeScope`, and both reach portaled overlays. Neither is set by default, so an app that doesn't ask keeps every size as it was.
 
-`npx youj init` and `create` leave the provider at its standard size, with no size props. For a dense pro tool, opt in on the root provider:
+`npx @youj/cli init` and `create` leave the provider at its standard size, with no size props. For a dense pro tool, opt in on the root provider:
 
 ```tsx title="app/layout.tsx"
 <YoujProvider theme={basalt} density="compact" scaling="90%">
@@ -601,7 +601,7 @@ To give one family a shape of its own, set its switch on the theme's scope: `--y
 In your own code, use the control's props (`size`, `variant="ghost"` on a SelectTrigger, Badge's `size`) or these tokens rather than a fixed `rounded-full` or `h-10` on a kit control.
 
 <Callout title="Load your theme’s fonts">
-  A theme names font stacks; your app loads the font files. `npx youj init` loads the preset's, and Create’s export includes its theme's. Basalt (the Clean style) and the Brutal style use Inter and JetBrains Mono, which is also what a theme that leaves its fonts out gets, and Terminal JetBrains Mono, through stacks that ask for `'Inter Variable'` and `'JetBrains Mono Variable'`: the names `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` register. Install those and import them once in your root layout or entry (`import '@fontsource-variable/inter'`); `next/font` and Google register `'Inter'`, which those stacks don't match. The Bezel style uses Geist and Geist Mono (`next/font`'s `Geist` and `Geist_Mono`, or the Google Fonts stylesheet), and the Classic style IBM Plex. If a font is unavailable, the browser uses the next face in its stack.
+  A theme names font stacks; your app loads the font files. `npx @youj/cli init` loads the preset's, and Create’s export includes its theme's. Basalt (the Clean style) and the Brutal style use Inter and JetBrains Mono, which is also what a theme that leaves its fonts out gets, and Terminal JetBrains Mono, through stacks that ask for `'Inter Variable'` and `'JetBrains Mono Variable'`: the names `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` register. Install those and import them once in your root layout or entry (`import '@fontsource-variable/inter'`); `next/font` and Google register `'Inter'`, which those stacks don't match. The Bezel style uses Geist and Geist Mono (`next/font`'s `Geist` and `Geist_Mono`, or the Google Fonts stylesheet), and the Classic style IBM Plex. If a font is unavailable, the browser uses the next face in its stack.
 </Callout>
 
 ## Chart palette
@@ -670,7 +670,7 @@ const issues = checkTheme(defineTheme({ accent: '#ffd400' }))
 
 Each issue has a `level`. A pair that misses WCAG AA (text below 4.5:1, a control boundary below 3:1) is an `error`, like an input Youj can't use; an out-of-gamut color is a `warning`. `themeErrors(theme)` returns just the errors: the list that blocks a theme.
 
-In an app that copies the core, `checkTheme` and `themeErrors` aren't there: the core keeps a no-op in place of the check, since production builds strip it. `npx youj add theme check` (`youj-theme-check`) replaces it with the real one; import `checkTheme` from `@/lib/youj/theme/check`.
+In an app that copies the core, `checkTheme` and `themeErrors` aren't there: the core keeps a no-op in place of the check, since production builds strip it. `npx @youj/cli add theme check` (`youj-theme-check`) replaces it with the real one; import `checkTheme` from `@/lib/youj/theme/check`.
 
 Create and the export tools block themes with errors. Providers report errors in development; they still render the theme:
 
@@ -678,7 +678,7 @@ Create and the export tools block themes with errors. Providers report errors in
 | --- | --- |
 | `YoujProvider`, `ThemeScope` (development) | `console.error`, once per theme, naming each failing pair |
 | [Create](/create) | the command and the .zip are disabled until the Theme step passes |
-| `npx youj create '<link>'` | refused, with the failing pairs; `--allow-low-contrast` writes it anyway, with a warning |
+| `npx @youj/cli create '<link>'` | refused, with the failing pairs; `--allow-low-contrast` writes it anyway, with a warning |
 | MCP `create_theme` | refused, with the failing pairs; `allowLowContrast: true` returns it, with a warning |
 
 If you've checked that the failing pairs aren't drawn in your app, opt out on the theme itself, so the choice is visible in code and travels with the theme:
@@ -709,7 +709,7 @@ Use the builder below to try a preset and adjust its colors, type and appearance
 To use the theme in an app, open [Create](/create) and choose the **Theme** step. Choose your frame and style, then open **Export**. Copy its command and run it in your app:
 
 ```bash
-npx youj create '<paste your Create link here>'
+npx @youj/cli create '<paste your Create link here>'
 ```
 
 The CLI installs the selected frame and writes your theme to `lib/theme.ts`. Keep the link in quotes so your shell preserves its settings. Add `--dry-run` to preview the changes, or `--mode registry` to copy source files into an app that has not been set up yet. Create also offers a ZIP and code you can copy by hand.

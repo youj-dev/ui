@@ -17,7 +17,7 @@
  * What it can't map: shadcn's `accent` and `accent-foreground`. In youj
  * `accent` is the brand colour, and `bg-accent` is that colour's class, so
  * shadcn's hover surface can't take the name. `--sidebar-accent` has no such
- * clash. `npx youj add` rewrites shadcn's `accent` to `hover` (and
+ * clash. `npx @youj/cli add` rewrites shadcn's `accent` to `hover` (and
  * `accent-foreground` to `fg`) in the code it copies in. */
 
 @layer base {

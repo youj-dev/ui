@@ -69,7 +69,7 @@ export function stabilityOf(item: Pick<RegistryItem, 'name' | 'package' | 'type'
 
 /** Docs pages about a package or an entry rather than one item. */
 const PAGE_ENTRIES: Record<string, string> = {
-  '/docs/cli': 'youj',
+  '/docs/cli': '@youj/cli',
   '/docs/mcp': '@youj/mcp',
   '/docs/loaders': '@youj/loaders',
   '/docs/icons': '@youj/icons',

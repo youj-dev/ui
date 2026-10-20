@@ -102,7 +102,7 @@ export function ExportPanel(props: ExportPanelProps) {
   const code = useMemo(() => generateCode(scene, { link }), [scene, link])
   const json = useMemo(() => toJson(scene), [scene])
   const highlighted = useMemo(() => highlightTsx(code), [code])
-  const install = `npx youj add ${installItems(scene).join(' ')}`
+  const install = `npx @youj/cli add ${installItems(scene).join(' ')}`
   const component = /export function (\w+)/.exec(code)?.[1] ?? 'Illustration'
 
   const icon = { size: 16, strokeWidth: 1.75 }

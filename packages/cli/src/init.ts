@@ -274,7 +274,7 @@ async function copyCore(project: Project, pm: PackageManager, items: string[], s
     } catch (failure) {
       // Undo what shadcn wrote before it failed: the app's files as they were, nothing half there.
       rollback(project, before)
-      throw new CliError(`Copying the core failed, so init stopped before pointing your stylesheet and layout at it:\n${failure instanceof Error ? failure.message : String(failure)}\nFix that, then run npx youj init --mode registry again.`)
+      throw new CliError(`Copying the core failed, so init stopped before pointing your stylesheet and layout at it:\n${failure instanceof Error ? failure.message : String(failure)}\nFix that, then run npx @youj/cli init --mode registry again.`)
     }
     outcome = settle(project, before, false)
   } finally {
@@ -285,11 +285,11 @@ async function copyCore(project: Project, pm: PackageManager, items: string[], s
   const said = otherOutput(output)
   if (outcome.conflicts.length)
     throw new CliError(
-      `Files of your own are where Youj's core goes, so init stopped before pointing your stylesheet and layout at it:\n${outcome.conflicts.map((f) => `  ${f}`).join('\n')}\nMove or rename them, then run npx youj init --mode registry again. (components.json and the @/ alias are set up already.)`,
+      `Files of your own are where Youj's core goes, so init stopped before pointing your stylesheet and layout at it:\n${outcome.conflicts.map((f) => `  ${f}`).join('\n')}\nMove or rename them, then run npx @youj/cli init --mode registry again. (components.json and the @/ alias are set up already.)`,
     )
   if (missing.length)
     throw new CliError(
-      `The core didn't copy completely (missing: ${missing.join(', ')}), so init stopped before pointing your stylesheet and layout at it.${said.length ? `\nshadcn said:\n${said.map((l) => `  ${l}`).join('\n')}` : ''}\nFix that, then run npx youj init --mode registry again. (components.json and the @/ alias are set up already.)`,
+      `The core didn't copy completely (missing: ${missing.join(', ')}), so init stopped before pointing your stylesheet and layout at it.${said.length ? `\nshadcn said:\n${said.map((l) => `  ${l}`).join('\n')}` : ''}\nFix that, then run npx @youj/cli init --mode registry again. (components.json and the @/ alias are set up already.)`,
     )
 }
 

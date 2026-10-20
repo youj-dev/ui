@@ -14,7 +14,7 @@ const HEAD = `${bold('youj')} ${dim(`v${VERSION}`)}: set up Youj in a React app.
 
 /** Each command's help: its line, then its options. `youj <command> --help` prints just one. */
 const COMMAND_HELP: Record<string, string> = {
-  init: `  ${bold('npx youj init')}              detect the app, ask a few questions, set everything up
+  init: `  ${bold('npx @youj/cli init')}              detect the app, ask a few questions, set everything up
     --yes, -y                      take the defaults; no prompts
     --mode <package|registry>      the package, or copy-in source (default: package)
     --theme <${THEMES.join('|')}>   default: basalt
@@ -22,13 +22,13 @@ const COMMAND_HELP: Record<string, string> = {
     --quality <${QUALITIES.join('|')}>          default: auto
     --look <${LOOKS.join('|')}>          how components are built, with any theme (default: classic)
     --dry-run                      show the changes; write and install nothing`,
-  create: `  ${bold('npx youj create')} '<link>'   set the app up from a Create link (quoted): Youj, the theme
+  create: `  ${bold('npx @youj/cli create')} '<link>'   set the app up from a Create link (quoted): Youj, the theme
                                    in lib/theme.ts, the link's look, the frame's blocks and components/app-shell.tsx
     --mode <package|registry>      for an app without Youj yet (default: package)
     --overwrite                    replace a lib/theme.ts or app-shell.tsx that's already there
     --allow-low-contrast           write a theme that misses WCAG AA contrast (refused by default)
     --dry-run                      show the changes and commands; write and run nothing`,
-  add: `  ${bold('npx youj add')} <items…>       copy items in as source you own;
+  add: `  ${bold('npx @youj/cli add')} <items…>       copy items in as source you own;
                                    on the package, install what a component needs (add chart → recharts),
                                    and copy a block on its own, importing the rest from the packages;
                                    add sound: @youj/sound, with sound={beacon} on YoujProvider;
@@ -43,9 +43,9 @@ const COMMAND_HELP: Record<string, string> = {
     --view[=file]                 show the items' files as the registry has them (registry apps)
     --yes, -y                      don't ask before replacing files of yours
                                    other options go to shadcn as they are`,
-  doctor: `  ${bold('npx youj doctor')}            check the setup and print fixes
+  doctor: `  ${bold('npx @youj/cli doctor')}            check the setup and print fixes
     --strict                       fail on what's to look at too, and typecheck the app (tsc)`,
-  mcp: `  ${bold('npx youj mcp')}               add the Youj MCP server to your AI editor's config
+  mcp: `  ${bold('npx @youj/cli mcp')}               add the Youj MCP server to your AI editor's config
     --client <${MCP_CLIENTS.join('|')}|all>   which editor (repeatable; default: ask, or the ones found)
     --yes, -y                      don't ask which editors
     --print                        print the config; write nothing
@@ -117,12 +117,12 @@ async function main(argv: string[]) {
     const named = theirs.length > 4 ? `${theirs.slice(0, 4).join(', ')}…` : theirs.join(', ')
     const next =
       result.mode === 'package'
-        ? `import { Button } from '@youj/react'\n\n${theirs.length ? dim(`Your own ${named} stay as they are: switch each import to @youj/react when you're ready.\n`) : ''}${dim('Then: npx youj doctor, any time')}`
+        ? `import { Button } from '@youj/react'\n\n${theirs.length ? dim(`Your own ${named} stay as they are: switch each import to @youj/react when you're ready.\n`) : ''}${dim('Then: npx @youj/cli doctor, any time')}`
         : theirs.length
-          ? `npx youj add ${theirs.slice(0, 5).join(' ')} --overwrite\n\n${dim(`Your own ${named} stay until you replace them. Youj's components import each other, so replace the shared ones together, as above.\n`)}${dim('Then: npx youj doctor, any time')}`
-          : `npx youj add button dialog\n\n${dim('Then: npx youj doctor, any time')}`
+          ? `npx @youj/cli add ${theirs.slice(0, 5).join(' ')} --overwrite\n\n${dim(`Your own ${named} stay until you replace them. Youj's components import each other, so replace the shared ones together, as above.\n`)}${dim('Then: npx @youj/cli doctor, any time')}`
+          : `npx @youj/cli add button dialog\n\n${dim('Then: npx @youj/cli doctor, any time')}`
     const reactDocument = result.framework === 'next-app' || result.framework === 'next-pages' || result.framework === 'react-router'
-    const toggle = result.mode === 'package' ? `<ThemeToggle /> from ${PACKAGES.react}` : 'a ThemeToggle (npx youj add theme-toggle)'
+    const toggle = result.mode === 'package' ? `<ThemeToggle /> from ${PACKAGES.react}` : 'a ThemeToggle (npx @youj/cli add theme-toggle)'
     const scheme = dim(
       reactDocument && result.mode === 'registry'
         ? `Dark by default: data-theme="dark" on <html>. Remove it for light, or add ${toggle} to switch it (see Installation: Theme).`

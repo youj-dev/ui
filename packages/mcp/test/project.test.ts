@@ -110,7 +110,7 @@ describe('get_add_command', () => {
     // The Wizard component and the app-setup-wizard block (slug "wizard") both answer to "wizard".
     const root = project()
     expect(await getAddCommand(catalog, ['wizard'], root)).toContain('Wizard')
-    expect(await getAddCommand(catalog, ['app-setup-wizard'], root)).toContain('npx youj add app-setup-wizard')
+    expect(await getAddCommand(catalog, ['app-setup-wizard'], root)).toContain('npx @youj/cli add app-setup-wizard')
   })
 
   it('omits existing dependencies, uses packageManager fallback and defaults cwd', async () => {
@@ -126,13 +126,13 @@ describe('get_add_command', () => {
   })
 
   it('resolves registry components and blocks case-insensitively', async () => {
-    expect(await getAddCommand(catalog, ['BUTTON', 'AUTH-LOGIN', 'APP-ANALYTICS-OVERVIEW'], join(fixtures, 'registry'))).toBe('```bash\nnpx youj add button auth-login app-analytics-overview\n```')
+    expect(await getAddCommand(catalog, ['BUTTON', 'AUTH-LOGIN', 'APP-ANALYTICS-OVERVIEW'], join(fixtures, 'registry'))).toBe('```bash\nnpx @youj/cli add button auth-login app-analytics-overview\n```')
   })
 
   it('gives registry configuration precedence in mixed projects', async () => {
     const root = project('registry')
     write(root, 'package.json', '{"dependencies":{"@youj/react":"0.1.0"}}')
-    expect(await getAddCommand(catalog, ['Button'], root)).toContain('npx youj add button')
+    expect(await getAddCommand(catalog, ['Button'], root)).toContain('npx @youj/cli add button')
   })
 
   it('includes composition dependencies and explains copying the source', async () => {

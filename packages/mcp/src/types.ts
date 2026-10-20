@@ -46,7 +46,7 @@ export interface PackageInstall extends InstallBase {
   packageStylesheet?: string
 }
 
-/** Only `npx youj add` installs it: the package doesn't export it (the illustration kit). */
+/** Only `npx @youj/cli add` installs it: the package doesn't export it (the illustration kit). */
 export interface CopyInstall extends InstallBase {
   copyOnly: true
   /** The import from the path the CLI writes, when it has one. */

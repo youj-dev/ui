@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { sv } from '@youj/core/locales/sv'
- *   (copied in with npx youj add youj-locale-sv: import { sv } from '@/locales/sv')
+ *   (copied in with npx @youj/cli add youj-locale-sv: import { sv } from '@/locales/sv')
  *   <YoujProvider locale="sv-SE" labels={sv}>
  *
  * Register: imperatives on buttons ("Spara"), "du" in sentences, as in Apple's and Microsoft's Swedish. */

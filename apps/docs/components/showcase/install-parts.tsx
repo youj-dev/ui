@@ -27,7 +27,7 @@ export function installedFiles(entry: Pick<ShowcaseEntry, 'kind' | 'slug'>): Cod
 
 /** One `youj add` for every block a composition stacks. */
 export function stackInstall(names: string[]): CodeInstall {
-  return { command: `npx youj add ${names.join(' ')}`, deps: names }
+  return { command: `npx @youj/cli add ${names.join(' ')}`, deps: names }
 }
 
 /** The `youj add` command that copies in a registry item, and the items it brings. */
@@ -35,7 +35,7 @@ export function registryInstall(name: string | undefined): CodeInstall | undefin
   const item = name ? registryItems().get(name) : undefined
   if (!item) return undefined
   return {
-    command: `npx youj add ${name}`,
+    command: `npx @youj/cli add ${name}`,
     deps: (item.registryDependencies ?? []).map((d) => d.replace(/^.*\/r\/|\.json$/g, '')),
   }
 }

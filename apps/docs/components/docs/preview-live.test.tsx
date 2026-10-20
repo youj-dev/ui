@@ -175,7 +175,7 @@ describe('PreviewLive island', () => {
       await user.click(tile)
       const dialog = await screen.findByRole('dialog')
       expect(within(dialog).getByRole('heading', { name: 'probe.tsx' })).toBeInTheDocument()
-      expect(await within(dialog).findByText('npx youj add test')).toBeInTheDocument()
+      expect(await within(dialog).findByText('npx @youj/cli add test')).toBeInTheDocument()
       await vi.waitFor(() => expect(dialog).toHaveTextContent('export default Probe'))
       // The stage is untouched: no code shown in place, no layout change.
       expect(stage()).toBe(before)

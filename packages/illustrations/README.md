@@ -2,7 +2,7 @@
 
 > Alpha (0.x): APIs can change between minor versions. See [Versioning](https://www.youj.dev/docs/versioning).
 
-Isometric illustrations for React, drawn in SVG from your theme's tokens: ready-made scenes that assemble as they come into view, and the kit they're built with (`IsoScene`, `IsoBox`, `IsoCylinder`, `IsoPlatform`, `IsoStack`, `IsoCallout`, `IsoFloor`, `IsoPiece` and the grid backdrops `DotGrid`, `LineGrid` and `IsoGrid`). `IllustrationStage` and the kit's other scene helpers are copy-in only, with `npx youj add illustration-kit`.
+Isometric illustrations for React, drawn in SVG from your theme's tokens: ready-made scenes that assemble as they come into view, and the kit they're built with (`IsoScene`, `IsoBox`, `IsoCylinder`, `IsoPlatform`, `IsoStack`, `IsoCallout`, `IsoFloor`, `IsoPiece` and the grid backdrops `DotGrid`, `LineGrid` and `IsoGrid`). `IllustrationStage` and the kit's other scene helpers are copy-in only, with `npx @youj/cli add illustration-kit`.
 
 ```bash
 pnpm add @youj/illustrations @youj/core motion@^13.4.4 react react-dom
@@ -24,7 +24,7 @@ export function NoInvoices() {
 }
 ```
 
-`npx youj add illustration-<id>` installs the package and adds the sheet in an app on the packages, or copies the scene's source in an app on the registry.
+`npx @youj/cli add illustration-<id>` installs the package and adds the sheet in an app on the packages, or copies the scene's source in an app on the registry.
 
 ## Entries
 

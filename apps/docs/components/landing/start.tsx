@@ -77,7 +77,7 @@ export function Start({ install, componentsUrl, screensUrl }: { install: string;
           />
         </Path>
         <PiecePath planes={PLANES} pieces={PIECES.map(piece)} />
-        <WidePath label="A whole screen" command={`npx youj add ${PAGE}`} picture={<BlocksFrame />}>
+        <WidePath label="A whole screen" command={`npx @youj/cli add ${PAGE}`} picture={<BlocksFrame />}>
           <p className="max-w-[44ch] text-[14px] leading-relaxed text-pretty text-fg-muted">
             Start from a screen, not a blank file. Screens, sections and cards are copied in as source you own, in your theme.
           </p>

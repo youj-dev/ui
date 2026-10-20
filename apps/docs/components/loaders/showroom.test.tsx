@@ -209,7 +209,7 @@ describe('the loaders page', { timeout: 30_000 }, () => {
     expect(within(dialog).getByRole('group', { name: 'Usage' })).toHaveTextContent(`<LoaderTittle size="sm" label={['Loading…', 'Syncing changes', 'Almost there…']} showLabel labelEffect="scramble" />`)
     // Copied in: the CLI's command, and the code from where it writes the loader.
     fireEvent.click(within(within(dialog).getByRole('group', { name: 'Take it as' })).getByRole('button', { name: 'Copy in' }))
-    expect(within(dialog).getByRole('group', { name: 'Copy-in command' })).toHaveTextContent('npx youj add loader-tittle')
+    expect(within(dialog).getByRole('group', { name: 'Copy-in command' })).toHaveTextContent('npx @youj/cli add loader-tittle')
     expect(within(dialog).getByRole('group', { name: 'The copied component' })).toHaveTextContent("from '@/components/youj/loaders/depth/tittle'")
     fireEvent.click(within(dialog).getByRole('tab', { name: 'Props' }))
     const props = within(dialog).getByRole('table', { name: 'LoaderProps props' })

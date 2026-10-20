@@ -12,7 +12,7 @@ const oneLine = (text: string, max = 130) => {
 }
 
 const build = (site: string) =>
-  `Draw your own: the illustration builder (experimental) at ${site}/illustrations/build, or the kit the scenes are drawn with (get_component("illustration-kit"); copy-in only: \`npx youj add illustration-kit iso-shapes\`).`
+  `Draw your own: the illustration builder (experimental) at ${site}/illustrations/build, or the kit the scenes are drawn with (get_component("illustration-kit"); copy-in only: \`npx @youj/cli add illustration-kit iso-shapes\`).`
 
 export function listIllustrations(catalog: Catalog, category?: string): string {
   const { categories, scenes } = catalog.index.illustrations
@@ -20,7 +20,7 @@ export function listIllustrations(catalog: Catalog, category?: string): string {
   const asked = category?.trim().toLowerCase()
   if (!asked) {
     return [
-      `${scenes.length} illustration scenes in ${categories.length} categories (isometric, drawn from your theme; copy one in with \`npx youj add illustration-<id>\`, or draw it by id with \`<Illustration scene="<id>" />\` from \`@youj/illustrations\`):`,
+      `${scenes.length} illustration scenes in ${categories.length} categories (isometric, drawn from your theme; copy one in with \`npx @youj/cli add illustration-<id>\`, or draw it by id with \`<Illustration scene="<id>" />\` from \`@youj/illustrations\`):`,
       '',
       ...categories.map((c) => {
         const own = scenes.filter((s) => s.category === c.id)
@@ -39,7 +39,7 @@ export function listIllustrations(catalog: Catalog, category?: string): string {
     '',
     ...own.map((s) => `- \`${s.id}\` ${s.name} (\`${s.component}\`; tags: ${s.tags.join(', ') || 'none'}): ${oneLine(s.description)}`),
     '',
-    'Install one: `npx youj add illustration-<id>`. Details: get_component("illustration-<id>").',
+    'Install one: `npx @youj/cli add illustration-<id>`. Details: get_component("illustration-<id>").',
   ].join('\n')
 }
 
@@ -61,7 +61,7 @@ export function getScene(catalog: Catalog, scene: Scene): string {
     code('tsx', `import { Illustration, ${scene.component} } from '@youj/illustrations'\n\n<Illustration scene="${scene.id}" title="…" />\n<${scene.component} title="…" />`),
     '',
     'Or copy the one scene in with the Youj CLI (it brings the kit the scenes are drawn with and the shapes it uses):',
-    code('bash', `npx youj add ${scene.registry}`),
+    code('bash', `npx @youj/cli add ${scene.registry}`),
     ...(scene.importPath ? [`It lands in \`${scene.importPath.replace(/^@\//, '')}.tsx\` (under \`src/\` in an app that has one); import it through your \`@/\` alias:`, code('tsx', `import { ${scene.component} } from '${scene.importPath}'`)] : []),
     '',
     'Every scene frames the same volume, so any scene swaps for any other without the layout moving. It is decorative unless you give it a `title`; reduced motion draws it finished and still.',

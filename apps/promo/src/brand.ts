@@ -7,8 +7,8 @@
 const NAME = 'Youj'
 /** The npm scope the packages publish under. */
 const SCOPE = '@youj'
-/** The setup CLI: `npx youj init` sets an app up, `add` brings in one item. */
-const CLI = 'youj'
+/** The setup CLI: `npx @youj/cli init` sets an app up, `add` brings in one item. */
+const CLI = `${SCOPE}/cli`
 
 const PACKAGES = {
   ui: `${SCOPE}/react`,

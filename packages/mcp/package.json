@@ -29,7 +29,7 @@
     "directory": "packages/mcp"
   },
   "bin": {
-    "youj-mcp": "./dist/server.mjs"
+    "youj-mcp": "dist/server.mjs"
   },
   "files": [
     "dist",

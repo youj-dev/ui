@@ -33,7 +33,7 @@ export function RegistryExplorer({ picks = PICKS }: { picks?: string[] }) {
       {
         name,
         title: item.title?.replace(/ icon$/, '') ?? name,
-        command: `npx youj add ${name}`,
+        command: `npx @youj/cli add ${name}`,
         npm: item.dependencies ?? [],
         kind: kindOf(item),
         brings: dependencyClosure(name, items).flatMap((dep) => {

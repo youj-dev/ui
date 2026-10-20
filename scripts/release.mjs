@@ -1,7 +1,6 @@
 // Publishes the workspace packages: @youj/core, @youj/motion, @youj/loaders, @youj/sound, @youj/icons,
-// @youj/illustrations, @youj/miniatures, @youj/react, the CLI and the MCP server (@youj/mcp). The CLI is `youj` on npm (so
-// `npx youj init` works); GitHub Packages only takes scoped names, so
-// there it's `@youj/cli`.
+// @youj/illustrations, @youj/miniatures, @youj/react, the CLI (@youj/cli, whose command is `youj`) and the MCP server
+// (@youj/mcp).
 //
 //   node scripts/release.mjs             publish to GitHub Packages what it doesn't have yet
 //   node scripts/release.mjs --to npm    the same on the public npm registry, with public access
@@ -48,12 +47,9 @@ if (!/^https:\/\/[^/?#\s]+\/[^?#\s]+$/.test(repoUrl)) {
 // The workspace's package.json and READMEs link the default repository; the published copies link the configured one.
 const retarget = (text) => text.replaceAll(DEFAULT_REPO_URL, repoUrl)
 const registry = (process.env.YOUJ_NPM_REGISTRY ?? target.registry).replace(/\/?$/, '/')
-// The CLI goes first: it reserves the `youj` name on npm before anything else can go wrong (it installs the
-// rest at its own version, so `npx youj` works as soon as they follow). Then dependencies first: motion,
+// The CLI goes first (it installs the rest at its own version, so `npx @youj/cli` works as soon as they follow). Then dependencies first: motion,
 // loaders, sound, icons and illustrations depend on core, miniatures on nothing; ui on core, motion and icons.
 const PACKAGES = ['cli', 'core', 'motion', 'loaders', 'sound', 'icons', 'illustrations', 'miniatures', 'ui', 'mcp']
-// The published name, where it differs from the workspace's.
-const publishedName = (name) => (name === 'youj' && options.to === 'github' ? '@youj/cli' : name)
 
 const work = mkdtempSync(join(tmpdir(), 'youj-release-'))
 const userconfig = join(work, '.npmrc')
@@ -99,7 +95,7 @@ process.on('exit', () => rmSync(work, { recursive: true, force: true }))
 const summary = []
 for (const dir of PACKAGES) {
   const workspace = JSON.parse(readFileSync(join(root, 'packages', dir, 'package.json'), 'utf8'))
-  const name = publishedName(workspace.name)
+  const name = workspace.name
   if (isPublished(name, workspace.version)) {
     summary.push(`${name}@${workspace.version} is already published`)
     continue

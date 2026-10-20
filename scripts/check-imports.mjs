@@ -51,7 +51,7 @@ const APP_PATH_EXCEPTIONS = {
   // A story that shows toasts with two loaders as their icon (ui doesn't declare loaders; the story reaches the source by path).
   'packages/ui/src/components/ui/toast.stories.tsx': 'packages/loaders',
 }
-const isYoujPackage = (name) => name.startsWith('@youj/') || name === 'youj'
+const isYoujPackage = (name) => name.startsWith('@youj/')
 
 function* walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -147,7 +147,7 @@ for (const dir of dirs) {
       const rel = relative(root, file)
       const local = relative(dir, file)
       const direction = DIRECTION[pkg.name]
-      if (isYoujPackage(name) && name !== pkg.name && ((direction && !direction.includes(name)) || (pkg.name === 'youj' && CLI_SOURCE_DIRS.some((d) => local.startsWith(`${d}/`))))) {
+      if (isYoujPackage(name) && name !== pkg.name && ((direction && !direction.includes(name)) || (pkg.name === '@youj/cli' && CLI_SOURCE_DIRS.some((d) => local.startsWith(`${d}/`))))) {
         problems.push(`${rel}: imports ${spec}, against the dependency direction (${pkg.name} may import ${direction?.join(', ') || 'no Youj package'})`)
       }
       if (spec.startsWith('.')) {

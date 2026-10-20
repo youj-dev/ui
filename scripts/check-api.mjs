@@ -11,7 +11,7 @@ const STEPS = [
   node('scripts/surface-snapshot.mjs', '--check'),
   node('scripts/check-surface.mjs'),
   ['pnpm', '-F', '@youj/mcp', 'generate'],
-  ['pnpm', '-F', 'youj', '-F', '@youj/mcp', 'exec', 'vitest', 'run', 'test/surface.test.ts'],
+  ['pnpm', '-F', '@youj/cli', '-F', '@youj/mcp', 'exec', 'vitest', 'run', 'test/surface.test.ts'],
 ]
 
 for (const [cmd, ...args] of STEPS) {

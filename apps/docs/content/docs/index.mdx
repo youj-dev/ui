@@ -13,7 +13,7 @@ Youj is accessible components, animated icons, illustrations and themes that mov
 
 You need Node 22 or later and a React 19 app. Don't have one yet? Run `npx create-next-app@latest my-app --ts --tailwind --app`, then `cd my-app` (or `npm create vite@latest my-app -- --template react-ts` for Vite).
 
-1. In your app, run `npx youj init`. It installs the packages and wires the provider and the stylesheet.
+1. In your app, run `npx @youj/cli init`. It installs the packages and wires the provider and the stylesheet.
 2. Import a component and render it:
 
 ```tsx
@@ -53,7 +53,7 @@ In the Next.js App Router, a component that takes an event handler or holds stat
     Optional interface sounds that components cue as their motion starts.
   </Card>
   <Card title="CLI and MCP" href="/docs/cli">
-    <code>npx youj</code> sets up and adds to your app, and an MCP server gives AI coding tools the docs.
+    <code>npx @youj/cli</code> sets up and adds to your app, and an MCP server gives AI coding tools the docs.
   </Card>
 </Cards>
 
@@ -75,7 +75,7 @@ Read [Motion principles](/docs/motion/principles) to see each one side by side w
 
 | Compare | Package | Registry |
 | --- | --- | --- |
-| Install | `npx youj init` | `npx youj init --mode registry` |
+| Install | `npx @youj/cli init` | `npx @youj/cli init --mode registry` |
 | You get | Components to import | Their source files, in your app |
 | Updates | Bump the version | Add the item again, or edit it freely |
 | Best for | Using Youj as it is | Owning and tuning the code |

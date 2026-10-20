@@ -15,15 +15,15 @@ Everything Youj ships sits on one ladder, from a single control to a whole scree
 | --- | --- | --- | --- |
 | Component, simple | One control, surface, mark or effect with plain props: a button, a dialog, a sparkline. | Importing from `@youj/react` or `@youj/motion` | [Components](/docs/components) |
 | Component, composite | Several parts, or a model of rows, series or steps, with generic props: a data table, a chart, a date range picker. | Importing from `@youj/react` | [Components](/docs/components) |
-| Card | A self-contained card or panel with content of its own, in a product domain: a deploy pipeline, a recipe. | `npx youj add <name>` | [Cards](/docs/blocks/activity-and-conversations) |
-| Section | A full-width band of a website: a hero, pricing, a footer. | `npx youj add <name>` | [Sections](/docs/blocks/hero) |
-| Screen | A full screen: sign-in, settings, a dashboard. | `npx youj add <name>` | [Screens](/docs/blocks/checkout) |
+| Card | A self-contained card or panel with content of its own, in a product domain: a deploy pipeline, a recipe. | `npx @youj/cli add <name>` | [Cards](/docs/blocks/activity-and-conversations) |
+| Section | A full-width band of a website: a hero, pricing, a footer. | `npx @youj/cli add <name>` | [Sections](/docs/blocks/hero) |
+| Screen | A full screen: sign-in, settings, a dashboard. | `npx @youj/cli add <name>` | [Screens](/docs/blocks/checkout) |
 
 An item is built from items on its own level or below, never above: a screen uses cards, a card uses composite components, and a date range picker is built on the date picker. Cards, sections and screens are together the **blocks**: their registry type is `registry:block` and `add` writes them under `blocks/`.
 
 ### Components
 
-Components are the basics: code you depend on and update with the package. Each component's [docs page](/docs/components) shows it live, with its install command (`npx youj add <name>`), its import and its props, variants and states. Find one by what it does, then compose it.
+Components are the basics: code you depend on and update with the package. Each component's [docs page](/docs/components) shows it live, with its install command (`npx @youj/cli add <name>`), its import and its props, variants and states. Find one by what it does, then compose it.
 
 ```tsx
 import { Button } from '@youj/react'
@@ -54,7 +54,7 @@ Browse a level, smallest first. The rest of this page is about adding the copy-i
 A block is one card, section or screen, ready to use as it is. Add it by its registry name, which its page shows:
 
 ```bash
-npx youj add app-analytics-overview
+npx @youj/cli add app-analytics-overview
 ```
 
 In an app on the packages, `add` writes the block's own files under your `@/` alias, `blocks/app/analytics-overview.tsx` and its parts in `blocks/app/analytics-overview/`, and copies no component: the block imports those from `@youj/react`, `@youj/core`, `@youj/motion` and `@youj/icons`. It installs whatever the block needs that the app doesn't have yet, here `recharts` for its charts and `date-fns` and `react-day-picker` for its date range picker. Then render it:

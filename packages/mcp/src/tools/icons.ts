@@ -148,7 +148,7 @@ export function getIcon(catalog: Catalog, name: string): string {
       '',
       ...TRIGGERS.map((t) => `- ${t}`),
       '',
-      `\`intensity\` (subtle, default, strong) scales the effect; \`direction\` steers directional ones and follows RTL. Install: \`npm install ${ICONS_PACKAGE} lucide-react\`, or \`npx youj add youj-icon\` plus \`npm install lucide-react\`.`,
+      `\`intensity\` (subtle, default, strong) scales the effect; \`direction\` steers directional ones and follows RTL. Install: \`npm install ${ICONS_PACKAGE} lucide-react\`, or \`npx @youj/cli add youj-icon\` plus \`npm install lucide-react\`.`,
       ...(swaps.length ? ['', `Swaps well with: ${swaps.map((p) => (p.from === icon ? p.to.name : p.from.name)).join(', ')} (IconSwap).`] : []),
       '',
       `Reduced motion: ${reducedNote(catalog)}`,
@@ -178,7 +178,7 @@ export function getIcon(catalog: Catalog, name: string): string {
   out.push('', '## Triggers', '', ...TRIGGERS.map((t) => `- ${t}`))
   const props = catalog.index.props.IconProps
   if (props) out.push('', '## Props', '', propsTable(props))
-  out.push('', `Install: \`npm install ${ICONS_PACKAGE}\`, or copy the source: \`npx youj add icon-${icon.name}\`.`)
+  out.push('', `Install: \`npm install ${ICONS_PACKAGE}\`, or copy the source: \`npx @youj/cli add icon-${icon.name}\`.`)
   if (swaps.length) out.push('', `IconSwap pairs: ${swaps.map((p) => `${p.from.name} → ${p.to.name}`).join(', ')}.`)
   out.push('', `Reduced motion: ${reducedNote(catalog)}`)
   return out.join('\n')

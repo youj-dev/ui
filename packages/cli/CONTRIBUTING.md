@@ -1,6 +1,6 @@
 # Working on the youj CLI
 
-What it is: the setup CLI (`npx youj`): `init`, `add`, `create`, `doctor` and `mcp`. What it does for users is in [README.md](README.md).
+What it is: the setup CLI (`npx @youj/cli`): `init`, `add`, `create`, `doctor` and `mcp`. What it does for users is in [README.md](README.md).
 
 ## House rules
 
@@ -10,7 +10,7 @@ What typically drifts here. The root [Principles](../../CONTRIBUTING.md#principl
 - File edits in `codemods.ts` are careful string edits anchored on one landmark each, so code the CLI does not own keeps its formatting. Cover each with a snapshot against a fixture app.
 - Test with `test/fixtures` and a fake package manager. Never run a real install or touch the network in tests.
 - Changing what a command writes is a golden-file change: update the snapshots on purpose and say why in the pull request.
-- Rebuild before trying `node dist/cli.mjs` (`pnpm -F youj build`); the tests fail on a stale `dist/`.
+- Rebuild before trying `node dist/cli.mjs` (`pnpm -F @youj/cli build`); the tests fail on a stale `dist/`.
 - Keep the registry shape in sync with `apps/docs` (`/r`) and `packages/ui/entries.json`. If an item name or entry changes, update the CLI and the docs together.
 
 ## Layout
@@ -52,17 +52,17 @@ shadcn fills `${YOUJ_REGISTRY_TOKEN}` in from the environment or `.env.local` an
 ## Commands
 
 ```bash
-pnpm -F youj typecheck|test|build|verify
+pnpm -F @youj/cli typecheck|test|build|verify
 ```
 
-`verify` typechecks, rebuilds `dist/` and runs the tests. `dist/` is gitignored, so a checkout can hold a build older than `src/` and `node dist/cli.mjs` then runs old behaviour; the tests fail when `dist/cli.mjs` is older than `src/`, so run `pnpm -F youj build` (or `verify`) before trying the CLI from a checkout.
+`verify` typechecks, rebuilds `dist/` and runs the tests. `dist/` is gitignored, so a checkout can hold a build older than `src/` and `node dist/cli.mjs` then runs old behaviour; the tests fail when `dist/cli.mjs` is older than `src/`, so run `pnpm -F @youj/cli build` (or `verify`) before trying the CLI from a checkout.
 
 To try `init --mode registry`, `add` or `create` against the registry in your checkout, build it with `NEXT_PUBLIC_SITE_URL` set to the origin you'll serve it from (so its dependency URLs point local, not at production), serve it, and point the CLI there:
 
 ```bash
 NEXT_PUBLIC_SITE_URL=http://localhost:4000 node apps/docs/scripts/registry.ts
 node scripts/serve-static.mjs apps/docs/public 4000
-YOUJ_REGISTRY_URL=http://localhost:4000/r npx youj add sidebar
+YOUJ_REGISTRY_URL=http://localhost:4000/r npx @youj/cli add sidebar
 ```
 
 See RELEASING.md for rehearsing the npm packages the same way.

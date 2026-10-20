@@ -22,8 +22,8 @@ afterEach(() => {
 describe('docs column', () => {
   it('lets every block fill the column: none sizes itself', () => {
     const blocks = [
-      <CodeBlock key="code">{'npx youj init'}</CodeBlock>,
-      <InstallTabsView key="install" packageCommand="pnpm add @youj/react" packageImport="" registryCommand="npx youj add button" registryDeps={[]} />,
+      <CodeBlock key="code">{'npx @youj/cli init'}</CodeBlock>,
+      <InstallTabsView key="install" packageCommand="pnpm add @youj/react" packageImport="" registryCommand="npx @youj/cli add button" registryDeps={[]} />,
       <Callout key="callout">{'Note'}</Callout>,
       <Steps key="steps">{'One'}</Steps>,
       <Cards key="cards">{'Card'}</Cards>,

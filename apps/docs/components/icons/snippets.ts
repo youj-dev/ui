@@ -121,7 +121,7 @@ export function IconChain() {
 
 /** The package and the copy-in command for a chain: IconSwap and each icon. */
 export function chainInstall(icons: readonly IconEntry[]): { packageCommand: string; cli: string[] } {
-  return { packageCommand: `pnpm add ${ICONS_PACKAGE}`, cli: [`npx youj add ${['icon-swap', ...new Set(icons.map((e) => `icon-${e.name}`))].join(' ')}`] }
+  return { packageCommand: `pnpm add ${ICONS_PACKAGE}`, cli: [`npx @youj/cli add ${['icon-swap', ...new Set(icons.map((e) => `icon-${e.name}`))].join(' ')}`] }
 }
 
 /** The items the entry needs, copied in with the Youj CLI. */
@@ -133,7 +133,7 @@ export function cliSnippet(entry: Entry): string {
 export function installCommands(entry: Entry): { packageCommand: string; cli: string[] } {
   const item = (e: IconEntry) => `icon-${e.name}`
   const items = entry.kind === 'pair' ? ['icon-swap', ...new Set([item(entry.from), item(entry.to)])] : [item(entry)]
-  return { packageCommand: `pnpm add ${ICONS_PACKAGE}`, cli: [`npx youj add ${items.join(' ')}`] }
+  return { packageCommand: `pnpm add ${ICONS_PACKAGE}`, cli: [`npx @youj/cli add ${items.join(' ')}`] }
 }
 
 export function snippetsFor(entry: Entry, nodes: IconNode[] | null, o: SnippetOptions): Snippet[] {

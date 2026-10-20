@@ -16,7 +16,7 @@ What typically drifts here. The root [Principles](../../CONTRIBUTING.md#principl
 ## Layout
 
 ```
-src/components/youj/icons/   one file per icon (the path `npx youj add icon-<name>` installs it at),
+src/components/youj/icons/   one file per icon (the path `npx @youj/cli add icon-<name>` installs it at),
                              icon-base.tsx (createIcon and the categories), index.ts (generated)
 src/test/                    the shared contract tests and the SSR cases
 scripts/generate-icons.mjs   writes the barrel and registry/icons.json

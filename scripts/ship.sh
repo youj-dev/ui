@@ -187,10 +187,10 @@ else
   echo "ship: deployed: $(grep -iE 'version' "$out" | head -3 | tr -s ' │' ' ' | tr '\n' ';')"
   mark "cf build output and deploy"
   cli_version=$(node -p 'require("./packages/cli/package.json").version')
-  if npm view "youj@$cli_version" version >/dev/null 2>&1; then
+  if npm view "@youj/cli@$cli_version" version >/dev/null 2>&1; then
     (cd apps/docs && node scripts/registry-archive.ts archive) || { echo "ship: deployed, but archiving this registry version FAILED: run pnpm -F docs registry:archive now, before the next version ships"; exit 1; }
   else
-    echo "ship: youj@$cli_version is not published on npm; registry v$cli_version NOT archived (ship again after the release)"
+    echo "ship: @youj/cli@$cli_version is not published on npm; registry v$cli_version NOT archived (ship again after the release)"
   fi
 
   # A deploy keeps the Worker's secrets: until STEALTH_PASSWORD is deleted, the gate is still up.

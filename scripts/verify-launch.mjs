@@ -1,7 +1,7 @@
 // After the launch (scripts/ship.sh --launch): checks that production is public, as a visitor and the CLI see it.
 // Read-only: it only sends GET requests, and the CLI runs with --dry-run in a temp folder it deletes.
 //
-//   pnpm launch:verify                         www.youj.dev, with `npx youj@<this version> add button --dry-run`
+//   pnpm launch:verify                         www.youj.dev, with `npx @youj/cli@<this version> add button --dry-run`
 //   pnpm launch:verify --origin <url>          another origin (a local `cf:dev`); the CLI reads that origin's registry
 //   pnpm launch:verify --cli <path to cli.mjs> run a local build of the CLI instead of the published one
 //   pnpm launch:verify --no-cli                the HTTP checks only
@@ -75,9 +75,9 @@ if (!options['no-cli']) {
     for (const [name, json] of Object.entries(files)) writeFileSync(join(dir, name), JSON.stringify(json, null, 2) + '\n')
     writeFileSync(join(dir, 'vite.config.ts'), "import { defineConfig } from 'vite'\nexport default defineConfig({})\n")
     writeFileSync(join(dir, 'src/index.css'), "@import 'tailwindcss';\n")
-    const [cmd, args] = options.cli ? [process.execPath, [resolve(options.cli)]] : ['npx', ['-y', `youj@${version}`]]
+    const [cmd, args] = options.cli ? [process.execPath, [resolve(options.cli)]] : ['npx', ['-y', `@youj/cli@${version}`]]
     const env = { ...process.env, ...(origin === PRODUCTION ? {} : { YOUJ_REGISTRY_URL: registry }) }
-    const label = `${options.cli ? 'youj (local)' : `npx youj@${version}`} add button --dry-run`
+    const label = `${options.cli ? 'youj (local)' : `npx @youj/cli@${version}`} add button --dry-run`
     const run = spawnSync(cmd, [...args, 'add', 'button', '--dry-run'], { cwd: dir, env, encoding: 'utf8', timeout: 300_000 })
     const output = `${run.stdout}${run.stderr}`
     check(run.status === 0 && /components\/ui\/button\.tsx/.test(output), label, `exit ${run.status}\n${output.trim()}`)

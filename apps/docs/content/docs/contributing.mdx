@@ -77,7 +77,7 @@ To run a script for one package, filter by its name:
 ```bash
 pnpm -F @youj/motion test
 pnpm -F @youj/react verify
-pnpm -F youj test
+pnpm -F @youj/cli test
 pnpm -F docs typecheck
 ```
 
@@ -189,7 +189,7 @@ Youj is MIT-licensed. It builds on the open-source projects below, and each is u
 
 | Project | What Youj uses it for | License |
 |---|---|---|
-| [shadcn/ui](https://ui.shadcn.com) | `@youj/react` components begin from shadcn's `base-nova` sources, and copied-in items install through the Youj CLI (`npx youj add`), which uses the shadcn registry format and installer | MIT © shadcn |
+| [shadcn/ui](https://ui.shadcn.com) | `@youj/react` components begin from shadcn's `base-nova` sources, and copied-in items install through the Youj CLI (`npx @youj/cli add`), which uses the shadcn registry format and installer | MIT © shadcn |
 | [Base UI](https://base-ui.com) | The accessible, headless primitives behind the components | MIT © MUI |
 | [Motion](https://motion.dev) | The animation runtime every motion token and component runs on | MIT © Motion Division |
 | [Tailwind CSS](https://tailwindcss.com) | Styling and the token layer | MIT © Tailwind Labs |
@@ -209,7 +209,7 @@ Youj is MIT-licensed. It builds on the open-source projects below, and each is u
 | [class-variance-authority](https://cva.style) | Component variants | Apache-2.0 © Joe Bell |
 | [clsx](https://github.com/lukeed/clsx) and [tailwind-merge](https://github.com/dcastil/tailwind-merge) | Class names | MIT |
 | [dotLottie](https://github.com/LottieFiles/dotlottie-web) | The Lottie player (optional peer dependency of `@youj/motion`) | MIT |
-| [Clack](https://github.com/bombshell-dev/clack) | The prompts in `npx youj init` | MIT © Nate Moore |
+| [Clack](https://github.com/bombshell-dev/clack) | The prompts in `npx @youj/cli init` | MIT © Nate Moore |
 | [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) | The [Youj MCP server](/docs/mcp), which bundles it | MIT © Anthropic, PBC |
 
 ### Icons

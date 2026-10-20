@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { nl } from '@youj/core/locales/nl'
- *   (copied in with npx youj add youj-locale-nl: import { nl } from '@/locales/nl')
+ *   (copied in with npx @youj/cli add youj-locale-nl: import { nl } from '@/locales/nl')
  *   <YoujProvider locale="nl-NL" labels={nl}>
  *
  * Register: infinitives on buttons ("Opslaan"), imperatives in hints, no "u" or "je" where a sentence can do without. */

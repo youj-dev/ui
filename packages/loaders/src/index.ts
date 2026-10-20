@@ -3,7 +3,7 @@
 // showLabel, labelPosition, labelEffect, paused), drawn from the theme's tokens on
 // one shared ticker. This entry is the kit: LoaderRoot, the props and the category data. The drawing engine (field.ts) is internal.
 // Each loader is its own entry, `@youj/loaders/<id>` (LoaderVortex from
-// '@youj/loaders/vortex'), and installs on its own: `npx youj add loader-<id>`.
+// '@youj/loaders/vortex'), and installs on its own: `npx @youj/cli add loader-<id>`.
 // The per-loader entries are generated (scripts/loaders.mjs); to add a loader, see
 // components/youj/loaders/LOADERS.md.
 

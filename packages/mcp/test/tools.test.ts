@@ -75,12 +75,12 @@ describe('search', () => {
 
   it('gives every installable match its exact import or add command', () => {
     expect(search(catalog, 'date picker', ['component'], 3)).toContain("`npm install @youj/react date-fns react-day-picker` · `import { DatePicker } from '@youj/react/date'`")
-    expect(search(catalog, 'illustration kit', ['component'], 5)).toContain('`npx youj add illustration-kit`')
-    expect(search(catalog, 'login', ['block'], 3)).toMatch(/get_block\("([\w-]+)"\) · `npx youj add \1`/)
+    expect(search(catalog, 'illustration kit', ['component'], 5)).toContain('`npx @youj/cli add illustration-kit`')
+    expect(search(catalog, 'login', ['block'], 3)).toMatch(/get_block\("([\w-]+)"\) · `npx @youj\/cli add \1`/)
     expect(search(catalog, 'bell', ['icon'], 3)).toContain("`import { BellIcon } from '@youj/icons'`")
     const lines = search(catalog, 'settings', ['component', 'block', 'icon', 'illustration', 'hook'], 25).split('\n').filter((l) => /^\d+\./.test(l))
     expect(lines.length).toBeGreaterThan(5)
-    for (const line of lines) expect(line).toMatch(/`(npx youj add [\w-]+|npm install [^`]+|import [^`]+)`/)
+    for (const line of lines) expect(line).toMatch(/`(npx @youj\/cli add [\w-]+|npm install [^`]+|import [^`]+)`/)
   })
 })
 
@@ -90,7 +90,7 @@ describe('get_component', () => {
     expect(out).toMatch(/^# Button/)
     expect(out).toContain('## When to use')
     expect(out).toContain("import { Button } from '@youj/react'")
-    expect(out).toContain('npx youj add button')
+    expect(out).toContain('npx @youj/cli add button')
     expect(out).toContain('## Props: Button')
     expect(out).toMatch(/\| loadingLabel \|/)
     expect(out).toMatch(/Press: duration\.instant \(80ms\)/)
@@ -121,7 +121,7 @@ describe('get_component', () => {
     expect(out).toContain('Nothing to import')
     expect(out).toContain("@import '@youj/core/styles.css'")
     expect(out).not.toContain('```tsx')
-    expect(out).toContain('npx youj add youj-presets')
+    expect(out).toContain('npx @youj/cli add youj-presets')
     const add = await getAddCommand(catalog, ['youj-presets'], join(import.meta.dirname, 'fixtures', 'package'))
     expect(add).toContain("@import '@youj/core/styles.css'")
     expect(add).not.toContain('```tsx')
@@ -163,7 +163,7 @@ describe('icons', () => {
     expect(play).toContain('`active={false}` shows **play**')
     expect(play).toContain("useIconState({ labels: ['Play', 'Pause'] })")
     expect(play).toContain('`hover` (default)')
-    expect(play).toContain('npx youj add icon-play')
+    expect(play).toContain('npx @youj/cli add icon-play')
     expect(getIcon(catalog, 'menu')).toContain('aria-expanded={open}')
     expect(getIcon(catalog, 'lucide:rocket')).toMatch(/YoujIcon icon=\{Rocket\}[\s\S]*## Effects/)
     expect(() => getIcon(catalog, 'nopeicon')).toThrow(/No icon/)
@@ -228,7 +228,7 @@ describe('blocks', () => {
     expect(mullion.technique).toBeTruthy()
     const hits = search(catalog, 'responsive breakpoint layout animation', ['loader'], 5)
     expect(hits).toContain('Mullion')
-    expect(hits).toContain('npx youj add loader-mullion')
+    expect(hits).toContain('npx @youj/cli add loader-mullion')
     expect(hits).toContain("import { LoaderMullion } from '@youj/loaders/mullion'")
     expect(search(catalog, 'software animation', undefined, 10)).toContain('Software loader')
   })
@@ -236,9 +236,9 @@ describe('blocks', () => {
   it('resolves animations in get_add_command beside other items', async () => {
     const out = await getAddCommand(catalog, ['loader-mullion', 'LoaderTangent', 'nope'], join(import.meta.dirname, 'fixtures', 'package'))
     expect(out).toContain("import { LoaderMullion } from '@youj/loaders/mullion'")
-    expect(out).toContain('npx youj add loader-tangent')
+    expect(out).toContain('npx @youj/cli add loader-tangent')
     expect(out).toContain('Skipped: Unknown item "nope"')
-    expect(await getAddCommand(catalog, ['loader-mullion'], join(import.meta.dirname, 'fixtures', 'registry'))).toContain('npx youj add loader-mullion')
+    expect(await getAddCommand(catalog, ['loader-mullion'], join(import.meta.dirname, 'fixtures', 'registry'))).toContain('npx @youj/cli add loader-mullion')
   })
 
   it('indexes the miniatures as their own kind, npm only', () => {
@@ -256,7 +256,7 @@ describe('blocks', () => {
     expect(out).toContain('@youj/miniatures')
     expect(out).toContain("import { MiniatureTurntable } from '@youj/miniatures/turntable'")
     expect(out).toContain("import { MiniatureHourglass } from '@youj/miniatures/hourglass'")
-    expect(out).not.toContain('npx youj add')
+    expect(out).not.toContain('npx @youj/cli add')
   })
 
   it('imports useIconState from the icons package', () => {
@@ -271,14 +271,14 @@ describe('blocks', () => {
 
   it('details one with its install command and files', async () => {
     const out = await getShowcase(catalog, 'auth-login')
-    expect(out).toContain('npx youj add auth-login')
+    expect(out).toContain('npx @youj/cli add auth-login')
     expect(out).toMatch(/## Files\n\n.*\n\n- blocks\/auth\/login\.tsx/)
     expect(out).toContain('Stability: **alpha**')
   })
 
   it('gives what the CLI installs: the command, the files as written, the import and the package imports', async () => {
     const out = await getShowcase(catalog, 'app-customers')
-    expect(out).toContain('npx youj add app-customers')
+    expect(out).toContain('npx @youj/cli add app-customers')
     for (const file of ['blocks/app/customers.tsx', 'blocks/app/customers/columns.tsx', 'blocks/app/customers/data.ts', 'blocks/app/customers/detail.tsx']) expect(out).toContain(`- ${file} (`)
     expect(out).toMatch(/import \{ \w*Customers\w* \} from '@\/blocks\/app\/customers'/)
     expect(out).not.toMatch(/packages\/|apps\/docs|\.\.\/\.\.\//)
@@ -296,7 +296,7 @@ describe('blocks', () => {
 
   it('says a composition has no files of its own and installs its blocks', async () => {
     const out = await getShowcase(catalog, 'marketing-landing')
-    expect(out).toContain('npx youj add marketing-cta')
+    expect(out).toContain('npx @youj/cli add marketing-cta')
     expect(out).toContain('None of its own')
   })
 
@@ -403,7 +403,7 @@ describe('tokens and themes', () => {
     expect(bezel).toContain('<html lang="en" {...themeProps(signal)} data-theme="dark" data-yj-look="bezel">')
     expect(bezel).toContain('<YoujProvider theme={signal} look="bezel">')
     expect(bezel).toContain('<ThemeScope theme={signal} look="bezel">')
-    expect(bezel).toContain('npx youj add youj-look-bezel')
+    expect(bezel).toContain('npx @youj/cli add youj-look-bezel')
   })
 
   it('creates a theme with a character of its own, checked like any other', () => {
@@ -436,7 +436,7 @@ describe('motion_guidance', () => {
 describe('setup', () => {
   it('leads with init and gives the framework’s manual steps', () => {
     const out = setup(catalog, { framework: 'next-app' })
-    expect(out).toContain('npx youj init')
+    expect(out).toContain('npx @youj/cli init')
     expect(out).toContain("@import '@youj/react/styles.css';")
     expect(out).toContain('app/layout.tsx')
   })
@@ -444,24 +444,24 @@ describe('setup', () => {
   it('sets up Basalt, dark and classic by default: the provider and <html>, and no stylesheet', () => {
     const pkg = setup(catalog, { framework: 'next-app' })
     expect(setup(catalog, { framework: 'next-app', look: 'classic' })).toBe(pkg)
-    expect(pkg).toContain('npx youj init\n')
+    expect(pkg).toContain('npx @youj/cli init\n')
     expect(pkg).toContain('<YoujProvider theme={basalt}>{children}</YoujProvider>')
     expect(pkg).toContain('{...themeProps(basalt)} data-theme="dark" data-yj-look="classic"')
     const registry = setup(catalog, { framework: 'vite', mode: 'registry' })
-    expect(registry).toContain('npx youj init --mode registry\n')
-    expect(registry).toContain('npx youj add youj-core youj-ui-core\n')
+    expect(registry).toContain('npx @youj/cli init --mode registry\n')
+    expect(registry).toContain('npx @youj/cli add youj-core youj-ui-core\n')
     expect(registry).not.toContain('bezel.css')
     expect(registry).toContain('data-yj-theme="basalt" data-theme="dark" data-yj-look="classic"')
   })
 
   it('sets up bezel when asked: the init flag, the provider prop and the registry’s stylesheet', () => {
     const pkg = setup(catalog, { framework: 'next-app', look: 'bezel' })
-    expect(pkg).toContain('npx youj init --look bezel')
+    expect(pkg).toContain('npx @youj/cli init --look bezel')
     expect(pkg).toContain('<YoujProvider theme={basalt} look="bezel">')
     expect(pkg).toContain('{...themeProps(basalt)} data-theme="dark" data-yj-look="bezel"')
     expect(pkg).toContain('@youj/react/styles.css already')
     const registry = setup(catalog, { framework: 'vite', mode: 'registry', look: 'bezel' })
-    expect(registry).toContain('npx youj add youj-core youj-ui-core youj-look-bezel')
+    expect(registry).toContain('npx @youj/cli add youj-core youj-ui-core youj-look-bezel')
     expect(registry).toContain("@import '../styles/ui.css';\n@import '../styles/bezel.css';")
   })
 

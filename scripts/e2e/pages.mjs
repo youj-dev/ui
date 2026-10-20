@@ -1,5 +1,5 @@
 // Writes the install test's pages into an app: every docs example (copied verbatim, as a reader
-// copies it from the Code tab), every block `npx youj add` wrote (read from youj.json), the
+// copies it from the Code tab), every block `npx @youj/cli add` wrote (read from youj.json), the
 // illustration builder's templates as its Copy code writes them, every icon, illustration, loader
 // and miniature, and each sound pack, each rendered in an error boundary.
 // Next.js gets one dynamic page per group (rendered per request, so one item that throws on the
@@ -28,7 +28,7 @@ const chunk = (list, n) => Array.from({ length: Math.ceil(list.length / n) }, (_
 /** The illustration builder's templates, and one on the floor's grid, as its Copy code writes them. */
 const builderScenes = [...TEMPLATES.map((t) => t.scene), { ...TEMPLATES[1].scene, name: 'Shop on a grid', base: 'grid' }]
 
-/** What the builder's code says to add first (`npx youj add illustration-kit iso-shapes …`). */
+/** What the builder's code says to add first (`npx @youj/cli add illustration-kit iso-shapes …`). */
 export const builderItems = [...new Set(builderScenes.flatMap((scene) => installItems(scene)))]
 
 /** The blocks youj.json says `add` wrote, each with the module and export that renders it. */
@@ -67,7 +67,7 @@ export function writePages({ appDir, kind, blocks }) {
     write(join(e2e, `groups/${id}.tsx`), `'use client'\nimport { examples } from '../examples'\nimport type { Item } from '../harness'\n\nexport const items: Item[] = ${JSON.stringify(keys)}.map((id) => ({ id, C: examples[id]! }))\n`)
   })
 
-  // Blocks, from their own module. Frame parts render inside the frame (`npx youj create` covers them).
+  // Blocks, from their own module. Frame parts render inside the frame (`npx @youj/cli create` covers them).
   chunk(blocks.filter((b) => !b.name.startsWith('frame-')), 25).forEach((list, i) => {
     const id = `blocks-${String(i).padStart(2, '0')}`
     groups.push(id)

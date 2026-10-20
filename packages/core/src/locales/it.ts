@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { it } from '@youj/core/locales/it'
- *   (copied in with npx youj add youj-locale-it: import { it } from '@/locales/it')
+ *   (copied in with npx @youj/cli add youj-locale-it: import { it } from '@/locales/it')
  *   <YoujProvider locale="it-IT" labels={it}>
  *
  * Register: the short imperative Italian software uses on buttons ("Salva", "Annulla"), "tu" in sentences. */

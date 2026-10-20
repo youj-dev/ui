@@ -1,6 +1,6 @@
 # Changelog
 
-The packages version together, as one fixed group: `@youj/core`, `@youj/react`, `@youj/motion`, `@youj/sound`, `@youj/icons`, `@youj/illustrations`, `@youj/loaders`, `@youj/miniatures`, `youj` and `@youj/mcp`. This is the first release; from the next one, entries come from [changesets](https://github.com/changesets/changesets): `pnpm version-packages` writes each package's `CHANGELOG.md`, and this file summarises the release. See [RELEASING.md](RELEASING.md).
+The packages version together, as one fixed group: `@youj/core`, `@youj/react`, `@youj/motion`, `@youj/sound`, `@youj/icons`, `@youj/illustrations`, `@youj/loaders`, `@youj/miniatures`, `@youj/cli` and `@youj/mcp`. This is the first release; from the next one, entries come from [changesets](https://github.com/changesets/changesets): `pnpm version-packages` writes each package's `CHANGELOG.md`, and this file summarises the release. See [RELEASING.md](RELEASING.md).
 
 ## 0.1.0 - 2026-10-20
 

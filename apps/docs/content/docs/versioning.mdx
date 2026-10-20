@@ -20,7 +20,7 @@ Youj follows [semantic versioning](https://semver.org) the way 0.x projects do. 
 
 The range a package manager writes, such as `^0.1.2`, already stops before 0.2.0, so a plain install or update never takes a breaking release by surprise.
 
-All the packages release together at one version: `@youj/react`, `@youj/core`, `@youj/motion`, `@youj/icons`, `@youj/illustrations`, `@youj/loaders`, `@youj/miniatures`, `@youj/sound`, `@youj/mcp` and the `youj` CLI. Keep them on the same one; `npx youj doctor` tells you when they drift.
+All the packages release together at one version: `@youj/react`, `@youj/core`, `@youj/motion`, `@youj/icons`, `@youj/illustrations`, `@youj/loaders`, `@youj/miniatures`, `@youj/sound`, `@youj/mcp` and the CLI, `@youj/cli`. Keep them on the same one; `npx @youj/cli doctor` tells you when they drift.
 
 ## The alpha promise
 
@@ -54,19 +54,19 @@ When in doubt, it's treated as breaking.
 Moving from one 0.x release to the next is a minor upgrade, so it can break things. The [releases page](/docs/versioning#upgrading) has the commands. In order:
 
 1. Read the Breaking section of every release you're skipping over, in the [changelog](/changelog), and follow its upgrade guide if it has one.
-2. Upgrade every Youj package to the same version, then run `npx youj doctor`. Your `^0.1.2` range won't take 0.2.0 by itself: change it on purpose.
+2. Upgrade every Youj package to the same version, then run `npx @youj/cli doctor`. Your `^0.1.2` range won't take 0.2.0 by itself: change it on purpose.
 3. Fix what the changelog says, and what TypeScript reports. A deprecated API still works for at least one minor release, so you can upgrade first and migrate after.
-4. Copied-in items stay as they are. Run `npx youj add <item> --dry-run` to see what the new version would change, and add it again only when you want it.
+4. Copied-in items stay as they are. Run `npx @youj/cli add <item> --dry-run` to see what the new version would change, and add it again only when you want it.
 
 On the `next` channel, prereleases such as `0.2.0-next.1` may change before the release ships. Pin the exact version while you test one.
 
 ## Copy-in code is yours
 
-What `npx youj add` copies into your app is your code: an upgrade never touches it. What changes between versions is what the next `youj add` writes.
+What `npx @youj/cli add` copies into your app is your code: an upgrade never touches it. What changes between versions is what the next `youj add` writes.
 
-- **Copy the version you run.** Each release publishes its registry items under its version number as well as the latest, so a 0.1 CLI copies 0.1's items. The CLI uses its own version, so run it at the version of your packages (`npx youj@0.1.2 add …`); `--latest` takes the latest items instead.
-- **Updating a copied item is a choice.** Run `npx youj add <item>` again and review the diff before you keep it, as you would any upstream change. A `youj diff <item>` command, to show what changed upstream since you copied it, is planned.
-- **Blocks update the same way.** A block is copy-in source: once added it's yours, and later changes on the site don't touch your copy. Because `npx youj add` copies the items of the CLI's own version, which stay archived per release, running it never breaks an existing install. Notable block changes, renames and removals are listed in the changelog.
+- **Copy the version you run.** Each release publishes its registry items under its version number as well as the latest, so a 0.1 CLI copies 0.1's items. The CLI uses its own version, so run it at the version of your packages (`npx @youj/cli@0.1.2 add …`); `--latest` takes the latest items instead.
+- **Updating a copied item is a choice.** Run `npx @youj/cli add <item>` again and review the diff before you keep it, as you would any upstream change. A `youj diff <item>` command, to show what changed upstream since you copied it, is planned.
+- **Blocks update the same way.** A block is copy-in source: once added it's yours, and later changes on the site don't touch your copy. Because `npx @youj/cli add` copies the items of the CLI's own version, which stay archived per release, running it never breaks an existing install. Notable block changes, renames and removals are listed in the changelog.
 - **The changelog covers registry items too.** A breaking change to a block's or component's source is listed like one to a package.
 
 ## Stability labels
@@ -110,7 +110,7 @@ Mark the old path `@deprecated` in its JSDoc; the docs and the API reference pic
 | `latest` | `pnpm add @youj/react` | The current release. What everyone gets by default. |
 | `next` | `pnpm add @youj/react@next` | Prereleases (`0.2.0-next.1`) for testers, ahead of a minor release. They may change before it ships. |
 
-With the CLI, `npx youj@next init` sets an app up on the prerelease. Put every Youj package on the same channel.
+With the CLI, `npx @youj/cli@next init` sets an app up on the prerelease. Put every Youj package on the same channel.
 
 ## Supported versions
 
@@ -141,12 +141,12 @@ Upgrade every Youj package at once, to the same version:
 
 ```bash
 pnpm up "@youj/*" --latest
-npx youj doctor
+npx @youj/cli doctor
 ```
 
 `youj doctor` checks the packages agree and the setup still holds. Before a minor upgrade, read its Breaking section in the changelog and follow its upgrade guide, if it has one. Deprecated APIs keep working for at least one minor release, so you can upgrade first and migrate after.
 
-Code you copied in with `npx youj add` doesn't change when you upgrade. To take an item's new version, add it again and review the diff before you keep it.
+Code you copied in with `npx @youj/cli add` doesn't change when you upgrade. To take an item's new version, add it again and review the diff before you keep it.
 
 To try a release before it ships, install the `next` channel: `pnpm add @youj/react@next`, with the other Youj packages on `@next` too.
 

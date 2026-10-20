@@ -889,7 +889,7 @@ function navigationMenuSpec({ icons }: Deps): SetSpec {
 function megaMenuSpec({ icons }: Deps): SetSpec {
   const sections = [
     { heading: 'Build', links: [['Components', 'Accessible, animated parts.', 'layers'], ['Motion', 'Transitions and effects.', 'sparkles'], ['Icons', 'Animated icon set.', 'smile']] },
-    { heading: 'Ship', links: [['Blocks', 'Whole pages to start from.', 'layout-dashboard'], ['CLI', 'npx youj add, and more.', 'terminal'], ['MCP', 'Youj in your AI tools.', 'cpu']] },
+    { heading: 'Ship', links: [['Blocks', 'Whole pages to start from.', 'layout-dashboard'], ['CLI', 'npx @youj/cli add, and more.', 'terminal'], ['MCP', 'Youj in your AI tools.', 'cpu']] },
   ]
   return {
     key: 'component:mega-menu',

@@ -3,7 +3,7 @@
   "baseBranch": "main",
   "access": "public",
   "ignore": ["docs", "promo"],
-  "fixed": [["@youj/core", "@youj/motion", "@youj/loaders", "@youj/sound", "@youj/icons", "@youj/illustrations", "@youj/miniatures", "@youj/react", "youj", "@youj/mcp"]],
+  "fixed": [["@youj/core", "@youj/motion", "@youj/loaders", "@youj/sound", "@youj/icons", "@youj/illustrations", "@youj/miniatures", "@youj/react", "@youj/cli", "@youj/mcp"]],
   "linked": [],
   "updateInternalDependencies": "patch",
   "privatePackages": { "version": true, "tag": true },

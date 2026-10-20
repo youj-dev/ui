@@ -170,7 +170,7 @@ export function aliasProblems(project: Project, framework: Framework | null): Al
       message: inApp
         ? `The @/ alias is in ${app} but not in ${root}. shadcn reads ${root}, so \`add\` would write into a literal ./@/ folder`
         : `No @/ alias in ${root}: shadcn would write copied items into a literal ./@/ folder, and their @/ imports wouldn't resolve`,
-      fix: `Add ${paths} to compilerOptions in ${root}${framework === 'vite' ? `${app ? ` and ${app}` : ''}, plus resolve.alias in your Vite config. \`npx youj init --mode registry\` does all three` : ''}.`,
+      fix: `Add ${paths} to compilerOptions in ${root}${framework === 'vite' ? `${app ? ` and ${app}` : ''}, plus resolve.alias in your Vite config. \`npx @youj/cli init --mode registry\` does all three` : ''}.`,
     })
   } else if (app && !hasAt(pathsOf(project, app)))
     problems.push({ message: `The @/ alias is in ${root} but not in ${app}, which TypeScript uses for your source, so its imports are type errors`, fix: `Add ${paths} to compilerOptions in ${app}.` })

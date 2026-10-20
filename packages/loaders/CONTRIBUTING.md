@@ -1,6 +1,6 @@
 # Working on @youj/loaders
 
-What it is: loading animations, 228 polite status loaders. Each one is a file that draws a scene on one shared ticker, built on `@youj/core`. The kit (`LoaderRoot`, the props, the engine) is the package's `.` entry; every loader is its own entry, `@youj/loaders/<id>` (`LoaderVortex` from `@youj/loaders/vortex`), and installs on its own with `npx youj add loader-<id>`. What it does for users is in [README.md](README.md).
+What it is: loading animations, 228 polite status loaders. Each one is a file that draws a scene on one shared ticker, built on `@youj/core`. The kit (`LoaderRoot`, the props, the engine) is the package's `.` entry; every loader is its own entry, `@youj/loaders/<id>` (`LoaderVortex` from `@youj/loaders/vortex`), and installs on its own with `npx @youj/cli add loader-<id>`. What it does for users is in [README.md](README.md).
 
 Nothing here imports `@youj/motion`, icons or scenes: loaders depend on core only. The motion rules in [packages/motion/CONTRIBUTING.md](../motion/CONTRIBUTING.md) apply (tokens from the provider, semantic colors, reduced motion, token lint).
 

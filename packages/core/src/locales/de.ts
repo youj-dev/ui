@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { de } from '@youj/core/locales/de'
- *   (copied in with npx youj add youj-locale-de: import { de } from '@/locales/de')
+ *   (copied in with npx @youj/cli add youj-locale-de: import { de } from '@/locales/de')
  *   <YoujProvider locale="de-DE" labels={de}>
  *
  * Register: infinitives on buttons ("Speichern"), "Sie" in sentences. */

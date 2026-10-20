@@ -33,7 +33,7 @@ export interface ViewerEntry {
   docs?: string
   /** A block's page on its level's list. */
   page?: string
-  /** `npx youj add …`, when there is one. */
+  /** `npx @youj/cli add …`, when there is one. */
   install?: string
   /** A component's import from `@youj/react`. */
   import?: string

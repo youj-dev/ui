@@ -158,7 +158,7 @@ export function CreateStudio() {
   const files = useMemo<CodeFile[]>(() => [...written.map((f) => ({ ...f, highlighted: highlightTsx(f.code) })), ...highlightedParts], [written, highlightedParts])
   const install = useMemo(() => {
     const items = createItems(exported.frame, exported.style)
-    return { command: `npx youj add ${items.join(' ')}`, deps: items }
+    return { command: `npx @youj/cli add ${items.join(' ')}`, deps: items }
   }, [exported.frame, exported.style])
   // A theme that misses AA can't be exported: the panel's command gives way to the issue.
   const blocked = useMemo(() => themeErrors(exported.theme).length, [exported.theme])

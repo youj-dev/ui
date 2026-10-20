@@ -39,7 +39,7 @@ describe('search', () => {
 
   it('answers with the install command and the tool to call next', () => {
     const out = search(catalog, 'coffee', ['illustration'], 3)
-    expect(out).toContain('npx youj add illustration-coffee')
+    expect(out).toContain('npx @youj/cli add illustration-coffee')
     expect(out).toContain('get_component("illustration-coffee")')
   })
 
@@ -52,10 +52,10 @@ describe('search', () => {
 
 describe('get_add_command', () => {
   it('returns the CLI command for a scene, in a project on the package or the registry, and in none', async () => {
-    const command = '```bash\nnpx youj add illustration-coffee\n```'
+    const command = '```bash\nnpx @youj/cli add illustration-coffee\n```'
     expect(await getAddCommand(catalog, ['illustration-coffee'], join(fixtures, 'registry'))).toBe(command)
     expect(await getAddCommand(catalog, ['illustration-coffee'], join(fixtures, 'package'))).toContain(command)
-    expect(await getAddCommand(catalog, ['Illustration-Coffee', 'IllustrationDatabase'], join(fixtures, 'registry'))).toBe('```bash\nnpx youj add illustration-coffee illustration-database\n```')
+    expect(await getAddCommand(catalog, ['Illustration-Coffee', 'IllustrationDatabase'], join(fixtures, 'registry'))).toBe('```bash\nnpx @youj/cli add illustration-coffee illustration-database\n```')
   })
 
   it('names the import a copied scene gets and the package route', async () => {
@@ -66,7 +66,7 @@ describe('get_add_command', () => {
 
   it('installs the illustration kit only through the CLI', async () => {
     const out = await getAddCommand(catalog, ['illustration-kit'], join(fixtures, 'package'))
-    expect(out).toContain('npx youj add illustration-kit')
+    expect(out).toContain('npx @youj/cli add illustration-kit')
     expect(out).not.toMatch(/pnpm|npm install|yarn add|bun add/)
   })
 
@@ -83,14 +83,14 @@ describe('get_component', () => {
     expect(out).toContain("import { Illustration } from '@youj/illustrations'")
     expect(out).toContain('scene')
     expect(out).toContain('/docs/illustrations')
-    expect(out).toContain('npx youj add illustrations')
+    expect(out).toContain('npx @youj/cli add illustrations')
     expect(getComponent(catalog, 'illustrations')).toBe(out)
   })
 
   it('describes one scene', () => {
     const out = getComponent(catalog, 'illustration-coffee')
     expect(out).toContain('# Coffee illustration')
-    expect(out).toContain('npx youj add illustration-coffee')
+    expect(out).toContain('npx @youj/cli add illustration-coffee')
     expect(out).toContain("import { Illustration, IllustrationCoffee } from '@youj/illustrations'")
     expect(getComponent(catalog, 'IllustrationCoffee')).toBe(out)
   })
@@ -98,9 +98,9 @@ describe('get_component', () => {
   it('says the illustration kit is copy-in only and where the builder is', () => {
     const out = getComponent(catalog, 'illustration-kit')
     expect(out).toContain('Copy-in only')
-    expect(out).toContain('npx youj add illustration-kit')
+    expect(out).toContain('npx @youj/cli add illustration-kit')
     expect(out).not.toContain('pnpm add')
-    expect(catalog.doc('illustrations/build')!.markdown).toMatch(/Copy code[\s\S]*npx youj add illustration-kit iso-shapes/)
+    expect(catalog.doc('illustrations/build')!.markdown).toMatch(/Copy code[\s\S]*npx @youj\/cli add illustration-kit iso-shapes/)
   })
 
   it('covers the kit’s shapes', () => {
@@ -121,7 +121,7 @@ describe('list_illustrations', () => {
   it('lists one category with tags and the install command, by id or name', () => {
     const out = listIllustrations(catalog, 'food')
     expect(out).toMatch(/- `coffee` Coffee \(`IllustrationCoffee`; tags: cafe, drink/)
-    expect(out).toContain('npx youj add illustration-<id>')
+    expect(out).toContain('npx @youj/cli add illustration-<id>')
     expect(listIllustrations(catalog, 'Food')).toBe(out)
     expect(out).not.toContain('`database`')
   })

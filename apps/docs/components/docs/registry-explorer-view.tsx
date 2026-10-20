@@ -43,7 +43,7 @@ export function RegistryExplorer({ items }: { items: ExplorerItem[] }) {
         </ToggleGroup>
       </div>
       <div className="flex flex-col gap-4 p-4 sm:p-5">
-        <InstallField run={item.command.replace(/^npx youj /, '')} className="w-full" />
+        <InstallField run={item.command.replace(/^npx @youj\/cli /, '')} className="w-full" />
         <div>
           <p className="type-label">Lands in your app</p>
           <PresenceList as="ul" className="mt-2.5 flex flex-col">

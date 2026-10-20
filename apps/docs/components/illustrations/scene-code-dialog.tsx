@@ -269,7 +269,7 @@ export function SceneCodeDialog({ scene, blocks, props, download, look, trigger,
           icon: <FileCodeIcon {...icon} />,
           description: (
             <>
-              What <Mono>{`npx youj add ${itemName(scene.id)}`}</Mono> writes into your app.
+              What <Mono>{`npx @youj/cli add ${itemName(scene.id)}`}</Mono> writes into your app.
             </>
           ),
           content: <RegistrySource item={itemName(scene.id)} path={path} />,

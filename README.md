@@ -39,7 +39,7 @@ https://github.com/user-attachments/assets/c5c88aa8-58a6-41aa-b962-5a9c3f522bfe
 ## Quick start
 
 ```bash
-npx youj init
+npx @youj/cli init
 ```
 
 `init` detects Next.js, Vite, React Router or Astro, sets up Tailwind v4 if needed, asks for a theme and a motion personality, and wraps your app in `YoujProvider`. Every edit is shown as a diff first.
@@ -61,7 +61,7 @@ export function Save() {
 Or copy one in as source:
 
 ```bash
-npx youj add button
+npx @youj/cli add button
 ```
 
 Requires React 19, Tailwind CSS v4 and Node.js 22+. The packages are ESM only. [Installation](https://www.youj.dev/docs/installation) covers the manual route and the shadcn registry.
@@ -78,7 +78,7 @@ Requires React 19, Tailwind CSS v4 and Node.js 22+. The packages are ESM only. [
 | 🌀 **[Motion](https://www.youj.dev/docs/motion)** | Primitives, transitions, effects, interactions, WebGL backgrounds and a Lottie player |
 | 🌗 **[Themes](https://www.youj.dev/docs/theming)** | Presets and two [looks](https://www.youj.dev/docs/looks), tuned for light and dark and checked against WCAG AA |
 | 🔊 **[Sound](https://www.youj.dev/docs/sound)** | Optional interface sounds, cued as motion starts. Nothing downloads until you turn it on |
-| 🤖 **[CLI](https://www.youj.dev/docs/cli) and [MCP](https://www.youj.dev/docs/mcp)** | `npx youj` to set up and add items, and an MCP server for AI coding tools |
+| 🤖 **[CLI](https://www.youj.dev/docs/cli) and [MCP](https://www.youj.dev/docs/mcp)** | `npx @youj/cli` to set up and add items, and an MCP server for AI coding tools |
 | 🖌️ **[Figma](https://www.youj.dev/docs/figma)** | A plugin that builds the kit in your file from the real tokens |
 
 The docs are also served as Markdown for machines: [`/llms.txt`](https://www.youj.dev/llms.txt) and [`/llms-full.txt`](https://www.youj.dev/llms-full.txt).

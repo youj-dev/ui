@@ -289,7 +289,7 @@ export function motionMarkdown(rows: MotionSpecRow[], reduced: string | undefine
 
 /** A composition with no item of its own (the landing page) installs as the blocks it stacks. */
 export function stackedInstall(stack: string[]): InstallInfo {
-  return { registryCommand: `npx youj add ${stack.join(' ')}`, registryDeps: [] }
+  return { registryCommand: `npx @youj/cli add ${stack.join(' ')}`, registryDeps: [] }
 }
 
 export function installMarkdown(info: InstallInfo): string {
@@ -418,7 +418,7 @@ function renderNode(node: Node, ctx: MarkdownContext): string {
       return block(fenced(AI_CLIENTS.map((c) => `# ${c.label}\n${MCP_CONNECT[c.value]}`).join('\n'), 'bash'))
     case 'McpSetup':
       return block(
-        MCP_EDITORS.map((e) => [`**${e.name}**: \`npx youj mcp --client ${e.id}\`${e.command ? `, or \`${e.command}\`` : ''}, or ${e.manual ? `paste in ${e.path}` : `add to \`${e.path}\``}:`, '', fenced(e.config, e.lang)].join('\n')).join('\n\n'),
+        MCP_EDITORS.map((e) => [`**${e.name}**: \`npx @youj/cli mcp --client ${e.id}\`${e.command ? `, or \`${e.command}\`` : ''}, or ${e.manual ? `paste in ${e.path}` : `add to \`${e.path}\``}:`, '', fenced(e.config, e.lang)].join('\n')).join('\n\n'),
       )
     case 'FigmaKit':
       return block(`[Download the Figma plugin](${ctx.site}/downloads/youj-figma-plugin.zip) (.zip, for Figma desktop).`)

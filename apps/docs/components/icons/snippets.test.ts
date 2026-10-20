@@ -49,9 +49,9 @@ describe('import lines', () => {
 
 describe('install commands', () => {
   it('adds the icon, or the swap and its icons', () => {
-    expect(cliSnippet(bell)).toBe('npx youj add icon-bell')
+    expect(cliSnippet(bell)).toBe('npx @youj/cli add icon-bell')
     const pair: PairEntry = { kind: 'pair', id: 'copy~x', name: 'copy → x', from: copy, to: x }
-    expect(cliSnippet(pair)).toBe('npx youj add icon-swap icon-copy icon-x')
+    expect(cliSnippet(pair)).toBe('npx @youj/cli add icon-swap icon-copy icon-x')
   })
 })
 

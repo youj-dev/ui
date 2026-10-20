@@ -1,11 +1,11 @@
-# youj
+# @youj/cli
 
 > Alpha (0.x): APIs can change between minor versions. See [Versioning](https://www.youj.dev/docs/versioning).
 
 Sets Youj up in a React app with one command. It needs Node.js 22 or later.
 
 ```bash
-npx youj init
+npx @youj/cli init
 ```
 
 It recognises Next.js (App and Pages Router), Vite, React Router v7 and Astro, your package manager (pnpm, npm, Yarn, Bun) and Tailwind CSS, and installs Tailwind v4 if it's missing. It asks for the mode (the `@youj/react` package, or the source copied in), a theme preset (Basalt by default), the component look (classic by default, or bezel), the motion personality and the default quality, then installs the packages (`@youj/react`, `@youj/core`, `@youj/motion`, `@youj/icons` and `motion`), adds the stylesheet after Tailwind and wraps the app in `YoujProvider`. Every change is shown as a diff; running it again changes nothing.
@@ -30,7 +30,7 @@ After adding items, `create` puts back any `@/` import shadcn pointed at the wro
 
 All take `--cwd <dir>`. `YOUJ_NPM_REGISTRY` points the app's `@youj` scope at another npm registry.
 
-**Which registry.** The docs site serves every release's items at `/r/v<version>/<name>.json`, and the latest at `/r/<name>.json` (the alias the shadcn directory lists). The CLI reads its own version's, `https://www.youj.dev/r/v<its version>/{name}.json`, so what it copies matches the packages it installs and doesn't change with each deploy of the site; `init --mode registry` writes that URL into `components.json`. `--latest` on `init`, `create` and `add` (or `YOUJ_REGISTRY_LATEST=1`) reads the alias instead. An item newer than the CLI is a 404 that says so: run `npx youj@latest`, or pass `--latest`. `YOUJ_REGISTRY_URL` overrides both (a template with `{name}`, or a base URL).
+**Which registry.** The docs site serves every release's items at `/r/v<version>/<name>.json`, and the latest at `/r/<name>.json` (the alias the shadcn directory lists). The CLI reads its own version's, `https://www.youj.dev/r/v<its version>/{name}.json`, so what it copies matches the packages it installs and doesn't change with each deploy of the site; `init --mode registry` writes that URL into `components.json`. `--latest` on `init`, `create` and `add` (or `YOUJ_REGISTRY_LATEST=1`) reads the alias instead. An item newer than the CLI is a 404 that says so: run `npx @youj/cli@latest`, or pass `--latest`. `YOUJ_REGISTRY_URL` overrides both (a template with `{name}`, or a base URL).
 
 ## Contributing
 

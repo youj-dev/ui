@@ -65,7 +65,7 @@ const ITEM = /^(?:@[a-z0-9][a-z0-9._~-]*\/)?[a-z0-9][a-z0-9._~-]*$|^https?:\/\/[
 /** Item names reach a command line (on Windows through a shell), so anything else stops here before it does. */
 export function assertItems(items: string[]): void {
   const bad = items.filter((item) => !ITEM.test(item))
-  if (bad.length) throw new CliError(`Can't add ${bad.map((b) => JSON.stringify(b)).join(', ')}: not an item name or an https URL. Names are lowercase letters, digits, "-", "_" and ".", e.g. youj add button.`)
+  if (bad.length) throw new CliError(`Can't add ${bad.map((b) => JSON.stringify(b)).join(', ')}: not an item name or an https URL. Names are lowercase letters, digits, "-", "_" and ".", e.g. npx @youj/cli add button.`)
 }
 
 /**
@@ -76,7 +76,7 @@ export function assertItems(items: string[]): void {
  * has staged but not written.
  */
 export function addCommand(cwd: string, items: string[], flags: string[], env: NodeJS.ProcessEnv = process.env, project = new Project(resolve(cwd))): Command {
-  if (!items.length) throw new CliError('Name the items to add, e.g. youj add button dialog')
+  if (!items.length) throw new CliError('Name the items to add, e.g. npx @youj/cli add button dialog')
   assertItems(items)
   // Without components.json, shadcn sets one up before it adds (`init --mode registry` does it the Youj way).
   const components = project.json<{ registries?: Record<string, string> }>('components.json')
@@ -118,7 +118,7 @@ export interface AddPlan {
  * pointed at the packages (copy-in.ts).
  */
 export function addPlan(cwd: string, items: string[], flags: string[], env: NodeJS.ProcessEnv = process.env, project = new Project(resolve(cwd)), mode?: Mode): AddPlan {
-  if (!items.length) throw new CliError('Name the items to add, e.g. youj add button dialog')
+  if (!items.length) throw new CliError('Name the items to add, e.g. npx @youj/cli add button dialog')
   assertItems(items)
   const deps = allDeps(project.json<PackageJson>('package.json'))
   const namespaced = Boolean(project.json<{ registries?: Record<string, string> }>('components.json')?.registries?.[REGISTRY_NAMESPACE])
@@ -183,7 +183,7 @@ export function addPlan(cwd: string, items: string[], flags: string[], env: Node
 
 /** The commands a plan stands for, to show: installs, then the copy (`youj add …` for the one the CLI does itself). */
 export function planCommands(plan: AddPlan): Command[] {
-  const copyIn: Command | undefined = plan.copyIn && { cmd: 'youj', args: ['add', ...plan.copyIn] }
+  const copyIn: Command | undefined = plan.copyIn && { cmd: 'npx', args: ['@youj/cli', 'add', ...plan.copyIn] }
   return [plan.install, plan.copy, copyIn].filter((c): c is Command => c !== undefined)
 }
 
@@ -335,7 +335,7 @@ async function settleConflicts(root: string, items: string[], outcome: CopyOutco
     ui.warn(`Kept your version of ${plural(kept.length, 'file')} that differ${kept.length === 1 ? 's' : ''} from Youj's:\n${kept.map((f) => `  ${f}`).join('\n')}\nRun again with --overwrite to replace ${kept.length === 1 ? 'it' : 'them'}.`)
   if (!broken.length) return
   const files = broken.map((b) => b.file)
-  const retry = `npx youj add ${items.join(' ')} --overwrite`
+  const retry = `npx @youj/cli add ${items.join(' ')} --overwrite`
   const why = `Youj's components need Youj's version of ${plural(files.length, 'file')} that you have your own of:\n${describeBroken(broken)}`
   if (interactive && (await ui.confirm(`${why}\nReplace ${files.length === 1 ? 'it' : 'them'} with Youj's now? Youj's keep shadcn's component names; check the "Coming from shadcn/ui" guide for the props that differ.`, false))) {
     for (const file of files) project.restore(file, outcome.incoming.get(file)!)
@@ -363,7 +363,7 @@ export function unwired(project: Project): string | null {
   const provider = framework === 'astro' || findProvider(project, entry) !== null
   return `Youj isn't wired into this app yet: ${sheet.path} doesn't import the copied youj.css and ui.css, so the items have none of Youj's tokens${
     provider ? '' : ', and nothing renders YoujProvider'
-  }. Run npx youj init --mode registry: it keeps the files add copied and does the rest. Then npx youj doctor.`
+  }. Run npx @youj/cli init --mode registry: it keeps the files add copied and does the rest. Then npx @youj/cli doctor.`
 }
 
 export { fetchRegistryItem }

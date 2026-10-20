@@ -52,14 +52,14 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
   else ok(`React ${majorOf(react) ?? react}`)
 
   const tailwind = versionMajor(project, 'tailwindcss')
-  if (tailwind === null) error('Tailwind CSS isn’t installed', 'npx youj init sets it up, or see tailwindcss.com/docs/installation')
+  if (tailwind === null) error('Tailwind CSS isn’t installed', 'npx @youj/cli init sets it up, or see tailwindcss.com/docs/installation')
   else if (tailwind < 4) error(`Tailwind CSS ${tailwind}: Youj needs v4`, 'npx @tailwindcss/upgrade@latest (commit first)')
   else ok(`Tailwind CSS v${tailwind}`)
   const wiring = tailwind !== null && tailwind >= 4 && detectFramework(project) ? tailwindWiring(project, detectFramework(project)!) : null
   if (wiring?.wired === false)
     error(
       `Tailwind CSS is installed but not in the build${wiring.file ? ` (${wiring.file} doesn't use its plugin)` : ''}, so nothing compiles Youj's classes`,
-      'npx youj init sets it up, or see tailwindcss.com/docs/installation',
+      'npx @youj/cli init sets it up, or see tailwindcss.com/docs/installation',
     )
 
   const components = project.json<{ registries?: Record<string, string>; aliases?: Record<string, string> }>('components.json')
@@ -69,7 +69,7 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
   const registryCss = project.walk('.', (n) => n === 'youj.css').find((f) => f.endsWith('styles/youj.css'))
   const usesRegistry = Boolean(registryCss || components?.registries?.[REGISTRY_NAMESPACE])
   if (!usesPackage && !usesRegistry) {
-    error('Youj isn’t set up in this app', 'npx youj init')
+    error('Youj isn’t set up in this app', 'npx @youj/cli init')
     return checks
   }
 
@@ -109,7 +109,7 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
     if (dupes.length)
       warn(
         `${dupes.length} copied Youj file${dupes.length === 1 ? '' : 's'} duplicate${dupes.length === 1 ? 's' : ''} what the Youj packages ship${dupes.some((f) => /lib\/youj\/provider\.[jt]sx?$/.test(f)) ? ', the provider among them' : ''} (${list(dupes)}): the app has two of each, and the copies don't follow the packages' updates`,
-        'Import them from the packages instead (@youj/react, @youj/core, @youj/motion, @youj/icons), then delete the copies. `npx youj add <block> --overwrite` copies a block again that way, on its own (replacing your edits to it).',
+        'Import them from the packages instead (@youj/react, @youj/core, @youj/motion, @youj/icons), then delete the copies. `npx @youj/cli add <block> --overwrite` copies a block again that way, on its own (replacing your edits to it).',
       )
     if (own.length)
       warn(
@@ -175,7 +175,7 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
       else ok(`${main} imports Tailwind, then Youj's tokens`)
     }
     const leftovers = dropShadcnLeftovers(css).removed
-    const fix = 'npx youj init removes them (it shows the diff first), or delete them by hand: see the "Coming from shadcn/ui" guide.'
+    const fix = 'npx @youj/cli init removes them (it shows the diff first), or delete them by hand: see the "Coming from shadcn/ui" guide.'
     if (leftovers.some((l) => l.what === '@custom-variant dark'))
       error(`${main} redefines the dark variant (@custom-variant dark), so Youj's dark: classes follow it instead of data-theme and match nothing`, fix)
     const accent = leftovers.flatMap((l) => l.names).filter((n) => /^--color-(?:sidebar-)?accent/.test(n))
@@ -189,14 +189,14 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
     // An @import of a file that isn't there breaks the build (a copy that stopped halfway).
     for (const [, spec] of css.matchAll(/@import\s+['"](\.{1,2}\/[^'"]+)['"]/g)) {
       const path = posix.normalize(posix.join(posix.dirname(main), spec!))
-      if (!project.exists(path)) error(`${main} imports ${spec}, which isn't there`, path.endsWith('youj.css') || path.endsWith('ui.css') || /styles\/\w+\.css$/.test(path) ? 'npx youj init --mode registry copies the core in again.' : 'Fix the path, or remove the import.')
+      if (!project.exists(path)) error(`${main} imports ${spec}, which isn't there`, path.endsWith('youj.css') || path.endsWith('ui.css') || /styles\/\w+\.css$/.test(path) ? 'npx @youj/cli init --mode registry copies the core in again.' : 'Fix the path, or remove the import.')
     }
   }
 
   // An app on the package that copied blocks in imports them through @/ too.
   const blocks = project.walk('.', (n) => /\.tsx?$/.test(n), 3).some((f) => /^(src\/)?blocks\//.test(f))
   if (usesRegistry && !usesPackage) {
-    if (!components?.registries?.[REGISTRY_NAMESPACE]) warn(`components.json has no ${REGISTRY_NAMESPACE} registry, so items need their full URL`, 'npx youj init --mode registry adds it')
+    if (!components?.registries?.[REGISTRY_NAMESPACE]) warn(`components.json has no ${REGISTRY_NAMESPACE} registry, so items need their full URL`, 'npx @youj/cli init --mode registry adds it')
     else ok(`components.json maps ${REGISTRY_NAMESPACE}`)
   }
   if (usesRegistry || blocks) checkAlias(project, framework, components, ok, error)
@@ -214,13 +214,13 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
           .slice(0, 3)
           .map(([f, names]) => `${f}: ${names.slice(0, 3).join(', ')}${names.length > 3 ? ', …' : ''}`)
           .join('; ')}${named.length > 3 ? '; …' : ''}). Youj's are roles (canvas, fg, fg-muted, line…), so these only work with ${PACKAGES.react}/shadcn.css`,
-        `npx youj add ${named.map(([f]) => f.slice(f.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')).slice(0, 4).join(' ')} --overwrite copies the current versions, or rename the classes (the "Coming from shadcn/ui" guide lists them).`,
+        `npx @youj/cli add ${named.map(([f]) => f.slice(f.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')).slice(0, 4).join(' ')} --overwrite copies the current versions, or rename the classes (the "Coming from shadcn/ui" guide lists them).`,
       )
     const broken = brokenImports(project, copied.filter((f) => !youj.includes(f)), youj)
     if (broken.length)
       error(
         `Youj's copied components import ${broken.length === 1 ? 'a file' : `${broken.length} files`} that can't stand in for Youj's, so the app won't typecheck:\n${describeBroken(broken)}`,
-        `Replace ${broken.length === 1 ? 'it' : 'them'} with Youj's: npx youj add ${broken.map((b) => b.file.slice(b.file.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')).join(' ')} --overwrite`,
+        `Replace ${broken.length === 1 ? 'it' : 'them'} with Youj's: npx @youj/cli add ${broken.map((b) => b.file.slice(b.file.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')).join(' ')} --overwrite`,
       )
   }
 
@@ -231,7 +231,7 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
   if (older.length)
     warn(
       `${older.length} copied item${older.length === 1 ? ' is' : 's are'} from an older Youj than ${VERSION}: ${older.slice(0, 5).map((o) => `${o.item} (${o.version})`).join(', ')}${older.length > 5 ? `, and ${older.length - 5} more` : ''}`,
-      `npx youj add ${older.slice(0, 4).map((o) => o.item).join(' ')} replaces the files you haven't edited and keeps the ones you have (--overwrite replaces those too). ${MANIFEST} lists what each item copied.`,
+      `npx @youj/cli add ${older.slice(0, 4).map((o) => o.item).join(' ')} replaces the files you haven't edited and keeps the ones you have (--overwrite replaces those too). ${MANIFEST} lists what each item copied.`,
     )
 
   // Provider (optional)
@@ -306,7 +306,7 @@ export async function typecheck(cwd: string, runner: Runner): Promise<Check> {
 
 /** The `@/` alias, for an app that copies source: set where shadcn and the bundler read it, and every copied `@/` import lands on a file. */
 function checkAlias(project: Project, framework: ReturnType<typeof detectFramework>, components: { aliases?: Record<string, string> } | null, ok: (m: string) => void, error: (m: string, fix?: string) => void) {
-  if (project.exists('components.json') && !components) error('components.json isn’t valid JSON, so shadcn can’t read it', 'Fix or remove it, then run npx youj init --mode registry')
+  if (project.exists('components.json') && !components) error('components.json isn’t valid JSON, so shadcn can’t read it', 'Fix or remove it, then run npx @youj/cli init --mode registry')
   const usesAt = !components?.aliases || Object.values(components.aliases).some((a) => String(a).startsWith('@/'))
   if (!usesAt) return
   const problems = aliasProblems(project, framework)
@@ -323,7 +323,7 @@ function checkAlias(project: Project, framework: ReturnType<typeof detectFramewo
   const missing = new Set<string>()
   for (const file of project.walk(base || '.', (n) => /\.(tsx?|jsx?)$/.test(n)).filter((f) => /(^|\/)(components|lib|hooks|blocks)\//.test(f)))
     for (const m of (project.read(file) ?? '').matchAll(/\bfrom\s*['"]@\/([^'"]+)['"]/g)) if (!resolves(m[1]!)) missing.add(`@/${m[1]}`)
-  if (missing.size) error(`${missing.size} @/ import${missing.size === 1 ? '' : 's'} in the copied source point at files that aren't there (${[...missing].slice(0, 5).join(', ')}${missing.size > 5 ? ', …' : ''})`, 'Add the items they belong to (npx youj add <item>), or check that @/* points at your source folder.')
+  if (missing.size) error(`${missing.size} @/ import${missing.size === 1 ? '' : 's'} in the copied source point at files that aren't there (${[...missing].slice(0, 5).join(', ')}${missing.size > 5 ? ', …' : ''})`, 'Add the items they belong to (npx @youj/cli add <item>), or check that @/* points at your source folder.')
   else ok('The @/ alias is set up, and the copied source’s @/ imports resolve')
 }
 

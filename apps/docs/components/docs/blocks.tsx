@@ -35,7 +35,7 @@ function textOf(node: ReactNode): string {
 
 /**
  * Fenced code from MDX, highlighted at build time by rehype-code. A block that is one install or run command
- * (`npx youj add button`, `pnpm add @youj/sound`) is the install field instead, like every command on the site:
+ * (`npx @youj/cli add button`, `pnpm add @youj/sound`) is the install field instead, like every command on the site:
  * the reader's package manager, a menu and a copy button. Config, output and several lines stay code.
  */
 export function CodeBlock({ title, children, className, style, ...props }: ComponentProps<'pre'>) {

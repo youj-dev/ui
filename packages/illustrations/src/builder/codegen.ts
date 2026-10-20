@@ -87,7 +87,7 @@ export function generateCode(scene: BuilderScene, { link }: CodeOptions = {}): s
   const body = specs.length ? specs.flatMap((spec) => jsx(spec, 3)) : ['      {null}']
   const header = [
     `// ${scene.name}, drawn in the Youj illustration builder.${link ? ` Open it again: ${link}` : ''}`,
-    `// It draws with the illustration kit: npx youj add ${installItems(scene).join(' ')}`,
+    `// It draws with the illustration kit: npx @youj/cli add ${installItems(scene).join(' ')}`,
   ]
   return [
     `'use client'`,

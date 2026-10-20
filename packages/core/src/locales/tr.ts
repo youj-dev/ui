@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { tr } from '@youj/core/locales/tr'
- *   (copied in with npx youj add youj-locale-tr: import { tr } from '@/locales/tr')
+ *   (copied in with npx @youj/cli add youj-locale-tr: import { tr } from '@/locales/tr')
  *   <YoujProvider locale="tr-TR" labels={tr}>
  *
  * Register: short imperatives on buttons ("Kaydet"), "siz" in sentences. Values are never given a

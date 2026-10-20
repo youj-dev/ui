@@ -119,7 +119,7 @@ describe('create', () => {
     expect(result.commands.map(format)).toEqual([
       'bun add -d tailwindcss @tailwindcss/vite',
       'bun add @youj/react@^0.1.0 @youj/core@^0.1.0 @youj/motion@^0.1.0 @youj/icons@^0.1.0 motion@^14 @base-ui/react@~1.9.0',
-      `youj add ${frameItems(frame).join(' ')}`,
+      `npx @youj/cli add ${frameItems(frame).join(' ')}`,
     ])
     expect(Object.keys(files).sort()).toEqual(['index.html', 'src/components/app-shell.tsx', 'src/index.css', 'src/lib/nav.ts', 'src/lib/theme.ts', 'src/main.tsx', 'tsconfig.app.json', 'tsconfig.json', 'vite.config.ts'])
     expect(files['src/main.tsx']).toContain("import { theme } from './lib/theme'")

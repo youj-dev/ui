@@ -169,10 +169,10 @@ describe('add over a shadcn app’s components', () => {
     const { runner } = shadcn(root, { files: { 'components/ui/dialog.tsx': YOUJ_DIALOG, 'components/ui/alert-dialog.tsx': YOUJ_ALERT_DIALOG } })
     const run = add(root, ['alert-dialog'], [], runner, silentUi(), {})
     await expect(run).rejects.toBeInstanceOf(CliError)
-    await expect(run).rejects.toThrow(/components\/ui\/dialog\.tsx \(not Youj's: shadcn's, or your own\): alert-dialog\.tsx imports dialogPopupClass[\s\S]*npx youj add alert-dialog --overwrite/)
+    await expect(run).rejects.toThrow(/components\/ui\/dialog\.tsx \(not Youj's: shadcn's, or your own\): alert-dialog\.tsx imports dialogPopupClass[\s\S]*npx @youj\/cli add alert-dialog --overwrite/)
     expect(read(root, 'components/ui/dialog.tsx')).toBe(theirs)
     // Run again, with the item's own files already in place: it stops all the same.
-    await expect(add(root, ['alert-dialog'], [], runner, silentUi(), {})).rejects.toThrow(/npx youj add alert-dialog --overwrite/)
+    await expect(add(root, ['alert-dialog'], [], runner, silentUi(), {})).rejects.toThrow(/npx @youj\/cli add alert-dialog --overwrite/)
   })
 
   it('replaces them when you say so in a terminal', async () => {
@@ -208,7 +208,7 @@ describe('add over a shadcn app’s components', () => {
     write(root, 'components.json', JSON.stringify({ ...JSON.parse(read(root, 'components.json')), registries: { '@youj': 'https://www.youj.dev/r/{name}.json' } }))
     const ui = silentUi()
     await add(root, ['button'], [], shadcn(root, { files: { 'styles/youj.css': '/* tokens */\n' } }).runner, ui, {})
-    expect(ui.log.join('\n')).toContain("warn: Youj isn't wired into this app yet: app/globals.css doesn't import the copied youj.css and ui.css, so the items have none of Youj's tokens, and nothing renders YoujProvider. Run npx youj init --mode registry")
+    expect(ui.log.join('\n')).toContain("warn: Youj isn't wired into this app yet: app/globals.css doesn't import the copied youj.css and ui.css, so the items have none of Youj's tokens, and nothing renders YoujProvider. Run npx @youj/cli init --mode registry")
   })
 })
 
@@ -238,7 +238,7 @@ describe('doctor in a shadcn app', () => {
     write(root, 'components/ui/alert-dialog.tsx', YOUJ_ALERT_DIALOG)
     const error = doctor(root, {}).find((c) => c.level === 'error')
     expect(error?.message).toMatch(/components\/ui\/dialog\.tsx \(not Youj's: shadcn's, or your own\): alert-dialog\.tsx imports dialogPopupClass, which it doesn't export/)
-    expect(error?.fix).toBe("Replace it with Youj's: npx youj add dialog --overwrite")
+    expect(error?.fix).toBe("Replace it with Youj's: npx @youj/cli add dialog --overwrite")
   })
 
   it('warns on shadcn’s color names in a copied Youj file, and not on roles', async () => {

@@ -30,7 +30,7 @@ export interface CategoryEntry {
 
 export const itemName = (id: string) => `loader-${id}`
 export const importLine = (entry: LoaderEntry) => `import { ${entry.component} } from '@youj/loaders/${entry.id}'`
-/** Where `npx youj add` writes it, through the app's @/ alias. */
+/** Where `npx @youj/cli add` writes it, through the app's @/ alias. */
 export const installedPath = (entry: LoaderEntry) => `@/components/youj/loaders/${entry.category}/${entry.id}`
 
 /** A loop's length in seconds at a speed, in the site's theme (the precise tempo). */

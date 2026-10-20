@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { pl } from '@youj/core/locales/pl'
- *   (copied in with npx youj add youj-locale-pl: import { pl } from '@/locales/pl')
+ *   (copied in with npx @youj/cli add youj-locale-pl: import { pl } from '@/locales/pl')
  *   <YoujProvider locale="pl-PL" labels={pl}>
  *
  * Register: imperatives on buttons ("Zapisz", "Anuluj") as Polish software uses them, "ty" in sentences.

@@ -5,7 +5,7 @@ import { CodeBlock } from '@youj/react'
 export default function CodeBlockLanguages() {
   return (
     <div className="flex w-full max-w-xl flex-col gap-3">
-      <CodeBlock code="pnpm dlx youj@latest init" language="sh" />
+      <CodeBlock code="pnpm dlx @youj/cli@latest init" language="sh" />
       <CodeBlock
         language="diff"
         code={`- import { Check } from 'lucide-react'

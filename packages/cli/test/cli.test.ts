@@ -78,7 +78,7 @@ describe('the repo build', () => {
     const built = join(pkg, 'dist/cli.mjs')
     if (!existsSync(built)) return
     const newest = Math.max(...[...readdirSync(join(pkg, 'src')).map((f) => join(pkg, 'src', f)), join(pkg, 'package.json')].map((f) => statSync(f).mtimeMs))
-    expect(statSync(built).mtimeMs, 'dist/cli.mjs is older than src/: run `pnpm -F youj build` (or `pnpm -F youj verify`, which builds first)').toBeGreaterThanOrEqual(newest)
+    expect(statSync(built).mtimeMs, 'dist/cli.mjs is older than src/: run `pnpm -F @youj/cli build` (or `pnpm -F @youj/cli verify`, which builds first)').toBeGreaterThanOrEqual(newest)
   })
 })
 
@@ -110,7 +110,7 @@ describe('youj without a terminal', () => {
     const root = fixture('shadcn')
     const { status, output } = youj(root, ['init', '--mode', 'registry'])
     expect(output).toContain('Done.')
-    expect(output).toContain('npx youj add button dialog input label --overwrite')
+    expect(output).toContain('npx @youj/cli add button dialog input label --overwrite')
     expect(status).toBe(0)
     expect(read(root, 'app/globals.css')).toContain('../styles/ui.css')
     expect(read(root, 'app/globals.css')).not.toContain('@custom-variant dark')
@@ -121,7 +121,7 @@ describe('youj without a terminal', () => {
     expect(youj(root, ['init', '--mode', 'registry']).status).toBe(0)
     const kept = youj(root, ['add', 'alert-dialog'])
     expect(kept.status).toBe(1)
-    expect(kept.output).toContain('npx youj add alert-dialog --overwrite')
+    expect(kept.output).toContain('npx @youj/cli add alert-dialog --overwrite')
     expect(read(root, 'components/ui/dialog.tsx')).toContain('@radix-ui/react-dialog')
     const replaced = youj(root, ['add', 'alert-dialog', '--overwrite'])
     expect(replaced.status).toBe(0)
@@ -132,7 +132,7 @@ describe('youj without a terminal', () => {
     const { status, output } = youj(fixture('shadcn'), ['add', '--help'])
     expect(status).toBe(0)
     for (const flag of ['--path', '--dry-run', '--diff', '--view', '--overwrite']) expect(output).toContain(flag)
-    expect(output).not.toContain('npx youj init')
+    expect(output).not.toContain('npx @youj/cli init')
   })
 
   it('says a command that fails in a line, not as a stack', () => {
@@ -152,6 +152,6 @@ describe('youj without a terminal', () => {
     expect(output).not.toContain('next-themes')
     // From source there's no @youj/react to import it from.
     const source = youj(fixture('create-vite'), ['init', '--yes', '--mode', 'registry', '--look', 'classic'])
-    expect(source.output).toContain('Add a ThemeToggle (npx youj add theme-toggle) to let them switch')
+    expect(source.output).toContain('Add a ThemeToggle (npx @youj/cli add theme-toggle) to let them switch')
   })
 })

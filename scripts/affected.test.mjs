@@ -32,7 +32,7 @@ test('a core change reaches every package that depends on it', () => {
 })
 
 test('a package nothing depends on affects only itself', () => {
-  assert.deepEqual(of('packages/cli/src/index.ts').packages, ['youj'])
+  assert.deepEqual(of('packages/cli/src/index.ts').packages, ['@youj/cli'])
   assert.deepEqual(of('packages/mcp/src/server.ts').packages, ['@youj/mcp'])
 })
 

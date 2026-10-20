@@ -225,7 +225,7 @@ describe('the export', () => {
     await vi.waitFor(() => expect(writeText).toHaveBeenCalledTimes(2))
     expect(fromJson(writeText.mock.calls[1]![0])).toEqual(desk)
     fireEvent.click(within(dialog).getByRole('tab', { name: 'Install' }))
-    expect(within(dialog).getByRole('group', { name: 'Install command' })).toHaveTextContent('npx youj add illustration-kit iso-shapes')
+    expect(within(dialog).getByRole('group', { name: 'Install command' })).toHaveTextContent('npx @youj/cli add illustration-kit iso-shapes')
   })
 
   it('saves the still frame as a standalone SVG named after the scene', async () => {

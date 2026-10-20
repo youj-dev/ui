@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { ptBR } from '@youj/core/locales/pt-BR'
- *   (copied in with npx youj add youj-locale-pt-br: import { ptBR } from '@/locales/pt-BR')
+ *   (copied in with npx @youj/cli add youj-locale-pt-br: import { ptBR } from '@/locales/pt-BR')
  *   <YoujProvider locale="pt-BR" labels={ptBR}>
  *
  * Register: infinitives on buttons ("Salvar"), "você" in sentences. */

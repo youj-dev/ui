@@ -63,7 +63,7 @@ describe('stdio server', () => {
     expect(info.isError).not.toBe(true)
     expect(text(info)).toContain('Route: registry')
     const add = await client.callTool({ name: 'get_add_command', arguments: { cwd, items: ['DATATABLETOOLBAR', 'auth-login'] } })
-    expect(text(add)).toContain('npx youj add data-table auth-login')
+    expect(text(add)).toContain('npx @youj/cli add data-table auth-login')
     const unknown = await client.callTool({ name: 'get_add_command', arguments: { cwd, items: ['buton'] } })
     expect(unknown.isError).toBe(true)
     expect(text(unknown)).toContain('button')
@@ -78,7 +78,7 @@ describe('stdio server', () => {
 
   it('knows the illustrations over stdio', async () => {
     const cwd = join(pkg, 'test/fixtures/registry')
-    expect(text(await client.callTool({ name: 'get_add_command', arguments: { cwd, items: ['illustration-coffee'] } }))).toContain('npx youj add illustration-coffee')
+    expect(text(await client.callTool({ name: 'get_add_command', arguments: { cwd, items: ['illustration-coffee'] } }))).toContain('npx @youj/cli add illustration-coffee')
     expect(text(await client.callTool({ name: 'get_component', arguments: { name: 'Illustration' } }))).toContain("from '@youj/illustrations'")
     expect(text(await client.callTool({ name: 'list_illustrations', arguments: { category: 'food' } }))).toContain('`coffee`')
     expect(text(await client.callTool({ name: 'search', arguments: { query: 'coffee', kinds: ['illustration'] } }))).toContain('illustration-coffee')

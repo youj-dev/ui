@@ -26,10 +26,10 @@ Every item is published as JSON at <RegistryUrl name="<name>" />. Start with `yo
 
 ```bash
 # once: set the app up (tokens, stylesheet, provider)
-npx youj init
+npx @youj/cli init
 
 # then any item by name
-npx youj add reveal stagger
+npx @youj/cli add reveal stagger
 ```
 
 `youj add` fetches each item from the registry at <RegistryUrl name="<name>" /> and copies its source into your app. [Installation](https://www.youj.dev/docs/installation) covers the manual route.

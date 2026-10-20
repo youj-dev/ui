@@ -51,7 +51,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ### On the server, or without JavaScript
 
-The recipes key on the `data-yj-look` attribute, so no JavaScript is needed. Without a provider and without the attribute, components draw Classic. Writing `data-yj-look="bezel"` on `<html>` switches the whole document to Bezel, overlays included. `npx youj init` writes the attribute for you.
+The recipes key on the `data-yj-look` attribute, so no JavaScript is needed. Without a provider and without the attribute, components draw Classic. Writing `data-yj-look="bezel"` on `<html>` switches the whole document to Bezel, overlays included. `npx @youj/cli init` writes the attribute for you.
 
 ```tsx title="app/layout.tsx"
 import { basalt, themeProps } from '@youj/core'
@@ -96,10 +96,10 @@ useYoujLook() // the look in effect where it's called
 
 From the package, there's nothing to add: `@youj/react/styles.css` carries Bezel's recipes, and they apply wherever `data-yj-look="bezel"` is written.
 
-From the registry, Bezel's recipes are an item of their own, `youj-look-bezel`, imported right after `ui.css`. `npx youj init --look bezel` copies it with the core, and a [Create](/create) link in Bezel (`look=bezel`) installs it with the frame:
+From the registry, Bezel's recipes are an item of their own, `youj-look-bezel`, imported right after `ui.css`. `npx @youj/cli init --look bezel` copies it with the core, and a [Create](/create) link in Bezel (`look=bezel`) installs it with the frame:
 
 ```bash
-npx youj add youj-look-bezel
+npx @youj/cli add youj-look-bezel
 ```
 
 ```css title="app/globals.css"

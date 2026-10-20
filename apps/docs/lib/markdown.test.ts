@@ -21,7 +21,7 @@ function context(unknown: string[] = [], missing: string[] = []): MarkdownContex
     install: (name) => ({
       packageCommand: 'pnpm add @youj/react',
       packageImport: `import { X } from '@youj/react'`,
-      registryCommand: `npx youj add ${name}`,
+      registryCommand: `npx @youj/cli add ${name}`,
       registryDeps: [],
     }),
     tokens: { durations, easings, springs, staggers },
@@ -76,7 +76,7 @@ Use it for [actions](/docs/components/button), not \`<a>\` links.
   <Card title="Toggle" href="/docs/components/toggle">A button that stays pressed.</Card>
 </Cards>
 
-<Snippet code="npx youj add reveal" />
+<Snippet code="npx @youj/cli add reveal" />
 
 <ThemeBuilder />
 `,
@@ -85,13 +85,13 @@ Use it for [actions](/docs/components/button), not \`<a>\` links.
     expect(md).toContain('```tsx\n')
     expect(md).toContain('[actions](https://k.dev/docs/components/button), not `<a>` links.')
     expect(md).toContain('pnpm add @youj/react')
-    expect(md).toContain('npx youj add button')
+    expect(md).toContain('npx @youj/cli add button')
     expect(md).toContain('| Press | `duration.instant`, `ease.standard` | 80ms; cubic-bezier(0.2, 0, 0, 1) | scales to 0.97 |')
     expect(md).toContain('**Reduced motion:** No scale.')
     expect(md).toContain("| `size` | `'sm' \\| 'md'` | `'md'` | How big. |")
     expect(md).toContain('> **Warning:** Keep one per view.')
     expect(md).toContain('- [Toggle](https://k.dev/docs/components/toggle): A button that stays pressed.')
-    expect(md).toContain('npx youj add reveal')
+    expect(md).toContain('npx @youj/cli add reveal')
     expect(md).not.toMatch(/ThemeBuilder|title: Demo/)
   })
 
@@ -138,12 +138,12 @@ A row of buttons.
 </ComponentStories>`,
       context(),
     )
-    expect(md).toMatch(/^## Examples\n\n### Demo\n\n```tsx\n[\s\S]*```\n\nA row of buttons\.\n\n## Installation & usage\n\n```bash\npnpm add @youj\/react\n```\n\nFor an app already set up with `npx youj init`[^`]*`@youj\/core`[^`]*`@youj\/motion`[^`]*`motion`[^\n]*\n\nOr copy[^`]*```bash\nnpx youj add button\n```\n\n## Description\n\nEach example's description is under Examples\.\n\n## Code\n\nEach example's code is under Examples\.$/)
+    expect(md).toMatch(/^## Examples\n\n### Demo\n\n```tsx\n[\s\S]*```\n\nA row of buttons\.\n\n## Installation & usage\n\n```bash\npnpm add @youj\/react\n```\n\nFor an app already set up with `npx @youj\/cli init`[^`]*`@youj\/core`[^`]*`@youj\/motion`[^`]*`motion`[^\n]*\n\nOr copy[^`]*```bash\nnpx @youj\/cli add button\n```\n\n## Description\n\nEach example's description is under Examples\.\n\n## Code\n\nEach example's code is under Examples\.$/)
   })
 
   it('prints a copy-in-only item without a package route', () => {
-    const md = installMarkdown({ registryCommand: 'npx youj add marketing-cta-banner', registryImport: "import { CtaBanner } from '@/blocks/marketing/cta-banner'", registryDeps: [] })
-    expect(md).toContain('npx youj add marketing-cta-banner')
+    const md = installMarkdown({ registryCommand: 'npx @youj/cli add marketing-cta-banner', registryImport: "import { CtaBanner } from '@/blocks/marketing/cta-banner'", registryDeps: [] })
+    expect(md).toContain('npx @youj/cli add marketing-cta-banner')
     expect(md).toContain("import { CtaBanner } from '@/blocks/marketing/cta-banner'")
     expect(md).not.toMatch(/pnpm add|@youj\/react/)
   })
@@ -188,7 +188,7 @@ describe('BlockStories', () => {
     )
     expect(md).toContain('## Blocks')
     expect(md).toContain('### Bento\n\nA grid of tiles.')
-    expect(md).toContain('npx youj add marketing-feature-bento')
+    expect(md).toContain('npx @youj/cli add marketing-feature-bento')
     expect(md).toContain('export const A = 1')
     expect(md).toContain('| `size` |')
     expect(md).toContain('`copy` takes `title`')
@@ -198,6 +198,6 @@ describe('BlockStories', () => {
   it('gives a composition with no item of its own the install of the blocks it stacks', () => {
     const ctx: MarkdownContext = { ...context(), storyInstall: () => stackedInstall(['marketing-navbar', 'marketing-hero-centered']) }
     const md = mdxToMarkdown('<BlockStories>\n<BlockStory id="a" label="Landing" block="marketing-landing" story="Default">\nA page.\n</BlockStory>\n</BlockStories>', ctx)
-    expect(md).toContain('npx youj add marketing-navbar marketing-hero-centered')
+    expect(md).toContain('npx @youj/cli add marketing-navbar marketing-hero-centered')
   })
 })

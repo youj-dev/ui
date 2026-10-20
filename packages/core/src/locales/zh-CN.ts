@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { zhCN } from '@youj/core/locales/zh-CN'
- *   (copied in with npx youj add youj-locale-zh-cn: import { zhCN } from '@/locales/zh-CN')
+ *   (copied in with npx @youj/cli add youj-locale-zh-cn: import { zhCN } from '@/locales/zh-CN')
  *   <YoujProvider locale="zh-CN" labels={zhCN}>
  *
  * Register: concise verbs on buttons ("保存", "取消"), full-width punctuation, no spaces around digits or Latin. */

@@ -41,7 +41,7 @@ export default function ExampleCodeDialog({ name, file, ...dialog }: ExampleCode
                 <CodePanel
                   idBase={`example-code-${slug}`}
                   files={[{ path: `examples/${name}.tsx`, src, lines: state.body.code.split('\n').length }]}
-                  install={{ command: `npx youj add ${name.split('/')[0]}`, deps: [] }}
+                  install={{ command: `npx @youj/cli add ${name.split('/')[0]}`, deps: [] }}
                   download={slug}
                   height="100%"
                   collapsibleTree

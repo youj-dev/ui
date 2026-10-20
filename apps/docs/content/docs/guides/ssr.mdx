@@ -11,9 +11,9 @@ Youj renders on the server. The packages mark their client components with `"use
 
 - **Import Youj components from a Server Component.** `import { Card } from '@youj/react'` works in a file with no directive.
 - **Functions come from a Client Component.** A prop that's a function (`onAction`, `onValueChange`, `render`) can't cross from a Server Component. Put the component that passes it in a file that starts with `'use client'`.
-- **A sound pack is such a function.** `sound={beacon}` goes on a `YoujProvider` in a client file; `npx youj add sound` writes `app/providers.tsx` for this on the App Router.
+- **A sound pack is such a function.** `sound={beacon}` goes on a `YoujProvider` in a client file; `npx @youj/cli add sound` writes `app/providers.tsx` for this on the App Router.
 - **Hooks are client-side.** `useYouj`, `useDevice` and the rest read the provider, so use them in a Client Component.
-- **What reads the clock goes inside Suspense under `cacheComponents`.** create-next-app turns Next.js's `cacheComponents` on, and then `next build` stops when a Client Component reads the current time while its page prerenders. The Date Range Picker does (its presets count from today), and so do blocks and examples that count from now (a countdown, an upload's progress, a schedule's current hour). Wrap them, or the part of the page around them, in `<Suspense>` and they render per request. `npx youj create` wraps its screens for you.
+- **What reads the clock goes inside Suspense under `cacheComponents`.** create-next-app turns Next.js's `cacheComponents` on, and then `next build` stops when a Client Component reads the current time while its page prerenders. The Date Range Picker does (its presets count from today), and so do blocks and examples that count from now (a countdown, an upload's progress, a schedule's current hour). Wrap them, or the part of the page around them, in `<Suspense>` and they render per request. `npx @youj/cli create` wraps its screens for you.
 
 ## The theme, without a flash
 
@@ -27,7 +27,7 @@ import { basalt, themeProps } from '@youj/core'
 
 `themeProps` returns the attributes that apply a theme to an element: its contract as CSS variables, the preset's id and its motion personality. The server's HTML already carries the theme, so the first paint is themed.
 
-The light or dark scheme is set on `<html>` by a script before React hydrates, which is why `<html>` needs `suppressHydrationWarning`. `npx youj init` writes both in a Next.js or React Router app. See [Installation](/docs/installation#theme) for the setup by hand.
+The light or dark scheme is set on `<html>` by a script before React hydrates, which is why `<html>` needs `suppressHydrationWarning`. `npx @youj/cli init` writes both in a Next.js or React Router app. See [Installation](/docs/installation#theme) for the setup by hand.
 
 ## What the first render assumes
 

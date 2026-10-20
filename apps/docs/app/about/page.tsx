@@ -79,7 +79,7 @@ export default function AboutPage() {
     { mark: 'icons', name: '@youj/icons', what: 'Original animated icons that morph between states', href: '/docs/icons' },
     { mark: 'illustrations', name: '@youj/illustrations', what: 'Isometric scenes and the kit to draw your own', href: '/docs/illustrations' },
     { mark: AudioLinesIcon, name: '@youj/sound', what: 'Designed interface sounds for the components’ cues, off until you add the provider', href: '/docs/sound' },
-    { mark: TerminalIcon, name: 'youj', what: 'The CLI: init, add, create, doctor and mcp', href: '/docs/installation' },
+    { mark: TerminalIcon, name: '@youj/cli', what: 'The CLI: init, add, create, doctor and mcp', href: '/docs/installation' },
     { mark: BotIcon, name: '@youj/mcp', what: 'An MCP server that gives AI coding tools the docs, props and icons', href: '/docs/mcp' },
     { mark: BrandFigmaIcon, name: 'Figma kit', what: 'A plugin that builds the kit in Figma from the same tokens', href: '/docs/figma' },
   ]
@@ -210,7 +210,7 @@ export default function AboutPage() {
                 title="Report a bug"
                 body={
                   <>
-                    Open an issue with your versions (<code className="code-inline">npx youj doctor</code> prints them) and a small reproduction.
+                    Open an issue with your versions (<code className="code-inline">npx @youj/cli doctor</code> prints them) and a small reproduction.
                   </>
                 }
                 href={project.newIssue}

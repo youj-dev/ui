@@ -25,11 +25,11 @@ const TRIGGER = 'focus-ring inline-flex h-8 shrink-0 items-center gap-1.5 rounde
 export type InstallMode = 'package' | 'registry'
 
 /**
- * What the field installs: the CLI (`youj <run>`), packages from npm, or a command of an AI coding tool, where the
+ * What the field installs: the CLI (`@youj/cli <run>`), packages from npm, or a command of an AI coding tool, where the
  * menu picks the tool instead of the package manager.
  */
 export type Install =
-  | { kind: 'cli'; /** What follows `youj`: `init`, `add button`. */ run: string }
+  | { kind: 'cli'; /** What follows `@youj/cli`: `init`, `add button`. */ run: string }
   | { kind: 'package'; /** `@youj/react recharts` */ packages: string; /** A dev dependency: `-D` (`--dev` for yarn). */ dev?: boolean }
   | { kind: 'client'; /** The whole command, for each tool: `claude mcp add …`. */ commands: Partial<Record<AiClient, string>> }
 
@@ -69,7 +69,7 @@ export function InstallField({
   const command =
     what.kind === 'client'
       ? (what.commands[tool?.value ?? client] ?? '')
-      : `${what.kind === 'cli' ? current.runner : current.add} ${what.kind === 'cli' ? `youj ${what.run}` : `${what.dev ? `${current.dev} ` : ''}${what.packages}`}`
+      : `${what.kind === 'cli' ? current.runner : current.add} ${what.kind === 'cli' ? `@youj/cli ${what.run}` : `${what.dev ? `${current.dev} ` : ''}${what.packages}`}`
   const [program, ...args] = command.split(' ')
   const rest = args.join(' ')
   // Until it's opened the trigger is a plain button; the menu's code is fetched when it's pointed at or focused, and the first press swaps it in, open.

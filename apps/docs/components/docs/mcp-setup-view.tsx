@@ -32,7 +32,7 @@ export function McpSetupView({ editors }: { editors: (McpEditor & { highlighted:
       {editors.map((editor) => (
         <div key={editor.id} role="tabpanel" id={`${id}-panel-${editor.id}`} aria-labelledby={`${id}-tab-${editor.id}`} hidden={current !== editor.id}>
           <Command
-            command={`npx youj mcp --client ${editor.id}`}
+            command={`npx @youj/cli mcp --client ${editor.id}`}
             note={
               editor.manual
                 ? `Prints the config to paste in ${editor.name}'s settings: it keeps its servers there, not in a file.`

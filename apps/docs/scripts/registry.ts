@@ -1,7 +1,7 @@
 /* Builds every workspace package's shadcn registry against this site's URL and
  * collects the output in public/r, so the site serves /r/<name>.json (the latest
  * alias) and /r/v<version>/<name>.json (this release's items, whose registry
- * dependencies name the same version). `npx youj` reads its own version's, so
+ * dependencies name the same version). `npx @youj/cli` reads its own version's, so
  * copied code doesn't change with each deploy. A build writes the current version
  * only; older ones come back from the archive when YOUJ_REGISTRY_ARCHIVE is set
  * (registry-archive.ts, RELEASING.md).

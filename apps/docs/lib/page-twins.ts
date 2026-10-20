@@ -8,7 +8,7 @@ const PAGES = {
     path: '/',
     title: 'Youj',
     summary:
-      'Accessible UI components, animated icons, illustrations and themes that move together. Install the kit, or copy just the pieces you need. Set up with `npx youj init`.',
+      'Accessible UI components, animated icons, illustrations and themes that move together. Install the kit, or copy just the pieces you need. Set up with `npx @youj/cli init`.',
     more: [['Docs', '/docs.md'], ['Everything in one file', '/llms-full.txt']],
   },
   icons: {
@@ -49,7 +49,7 @@ const PAGES = {
     path: '/create',
     title: 'Create',
     summary:
-      'Build an app frame from Youj blocks (sidebar, top bar, account and search), add screens from the Screens catalog, give it your theme, and take it home as code with `npx youj create \'<link>\'`.',
+      'Build an app frame from Youj blocks (sidebar, top bar, account and search), add screens from the Screens catalog, give it your theme, and take it home as code with `npx @youj/cli create \'<link>\'`.',
     more: [['Docs', '/docs.md']],
   },
   about: {

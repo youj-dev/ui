@@ -33,7 +33,7 @@ function basicEntry(e: BasicEntry, category: string): ViewerEntry {
     level: LEVEL_LABELS[e.level].one,
     framing: 'card',
     docs: e.href,
-    install: `npx youj add ${e.slug}`,
+    install: `npx @youj/cli add ${e.slug}`,
     ...(e.import && { import: e.import }),
     stories: e.demos.map((d) => ({ id: d.id, label: d.label, files: [{ path: `${d.id}.tsx`, src: codeUrl.example(d.id), lines: lines(exampleSource(d.id)) }] })),
   }
@@ -42,7 +42,7 @@ function basicEntry(e: BasicEntry, category: string): ViewerEntry {
 function showcaseEntry(e: ShowcaseEntry): ViewerEntry {
   // Its stack, else the rule, else none.
   const names = installOf(e).install ?? e.slug
-  const command = names ? `npx youj add ${names}` : undefined
+  const command = names ? `npx @youj/cli add ${names}` : undefined
   const href = itemHref(e)
   return {
     key: `${e.kind}/${e.slug}`,

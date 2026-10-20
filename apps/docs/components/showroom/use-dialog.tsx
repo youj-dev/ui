@@ -228,7 +228,7 @@ function loadSource(item: string) {
 /** Line lengths for the placeholder, so it reads as code rather than a bar chart. */
 const LINES = [58, 34, 0, 72, 46, 64, 28, 0, 52, 40]
 
-/** The file `npx youj add <item>` writes, as it writes it: read the first time it's shown; meanwhile code-shaped lines. */
+/** The file `npx @youj/cli add <item>` writes, as it writes it: read the first time it's shown; meanwhile code-shaped lines. */
 export function RegistrySource({ item, path }: { item: string; /** Where it lands in the app, without the @/ alias. */ path: string }) {
   const [attempt, setAttempt] = useState(0)
   const [source, setSource] = useState<Source>({ status: 'loading' })

@@ -37,7 +37,7 @@ export function faq(): QuestionGroup[] {
         {
           id: 'shadcn',
           question: 'How is it different from shadcn/ui?',
-          answer: `\`@youj/react\` is shadcn/ui: the \`base-nova\` style on Base UI, with shadcn's component APIs. Youj adds what shadcn leaves to you: a motion system every component moves through (tokens, springs, speed and reduced motion from one provider), original animated icons that morph between states, themes derived from a few inputs with contrast checked against WCAG AA, and components shadcn doesn't have, such as Data Table, Kanban, Tag Input and a chat kit. Install it as an npm package and import from \`@youj/react\`, or copy the source in with \`npx youj add\`.`,
+          answer: `\`@youj/react\` is shadcn/ui: the \`base-nova\` style on Base UI, with shadcn's component APIs. Youj adds what shadcn leaves to you: a motion system every component moves through (tokens, springs, speed and reduced motion from one provider), original animated icons that morph between states, themes derived from a few inputs with contrast checked against WCAG AA, and components shadcn doesn't have, such as Data Table, Kanban, Tag Input and a chat kit. Install it as an npm package and import from \`@youj/react\`, or copy the source in with \`npx @youj/cli add\`.`,
         },
         {
           id: 'existing-shadcn-project',
@@ -52,7 +52,7 @@ export function faq(): QuestionGroup[] {
         {
           id: 'nextjs',
           question: 'Does it work with the Next.js App Router and server components?',
-          answer: `Yes. The packages ship ESM with types and mark their client components with \`"use client"\`, so server components import them directly, with nothing to transpile. \`npx youj init\` recognizes the App and Pages Router, adds the stylesheet and the provider, and spreads the theme onto the server-rendered \`<html>\` so nothing flashes on load. Numbers and dates format in the provider's \`locale\`, so the server and the browser render the same text. [Server rendering guide](/docs/guides/ssr), [Installation](/docs/installation)`,
+          answer: `Yes. The packages ship ESM with types and mark their client components with \`"use client"\`, so server components import them directly, with nothing to transpile. \`npx @youj/cli init\` recognizes the App and Pages Router, adds the stylesheet and the provider, and spreads the theme onto the server-rendered \`<html>\` so nothing flashes on load. Numbers and dates format in the provider's \`locale\`, so the server and the browser render the same text. [Server rendering guide](/docs/guides/ssr), [Installation](/docs/installation)`,
         },
         {
           id: 'browsers',
@@ -99,7 +99,7 @@ export function faq(): QuestionGroup[] {
         {
           id: 'ai-mcp',
           question: 'Can AI coding tools use Youj?',
-          answer: `Yes, any MCP client can use it (Claude Code, Cursor, VS Code, Windsurf, Codex, Gemini CLI and Zed, for example). Run \`npx youj mcp\` to add the server to your editor's config, or connect to the hosted one at \`https://mcp.youj.dev\`, which needs nothing installed. It searches components, blocks, templates, icons and hooks by meaning, reads props and motion notes, finds the right icon morph for two states and builds contrast-checked themes. Run locally, it works offline from an index of your version; requests to the hosted server pass through Cloudflare, which keeps standard logs. Every docs page is also Markdown, listed in [/llms.txt](/llms.txt). [AI & MCP](/docs/mcp)`,
+          answer: `Yes, any MCP client can use it (Claude Code, Cursor, VS Code, Windsurf, Codex, Gemini CLI and Zed, for example). Run \`npx @youj/cli mcp\` to add the server to your editor's config, or connect to the hosted one at \`https://mcp.youj.dev\`, which needs nothing installed. It searches components, blocks, templates, icons and hooks by meaning, reads props and motion notes, finds the right icon morph for two states and builds contrast-checked themes. Run locally, it works offline from an index of your version; requests to the hosted server pass through Cloudflare, which keeps standard logs. Every docs page is also Markdown, listed in [/llms.txt](/llms.txt). [AI & MCP](/docs/mcp)`,
         },
       ],
     },
@@ -126,7 +126,7 @@ export function faq(): QuestionGroup[] {
         {
           id: 'get-help',
           question: 'How do I report a bug or get help?',
-          answer: `Search the docs first (⌘K, or Ctrl K on Windows and Linux). For a bug, [open an issue](${project.newIssue}) with your package versions (\`npx youj doctor\` prints them) and the smallest reproduction you can make. Questions and ideas go to [GitHub Discussions](${project.discussions}). Report security issues privately, never in a public issue: see [Is Youj secure to install?](#security).`,
+          answer: `Search the docs first (⌘K, or Ctrl K on Windows and Linux). For a bug, [open an issue](${project.newIssue}) with your package versions (\`npx @youj/cli doctor\` prints them) and the smallest reproduction you can make. Questions and ideas go to [GitHub Discussions](${project.discussions}). Report security issues privately, never in a public issue: see [Is Youj secure to install?](#security).`,
         },
         {
           id: 'security',

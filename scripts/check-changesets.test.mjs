@@ -5,7 +5,7 @@ import { apiProblems, beforeFirstRelease, bumps, removesApi } from './check-chan
 const changeset = (level) => `---\n'@youj/react': ${level}\n---\n\nSomething.\n`
 
 test('reads the bump levels from a changeset', () => {
-  assert.deepEqual(bumps(`---\n'@youj/react': minor\n'youj': patch\n---\nx`), ['minor', 'patch'])
+  assert.deepEqual(bumps(`---\n'@youj/react': minor\n'@youj/cli': patch\n---\nx`), ['minor', 'patch'])
   assert.deepEqual(bumps('no front matter'), [])
 })
 

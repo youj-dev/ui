@@ -14,18 +14,18 @@ function ImportLine({ code }: { code: string }) {
   )
 }
 
-/** The commands are written once, for pnpm (`pnpm add …`, `pnpm add -D …`, `npx youj …`): the field words them for the reader's manager. */
+/** The commands are written once, for pnpm (`pnpm add …`, `pnpm add -D …`, `npx @youj/cli …`): the field words them for the reader's manager. */
 function installOf(command: string): Install {
   const add = command.match(/^pnpm add(\s+-D)?\s+(.*)$/)
   if (add) return { kind: 'package', packages: add[2]!, dev: !!add[1] }
-  return { kind: 'cli', run: command.replace(/^npx youj /, '') }
+  return { kind: 'cli', run: command.replace(/^npx @youj\/cli /, '') }
 }
 
 /**
  * One install command (`pnpm add …`) as the install field: the Installation
  * page's, for packages outside a component's own block.
  */
-export function PackageInstallView({ command, label = 'Install command' }: { /** Written for pnpm: `pnpm add …` or `npx youj …`. */ command: string; label?: string }) {
+export function PackageInstallView({ command, label = 'Install command' }: { /** Written for pnpm: `pnpm add …` or `npx @youj/cli …`. */ command: string; label?: string }) {
   return (
     <div className="not-prose my-6">
       <InstallField install={installOf(command)} label={label} className="w-full" />
@@ -67,7 +67,7 @@ export function InstallTabsView({
       {importLine && <ImportLine code={importLine} />}
       {inPackage && (
         <p className="mt-2 px-1 text-[12.5px] text-fg-muted">
-          For an app already set up with <code className="code-inline">npx youj init</code>, which installs the peers (<code className="code-inline">@youj/core</code>, <code className="code-inline">@youj/motion</code>, <code className="code-inline">motion</code> and Base UI) and wires the provider. New app? Start at <Link href="/docs/installation" className="underline underline-offset-2">Installation</Link>.
+          For an app already set up with <code className="code-inline">npx @youj/cli init</code>, which installs the peers (<code className="code-inline">@youj/core</code>, <code className="code-inline">@youj/motion</code>, <code className="code-inline">motion</code> and Base UI) and wires the provider. New app? Start at <Link href="/docs/installation" className="underline underline-offset-2">Installation</Link>.
         </p>
       )}
       {method === 'registry' && registryDeps.length > 0 && (

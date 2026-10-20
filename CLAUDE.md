@@ -14,7 +14,7 @@ This pnpm monorepo holds one package per product, sharing one design language an
 | `packages/illustrations` → `@youj/illustrations` | the isometric kit, its scenes and the illustration builder's format and renderer | `packages/illustrations/CONTRIBUTING.md` |
 | `packages/miniatures` → `@youj/miniatures` | interactive isometric objects on one shared engine, one entry per miniature | `packages/miniatures/CONTRIBUTING.md` |
 | `packages/sound` → `@youj/sound` | interface sound packs for `<YoujProvider sound>`, `definePack`, the offline render | `packages/sound/CONTRIBUTING.md` |
-| `packages/cli` → `youj` | the setup CLI: `init`, `add`, `create`, `doctor`, `mcp` | `packages/cli/CONTRIBUTING.md` |
+| `packages/cli` → `@youj/cli` | the setup CLI: `init`, `add`, `create`, `doctor`, `mcp` | `packages/cli/CONTRIBUTING.md` |
 | `packages/mcp` → `@youj/mcp` | MCP server for AI coding tools, also a remote Worker at mcp.youj.dev | `packages/mcp/CONTRIBUTING.md` |
 | `packages/figma` → `@youj/figma` (private) | Figma plugin that builds the Youj kit from the real tokens | `packages/figma/CONTRIBUTING.md` |
 | `apps/docs` | public docs site (Next.js + Fumadocs); also hosts the combined registry at `/r` | `apps/docs/README.md` |
@@ -31,4 +31,4 @@ This pnpm monorepo holds one package per product, sharing one design language an
 - **Deploys and media:** maintainers deploy the docs site and upload promo media; a contribution doesn't touch either.
 
 ## Distribution
-Users import each thing from the versioned npm package that owns it (published under the `@youj` scope): components from `@youj/react` and its optional-peer entries, the provider, themes, tokens and locales from `@youj/core`, motion components from `@youj/motion`, loaders from `@youj/loaders/<id>`, icons from `@youj/icons`, scenes from `@youj/illustrations`, sounds from `@youj/sound`. There are no re-exports across packages. Copy-in source stays possible, but only through our CLI (`npx youj add <item>`); docs never show `npx shadcn add` or `@/components/ui/...` imports as the way to use Youj. Blocks and the illustration kit are copy-in only, so their snippets use the path the CLI writes.
+Users import each thing from the versioned npm package that owns it (published under the `@youj` scope): components from `@youj/react` and its optional-peer entries, the provider, themes, tokens and locales from `@youj/core`, motion components from `@youj/motion`, loaders from `@youj/loaders/<id>`, icons from `@youj/icons`, scenes from `@youj/illustrations`, sounds from `@youj/sound`. There are no re-exports across packages. Copy-in source stays possible, but only through our CLI (`npx @youj/cli add <item>`); docs never show `npx shadcn add` or `@/components/ui/...` imports as the way to use Youj. Blocks and the illustration kit are copy-in only, so their snippets use the path the CLI writes.

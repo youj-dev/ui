@@ -23,7 +23,7 @@
     "@youj/miniatures": "alpha",
     "@youj/miniatures/*": "alpha",
     "@youj/sound": "alpha",
-    "youj": "alpha",
+    "@youj/cli": "alpha",
     "@youj/mcp": "alpha"
   },
   "kinds": {

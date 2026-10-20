@@ -22,7 +22,7 @@ export function listShowcase(catalog: Catalog, group?: string, level?: string): 
   const filtered = wanted ? byGroup.filter((s) => s.level === wanted) : byGroup
   if (!filtered.length) throw new NotFound(`No blocks at level "${level}". Levels: ${BLOCK_LEVELS.join(', ')}.`)
   const counts = BLOCK_LEVELS.map((l) => [l, filtered.filter((s) => s.level === l).length] as const).filter(([, n]) => n).map(([l, n]) => `${n} ${l}s`).join(', ')
-  const out = [`${filtered.length} blocks (${counts}; copy-in, install with \`npx youj add <slug>\`):`]
+  const out = [`${filtered.length} blocks (${counts}; copy-in, install with \`npx @youj/cli add <slug>\`):`]
   let current: string | undefined
   for (const s of filtered) {
     if (s.group !== current) {
@@ -54,8 +54,8 @@ async function appImport(catalog: Catalog, item: ShowcaseItem): Promise<string |
 }
 
 export function install(item: ShowcaseItem): string {
-  if (item.registry) return `npx youj add ${item.registry}`
-  if (item.stack?.length) return `npx youj add ${item.stack.join(' ')}`
+  if (item.registry) return `npx @youj/cli add ${item.registry}`
+  if (item.stack?.length) return `npx @youj/cli add ${item.stack.join(' ')}`
   return ''
 }
 

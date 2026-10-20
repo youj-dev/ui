@@ -2,7 +2,7 @@
  * Translated for Youj; native review welcome. See CONTRIBUTING.md, "Improving a language".
  *
  *   import { he } from '@youj/core/locales/he'
- *   (copied in with npx youj add youj-locale-he: import { he } from '@/locales/he')
+ *   (copied in with npx @youj/cli add youj-locale-he: import { he } from '@/locales/he')
  *   <html lang="he" dir="rtl">
  *   <YoujProvider locale="he-IL" labels={he}>
  *

@@ -95,7 +95,7 @@ export async function loadRegistryItem(ref: string, env: NodeJS.ProcessEnv = pro
     throw new CliError(
       `No registry found at ${itemUrl('registry', env).replace(/registry\.json$/, '')} (it has no registry.json), so ${ref} can't be added from it.${env.YOUJ_REGISTRY_URL?.trim() ? ' Check YOUJ_REGISTRY_URL: it names the folder that holds registry.json and the items.' : ''}`,
     )
-  if (res.status === 404) throw new CliError(`${ref} isn't in the registry (${url})${didYouMean(ref, index, env)}${url.startsWith(DEFAULT_TEMPLATES.versioned.split('{name}')[0]!) ? `. If it's newer than ${VERSION}, run the latest CLI (npx youj@latest), or pass --latest (${REGISTRY_LATEST_ENV}=1) to copy the latest items` : ''}`)
+  if (res.status === 404) throw new CliError(`${ref} isn't in the registry (${url})${didYouMean(ref, index, env)}${url.startsWith(DEFAULT_TEMPLATES.versioned.split('{name}')[0]!) ? `. If it's newer than ${VERSION}, run the latest CLI (npx @youj/cli@latest), or pass --latest (${REGISTRY_LATEST_ENV}=1) to copy the latest items` : ''}`)
   if (!res.ok) throw new CliError(`The registry answered ${res.status} for ${url}`)
   try {
     return (await res.json()) as RegistryItem

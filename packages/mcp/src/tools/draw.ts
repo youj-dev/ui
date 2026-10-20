@@ -365,7 +365,7 @@ export function drawIllustration(catalog: Catalog, input: unknown, options: { na
   const file = `${project.path('src') ? 'src/' : ''}components/illustrations/${sceneSlug(scene.name)}.tsx`
   const lit = scene.parts.filter((p) => p.lit).length
   const warnings = sceneWarnings(scene)
-  const install = code('bash', `npx youj add ${installItems(scene).join(' ')}`) + '\nIt copies in the illustration kit and the shapes the scene uses (skip it if they are there already).'
+  const install = code('bash', `npx @youj/cli add ${installItems(scene).join(' ')}`) + '\nIt copies in the illustration kit and the shapes the scene uses (skip it if they are there already).'
 
   const text = [
     `# ${scene.name}`,

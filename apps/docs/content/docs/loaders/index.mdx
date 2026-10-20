@@ -47,10 +47,10 @@ import { LoaderTittle } from '@youj/loaders/tittle'
 
 ### One loader, as source
 
-To own and edit one loader, copy it in with the Youj CLI in an app set up from source (`npx youj init --mode registry`). Every loader is its own item, `loader-<id>`. It brings the kit the loaders are drawn with (`loader-kit`: the status, the shared ticker and the engine that draws in depth) and nothing else. In an app on the packages, the same command installs `@youj/loaders` instead and names the entry to import:
+To own and edit one loader, copy it in with the Youj CLI in an app set up from source (`npx @youj/cli init --mode registry`). Every loader is its own item, `loader-<id>`. It brings the kit the loaders are drawn with (`loader-kit`: the status, the shared ticker and the engine that draws in depth) and nothing else. In an app on the packages, the same command installs `@youj/loaders` instead and names the entry to import:
 
 ```bash
-npx youj add loader-tittle
+npx @youj/cli add loader-tittle
 ```
 
 It lands in `components/youj/loaders/<category>/<id>.tsx`, and you import it from there through your `@/` alias:

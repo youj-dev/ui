@@ -18,7 +18,7 @@ Four blocks draw with the kit directly, and each is a worked example:
 
 To draw a scene without writing it, use the [illustration builder](/illustrations/build) (experimental). Drag the kit's parts onto the shared 8 × 8 floor: boxes and tiles, cylinders, plinths, prisms with a preset outline, and turned solids. Move them in half units and size them by their handles, or type the numbers. Light the part the scene is about, and give parts a lift for when the scene comes apart and a float. Preview shows it assembling and coming apart, in any preset, light or dark, and as reduced motion draws it.
 
-Then take it home. **Copy code** writes a component the way the scenes below are written: the stage and the kit's shapes, imported from where `npx youj add illustration-kit iso-shapes` copies them. It draws exactly what the builder showed. The Export panel also downloads the frame as SVG or PNG and copies the scene as JSON. The scene lives in the page's address as you work, so a link opens it again, and the builder keeps your last scene in this browser. Everything works from the keyboard: the layers list chooses parts, the arrows move them on the canvas, and the keyboard button lists the shortcuts.
+Then take it home. **Copy code** writes a component the way the scenes below are written: the stage and the kit's shapes, imported from where `npx @youj/cli add illustration-kit iso-shapes` copies them. It draws exactly what the builder showed. The Export panel also downloads the frame as SVG or PNG and copies the scene as JSON. The scene lives in the page's address as you work, so a link opens it again, and the builder keeps your last scene in this browser. Everything works from the keyboard: the layers list chooses parts, the arrows move them on the canvas, and the keyboard button lists the shortcuts.
 
 The builder makes new scenes. The ready-made ones are code, not data, so they open in the [explorer](/illustrations) rather than in the builder.
 
@@ -39,11 +39,11 @@ The kit is `@youj/illustrations`, a package of its own on `@youj/core`: `pnpm ad
 @import '@youj/illustrations/styles.css';
 ```
 
-Its sheet points Tailwind at the built scenes, so it generates the classes they use; it goes after the tokens, in the same file. `npx youj add` adds it for you.
+Its sheet points Tailwind at the built scenes, so it generates the classes they use; it goes after the tokens, in the same file. `npx @youj/cli add` adds it for you.
 
 <InstallTabs name="iso-scene" imports="IsoScene" />
 
-Import everything below from `@youj/illustrations`. To copy the source in instead, `npx youj add <item>` copies these items, each bringing what it needs:
+Import everything below from `@youj/illustrations`. To copy the source in instead, `npx @youj/cli add <item>` copies these items, each bringing what it needs:
 
 | Item | Brings |
 | --- | --- |
@@ -242,7 +242,7 @@ Along `z`, each layer with a `label` gets a callout: a dot at the layer's outerm
 The ready-made scenes add a few pieces on top of the shapes, and they're yours to draw with. They are copy-in only, as the item `illustration-kit` (every `illustration-<id>` brings it along), which the CLI writes to `components/youj/graphics/illustrations/kit.tsx` beside the scenes. The package draws its scenes with them but doesn't export them.
 
 ```bash
-npx youj add illustration-kit
+npx @youj/cli add illustration-kit
 ```
 
 - **`IllustrationStage`** is the stage every scene draws on: an `IsoScene` framed to the shared volume (`VOLUME`, an 8 × 8 floor with room above it), with no rail, assembling by default, and decorative unless titled. It takes the scene props (`IllustrationProps`) and an `id`. Draw on it and your scene swaps with any ready-made one without the layout moving.
@@ -274,7 +274,7 @@ export function IllustrationJar(props: IllustrationProps) {
 }
 ```
 
-The kit is copied source. In an app set up from source it imports the scene and the shapes from beside it; in an app on the packages `npx youj add` copies it and the shapes (`iso-shapes`, `grid-backdrops`) too, their scene pointed at `@youj/illustrations`. Either way, draw with what `add` wrote: a stage from one copy and shapes from another don't share a scene.
+The kit is copied source. In an app set up from source it imports the scene and the shapes from beside it; in an app on the packages `npx @youj/cli add` copies it and the shapes (`iso-shapes`, `grid-backdrops`) too, their scene pointed at `@youj/illustrations`. Either way, draw with what `add` wrote: a stage from one copy and shapes from another don't share a scene.
 
 </Example>
 
@@ -362,7 +362,7 @@ const ordered = isoSort(racks, (rack) => rack.bounds)
 
 <PropsTable name="IsoCalloutProps" />
 
-<Callout type="note" title="Copy-in only from here down">Group, Lathe, Prism, Mark and Link come with the copied kit (`npx youj add illustration-kit`); `@youj/illustrations` doesn't export them.</Callout>
+<Callout type="note" title="Copy-in only from here down">Group, Lathe, Prism, Mark and Link come with the copied kit (`npx @youj/cli add illustration-kit`); `@youj/illustrations` doesn't export them.</Callout>
 
 #### Group
 

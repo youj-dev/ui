@@ -14,7 +14,7 @@ import { getShowcase, listShowcase } from '../src/tools/showcase'
 
 /* The docs policy, checked on what the tools answer: people import from
  * @youj/react (and motion, /icons, /sound), and source is copied in
- * only with `npx youj add`. A tool answer shows neither the shadcn
+ * only with `npx @youj/cli add`. A tool answer shows neither the shadcn
  * commands nor the repository's own paths and relative imports. */
 
 let catalog: Catalog
@@ -90,8 +90,8 @@ describe('the docs policy', () => {
     expect(catalog.index.docs.filter((d) => deprecated.test(d.markdown)).map((d) => d.slug)).toEqual([])
   })
 
-  it('copies in only with the CLI: every install command is npx youj add', async () => {
-    for (const [label, text] of (await answers())) for (const [, name] of text.matchAll(/npx (\S+) (?:add|init)/g)) expect(name, label).toBe('youj')
+  it('copies in only with the CLI: every install command is npx @youj/cli add', async () => {
+    for (const [label, text] of (await answers())) for (const [, name] of text.matchAll(/npx (\S+) (?:add|init)/g)) expect(name, label).toBe('@youj/cli')
   })
 
   it('shows source as the CLI writes it', async () => {
@@ -104,11 +104,11 @@ describe('the docs policy', () => {
   })
 
   it('shows no shadcn install command in the docs pages’ code, except on the page about the shadcn CLI', async () => {
-    // "Using with shadcn" documents adding @youj items with the shadcn CLI, and says when `npx youj add` is the better choice.
+    // "Using with shadcn" documents adding @youj items with the shadcn CLI, and says when `npx @youj/cli add` is the better choice.
     const SHADCN_PAGE = 'shadcn-registry'
     const fenced = /```[^\n]*\n([\s\S]*?)```/g
     const shows = (d: (typeof catalog.index.docs)[number]) => [...d.markdown.matchAll(fenced)].some(([, body]) => /shadcn(?:@latest)?\s+add/.test(body!))
     expect(catalog.index.docs.filter(shows).map((d) => d.slug).filter((slug) => slug !== SHADCN_PAGE)).toEqual([])
-    expect(catalog.index.docs.find((d) => d.slug === SHADCN_PAGE)?.markdown).toContain('npx youj add')
+    expect(catalog.index.docs.find((d) => d.slug === SHADCN_PAGE)?.markdown).toContain('npx @youj/cli add')
   })
 })

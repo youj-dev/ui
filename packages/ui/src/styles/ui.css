@@ -3,7 +3,7 @@
  * HOW TO LOAD IT: compile it in the SAME Tailwind root as youj.css, which
  * owns the core palette: your global stylesheet, right after Tailwind.
  *
- *   Copied in (npx youj add), from wherever the stylesheet sits, e.g.:
+ *   Copied in (npx @youj/cli add), from wherever the stylesheet sits, e.g.:
  *     @import 'tailwindcss';
  *     @import '../styles/youj.css';
  *     @import '../styles/ui.css';

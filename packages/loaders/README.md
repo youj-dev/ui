@@ -21,4 +21,4 @@ export function Syncing() {
 }
 ```
 
-They take `size`, `color`, `accentColor`, `speed`, `label` (one or several), `showLabel`, `labelPosition`, `labelEffect` and `paused`. `@youj/loaders` itself exports the kit (`LoaderRoot`, the props types and the drawing engine) for building your own. To own the source instead, `npx youj add loader-<id>` copies a loader and the kit into your app. The docs site's Loaders page shows the whole set.
+They take `size`, `color`, `accentColor`, `speed`, `label` (one or several), `showLabel`, `labelPosition`, `labelEffect` and `paused`. `@youj/loaders` itself exports the kit (`LoaderRoot`, the props types and the drawing engine) for building your own. To own the source instead, `npx @youj/cli add loader-<id>` copies a loader and the kit into your app. The docs site's Loaders page shows the whole set.

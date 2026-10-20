@@ -49,7 +49,7 @@ Open the guide for the area you touch. Each has the same shape: what it is, its 
 | Isometric scenes and the kit (`@youj/illustrations`) | [packages/illustrations](packages/illustrations/CONTRIBUTING.md) |
 | Interactive objects (`@youj/miniatures`) | [packages/miniatures](packages/miniatures/CONTRIBUTING.md) |
 | Interface sounds (`@youj/sound`) | [packages/sound](packages/sound/CONTRIBUTING.md) |
-| Setup CLI (`youj`) | [packages/cli](packages/cli/CONTRIBUTING.md) |
+| Setup CLI (`@youj/cli`) | [packages/cli](packages/cli/CONTRIBUTING.md) |
 | MCP server (`@youj/mcp`) | [packages/mcp](packages/mcp/CONTRIBUTING.md) |
 | Figma kit (`@youj/figma`, private) | [packages/figma](packages/figma/CONTRIBUTING.md) |
 | Docs site and registry host (`apps/docs`) | [apps/docs](apps/docs/CONTRIBUTING.md) |

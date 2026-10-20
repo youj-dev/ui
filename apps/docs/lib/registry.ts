@@ -133,7 +133,7 @@ export interface InstallInfo {
   /** Absent for a copy-in-only item (a block or an example): no package exports it. */
   packageCommand?: string
   packageImport?: string
-  /** `npx youj add <item>`: copies the source in. A packaged item is also in the package, so the package import stays the way to use it. */
+  /** `npx @youj/cli add <item>`: copies the source in. A packaged item is also in the package, so the package import stays the way to use it. */
   registryCommand: string
   /** A copy-in-only item's import, from the path the CLI writes: `import { CtaBanner } from '@/blocks/marketing/cta-banner'`. */
   registryImport?: string
@@ -220,7 +220,7 @@ export function installInfo(name: string, exportsOf: (path: string) => string[],
   let exports = imports ? [imports] : main ? exportsOf(main.path) : []
   const source = main && item.dir ? join(item.dir, main.path) : undefined
   if (!exports.length && source && existsSync(source)) exports = sourceExports(readFileSync(source, 'utf8'))
-  const registryCommand = `npx youj add ${name}`
+  const registryCommand = `npx @youj/cli add ${name}`
   const copyIn = heavyCopyIn(name, items)
   const registryDeps = (item.registryDependencies ?? []).map((d) => d.replace(/^.*\/r\/|\.json$/g, ''))
   const copyInOnly = !!item.type && COPY_IN_ONLY.has(item.type)

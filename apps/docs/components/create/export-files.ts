@@ -57,7 +57,7 @@ export function themeCssFile(state: CreateState): ExportFile {
 }
 
 export function createCommand(link: string): string {
-  return `npx youj create '${link}'`
+  return `npx @youj/cli create '${link}'`
 }
 
 export function readme(state: CreateState, link: string): ExportFile {

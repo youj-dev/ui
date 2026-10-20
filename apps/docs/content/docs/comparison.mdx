@@ -21,7 +21,7 @@ Youj is built on shadcn/ui, and it sits among several good React libraries. This
 | Themes | Presets, each tuned for light and dark, or your own derived from a few inputs. `checkTheme` holds every color pair to WCAG AA, and the CLI and MCP server refuse a theme that misses it. See [Theming](/docs/theming) |
 | Styles | Classic (the default) and Bezel, with any theme. See [Looks](/docs/looks) |
 | Languages | Built-in strings in a set of locales besides English, and right-to-left layouts |
-| How you get it | npm packages, or source through `npx youj add` or the [shadcn CLI](/docs/shadcn-registry) |
+| How you get it | npm packages, or source through `npx @youj/cli add` or the [shadcn CLI](/docs/shadcn-registry) |
 | CLI | `init`, `add`, `create`, `doctor` and `mcp`. See [CLI](/docs/cli) |
 | AI tools | An [MCP server](/docs/mcp) with the docs, props, icons and install commands, and `llms.txt` |
 | Figma | A [plugin](/docs/figma) that builds the kit in Figma from the same tokens |
@@ -42,7 +42,7 @@ Youj is built on shadcn/ui, and it sits among several good React libraries. This
 
 shadcn/ui is Youj's base, and Youj stays grateful to it (see [Credits](/docs/contributing#credits-and-licenses)). It gives you well-made components as source you own, a choice of Radix UI or Base UI underneath, and the registry format that Youj and many others publish to. It animates with Tailwind utility classes.
 
-Youj keeps shadcn's component names and, where Base UI allows, its props, and adds a motion system the whole set shares, npm packages next to copy-in, animated icons, illustrations, sound, themes derived and checked for contrast, two component styles and `npx youj doctor`. Moving over from a Radix-based shadcn style changes some props (`asChild` becomes `render`, menu items take `onClick`, `Select` takes `items`): [Coming from shadcn/ui](/docs/guides/shadcn) walks through it and lists every change.
+Youj keeps shadcn's component names and, where Base UI allows, its props, and adds a motion system the whole set shares, npm packages next to copy-in, animated icons, illustrations, sound, themes derived and checked for contrast, two component styles and `npx @youj/cli doctor`. Moving over from a Radix-based shadcn style changes some props (`asChild` becomes `render`, menu items take `onClick`, `Select` takes `items`): [Coming from shadcn/ui](/docs/guides/shadcn) walks through it and lists every change.
 
 Choose shadcn/ui alone when you want the smallest starting point and plan to design the motion and the rest yourself.
 

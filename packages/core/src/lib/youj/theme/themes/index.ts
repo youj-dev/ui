@@ -33,7 +33,7 @@ export type ThemeId = (typeof shippedThemes)[number]['id']
 export type InternalThemeId = (typeof themes)[number]['id']
 
 /**
- * A starting suggestion, not a brand default: the preset `npx youj init --yes`, Create, MCP and the Figma kit start
+ * A starting suggestion, not a brand default: the preset `npx @youj/cli init --yes`, Create, MCP and the Figma kit start
  * from, and the docs site's dark mode (its light mode wears Graphite, the same palette and style). Apps pick their own.
  * Basalt: the Youj palette in the Clean style, so it matches what a bare provider draws.
  */

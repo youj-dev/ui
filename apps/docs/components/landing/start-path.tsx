@@ -4,8 +4,8 @@ import { Stage } from '@/components/site/stage'
 import { BackdropLayer } from '@/components/docs/backdrop-layer'
 import type { BackdropId } from '@/lib/backdrops'
 
-/** A `npx youj …` command as what follows `youj`, for the install field (which puts each manager's runner in front). */
-const runOf = (command: string) => command.replace(/^npx youj /, '')
+/** A `npx @youj/cli …` command as what follows `youj`, for the install field (which puts each manager's runner in front). */
+const runOf = (command: string) => command.replace(/^npx @youj\/cli /, '')
 
 /** One way in, as a card: its label, its command, and its picture (with any controls under it). Plain markup, so the Start section draws it on the server around a stack whose code waits (start-stack-on-view). */
 export function Path({ label, command, controls, mood, children }: { label: string; command: string; controls?: ReactNode; /** A mood's still behind the picture (as on the parts' tiles); else the Youj aurora. */ mood?: BackdropId; children: ReactNode }) {

@@ -30,7 +30,7 @@ Categories are fixed (`categories.ts`): `color` (loaders built around color), `d
 
 1. Create `<category>/<id>.tsx` from the template below. The id is kebab-case and is also the file name. The component is `Loader` + its PascalCase name (`signal-drift` → `LoaderSignalDrift`).
 2. Copy any sibling's `<id>.stories.tsx`, and rename the imports and the story title (`Visuals/Loaders/<Category>/<Title>`).
-3. Run `pnpm -F @youj/loaders loaders:generate`. It writes `registry/loaders-<category>.json` and the package's `exports`, so the docs gallery, the registry (`npx youj add loader-<id>`) and the public entry (`@youj/loaders/<id>`) pick the loader up.
+3. Run `pnpm -F @youj/loaders loaders:generate`. It writes `registry/loaders-<category>.json` and the package's `exports`, so the docs gallery, the registry (`npx @youj/cli add loader-<id>`) and the public entry (`@youj/loaders/<id>`) pick the loader up.
 4. Run `pnpm -F @youj/loaders verify` (typecheck, token lint, `loaders:check`, registry closure and tests). Look at it in Storybook (`Visuals/Loaders/Gallery/Stage`, `args=id:<id>;size:240`) in both themes, at 24px and 240px, with reduced motion on, and with its label (`Visuals/Loaders/Gallery/Label`, `args=id:<id>`).
 
 ```tsx

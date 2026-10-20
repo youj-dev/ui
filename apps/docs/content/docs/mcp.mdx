@@ -6,7 +6,7 @@ status: new
 
 <PageArt art="ai" />
 
-**Which one?** Local (`npx youj mcp`) knows your project (package manager, install route) and your Youj version: use it with Claude Code and Cursor. Hosted is for zero-install; it can't see your project and answers from the latest release.
+**Which one?** Local (`npx @youj/cli mcp`) knows your project (package manager, install route) and your Youj version: use it with Claude Code and Cursor. Hosted is for zero-install; it can't see your project and answers from the latest release.
 
 Connect your AI coding tool to the Youj MCP server, a [Model Context Protocol](https://modelcontextprotocol.io) server, to search components, read props and accessibility notes, find icon morphs, check theme contrast and get installation guidance. It's hosted at `https://mcp.youj.dev`: one line connects it, with nothing to install and no key. The same server is on npm as `@youj/mcp`, to run on your own machine (see [Run it yourself](#run-it-yourself)).
 
@@ -175,7 +175,7 @@ The hosted server can't see your project. Run the server on your machine when yo
 The quickest way is the CLI, run in your app:
 
 ```bash
-npx youj mcp
+npx @youj/cli mcp
 ```
 
 It asks which editor, writes that editor's config file and pins the server to the Youj version your app has installed. `--client` picks the editor without asking, and `--print` prints the config instead of writing it. The [CLI reference](/docs/cli#mcp) lists every option.
@@ -200,7 +200,7 @@ Every tool is read-only: none of them writes files or installs anything. They re
 
 ### Find
 
-**`search`**: searches by meaning across components, blocks, icons, illustration scenes, loaders (`npx youj add loader-<id>`), hooks and docs, and gives each result the tool to call next and the exact way in: the package import, or `npx youj add` for what's copied in.
+**`search`**: searches by meaning across components, blocks, icons, illustration scenes, loaders (`npx @youj/cli add loader-<id>`), hooks and docs, and gives each result the tool to call next and the exact way in: the package import, or `npx @youj/cli add` for what's copied in.
 
 | Input | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -218,7 +218,7 @@ Every tool is read-only: none of them writes files or installs anything. They re
 
 **`list_components`**: every component (UI, core, motion, sound) by docs category, with its package, stability and a one-line summary. Optional `kind` (`ui`, `core`, `motion` or `sound`) and `category` (such as `"forms"`).
 
-**`list_loaders`**: every loading animation by category, with its id, component and technique. Optional `category`. Install one with `npx youj add loader-<id>`.
+**`list_loaders`**: every loading animation by category, with its id, component and technique. Optional `category`. Install one with `npx @youj/cli add loader-<id>`.
 
 **`list_miniatures`**: every miniature (an interactive isometric object) by category, with its id and component. Optional `category`.
 
@@ -253,7 +253,7 @@ Blocks are the copy-in [levels](/docs/choosing-a-level) card, section and screen
 
 **`list_blocks`**: every block, grouped by domain and tagged with its level, with a one-line summary. Optional `group` (such as `"Auth"`) lists one group, and `level` (`card`, `section` or `screen`) lists one level.
 
-**`get_block`**: one block: its description, the components it uses, its install command and its files as `npx youj add` writes them.
+**`get_block`**: one block: its description, the components it uses, its install command and its files as `npx @youj/cli add` writes them.
 
 | Input | Type | Description |
 | --- | --- | --- |
@@ -315,14 +315,14 @@ These tools read the app on disk, so they're on the [local server](#run-it-yours
 
 **`get_project_info`**: the framework, package manager, install route (the packages or the `@youj` registry), Youj, React and Tailwind versions, and setup warnings. Installed versions are labeled separately from the ranges in `package.json`. When an app has both routes, the registry wins. Optional input: `cwd`.
 
-**`get_add_command`**: the exact install command and imports for components, blocks or illustration scenes, for the project's route and package manager, including optional peers and the entry to import from. It leaves out dependencies the app already has. Blocks and scenes get an `npx youj add` command, which copies them in. Each name is answered on its own: an unknown one comes back as "Skipped" with suggestions beside the commands for the others (an error only when none is known).
+**`get_add_command`**: the exact install command and imports for components, blocks or illustration scenes, for the project's route and package manager, including optional peers and the entry to import from. It leaves out dependencies the app already has. Blocks and scenes get an `npx @youj/cli add` command, which copies them in. Each name is answered on its own: an unknown one comes back as "Skipped" with suggestions beside the commands for the others (an error only when none is known).
 
 | Input | Type | Description |
 | --- | --- | --- |
 | `items` | list of names | 1 to 50 names, matched exactly, ignoring case. |
 | `cwd` | string | The app's folder. |
 
-**`setup`**: how to add Youj to an app: `npx youj init` and the manual steps for the framework and mode, in a component style when given. Paste `package.json` or the global stylesheet to check versions and stylesheet order, as [`youj doctor`](/docs/cli#doctor) does.
+**`setup`**: how to add Youj to an app: `npx @youj/cli init` and the manual steps for the framework and mode, in a component style when given. Paste `package.json` or the global stylesheet to check versions and stylesheet order, as [`youj doctor`](/docs/cli#doctor) does.
 
 | Input | Description |
 | --- | --- |
@@ -349,13 +349,13 @@ These tools read the app on disk, so they're on the [local server](#run-it-yours
 
 ## The rules it follows
 
-The server tells your tool to import each thing from the package that owns it, to copy source in only with `npx youj add`, to use semantic color classes and Youj sizes rather than raw colors, to take timing from `useYouj()` or `var(--yj-duration-*)` rather than hard-coded durations, and to give every animation a reduced-motion equivalent.
+The server tells your tool to import each thing from the package that owns it, to copy source in only with `npx @youj/cli add`, to use semantic color classes and Youj sizes rather than raw colors, to take timing from `useYouj()` or `var(--yj-duration-*)` rather than hard-coded durations, and to give every animation a reduced-motion equivalent.
 
 
 ## Related
 
 <Cards>
-  <Card title="CLI" href="/docs/cli">`npx youj mcp` and the other commands.</Card>
+  <Card title="CLI" href="/docs/cli">`npx @youj/cli mcp` and the other commands.</Card>
   <Card title="Installation" href="/docs/installation">Set up Youj with one command, or by hand.</Card>
   <Card title="Icons" href="/docs/icons">The animated set, its triggers and its morphs.</Card>
   <Card title="Theming" href="/docs/theming">Presets, and themes of your own.</Card>

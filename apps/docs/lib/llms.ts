@@ -56,13 +56,13 @@ export async function renderPage(page: Page, ctx = markdownContext()): Promise<s
   return pageMarkdown({ title: page.data.title ?? page.url, description: page.data.description, url: page.url }, raw, ctx)
 }
 
-const intro = () => `Youj: Accessible components, animated icons, illustrations and themes that move together. It is a React UI kit with accessible components on shadcn and Base UI (\`@youj/react\`), motion tokens, primitives, animated icons that morph between states and brand marks (\`@youj/motion\`, \`@youj/icons\`), opt-in interface sounds the components cue as they move (\`@youj/sound\`), themes with contrast checked against WCAG AA, isometric illustrations drawn from the theme (\`@youj/illustrations\`), and the same source to copy in with \`npx youj add\`. It needs React ${REACT} and Tailwind CSS ${TAILWIND}. Agents: install with \`npx youj add <item>\` (or the packages), never \`npx shadcn add\`.`
+const intro = () => `Youj: Accessible components, animated icons, illustrations and themes that move together. It is a React UI kit with accessible components on shadcn and Base UI (\`@youj/react\`), motion tokens, primitives, animated icons that morph between states and brand marks (\`@youj/motion\`, \`@youj/icons\`), opt-in interface sounds the components cue as they move (\`@youj/sound\`), themes with contrast checked against WCAG AA, isometric illustrations drawn from the theme (\`@youj/illustrations\`), and the same source to copy in with \`npx @youj/cli add\`. It needs React ${REACT} and Tailwind CSS ${TAILWIND}. Agents: install with \`npx @youj/cli add <item>\` (or the packages), never \`npx shadcn add\`.`
 
 /** Which import path: what each thing is imported from as a package and once `youj add` has copied it in (the paths the CLI writes). */
 const IMPORT_PATHS = [
   '## Which import path',
   '',
-  '| | From the packages | Copied in with `npx youj add` |',
+  '| | From the packages | Copied in with `npx @youj/cli add` |',
   '| --- | --- | --- |',
   "| Components | `import { Button } from '@youj/react'` | `import { Button } from '@/components/ui/button'` |",
   "| Motion | `import { Reveal } from '@youj/motion'` | `import { Reveal } from '@/components/youj/motion/reveal'` |",
@@ -75,7 +75,7 @@ export function llmsIndex(): string {
   const tree = source.getPageTree()
   const lines = [`# Youj`, '', `> ${intro()}`, '']
   lines.push(
-    `Set up with \`npx youj init\`. AI coding tools can use the Youj MCP server (\`npx @youj/mcp\`) to search components and icons, suggest icon morphs, build themes and install items: see [AI & MCP](${site}/docs/mcp.md). Every page below is Markdown; [llms-full.txt](${site}/llms-full.txt) has them all in one file.`,
+    `Set up with \`npx @youj/cli init\`. AI coding tools can use the Youj MCP server (\`npx @youj/mcp\`) to search components and icons, suggest icon morphs, build themes and install items: see [AI & MCP](${site}/docs/mcp.md). Every page below is Markdown; [llms-full.txt](${site}/llms-full.txt) has them all in one file.`,
     '',
     IMPORT_PATHS,
     '',
@@ -105,7 +105,7 @@ export function llmsIndex(): string {
     '',
     '## Create',
     '',
-    `Build the app frame (sidebar, top bar, account and search) at ${site}/create, add the in-app screens it holds (dashboards, tables, settings, billing, an assistant…), each a page of its nav, then take it home as code with \`npx youj create '<link>'\`.`,
+    `Build the app frame (sidebar, top bar, account and search) at ${site}/create, add the in-app screens it holds (dashboards, tables, settings, billing, an assistant…), each a page of its nav, then take it home as code with \`npx @youj/cli create '<link>'\`.`,
   )
   lines.push(
     '',
@@ -123,7 +123,7 @@ export function llmsIndex(): string {
     '',
     `- [Components, short](${site}/llms-small.txt): every component's import, one-line description and main props in one small file; ${site}/llms-full.txt has every page.`,
     `- [Icons explorer](${site}/icons): every Youj icon, searchable by meaning, with the Morph Lab.`,
-    `- [Illustrations explorer](${site}/illustrations): every isometric scene, searchable by name, category and tag, each installable on its own (\`npx youj add illustration-<id>\`) and downloadable as SVG or PNG.`,
+    `- [Illustrations explorer](${site}/illustrations): every isometric scene, searchable by name, category and tag, each installable on its own (\`npx @youj/cli add illustration-<id>\`) and downloadable as SVG or PNG.`,
     `- [Registry](${site}/r/registry.json): the registry index the Youj CLI reads.`,
   )
   return `${lines.join('\n').replace(/\n{3,}/g, '\n\n')}\n`
@@ -142,7 +142,7 @@ const SMALL_PROPS = 6
 export function llmsSmall(): string {
   const site = siteUrl()
   const docs = componentDocs()
-  const lines = ['# Youj components', '', `> ${intro()}`, '', `Install with \`npx youj add <name>\` or import from the package. Full pages: ${site}/docs/components/<name>.md, or ${site}/llms-full.txt for everything.`, '']
+  const lines = ['# Youj components', '', `> ${intro()}`, '', `Install with \`npx @youj/cli add <name>\` or import from the package. Full pages: ${site}/docs/components/<name>.md, or ${site}/llms-full.txt for everything.`, '']
   const items = [...registryItems().values()].filter((item) => item.type === 'registry:ui').sort((a, b) => a.name.localeCompare(b.name))
   for (const item of items) {
     const info = installInfo(item.name, componentsIn)
