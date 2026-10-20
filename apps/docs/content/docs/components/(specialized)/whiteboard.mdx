@@ -1,0 +1,204 @@
+---
+title: Whiteboard
+description: "Sketch, write sticky notes, connect shapes, embed your own components, pin comments and see who else is on the board, then export the scene."
+---
+
+<ComponentStories>
+<Story id="flow-sketch" label="Flow sketch">
+
+<ComponentPreview name="whiteboard/demo" height={540} />
+
+An onboarding flow as sticky notes joined by connectors, a live stat card embedded beside them, a circled question and a comment pinned to a step.
+
+Pick Select (V) to click a shape, Shift-click to add one, or drag on empty board for a marquee. Drag the selection to move it: it snaps to the edges and centers of the shapes around it and to the spacing between them, with guides and gap sizes showing why (hold Alt to move freely). Corner handles resize. Double-click a text, a note or a connector to edit its words. With two or more shapes selected, Arrange lines them up or spreads them evenly.
+
+</Story>
+
+<Story id="embeds" label="Embeds">
+
+<ComponentPreview name="whiteboard/embeds" height={460} />
+
+Kit components placed on the board: a stat card and a release card, with a note connected to the card it explains.
+
+An `embed` shape is a frame for any React node: `embeds` maps its id to what it holds (or is a function of the shape). The frame moves and resizes like any shape, from its title; what's inside keeps its own pointer and keyboard, and stays mounted while it's offscreen so it keeps its state. Connectors attach to embeds as they do to shapes.
+
+</Story>
+
+<Story id="connectors" label="Connectors">
+
+<ComponentPreview name="whiteboard/connectors" height={460} />
+
+A queue's design, opening on the Connector tool (X): drag from one shape to another.
+
+A connector stores the shapes it joins, not where they are, so it re-routes whenever either end moves. `straight` runs from edge to edge, `elbow` leaves the side that faces the other shape and turns at right angles. Double-click it (or press Enter on it) to write a label. A connector dropped on empty board ends at that point. Deleting a shape deletes its connectors in the same undo step.
+
+</Story>
+
+<Story id="comments" label="Comments">
+
+<ComponentPreview name="whiteboard/comments" height={440} />
+
+A landing page review with a thread on the hero and a resolved one on the nav, opening on the Comment tool (C).
+
+Click to drop a pin: on a shape it attaches there and moves with it. A pin opens `pinContent(pin, actions)`, your own thread, in a popover; `actions` are the pin's Resolve and Delete, to put in your thread's header so the popover has one header (CommentThread takes them as `actions`). Without `pinContent` it holds the pin's name, those actions and a plain note that writes `pin.text`. Pins keep their size at any zoom. The [Collaborative canvas](/docs/blocks/specialized#collaborative-canvas) screen puts a full CommentThread in them.
+
+</Story>
+
+<Story id="presence" label="Presence">
+
+<ComponentPreview name="whiteboard/presence" height={400} />
+
+Two people on the board, with a chat bubble, and your own position reported as you move.
+
+`cursors` takes everyone else's pointers in board coordinates (the same as the shapes'), so they stay on the spot they point at as you pan and zoom; [Live Cursors](/docs/components/live-cursors) draws them, with names, colors from the chart palette, chat bubbles and join and leave announcements. `onCursorMove` reports yours in the same coordinates, throttled, and `null` when the pointer leaves: send it to the others.
+
+</Story>
+
+<Story id="large-board" label="Large board">
+
+<ComponentPreview name="whiteboard/large-board" height={500} />
+
+A retro wall of 200 shapes with the minimap on.
+
+Wheel or two fingers pan, ⌘/Ctrl + wheel or a pinch zooms at the pointer, Space-drag or the Hand tool (H) pans. The zoom menu fits the board (⇧1) or the selection (⇧2), goes back to 100% and turns on the minimap (M) and Snap to grid. Only the shapes near the view are drawn, and moving the view moves two layers rather than every shape, so panning stays smooth at a few hundred shapes.
+
+</Story>
+
+<Story id="empty" label="Empty board">
+
+<ComponentPreview name="whiteboard/empty" height={440} />
+
+A controlled board that starts empty, with SVG and PNG export.
+
+The scene is plain JSON, `{ shapes, pins }`, so it saves and loads as it is. `onValueChange` fires once a stroke, drag or edit ends, not on every pointer move. The ref's `toSVG()` returns a standalone SVG cropped to the shapes in the theme's colors of the moment, and `toPNG()` the same picture as an image; embeds can't travel in a file, so they export as titled placeholders.
+
+</Story>
+
+<Story id="read-only" label="Read only">
+
+<ComponentPreview name="whiteboard/read-only" height={300} />
+
+A design shared for review: the scene with pan and zoom, and no tools.
+
+`readOnly` drops the toolbar, the handles and undo; dragging the board pans it. Shapes still take focus and are read out by name, and pins open read-only.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="whiteboard" noImport />
+
+Use a Whiteboard for diagrams and planning inside a product: a flow in a ticket, a retro, a review with comments, a canvas of live metrics. For laid-out graphs that come from data, a [Flow Graph](/docs/components/flow-graph) fits better.
+
+```tsx
+import { useState } from 'react'
+import { Whiteboard, type WhiteboardScene } from '@youj/react'
+
+export function Board({ chart }: { chart: React.ReactNode }) {
+  const [scene, setScene] = useState<WhiteboardScene>({ shapes: [] })
+  return <Whiteboard value={scene} onValueChange={setScene} embeds={{ revenue: chart }} height={520} />
+}
+```
+
+A shape is `{ id, type, color, width, … }`: `pen` keeps its `points` (`[x, y, pressure]`), `line` and `arrow` their ends, `rectangle` and `ellipse` a box, `text` a position and its `text`, `sticky` a box (its height the least it takes; it grows to fit) and its `text`, `connector` its `from` and `to` (`{ shape }` or `{ x, y }`), `route` and `label`, and `embed` a box and a `title`. `color` names a theme role (`ink`, `accent`, `red`, `amber`, `green`, `blue`), so the board follows light, dark and every preset; a note's paper is its role's soft fill. A pin is `{ id, x, y, shape?, resolved?, author?, text? }`. Scenes saved before notes, connectors, embeds and pins load as they are.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, tools, embeds, pinContent, cursors…">
+
+### Props
+
+<PropsTable name="Whiteboard" />
+
+#### Handle
+
+| Method | Does |
+|---|---|
+| `toSVG()` | The scene as a standalone SVG, cropped to the shapes, in the theme's colors; embeds as titled placeholders |
+| `toPNG({ scale })` | The same picture as a PNG `Blob`, `scale` times its size (default 2), on the board's surface color |
+| `zoomToFit()` | Scales and centers the view on the whole scene |
+| `zoomToSelection()` | Scales and centers the view on the selection |
+
+#### Keyboard shortcuts
+
+| Keys | Does |
+|---|---|
+| V, H, P, L, A, R, O, T, S, X, C | Select, Hand, Pen, Line, Arrow, Rectangle, Ellipse, Text, Sticky note, Connector, Comment |
+| ⌘Z / Ctrl+Z, ⇧⌘Z / Ctrl+Y | Undo, redo |
+| Delete or Backspace | Delete the selection (and its connectors) |
+| ⌘A / Ctrl+A | Select every shape |
+| Arrow keys | Nudge the selection (Shift: ten times as far); on the board, pan |
+| ⌥ / Alt + A, H, D, W, V, S | Align left, center, right, top, middle, bottom |
+| ⌥⇧ / Alt+Shift + H, V | Distribute horizontally, vertically |
+| Space + drag | Pan |
+| + − 0 | Zoom in, zoom out, back to 100% |
+| ⇧1, ⇧2 | Fit the board, zoom to the selection |
+| M | Show or hide the minimap |
+| ? | List these shortcuts |
+| Enter (on the board) | Place the tool's shape in the middle of the view; with Connector, join the two selected shapes; with Comment, pin the selected shape |
+| Enter (on a shape) | Edit a text, a note or a connector's label |
+
+#### Data attributes
+
+The root carries `data-yj-tool` (the active tool) and `data-readonly`; each shape `data-yj-shape` (its type) and `data-selected` when selected; a pin `data-yj-resolved` once resolved.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="View easing · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drawing and dragging', note: 'follow the pointer sample by sample, never eased' },
+    { moment: 'Wheel, pinch and the zoom buttons', note: 'move the view at once' },
+    { moment: 'Fit and zoom to selection', note: 'ease the view there on the base token' },
+    { moment: 'Remote cursors', note: 'Live Cursors’ spring, between sparse updates' },
+  ]}
+  reduced="Fitting the view jumps; remote cursors jump to each update."
+/>
+
+#### Reduced motion
+
+The board reads and works the same; nothing eases.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The toolbar and the zoom bar are each one tab stop with arrow-key roving; each tool is a toggle named by its label, with its key in `aria-keyshortcuts` and in its tooltip.
+- The board is a named group described by how many shapes it holds and how to work it from the keyboard. Its shapes are a multi-select listbox and one tab stop: Tab walks them (bringing an offscreen one into view) and leaves the board after the last. Each is named for what it is: "Sticky note: Ship it", "Connector: Sign up to Verify email", "Embed: Revenue".
+- A focused shape is selected; the arrow keys nudge it, Delete removes it, Enter edits its words and Escape lets go. Align and distribute have keys, so nothing needs a pointer; with a drawing tool, Enter on the board places that shape.
+- An embed's content is a region named by its title, outside the list of shapes, so its own controls keep their roles.
+- Pins are a named group of buttons ("Comment 2 by Ana Ruiz, Resolved"); each opens its thread in a popover that takes focus and returns it.
+- Additions, deletions and selection changes are announced in a polite live region; Live Cursors announces who joins and leaves.
+
+</ReferenceRow>

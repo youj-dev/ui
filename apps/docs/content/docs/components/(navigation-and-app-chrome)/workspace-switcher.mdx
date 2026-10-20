@@ -1,0 +1,121 @@
+---
+title: Workspace Switcher
+description: "Find and switch between teams, organizations or projects, or create a new one."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="workspace-switcher/demo" height={440} />
+
+A switcher in a small sidebar card; searching for a name that doesn't exist offers to create it.
+
+</Story>
+
+<Story id="compact" label="Compact">
+
+<ComponentPreview name="workspace-switcher/compact" height={360} />
+
+A logo-only switcher at the top of an icon rail, opening its list beside the rail.
+
+`compact` shows only the logo, for a sidebar collapsed to icons. The name moves into the trigger's accessible name, and `side` opens the list beside the rail instead of below it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="workspace-switcher" noImport />
+
+Requires `cmdk`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/workspace-switcher`.
+
+Use it at the top of a [Sidebar](/docs/components/sidebar), or at the start of an [App Header](/docs/components/app-header), when people belong to several workspaces and move between them often. The trigger always says which one they're in. The list is searchable, so it holds up at 3 workspaces or 300. For a short list that sits among other account items, the `workspaces` option of the [Account Menu](/docs/components/account-menu) is enough.
+
+```tsx
+import { WorkspaceSwitcher, type Workspace } from '@youj/react/workspace-switcher'
+
+const workspaces: Workspace[] = [
+  { id: 'northwind', name: 'Northwind Labs', detail: 'Pro · 12 members' },
+  { id: 'acme', name: 'Acme Corp', detail: 'Enterprise · 148 members' },
+]
+
+export function Switcher() {
+  const [workspace, setWorkspace] = useState('northwind')
+  return <WorkspaceSwitcher workspaces={workspaces} value={workspace} onValueChange={setWorkspace} onCreate={createWorkspace} />
+}
+```
+
+Each workspace has an `id`, a `name`, an optional `logo` (its initials show until the image loads, or if it fails) and an optional `detail` line such as the plan or member count. The trigger shows the current one, and the list marks it with a check. It's controlled with `value` and `onValueChange`, or uncontrolled with `defaultValue`.
+
+### Creating a workspace
+
+Pass `onCreate` and a "Create workspace" row sits under the list. It carries what was typed in the search, so someone who looks for a workspace that isn't there can press Enter to create it with that name: with no match left, the create row is the active one. `onCreate` receives the trimmed search text, which is empty when nothing was typed. Rename the row with `createLabel`. Search is plain substring matching, so a new name never fuzzily matches an existing one.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="workspaces, value, defaultValue… (11)">
+
+### Props
+
+<PropsTable name="WorkspaceSwitcher" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, chevrons… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'scale .96 → 1 and fade, from the trigger (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Chevrons', note: 'part while the list is open (`ChevronsUpDownIcon`)', value: 'per icon' },
+    { moment: 'Highlight', note: 'the active row’s background glides with ↑ and ↓', spring: 'smooth' },
+    { moment: 'Check', note: 'draws in on the current workspace', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Trigger hover', note: 'background', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The list opens and closes at once, the highlight jumps between rows, and the check appears already drawn."
+/>
+
+#### Reduced motion
+
+The popover appears and disappears at once, the highlight moves between rows without gliding, and the chevrons and check change without animating. Search, focus and keyboard handling work the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The trigger is a button named after the current workspace ("Northwind Labs, switch workspace"), which also covers the compact trigger. The logos are decorative.
+- It opens with Enter, Space or ↓, and focus lands in the search field. ↑ and ↓ move the active row, Enter chooses it, and Escape closes the list and returns focus to the trigger.
+- The list is the [Command](/docs/components/command) listbox, so the active row is announced as you move, and the current workspace as selected. Each row's detail is read after its name.
+- The search clears once the list has closed, so it opens fresh next time.
+
+</ReferenceRow>

@@ -1,0 +1,15 @@
+{
+  "title": "Visual effects",
+  "pages": [
+    "---Lights---",
+    "spotlight",
+    "spotlight-card",
+    "shimmer",
+    "shimmer-border",
+    "---Pointer---",
+    "tilt",
+    "magnetic",
+    "cursor-follower",
+    "liquid-glass"
+  ]
+}

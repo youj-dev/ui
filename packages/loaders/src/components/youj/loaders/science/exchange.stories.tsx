@@ -1,0 +1,11 @@
+import type { Meta } from '@storybook/react-vite'
+import { loaderMeta, loaderStories } from '../story-kit'
+import { LoaderExchange, meta as about } from './exchange'
+
+export default { title: 'Visuals/Loaders/Science/Exchange', tags: ['autodocs'], ...loaderMeta(LoaderExchange, about) } satisfies Meta<typeof LoaderExchange>
+
+const s = loaderStories(LoaderExchange)
+export const Hero = s.Hero
+export const Playground = s.Playground
+export const Sizes = s.Sizes
+export const ReducedMotion = s.ReducedMotion

@@ -1,0 +1,842 @@
+[
+  {
+    "name": "loader-mesh",
+    "type": "registry:component",
+    "title": "Mesh loader",
+    "description": "Two spur gears on pillow blocks transmit four measured pushes through their shared contact, turning continuously in the exact 15:10 tooth ratio. Lightening holes, raised hubs and an accent timing mark show each wheel turn. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "mesh",
+      "component": "LoaderMesh",
+      "category": "mechanics",
+      "technique": "planes",
+      "order": 1,
+      "title": "Mesh",
+      "tags": [
+        "gears",
+        "teeth",
+        "drive",
+        "transmission",
+        "contact"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Follower",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/mesh.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-dwell",
+    "type": "registry:component",
+    "title": "Dwell loader",
+    "description": "A turning cam lifts a roller follower through its guide and compresses the return spring, holds it at full travel through the dwell, then lowers it onto the base circle. The roller rides the profile all the way round. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "dwell",
+      "component": "LoaderDwell",
+      "category": "mechanics",
+      "technique": "mixed",
+      "order": 2,
+      "title": "Dwell",
+      "tags": [
+        "cam",
+        "follower",
+        "spring",
+        "lift",
+        "dwell"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Spring",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/dwell.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-yoke",
+    "type": "registry:component",
+    "title": "Yoke loader",
+    "description": "A crank pin slides inside a slotted yoke, turning the disc’s steady revolution into the harmonic stroke of a piston in a cut-away cylinder. The slot, rod and piston stay constrained as the drive passes both dead centres. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "yoke",
+      "component": "LoaderYoke",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 3,
+      "title": "Yoke",
+      "tags": [
+        "crank",
+        "slot",
+        "piston",
+        "reciprocation",
+        "linkage"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Piston",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/yoke.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-impulse",
+    "type": "registry:component",
+    "title": "Impulse loader",
+    "description": "Five suspended metal bobs pass an impulse from one end to the other. The end bobs swing as true pendulums, striking at full speed; the centre stays quiet while the accent runs through the contacts at each impact. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "impulse",
+      "component": "LoaderImpulse",
+      "category": "mechanics",
+      "technique": "planes",
+      "order": 4,
+      "title": "Impulse",
+      "tags": [
+        "cradle",
+        "momentum",
+        "pendulums",
+        "collision",
+        "energy"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Strings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/impulse.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-iris",
+    "type": "registry:component",
+    "title": "Iris loader",
+    "description": "Shingled diaphragm blades sweep round a polygonal opening inside a deep bezel, closing and opening as an accent lever travels its slot. Each blade lies over the next, edge-shadowed, and the aperture breathes without stopping. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "iris",
+      "component": "LoaderIris",
+      "category": "mechanics",
+      "technique": "mixed",
+      "order": 5,
+      "title": "Iris",
+      "tags": [
+        "diaphragm",
+        "aperture",
+        "blades",
+        "camera",
+        "linkage"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Aperture",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/iris.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tackle",
+    "type": "registry:component",
+    "title": "Tackle loader",
+    "description": "A moving sheave hoists a suspended load while the free rope pays out at twice its travel. The rope runs over both sheaves with an accent tag riding it, and its length stays constant throughout the lift and return. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "tackle",
+      "component": "LoaderTackle",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 6,
+      "title": "Tackle",
+      "tags": [
+        "pulley",
+        "hoist",
+        "rope",
+        "tension",
+        "mechanical advantage"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Rope",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/tackle.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-heddle",
+    "type": "registry:component",
+    "title": "Heddle loader",
+    "description": "Two heddle shafts open the warp into a shed and a boat shuttle flies a pick through it from box to box. The reed beats the accent pick into the fell, the shed crosses, the shuttle flies back, and the woven cloth winds steadily onto its beam. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "heddle",
+      "component": "LoaderHeddle",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 7,
+      "title": "Heddle",
+      "tags": [
+        "loom",
+        "weaving",
+        "warp",
+        "weft",
+        "shuttle",
+        "textile"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Warp",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/heddle.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-gimbal",
+    "type": "registry:component",
+    "title": "Gimbal loader",
+    "description": "Three nested bearing rings on a pedestal exchange a measured tilt around perpendicular axes. Pivot stubs carry each inner ring, and a rimmed flywheel spins on its own axle inside the moving cradle, its accent mark sweeping the rim. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "gimbal",
+      "component": "LoaderGimbal",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 8,
+      "title": "Gimbal",
+      "tags": [
+        "gyroscope",
+        "bearings",
+        "rings",
+        "precession",
+        "orientation",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Inner ring",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/gimbal.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lattice",
+    "type": "registry:component",
+    "title": "Lattice loader",
+    "description": "A ram under two parallel scissor linkages lifts a platform and its accent load. Every bar keeps its length as the feet roll inward along their rails, the crossing pins rise through three stages, and the deck rides smoothly up and back down to its bed. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "lattice",
+      "component": "LoaderLattice",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 9,
+      "title": "Lattice",
+      "tags": [
+        "scissor",
+        "lift",
+        "linkage",
+        "platform",
+        "constraint",
+        "deployment"
+      ],
+      "beats": 5.75,
+      "colors": [
+        {
+          "part": "Crossings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/lattice.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-siphon",
+    "type": "registry:component",
+    "title": "Siphon loader",
+    "description": "Two glass reservoirs on a base exchange a fixed volume through a primed, elevated tube. The levels rise and fall in counterphase, the column in the tube flows one way and back with an accent parcel riding it, and the surfaces ripple while the flow is strongest. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "siphon",
+      "component": "LoaderSiphon",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 10,
+      "title": "Siphon",
+      "tags": [
+        "fluid",
+        "reservoirs",
+        "transfer",
+        "hydraulics",
+        "pipe",
+        "volume"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Liquid",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/siphon.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-detent",
+    "type": "registry:component",
+    "title": "Detent loader",
+    "description": "A crank turning steadily drives its pin into a radial slot and indexes a fourfold Geneva wheel through one precise quarter turn. Between indexes the driver’s locking disc turns inside the wheel’s concave flank and holds it still. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "detent",
+      "component": "LoaderDetent",
+      "category": "mechanics",
+      "technique": "mixed",
+      "order": 11,
+      "title": "Detent",
+      "tags": [
+        "geneva",
+        "index",
+        "slot",
+        "drive",
+        "intermittent",
+        "kinematics"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Wheel",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/detent.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-bellows",
+    "type": "registry:component",
+    "title": "Bellows loader",
+    "description": "A hand lever rocks on its post and, through a pinned link, draws a radial concertina open and presses it shut. Air comes in through the intake valve as it opens and leaves through the outlet as it closes, each flap lifting on its hinge as the flow passes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "bellows",
+      "component": "LoaderBellows",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 12,
+      "title": "Bellows",
+      "tags": [
+        "pneumatic",
+        "concertina",
+        "pressure",
+        "valves",
+        "folds",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Valves",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/bellows.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tread",
+    "type": "registry:component",
+    "title": "Tread loader",
+    "description": "Hinged track shoes, chained at their edge, circulate round a drive wheel and an idler on a side frame. The lower run lies on moving ground without slipping, the road wheels turn at the exact belt speed, and one accent shoe makes the circuit. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "tread",
+      "component": "LoaderTread",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 13,
+      "title": "Tread",
+      "tags": [
+        "track",
+        "rollers",
+        "links",
+        "belt",
+        "contact",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Wheels",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/tread.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-fulcrum",
+    "type": "registry:component",
+    "title": "Fulcrum loader",
+    "description": "A sliding rider glides along a graduated balance beam, crossing the pivot and back. The beam answers its changing moment a beat behind, the suspended pans swing level beneath their hangers, and the pointer sweeps its scale through equilibrium. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "fulcrum",
+      "component": "LoaderFulcrum",
+      "category": "mechanics",
+      "technique": "lines",
+      "order": 14,
+      "title": "Fulcrum",
+      "tags": [
+        "balance",
+        "scale",
+        "counterweight",
+        "pans",
+        "gravity",
+        "equilibrium"
+      ],
+      "beats": 5.75,
+      "colors": [
+        {
+          "part": "Pans",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/fulcrum.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-auger",
+    "type": "registry:component",
+    "title": "Auger loader",
+    "description": "A helical flight turns steadily on its shaft inside an inclined, cut-away trough, carrying pockets of granules uphill by exactly one pitch a turn; one grain rides in the accent, and the lit flight passes behind the shaft and back over it. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "auger",
+      "component": "LoaderAuger",
+      "category": "mechanics",
+      "technique": "mixed",
+      "order": 15,
+      "title": "Auger",
+      "tags": [
+        "screw",
+        "conveyor",
+        "helix",
+        "transport",
+        "trough",
+        "flight"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Granules",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/auger.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-epicycle",
+    "type": "registry:component",
+    "title": "Epicycle loader",
+    "description": "Three planets roll between a driven sun and a fixed internal ring. A spider carrier turns once a loop in three swelling strokes that never stop, while the sun turns four times and each planet counterturns twice; the accent arm follows the carrier. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "epicycle",
+      "component": "LoaderEpicycle",
+      "category": "mechanics",
+      "technique": "mixed",
+      "order": 30,
+      "title": "Epicycle",
+      "tags": [
+        "planetary",
+        "gearbox",
+        "carrier",
+        "transmission",
+        "annulus",
+        "kinematics"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Planets",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/epicycle.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-bolus",
+    "type": "registry:component",
+    "title": "Bolus loader",
+    "description": "A soft conduit squeezes behind a travelling pocket. Lit compression collars on posts close in sequence and reopen as the bulge passes, and the cutaway membrane shows the accent bolus riding the pocket from end to end. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "bolus",
+      "component": "LoaderBolus",
+      "category": "mechanics",
+      "technique": "planes",
+      "order": 31,
+      "title": "Bolus",
+      "tags": [
+        "peristalsis",
+        "soft",
+        "pump",
+        "membrane",
+        "transport",
+        "constriction"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Collars",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/bolus.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-nutate",
+    "type": "registry:component",
+    "title": "Nutate loader",
+    "description": "A spoked flywheel spins on a leaning axle that precesses round a pivot on its pedestal. Two nods a turn modulate the cone, the axle tip traces its looping path, and a short accent on the rim follows the independent spin. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "mechanics"
+    ],
+    "meta": {
+      "loader": "nutate",
+      "component": "LoaderNutate",
+      "category": "mechanics",
+      "technique": "planes",
+      "order": 32,
+      "title": "Nutate",
+      "tags": [
+        "gyroscope",
+        "precession",
+        "nutation",
+        "flywheel",
+        "angular momentum",
+        "pivot"
+      ],
+      "beats": 5.2,
+      "colors": [
+        {
+          "part": "Trace",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/mechanics/nutate.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/mechanics/machine.ts",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

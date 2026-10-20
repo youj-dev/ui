@@ -1,0 +1,120 @@
+---
+title: Input
+description: "Collect a single line of text with clear focus and validation states."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="input/demo" height={260} />
+
+An invite-by-email field with a Send invite button that shows an error for an invalid address.
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="input/states" height={360} />
+
+Inputs in their hover, focus, invalid, disabled and read-only states.
+
+Hover strengthens the border. Focus turns the border accent inside a soft 3px halo, so the field reads as lit rather than outlined. Invalid swaps both to the destructive color. Disabled and read-only are native, and read-only gets a muted fill so it doesn't look editable.
+
+Set `aria-invalid` yourself on a standalone input. Inside a Field, `invalid` sets it for you.
+
+</Story>
+
+<Story id="controlled" label="Controlled">
+
+<ComponentPreview name="input/controlled" height={220} />
+
+An input whose value you own.
+
+`onValueChange` hands you the new string, and the `value` you pass back is what the input shows. Use it to format as people type. The standard `onChange` event works too.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="input" noImport />
+
+Use Input for short text such as a name, email address or URL. Choose a [Textarea](/docs/components/textarea) for multiple lines, an [Input Group](/docs/components/input-group) for a prefix, icon or button inside the field, or a [Select](/docs/components/select) for a known list of answers.
+
+```tsx
+import { Field, FieldLabel, Input } from '@youj/react'
+
+export function DisplayName() {
+  return (
+    <Field>
+      <FieldLabel>Display name</FieldLabel>
+      <Input name="displayName" autoComplete="name" />
+    </Field>
+  )
+}
+```
+
+Inside a [Field](/docs/components/field), the input is labeled, described and validated with no extra wiring, and it takes `required` from the Field. On its own, name it with `aria-label` or a [Label](/docs/components/field#label).
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Every native input attribute passes through, plus Base UI's…">
+
+### Props
+
+<PropsTable name="Input" />
+
+Every native input attribute passes through, plus Base UI's `onValueChange(value, details)`, which reports the new value as a string.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Hover and focus · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[{ moment: 'Hover and focus', note: 'border color, fill and the focus halo', duration: 'fast', ease: 'standard' }]}
+  reduced="There is nothing to reduce: the input only changes color, on the fast token."
+/>
+
+#### Reduced motion
+
+The input doesn't move. Its border, fill and halo change color on the `fast` token with or without reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a native `<input>`. Give it a visible label through a Field, or an `aria-label` when the context names it, like a search box.
+- Focus shows as an accent border and halo. A transparent outline rides along, so Windows high-contrast mode still draws a focus indicator.
+- Text is 13px, and 16px on touch screens, so iOS doesn't zoom the page when the input takes focus.
+- Pick the right `type`, `inputMode` and `autoComplete`. They choose the on-screen keyboard and let browsers and password managers fill the field.
+
+</ReferenceRow>

@@ -1,0 +1,122 @@
+---
+title: Radar Chart
+description: "Compare several things on the same axes, one filled shape each, with axis tooltips, a series legend and a keyboard-readable plot."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="radar-chart/demo" height={520} />
+
+Three made-up assistants scored on eight things. Hover or focus an axis label to see what it measures, hover or focus a point to read its value, and press a name in the legend to take its shape out of the plot.
+
+</Story>
+
+<Story id="scale" label="Scale">
+
+<ComponentPreview name="radar-chart/scale" height={440} />
+
+Two weekly check-ins on a fixed 0 to 10 scale with five rings, and values written with their scale.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="radar-chart" noImport />
+
+Use a radar chart to compare a handful of things on the same few measures, when the overall shape matters more than any one number: models, plans, candidates, products. Keep it to three to eight axes and a few series. For one thing over time use a [Sparkline](/docs/components/sparkline); for exact values side by side, a table; the [Compare items](/docs/blocks/trends-and-comparisons) card pairs this chart with an overview table.
+
+```tsx
+import { RadarChart } from '@youj/react'
+
+<RadarChart
+  label="Assistants compared"
+  axes={[
+    { id: 'reasoning', label: 'Reasoning', description: 'How well it works through multi-step problems.' },
+    { id: 'speed', label: 'Speed' },
+    { id: 'safety', label: 'Safety' },
+  ]}
+  series={[
+    { id: 'atlas', name: 'Atlas 2', values: [88, 56, 80] },
+    { id: 'quill', name: 'Quill S', values: [64, 92, 72] },
+  ]}
+/>
+```
+
+`axes` are drawn clockwise from the top, and each series gives one value per axis in the same order. The scale runs from zero at the center to `max` at the outer ring (by default the largest value rounded up to a round number; pass one to keep the scale still as data changes), divided by `rings`. Series take the chart colors in order unless they set a `tone`. `formatValue` writes values with their unit, and `legendEnd` adds your own controls beside the legend. Fewer than three axes, or no series, shows the empty state.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="axes, series, max, rings… (9)">
+
+### Props
+
+<PropsTable name="RadarChart" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `radar-chart`, `radar-chart-stage`, `radar-chart-plot`, `radar-chart-ring`, `radar-chart-spoke`, `radar-chart-series`, `radar-chart-points`, `radar-chart-point`, `radar-chart-axis`, `radar-chart-readout`, `radar-chart-swatch`, `radar-chart-legend`, `radar-chart-legend-item`, `radar-chart-table` and `radar-chart-empty`. A series has `data-state` (`shown` or `hidden`) and `data-tone`; the readout has `data-state` (`open` or `closed`); a legend item has `data-state` too. A series' color is `--radar-chart-tone` on its group.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, new values, toggling a series · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'every shape opens from the center, its corners sliding out along the spokes, when a third of the chart scrolls into view', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'New values, toggling a series', note: 'shapes morph to their new corners; a hidden series folds to the center', spring: 'smooth' },
+    { moment: 'Lighting a series, an axis or a point', note: 'the other shapes quiet, the spoke strengthens, the readout fades in', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; new values and toggles land at once."
+/>
+
+#### Reduced motion
+
+The shapes are drawn in place, and new values and toggled series land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Radar chart"). Every point is an image named "series, axis: value" ("Atlas 2, Reasoning: 88"), and a visually hidden table holds every number, with the series as columns and the axes as rows.
+- The plot is one tab stop. Left and Right walk the axes, Up and Down the series, Home and End go to the first and last axis, and Escape lets go. Focusing a point reads it out beside the point and lights its series, as hovering it does.
+- An axis with a `description` is a focusable label: its tooltip appears on hover or focus, and the sentence is also the label's accessible description.
+- The legend is a row of toggle buttons (`aria-pressed`), each reachable with Tab. Color is never the only cue: every series is named in the legend, the readout and the table.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

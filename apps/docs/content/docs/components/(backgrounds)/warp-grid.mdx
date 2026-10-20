@@ -1,0 +1,122 @@
+---
+title: Warp Grid
+description: "Show a line grid that sags toward the pointer like mass bending space."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="warp-grid/demo" full height={400} />
+
+A hero section over the grid; move the pointer across it and the whole grid leans toward it. Leave, and the well eases back to the middle.
+
+`colors` takes two CSS colors: the grid lines, then the color the lines take close to the well. The defaults are `--color-fg-subtle` and `--color-accent`. Token references follow the theme, and the grid rereads them when the theme changes.
+
+</Story>
+
+<Story id="depth" label="Depth">
+
+<ComponentPreview name="warp-grid/depth" full height={340} />
+
+A switch between a shallow, a default and a deep well.
+
+`depth` scales how far points slide toward the well, and `radius` how far out the pull reaches. Points move with an inverse-square falloff, so lines bunch and curve close to the well and stay where they are far away: the edges of the field never move. A deep well pinches the lines almost together at the center.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="warp-grid" noImport />
+
+Use it where the idea is weight, gravity or structure: infrastructure, finance, anything that should feel like a surface under load. It is the one grid that never goes fully still, because with nobody there the well rests in the middle and breathes slowly. Keep it to one per page.
+
+The grid fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { WarpGrid } from '@youj/motion/backgrounds'
+
+export function WeightedHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <WarpGrid />
+      <p className="relative text-5xl font-semibold">Space bends around what matters</p>
+    </section>
+  )
+}
+```
+
+The well follows the pointer with the same smoothing as the other backgrounds. When the pointer leaves, it glides back to the middle of the field and shallows to 40% of its depth. A press deepens it for a moment, which is what makes it respond on touch screens.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (8)">
+
+### Props
+
+<PropsTable name="WarpGrid" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="Canvas 2D; one path plus a few for the lit lines">
+
+### Performance
+
+It's drawn with Canvas 2D, not WebGL. Every line is sampled every 8 pixels and each sample is one inverse-square evaluation, so the whole grid is the base path plus five alpha-bucketed paths for the lit segments. The canvas renders at a device-pixel ratio capped at 2. On the low motion-budget tier the lines are sampled 60% more coarsely and the loop runs at 30 fps. The loop pauses when the grid is offscreen or the tab is hidden, and it stops and cleans up on unmount. If the browser can't create a 2D context, it falls back to a static CSS wash of the accent color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Well position, breathing, press pulse · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Well position', note: 'blends from the middle to the pointer by pointer strength', value: 'smoothed per frame' },
+    { moment: 'Idle breathing', note: 'the well deepens and eases about 6% while nobody is there', value: 'speed ÷ time scale' },
+    { moment: 'Press pulse', note: 'the well deepens by half, then decays', value: 'about 0.3 s half-life' },
+  ]}
+  reduced="Draws one still grid sagging toward the middle: the same composition every time. There's no breathing and no pointer response, and it redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The grid sags toward the middle at its resting depth, so it's the same on every visit and in every screenshot. The lines and the lit accent keep their colors. Only the breathing and the pointer response are gone. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- Lines cross whatever sits above them. Keep a quiet pool of canvas behind the copy, as the hero preview does, or lower `intensity`, and check your text's contrast there.
+- The idle breathing is slow and stops offscreen. Under reduced motion the grid doesn't move at all.
+
+</ReferenceRow>

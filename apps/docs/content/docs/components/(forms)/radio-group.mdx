@@ -1,0 +1,142 @@
+---
+title: Radio Group
+description: "Choose one option from a visible list or a set of cards."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="radio-group/demo" height={440} />
+
+A plan picker as choice cards, with Pro chosen.
+
+The demo wraps each `Field` in a `FieldLabel`, so the whole card is the target. The card tints when it's chosen and carries the focus ring for the radio inside it. Put the title in a `FieldTitle`, since a label can't contain another label.
+
+</Story>
+
+<Story id="lists" label="Lists">
+
+<ComponentPreview name="radio-group/list" height={280} />
+
+A plain list with a disabled option.
+
+A plain list suits short options. Put `disabled` on an option's `Field` to dim its label with it. The arrow keys skip disabled options.
+
+</Story>
+
+<Story id="in-a-row" label="In a row">
+
+<ComponentPreview name="radio-group/inline" height={200} />
+
+A short set laid out in a row, with the choice controlled.
+
+Short sets can sit in a row. The arrow keys move the choice in any layout, and here the choice is controlled, so the description follows it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="radio-group" noImport />
+
+Use Radio Group when people need to choose one option and see the full list. Use a [Select](/docs/components/select) for longer lists, [Checkboxes](/docs/components/checkbox) for choices that can combine, or a [Toggle Group](/docs/components/toggle-group) for view settings.
+
+Each `RadioGroupItem` sits in its own `Field` with a `FieldLabel`. Name the group with a `FieldSet` and `FieldLegend`, or with `aria-label` on the `RadioGroup`.
+
+```tsx
+import { Field, FieldLabel, FieldLegend, FieldSet, RadioGroup, RadioGroupItem } from '@youj/react'
+
+export function Density() {
+  return (
+    <FieldSet>
+      <FieldLegend variant="label">Density</FieldLegend>
+      <RadioGroup defaultValue="comfortable" name="density">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="comfortable" />
+          <FieldLabel>Comfortable</FieldLabel>
+        </Field>
+        <Field orientation="horizontal">
+          <RadioGroupItem value="compact" />
+          <FieldLabel>Compact</FieldLabel>
+        </Field>
+      </RadioGroup>
+    </FieldSet>
+  )
+}
+```
+
+`defaultValue` makes it uncontrolled. Pass `value` and `onValueChange` to own the choice, and `name` to submit it with a form.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="The group takes Base UI's value, defaultValue, onValueChange, name,…">
+
+### Props
+
+<PropsTable name="RadioGroup" />
+
+#### RadioGroupItem
+
+<PropsTable name="RadioGroupItem" />
+
+The group takes Base UI's `value`, `defaultValue`, `onValueChange`, `name`, `disabled`, `readOnly` and `required`. Each item takes a `value`, plus its own `disabled`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Dot in, dot out, ring fill… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Dot in', note: 'the chosen dot grows from zero', duration: 'fast', ease: 'enter' },
+    { moment: 'Dot out', note: 'the previous dot shrinks away at the same time', duration: 'fast', ease: 'exit' },
+    { moment: 'Ring fill', note: 'background and border color', duration: 'fast', ease: 'standard' },
+    { moment: 'Press', note: 'the ring squeezes to 90%', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="The dot appears and disappears without scaling, and the ring doesn't squeeze on press."
+/>
+
+The dot is a CSS transition, so a choice that changes mid-way picks up from the dot's current scale.
+
+#### Reduced motion
+
+The dot switches on and off without growing, and the press doesn't squeeze. The chosen option still shows the filled ring and the dot, so the choice reads the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The group is one tab stop. `Tab` lands on the chosen option, the arrow keys move the choice and wrap at the ends, and `Space` selects the focused option.
+- The group is a `radiogroup`, named by its `FieldLegend` or `aria-label`. Each item is a `radio`, named by its `FieldLabel`.
+- `required` on the group or its `Field` makes a choice mandatory before the form submits.
+- Each 16px radio has a 24px hit area, and 40px on touch screens.
+
+</ReferenceRow>

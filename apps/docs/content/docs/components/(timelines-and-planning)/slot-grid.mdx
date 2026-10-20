@@ -1,0 +1,113 @@
+---
+title: Slot Grid
+description: "Choose a bookable time from a weekly grid that shows remaining places."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="slot-grid/demo" height={440} />
+
+A week of class slots with the places left in each, one of them already yours.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="slot-grid" noImport />
+
+Use a slot grid to pick one time from a week of sessions that each have a number of places: a studio's classes, a salon's chairs, a clinic's appointments, a tour's departures. There's a column per day and a row per start time. In each cell a run of pips, one per place up to eight, is lit for the places still free, so availability reads as a pattern before you read a number. A slot with only a few places left warms to the warning tone, a full one is hatched and dark, a time the day doesn't offer is a dash, and the viewer's own booking carries a check. For a single day of free times, use a list of buttons; for picking a date, a [Calendar](/docs/components/calendar).
+
+```tsx
+import { SlotGrid, type SlotGridSlot } from '@youj/react'
+
+const slots: SlotGridSlot[] = [
+  { id: 'mon-7', start: new Date('2026-09-28T07:00'), left: 3, capacity: 8 },
+  { id: 'mon-9', start: new Date('2026-09-28T09:00'), left: 0, capacity: 8 },
+  { id: 'tue-7', start: new Date('2026-09-29T07:00'), left: 8, capacity: 8, mine: true },
+]
+
+const [slot, setSlot] = useState<string | null>(null)
+
+<SlotGrid slots={slots} start={new Date('2026-09-28')} value={slot} onValueChange={setSlot} />
+```
+
+`start` is the first day shown (by default, the day of the earliest slot) and `days` how many follow (7). The rows are every start time among the slots, or the ones you pass as `times`, in minutes after midnight, so a time one day doesn't offer shows as a dash. A slot counts as few when it has `fewAt` places left or fewer (2). Only a slot with room can be picked: `onValueChange` is called with its id and the slot, and `value` makes the pick controlled.
+
+`layout="auto"` (the default) measures the grid's own width and shows one day at a time when it's under 36rem, whatever the viewport: a track of the week's days, each with a bar of how much of it is still free, over that day's times as full-width rows. `layout="week"` and `layout="day"` fix one or the other.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="slots, start, days… (13)">
+
+### Props
+
+<PropsTable name="SlotGrid" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `slot-grid` (with `data-layout`), `slot-grid-grid`, `slot-grid-row`, `slot-grid-time`, `slot-grid-day`, `slot-grid-cell` (with `data-state`: `open`, `few`, `full`, `closed` or `mine`, and `data-picked`), `slot-grid-pips`, `slot-grid-pip` (with `data-state`), `slot-grid-value`, `slot-grid-legend`, and in the day view `slot-grid-days`, `slot-grid-day-key`, `slot-grid-date` and `slot-grid-day-indicator`. In Bezel the day names are mono capital eyebrows and the times, dates and counts are mono.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, pick, another day · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'the cells come in as a wave from the first slot', duration: 'deliberate', ease: 'standard' },
+    { moment: 'Pick', note: 'the cell lights as the key; a press gives a little', duration: 'fast', ease: 'standard' },
+    { moment: 'Another day', note: 'in the day view the new day slides in from the side it lies on; the day key glides', spring: 'snappy' },
+  ]}
+  reduced="The grid is drawn in place, days swap without the slide and the key jumps."
+/>
+
+#### Reduced motion
+
+The cells are drawn in place, a new day replaces the last without sliding, and the day key moves without gliding.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard">
+
+### Accessibility
+
+- The grid is an ARIA grid named by `label` (default: the labels' "Available times") and described by how to move through it, with the days as column headers and the times as row headers.
+- Each cell is named by its day, time and state ("Monday, September 28, 07:00, 3 left"). A slot with room is selectable and says whether it's picked; a full slot, a time not offered and your own booking are disabled.
+- The grid is one tab stop, starting on the picked slot or the first with room. Arrow keys move between days and times (left and right mirrored in RTL), Home and End to a row's ends, Ctrl+Home and Ctrl+End to the grid's, and Enter or Space picks. In the day view, left and right step the day.
+- With sound on, picking a slot plays `select` (`sound={false}` keeps it quiet).
+- Its words come from the labels (`slotGrid`, `slotGridHint`, `slotGridCell`, `slotGridLeft`, `slotGridFull`, `slotGridClosed`, `slotGridFew`, `slotGridOpen`, `slotGridMine`, `slotGridDays`, `slotGridOpenCount`), translated by the language packs.
+
+</ReferenceRow>

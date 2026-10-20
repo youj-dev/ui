@@ -1,0 +1,116 @@
+---
+title: Treemap
+description: "Compare parts of a whole as cells sized by value, with tooltips and keyboard access."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="treemap/demo" height={320} />
+
+A web app's bundle by package, with a button that loads the charts on demand and re-lays the map.
+
+</Story>
+
+<Story id="highlight-and-tone" label="Highlight and tone">
+
+<ComponentPreview name="treemap/tones" height={300} />
+
+Spend by line item, with one highlighted cell and a tone on each category.
+
+`highlight` takes one id or several: those cells are tinted and outlined in their tone, the accent unless the item sets one. An item's `tone` alone tints its cell faintly, for categories that carry a color of their own.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="treemap" noImport />
+
+Use a treemap when the question is "where does it all go": a bundle by package, a disk by table, spend by line item. Each part is a cell whose area is its value, laid out squarified so cells stay close to square and compare by eye, largest first from the top-start corner. For one part's share in a row, use a [Share Bar](/docs/components/share-bar); for exact values people compare or sort, a table.
+
+```tsx
+import { Treemap } from '@youj/react'
+
+const kb = new Intl.NumberFormat('en-US', { style: 'unit', unit: 'kilobyte' }).format
+
+<Treemap
+  label="Bundle by package"
+  items={[
+    { id: 'app', name: 'app code', value: 164 },
+    { id: 'react-dom', name: 'react-dom', value: 131 },
+    { id: 'recharts', name: 'recharts', value: 96 },
+  ]}
+  highlight="recharts"
+  formatValue={kb}
+/>
+```
+
+It's a wide strip by default (`aspect` 3.5, width to height); pass another `aspect`, or a height class, which wins. Cells show the name and value where they have room, the name alone when smaller and nothing in a sliver, and every cell keeps its tooltip with the name, the value and its share of the total. Items at zero or below are left out, and with nothing to show it says so.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, highlight, formatValue… (6)">
+
+### Props
+
+<PropsTable name="Treemap" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, new data, parts come and go… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'cells fade in largest first when a third of the map scrolls into view', duration: 'base', ease: 'enter' },
+    { moment: 'New data', note: 'the map re-lays itself with a FLIP, so only transforms move; labels keep their size', spring: 'smooth' },
+    { moment: 'Parts come and go', note: 'a part that leaves fades out where it was; a new one fades in', duration: 'base', ease: 'enter' },
+    { moment: 'Highlight', note: 'fill, border and text change color', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; new data and highlights land at once."
+/>
+
+#### Reduced motion
+
+Cells are drawn in place, and new data and highlights land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Treemap") holding a `list`, largest first. Each item is named with its value, its share and whether it's highlighted ("recharts: 96 kB, 17% of total, highlighted").
+- A summary describes the group: how many parts, their total and the largest.
+- One tab stop. The arrow keys move to the nearest cell in that direction as laid out, in either text direction; Home and End go to the largest and the smallest. Focus shows the tooltip, as hover does.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

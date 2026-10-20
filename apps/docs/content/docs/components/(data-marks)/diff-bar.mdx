@@ -1,0 +1,119 @@
+---
+title: Diff Bar
+description: "Compare values from models, runs or periods, with the better result highlighted."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="diff-bar/demo" height={420} />
+
+Rows comparing Large against Mini, each side growing from a shared center.
+
+</Story>
+
+<Story id="stacked" label="Stacked">
+
+<ComponentPreview name="diff-bar/stacked" height={300} />
+
+What an agreement allows against what was quoted, as two rows on one scale, with the overage in the danger tone.
+
+`layout="stacked"` draws each side as a row from the inline start, named by `names`. Both are lit in `tone` up to the smaller value; past it, the worse side's excess is drawn in danger and its value in the danger ink, so an overage reads at a glance. With `better="higher"` the better side is the longer one and stays in the tone.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="diff-bar" noImport />
+
+Use a diff bar to compare two values of one measure: two models on accuracy, this month's latency against last month's, a candidate against production. Each side grows out from a shared center toward its own end, A to the start and B to the end, in cells you can count, and the better side is lit. Stack them and every row shares one center line, so a table of them reads as a verdict at a glance. For one row's share of a whole use a [Share Bar](/docs/components/share-bar); for a baseline beside the actual, a [Hatched Bar](/docs/components/hatched-bar).
+
+```tsx
+import { DiffBar, diffWinner } from '@youj/react'
+
+<DiffBar label="Accuracy" a={91.2} b={92.4} format={{ style: 'unit', unit: 'percent' }} />
+<DiffBar label="Latency p95" a={1840} b={910} better="lower" format={{ style: 'unit', unit: 'millisecond' }} names={['Large', 'Mini']} />
+
+diffWinner(1840, 910, 'lower') // 'b'
+```
+
+`better` says which way wins: `higher` (the default) or `lower`. A difference under `tolerance` of the larger value (half a percent by default) is even, and lights neither side. Each side's full length is the larger value, or your `max` when several bars should share a scale. `format` and `locale` set how the values read, `segments` how many cells each side has (14; `0` draws solid bars), and `tone` the lit side's color (the accent, a status or a chart color).
+
+`layout` is `diverging` (the default, out from a shared center) or `stacked` (two rows on one scale, the worse side's excess in danger).
+
+`diffWinner(a, b, better, tolerance)` returns the same verdict (`'a'`, `'b'` or `'even'`), for a chip or a count of wins beside the bars.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="a, b, max… (14)">
+
+### Props
+
+<PropsTable name="DiffBar" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `diff-bar` (with `data-winner`, and `data-variant`: `diverging` or `stacked`), `diff-bar-name` (stacked), `diff-bar-label`, `diff-bar-row`, `diff-bar-value` and `diff-bar-track` (each with `data-side`), `diff-bar-cell` (with `data-state`), `diff-bar-bar`, `diff-bar-fill` (stacked: with `data-part`, `shared` or `excess`), `diff-bar-center` and `diff-bar-verdict`. The value columns are `--diff-bar-value` wide (4.5rem), so stacked bars share one center; widen it for longer values.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, new value · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'both sides light outward from the center at one constant rate, so the longer side takes longer, once half the bar is in view', duration: 'deliberate' },
+    { moment: 'New value', note: 'cells light or darken in place', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn at once."
+/>
+
+#### Reduced motion
+
+The cells are lit at once, and a new value lands in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- The values are text at the bar's ends, read in order, and a visually hidden verdict follows them: "Mini is better by 51%", or "Even". The margin is relative to the worse side unless you pass `by` ("1.2 points").
+- `names` name the sides in the verdict (`['A', 'B']` by default).
+- The cells are decorative (`aria-hidden`).
+- The start side grows toward the inline start, so the bar mirrors in RTL.
+- Its words come from the labels (`diffBetter`, `diffEven`), translated by the language packs.
+
+</ReferenceRow>

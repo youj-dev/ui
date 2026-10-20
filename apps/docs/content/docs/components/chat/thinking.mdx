@@ -1,0 +1,115 @@
+---
+title: Thinking
+description: "Show when an assistant is working, with a typing indicator and collapsible reasoning."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="thinking/demo" height={320} />
+
+Reasoning that streams open, folds to “Thought for” its duration, and can be run again.
+
+`ChatReasoning` streams its `content` as muted [markdown](/docs/components/chat/markdown) under a rule. Uncontrolled, it's open while `streaming` and folds away when the thinking is done, until the reader toggles it: then their choice sticks. The label reads "Thinking…" with a sweep of light while it streams, then "Thought for" and `duration` (in seconds), or "Reasoning" without one. Control it with `open` and `onOpenChange`.
+
+</Story>
+
+<Story id="typing-indicator" label="Typing indicator">
+
+<ComponentPreview name="thinking/indicators" height={200} />
+
+The two typing indicators, shimmer and dots.
+
+The default `shimmer` sweeps a band of light across its label. `dots` is three dots in a traveling wave, for tighter spaces, with the label read to screen readers only. `label` defaults to "Thinking…". The sweep pauses while it's offscreen or the tab is hidden.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatReasoning, ChatTypingIndicator" noImport />
+
+Two parts cover the wait. `ChatTypingIndicator` says the assistant is working when nothing has arrived yet. `ChatReasoning` shows a model's reasoning as it streams, then folds it under "Thought for 4s" so the answer takes the space. Put either inside the assistant's [Chat Message](/docs/components/chat/message), before its content. For work with a name and a result, like a search or an API call, use a [Tool Call](/docs/components/chat/tool-call) instead.
+
+```tsx
+import { ChatMessage, ChatReasoning, ChatTypingIndicator } from '@youj/react'
+
+<ChatMessage role="assistant" content={reply.stream} streaming={reply.streaming}>
+  {reply.waiting && <ChatTypingIndicator />}
+  {reply.reasoning && (
+    <ChatReasoning content={reply.reasoning.stream} streaming={reply.reasoning.streaming} duration={reply.reasoning.seconds} />
+  )}
+</ChatMessage>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="content, streaming, duration… (7)">
+
+### Props
+
+<PropsTable name="ChatReasoning" />
+
+#### ChatTypingIndicator
+
+<PropsTable name="ChatTypingIndicator" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Shimmer sweep, dots, reasoning folds… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Shimmer sweep', note: 'a masked copy of the label rides a band across it; transform only', duration: 'deliberate', ease: 'standard', value: '× 3 per sweep' },
+    { moment: 'Dots', note: 'three dots in a traveling wave', value: 'loop' },
+    { moment: 'Reasoning folds', note: 'height to and from `auto`, the text fading with it (Collapse)', duration: 'base', ease: 'standard' },
+    { moment: 'Fold fade out', note: 'faster than the fold, so text never looks squashed', duration: 'fast', ease: 'exit' },
+    { moment: 'Label swap', note: '"Thinking…" crossfades to "Thought for 4s" (Morph Label)', duration: 'fast', ease: 'standard' },
+    { moment: 'Label width', spring: 'snappy' },
+  ]}
+  reduced="The label holds still (no sweep, no wave), and the reasoning opens and closes instantly."
+/>
+
+#### Reduced motion
+
+The shimmer and the dots hold still, the label swaps without crossfading, and the reasoning opens and folds at once. The reasoning text arrives in whole sentences, as all streamed markdown does.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- The reasoning's toggle is a button with `aria-expanded` and `aria-controls`, named by its label.
+- Inside a [Chat Message List](/docs/components/chat/message-list), a typing indicator is announced once through the list, unless it sits in a message, which already said it's responding. On its own it's a `status` region.
+- The shimmer's moving copy is `aria-hidden`, so the label is read once.
+
+</ReferenceRow>

@@ -1,0 +1,120 @@
+---
+title: Flow Lanes
+description: "Show where a stream goes: one source fanning out to a lane per destination, each a stream of particles as dense as its rate."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="flow-lanes/demo" height={260} />
+
+A made-up delivery hub's parcels per minute, by route. Each lane's particles cross at the same speed, so the busy Harbor run is a dense stream and the Hill towns a trickle; the line's weight says the same.
+
+</Story>
+
+<Story id="pointing" label="Pointing">
+
+<ComponentPreview name="flow-lanes/pointing" height={300} />
+
+`active` lights one lane and quiets the rest, and `onActiveChange` reports where pointing and focus go, so a table or a set of buttons beside the chart can light a lane too.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="flow-lanes" noImport />
+
+Use flow lanes for one stream split many ways, where the split is the story: a model router's traffic by model, a load balancer's pools, a queue's consumers, an inbox's routing rules. The [Routing flow](/docs/blocks/flows#routing-flow) card is built on it. For a run of steps with branches use a [Flow Graph](/docs/components/flow-graph); for shares without a source, a [Share Bar](/docs/components/share-bar).
+
+```tsx
+import { FlowLanes } from '@youj/react'
+
+<FlowLanes
+  source="Gateway"
+  label="Requests by model"
+  lanes={[
+    { id: 'pro', label: 'Kestrel 3 Pro', value: 47, tone: 'chart-1' },
+    { id: 'orrery', label: 'Orrery 2', value: 137, tone: 'chart-2' },
+  ]}
+  formatValue={(v) => `${Math.round(v)}/s`}
+/>
+```
+
+`source` names the node the lanes leave from. Each lane's `value` is its rate in any unit: it sets how many particles ride it (a share of the whole, at least one for any flow), the weight of its line and the share spoken with it. Lanes take the chart colors in order unless they set a `tone`. `formatValue` writes a rate with its unit. The particles stop while the chart is off screen or the tab is hidden, and `paused` stops them for good. No lanes, or nothing flowing, shows the empty state.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="source, lanes, active, onActiveChange, paused, formatValue…">
+
+### Props
+
+<PropsTable name="FlowLanes" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `flow-lanes`, `flow-lanes-plot`, `flow-lanes-source`, `flow-lanes-source-node`, `flow-lanes-lane`, `flow-lanes-stream`, `flow-lanes-particles`, `flow-lanes-particle`, `flow-lanes-list`, `flow-lanes-item`, `flow-lanes-label`, `flow-lanes-value`, `flow-lanes-summary` and `flow-lanes-empty`. While a lane is lit, its lane, particles and item have `data-state="active"` and the others `data-state="inactive"`. The lane pitch is `--flow-lanes-pitch` (32px, 28px compact).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Draw, stream, reweight · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Draw', note: 'the lanes draw out from the source when a third of the chart scrolls into view, a lane after another', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Stream', note: 'particles cross at one steady speed, a full width in six deliberate beats, fading in and out at the ends; they stop off screen', value: 'linear, looping' },
+    { moment: 'Reweight', note: 'a new rate thickens or thins the line and reseeds the stream', duration: 'slow', ease: 'standard' },
+    { moment: 'Pointing', note: 'the other lanes and their streams quiet', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; the particles rest on their lanes, spaced by the rate, so the density still reads."
+/>
+
+#### Reduced motion
+
+The lanes are drawn in place and the particles stand still on them, as many as the rate gives, so a busy lane still looks busy.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Flow lanes") described by the source, how many lanes it feeds and their total ("Gateway to 4 lanes, 312/s in all.").
+- The lanes are a list; each is read with its name, rate and share ("Orrery 2: 137/s, 44%").
+- The names are one tab stop. The arrow keys, `Home` and `End` move between them, and focus lights the lane as pointing does.
+- The drawing and the particles are decorative; the list says the same in words. Color is never the only cue: every lane is named.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

@@ -1,0 +1,118 @@
+---
+title: Radial Graph
+description: "Show what one thing reaches, in rings by how many hops away, with each node's kind, state and path from the center."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="radial-graph/demo" height={480} />
+
+A made-up service account and what it can reach. Two things were hit (a solid ring and a solid link) and three more are exposed through them (dashed). Hover or focus a node to read it and light its path from the center.
+
+</Story>
+
+<Story id="hops" label="Hops">
+
+<ComponentPreview name="radial-graph/hops" height={520} />
+
+`hops` shows fewer rings: the outer nodes fold into the ones they hang from, and unfold on the same spot.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="radial-graph" noImport />
+
+Use a radial graph when the question is "what does this one thing reach, and how directly": the blast radius of a compromised account, the services a change touches, the people around a person. Each node hangs from its `via` (or from the center), so a branch reads as a wedge, and its ring says how many hops out it is. For a run or pipeline with an order, use a [Flow Graph](/docs/components/flow-graph); for a hierarchy you browse, a [Hierarchy Chart](/docs/components/hierarchy-chart). The [Radial network](/docs/blocks/networks-and-maps#radial-network) card is built on it.
+
+```tsx
+import { RadialGraph } from '@youj/react'
+
+<RadialGraph
+  label="What svc-reports can reach"
+  center={{ id: 'svc', label: 'svc-reports', short: 'SR' }}
+  nodes={[
+    { id: 'vault', label: 'secrets-vault', tone: 'chart-3', ring: 'solid', state: 'Hit', detail: 'Read with the leaked token' },
+    { id: 'queue', label: 'jobs-queue', tone: 'chart-1' },
+    { id: 'api', label: 'billing-api', via: 'vault', ring: 'dashed', state: 'Exposed' },
+  ]}
+/>
+```
+
+A node's `tone` colors its dot (its kind); `ring` draws its state around it, `solid` or `dashed` in `ringTone` (danger by default), and the link into it takes the same line, so a path through the graph shows at a glance. `state` and `detail` are shown in its tooltip and spoken with it. The rings are spaced evenly out to the deepest node and named in a quiet gap ("1 hop", "2 hops"; `ringLabels={false}` hides them). A `via` that is unknown, or that loops, hangs the node from the center. No nodes shows the empty state.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="center, nodes, hops, ringLabels, label">
+
+### Props
+
+<PropsTable name="RadialGraph" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `radial-graph`, `radial-graph-stage`, `radial-graph-plot`, `radial-graph-ring`, `radial-graph-link`, `radial-graph-center`, `radial-graph-node`, `radial-graph-caption`, `radial-graph-short`, `radial-graph-nodes`, `radial-graph-target`, `radial-graph-tooltip`, `radial-graph-summary` and `radial-graph-empty`. A node, its link and the center have `data-yj-ring` (`solid` or `dashed`) when they carry a state; a node and a ring have `data-state` (`shown`, or `folded` and `hidden` past `hops`). The gap kept round each dot is `--radial-graph-gap` (the surface by default): set it to the color behind the graph.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, folding · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the nodes travel out from the center ring by ring and their links fade in, when a third of the graph scrolls into view', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Folding and unfolding', note: 'nodes past `hops` glide into the node they hang from and fade; they come back out the same way', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Reading a node', note: 'its path from the center strengthens, the rest quiet, its dot grows a step', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; folds land at once."
+/>
+
+#### Reduced motion
+
+The graph is drawn in place, and folding or unfolding lands at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Radial graph") described by a summary: how many nodes are linked to the center, and within how many hops.
+- The nodes are a list, the center first and then each ring clockwise from the top. Each is named with its label and distance ("shared-drive, 2 hops away") and described by its `state` and `detail`. Color is never the only cue: the state is in words, and solid and dashed rings tell hit from exposed.
+- One tab stop. Left and Right walk a ring (mirrored in RTL), Down follows a link outward, Up goes back toward the center, Home and End go to the center and the last node. Focus shows the node's tooltip and lights its path, as hovering does.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

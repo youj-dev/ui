@@ -1,0 +1,18 @@
+{
+  "title": "Primitives",
+  "pagesIndex": "primitives",
+  "pages": [
+    "---Appear---",
+    "reveal",
+    "stagger",
+    "---Text and numbers---",
+    "text-split",
+    "text-effect",
+    "scramble-text",
+    "counter",
+    "---Loops and scroll---",
+    "marquee",
+    "parallax",
+    "scroll-progress"
+  ]
+}

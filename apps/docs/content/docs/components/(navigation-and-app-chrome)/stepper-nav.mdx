@@ -1,0 +1,120 @@
+---
+title: Stepper Nav
+description: "Navigate a flow that spans pages, with links back to completed steps."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="stepper-nav/demo" height={260} />
+
+A four-step setup row with Back and Continue buttons; finished steps become links back.
+
+The horizontal row keeps its discs and connectors on narrow screens and drops the titles below `sm`, so four or five steps still fit in one line. The titles stay in the accessible name. Pass `compact={false}` to keep them visible, or switch to `vertical` on phones.
+
+</Story>
+
+<Story id="vertical" label="Vertical">
+
+<ComponentPreview name="stepper-nav/vertical" height={320} />
+
+The same navigation stacked down the side of a checkout, beside the content for the current step.
+
+`orientation="vertical"` stacks the steps down the side of the page, next to the form they describe, with the connectors running between the discs.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="stepper-nav" noImport />
+
+Use it at the top (or down the side) of a flow where each step is its own page: checkout, onboarding, workspace setup. It shows where the reader is and lets them go back to any step they've done. It doesn't run the flow: validation, saving and what "Continue" does stay with your app, and upcoming steps can't be jumped to. When the steps live on one page and the component should own them, use a [Wizard](/docs/components/wizard). To show progress without links, use a [Stepper](/docs/components/stepper) on its own.
+
+```tsx
+import { StepperNav } from '@youj/react'
+
+const steps = [
+  { id: 'account', title: 'Account', description: 'Email and password' },
+  { id: 'workspace', title: 'Workspace', description: 'Name and URL' },
+  { id: 'plan', title: 'Plan' },
+  { id: 'invite', title: 'Invite', optional: true },
+]
+
+export function SetupProgress({ step }: { step: number }) {
+  return <StepperNav aria-label="Setup" steps={steps} current={step} href={(i) => `/setup/${steps[i]!.id}`} />
+}
+```
+
+`current` is the index of the step the reader is on, usually read from the route. `href` maps a step to its page. The done steps and the current one become links, and the ones ahead stay plain text. Set `current` to `steps.length` once the flow is done, and every step shows its check.
+
+Each step is a [Stepper](/docs/components/stepper) step: a `title`, an optional `description`, `optional` to add "Optional" under the title, and `error` to mark a step that needs another look. `onNavigate` fires as a step link is followed, which is where a client-side router takes over.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="steps, current, href… (6)">
+
+### Props
+
+<PropsTable name="StepperNav" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Connector fills, connector drains, check… · reduced motion">
+
+### Motion
+
+The motion is Stepper's.
+
+<MotionSpec
+  rows={[
+    { moment: 'Connector fills', note: 'as a step completes, scaling along the line from the finished step', duration: 'slow', ease: 'standard' },
+    { moment: 'Connector drains', note: 'when you go back, from wherever the fill is', duration: 'slow', ease: 'standard' },
+    { moment: 'Check', note: 'draws in on a finished step', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Disc and title color', note: 'upcoming, current, complete or error', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Connectors fill and drain at once, and checks appear already drawn."
+/>
+
+#### Reduced motion
+
+The connectors fill and drain at once, and a finished step's check appears already drawn. Colors change instantly. The links, statuses and names are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus">
+
+### Accessibility
+
+- It's a `nav` landmark named "Progress" by default. Name it after the flow with `aria-label` ("Setup", "Checkout").
+- The steps are an ordered list. The current step carries `aria-current="step"`, and every step's name ends with its status ("Workspace, current step", "Account, completed", "Plan, not started"), so the progress reads the same without the colors.
+- Done steps and the current one are links. Upcoming steps aren't focusable, since they can't be reached yet.
+- Titles hidden below `sm` are still in the accessible name.
+
+</ReferenceRow>

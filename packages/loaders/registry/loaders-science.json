@@ -1,0 +1,472 @@
+[
+  {
+    "name": "loader-ligate",
+    "type": "registry:component",
+    "title": "Ligate loader",
+    "description": "A double helix opens from its upper end as paired bases separate into two half-rungs. The opening fork descends through the turning backbones, pauses, and climbs back as complementary bases meet again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "ligate",
+      "component": "LoaderLigate",
+      "category": "science",
+      "technique": "lines",
+      "order": 1,
+      "title": "Ligate",
+      "tags": [
+        "dna",
+        "double helix",
+        "base pair",
+        "unzipping",
+        "molecular",
+        "3d"
+      ],
+      "beats": 5.75,
+      "colors": [
+        {
+          "part": "Bases",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/ligate.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-valence",
+    "type": "registry:component",
+    "title": "Valence loader",
+    "description": "Four atoms approach a central atom along its four dashed valence directions and seat bond by bond. The completed ball-and-stick molecule shows its tetrahedron as it turns through depth, then the bonds release and the atoms withdraw in the same measured sequence. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "valence",
+      "component": "LoaderValence",
+      "category": "science",
+      "technique": "mixed",
+      "order": 2,
+      "title": "Valence",
+      "tags": [
+        "molecule",
+        "tetrahedral",
+        "ball and stick",
+        "assembly",
+        "bond",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Valences",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/valence.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-halite",
+    "type": "registry:component",
+    "title": "Halite loader",
+    "description": "An ionic crystal grows from an accent seed into connected cubic cells. Large and small ions seat by turns along a diagonal growth front, each lattice line reaching out to a neighbour as it arrives, the unit cell ruled in dashes once whole; then the outer layers dissolve back toward the seed. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "halite",
+      "component": "LoaderHalite",
+      "category": "science",
+      "technique": "lines",
+      "order": 3,
+      "title": "Halite",
+      "tags": [
+        "crystal",
+        "ionic",
+        "unit cell",
+        "lattice growth",
+        "nucleation",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Small ions",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/halite.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-chaperone",
+    "type": "registry:component",
+    "title": "Chaperone loader",
+    "description": "A loose protein coil zips into an alpha helix from one end, its thin backbone widening into a lit ribbon as each turn forms and hydrogen bonds bridging neighbouring turns. The accent marks the folding front; after a turn of the view the helix unzips back into the coil from the other end. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "chaperone",
+      "component": "LoaderChaperone",
+      "category": "science",
+      "technique": "planes",
+      "order": 4,
+      "title": "Chaperone",
+      "tags": [
+        "protein",
+        "folding",
+        "ribbon",
+        "torsion",
+        "hydrogen bond",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Bonds",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/chaperone.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lobule",
+    "type": "registry:component",
+    "title": "Lobule loader",
+    "description": "Two opposed p-orbital lobes open around a small nucleus and turn their nodal plane through depth. Lit shell strips show their volume, a spherical s-shell remains inside, and a short meridian carries the accent as the lobes breathe and reorient. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "lobule",
+      "component": "LoaderLobule",
+      "category": "science",
+      "technique": "planes",
+      "order": 5,
+      "title": "Lobule",
+      "tags": [
+        "orbital",
+        "p lobe",
+        "s shell",
+        "electron density",
+        "nodal plane",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "S-shell",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/lobule.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-chamber",
+    "type": "registry:component",
+    "title": "Chamber loader",
+    "description": "A beam track of bubbles crosses a framed bubble chamber and strikes a target. Charged tracks curl away from the vertex in opposite senses, spiralling tighter as they lose energy, a tight delta-ray curl and a neutral decay’s V follow, and the whole event drains away as the next beam particle enters. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "chamber",
+      "component": "LoaderChamber",
+      "category": "science",
+      "technique": "paths",
+      "order": 6,
+      "title": "Chamber",
+      "tags": [
+        "bubble chamber",
+        "collision",
+        "charged track",
+        "magnetic field",
+        "particle physics",
+        "3d"
+      ],
+      "beats": 5.25,
+      "colors": [
+        {
+          "part": "Tracks",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/chamber.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-adduct",
+    "type": "registry:component",
+    "title": "Adduct loader",
+    "description": "Two reactants land in neighbouring hollows of a lattice of surface atoms, held by short surface bonds. They slide together and couple through a new accent bond, the product lifts off and turns away into the distance, and the next pair is already on its way in. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "adduct",
+      "component": "LoaderAdduct",
+      "category": "science",
+      "technique": "mixed",
+      "order": 7,
+      "title": "Adduct",
+      "tags": [
+        "catalyst",
+        "adsorption",
+        "reaction",
+        "desorption",
+        "surface chemistry",
+        "3d"
+      ],
+      "beats": 5.75,
+      "colors": [
+        {
+          "part": "Reactants",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/adduct.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-exchange",
+    "type": "registry:component",
+    "title": "Exchange loader",
+    "description": "An approaching atom takes a covalent bond as the opposite atom departs. Both bonds are partial through the shared transition, the three spectator bonds flatten and invert like an umbrella, and the exchange runs back to restore the starting molecule. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "exchange",
+      "component": "LoaderExchange",
+      "category": "science",
+      "technique": "mixed",
+      "order": 8,
+      "title": "Exchange",
+      "tags": [
+        "covalent",
+        "substitution",
+        "bond exchange",
+        "inversion",
+        "transition state",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Leaving group",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/exchange.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-kekule",
+    "type": "registry:component",
+    "title": "Kekule loader",
+    "description": "A lit benzene ring rocks in perspective while its two Kekulé drawings trade places: the alternating double bonds fade through one delocalized inner ring, with the pi clouds above and below it, and back. One accent electron pair slides from bond to bond as the structures turn over. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "kekule",
+      "component": "LoaderKekule",
+      "category": "science",
+      "technique": "lines",
+      "order": 9,
+      "title": "Kekule",
+      "tags": [
+        "benzene",
+        "aromatic",
+        "resonance",
+        "delocalization",
+        "chemical structure",
+        "3d"
+      ],
+      "beats": 5.25,
+      "colors": [
+        {
+          "part": "Delocalized",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/kekule.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-catenate",
+    "type": "registry:component",
+    "title": "Catenate loader",
+    "description": "A monomer swings in and turns into alignment with a growing polymer tip, reaches for it with a partial bond and closes the link, and the active end, an accent mark, steps onto it. The zigzag chain flows back into depth by exactly one repeat unit a loop, its oldest unit dwindling as the next donor arrives. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "science"
+    ],
+    "meta": {
+      "loader": "catenate",
+      "component": "LoaderCatenate",
+      "category": "science",
+      "technique": "lines",
+      "order": 10,
+      "title": "Catenate",
+      "tags": [
+        "polymer",
+        "monomer",
+        "chain growth",
+        "linking",
+        "repeat unit",
+        "3d"
+      ],
+      "beats": 5.25,
+      "colors": [
+        {
+          "part": "Reach",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/science/catenate.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/science/matter.ts",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

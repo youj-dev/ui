@@ -1,0 +1,82 @@
+---
+title: Call to action
+description: "Closing and in-page calls to action, from a slim banner to a full form or a ledger of customer results."
+---
+
+<BlockStories>
+
+<BlockStory id="band" label="Band" block="marketing-cta" story="Default" backdrop="cinnabar">
+
+A closing call to action with a headline, reassurance under the button and room for a secondary link.
+
+</BlockStory>
+
+<BlockStory id="banner" label="Banner" block="marketing-cta-banner" story="Default" backdrop="cinnabar">
+
+A slim banner for between sections, with a short line and a button. Pick it when a full closing section would be too much.
+
+</BlockStory>
+
+<BlockStory id="form" label="Form" block="marketing-cta-form" story="Default" backdrop="cinnabar">
+
+A work email and team size form beside the pitch, so interest turns into an inquiry on the spot.
+
+</BlockStory>
+
+<BlockStory id="proof" label="Proof" block="marketing-cta-proof" story="Default" backdrop="cinnabar">
+
+A ledger of customer results and the words behind them, ending on the reader’s own line and the call to action. Pick it when evidence should lead into the ask.
+
+</BlockStory>
+
+<BlockStory id="contact-sales" label="Contact sales" block="marketing-contact-sales" story="Default" backdrop="cinnabar">
+
+Book a sales call the way a good scheduler does, one question at a time: a day and a time with the person the visitor's region puts forward, then three short rows of details with the time pinned on top, then a confirmation that says it in full. Writing instead is one link away and keeps what was typed.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, forms">
+
+### Accessibility
+
+Each call to action is a `<section>` named by its own heading (`aria-labelledby`). The heading is an `h2` by default; `headingLevel` changes it.
+
+Form and Contact sales use real `form` elements with labelled fields. Contact sales moves focus to each step's heading as it arrives; its days and times are labelled toggle groups (one tab stop, arrow keys between them) that read each day's open times and say a taken time is taken; a missing time or field is said in an alert and focused; the region is a labelled menu. Proof marks its toggle with `aria-pressed`, announces changes in a live region and hides decorative marks from assistive technology.
+
+Banner checks the reduced-motion setting. The links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

@@ -1,0 +1,104 @@
+---
+title: Capsule Toggle
+description: "Choose one of two or three options in a capsule."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="capsule-toggle/demo" height={180} />
+
+A labeled three-way Monitor toggle, and an icon-only Layout toggle between grid and list.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="capsule-toggle" noImport />
+
+Use a capsule toggle for a small choice that sits with other floating controls: a monitor source, a layout, a snap setting. It's a [Segmented Control](/docs/components/segmented-control) that uses the capsule as its track, so the selected option glides inside the pill. For more than three options, use a Segmented Control or [Tabs](/docs/components/tabs).
+
+```tsx
+import { CapsuleToggle } from '@youj/react'
+
+<CapsuleToggle
+  label="Monitor"
+  value={monitor}
+  onValueChange={setMonitor}
+  options={[
+    { value: 'source', label: 'Source' },
+    { value: 'mix', label: 'Mix' },
+    { value: 'master', label: 'Master' },
+  ]}
+/>
+```
+
+`label` puts a short name in front of the options. `iconOnly` shows only each option's `icon`, and its label becomes the option's name.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="options, label, iconOnly… (9)">
+
+### Props
+
+<PropsTable name="CapsuleToggle" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and class names">
+
+### Styling
+
+Parts: `capsule-toggle`, `capsule-label`, then the segmented control's own `segmented-control`, `segmented-control-item` and `toggle-group-indicator`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Choose">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Choose', note: 'the selected key glides to the new option, and changes course if you choose again mid-way', spring: 'smooth' },
+  ]}
+  reduced="The key jumps to the new option."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- It's a group named by `label` or `aria-label`, with one tab stop. The arrow keys move between options.
+- One option is always selected, and each option says whether it's pressed.
+- With sound on, a new choice plays `select`. `sound={false}` turns it off.
+
+</ReferenceRow>

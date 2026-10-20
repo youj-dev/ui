@@ -1,0 +1,117 @@
+---
+title: ScrollProgress
+description: "Show reading progress through a page or scroll container as a bar or ring."
+---
+
+<ComponentPreview name="scroll-progress/demo" height={400} />
+
+Use it where reading position matters: long articles, docs, changelogs, a long settings page. It answers "how much is left?" at a glance. Skip it on short pages, where there's nothing to track, and don't use it for the progress of a task, like an upload or a build. That's [Progress](/docs/components/progress).
+
+## Installation
+
+<InstallTabs name="scroll-progress" />
+
+## Usage
+
+With no `container`, it tracks the page. ScrollProgress doesn't position itself, so place it where it should sit:
+
+```tsx
+import { ScrollProgress } from '@youj/motion'
+
+export function ArticleLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <ScrollProgress className="fixed inset-x-0 top-0 z-50" label="Reading progress" />
+      <article>{children}</article>
+    </>
+  )
+}
+```
+
+The bar fills its width with a 2px accent line, and grows by `scaleX` from the left.
+
+## Examples
+
+<Examples>
+
+<Example id="scroll-containers" label="Scroll containers">
+
+### Scroll containers
+
+Pass a ref to track an element that scrolls on its own, like the article panel above. Give that element `tabIndex={0}` and a name, so keyboard users can reach and scroll it.
+
+```tsx
+const article = useRef<HTMLDivElement>(null)
+
+<ScrollProgress variant="ring" container={article} size={28} thickness={2.5} />
+<div ref={article} role="region" aria-label="Changelog" tabIndex={0} className="h-64 overflow-y-auto">…</div>
+```
+
+When two indicators show the same scroll, as the ring and the bar do here, expose one of them. The bar sits in an `aria-hidden` wrapper, so a screen reader finds one progress bar, not two.
+
+</Example>
+
+<Example id="ring" label="Ring">
+
+### Ring
+
+`variant="ring"` draws the progress around a circle, starting at twelve o'clock. `size` is its diameter and `thickness` its stroke, both in pixels. Around a back-to-top button, it shows how far down you are and offers the way back up.
+
+<ComponentPreview name="scroll-progress/back-to-top" height={360} />
+
+The track uses the `line` token and the arc the `accent` token, so the ring follows the theme with no props.
+
+</Example>
+
+<Example id="horizontal" label="Horizontal">
+
+### Horizontal
+
+`axis="x"` follows horizontal scroll, for rails, carousels and wide tables.
+
+<ComponentPreview name="scroll-progress/horizontal" height={300} />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, container, axis… (8)">
+
+### Props
+
+<PropsTable name="ScrollProgress" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Progress, ring cap · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Progress', note: 'the bar scales on x; the ring draws its `pathLength`', spring: 'smooth' },
+    { moment: 'Ring cap', note: 'fades in over the first 0.5%, so an empty ring never shows a dot', value: 'progress 0 → 0.005' },
+  ]}
+  reduced="Tracks the scroll position directly, with no spring. The progress still shows."
+/>
+
+`spring` swaps the default for another spring token: `snappy` follows the scroll more tightly. The spring only smooths the drawing, so a fast fling never makes the indicator lag behind the page for long.
+
+#### Reduced motion
+
+The indicator tracks the scroll position exactly, with no spring. Nothing else changes: the bar and the ring still show how far you've read, and the back-to-top button in the second preview jumps rather than scrolls smoothly.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- It's a `progressbar` with a 0 to 100 range, named by `label`. Name it for what it measures, such as "Reading progress".
+- `aria-valuenow` follows the raw scroll position, not the smoothed one, and it's written straight to the attribute, so scrolling never re-renders React.
+- A scroll container needs `tabIndex={0}` and an accessible name to be reachable from the keyboard.
+- The indicator is information, not decoration. It stays visible under reduced motion.
+
+</ReferenceRow>

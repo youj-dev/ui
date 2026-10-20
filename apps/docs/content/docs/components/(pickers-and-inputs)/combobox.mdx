@@ -1,0 +1,169 @@
+---
+title: Combobox
+description: "Choose a value from a searchable list, with groups and async results."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="combobox/demo" height={300} />
+
+An owner field over nine people grouped by team, each with an avatar and an email, and a clear button.
+
+Long labels truncate in the trigger and in the rows, and a row's description gives way before its name. The popup follows the trigger's width. Give it more room with `contentClassName`, for example `w-80`, when the trigger is narrow.
+
+</Story>
+
+<Story id="async-search" label="Async search">
+
+<ComponentPreview name="combobox/async" height={300} />
+
+A reviewer field that searches a directory through a simulated 650 ms request and shows a loading row while it waits.
+
+Pass `onSearchChange` and the built-in filtering turns off: fetch the matches yourself and pass them as `options`. While `loading` is true the list shows a loading row, which is announced, and the empty message waits until the results arrive.
+
+Ignore responses from stale requests, as the example does, so a slow early request can't overwrite a newer one. The chosen option stays displayable in the trigger after it leaves `options`.
+
+</Story>
+
+<Story id="creating-options" label="Creating options">
+
+<ComponentPreview name="combobox/create" height={300} />
+
+A framework field where typing a name that isn't listed offers to add it as a new option.
+
+`onCreate` offers a "Create “…”" row for text that matches no option. Return the new option, or a promise of it, to select it. `createLabel` changes the row's wording.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="combobox" noImport />
+
+Requires `cmdk`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/command`.
+
+Use Combobox to choose one value from a list that needs search, such as a directory of people. Use [Multi-select](/docs/components/multi-select) for several values, or [Tag Input](/docs/components/tag-input) for free-form entries. For short lists, use [Select](/docs/components/select) or [Radio Group](/docs/components/radio-group).
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel } from '@youj/react'
+import { Combobox } from '@youj/react/command'
+
+const regions = [
+  { value: 'iad1', label: 'Washington, D.C.', group: 'Americas' },
+  { value: 'fra1', label: 'Frankfurt', group: 'Europe' },
+  { value: 'hnd1', label: 'Tokyo', group: 'Asia Pacific' },
+]
+
+export function RegionField() {
+  const [region, setRegion] = useState<string | null>('fra1')
+  return (
+    <Field>
+      <FieldLabel>Region</FieldLabel>
+      <Combobox options={regions} value={region} onValueChange={setRegion} placeholder="Choose a region" />
+    </Field>
+  )
+}
+```
+
+The trigger is a field-styled button with `role="combobox"`, named by the `FieldLabel` around it. It opens a [Popover](/docs/components/popover) holding a [Command](/docs/components/command), so the search, the gliding active row and the list's height all behave like the command menu. Each option has a `value` and a `label`, and can add a `description` (searched too), an `icon`, a `group` heading, extra `keywords` and `disabled`. `onValueChange` hands you the value and the option.
+
+Typing a letter on the closed trigger opens it with that letter already searched. With `clearable`, a clear button sits in the trigger, and Delete or Backspace clears the value from the keyboard.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="options, value, defaultValue… (22)">
+
+### Props
+
+<PropsTable name="Combobox" />
+
+`ComboboxOption` is `{ value, label, description?, icon?, group?, keywords?, disabled? }`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Long lists" summary="Past 100 options only the best matches are mounted">
+
+### Long lists
+
+Every mounted row costs a registration, a score and a re-render on each keystroke, so past 100 options the Combobox mounts only the 100 best matches, in order of match, and ends them with a note ("Showing 100 of 2,000. Keep typing to narrow the results."). Searching reaches every option. With 2,000 options a keystroke takes about 35 ms where it took about 120 ms, and clearing the search about 0.07 s where it took 0.2 s (Chromium on a laptop, development build; 4x CPU throttling shows the same ratios).
+
+- **Up to 100 options:** everything is mounted and cmdk filters, as before.
+- **100 to about 5,000 options:** pass them all. The filter runs on every keystroke over all options, which stays under a few milliseconds per thousand. Define the `options` array outside render, or memoise it, so unchanged rows aren't re-rendered.
+- **More than that, or options that live on a server:** use `onSearchChange` and pass the matches. Your results are cut to 100 rows too, so return the best 100 or fewer.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the list opens as a bottom sheet with a grab…">
+
+### Touch
+
+On a touch device the list opens as a bottom sheet with a grab handle, the search field at the top and 48px rows. It opens with the list in view and the on-screen keyboard down; tap the field to search. While the keyboard is up, the sheet sits on top of it and is only as tall as the space that's left, so the field stays visible, and it keeps its height as results narrow so the field doesn't jump. A tap on a row picks it and closes the sheet. Pull the sheet down, tap outside it or press Escape to close it without picking, and focus returns to the trigger.
+
+`presentation` chooses: `auto` (the default) is a popover under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the popover on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, keyboard open, Escape close… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'the popup grows out of the trigger (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Keyboard open, Escape close', note: 'Base UI sets `data-instant`', value: '0ms' },
+    { moment: 'Chevron', note: 'turns over while open', spring: 'snappy' },
+    { moment: 'Active row', note: 'one indicator glides between rows', spring: 'smooth' },
+    { moment: 'List height', note: 'eases as results come and go', duration: 'base', ease: 'standard' },
+    { moment: 'Chosen row', note: 'its check draws in', duration: 'slow', ease: 'emphasized' },
+  ]}
+  reduced="The popup opens and closes at once, the chevron flips without turning, the highlight jumps to the active row, the list snaps to its height and the check appears drawn."
+/>
+
+#### Reduced motion
+
+The popup appears without growing, the chevron flips in place, the active row's highlight jumps instead of gliding, and the list changes height at once. Search, keyboard handling and announcements are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The trigger has `role="combobox"` and is named by its `FieldLabel`, or by `aria-label` when it has no label. The description and error of its Field describe it, and `aria-invalid` and `aria-required` follow the Field.
+- ArrowDown, ArrowUp, Enter or Space opens the list. Typing a character opens it with that character searched. In the list, arrows move, Enter picks and returns focus to the trigger, and Escape closes.
+- The chosen row carries `aria-checked` and a drawn check. Groups are labeled by their heading.
+- In a long list each row carries `aria-setsize` (all matches) and `aria-posinset`, so assistive tech announces "3 of 2000" rather than "3 of 100"; the note under the rows is announced when the list opens and as the search changes.
+- Clearing, from the button or with Delete, is announced ("Selection cleared") and focus stays on the trigger. The clear button is named "Clear selection".
+- The loading row is announced politely, and the empty message isn't shown until loading ends, so "No results" is never read out for results that are still coming.
+- With `name`, a hidden input submits the value with a native form.
+
+</ReferenceRow>

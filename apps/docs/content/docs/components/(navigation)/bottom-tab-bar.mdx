@@ -1,0 +1,121 @@
+---
+title: Bottom Tab Bar
+description: "Keep a phone layout’s main destinations within reach at the bottom of the screen."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="bottom-tab-bar/demo" height={560} />
+
+A phone-sized screen with five tabs, a count on Inbox and a dot on Activity.
+
+</Story>
+
+<Story id="badges" label="Badges">
+
+<ComponentPreview name="bottom-tab-bar/badges" height={400} />
+
+Tabs with a count, a dot and no badge.
+
+`badge` counts what's waiting. A number shows as a count (99+ past 99), `true` shows a dot, and `0` or `false` shows nothing. Screen readers hear the badge after the label: "Inbox, 3 new" by default, or your own words with `badgeLabel`.
+
+
+Keep badges for things that need the person, like unread messages or an invitation. A badge on every tab stops meaning anything.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="bottom-tab-bar" noImport />
+
+Use it for the three to five top-level destinations of a phone layout: the places people switch between all day, within reach of the thumb. Each tab goes to a page, so the tabs are links. To switch panels of content inside one page, use [Tabs](/docs/components/tabs). On wide screens the same destinations belong in an [App Header](/docs/components/app-header) or a [Sidebar](/docs/components/sidebar), so render the bar only below your phone breakpoint.
+
+```tsx
+import { BottomTabBar, BottomTabBarItem } from '@youj/react'
+import { HomeIcon, InboxIcon, SearchIcon, UserIcon } from '@youj/icons'
+
+export function PhoneNav({ pathname }: { pathname: string }) {
+  return (
+    <BottomTabBar className="md:hidden">
+      <BottomTabBarItem href="/" icon={<HomeIcon />} label="Home" active={pathname === '/'} />
+      <BottomTabBarItem href="/search" icon={<SearchIcon />} label="Search" active={pathname === '/search'} />
+      <BottomTabBarItem href="/inbox" icon={<InboxIcon />} label="Inbox" badge={3} active={pathname === '/inbox'} />
+      <BottomTabBarItem href="/me" icon={<UserIcon />} label="Profile" active={pathname === '/me'} />
+    </BottomTabBar>
+  )
+}
+```
+
+The bar is fixed to the bottom of the viewport and pads itself by the safe-area insets, so it clears the home indicator and the rounded corners on its own. For that to work, the page needs `viewport-fit=cover` in its viewport meta tag. Give the page's content bottom padding as tall as the bar, so nothing ends up hidden behind it. The previews pass `className="absolute"` to place it inside a phone frame instead.
+
+Each `BottomTabBarItem` renders an `<a>`. Pass `render` for a router's link, for example `render={<Link href="/inbox" />}`. Mark the current destination with `active`: its icon sits on a pill, which glides from tab to tab on the `smooth` spring, and its icon and label turn to ink.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="icon, label, active… (5)">
+
+### Props
+
+<PropsTable name="BottomTabBarItem" />
+
+`BottomTabBar` is a `nav` and takes its props. Its `aria-label` defaults to "Primary".
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Current pill, label and icon color, icon · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Current pill', note: 'one Sliding Indicator glides to the current tab, hugging its icon', spring: 'smooth' },
+    { moment: 'Label and icon color', note: 'to ink on the current tab, and on hover', duration: 'fast', ease: 'standard' },
+    { moment: 'Icon', note: 'a Youj icon plays its own motion on hover and keyboard focus', value: 'per icon' },
+  ]}
+  reduced="The pill jumps to the new tab, colors change at once, and icons stay still."
+/>
+
+#### Reduced motion
+
+The pill moves to the new tab at once instead of gliding, and the icons don't play. Colors change instantly. Navigation and focus work the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The bar is a `nav` landmark named "Primary". Rename it with `aria-label` if the page has another primary navigation.
+- Tabs are links in a list, so Tab reaches each one and the browser's own link handling applies: open in a new tab, copy the address, and so on. The current tab carries `aria-current="page"`.
+- The badge is hidden from assistive technology and read as text after the label, so "Inbox, 3 new" is one name.
+- The focus ring draws around the icon's pill, where the eye already is. Each tab is at least 56px tall.
+
+</ReferenceRow>

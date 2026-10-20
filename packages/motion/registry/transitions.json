@@ -1,0 +1,94 @@
+[
+  {
+    "name": "sliding-indicator",
+    "type": "registry:component",
+    "title": "Sliding Indicator",
+    "description": "One highlight per group that glides between tabs, segmented options, toggle items or nav links. Finds the selected item from ARIA / Base UI attributes (or follows pointer and keyboard focus), glides with Motion layout projection on the smooth spring, re-places without motion on resize and RTL. Pill or underline.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "youj-presets"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/transitions/sliding-indicator.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "morph-label",
+    "type": "registry:component",
+    "title": "Morph Label",
+    "description": "Content that crossfades between states while its box morphs to the new width (transform-only layout projection; useMorphRoot gives the box the label's spring). The outgoing label is hidden from assistive tech while it fades.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/transitions/morph-label.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "collapse",
+    "type": "registry:component",
+    "title": "Collapse",
+    "description": "Height-auto disclosure for non-Base-UI uses: eases between 0 and auto with the content fading, reverses from the current height, clips only while moving, keeps closed content inert, unmounts or keeps it mounted.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/transitions/collapse.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "content-swap",
+    "type": "registry:component",
+    "title": "Content Swap",
+    "description": "Skeleton to content: the placeholder drops away while the content resolves into focus and the box morphs between their heights so the page below moves with it. Both directions, aria-busy while loading.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/transitions/content-swap.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "presence-list",
+    "type": "registry:component",
+    "title": "Presence List",
+    "description": "Insert, remove and reorder animation for lists and table rows (<PresenceList as=\"tbody\"> + <PresenceItem as=\"tr\">): exits fade in place, the rest FLIP on translate only, measured against the list so a moving list doesn't make rows glide. Works with memoized rows.",
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "youj-core",
+      "settled-entrances"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/transitions/presence-list.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

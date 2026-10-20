@@ -1,0 +1,113 @@
+---
+title: Tool Call
+description: "Show an assistant’s tool call, its arguments, status and result."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tool-call/demo" height={300} />
+
+A tool call that moves from queued to running to done, with its result unfolding at the end.
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="tool-call/states" height={320} />
+
+A tool call in each state: pending, running, success and error.
+
+`status` is `pending`, `running`, `success` or `error`. The mark is a spinner while it's queued or running, then a check that draws itself in, or a warning that rocks once. The badge reads Queued, Running, Done or Failed, and an error shows `error` in the preview.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatToolCall" noImport />
+
+Use one for each function, search or API call an assistant makes, inside its [Chat Message](/docs/components/chat/message) before the answer. People see that the answer rests on real data, and can open the call to check exactly what went in and came out. For the model thinking without a tool, use [Thinking](/docs/components/chat/thinking).
+
+```tsx
+import { ChatToolCall } from '@youj/react'
+
+<ChatToolCall
+  name="get_deployments"
+  args={{ project: 'orion', limit: 3 }}
+  status={call.status}
+  result={call.result}
+  error={call.error}
+  duration={call.ms}
+/>
+```
+
+At rest it's one line: a status mark, the tool's name, a short read of its arguments and a badge. When the result arrives, a two-line preview unfolds under it. Opening the card shows the arguments and the full result, with JSON highlighted. `result` takes text or anything JSON can show, and `duration` (in ms) joins the badge once it's done. `open`, `defaultOpen` and `onOpenChange` control the card.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="name, status, args… (9)">
+
+### Props
+
+<PropsTable name="ChatToolCall" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Badge label, badge width, check… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Badge label', note: 'crossfades between states (Morph Label)', duration: 'fast', ease: 'standard' },
+    { moment: 'Badge width', note: 'the box morphs to the new label', spring: 'snappy' },
+    { moment: 'Check', note: 'draws itself in on success', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Warning', note: 'rocks once on error', duration: 'deliberate', ease: 'standard' },
+    { moment: 'Preview unfolds', note: 'height and fade, when the result arrives (Collapse)', duration: 'base', ease: 'standard' },
+    { moment: 'Open and close', note: 'the full exchange (`yj-collapse`)', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Every swap and fold is instant, and the marks appear already drawn."
+/>
+
+#### Reduced motion
+
+The badge changes without crossfading, the check and the warning appear without playing, and the preview and the card open and close at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- The header is the card's disclosure button, named by the tool and its status ("get_deployments: Done · 1.5s").
+- Each status change is announced once: through the conversation's live regions inside a [Chat Message List](/docs/components/chat/message-list), or its own status region on its own. Errors are assertive. A call that mounts already settled, as history, isn't announced.
+- Long arguments and results scroll inside a named region, which becomes a tab stop once it overflows.
+
+</ReferenceRow>

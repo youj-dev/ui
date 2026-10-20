@@ -1,0 +1,155 @@
+---
+title: Typography
+description: "Use consistent headings, body text, quotes, code and lists."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="typography/demo" height={640} />
+
+A changelog entry set with the typography components.
+
+</Story>
+
+<Story id="the-set" label="The set">
+
+<ComponentPreview name="typography/scale" height={560} />
+
+The set as specimens, each name beside a sample.
+
+| Component | Element | For |
+| --- | --- | --- |
+| `TypographyH1`–`TypographyH4` | `h1`–`h4` | Page and section titles. Plain headings, with no rule: add `border-b border-line pb-2` to a section title that wants one. |
+| `TypographyP` | `p` | Body copy: 15px on a 28px line height. |
+| `TypographyLead` | `p` | The paragraph under a title, larger and quieter. |
+| `TypographyLarge` | `div` | Emphasis that isn't a heading: a price, a callout's first line. |
+| `TypographySmall` | `small` | A label or caption that still reads as content. |
+| `TypographyMuted` | `p` | Helper copy and metadata. |
+| `TypographyBlockquote` | `blockquote` | A quotation, set off by a rule on the start side. |
+| `TypographyInlineCode` | `code` | Code inside a sentence. For blocks, use [Code Block](/docs/components/code-block). |
+| `TypographyList` | `ul`, or `ol` with `ordered` | Square markers, or numbers counted in mono. |
+
+Vertical rhythm comes from a top margin on everything but the first child, as in shadcn, so a heading or paragraph that opens a card sits flush. Links inside `P`, `Lead`, `Muted`, `Blockquote` and `List` underline in a quiet tint of the accent that fills in on hover.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="typography" noImport />
+
+Use the typography set for text you write into a page by hand: a changelog entry, an empty state's explanation, a settings section's intro, a marketing page. It follows [shadcn's typography](https://ui.shadcn.com/docs/components/typography), but as components you import rather than class lists you copy, so every page picks up the theme's type and a fix lands everywhere.
+
+For long-form content that comes from Markdown or a CMS, style the container instead of wrapping every element. The docs site does that with a `.prose` stylesheet built on the same values.
+
+```tsx
+import { TypographyH1, TypographyLead, TypographyList, TypographyP } from '@youj/react'
+
+export function Intro() {
+  return (
+    <>
+      <TypographyH1>Deploys that explain themselves</TypographyH1>
+      <TypographyLead>Every deploy now carries its own story.</TypographyLead>
+      <TypographyP>
+        Read the <a href="/guide">migration guide</a> if you pinned the old layout.
+      </TypographyP>
+      <TypographyList>
+        <li>Build output streams as it happens.</li>
+        <li>Rollbacks keep their environment.</li>
+      </TypographyList>
+    </>
+  )
+}
+```
+
+Each piece renders the element it names (`h1` to `h4`, `p`, `blockquote`, `code`, `ul` or `ol`) and takes that element's props, so `id`, `className` and ARIA pass straight through. Pick the heading for the outline, not the size: restyle it with `className` if the page needs a different look.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Eyebrow" summary="the short label over a figure or section">
+
+### Eyebrow
+
+`Eyebrow` is the short label over a figure, a group or a section: "Month-to-date spend", "Included usage", "Status". It's a `span` of small muted text, and your classes win, so a label you move to it keeps the look it had. Naming it is what lets a [look](/docs/looks) give every label the same voice: in Bezel they're mono capitals. Pass `render` for another element, such as a section's heading.
+
+An `Eyebrow` is inline and carries no margin, and a heading that opens a container sits flush, so the two touch until you space them. Stack them with a gap, as a hero does:
+
+```tsx
+<div className="flex flex-col gap-2">
+  <Eyebrow>New in 2.0</Eyebrow>
+  <TypographyH1>Deploys that explain themselves</TypographyH1>
+</div>
+```
+
+```tsx
+import { Eyebrow } from '@youj/react'
+
+<Eyebrow>Month-to-date spend</Eyebrow>
+<Eyebrow render={<h2 id="usage" />} className="text-ui-lg font-semibold text-fg">
+  Included usage
+</Eyebrow>
+```
+
+</ReferenceRow>
+
+<ReferenceRow title="Props" summary="ordered (1)">
+
+### Props
+
+#### TypographyList
+
+<PropsTable name="TypographyList" />
+
+Every other piece takes the props of its element.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Typography doesn't move · reduced motion">
+
+### Motion
+
+Typography doesn't move. The one exception is a link's underline color, which eases to the accent on hover over `fast` with the `standard` ease.
+
+#### Reduced motion
+
+Nothing changes: a link's underline color change isn't motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- The headings are real heading elements, so the page outline and screen-reader heading navigation follow them. Don't skip levels for looks; restyle instead.
+- `TypographyList` is a real `ul` or `ol`, so most screen readers announce it as a list with its item count. Safari with VoiceOver drops list semantics from lists without visible markers, so pass `role="list"` where that matters. The square markers and mono numbers are drawn with CSS and aren't read.
+- Links keep the focus ring every control has.
+- Body and muted text meet WCAG AA contrast on the theme's backgrounds, in both modes.
+
+</ReferenceRow>

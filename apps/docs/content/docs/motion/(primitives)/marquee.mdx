@@ -1,0 +1,128 @@
+---
+title: Marquee
+description: "Loop supporting content horizontally or vertically, pausing on hover and focus."
+---
+
+<ComponentPreview name="marquee/demo" height={300} />
+
+Use it for supporting content that works as ambience: a wall of customer logos, a column of testimonials. Don't put anything people need to read or act on in a loop, like announcements, prices or the only link to a page. Show those in a static list.
+
+## Installation
+
+<InstallTabs name="marquee" />
+
+## Usage
+
+```tsx
+import { Marquee } from '@youj/motion'
+
+export function Customers() {
+  return (
+    <Marquee speed={40} fade={64}>
+      <Logo name="Northwind" />
+      <Logo name="Halcyon" />
+      <Logo name="Vertex" />
+    </Marquee>
+  )
+}
+```
+
+Marquee measures its content, repeats it just enough times to fill the track plus one, and moves the row by exactly one copy's length per cycle, so the seam never shows. It measures again when the track or the content resizes.
+
+## Examples
+
+<Examples>
+
+<Example id="direction-and-speed" label="Direction and speed">
+
+### Direction and speed
+
+`direction` is `left`, `right`, `up` or `down`. `speed` is in pixels per second at normal speed, so a long row and a short row move at the same pace. Two rows running opposite ways, at slightly different speeds, give a logo wall depth without drawing the eye.
+
+`gap` spaces the items and the copies, and `fade` masks each edge over that many pixels. `fade={0}` turns the mask off.
+
+</Example>
+
+<Example id="fade" label="Fade">
+
+### Fade
+
+The same row in a frame, faded over 0, 48 and 96 pixels:
+
+<ComponentPreview name="marquee/fade" height={340} />
+
+`fade={0}` suits a row inside its own frame, where the frame's edge already ends it. On an open stage, a wider fade lets items drift in from nothing instead of crossing a line.
+
+</Example>
+
+<Example id="vertical" label="Vertical">
+
+### Vertical
+
+`up` and `down` stack the content in a column. A vertical marquee needs a height. This one is also a named, focusable region: focusing it with Tab stops it where it is, and under reduced motion, when the column becomes a scroll area, the keyboard can scroll it.
+
+<ComponentPreview name="marquee/vertical" height={400} />
+
+</Example>
+
+<Example id="pausing" label="Pausing">
+
+### Pausing
+
+Hover eases the loop to a stop, and leaving eases it back up, so a reader can finish a quote or reach a link. `pauseOnHover={false}` turns this off. Keyboard focus inside always stops it at once, and a focused item eases clear of the faded edges.
+
+For anything that plays longer than five seconds, also give people a control to stop it. Setting `speed` to 0 holds the row where it is, as the Pause button in the first preview does:
+
+```tsx
+<Marquee speed={paused ? 0 : 40}>{logos}</Marquee>
+```
+
+The loop also pauses on its own while it's offscreen and while the tab is hidden, and a long frame, such as one after a tab switch, is clamped so the row never jumps.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="children, direction, speed… (6)">
+
+### Props
+
+<PropsTable name="Marquee" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Loop, ease to a stop and back, focused item into view… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Loop', note: 'constant velocity; divided by the time scale', value: '`speed` px/s, default 40' },
+    { moment: 'Ease to a stop and back', note: 'hover; the time constant of an exponential ease', duration: 'slow' },
+    { moment: 'Focused item into view', note: 'focus within stops the loop at once; the item eases clear of the fade', duration: 'base' },
+    { moment: 'Frame clamp', note: 'the longest step a single frame can take', duration: 'instant' },
+  ]}
+  reduced="One static row that wraps, or a scrollable column when vertical. No copies, no mask and no movement."
+/>
+
+#### Reduced motion
+
+Nothing moves. A horizontal marquee renders its content once, as a centered row that wraps onto new lines, and a vertical one becomes a column that scrolls. The edge fade is dropped, so every item is fully visible.
+
+Design the rest of the section for it too. With nothing to pause, the first preview drops its Pause button, and it drops the second row, which would only repeat the first. Read `useYouj().reduced` to make choices like these.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- One copy of the content is in the accessibility tree. The copies that fill the loop are `aria-hidden` and `inert`, so links inside them are never read or tabbed to twice.
+- A second row that repeats the first should be hidden too, with `aria-hidden` on the Marquee, as in the first preview.
+- Keyboard focus inside the marquee stops it, and Tab onto a link slides that link fully into view, so focus never lands on a half-hidden item. Pair it with a visible pause control for anything longer than a few seconds.
+- The edge fade is a mask. It reaches a few pixels past the row on the other axis, so an item's own focus ring shows; a ring around the whole marquee goes on a wrapper, as the vertical preview does with `has-focus-visible:ring-2`.
+- Don't put essential links or information only in a marquee: moving targets are hard to read and hard to hit.
+
+</ReferenceRow>

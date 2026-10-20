@@ -1,0 +1,16 @@
+{
+  "title": "Feedback",
+  "pages": [
+    "---Messages---",
+    "alert",
+    "banner",
+    "session-timeout",
+    "toast",
+    "---Status---",
+    "progress",
+    "spinner",
+    "skeleton",
+    "async-feedback",
+    "empty-state"
+  ]
+}

@@ -1,0 +1,129 @@
+---
+title: Blueprint
+description: "Draft real UI as an architect's blueprint, with its measurements, then build it up stage by stage into the real thing."
+---
+
+<ComponentPreview name="blueprint/demo" height={460} />
+
+Use it for an entrance that explains how a piece of UI is built: a hero demo, a product tour, a component on show. A draftsman lays out the frame, measures off its regions and pencils every part, while two columns beside it log the build and the values it applies. Then a ruled edge sweeps down and inks the real UI in, part by part. Keep it to one moment on a page: it asks to be watched, and a second one in view competes with the first.
+
+## Installation
+
+<InstallTabs name="blueprint" />
+
+## Usage
+
+Wrap the UI in `BlueprintEntrance`. It drafts its first child and plays on mount.
+
+```tsx
+import { BlueprintEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <BlueprintEntrance>
+      <SignInCard />
+    </BlueprintEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the engine. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { blueprint } from '@youj/motion'
+
+const run = blueprint(document.querySelector('#pricing')!, { speed: 1.5 })
+await run.finished
+```
+
+## Pacing
+
+The build goes through seven stages, each advancing through the parts in build order, so it is visibly in progress from the first mark to the last: **survey** (the paper, the bounds and their dimensions), **layout** (the main regions), **detail** (every part in dotted pencil), **ink** (each outline traced over solid), **tone** (filled boxes in flat greys, hatching or a screen), **set** (the text sets in grey, line by line, and icons and charts trace their real shapes) and **finish** (a ruled edge sweeps down, and behind it the real colour, radii, shadows and images come in). It stays black and white until the finish.
+
+The length grows with the demo: about 2 seconds for a card, about 3.5 for a small screen, and at most about 6 for a large one. Three options tune it:
+
+- `duration` fixes the whole run, in milliseconds.
+- `speed` scales it: `2` plays twice as fast. It applies on top of `duration` and the provider's speed.
+- `phases` shares the run out between the seven stages. The values are weights, so they are normalized and never change the total; a stage left out keeps its default (`{ survey: 10, layout: 10, detail: 20, ink: 13, tone: 12, set: 13, finish: 22 }`), and `0` skips it.
+
+```tsx
+// a 2.4 s run with a quick pencil draft and a long, readable build-up
+<BlueprintEntrance duration={2400} phases={{ survey: 6, layout: 6, detail: 12, ink: 18, tone: 18, set: 22, finish: 18 }}>
+  <PricingCard />
+</BlueprintEntrance>
+```
+
+A demo with no regions gives the layout's share to the detail.
+
+The side columns show when there are about 180 pixels free on a side, inside the nearest container that clips; `columns="none"` leaves them out.
+
+## What it reads
+
+The draft comes from the real DOM, read once before the first frame: roles, tags and `data-slot` first, then geometry. Boxes with a fill, a border or a shadow are drafted as dotted outlines, text as dotted baselines with a cap-height tick, icons as their square with a centre mark, charts as their axes, images as a crossed box, list rows as one line, and fields with a caret. The largest boxes become the numbered regions. Anything it can't classify, and open popovers, simply appear at the finish. Fills, borders and type are logged with the theme's token names, like `fill surface` and `ink fg-muted`.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, columns, onFinish">
+
+### Props
+
+<PropsTable name="BlueprintEntrance" />
+
+#### blueprint
+
+```ts
+function blueprint(node: HTMLElement, options?: BlueprintOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `BlueprintPhases` | `{ survey: 10, layout: 10, detail: 20, ink: 13, tone: 12, set: 13, finish: 22 }` | Each stage's share of the run, as weights. |
+| `columns` | `'auto' \| 'none'` | `'auto'` | The build and values columns, when there is room. |
+| `labels` | `Partial<BlueprintLabels>` | Youj's labels | The build column's words and the columns' titles. `<BlueprintEntrance>` takes them from `<YoujProvider labels>`. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the draft. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Survey, layout, detail, ink, tone, set, finish · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Survey', note: 'paper grid, registration cross, dotted bounds, dimensions counting up', value: '10% of the run' },
+    { moment: 'Layout', note: 'the main regions, outside-in, with index, size and corner', value: '10%' },
+    { moment: 'Detail', note: 'every part pencilled in reading order, region by region', value: '20%' },
+    { moment: 'Ink', note: 'each outline traced over in solid ink, part by part', value: '13%' },
+    { moment: 'Tone', note: 'filled boxes take flat greys, hatching or a screen, top to bottom', value: '12%' },
+    { moment: 'Set', note: 'text sets in grey, line by line; icons and charts trace their shapes', value: '13%', ease: 'linear' },
+    { moment: 'Finish', note: 'a ruled edge sweeps down at an even pace; the drawing clears in a soft band behind it', value: '22%', ease: 'linear' },
+    { moment: 'Piece in', note: '`opacity`, as the edge passes it: a card, a control, a row, a paragraph', duration: 'slow', ease: 'standard' },
+    { moment: 'Clear', note: 'numbers, columns and the paper fade', duration: 'slow', ease: 'exit' },
+  ]}
+  reduced="No draft: the UI is just there, and nothing is added to the page."
+/>
+
+The demo is never restyled. It is hidden and shown by Web Animations alone: an `opacity` hold while it's drafted, a `clip-path` wipe under the edge, and an `opacity` fade on each piece, created just before its moment so a screen only ever has a few in flight. The drawing lives on two canvases in an overlay beside the demo, and a frame only adds the marks due since the last one. When the run ends, or `cancel()` is called, the animations are cancelled and the overlay removed, so the page is exactly as it was. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `blueprint()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The drawing and the columns are `aria-hidden` and never take the pointer. The demo stays in the accessibility tree the whole time, so a screen reader reads the real UI, not the drawing.
+- Tabbing into the demo, or pressing on it, ends the run at once, so nobody uses a part that hasn't been inked yet.
+- Nothing flashes: lines draw in pencil tones of the theme's foreground and the reveal is a slow sweep.
+
+</ReferenceRow>

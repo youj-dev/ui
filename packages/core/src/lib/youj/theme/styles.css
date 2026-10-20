@@ -1,0 +1,119 @@
+/* The styles: form only (corners, control size, type, lines, depth, titles,
+ * labels, action fill, surface shading). Put data-yj-style="<id>" next to
+ * data-yj-theme, with the look it names (data-yj-look) and its motion
+ * (data-yj-motion). Any palette pairs with any style. */
+
+/* Clean. Look: data-yj-look="classic". Motion: data-yj-motion="precise". */
+[data-yj-style='clean'] {
+  --yj-radius: 0.625rem;
+  --yj-density: 0;
+  --yj-font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --yj-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-font-display: initial;
+  --yj-stroke-width: 1px;
+  --yj-stroke-ink: 0;
+  --yj-icon-weight: 1;
+  --yj-shadow-soft: 1;
+  --yj-shadow-hard: 0;
+  --yj-action-ink: 0;
+  --yj-pill: 0;
+  --yj-field-soft: 0;
+  --yj-surface-gradient: 0;
+  --yj-heading-weight: 600;
+  --yj-heading-tracking: -0.025em;
+  --yj-label-case: initial;
+  --yj-label-font: initial;
+  --yj-label-tracking: initial;
+}
+
+/* Bezel. Look: data-yj-look="bezel". Motion: data-yj-motion="precise". */
+[data-yj-style='bezel'] {
+  --yj-radius: 0.5rem;
+  --yj-density: 1;
+  --yj-font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --yj-font-mono: 'Geist Mono', ui-monospace, monospace;
+  --yj-font-display: initial;
+  --yj-stroke-width: 1px;
+  --yj-stroke-ink: 0;
+  --yj-icon-weight: 1;
+  --yj-shadow-soft: 1;
+  --yj-shadow-hard: 0;
+  --yj-action-ink: 0;
+  --yj-pill: 1;
+  --yj-field-soft: 0;
+  --yj-surface-gradient: 0.6;
+  --yj-heading-weight: 500;
+  --yj-heading-tracking: -0.02em;
+  --yj-label-case: uppercase;
+  --yj-label-font: 'Geist Mono', ui-monospace, monospace;
+  --yj-label-tracking: 0.12em;
+}
+
+/* Classic. Look: data-yj-look="classic". Motion: data-yj-motion="precise". */
+[data-yj-style='classic'] {
+  --yj-radius: 0.25rem;
+  --yj-density: 0;
+  --yj-font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --yj-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --yj-font-display: initial;
+  --yj-stroke-width: 1px;
+  --yj-stroke-ink: 0;
+  --yj-icon-weight: 1;
+  --yj-shadow-soft: 1;
+  --yj-shadow-hard: 0;
+  --yj-action-ink: 0;
+  --yj-pill: 0;
+  --yj-field-soft: 0;
+  --yj-surface-gradient: 0.3;
+  --yj-heading-weight: 600;
+  --yj-heading-tracking: -0.01em;
+  --yj-label-case: initial;
+  --yj-label-font: initial;
+  --yj-label-tracking: initial;
+}
+
+/* Brutal. Look: data-yj-look="classic". Motion: data-yj-motion="precise". */
+[data-yj-style='brutal'] {
+  --yj-radius: 0rem;
+  --yj-density: 0;
+  --yj-font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --yj-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-font-display: initial;
+  --yj-stroke-width: 2px;
+  --yj-stroke-ink: 1;
+  --yj-icon-weight: 1.3;
+  --yj-shadow-soft: 0;
+  --yj-shadow-hard: 1;
+  --yj-action-ink: 0;
+  --yj-pill: 1;
+  --yj-field-soft: 0;
+  --yj-surface-gradient: 0;
+  --yj-heading-weight: 800;
+  --yj-heading-tracking: -0.035em;
+  --yj-label-case: uppercase;
+  --yj-label-font: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-label-tracking: 0.02em;
+}
+
+/* Terminal. Look: data-yj-look="bezel". Motion: data-yj-motion="precise". */
+[data-yj-style='terminal'] {
+  --yj-radius: 0rem;
+  --yj-density: -1;
+  --yj-font-sans: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-font-display: initial;
+  --yj-stroke-width: 1px;
+  --yj-stroke-ink: 0;
+  --yj-icon-weight: 1;
+  --yj-shadow-soft: 0;
+  --yj-shadow-hard: 0;
+  --yj-action-ink: 0;
+  --yj-pill: 1;
+  --yj-field-soft: 0;
+  --yj-surface-gradient: 0;
+  --yj-heading-weight: 600;
+  --yj-heading-tracking: -0.01em;
+  --yj-label-case: initial;
+  --yj-label-font: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --yj-label-tracking: initial;
+}

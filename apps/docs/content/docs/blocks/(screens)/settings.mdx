@@ -1,0 +1,66 @@
+---
+title: Settings and profile
+description: "Account screens: a tabbed settings page and a public profile."
+---
+
+<BlockStories>
+
+<BlockStory id="settings" label="Settings" block="app-settings" story="Profile" backdrop="heather">
+
+A tabbed settings page that brings account, team, billing and notification preferences together; this story opens on the Profile tab.
+
+</BlockStory>
+
+<BlockStory id="notification-preferences" label="Notification preferences" block="app-settings" story="NotificationPreferencesCard" backdrop="heather">
+
+Notification preferences as one card: a master Off / On, what to be told about, reminders and channels. Turning the master off mutes the rest, and nothing is stored until Save changes.
+
+</BlockStory>
+
+<BlockStory id="profile" label="Profile" block="app-profile" story="Default" backdrop="heather">
+
+A public profile for creators, with a cover, follow controls, tabs of work and a link visitors can copy.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="headings, tabs, forms, status">
+
+### Accessibility
+
+Settings and Profile use the kit’s Tabs, so the tab list is named, Left and Right Arrow move between tabs and the panel follows the selected one. Settings has one page heading (`headingLevel` changes it) and labelled fields and switches. The invite and confirm steps open in dialogs. Profile has a labelled `aside` and `nav`, the avatar is decorative (`alt=""`) because the name sits beside it, and the activity heatmap is one image with a text label. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

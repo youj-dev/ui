@@ -1,0 +1,11 @@
+[
+  {
+    "name": "youj-presets",
+    "type": "registry:item",
+    "title": "Motion presets",
+    "description": "Tailwind @utility presets for Base UI's data-starting-style / data-ending-style lifecycle: yj-pop, yj-tooltip, yj-dialog, yj-backdrop, yj-sheet-{top,right,bottom,left,start,end}, yj-toast / yj-toast-top / yj-toast-content, yj-collapse, yj-fade and yj-duration-*. Every duration is a youj token times --yj-motion, so Speed, prefers-reduced-motion and reducedMotion=\"always\" reach them. Installing it writes the utilities into your app's stylesheet.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core"],
+    "css": "src/styles/presets.css"
+  }
+]

@@ -1,0 +1,155 @@
+---
+title: Accordion
+description: "Expand and collapse sections to show the content you need."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="accordion/demo" height={380} />
+
+A set of frequently asked questions where opening one item closes the others.
+
+</Story>
+
+<Story id="several-open-at-once" label="Several open at once">
+
+<ComponentPreview name="accordion/multiple" height={380} />
+
+Build checks that can stay open together, with one disabled while it runs.
+
+With `multiple`, items open and close independently. Here the build checks can all stay open for comparison, and the running check is `disabled` until it finishes.
+
+
+A trigger can hold more than its label. Put icons, badges or counts inside it and they become part of the trigger's accessible name, so keep them short.
+
+</Story>
+
+<Story id="controlled" label="Controlled">
+
+<ComponentPreview name="accordion/controlled" height={480} />
+
+One button that expands or collapses every environment, driven by the accordion's value.
+
+Pass `value` and `onValueChange` to keep the open items in your own state, so anything on the page can open or close them. Here one button expands or collapses every environment, and its label and icon follow along. Keep `multiple` on, or opening one item by hand closes the rest.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="accordion" noImport />
+
+Use Accordion for sections people open as needed, such as FAQs or groups of settings. Keep essential content and side-by-side comparisons visible. Use [Collapsible](/docs/components/collapsible) for a single section, or [Tabs](/docs/components/tabs) for related views.
+
+```tsx
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@youj/react'
+
+export function Faq() {
+  return (
+    <Accordion defaultValue={['seats']}>
+      <AccordionItem value="seats">
+        <AccordionTrigger>What counts as a seat?</AccordionTrigger>
+        <AccordionContent>Anyone who can sign in to the workspace.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="plans">
+        <AccordionTrigger>Can I change plans mid-cycle?</AccordionTrigger>
+        <AccordionContent>Yes. Upgrades apply at once and are prorated.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  )
+}
+```
+
+Give each item a `value`. The accordion's value is always an array of the open items' values, so `defaultValue={['seats']}` opens one item and `defaultValue={[]}` opens none. Pass `value` and `onValueChange` to control it. Opening an item closes the others unless you set `multiple`.
+
+### Find in page
+
+`hiddenUntilFound` keeps closed panels in the document with `hidden="until-found"`, so the browser's find-in-page can search their text and open the panel that matches. Try ⌘F or Ctrl+F for "prorated" in the Demo story. Without it, closed panels are unmounted, unless you set `keepMounted` to keep them in the DOM, hidden.
+
+```tsx
+<Accordion hiddenUntilFound>…</Accordion>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Every part passes its props through to the Base UI part of the same…">
+
+### Props
+
+Every part passes its props through to the Base UI part of the same name: `Accordion.Root`, `Accordion.Item`, `Accordion.Trigger` and `Accordion.Panel`. The ones you'll use most:
+
+| Part | Prop | Type | Default |
+| --- | --- | --- | --- |
+| `Accordion` | `defaultValue` | `any[]` | – |
+| `Accordion` | `value`, `onValueChange` | `any[]`, `(value, details) => void` | – |
+| `Accordion` | `multiple` | `boolean` | `false` |
+| `Accordion` | `hiddenUntilFound` | `boolean` | `false` |
+| `Accordion` | `keepMounted` | `boolean` | `false` |
+| `Accordion` | `disabled` | `boolean` | `false` |
+| `AccordionItem` | `value` | `any` | – |
+| `AccordionItem` | `disabled` | `boolean` | `false` |
+| `AccordionItem` | `onOpenChange` | `(open, details) => void` | – |
+| `AccordionTrigger` | `headingLevel` | `2 \| 3 \| 4 \| 5 \| 6` | `3` |
+
+<PropsTable name="Accordion" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Panel, chevron, chevron color · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Panel', note: 'height to the measured size, then `auto`, with a fade', duration: 'base', ease: 'standard' },
+    { moment: 'Chevron', note: 'turns over as the item opens', spring: 'snappy' },
+    { moment: 'Chevron color', note: 'on trigger hover', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Panels open and close at once, and the chevron flips without turning."
+/>
+
+The panel wears the `yj-collapse` [preset](/docs/motion/presets). A toggle mid-way reverses from the current height, so fast clicking never jumps. The panel clips while it moves, which is why the content's padding and focus rings sit inside it.
+
+#### Reduced motion
+
+Panels still open and close, the same way, but at once: the height doesn't ease and the content doesn't fade. The chevron flips to its new direction without turning.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- Each trigger is a `button` inside a heading (`h3` by default; set `headingLevel` on `AccordionTrigger` to match your outline, such as `2` straight under a page's `h1`), with `aria-expanded` and `aria-controls`. Each panel is a `region` labeled by its trigger.
+- Tab moves between triggers, and Enter or Space toggles one. Base UI follows the updated ARIA Authoring Practices here, which dropped arrow-key navigation for accordions.
+- A disabled item's trigger doesn't toggle.
+- The chevron is decorative. The open state is announced through `aria-expanded`.
+
+</ReferenceRow>

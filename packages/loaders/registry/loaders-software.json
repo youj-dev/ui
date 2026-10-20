@@ -1,0 +1,1006 @@
+[
+  {
+    "name": "loader-mullion",
+    "type": "registry:component",
+    "title": "Mullion loader",
+    "description": "An app narrows from a wide workspace to a pocket-sized frame. Its sidebar folds into a navigation rail, a two-column card row stacks beneath the header, and every block finds its new margin before the wide layout opens again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "mullion",
+      "component": "LoaderMullion",
+      "category": "software",
+      "technique": "planes",
+      "order": 1,
+      "title": "Mullion",
+      "tags": [
+        "responsive",
+        "breakpoint",
+        "app",
+        "window",
+        "layout",
+        "reflow"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Cards",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/mullion.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tangent",
+    "type": "registry:component",
+    "title": "Tangent loader",
+    "description": "A vector editor pulls a tangent handle and bends an S-shaped path between two fixed anchors. The paired handle mirrors the edit, the curve settles into a deeper inflection, and the pointer returns the handles to their original positions. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "tangent",
+      "component": "LoaderTangent",
+      "category": "software",
+      "technique": "lines",
+      "order": 2,
+      "title": "Tangent",
+      "tags": [
+        "vector",
+        "bezier",
+        "handles",
+        "path",
+        "curve",
+        "design",
+        "pen"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Mirror",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/tangent.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-scion",
+    "type": "registry:component",
+    "title": "Scion loader",
+    "description": "A source component lifts from its card and changes its proportions. Two linked instances receive the edit in succession, their inner controls widening to match; the inheritance links release and all three cards return to their original design. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "scion",
+      "component": "LoaderScion",
+      "category": "software",
+      "technique": "planes",
+      "order": 3,
+      "title": "Scion",
+      "tags": [
+        "component",
+        "instances",
+        "inheritance",
+        "design",
+        "update",
+        "linked"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Inheritance",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/scion.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-quire",
+    "type": "registry:component",
+    "title": "Quire loader",
+    "description": "A compact query strip dispatches into a waiting table. Result rows slide into their ruled slots and reveal unequal values column by column, an accent write bracket follows the returning batch, and the rows drain before the next query. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "quire",
+      "component": "LoaderQuire",
+      "category": "software",
+      "technique": "lines",
+      "order": 4,
+      "title": "Quire",
+      "tags": [
+        "query",
+        "table",
+        "database",
+        "results",
+        "records",
+        "rows"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Results",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/quire.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-graft",
+    "type": "registry:component",
+    "title": "Graft loader",
+    "description": "Two code panes hold the old and proposed versions of a small function. Removed lines contract, two added lines cross the gutter and seat between unchanged context, and the applied version separates back into its review panes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "graft",
+      "component": "LoaderGraft",
+      "category": "software",
+      "technique": "planes",
+      "order": 5,
+      "title": "Graft",
+      "tags": [
+        "diff",
+        "patch",
+        "code",
+        "editor",
+        "merge",
+        "changes"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Added",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/graft.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-verdict",
+    "type": "registry:component",
+    "title": "Verdict loader",
+    "description": "A test suite works through a stack of assertions. Each active row grows its result rule and resolves into an ink check, the suite counter fills one segment per passing test, and one accent confirmation appears only after the last assertion completes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "verdict",
+      "component": "LoaderVerdict",
+      "category": "software",
+      "technique": "lines",
+      "order": 6,
+      "title": "Verdict",
+      "tags": [
+        "tests",
+        "suite",
+        "assertions",
+        "checks",
+        "code",
+        "success"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Passed",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/verdict.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-chorus",
+    "type": "registry:component",
+    "title": "Chorus loader",
+    "description": "Collaborators take three scattered cards and bring them onto one shared baseline. Their pointers follow each card independently, an alignment guide closes across the canvas, and a pinned comment appears above the agreed arrangement before the collaborators release it. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "chorus",
+      "component": "LoaderChorus",
+      "category": "software",
+      "technique": "planes",
+      "order": 7,
+      "title": "Chorus",
+      "tags": [
+        "collaboration",
+        "multiplayer",
+        "cursors",
+        "canvas",
+        "comment",
+        "alignment"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Collaborators",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/chorus.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-casement",
+    "type": "registry:component",
+    "title": "Casement loader",
+    "description": "A second browser tab opens beside the first. The active underline travels across the tab strip, an article gives way to a compact list, and closing the new tab hands the window back to its original page. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "casement",
+      "component": "LoaderCasement",
+      "category": "software",
+      "technique": "planes",
+      "order": 8,
+      "title": "Casement",
+      "tags": [
+        "browser",
+        "tabs",
+        "window",
+        "page",
+        "navigation",
+        "handoff"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "New tab",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/casement.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-cadence",
+    "type": "registry:component",
+    "title": "Cadence loader",
+    "description": "Auto-layout gathers three unequal controls onto a common centreline. Their gaps become equal, the parent widens and redistributes the spare space, and paired spacing rulers follow the constraints before the controls return to their loose arrangement. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "cadence",
+      "component": "LoaderCadence",
+      "category": "software",
+      "technique": "lines",
+      "order": 9,
+      "title": "Cadence",
+      "tags": [
+        "auto-layout",
+        "spacing",
+        "design",
+        "distribution",
+        "padding",
+        "constraints"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Rulers",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/cadence.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-ledger",
+    "type": "registry:component",
+    "title": "Ledger loader",
+    "description": "An edited spreadsheet input invalidates its dependent cells. Two source values contribute to a subtotal, that subtotal recomputes a final result, and an active cell outline follows the calculation through the grid before the edit unwinds. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "ledger",
+      "component": "LoaderLedger",
+      "category": "software",
+      "technique": "lines",
+      "order": 10,
+      "title": "Ledger",
+      "tags": [
+        "spreadsheet",
+        "formula",
+        "recalculate",
+        "cells",
+        "dependencies",
+        "sum"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Recalculation",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/ledger.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-winnow",
+    "type": "registry:component",
+    "title": "Winnow loader",
+    "description": "A filter criterion locks into a list toolbar. Nonmatching records slide out, matching rows close the gaps without changing their order, and the result count settles before clearing the criterion restores the complete list. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "winnow",
+      "component": "LoaderWinnow",
+      "category": "software",
+      "technique": "planes",
+      "order": 11,
+      "title": "Winnow",
+      "tags": [
+        "filter",
+        "list",
+        "results",
+        "criteria",
+        "narrow",
+        "records"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Matches",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/winnow.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-offshoot",
+    "type": "registry:component",
+    "title": "Offshoot loader",
+    "description": "A feature branch leaves the main commit rail and acquires two commits while main advances independently. The branch curves back into one merge commit, the joined history continues, and the new work retraces to its branching point. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "offshoot",
+      "component": "LoaderOffshoot",
+      "category": "software",
+      "technique": "paths",
+      "order": 12,
+      "title": "Offshoot",
+      "tags": [
+        "commit",
+        "branch",
+        "merge",
+        "version-control",
+        "history",
+        "code"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Branch",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/offshoot.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-outpost",
+    "type": "registry:component",
+    "title": "Outpost loader",
+    "description": "A release reaches three regional service racks in succession. Each rack provisions a standby above its live service, transfers traffic as the replacement seats, and retires the old slot while the other regions keep serving; the rollout then returns to its original version. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "outpost",
+      "component": "LoaderOutpost",
+      "category": "software",
+      "technique": "planes",
+      "order": 13,
+      "title": "Outpost",
+      "tags": [
+        "deploy",
+        "regions",
+        "rollout",
+        "services",
+        "release",
+        "replacement"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Release",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/outpost.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-amanuensis",
+    "type": "registry:component",
+    "title": "Amanuensis loader",
+    "description": "A small assistant message feeds a document. Unequal word strokes arrive in reading order behind a moving caret, the caret wraps at the margin, and a completion mark settles beneath the response before the text retracts along the same lines. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "amanuensis",
+      "component": "LoaderAmanuensis",
+      "category": "software",
+      "technique": "lines",
+      "order": 14,
+      "title": "Amanuensis",
+      "tags": [
+        "assistant",
+        "ai",
+        "response",
+        "document",
+        "streaming",
+        "writing"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Words",
+          "mono": "ink"
+        },
+        {
+          "part": "Done",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/amanuensis.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-valance",
+    "type": "registry:component",
+    "title": "Valance loader",
+    "description": "An app opens a side sheet over its workspace. The page recedes, the sheet seats against the window edge and reveals its controls in order; a confirmation closes the action before the sheet withdraws and restores the page. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "valance",
+      "component": "LoaderValance",
+      "category": "software",
+      "technique": "planes",
+      "order": 15,
+      "title": "Valance",
+      "tags": [
+        "app",
+        "sheet",
+        "panel",
+        "overlay",
+        "settings",
+        "confirm"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Sheet",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/valance.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-pipette",
+    "type": "registry:component",
+    "title": "Pipette loader",
+    "description": "An eyedropper samples a small colour source on a design canvas. The picked colour seats in the palette, transfers to the selected shape and leaves a short selection edge; the tool releases the sample and restores the original fill. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "pipette",
+      "component": "LoaderPipette",
+      "category": "software",
+      "technique": "planes",
+      "order": 16,
+      "title": "Pipette",
+      "tags": [
+        "design",
+        "colour",
+        "eyedropper",
+        "swatch",
+        "palette",
+        "canvas"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "First swatch",
+          "mono": "ink"
+        },
+        {
+          "part": "Third swatch",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/pipette.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-portico",
+    "type": "registry:component",
+    "title": "Portico loader",
+    "description": "A dashboard resolves its two metric cards before plotting the detailed chart below. Unequal columns grow from a common baseline, the latest sample takes the accent and a header receipt closes only after all cards are ready; the cards clear for the next refresh. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "portico",
+      "component": "LoaderPortico",
+      "category": "software",
+      "technique": "lines",
+      "order": 17,
+      "title": "Portico",
+      "tags": [
+        "dashboard",
+        "cards",
+        "metrics",
+        "chart",
+        "analytics",
+        "refresh"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Series",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/portico.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-raccord",
+    "type": "registry:component",
+    "title": "Raccord loader",
+    "description": "Two record stores exchange three edits in both directions. A changed source value travels through the shared gap before its corresponding destination updates; acknowledgements close the row brackets and the paired stores agree before their edits release. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "raccord",
+      "component": "LoaderRaccord",
+      "category": "software",
+      "technique": "lines",
+      "order": 18,
+      "title": "Raccord",
+      "tags": [
+        "sync",
+        "records",
+        "stores",
+        "replication",
+        "bidirectional",
+        "data"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Record",
+          "mono": "ink"
+        },
+        {
+          "part": "Acknowledged",
+          "mono": "ink",
+          "role": "success"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/raccord.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-elide",
+    "type": "registry:component",
+    "title": "Elide loader",
+    "description": "An editor folds a nested block from its gutter. Indented code rules gather behind a compact fold marker, the closing bracket and following lines move up to recover the space, and reopening restores every line to its original indentation. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "elide",
+      "component": "LoaderElide",
+      "category": "software",
+      "technique": "lines",
+      "order": 19,
+      "title": "Elide",
+      "tags": [
+        "code",
+        "editor",
+        "fold",
+        "indent",
+        "gutter",
+        "collapse"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Fold",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/elide.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-attest",
+    "type": "registry:component",
+    "title": "Attest loader",
+    "description": "A source document supplies the values of an empty form. A read bracket selects each source line, a transfer stroke carries it into its field and the value fills behind the write edge; a single confirmation seals the completed form before the values clear. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "attest",
+      "component": "LoaderAttest",
+      "category": "software",
+      "technique": "lines",
+      "order": 20,
+      "title": "Attest",
+      "tags": [
+        "form",
+        "autofill",
+        "document",
+        "extract",
+        "assistant",
+        "fields"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Transfer",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/attest.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-satchel",
+    "type": "registry:component",
+    "title": "Satchel loader",
+    "description": "Three folded-corner files rise into an open folder one at a time. Each file writes its upload rule while approaching the mouth, seats behind the front cover and adds a receipt to the folder edge; the completed batch fans back out along its original paths. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "software"
+    ],
+    "meta": {
+      "loader": "satchel",
+      "component": "LoaderSatchel",
+      "category": "software",
+      "technique": "planes",
+      "order": 21,
+      "title": "Satchel",
+      "tags": [
+        "upload",
+        "files",
+        "folder",
+        "transfer",
+        "documents",
+        "batch"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Files",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/software/satchel.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/software/workspace.ts",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

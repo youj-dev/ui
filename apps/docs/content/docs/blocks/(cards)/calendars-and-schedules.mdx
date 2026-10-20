@@ -1,0 +1,120 @@
+---
+title: Calendars & schedules
+description: "Time as a grid or a dial: month agendas, rotas, day and week schedules, heatmaps and bookings."
+---
+
+<BlockStories>
+
+<BlockStory id="month-agenda" label="Month agenda" block="app-month-agenda" story="Default" backdrop="sandstone">
+
+What comes round each month, on the kit's Calendar: each day a tile with the marks of what falls on it and a dot for the cycle (solid monthly, a ring yearly), today lit and the days outside the month hatched. Hover or arrow onto a day for its events, pick one and + adds one on it; the head counts what is active and new, and the foot sums what is due in the month shown (or counts the events when none has an amount). Every name and mark in the demo is made up; pass a `logo` for yours. The demo is a household's subscriptions; stories show birthdays, a building's maintenance plan and medication refills.
+
+</BlockStory>
+
+<BlockStory id="shift-rota" label="Shift rota" block="app-shift-rota" story="Default" backdrop="umber">
+
+Who is on shift now, with the shift's time left counting down and who is next, plus Swap and a contact button (Page, Call, Message). Under it, the week in lanes per person with handoffs, overrides and a line for now.
+
+</BlockStory>
+
+<BlockStory id="day-schedule" label="Day schedule" block="app-day-schedule" story="Default" backdrop="umber">
+
+A day of scheduled events on a 24 hour ring with a hand at now, next to the day's figures: jobs, doses or sailings. Each entry lists its cron expression in words with a pause switch; Stagger overlaps moves colliding entries 15 minutes apart.
+
+</BlockStory>
+
+<BlockStory id="week-blocks" label="Week blocks" block="app-week-blocks" story="Default" backdrop="seaglass">
+
+A week of logged time as columns, one per day: each entry a rounded block in the color of its kind, placed by its start and end on a quiet track with a hairline at each labelled hour. Today is marked, and while the clock is inside the hours a line crosses today's column with its time in the gutter. The week's total leads, large, with a legend that gives the totals per kind. Point at a block, or focus the plot and use the arrow keys, to read it as "Tue 09:30–12:15 · Billable · 2h 45m".
+
+</BlockStory>
+
+<BlockStory id="week-dial" label="Week dial" block="app-week-dial" story="Default" backdrop="seaglass">
+
+The same week as a clock: a ring per weekday, Monday outermost, with an arc for each entry round a dial that runs clockwise from nine o'clock to six. A hand crosses the rings at the current time, labelled beyond the outer one, and the middle gives the headline kind's total. Both cards read the same `entries` and `kinds`, and the arrow keys step through the entries in the order of the week.
+
+</BlockStory>
+
+<BlockStory id="activity-heatmap" label="Activity heatmap" block="app-activity-heatmap" story="Default">
+
+When it happens: a year of days, weeks across and weekdays down, under the year in four figures. Each step holds a quarter of the active days, so one record day doesn't pale the rest, and pressing a step in the legend lights only its days. Hours shows the same year by hour of the week. Point at a day, or move through the grid with the arrow keys, and one tip glides to it.
+
+</BlockStory>
+
+<BlockStory id="terrain-calendar" label="Terrain calendar" block="app-terrain-calendar" story="Default" backdrop="meadow">
+
+Months of days as an isometric landscape where each day's column is its measure. Switch the measure or the category, then point at a day for its entries, your usual day and its share of the week. The demo is a triathlete's training; stories show a store's sales by department and a weather network's rain by station.
+
+</BlockStory>
+
+<BlockStory id="slot-booking" label="Slot booking" block="app-slot-booking" story="Default" backdrop="meadow">
+
+A timetable booked the calm way: a month calendar beside the day's slots with places left in words. Narrow to one service, pick a slot to review it, then Book and see the confirmation. A grid variant shows the week. Classes, clinic appointments and tutoring lessons read the same way: your services, hosts, prices and pass are props.
+
+</BlockStory>
+
+<BlockStory id="itinerary" label="Itinerary" block="app-itinerary" story="Default" backdrop="meadow">
+
+A trip the way a travel app keeps it: the next leg as a boarding pass with a countdown to departure, then arrival, and the booking reference to copy. Below it the days, each with the place it's spent in, and the picked day's plans in time order with where you sleep that night and every confirmation code to copy. City breaks, conference weeks and film shoots read the same way: the kinds of booking, their icons and their statuses are props.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="grids, keyboard, live regions, motion">
+
+### Accessibility
+
+Month agenda is the kit's Calendar grid: the arrow keys walk the days, Page Up and Page Down the months, and a day with events is named with its date and them ("Bills Tessel, $54.99 Monthly"), which its tooltip shows on hover and keyboard focus. The month name is a polite live region, the cycle is a solid dot or a ring as well as a word, and the arrows and + are named buttons.
+
+Shift rota groups the current shift under a label, the countdown is `role="timer"`, and the time lanes are one tab stop where the arrow keys walk the shifts and Enter opens one, with a hidden hint.
+
+Day schedule draws a ring that is an image with a text description, and each entry's pause switch is named for it. Its heading level follows whether it is embedded.
+
+The week's time blocks and its clock are each one tab stop, a group named for the chart and described by a sentence on the week's total. The arrow keys step through the entries in the order of the week (Right and Down on, Left and Up back), Home and End jump to the first and last, and Escape lets go. The entry is read out by a polite live region as its day, times, kind and length, and every entry is also listed as text for screen readers. The now line and hand are decorative; the time is text beside them.
+
+Each chart has a name and a one-sentence summary, and the metric chart's numbers are also in a real table behind View data. Wherever you can scrub a chart (the KPI tiles and the metric chart), it is a slider: Left and Right step a bucket, Home and End jump to either end, Escape lets go, and each position is read out as a sentence with the date, the figures and the change. The tile and chart headers update with it.
+
+The activity heatmap is a grid with one tab stop. The arrow keys move a day or a week, Home and End move along a weekday, Page Up and Page Down jump four weeks, and Ctrl+Home and Ctrl+End go to the first and last day. Every day is named with its date and value, and the grid is described by a sentence on the total, the busiest day and the busiest weekday. The legend's steps are toggle buttons named with their range, and picking one says how many days it holds.
+
+Terrain calendar draws on a `canvas` that is `aria-hidden`. Its days are exposed as an ARIA grid for the keyboard and screen readers (arrow keys move between days), the measure and category switches are labelled, the entries table has a hidden caption, and view changes are announced.
+
+Slot booking lists each day's slots in a labelled list; every slot is a button. The service filter, the pass and the confirmation are labelled, and the grid variant adds previous and next week buttons. The review pane is a labelled region.
+
+In Itinerary the boarding pass is a labelled group whose route line is named (Barcelona to Rome) and whose countdown is a timer with live announcements off. The days are tabs (arrow keys, Home and End), each named with its date, Today and its city or Travel to …; each day's plans are an ordered list under a heading, statuses are written out, and the copy buttons name the code they copy and announce it. The stories show other worlds, with their own names and words.
+
+Under reduced motion rows, panes and the plane on the pass are drawn in place.
+
+</ReferenceRow>
+
+</BlockStories>

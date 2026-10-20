@@ -1,0 +1,218 @@
+---
+title: Loaders
+description: Loaders are loading animations with depth, drawn in your theme. Particle fields in perspective, wireframes and lit solids, waveforms, the youj letterforms and moments from the tools people wait in, each a polite status and a still frame under reduced motion.
+sidebarTitle: Overview
+---
+
+<ComponentPreview name="loaders/demo" height={300} />
+
+When something takes a moment (a workspace being prepared, a model thinking, a build, an upload), show it at work. Each loader is a small scene in perspective, drawn live in your text color with one mark in your accent and a few touches of your theme's colors, on the motion tokens' tempo. It's a status that announces its label politely, and under reduced motion it holds one still frame that still reads as busy.
+
+The [loaders gallery](/loaders) shows every one of them live: filter them by category, set the size, the length of a loop, the colors and the labels, then copy the code or the install command.
+
+<Callout title="New">
+  Loaders are new. The set is still growing, and a loader may be refined or renamed before 1.0.
+</Callout>
+
+## The set
+
+| Category | What it draws |
+| --- | --- |
+| Color | Built around your theme's colors: hue travelling through a structure, layered tints, color as state |
+| Depth | Particle fields in perspective, nearer marks larger and brighter |
+| Geometry | Wireframes, planes lit by their facets, surfaces drawn in lines |
+| Signal | Waveforms and live data, drawn as they arrive |
+| Glyph | The youj letterforms, drawing, turning and assembling |
+| Interface | Cursors, focus rings, pipelines and construction marks |
+
+### Every loader
+
+A loader's id is its entry, `@youj/loaders/<id>`, and its component is `Loader` and the id in PascalCase (`tittle` is `LoaderTittle`). The ids, by category:
+
+<KitNames kit="loaders" />
+
+## Installation
+
+### From the package
+
+Every loader ships in `@youj/loaders`, at its own entry, as `Loader` and its name:
+
+```bash
+pnpm add @youj/loaders
+```
+
+```tsx
+import { LoaderTittle } from '@youj/loaders/tittle'
+```
+
+### One loader, as source
+
+To own and edit one loader, copy it in with the Youj CLI in an app set up from source (`npx youj init --mode registry`). Every loader is its own item, `loader-<id>`. It brings the kit the loaders are drawn with (`loader-kit`: the status, the shared ticker and the engine that draws in depth) and nothing else. In an app on the packages, the same command installs `@youj/loaders` instead and names the entry to import:
+
+```bash
+npx youj add loader-tittle
+```
+
+It lands in `components/youj/loaders/<category>/<id>.tsx`, and you import it from there through your `@/` alias:
+
+```tsx
+import { LoaderTittle } from '@/components/youj/loaders/depth/tittle'
+```
+
+Each loader's id, import and install command are on its card in the [gallery](/loaders).
+
+## Usage
+
+```tsx
+import { LoaderSustain } from '@youj/loaders/sustain'
+
+export function Transcript({ busy }: { busy: boolean }) {
+  if (busy) return <LoaderSustain size="lg" label="Transcribing" showLabel />
+  // …
+}
+```
+
+### Size
+
+`size` is the drawing's height: `sm` (24px, beside text), `default` (40px, in a control or a card), `lg` (64px, on a panel) or any number of pixels. The wordmark loaders and most of the signals are wider than they are tall. Each draws for its size: fewer, bolder marks when it's small, finer detail when it's large.
+
+### Color
+
+A loader's structure is drawn in its ink, the text color (`currentColor`) by default, so it takes the color of whatever it sits in; `color` sets it to any CSS color, token references included. Its accent is on the one mark that matters (lit accent faces included) and in a shown label's light and caret: the theme's accent by default, and `accentColor` sets it the same way.
+
+That is all a loader uses unless you ask for more. Pass `colors="theme"` and a few parts take colors derived from your accent: what moves or works (a trail, a path being traced) in one, a second layer in another, and a finished state (a check, an arrival) in your success color. The color is quiet: thin marks and small particles, never more than about a third of the drawing, and it moves with the loop, a part warming toward its color on the beat, new marks arriving in color and settling to the ink, a hue travelling once through a structure. The colors are muted and follow your theme's accent, in light and dark, so the accent stays the brightest thing in the drawing.
+
+<ComponentPreview name="loaders/multicolor" height={260} />
+
+```tsx
+<LoaderIsobar color="var(--color-fg-muted)" />
+<LoaderTittle color="var(--color-fg-muted)" accentColor="var(--color-success)" />
+```
+
+`colors` is off by default: a loader draws in its ink and its accent alone. `colors="theme"` turns the colored parts on in the theme's colors. A list sets their colors instead, in order, with any CSS color or token reference; an empty entry, or one you leave out, keeps the theme color. A loader without colored parts ignores it. A loader's parts are named in the [gallery](/loaders), whose Color control switches between Mono (the default) and Theme and, with Theme on, picks each part's color.
+
+```tsx
+<LoaderPrompt colors="theme" />
+<LoaderGantry colors={['var(--color-fg-muted)', 'var(--color-success)']} />
+<LoaderGantry colors={['', 'var(--color-success)']} />
+```
+
+Solid planes and lit faces hide what's behind them by painting on a paper: `--yj-anim-paper`, the surface by default. On another background, set it to that background, so the faces sit on what's really there:
+
+```tsx
+<div className="bg-canvas [--yj-anim-paper:var(--color-canvas)]">
+  <LoaderCarton size="lg" />
+</div>
+```
+
+### Pace
+
+A loop lasts a few beats of the `deliberate` duration, so the theme's personality and the provider's time scale reach it: in a precise theme a beat is 560ms, and a loop takes a few seconds. `speed` multiplies on top (2 is twice as fast). A change of speed carries on from the frame it's on, and `paused` holds the frame.
+
+### Announcing the wait
+
+The status is named by `label`, "Loading" by default (from the [labels](/docs/guides/i18n), so it's translated with the rest). When something around it already says what's happening (a button that reads "Saving…"), pass `label={null}` and the loader is only a picture.
+
+### Showing the label
+
+`showLabel` shows the label with the drawing: centered under it by default, in the theme's label voice, with the space between them (and on a large drawing, the type) growing with `size`. `labelPosition` puts it over the drawing (`top`), or beside it, before (`start`) or after (`end`) it in the reading direction, so it changes sides in a right-to-left language. Beside the drawing it takes the text style of the line it sits in. Over or under it, one loader's label can take its own type through the theme's label properties and `--yj-label-size`: `className="[--yj-label-case:uppercase] [--yj-label-font:var(--font-mono)] [--yj-label-size:15px]"`.
+
+```tsx
+<LoaderBuild size="lg" label="Building" showLabel />
+<LoaderTittle size="sm" label="Syncing" showLabel labelPosition="end" />
+```
+
+A shown label moves in time with the drawing, on its clock: it holds when the drawing is paused or off screen, and keeps its pace through `speed` and the time scale. `labelEffect` picks how:
+
+| Effect | What it does |
+| --- | --- |
+| `pulse` (default) | A soft light, the ink with a touch of the accent, sweeps through the muted label once a loop, then rests. |
+| `wave` | A gentle lift travels through the letters, first to last, once a loop, then rests. |
+| `type` | The label types itself a letter at a time behind a square-cornered caret in the accent, holds while the caret blinks, and is cleared by the caret gliding home, so each loop starts on an empty line. |
+| `scramble` | The line fills with glyph noise and the letters resolve out of it one at a time, first to last; the word holds, then breaks back into noise that clears before the loop ends. |
+| `slide` | At the loop's seam the line rolls up, like a counter: the label rises out as the next rises in. It's made for [several labels](#rotating-labels); one label rolls over to itself. |
+| `none` | The label holds still. |
+
+```tsx
+<LoaderPrompt size="lg" label="Thinking" showLabel labelEffect="type" />
+```
+
+The drawn label is only a picture of the words: assistive technology hears the plain label once, never letters arriving. It's static in the server's HTML, and starts moving at a moment of the loop that looks just like it, so nothing jumps when the script arrives. In a right-to-left language the effects run from the right. Letters move one by one (`wave`, and `scramble`'s noise) only in scripts whose letters stand on their own; a joined script such as Arabic keeps its letters whole, `wave` passing a light through the word and `scramble` resolving it as a plain reveal.
+
+### Rotating labels
+
+A wait that takes a while can say more than one thing. Give `label` a list, and a shown label turns through it: each one shows for `labelEvery` loops (one by default), and the next takes over at the loop's seam, the effect carrying the change: the light dips, the letters lift away and rise in, the caret clears one and types the next, the noise resolves into it, or the line rolls up. Then it starts again from the first.
+
+<ComponentPreview name="loaders/rotating" height={260} />
+
+```tsx
+<LoaderBuild
+  size="lg"
+  label={['Building', 'Bundling', 'Optimizing images', 'Deploying']}
+  showLabel
+  labelEffect="slide"
+/>
+
+<LoaderTittle
+  size="lg"
+  label={['Loading', 'Generating results', 'Almost there']}
+  labelEvery={2}
+  showLabel
+  labelEffect="wave"
+/>
+```
+
+The labels sit in one place as wide as the longest, so nothing around them moves as they change. The status doesn't read each one out: it says the first, then a later one only as it shows, in order, once each and at least ten seconds after the last, and then it stays quiet, however long the wait. When the state really changes (an upload finishes and processing starts), pass a new `label`: that's said at once. Without `showLabel`, the labels still take turns for assistive technology the same way. Under reduced motion the first label shows, still, and stays.
+
+### Performance
+
+Each loader draws on one small canvas, on a ticker every loader on the page shares, and only while it's on screen in a visible tab: offscreen, hidden or paused, it costs nothing. Its colors are read once, and again when the theme changes. The server sends its still frame as SVG, so it's never blank before the script runs.
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, color, accentColor, colors… (12)">
+
+### Props
+
+<PropsTable name="LoaderProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Loop, moves, arrivals… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Loop', note: 'the whole scene, seamless: its last frame is its first', duration: 'deliberate', value: '× 2.25 to 6.5 beats per loop' },
+    { moment: 'Moves', note: 'travel with intent: a cursor, a fold, a plate coming into register', ease: 'emphasized' },
+    { moment: 'Arrivals', note: 'what lands or settles: a tittle, a packet, a closing lid', ease: 'enter' },
+    { moment: 'Departures', note: 'what lets go or leaves the frame', ease: 'exit' },
+    { moment: 'Label pulse', note: 'a soft light crosses the shown label once a loop, then rests', ease: 'emphasized' },
+    { moment: 'Label wave', note: 'a lift of a fifth of an em travels through the letters, first to last, no overshoot', value: 'a raised cosine per letter' },
+    { moment: 'Label type', note: 'a letter at a time at an even cadence, then the caret glides home, taking the word before the seam', ease: 'emphasized' },
+    { moment: 'Label scramble', note: 'noise fills the line, the letters lock in one at a time at an even cadence, then break back into noise', ease: 'linear' },
+    { moment: 'Label slide', note: 'at the seam the line rolls up through a soft-edged window the height of the line', ease: 'emphasized' },
+    { moment: 'Next label', note: 'at the seam, every labelEvery loops; the effect carries the change', duration: 'deliberate', value: '× the loop' },
+  ]}
+  reduced="One still frame, chosen to read as busy (mid-move, its depth showing), drawn as SVG. Nothing moves, a shown label holds still (the first of several, which don't turn), and the label is still announced."
+/>
+
+#### Reduced motion
+
+It holds one still frame that still reads as busy: mid-move, with its depth showing. It's the same SVG the server sends, so nothing moves and nothing flashes when the script arrives. A shown label stays whole and still: no light, no lift, no caret, no noise. Of several labels, the first shows and stays: a caption that kept changing on its own would be just the distraction reduced motion asks to be spared, and the first label already says what's happening.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- Each loader is `role="status"` with `aria-live="polite"`, named by its label: assistive technology hears "Loading" (or your label) once, not the drawing, which is `aria-hidden`.
+- A shown label is drawn `aria-hidden` too: the status keeps the plain label as its name and what it announces, so a typed or scrambled label is never read out letter by letter.
+- Several labels don't make a talkative status: it says the first, then a later one only as it shows, in order, once each and at least ten seconds apart, then stays quiet. A new `label` is said at once.
+- `label={null}` makes it decorative (`aria-hidden`, no status), for when the thing around it already announces the wait.
+- The accent and the theme's colors mark parts of the drawing, never the only difference: the drawing reads the same without `colors` and in forced colors.
+- It shows that something is happening, not how far along it is: when you know, show a [Progress](/docs/components/progress).
+
+</ReferenceRow>

@@ -1,0 +1,169 @@
+---
+title: Dropdown Menu
+description: "Open a menu of actions or options from a button."
+aliases: ["dropdown", "action menu", "kebab menu", "more menu"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="dropdown-menu/demo" height={480} />
+
+A project card with an actions menu of items, groups, shortcuts, a submenu and a danger row.
+
+- **Items** run an action. `variant="danger"` tints the row red, for deleting, revoking and leaving. `disabled` keeps a row visible but out of reach.
+- **Groups and labels.** `DropdownMenuGroup` gathers related rows, and a `DropdownMenuLabel` inside a group names it for screen readers. Outside a group, a label is a plain caption.
+- **Separators** divide groups. The highlight glides across them rather than blinking out.
+- **Submenus.** `DropdownMenuSub` holds a `DropdownMenuSubTrigger` row and a `DropdownMenuSubContent`, which opens beside the row with its first item level with it.
+- **Inset.** `inset` on a row or label indents it to line up with rows that have an icon.
+
+</Story>
+
+<Story id="checkbox-and-radio-items" label="Checkbox and radio items">
+
+<ComponentPreview name="dropdown-menu/options" height={380} />
+
+A menu with checkbox settings and a radio group, which stays open while they change.
+
+`DropdownMenuCheckboxItem` toggles a setting and `DropdownMenuRadioGroup` with `DropdownMenuRadioItem` picks one option. Both keep the menu open, so several settings can change in one visit. A check draws itself in when a row turns on.
+
+</Story>
+
+<Story id="account-menu" label="Account menu">
+
+<ComponentPreview name="dropdown-menu/account" height={420} />
+
+An account menu built from an avatar trigger, a header and a Theme submenu.
+
+The trigger can be any button: here an avatar and a name. The header is plain content, and the Theme submenu holds a radio group. The `inset` row lines up with the icon rows above it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="dropdown-menu" noImport />
+
+Use Dropdown Menu for actions such as open, rename or delete, and for view settings. Use [Select](/docs/components/select) to choose a value, or [Command](/docs/components/command) to search a long list. You can also offer the same actions in a [Context Menu](/docs/components/context-menu), while keeping the dropdown as a visible way to reach them.
+
+```tsx
+import { useState } from 'react'
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@youj/react'
+import { MoreHorizontalIcon, PencilIcon, TrashIcon } from '@youj/icons'
+
+export function ProjectActions() {
+  const [open, setOpen] = useState(false)
+  return (
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Project actions" />}>
+        <MoreHorizontalIcon active={open} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={rename}>
+          <PencilIcon />
+          Rename
+          <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="danger" onClick={remove}>
+          <TrashIcon />
+          Delete project
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+```
+
+`MoreHorizontalIcon` is a state icon: driven by the menu's `open` state, its dots become a close mark while the menu is open and return when it closes. Run an item's action from `onClick`. It fires for pointer and keyboard alike, then the menu closes. A leading icon is muted until its row is highlighted. [Youj icons](/docs/icons) also play their choreography then, because a menu item is their trigger. `DropdownMenuShortcut` shows a row's shortcut, trailing and muted. It's a label only, so bind the keys yourself.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="container, presentation, inset… (4)">
+
+### Props
+
+#### DropdownMenuContent
+
+<PropsTable name="DropdownMenuContent" />
+
+#### DropdownMenuItem
+
+<PropsTable name="DropdownMenuItem" />
+
+`DropdownMenu` takes Base UI's root props (`open`, `defaultOpen`, `onOpenChange`, `modal`, which is on by default), and `DropdownMenuTrigger` takes the trigger's (`openOnHover`, `delay`, `render`). `DropdownMenuCheckboxItem` takes `checked`, `defaultChecked` and `onCheckedChange`, and `DropdownMenuRadioGroup` takes `value`, `defaultValue` and `onValueChange`. Rows and labels take `inset`, rows take `disabled`, and `closeOnClick` changes whether choosing an item closes the menu (on for items, off for checkbox and radio items). `DropdownMenuSubContent` takes the same placement props as the content, opening on `inline-end` by default.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, highlight… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'scale .96 → 1 and fade, out of the trigger (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Highlight', note: 'one `SlidingIndicator` per popup glides between rows', spring: 'smooth' },
+    { moment: 'Highlight across a separator', note: 'holds its row this long before it lets go', duration: 'fast' },
+    { moment: 'Destructive wash', note: 'red tint on the highlighted row', duration: 'fast', ease: 'standard' },
+    { moment: 'Check', note: 'draws in when a row turns on', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Keyboard open, Escape close', note: 'Base UI sets `data-instant`', value: '0ms' },
+  ]}
+  reduced="The menu appears at once, the highlight jumps from row to row, and checks appear already drawn."
+/>
+
+Rows paint nothing themselves on hover. A single highlight per popup follows Base UI's highlighted row, so moving quickly down a menu reads as one traveling surface, and a mid-glide change of direction retargets it with its velocity. In forced-colors mode the fill is dropped and the highlighted row gets an outline.
+
+#### Reduced motion
+
+The menu opens and closes at once and the highlight moves without gliding. Checks are drawn as soon as a row turns on. Rows, keyboard behavior and focus handling don't change.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The trigger has `aria-haspopup="menu"` and `aria-expanded`, and the popup is a `menu`. Rows are `menuitem`, `menuitemcheckbox` or `menuitemradio`, with `aria-checked` where they hold state.
+- A label inside a group names the group. Radio items sit in a `group`, so the choice is announced with its name.
+- Focus moves into the menu when it opens and returns to the trigger when it closes. While open, the menu is modal: the page doesn't scroll and outside presses only close it.
+- The popup itself is a tab stop, so a menu long enough to scroll is reachable from the keyboard. `Tab` closes the menu.
+
+| Key | Action |
+| --- | --- |
+| `Enter` / `Space` / `↓` | Opens the menu from the trigger and focuses the first row. |
+| `↑` | Opens the menu from the trigger and focuses the last row. |
+| `↑` / `↓` | Moves between rows. |
+| `Home` / `End` | Jumps to the first or last row. |
+| Letters | Jump to the next row that starts with them (typeahead). |
+| `Enter` / `Space` | Runs the row, or toggles a checkbox or radio row. |
+| `→` / `←` | Opens a submenu on its first row, or closes it back onto its row. Mirrored in right-to-left layouts. |
+| `Escape` | Closes the menu and returns focus to the trigger. |
+
+</ReferenceRow>

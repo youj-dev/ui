@@ -1,0 +1,4877 @@
+[
+  {
+    "name": "illustration-kit",
+    "type": "registry:component",
+    "title": "Illustration kit",
+    "description": "What every illustration is drawn with: the stage (one volume for every scene, so any scene swaps for any other), groups that move as one object, turned and extruded solids (Lathe, Prism), marks on a face, links between points, and the inks they're drawn in. Each illustration-<id> item installs one scene on top of it.",
+    "registryDependencies": [
+      "iso-scene"
+    ],
+    "dependencies": [],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/kit.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-database",
+    "type": "registry:component",
+    "title": "Database illustration",
+    "description": "Three disks on a turntable and, hovering over them, the next one in the accent, about to be written. One isometric scene from the Data illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "data"
+    ],
+    "meta": {
+      "scene": "database",
+      "component": "IllustrationDatabase",
+      "category": "data",
+      "tags": [
+        "sql",
+        "records",
+        "table",
+        "query",
+        "storage"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes",
+      "iso-stack"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/database.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-warehouse",
+    "type": "registry:component",
+    "title": "Data warehouse illustration",
+    "description": "A floor of tables at their own heights, and over the one bay left, the last table landing. One isometric scene from the Data illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "data"
+    ],
+    "meta": {
+      "scene": "warehouse",
+      "component": "IllustrationWarehouse",
+      "category": "data",
+      "tags": [
+        "analytics",
+        "etl",
+        "tables",
+        "lake",
+        "reporting"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/warehouse.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-pipeline",
+    "type": "registry:component",
+    "title": "Pipeline illustration",
+    "description": "Packets riding a track through three stages: a source, a transform in the accent, and the store they end in. One isometric scene from the Data illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "data"
+    ],
+    "meta": {
+      "scene": "pipeline",
+      "component": "IllustrationPipeline",
+      "category": "data",
+      "tags": [
+        "etl",
+        "stream",
+        "sync",
+        "workflow",
+        "integration"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/pipeline.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-storage",
+    "type": "registry:component",
+    "title": "Storage illustration",
+    "description": "A cabinet of drawers with one pulled out in the accent, and a file hovering over it, about to go in. One isometric scene from the Data illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "data"
+    ],
+    "meta": {
+      "scene": "storage",
+      "component": "IllustrationStorage",
+      "category": "data",
+      "tags": [
+        "files",
+        "archive",
+        "cabinet",
+        "drawer",
+        "uploads"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/storage.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-backups",
+    "type": "registry:component",
+    "title": "Backups illustration",
+    "description": "Snapshots stepping back in time, each a little further off and fainter, the newest in the accent with a clock on its face. One isometric scene from the Data illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "data"
+    ],
+    "meta": {
+      "scene": "backups",
+      "component": "IllustrationBackups",
+      "category": "data",
+      "tags": [
+        "snapshot",
+        "restore",
+        "history",
+        "versions",
+        "recovery"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/backups.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-server-rack",
+    "type": "registry:component",
+    "title": "Server rack illustration",
+    "description": "Two racks on a plinth, one blade drawn out of the taller in the accent. One isometric scene from the Infrastructure illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "infrastructure"
+    ],
+    "meta": {
+      "scene": "server-rack",
+      "component": "IllustrationServerRack",
+      "category": "infrastructure",
+      "tags": [
+        "servers",
+        "hosting",
+        "datacenter",
+        "hardware",
+        "compute"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/server-rack.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-cloud",
+    "type": "registry:component",
+    "title": "Cloud regions illustration",
+    "description": "Three regions on their own plinths, one lit, and over them the cloud they share, wired down to each. One isometric scene from the Infrastructure illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "infrastructure"
+    ],
+    "meta": {
+      "scene": "cloud",
+      "component": "IllustrationCloud",
+      "category": "infrastructure",
+      "tags": [
+        "regions",
+        "hosting",
+        "global",
+        "availability",
+        "zones"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/cloud.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-network",
+    "type": "registry:component",
+    "title": "Network illustration",
+    "description": "A hub in the accent and the nodes round it, each wired to the hub and its neighbors along the floor. One isometric scene from the Infrastructure illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "infrastructure"
+    ],
+    "meta": {
+      "scene": "network",
+      "component": "IllustrationNetwork",
+      "category": "infrastructure",
+      "tags": [
+        "nodes",
+        "connections",
+        "graph",
+        "mesh",
+        "topology"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/network.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-load-balancer",
+    "type": "registry:component",
+    "title": "Load balancer illustration",
+    "description": "A balancer in the accent at the back, its traffic routed square along the floor to a row of three servers, a packet on each route. One isometric scene from the Infrastructure illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "infrastructure"
+    ],
+    "meta": {
+      "scene": "load-balancer",
+      "component": "IllustrationLoadBalancer",
+      "category": "infrastructure",
+      "tags": [
+        "traffic",
+        "routing",
+        "scaling",
+        "proxy",
+        "requests"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/load-balancer.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-edge",
+    "type": "registry:component",
+    "title": "Edge network illustration",
+    "description": "An origin in the accent at the center, and the edge round it: nodes on a ring, a fainter ring further out. One isometric scene from the Infrastructure illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "infrastructure"
+    ],
+    "meta": {
+      "scene": "edge",
+      "component": "IllustrationEdge",
+      "category": "infrastructure",
+      "tags": [
+        "cdn",
+        "latency",
+        "global",
+        "caching",
+        "distribution"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/edge.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-mail",
+    "type": "registry:component",
+    "title": "Mail illustration",
+    "description": "An envelope standing open, and the letter in the accent rising out of it. Hovered, it lifts clear. One isometric scene from the App illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "app"
+    ],
+    "meta": {
+      "scene": "mail",
+      "component": "IllustrationMail",
+      "category": "app",
+      "tags": [
+        "email",
+        "inbox",
+        "message",
+        "letter",
+        "newsletter"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/mail.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-calendar",
+    "type": "registry:component",
+    "title": "Calendar illustration",
+    "description": "A month on an easel with today in the accent, and the day's one event lifting off it. One isometric scene from the App illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "app"
+    ],
+    "meta": {
+      "scene": "calendar",
+      "component": "IllustrationCalendar",
+      "category": "app",
+      "tags": [
+        "schedule",
+        "event",
+        "date",
+        "meeting",
+        "booking"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/calendar.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-documents",
+    "type": "registry:component",
+    "title": "Documents illustration",
+    "description": "Three pages fanned out on edge, the front one lifting, its corner folded and its title in the accent. One isometric scene from the App illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "app"
+    ],
+    "meta": {
+      "scene": "documents",
+      "component": "IllustrationDocuments",
+      "category": "app",
+      "tags": [
+        "files",
+        "pages",
+        "docs",
+        "paper",
+        "notes"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/documents.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-analytics",
+    "type": "registry:component",
+    "title": "Analytics illustration",
+    "description": "Bars in front of a gridded back wall, rising to the last in the accent, with its reading hovering over it. One isometric scene from the App illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "app"
+    ],
+    "meta": {
+      "scene": "analytics",
+      "component": "IllustrationAnalytics",
+      "category": "app",
+      "tags": [
+        "chart",
+        "metrics",
+        "stats",
+        "reporting",
+        "growth"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/analytics.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-search",
+    "type": "registry:component",
+    "title": "Search illustration",
+    "description": "Results laid out on the desk and a lens hovering over the one that matches, lit in the accent. One isometric scene from the App illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "app"
+    ],
+    "meta": {
+      "scene": "search",
+      "component": "IllustrationSearch",
+      "category": "app",
+      "tags": [
+        "find",
+        "lookup",
+        "results",
+        "magnifier",
+        "query"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/search.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-notifications",
+    "type": "registry:component",
+    "title": "Notifications illustration",
+    "description": "A bell hovering over its plinth, the ring of its ping on the floor, and its badge in the accent. One isometric scene from the App illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "app"
+    ],
+    "meta": {
+      "scene": "notifications",
+      "component": "IllustrationNotifications",
+      "category": "app",
+      "tags": [
+        "bell",
+        "alerts",
+        "reminder",
+        "ping",
+        "badge"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/notifications.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-deploy",
+    "type": "registry:component",
+    "title": "Deploy illustration",
+    "description": "A rocket hovering over its pad on a flame, its band in the accent. Hovered, it lifts off. One isometric scene from the Lifecycle illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "lifecycle"
+    ],
+    "meta": {
+      "scene": "deploy",
+      "component": "IllustrationDeploy",
+      "category": "lifecycle",
+      "tags": [
+        "launch",
+        "rocket",
+        "release",
+        "ship",
+        "startup"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/deploy.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-security",
+    "type": "registry:component",
+    "title": "Security illustration",
+    "description": "A vault with its round door and dial, and over it a seal in the accent. One isometric scene from the Lifecycle illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "lifecycle"
+    ],
+    "meta": {
+      "scene": "security",
+      "component": "IllustrationSecurity",
+      "category": "lifecycle",
+      "tags": [
+        "vault",
+        "lock",
+        "safe",
+        "privacy",
+        "protection"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/security.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-team",
+    "type": "registry:component",
+    "title": "Team illustration",
+    "description": "Four people round a table, one in the accent, and the work they share on it. One isometric scene from the Lifecycle illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "lifecycle"
+    ],
+    "meta": {
+      "scene": "team",
+      "component": "IllustrationTeam",
+      "category": "lifecycle",
+      "tags": [
+        "people",
+        "collaboration",
+        "members",
+        "meeting",
+        "group"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/team.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-success",
+    "type": "registry:component",
+    "title": "Success illustration",
+    "description": "A coin in the accent with a check on its face, hovering over a plinth, with a few bits of confetti round it. One isometric scene from the Lifecycle illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "lifecycle"
+    ],
+    "meta": {
+      "scene": "success",
+      "component": "IllustrationSuccess",
+      "category": "lifecycle",
+      "tags": [
+        "done",
+        "complete",
+        "check",
+        "celebration",
+        "confetti"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/success.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-not-found",
+    "type": "registry:component",
+    "title": "Not found illustration",
+    "description": "A floor of tiles with one gone, its outline dashed, and the missing tile hovering over the gap in the accent. One isometric scene from the Lifecycle illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "lifecycle"
+    ],
+    "meta": {
+      "scene": "not-found",
+      "component": "IllustrationNotFound",
+      "category": "lifecycle",
+      "tags": [
+        "404",
+        "missing",
+        "error",
+        "lost",
+        "gap"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/not-found.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-empty",
+    "type": "registry:component",
+    "title": "Empty illustration",
+    "description": "An open box with its flaps folded out and nothing inside, and a dashed ghost of the first thing hovering over it. One isometric scene from the Lifecycle illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "lifecycle"
+    ],
+    "meta": {
+      "scene": "empty",
+      "component": "IllustrationEmpty",
+      "category": "lifecycle",
+      "tags": [
+        "blank",
+        "nothing",
+        "zero",
+        "box",
+        "placeholder"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/empty.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-storefront",
+    "type": "registry:component",
+    "title": "Shop front illustration",
+    "description": "A shop with its window and door, and over them an awning striped in the accent. Hovered, the awning rolls up. One isometric scene from the Commerce illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "commerce"
+    ],
+    "meta": {
+      "scene": "storefront",
+      "component": "IllustrationStorefront",
+      "category": "commerce",
+      "tags": [
+        "store",
+        "retail",
+        "boutique",
+        "market",
+        "awning"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/storefront.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-shopping-bag",
+    "type": "registry:component",
+    "title": "Shopping bag illustration",
+    "description": "A shopping bag, handles up, and the day's find rising out of it in the accent. One isometric scene from the Commerce illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "commerce"
+    ],
+    "meta": {
+      "scene": "shopping-bag",
+      "component": "IllustrationShoppingBag",
+      "category": "commerce",
+      "tags": [
+        "purchase",
+        "retail",
+        "order",
+        "buy",
+        "fashion"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/shopping-bag.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-delivery",
+    "type": "registry:component",
+    "title": "Delivery illustration",
+    "description": "Parcels stacked at the end of their dashed route across the floor, taped and labeled, the newest landing on top in the accent. One isometric scene from the Commerce illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "commerce"
+    ],
+    "meta": {
+      "scene": "delivery",
+      "component": "IllustrationDelivery",
+      "category": "commerce",
+      "tags": [
+        "shipping",
+        "parcel",
+        "package",
+        "courier",
+        "logistics"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/delivery.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-payment",
+    "type": "registry:component",
+    "title": "Payment illustration",
+    "description": "A card reader with its screen and keys, and over it a card in the accent, about to tap. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "payment",
+      "component": "IllustrationPayment",
+      "category": "finance",
+      "tags": [
+        "card",
+        "checkout",
+        "terminal",
+        "contactless",
+        "pay"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/payment.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-wallet",
+    "type": "registry:component",
+    "title": "Wallet illustration",
+    "description": "A wallet standing on its edge, its strap snapped, one card tucked in and the other drawn out of it in the accent. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "wallet",
+      "component": "IllustrationWallet",
+      "category": "finance",
+      "tags": [
+        "cards",
+        "money",
+        "cash",
+        "coins",
+        "balance"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/wallet.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-savings",
+    "type": "registry:component",
+    "title": "Savings illustration",
+    "description": "A jar of coins, seen through the glass, and the next coin, in the accent, standing on edge over the slot in its lid. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "savings",
+      "component": "IllustrationSavings",
+      "category": "finance",
+      "tags": [
+        "jar",
+        "coins",
+        "budget",
+        "piggy",
+        "money"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/savings.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-heart-rate",
+    "type": "registry:component",
+    "title": "Heart rate illustration",
+    "description": "A monitor tracing one beat across its screen, and the heart beside it in the accent. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "heart-rate",
+      "component": "IllustrationHeartRate",
+      "category": "health",
+      "tags": [
+        "pulse",
+        "monitor",
+        "cardio",
+        "heartbeat",
+        "vitals"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/heart-rate.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-fitness",
+    "type": "registry:component",
+    "title": "Fitness illustration",
+    "description": "A dumbbell mid-rep over its mat, the end of the mat still rolled, the grip in the accent. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "fitness",
+      "component": "IllustrationFitness",
+      "category": "health",
+      "tags": [
+        "gym",
+        "workout",
+        "dumbbell",
+        "exercise",
+        "training"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/fitness.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-first-aid",
+    "type": "registry:component",
+    "title": "First aid illustration",
+    "description": "A first-aid kit with its handle and latches, and over it the cross, in the accent. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "first-aid",
+      "component": "IllustrationFirstAid",
+      "category": "health",
+      "tags": [
+        "medical",
+        "emergency",
+        "care",
+        "doctor",
+        "kit"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/first-aid.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-books",
+    "type": "registry:component",
+    "title": "Books illustration",
+    "description": "A stack of books, the top one in the accent lifting off it, and a pencil in front. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "books",
+      "component": "IllustrationBooks",
+      "category": "education",
+      "tags": [
+        "reading",
+        "library",
+        "study",
+        "learning",
+        "pencil"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/books.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-graduation",
+    "type": "registry:component",
+    "title": "Graduation illustration",
+    "description": "A mortarboard in the accent over the rolled diploma, its tassel hanging off one corner. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "graduation",
+      "component": "IllustrationGraduation",
+      "category": "education",
+      "tags": [
+        "diploma",
+        "school",
+        "degree",
+        "cap",
+        "university"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/graduation.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-idea",
+    "type": "registry:component",
+    "title": "Idea illustration",
+    "description": "A bulb hovering over its plinth, lit in the accent, its light on the floor and rays round it. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "idea",
+      "component": "IllustrationIdea",
+      "category": "education",
+      "tags": [
+        "lightbulb",
+        "insight",
+        "brainstorm",
+        "inspiration",
+        "tip"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/idea.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-suitcase",
+    "type": "registry:component",
+    "title": "Suitcase illustration",
+    "description": "A suitcase on its wheels, handle up, ribbed, and its luggage tag in the accent. One isometric scene from the Travel illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "travel"
+    ],
+    "meta": {
+      "scene": "suitcase",
+      "component": "IllustrationSuitcase",
+      "category": "travel",
+      "tags": [
+        "luggage",
+        "trip",
+        "baggage",
+        "vacation",
+        "packing"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/suitcase.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-flight",
+    "type": "registry:component",
+    "title": "Flight illustration",
+    "description": "A plane in the accent climbing off its runway, the dashed path it took behind it, its shadow still on the ground. One isometric scene from the Travel illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "travel"
+    ],
+    "meta": {
+      "scene": "flight",
+      "component": "IllustrationFlight",
+      "category": "travel",
+      "tags": [
+        "plane",
+        "airport",
+        "trip",
+        "booking",
+        "departure"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/flight.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-map",
+    "type": "registry:component",
+    "title": "Map illustration",
+    "description": "A map folded like a concertina, a road or two across it, and a pin in the accent where the dashed route ends. One isometric scene from the Travel illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "travel"
+    ],
+    "meta": {
+      "scene": "map",
+      "component": "IllustrationMap",
+      "category": "travel",
+      "tags": [
+        "route",
+        "directions",
+        "location",
+        "pin",
+        "navigation"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/map.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-coffee",
+    "type": "registry:component",
+    "title": "Coffee illustration",
+    "description": "A cup of coffee in the accent on its saucer, steam rising off it. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "coffee",
+      "component": "IllustrationCoffee",
+      "category": "food",
+      "tags": [
+        "cafe",
+        "drink",
+        "cup",
+        "break",
+        "morning"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/coffee.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-restaurant",
+    "type": "registry:component",
+    "title": "Restaurant illustration",
+    "description": "A table set for one, and the cloche over the plate in the accent, about to lift. Hovered, it does. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "restaurant",
+      "component": "IllustrationRestaurant",
+      "category": "food",
+      "tags": [
+        "dining",
+        "meal",
+        "table",
+        "dinner",
+        "reservation"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/restaurant.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-groceries",
+    "type": "registry:component",
+    "title": "Groceries illustration",
+    "description": "A basket of groceries, a bottle and a box standing in it, and an apple in the accent dropping in. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "groceries",
+      "component": "IllustrationGroceries",
+      "category": "food",
+      "tags": [
+        "basket",
+        "shopping",
+        "produce",
+        "market",
+        "apple"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/groceries.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-camera",
+    "type": "registry:component",
+    "title": "Camera illustration",
+    "description": "A camera hovering over its plinth, its lens barrel in the accent. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "camera",
+      "component": "IllustrationCamera",
+      "category": "media",
+      "tags": [
+        "photo",
+        "photography",
+        "lens",
+        "picture",
+        "snapshot"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/camera.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-music",
+    "type": "registry:component",
+    "title": "Music illustration",
+    "description": "A record on its turntable, the arm on its edge, and a note in the accent rising off it. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "music",
+      "component": "IllustrationMusic",
+      "category": "media",
+      "tags": [
+        "record",
+        "vinyl",
+        "audio",
+        "song",
+        "playlist"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/music.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-video",
+    "type": "registry:component",
+    "title": "Video illustration",
+    "description": "A screen on its stand, and its round play button in the accent lifting off it toward you. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "video",
+      "component": "IllustrationVideo",
+      "category": "media",
+      "tags": [
+        "play",
+        "player",
+        "screen",
+        "stream",
+        "movie"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/video.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-chat",
+    "type": "registry:component",
+    "title": "Chat illustration",
+    "description": "A message, its lines of text, and in front of it the reply being typed, in the accent. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "chat",
+      "component": "IllustrationChat",
+      "category": "social",
+      "tags": [
+        "message",
+        "conversation",
+        "reply",
+        "typing",
+        "support"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/chat.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-video-call",
+    "type": "registry:component",
+    "title": "Video call illustration",
+    "description": "A laptop on a call, four faces on its screen, and the one speaking in the accent, lifting out of the grid. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "video-call",
+      "component": "IllustrationVideoCall",
+      "category": "social",
+      "tags": [
+        "meeting",
+        "conference",
+        "laptop",
+        "remote",
+        "webcam"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/video-call.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-announcement",
+    "type": "registry:component",
+    "title": "Announcement illustration",
+    "description": "A megaphone in the accent hovering over its plinth, the rings of what it's saying spreading ahead of it. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "announcement",
+      "component": "IllustrationAnnouncement",
+      "category": "social",
+      "tags": [
+        "megaphone",
+        "news",
+        "broadcast",
+        "launch",
+        "marketing"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/announcement.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-home",
+    "type": "registry:component",
+    "title": "Home illustration",
+    "description": "A house with its door and windows, a tree beside it, and its roof in the accent. Hovered, the roof lifts off. One isometric scene from the Home illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "home"
+    ],
+    "meta": {
+      "scene": "home",
+      "component": "IllustrationHome",
+      "category": "home",
+      "tags": [
+        "house",
+        "property",
+        "tree",
+        "roof",
+        "living"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/home.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-plant",
+    "type": "registry:component",
+    "title": "Plant illustration",
+    "description": "A pot hovering over its saucer, and the first shoot in the accent, two leaves unfolding. Hovered, it grows. One isometric scene from the Home illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "home"
+    ],
+    "meta": {
+      "scene": "plant",
+      "component": "IllustrationPlant",
+      "category": "home",
+      "tags": [
+        "pot",
+        "sprout",
+        "growth",
+        "garden",
+        "nature"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/plant.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-gift",
+    "type": "registry:component",
+    "title": "Gift illustration",
+    "description": "A present tied with a ribbon in the accent, its lid and bow rising off it. Hovered, it opens. One isometric scene from the Home illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "home"
+    ],
+    "meta": {
+      "scene": "gift",
+      "component": "IllustrationGift",
+      "category": "home",
+      "tags": [
+        "present",
+        "reward",
+        "birthday",
+        "ribbon",
+        "surprise"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/gift.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-checklist",
+    "type": "registry:component",
+    "title": "Checklist illustration",
+    "description": "A clipboard with its list, two items ticked, the third's tick landing in the accent, and a pencil beside it. One isometric scene from the Work illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "work"
+    ],
+    "meta": {
+      "scene": "checklist",
+      "component": "IllustrationChecklist",
+      "category": "work",
+      "tags": [
+        "tasks",
+        "todo",
+        "clipboard",
+        "done",
+        "checkbox"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/checklist.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-briefcase",
+    "type": "registry:component",
+    "title": "Briefcase illustration",
+    "description": "A briefcase in the accent hovering over its shadow, handle up, latches shut. One isometric scene from the Work illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "work"
+    ],
+    "meta": {
+      "scene": "briefcase",
+      "component": "IllustrationBriefcase",
+      "category": "work",
+      "tags": [
+        "job",
+        "business",
+        "career",
+        "office",
+        "portfolio"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/briefcase.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-trophy",
+    "type": "registry:component",
+    "title": "Trophy illustration",
+    "description": "A trophy in the accent over its podium, the name plate on the front. One isometric scene from the Work illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "work"
+    ],
+    "meta": {
+      "scene": "trophy",
+      "component": "IllustrationTrophy",
+      "category": "work",
+      "tags": [
+        "award",
+        "winner",
+        "achievement",
+        "prize",
+        "podium"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/trophy.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-bicycle",
+    "type": "registry:component",
+    "title": "Bicycle illustration",
+    "description": "A bicycle in the accent hovering over its lane, its shadow on the road. Hovered, it hops. One isometric scene from the Sports illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "sports"
+    ],
+    "meta": {
+      "scene": "bicycle",
+      "component": "IllustrationBicycle",
+      "category": "sports",
+      "tags": [
+        "bike",
+        "cycling",
+        "ride",
+        "commute"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/bicycle.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-basketball",
+    "type": "registry:component",
+    "title": "Basketball illustration",
+    "description": "A hoop on its pole, the ball in the accent over the rim. Hovered, it drops through the net. One isometric scene from the Sports illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "sports"
+    ],
+    "meta": {
+      "scene": "basketball",
+      "component": "IllustrationBasketball",
+      "category": "sports",
+      "tags": [
+        "hoop",
+        "ball",
+        "court",
+        "score",
+        "game"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/basketball.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-stopwatch",
+    "type": "registry:component",
+    "title": "Stopwatch illustration",
+    "description": "A stopwatch hovering on its edge, the time so far swept in the accent and its button in the accent on top. Hovered, the button clicks. One isometric scene from the Sports illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "sports"
+    ],
+    "meta": {
+      "scene": "stopwatch",
+      "component": "IllustrationStopwatch",
+      "category": "sports",
+      "tags": [
+        "timer",
+        "time",
+        "race",
+        "lap",
+        "speed"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/stopwatch.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-tennis",
+    "type": "registry:component",
+    "title": "Tennis illustration",
+    "description": "A racket lying on the court, and a ball in the accent over its strings. Hovered, it bounces up off them. One isometric scene from the Sports illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "sports"
+    ],
+    "meta": {
+      "scene": "tennis",
+      "component": "IllustrationTennis",
+      "category": "sports",
+      "tags": [
+        "racket",
+        "ball",
+        "court",
+        "match"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/tennis.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-game-controller",
+    "type": "registry:component",
+    "title": "Game controller illustration",
+    "description": "A gamepad in the accent hovering over its shadow, pad and buttons up. Hovered, it's picked up. One isometric scene from the Play illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "play"
+    ],
+    "meta": {
+      "scene": "game-controller",
+      "component": "IllustrationGameController",
+      "category": "play",
+      "tags": [
+        "gamepad",
+        "gaming",
+        "console",
+        "joystick"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/game-controller.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-arcade",
+    "type": "registry:component",
+    "title": "Arcade illustration",
+    "description": "An arcade cabinet, stick and buttons on its panel, and a pixel heart in the accent coming out of the screen. Hovered, it jumps clear. One isometric scene from the Play illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "play"
+    ],
+    "meta": {
+      "scene": "arcade",
+      "component": "IllustrationArcade",
+      "category": "play",
+      "tags": [
+        "cabinet",
+        "retro",
+        "pixel",
+        "gaming",
+        "coin"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/arcade.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-dice",
+    "type": "registry:component",
+    "title": "Dice illustration",
+    "description": "A die at rest and another in the accent in the air over its shadow. Hovered, it's thrown higher. One isometric scene from the Play illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "play"
+    ],
+    "meta": {
+      "scene": "dice",
+      "component": "IllustrationDice",
+      "category": "play",
+      "tags": [
+        "roll",
+        "luck",
+        "chance",
+        "board",
+        "random"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/dice.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-puzzle",
+    "type": "registry:component",
+    "title": "Puzzle illustration",
+    "description": "A jigsaw with its middle piece missing, and the piece in the accent hovering over the gap. Hovered, it drops into place. One isometric scene from the Play illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "play"
+    ],
+    "meta": {
+      "scene": "puzzle",
+      "component": "IllustrationPuzzle",
+      "category": "play",
+      "tags": [
+        "jigsaw",
+        "piece",
+        "fit",
+        "solve"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/puzzle.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-party",
+    "type": "registry:component",
+    "title": "Party illustration",
+    "description": "Three balloons tied to a weight among the confetti, the one in the accent slipping its string. Hovered, it floats off. One isometric scene from the Events illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "events"
+    ],
+    "meta": {
+      "scene": "party",
+      "component": "IllustrationParty",
+      "category": "events",
+      "tags": [
+        "balloons",
+        "birthday",
+        "celebrate",
+        "confetti"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/party.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-ticket",
+    "type": "registry:component",
+    "title": "Ticket illustration",
+    "description": "A roll of tickets unwinding across the floor, perforated between each, and the last one in the accent torn off it. Hovered, it's taken. One isometric scene from the Events illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "events"
+    ],
+    "meta": {
+      "scene": "ticket",
+      "component": "IllustrationTicket",
+      "category": "events",
+      "tags": [
+        "admission",
+        "pass",
+        "concert",
+        "booking",
+        "entry"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/ticket.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-stage",
+    "type": "registry:component",
+    "title": "Stage illustration",
+    "description": "A stage behind its arch, its curtain in the accent just off the boards, a spotlight on the microphone waiting behind it. Hovered, the curtain goes up. One isometric scene from the Events illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "events"
+    ],
+    "meta": {
+      "scene": "stage",
+      "component": "IllustrationShowStage",
+      "category": "events",
+      "tags": [
+        "theatre",
+        "curtain",
+        "show",
+        "spotlight",
+        "performance"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/stage.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-cake",
+    "type": "registry:component",
+    "title": "Cake illustration",
+    "description": "A cake on its stand, candles lit, a quarter cut showing its layers and the slice in the accent lifting out. Hovered, it's served. One isometric scene from the Events illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "events"
+    ],
+    "meta": {
+      "scene": "cake",
+      "component": "IllustrationCake",
+      "category": "events",
+      "tags": [
+        "birthday",
+        "celebration",
+        "candles",
+        "anniversary"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/cake.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-dog-house",
+    "type": "registry:component",
+    "title": "Dog house illustration",
+    "description": "A kennel with its arched door, a bone on its gable and its roof in the accent. Hovered, the roof lifts to show inside. One isometric scene from the Pets illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "pets"
+    ],
+    "meta": {
+      "scene": "dog-house",
+      "component": "IllustrationDogHouse",
+      "category": "pets",
+      "tags": [
+        "dog",
+        "kennel",
+        "puppy",
+        "yard"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/dog-house.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-fish-bowl",
+    "type": "registry:component",
+    "title": "Fish bowl illustration",
+    "description": "A glass bowl of water, a ripple on it, and a goldfish in the accent swimming inside. Hovered, it leaps out. One isometric scene from the Pets illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "pets"
+    ],
+    "meta": {
+      "scene": "fish-bowl",
+      "component": "IllustrationFishBowl",
+      "category": "pets",
+      "tags": [
+        "fish",
+        "goldfish",
+        "aquarium",
+        "water"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/fish-bowl.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-pet-bowl",
+    "type": "registry:component",
+    "title": "Pet bowl illustration",
+    "description": "A food bowl of kibble and a water bowl on their mat, and a bone-shaped treat in the accent over the food. Hovered, it drops in. One isometric scene from the Pets illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "pets"
+    ],
+    "meta": {
+      "scene": "pet-bowl",
+      "component": "IllustrationPetBowl",
+      "category": "pets",
+      "tags": [
+        "food",
+        "treat",
+        "feeding",
+        "dog",
+        "cat"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/pet-bowl.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-cat-tree",
+    "type": "registry:component",
+    "title": "Cat tree illustration",
+    "description": "A cat tree: a cubby, a post wound in sisal, the cat up on the top deck and its toy in the accent hanging below. Hovered, it's batted up. One isometric scene from the Pets illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "pets"
+    ],
+    "meta": {
+      "scene": "cat-tree",
+      "component": "IllustrationCatTree",
+      "category": "pets",
+      "tags": [
+        "cat",
+        "kitten",
+        "scratching",
+        "toy"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/cat-tree.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-sun-cloud",
+    "type": "registry:component",
+    "title": "Sun and cloud illustration",
+    "description": "The sun in the accent, its rays round it, half behind a cloud. Hovered, it comes out. One isometric scene from the Weather illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "weather"
+    ],
+    "meta": {
+      "scene": "sun-cloud",
+      "component": "IllustrationSunCloud",
+      "category": "weather",
+      "tags": [
+        "sunny",
+        "cloudy",
+        "forecast",
+        "sky",
+        "day"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/sun-cloud.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-rain",
+    "type": "registry:component",
+    "title": "Rain illustration",
+    "description": "Drops in the accent falling from a cloud toward the rings of a puddle. Hovered, they fall. One isometric scene from the Weather illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "weather"
+    ],
+    "meta": {
+      "scene": "rain",
+      "component": "IllustrationRain",
+      "category": "weather",
+      "tags": [
+        "rainy",
+        "drops",
+        "shower",
+        "forecast",
+        "wet"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/rain.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-snowflake",
+    "type": "registry:component",
+    "title": "Snowflake illustration",
+    "description": "A snowflake in the accent over the snow lying on the ground. Hovered, it settles. One isometric scene from the Weather illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "weather"
+    ],
+    "meta": {
+      "scene": "snowflake",
+      "component": "IllustrationSnowflake",
+      "category": "weather",
+      "tags": [
+        "snow",
+        "winter",
+        "cold",
+        "frost",
+        "forecast"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/snowflake.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-lightning",
+    "type": "registry:component",
+    "title": "Lightning illustration",
+    "description": "A storm cloud with a bolt in the accent out of it, and the ground it's about to hit. Hovered, it strikes. One isometric scene from the Weather illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "weather"
+    ],
+    "meta": {
+      "scene": "lightning",
+      "component": "IllustrationLightning",
+      "category": "weather",
+      "tags": [
+        "storm",
+        "thunder",
+        "bolt",
+        "flash",
+        "forecast"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/lightning.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-tree",
+    "type": "registry:component",
+    "title": "Tree illustration",
+    "description": "An apple tree, its crown four puffs, and an apple in the accent hanging under it. Hovered, it falls. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "tree",
+      "component": "IllustrationTree",
+      "category": "nature",
+      "tags": [
+        "apple",
+        "park",
+        "garden",
+        "forest",
+        "outdoors"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/tree.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-mountain",
+    "type": "registry:component",
+    "title": "Mountain illustration",
+    "description": "Two snow-capped peaks, and a flag in the accent on the taller one's summit. Hovered, it's run up the pole. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "mountain",
+      "component": "IllustrationMountain",
+      "category": "nature",
+      "tags": [
+        "peak",
+        "summit",
+        "hiking",
+        "climb",
+        "goal"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/mountain.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-island",
+    "type": "registry:component",
+    "title": "Island illustration",
+    "description": "An island of sand in the sea, a palm leaning over it, and a boat offshore, its sail in the accent. Hovered, a swell lifts it. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "island",
+      "component": "IllustrationIsland",
+      "category": "nature",
+      "tags": [
+        "beach",
+        "palm",
+        "sea",
+        "holiday",
+        "tropical"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/island.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-flower",
+    "type": "registry:component",
+    "title": "Flower illustration",
+    "description": "A daisy in the accent standing in a glass vase, two leaves on its stem. Hovered, it's lifted out. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "flower",
+      "component": "IllustrationFlower",
+      "category": "nature",
+      "tags": [
+        "bloom",
+        "daisy",
+        "vase",
+        "spring",
+        "garden"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/flower.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-recycling",
+    "type": "registry:component",
+    "title": "Recycling illustration",
+    "description": "A recycling bin with its mark, and a bottle in the accent over the opening. Hovered, it drops in. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "recycling",
+      "component": "IllustrationRecycling",
+      "category": "nature",
+      "tags": [
+        "recycle",
+        "bin",
+        "waste",
+        "bottle",
+        "sustainability"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/recycling.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-greenhouse",
+    "type": "registry:component",
+    "title": "Greenhouse illustration",
+    "description": "A greenhouse, glass on a low wall, seedlings in pots in rows, and one of them in the accent. Hovered, it shoots up. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "greenhouse",
+      "component": "IllustrationGreenhouse",
+      "category": "nature",
+      "tags": [
+        "garden",
+        "seedlings",
+        "grow",
+        "glass",
+        "plants"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/greenhouse.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-water-drop",
+    "type": "registry:component",
+    "title": "Water drop illustration",
+    "description": "One drop of water in the accent over the rings it's about to make. Hovered, it falls. One isometric scene from the Nature illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "nature"
+    ],
+    "meta": {
+      "scene": "water-drop",
+      "component": "IllustrationWaterDrop",
+      "category": "nature",
+      "tags": [
+        "water",
+        "droplet",
+        "ripple",
+        "liquid",
+        "hydration"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/water-drop.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-solar-panel",
+    "type": "registry:component",
+    "title": "Solar panel illustration",
+    "description": "A solar panel in the accent between its posts, its cells ruled across it. Hovered, it tilts to face the sun. One isometric scene from the Energy illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "energy"
+    ],
+    "meta": {
+      "scene": "solar-panel",
+      "component": "IllustrationSolarPanel",
+      "category": "energy",
+      "tags": [
+        "solar",
+        "sun",
+        "renewable",
+        "power",
+        "electricity"
+      ]
+    },
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/solar-panel.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-wind-turbine",
+    "type": "registry:component",
+    "title": "Wind turbine illustration",
+    "description": "A wind turbine on its mast, its blades in the accent turning slowly. Hovered, a gust spins them up. One isometric scene from the Energy illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "energy"
+    ],
+    "meta": {
+      "scene": "wind-turbine",
+      "component": "IllustrationWindTurbine",
+      "category": "energy",
+      "tags": [
+        "wind",
+        "windmill",
+        "renewable",
+        "power",
+        "electricity"
+      ]
+    },
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/wind-turbine.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-battery",
+    "type": "registry:component",
+    "title": "Battery illustration",
+    "description": "A battery lying down, its case glass: three bars of charge in it and the fourth in the accent over its place. Hovered, it drops in. One isometric scene from the Energy illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "energy"
+    ],
+    "meta": {
+      "scene": "battery",
+      "component": "IllustrationBattery",
+      "category": "energy",
+      "tags": [
+        "charge",
+        "charging",
+        "power",
+        "level",
+        "storage"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/battery.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-ev-charger",
+    "type": "registry:component",
+    "title": "EV charger illustration",
+    "description": "A charging post with its screen, a bay marked out in front of it, and its plug in the accent sitting in the holster. Hovered, it's lifted out. One isometric scene from the Energy illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "energy"
+    ],
+    "meta": {
+      "scene": "ev-charger",
+      "component": "IllustrationEvCharger",
+      "category": "energy",
+      "tags": [
+        "electric",
+        "car",
+        "charging",
+        "plug",
+        "station"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/ev-charger.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-car",
+    "type": "registry:component",
+    "title": "Car illustration",
+    "description": "A car in the accent parked in its bay, its wheels on the ground. Hovered, it rises on its springs, ready to go. One isometric scene from the Transport illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "transport"
+    ],
+    "meta": {
+      "scene": "car",
+      "component": "IllustrationCar",
+      "category": "transport",
+      "tags": [
+        "vehicle",
+        "drive",
+        "ride",
+        "parking",
+        "road"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/car.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-bus",
+    "type": "registry:component",
+    "title": "Bus illustration",
+    "description": "A bus pulled in to its stop, its livery and destination lit in the accent, the sign and a bench on the curb. Hovered, it rises on its springs. One isometric scene from the Transport illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "transport"
+    ],
+    "meta": {
+      "scene": "bus",
+      "component": "IllustrationBus",
+      "category": "transport",
+      "tags": [
+        "transit",
+        "commute",
+        "stop",
+        "public",
+        "city"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/bus.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-train",
+    "type": "registry:component",
+    "title": "Train illustration",
+    "description": "A train on its rails, sleepers under them, its long nose in the accent. Hovered, it rises on its springs. One isometric scene from the Transport illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "transport"
+    ],
+    "meta": {
+      "scene": "train",
+      "component": "IllustrationTrain",
+      "category": "transport",
+      "tags": [
+        "rail",
+        "railway",
+        "transit",
+        "commute",
+        "station"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/train.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-scooter",
+    "type": "registry:component",
+    "title": "Scooter illustration",
+    "description": "A kick scooter mid-hop over its shadow: deck, stem and bar in the accent, on two small wheels. Hovered, it kicks up higher. One isometric scene from the Transport illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "transport"
+    ],
+    "meta": {
+      "scene": "scooter",
+      "component": "IllustrationScooter",
+      "category": "transport",
+      "tags": [
+        "kick",
+        "ride",
+        "electric",
+        "commute",
+        "city"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/scooter.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-ship",
+    "type": "registry:component",
+    "title": "Ship illustration",
+    "description": "A container ship out on the water, the hull in the accent, boxes stacked on deck and the bridge at the stern. Hovered, it rides up the swell. One isometric scene from the Transport illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "transport"
+    ],
+    "meta": {
+      "scene": "ship",
+      "component": "IllustrationShip",
+      "category": "transport",
+      "tags": [
+        "boat",
+        "cargo",
+        "shipping",
+        "freight",
+        "sea",
+        "port"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/ship.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-office-tower",
+    "type": "registry:component",
+    "title": "Office tower illustration",
+    "description": "A glass tower of ribbon windows between two lower blocks, and its crown in the accent. Hovered, the crown lifts off. One isometric scene from the Places illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "places"
+    ],
+    "meta": {
+      "scene": "office-tower",
+      "component": "IllustrationOfficeTower",
+      "category": "places",
+      "tags": [
+        "building",
+        "office",
+        "skyscraper",
+        "city",
+        "business"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/office-tower.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-bank",
+    "type": "registry:component",
+    "title": "Bank illustration",
+    "description": "A bank behind its four columns on a flight of steps, its name across the frieze, and a coin in the accent over the pediment. Hovered, the coin lifts. One isometric scene from the Places illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "places"
+    ],
+    "meta": {
+      "scene": "bank",
+      "component": "IllustrationBank",
+      "category": "places",
+      "tags": [
+        "money",
+        "finance",
+        "building",
+        "branch",
+        "deposit"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/bank.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-hospital",
+    "type": "registry:component",
+    "title": "Hospital illustration",
+    "description": "A hospital with its cross over the doors and a pad on the roof, and a helicopter in the accent over it. Hovered, it takes off. One isometric scene from the Places illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "places"
+    ],
+    "meta": {
+      "scene": "hospital",
+      "component": "IllustrationHospital",
+      "category": "places",
+      "tags": [
+        "health",
+        "medical",
+        "clinic",
+        "emergency",
+        "helicopter"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/hospital.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-school",
+    "type": "registry:component",
+    "title": "School illustration",
+    "description": "A schoolhouse: two floors of windows, the tower over its door with the clock on it, and the flag in the accent at the foot of its pole. Hovered, it runs up. One isometric scene from the Places illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "places"
+    ],
+    "meta": {
+      "scene": "school",
+      "component": "IllustrationSchool",
+      "category": "places",
+      "tags": [
+        "education",
+        "class",
+        "campus",
+        "building",
+        "flag"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/school.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-museum",
+    "type": "registry:component",
+    "title": "Museum illustration",
+    "description": "A gallery corner: a painting on the wall, a rope in front, and on its plinth an amphora in the accent. Hovered, it lifts for a closer look. One isometric scene from the Places illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "places"
+    ],
+    "meta": {
+      "scene": "museum",
+      "component": "IllustrationMuseum",
+      "category": "places",
+      "tags": [
+        "gallery",
+        "art",
+        "exhibit",
+        "culture",
+        "history"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/museum.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-lighthouse",
+    "type": "registry:component",
+    "title": "Lighthouse illustration",
+    "description": "A lighthouse on its rock, banded, rings on the water round it, and the lantern in the accent shining out. Hovered, the lantern lifts. One isometric scene from the Places illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "places"
+    ],
+    "meta": {
+      "scene": "lighthouse",
+      "component": "IllustrationLighthouse",
+      "category": "places",
+      "tags": [
+        "coast",
+        "sea",
+        "beacon",
+        "light",
+        "harbour"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/lighthouse.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-tent",
+    "type": "registry:component",
+    "title": "Tent illustration",
+    "description": "A tent pitched on its patch, guyed out, door open, and the campfire in front with its flame in the accent. Hovered, the fire flares up. One isometric scene from the Outdoors illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "outdoors"
+    ],
+    "meta": {
+      "scene": "tent",
+      "component": "IllustrationTent",
+      "category": "outdoors",
+      "tags": [
+        "camping",
+        "campfire",
+        "trip",
+        "nature",
+        "night"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/tent.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-compass",
+    "type": "registry:component",
+    "title": "Compass illustration",
+    "description": "A compass with its dial and bail, and over the dial its needle, the north half in the accent. Hovered, it lifts to find north. One isometric scene from the Outdoors illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "outdoors"
+    ],
+    "meta": {
+      "scene": "compass",
+      "component": "IllustrationCompass",
+      "category": "outdoors",
+      "tags": [
+        "direction",
+        "navigation",
+        "north",
+        "explore",
+        "hiking"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/compass.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-binoculars",
+    "type": "registry:component",
+    "title": "Binoculars illustration",
+    "description": "Binoculars hovering over their shadow, the lens barrels facing you in the accent. Hovered, they're raised to take a look. One isometric scene from the Outdoors illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "outdoors"
+    ],
+    "meta": {
+      "scene": "binoculars",
+      "component": "IllustrationBinoculars",
+      "category": "outdoors",
+      "tags": [
+        "look",
+        "explore",
+        "birdwatching",
+        "view",
+        "discover"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/binoculars.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-hot-air-balloon",
+    "type": "registry:component",
+    "title": "Hot-air balloon illustration",
+    "description": "A hot-air balloon going up over its landing field, the envelope in the accent, the basket hanging under it. Hovered, it climbs. One isometric scene from the Outdoors illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "outdoors"
+    ],
+    "meta": {
+      "scene": "hot-air-balloon",
+      "component": "IllustrationHotAirBalloon",
+      "category": "outdoors",
+      "tags": [
+        "balloon",
+        "flight",
+        "sky",
+        "adventure",
+        "travel"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/hot-air-balloon.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-beach",
+    "type": "registry:component",
+    "title": "Beach illustration",
+    "description": "A day at the beach: the sea lapping at the sand, a striped towel laid out, and the umbrella in the accent over it. Hovered, a gust lifts it. One isometric scene from the Outdoors illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "outdoors"
+    ],
+    "meta": {
+      "scene": "beach",
+      "component": "IllustrationBeach",
+      "category": "outdoors",
+      "tags": [
+        "holiday",
+        "summer",
+        "umbrella",
+        "towel",
+        "sand",
+        "vacation"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/beach.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-microscope",
+    "type": "registry:component",
+    "title": "Microscope illustration",
+    "description": "A microscope on its foot, a slide on the stage, its tube in the accent. Hovered, it racks up to focus. One isometric scene from the Science illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "science"
+    ],
+    "meta": {
+      "scene": "microscope",
+      "component": "IllustrationMicroscope",
+      "category": "science",
+      "tags": [
+        "lab",
+        "research",
+        "biology",
+        "zoom",
+        "sample"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/microscope.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-lab-flask",
+    "type": "registry:component",
+    "title": "Lab flask illustration",
+    "description": "A flask hovering over its plinth, the liquid in it lit in the accent, bubbles rising off it. Hovered, it lifts and they float away. One isometric scene from the Science illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "science"
+    ],
+    "meta": {
+      "scene": "lab-flask",
+      "component": "IllustrationLabFlask",
+      "category": "science",
+      "tags": [
+        "chemistry",
+        "experiment",
+        "lab",
+        "beta",
+        "test"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/lab-flask.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-atom",
+    "type": "registry:component",
+    "title": "Atom illustration",
+    "description": "An atom over its plinth: its nucleus in the accent inside three orbits, one electron on each. Hovered, it lifts. One isometric scene from the Science illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "science"
+    ],
+    "meta": {
+      "scene": "atom",
+      "component": "IllustrationAtom",
+      "category": "science",
+      "tags": [
+        "physics",
+        "energy",
+        "particle",
+        "electron",
+        "nuclear"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/atom.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-telescope",
+    "type": "registry:component",
+    "title": "Telescope illustration",
+    "description": "A telescope on its tripod, trained on a star in the accent. Hovered, the star rises. One isometric scene from the Science illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "science"
+    ],
+    "meta": {
+      "scene": "telescope",
+      "component": "IllustrationTelescope",
+      "category": "science",
+      "tags": [
+        "astronomy",
+        "space",
+        "stars",
+        "discover",
+        "observe"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/telescope.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-dna",
+    "type": "registry:component",
+    "title": "DNA illustration",
+    "description": "A double helix on its stand, seen side on: two backbones twisting round each other, one lit in the accent, paired by their rungs. Hovered, the lit strand lifts away: it unzips. One isometric scene from the Science illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "science"
+    ],
+    "meta": {
+      "scene": "dna",
+      "component": "IllustrationDna",
+      "category": "science",
+      "tags": [
+        "genetics",
+        "biology",
+        "helix",
+        "gene",
+        "health"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/dna.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-padlock",
+    "type": "registry:component",
+    "title": "Padlock illustration",
+    "description": "A padlock with its keyhole, its shackle in the accent. Hovered, the shackle springs open. One isometric scene from the Security illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "security"
+    ],
+    "meta": {
+      "scene": "padlock",
+      "component": "IllustrationPadlock",
+      "category": "security",
+      "tags": [
+        "lock",
+        "locked",
+        "unlock",
+        "privacy",
+        "secure"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/padlock.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-key",
+    "type": "registry:component",
+    "title": "Key illustration",
+    "description": "A key in the accent hanging over the lock it fits, the slot cut in the plate below. Hovered, it drops toward it. One isometric scene from the Security illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "security"
+    ],
+    "meta": {
+      "scene": "key",
+      "component": "IllustrationKey",
+      "category": "security",
+      "tags": [
+        "access",
+        "password",
+        "unlock",
+        "credentials",
+        "login"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/key.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-fingerprint",
+    "type": "registry:component",
+    "title": "Fingerprint illustration",
+    "description": "A reader standing on its plinth, its glass lit, and a print in the accent lifting off it. Hovered, it's read. One isometric scene from the Security illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "security"
+    ],
+    "meta": {
+      "scene": "fingerprint",
+      "component": "IllustrationFingerprint",
+      "category": "security",
+      "tags": [
+        "biometric",
+        "identity",
+        "touch",
+        "scan",
+        "login"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/fingerprint.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-shield",
+    "type": "registry:component",
+    "title": "Shield illustration",
+    "description": "A shield in the accent standing guard over its plinth, a check on its face. Hovered, it rises. One isometric scene from the Security illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "security"
+    ],
+    "meta": {
+      "scene": "shield",
+      "component": "IllustrationShield",
+      "category": "security",
+      "tags": [
+        "protection",
+        "antivirus",
+        "safe",
+        "guard",
+        "verified"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/shield.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-vault",
+    "type": "registry:component",
+    "title": "Vault illustration",
+    "description": "A safe on its feet with its door swung wide on its bolts, gold stacked inside, and one bar in the accent drawn out. Hovered, it lifts clear. One isometric scene from the Security illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "security"
+    ],
+    "meta": {
+      "scene": "vault",
+      "component": "IllustrationVault",
+      "category": "security",
+      "tags": [
+        "safe",
+        "gold",
+        "valuables",
+        "secure",
+        "savings"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/vault.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-phone",
+    "type": "registry:component",
+    "title": "Phone illustration",
+    "description": "A phone standing on its plinth, its home screen on, and a notification in the accent lifting off it. Hovered, it rises clear. One isometric scene from the Devices illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "devices"
+    ],
+    "meta": {
+      "scene": "phone",
+      "component": "IllustrationPhone",
+      "category": "devices",
+      "tags": [
+        "mobile",
+        "smartphone",
+        "app",
+        "notification",
+        "cell"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/phone.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-laptop",
+    "type": "registry:component",
+    "title": "Laptop illustration",
+    "description": "A laptop open on its plinth, facing the other way from the call's, a window of code on its screen and one in the accent lifting off it. Hovered, it comes clear. One isometric scene from the Devices illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "devices"
+    ],
+    "meta": {
+      "scene": "laptop",
+      "component": "IllustrationLaptop",
+      "category": "devices",
+      "tags": [
+        "computer",
+        "notebook",
+        "desktop",
+        "code",
+        "screen"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/laptop.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-smartwatch",
+    "type": "registry:component",
+    "title": "Smartwatch illustration",
+    "description": "A watch hovering over its charger, its strap up and down, and the ring on its screen closing in the accent. Hovered, it lifts off. One isometric scene from the Devices illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "devices"
+    ],
+    "meta": {
+      "scene": "smartwatch",
+      "component": "IllustrationSmartwatch",
+      "category": "devices",
+      "tags": [
+        "watch",
+        "wearable",
+        "fitness",
+        "time",
+        "activity"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/smartwatch.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-vr-headset",
+    "type": "registry:component",
+    "title": "VR headset illustration",
+    "description": "A headset resting on its plinth, and over it the world it shows: a wireframe cube in the accent. Hovered, the cube rises. One isometric scene from the Devices illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "devices"
+    ],
+    "meta": {
+      "scene": "vr-headset",
+      "component": "IllustrationVrHeadset",
+      "category": "devices",
+      "tags": [
+        "virtual",
+        "reality",
+        "goggles",
+        "immersive",
+        "3d"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/vr-headset.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-printer",
+    "type": "registry:component",
+    "title": "Printer illustration",
+    "description": "A printer with its paper standing in the feed, and the page it just printed on the tray in the accent. Hovered, the page lifts off. One isometric scene from the Devices illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "devices"
+    ],
+    "meta": {
+      "scene": "printer",
+      "component": "IllustrationPrinter",
+      "category": "devices",
+      "tags": [
+        "print",
+        "paper",
+        "office",
+        "document",
+        "page"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/printer.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-drone",
+    "type": "registry:component",
+    "title": "Drone illustration",
+    "description": "A drone in the accent hovering over its landing pad, its rotors a blur. Hovered, it climbs. One isometric scene from the Devices illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "devices"
+    ],
+    "meta": {
+      "scene": "drone",
+      "component": "IllustrationDrone",
+      "category": "devices",
+      "tags": [
+        "quadcopter",
+        "flying",
+        "aerial",
+        "camera",
+        "delivery"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/drone.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-handshake",
+    "type": "registry:component",
+    "title": "Handshake illustration",
+    "description": "Two arms meeting over a round plinth, sleeves and cuffs, and the clasp of their hands in the accent. The pair bobs as a shake does; hovered, it rises. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "handshake",
+      "component": "IllustrationHandshake",
+      "category": "business",
+      "tags": [
+        "deal",
+        "agreement",
+        "partner",
+        "welcome",
+        "trust"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/handshake.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-presentation",
+    "type": "registry:component",
+    "title": "Presentation illustration",
+    "description": "A pitch on an easel: bullet points and a pie, its key slice in the accent coming off the board. Hovered, it lifts out. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "presentation",
+      "component": "IllustrationPresentation",
+      "category": "business",
+      "tags": [
+        "pitch",
+        "slides",
+        "easel",
+        "chart",
+        "meeting"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/presentation.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-meeting",
+    "type": "registry:component",
+    "title": "Meeting illustration",
+    "description": "A boardroom table, chairs drawn up round it and a paper at each place, and over it what's being said, in the accent. Hovered, it rises. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "meeting",
+      "component": "IllustrationMeeting",
+      "category": "business",
+      "tags": [
+        "boardroom",
+        "conference",
+        "table",
+        "chairs",
+        "discussion"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/meeting.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-org-chart",
+    "type": "registry:component",
+    "title": "Org chart illustration",
+    "description": "An org chart on a standing board: the team, their two leads, and at the top the head in the accent, lifting off it. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "org-chart",
+      "component": "IllustrationOrgChart",
+      "category": "business",
+      "tags": [
+        "hierarchy",
+        "team",
+        "structure",
+        "company",
+        "people"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/org-chart.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-target",
+    "type": "registry:component",
+    "title": "Target illustration",
+    "description": "A target on the floor in rings, and a dart in the accent over the bullseye: point, barrel, shaft and crossed flights, the far vane first. Hovered, it lands. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "target",
+      "component": "IllustrationTarget",
+      "category": "business",
+      "tags": [
+        "goal",
+        "aim",
+        "bullseye",
+        "dart",
+        "focus"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/target.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-contract",
+    "type": "registry:component",
+    "title": "Contract illustration",
+    "description": "A contract on the desk, a copy under it, and the pen in the accent over the line it's just signed. Hovered, the pen lifts. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "contract",
+      "component": "IllustrationContract",
+      "category": "business",
+      "tags": [
+        "agreement",
+        "sign",
+        "signature",
+        "document",
+        "legal"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/contract.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-scales",
+    "type": "registry:component",
+    "title": "Scales illustration",
+    "description": "A balance on its post, a pan hanging from each end of the beam, and a weight in the accent over the near one. Hovered, it's set down. One isometric scene from the Business illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "business"
+    ],
+    "meta": {
+      "scene": "scales",
+      "component": "IllustrationScales",
+      "category": "business",
+      "tags": [
+        "justice",
+        "balance",
+        "law",
+        "legal",
+        "fair",
+        "weigh"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/scales.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-stock-chart",
+    "type": "registry:component",
+    "title": "Stock chart illustration",
+    "description": "Candles climbing a chart, falling days darker, each on its wick, the trend dashed through their closes, and the last in the accent breaking out. Hovered, it jumps. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "stock-chart",
+      "component": "IllustrationStockChart",
+      "category": "finance",
+      "tags": [
+        "stocks",
+        "trading",
+        "market",
+        "candles",
+        "invest"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/stock-chart.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-calculator",
+    "type": "registry:component",
+    "title": "Calculator illustration",
+    "description": "A calculator on the desk, its display and keys, and its tall equals key in the accent springing up out of its place. Hovered, it rises. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "calculator",
+      "component": "IllustrationCalculator",
+      "category": "finance",
+      "tags": [
+        "math",
+        "budget",
+        "accounting",
+        "sum",
+        "tax"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/calculator.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-coins",
+    "type": "registry:component",
+    "title": "Coins illustration",
+    "description": "Coins stacked in three piles, a few loose, and the next coin in the accent over the tallest. Hovered, it drops onto the pile. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "coins",
+      "component": "IllustrationCoins",
+      "category": "finance",
+      "tags": [
+        "money",
+        "cash",
+        "change",
+        "savings",
+        "earnings"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/coins.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-invoice",
+    "type": "registry:component",
+    "title": "Invoice illustration",
+    "description": "A till with its screen and keys, and the invoice in the accent printing out of the slot at its back. Hovered, more of it comes out. One isometric scene from the Finance illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "finance"
+    ],
+    "meta": {
+      "scene": "invoice",
+      "component": "IllustrationInvoice",
+      "category": "finance",
+      "tags": [
+        "bill",
+        "receipt",
+        "billing",
+        "payment",
+        "print"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/invoice.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-phone-call",
+    "type": "registry:component",
+    "title": "Phone call illustration",
+    "description": "A desk phone with its dial, and the handset in the accent over its cradle. Hovered, it's picked up. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "phone-call",
+      "component": "IllustrationPhoneCall",
+      "category": "social",
+      "tags": [
+        "call",
+        "ring",
+        "telephone",
+        "support",
+        "contact"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/phone-call.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-newsletter",
+    "type": "registry:component",
+    "title": "Newsletter illustration",
+    "description": "A mailbox on its post, the day's newsletter rolled in its open door, and its flag in the accent up. Hovered, the flag rises. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "newsletter",
+      "component": "IllustrationNewsletter",
+      "category": "social",
+      "tags": [
+        "subscribe",
+        "mailbox",
+        "news",
+        "updates",
+        "inbox"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/newsletter.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-podcast",
+    "type": "registry:component",
+    "title": "Podcast illustration",
+    "description": "A studio mic on its stand, its capsule in the accent, and headphones standing beside it. Hovered, the mic rises. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "podcast",
+      "component": "IllustrationPodcast",
+      "category": "social",
+      "tags": [
+        "mic",
+        "microphone",
+        "audio",
+        "record",
+        "show"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/podcast.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-community",
+    "type": "registry:component",
+    "title": "Community illustration",
+    "description": "People holding hands in a circle, and over the place kept for them the one joining, in the accent. Hovered, they step in and the circle closes. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "community",
+      "component": "IllustrationCommunity",
+      "category": "social",
+      "tags": [
+        "people",
+        "group",
+        "gathering",
+        "members",
+        "campfire"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/community.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-reactions",
+    "type": "registry:component",
+    "title": "Reactions illustration",
+    "description": "A post and the reactions under it, and a heart in the accent rising off them. Hovered, it floats up. One isometric scene from the Social illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "social"
+    ],
+    "meta": {
+      "scene": "reactions",
+      "component": "IllustrationReactions",
+      "category": "social",
+      "tags": [
+        "like",
+        "heart",
+        "emoji",
+        "feedback",
+        "post"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/reactions.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-pizza",
+    "type": "registry:component",
+    "title": "Pizza illustration",
+    "description": "A pizza on its board, cut in six, and the slice in the accent lifted out of it. Hovered, it rises away. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "pizza",
+      "component": "IllustrationPizza",
+      "category": "food",
+      "tags": [
+        "slice",
+        "takeaway",
+        "dinner",
+        "order"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/pizza.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-bakery",
+    "type": "registry:component",
+    "title": "Bakery illustration",
+    "description": "A loaf on its board with the bread knife in front, and its first slice in the accent falling away. Hovered, it lifts off. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "bakery",
+      "component": "IllustrationBakery",
+      "category": "food",
+      "tags": [
+        "bread",
+        "loaf",
+        "toast",
+        "breakfast"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/bakery.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-cocktail",
+    "type": "registry:component",
+    "title": "Cocktail illustration",
+    "description": "A cocktail on its stem, and over it a cherry in the accent. Hovered, it drops in. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "cocktail",
+      "component": "IllustrationCocktail",
+      "category": "food",
+      "tags": [
+        "drink",
+        "bar",
+        "glass",
+        "party"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/cocktail.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-cooking",
+    "type": "registry:component",
+    "title": "Cooking illustration",
+    "description": "A pot on the hob, the empty ring beside it, and its lid in the accent rattling on a head of steam. Hovered, it lifts. One isometric scene from the Food illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "food"
+    ],
+    "meta": {
+      "scene": "cooking",
+      "component": "IllustrationCooking",
+      "category": "food",
+      "tags": [
+        "pot",
+        "stove",
+        "kitchen",
+        "recipe",
+        "steam"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-scene",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/cooking.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-pills",
+    "type": "registry:component",
+    "title": "Pills illustration",
+    "description": "An open pill bottle with its label, the cap on its side and two tablets by it, and a capsule in the accent rising out. Hovered, it rises further. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "pills",
+      "component": "IllustrationPills",
+      "category": "health",
+      "tags": [
+        "medicine",
+        "pharmacy",
+        "prescription",
+        "capsule"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/pills.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-stethoscope",
+    "type": "registry:component",
+    "title": "Stethoscope illustration",
+    "description": "A stethoscope laid on the table, its tubing looped round, and its chest piece in the accent. Hovered, it's picked up to listen. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "stethoscope",
+      "component": "IllustrationStethoscope",
+      "category": "health",
+      "tags": [
+        "doctor",
+        "checkup",
+        "clinic",
+        "medical"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/stethoscope.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-tooth",
+    "type": "registry:component",
+    "title": "Tooth illustration",
+    "description": "A tooth in the accent, shining, over the brush that keeps it so. Hovered, it rises. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "tooth",
+      "component": "IllustrationTooth",
+      "category": "health",
+      "tags": [
+        "dentist",
+        "dental",
+        "teeth",
+        "toothbrush"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/tooth.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-yoga",
+    "type": "registry:component",
+    "title": "Yoga illustration",
+    "description": "Someone meditating, cut from the accent like a standee: crossed legs, hands on the knees. It floats over the mat, a block beside it. Hovered, it rises. One isometric scene from the Health illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "health"
+    ],
+    "meta": {
+      "scene": "yoga",
+      "component": "IllustrationYoga",
+      "category": "health",
+      "tags": [
+        "meditation",
+        "mindfulness",
+        "wellness",
+        "calm",
+        "mat"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/yoga.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-globe",
+    "type": "registry:component",
+    "title": "Globe illustration",
+    "description": "A desk globe: the sphere in the accent, tilted on its axis in a half ring over its stand, its lines of latitude and longitude on it. Hovered, it lifts out. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "globe",
+      "component": "IllustrationGlobe",
+      "category": "education",
+      "tags": [
+        "world",
+        "geography",
+        "earth",
+        "international",
+        "language"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/globe.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-school-backpack",
+    "type": "registry:component",
+    "title": "School backpack illustration",
+    "description": "A school backpack in the accent, zipped, its front pocket and handle, a pencil on the floor in front. Hovered, it's picked up. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "school-backpack",
+      "component": "IllustrationBackpack",
+      "category": "education",
+      "tags": [
+        "bag",
+        "student",
+        "kids",
+        "homework"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/school-backpack.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-library",
+    "type": "registry:component",
+    "title": "Library illustration",
+    "description": "A bookcase of two shelves, books standing in rows, a stack lying flat and a plant at the ends, and one book in the accent taken out, hovering by its gap. Hovered, it rises. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "library",
+      "component": "IllustrationLibrary",
+      "category": "education",
+      "tags": [
+        "bookcase",
+        "shelf",
+        "reading",
+        "books",
+        "catalog"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/library.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-abacus",
+    "type": "registry:component",
+    "title": "Abacus illustration",
+    "description": "An abacus standing on its feet, beads on its rods, and two in the accent on their way up to the beam. Hovered, they're counted. One isometric scene from the Education illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "education"
+    ],
+    "meta": {
+      "scene": "abacus",
+      "component": "IllustrationAbacus",
+      "category": "education",
+      "tags": [
+        "counting",
+        "math",
+        "numbers",
+        "beads"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/abacus.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-easel",
+    "type": "registry:component",
+    "title": "Easel illustration",
+    "description": "A canvas on its easel with a landscape on it, and the palette in the accent with its paints and brush. Hovered, it's picked up. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "easel",
+      "component": "IllustrationEasel",
+      "category": "media",
+      "tags": [
+        "painting",
+        "art",
+        "canvas",
+        "palette",
+        "creative"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/easel.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-guitar",
+    "type": "registry:component",
+    "title": "Guitar illustration",
+    "description": "An acoustic guitar in the accent, leaning as if on a stand, its amp behind it. Hovered, it's picked up. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "guitar",
+      "component": "IllustrationGuitar",
+      "category": "media",
+      "tags": [
+        "music",
+        "instrument",
+        "amp",
+        "band"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/guitar.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-film-reel",
+    "type": "registry:component",
+    "title": "Film reel illustration",
+    "description": "A film reel in the accent standing on its edge, the film wound between its flanges and run out across the floor. Hovered, it lifts. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "film-reel",
+      "component": "IllustrationFilmReel",
+      "category": "media",
+      "tags": [
+        "movie",
+        "cinema",
+        "film",
+        "video"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/film-reel.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "illustration-design-tools",
+    "type": "registry:component",
+    "title": "Design tools illustration",
+    "description": "A curve being drawn across the table, its anchors and handles out, a set square and a ruler by it, and the pen nib in the accent over its last point. Hovered, it lifts off the stroke. One isometric scene from the Media illustrations, on its own: it assembles as it comes into view, its hero part floats, and it comes apart on hover. Decorative unless titled; reduced motion draws it finished and still.",
+    "categories": [
+      "illustrations",
+      "media"
+    ],
+    "meta": {
+      "scene": "design-tools",
+      "component": "IllustrationDesignTools",
+      "category": "media",
+      "tags": [
+        "pen",
+        "vector",
+        "ruler",
+        "drawing",
+        "bezier"
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "illustration-kit",
+      "iso-shapes"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/graphics/illustrations/scenes/design-tools.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

@@ -1,0 +1,119 @@
+---
+title: Density Lanes
+description: "Show when things happen, one lane of dots per kind, swelling where it's busy, on one scale with a highlight and a marker."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="density-lanes/demo" height={420} />
+
+A made-up café's orders through a day, by channel. Each lane swells where it's busy, and every lane uses the same scale, so the counter's morning rush and the evening's deliveries compare at a glance.
+
+</Story>
+
+<Story id="highlight" label="Highlight and marker">
+
+<ComponentPreview name="density-lanes/highlight" height={380} />
+
+`highlight` keeps column ranges in tone and quiets the rest (here the hours outside the office), and `marker` flags one column through every lane.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="density-lanes" noImport />
+
+Use density lanes for "when" across a few kinds of thing: alerts by hour per source, orders by half-hour per channel, commits by weekday per team. Each lane's shape tells when it's busy; the shares under the names tell how much of the whole it is. For one series of counts use a [Unit Chart](/docs/components/unit-chart); for a year of days, a [Calendar Heatmap](/docs/components/calendar-heatmap). The [Hour lanes](/docs/blocks/trends-and-comparisons#hour-lanes) card is built on it.
+
+```tsx
+import { DensityLanes } from '@youj/react'
+
+<DensityLanes
+  label="Alerts by hour"
+  columns={hours}
+  lanes={[
+    { id: 'identity', label: 'Identity', values: identityByHour, tone: 'chart-3' },
+    { id: 'network', label: 'Network', values: networkByHour, tone: 'chart-2' },
+  ]}
+  highlight={[[0, 6], [19, 23]]}
+  marker={{ column: 12, label: 'Peak 12:00 · 504 alerts' }}
+/>
+```
+
+`columns` names each column (in its tooltip and spoken), and every lane gives one value per column. A column swells `depth` dots (4 by default) above and below the lane's spine at `max` (by default the largest value, one scale for every lane), and a column with nothing draws no dots, only the faint grid. `ticks` places labels at column edges (`at` 0 is the start of the first column), by default one at each quarter. Lanes take the chart colors in order unless they set a `tone`; `shares={false}` drops the shares under their names; `formatValue` writes values with their unit. No lanes, or nothing in them, shows the empty state.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="lanes, columns, depth, max, highlight, marker, ticks…">
+
+### Props
+
+<PropsTable name="DensityLanes" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `density-lanes`, `density-lanes-grid`, `density-lanes-lane`, `density-lanes-label`, `density-lanes-plot`, `density-lanes-column`, `density-lanes-cells`, `density-lanes-cell`, `density-lanes-band`, `density-lanes-flag-row`, `density-lanes-flag`, `density-lanes-marker`, `density-lanes-axis`, `density-lanes-tick`, `density-lanes-tooltip`, `density-lanes-summary` and `density-lanes-empty`. A column in a highlight has `data-highlighted`. A lane's color is `--density-lanes-tone` on its plot, and an empty dot's is `--density-lanes-off`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, highlight · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the dots light column by column from the start when a third of the chart scrolls into view', duration: 'deliberate', ease: 'standard' },
+    { moment: 'Highlight', note: 'columns leaving or entering a highlight recolor between the tone and the quiet gray', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; changes land at once."
+/>
+
+#### Reduced motion
+
+The dots are drawn in place, and a new highlight lands at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, screen readers">
+
+### Accessibility
+
+- A named `grid` (your `label`, or the labels' "Density lanes") described by a summary: how many lanes, their total, and the busiest column with its value.
+- A row per lane, its header the lane's name and share; every cell is named with its column and value, and says when it is in the highlight ("12:00: 504 alerts, highlighted").
+- One tab stop. Left and Right walk the columns (mirrored in RTL), Up and Down the lanes, Home and End go to a lane's ends. Focus shows the cell's tooltip and marks its column through every lane, as hovering does.
+- The dots, flag and axis are decorative; the cells say the same in words. Color is never the only cue: lanes are named, and a highlight is spoken.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

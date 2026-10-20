@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@youj/core": [
+        "../core/src/index.ts"
+      ],
+      "@youj/core/*": [
+        "../core/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "scripts",
+    "vitest.config.ts"
+  ]
+}

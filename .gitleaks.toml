@@ -1,0 +1,12 @@
+# Config for gitleaks (https://github.com/gitleaks/gitleaks). Keeps the default rules. Demos, stories and test
+# mocks use obviously fake values (yk_demo_..., whsec_demo_...); they're allowed by pattern, so a new demo key
+# that follows the convention never needs an entry here.
+title = "Youj"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Fake sample keys in demo data, stories and test mocks"
+regexTarget = "match"
+regexes = ['''\b(yk|whsec)_demo_[A-Za-z0-9_]*''']

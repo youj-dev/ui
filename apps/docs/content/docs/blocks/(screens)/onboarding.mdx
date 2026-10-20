@@ -1,0 +1,72 @@
+---
+title: Onboarding
+description: "Screens for getting started: onboarding, creating a workspace, accepting an invite and a multi-step setup wizard."
+---
+
+<BlockStories>
+
+<BlockStory id="onboarding" label="Onboarding" block="app-onboarding" story="Default" backdrop="heather">
+
+Welcome users with a guided flow for naming a workspace, choosing a theme and inviting teammates.
+
+</BlockStory>
+
+<BlockStory id="create-workspace" label="Create workspace" block="app-create-workspace" story="Default" backdrop="heather">
+
+Walk users through creating a workspace, choosing its address and inviting their team, with the address checked as they type.
+
+</BlockStory>
+
+<BlockStory id="accept-invite" label="Accept invite" block="app-accept-invite" story="Default" backdrop="heather">
+
+Help a new teammate join a workspace with an invitation page that shows who invited them.
+
+</BlockStory>
+
+<BlockStory id="setup-wizard" label="Setup wizard" block="app-setup-wizard" story="Default" backdrop="heather">
+
+A multi-step setup with checks at each step, a review, a saved draft and a finished state.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, forms, progress">
+
+### Accessibility
+
+Each screen is a `main` with one heading (`h1` by default; `headingLevel` changes it). Onboarding’s step indicator is labelled, its theme choice is a labelled radio group, and Enter moves to the next step from its text fields. Create workspace announces the result of the address check in a live region. Setup wizard announces step changes in a live region and labels its review sections. Accept invite shows the inviter’s avatar with `alt` text. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

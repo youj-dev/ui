@@ -1,0 +1,290 @@
+$ youj
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj init              detect the app, ask a few questions, set everything up
+    --yes, -y                      take the defaults; no prompts
+    --mode <package|registry>      the package, or copy-in source (default: package)
+    --theme <graphite|terminal|brutal|basalt|meadow|sandstone|cinnabar|umber|seaglass|heather>   default: basalt
+    --motion-personality <precise|calm|lively>    default: the preset's own
+    --quality <auto|high|low>          default: auto
+    --look <classic|bezel>          how components are built, with any theme (default: classic)
+    --dry-run                      show the changes; write and install nothing
+
+  npx youj create '<link>'   set the app up from a Create link (quoted): Youj, the theme
+                                   in lib/theme.ts, the link's look, the frame's blocks and components/app-shell.tsx
+    --mode <package|registry>      for an app without Youj yet (default: package)
+    --overwrite                    replace a lib/theme.ts or app-shell.tsx that's already there
+    --allow-low-contrast           write a theme that misses WCAG AA contrast (refused by default)
+    --dry-run                      show the changes and commands; write and run nothing
+
+  npx youj add <items…>       copy items in as source you own;
+                                   on the package, install what a component needs (add chart → recharts),
+                                   and copy a block on its own, importing the rest from the packages;
+                                   add sound: @youj/sound, with sound={beacon} on YoujProvider;
+                                   add locale de, add theme terminal: a language, a theme's stylesheet
+                                   (the core holds English, Basalt and Graphite);
+                                   stops (exit 1) when Youj's code needs files of yours replaced;
+                                   prints the import for what it copied
+    --overwrite                    replace files of yours with Youj's (lib/utils.ts is always merged)
+    --path, -p <dir>               where the items go, instead of where components.json says
+    --dry-run                      list the files it would copy; write and install nothing
+    --diff[=file]                 show shadcn's diff of what would change (registry apps)
+    --view[=file]                 show the items' files as the registry has them (registry apps)
+    --yes, -y                      don't ask before replacing files of yours
+                                   other options go to shadcn as they are
+
+  npx youj doctor            check the setup and print fixes
+    --strict                       fail on what's to look at too, and typecheck the app (tsc)
+
+  npx youj mcp               add the Youj MCP server to your AI editor's config
+    --client <claude|cursor|vscode|windsurf|codex|gemini|zed|jetbrains|all>   which editor (repeatable; default: ask, or the ones found)
+    --yes, -y                      don't ask which editors
+    --print                        print the config; write nothing
+    --dry-run                      show the changes; write nothing
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj --help
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj init              detect the app, ask a few questions, set everything up
+    --yes, -y                      take the defaults; no prompts
+    --mode <package|registry>      the package, or copy-in source (default: package)
+    --theme <graphite|terminal|brutal|basalt|meadow|sandstone|cinnabar|umber|seaglass|heather>   default: basalt
+    --motion-personality <precise|calm|lively>    default: the preset's own
+    --quality <auto|high|low>          default: auto
+    --look <classic|bezel>          how components are built, with any theme (default: classic)
+    --dry-run                      show the changes; write and install nothing
+
+  npx youj create '<link>'   set the app up from a Create link (quoted): Youj, the theme
+                                   in lib/theme.ts, the link's look, the frame's blocks and components/app-shell.tsx
+    --mode <package|registry>      for an app without Youj yet (default: package)
+    --overwrite                    replace a lib/theme.ts or app-shell.tsx that's already there
+    --allow-low-contrast           write a theme that misses WCAG AA contrast (refused by default)
+    --dry-run                      show the changes and commands; write and run nothing
+
+  npx youj add <items…>       copy items in as source you own;
+                                   on the package, install what a component needs (add chart → recharts),
+                                   and copy a block on its own, importing the rest from the packages;
+                                   add sound: @youj/sound, with sound={beacon} on YoujProvider;
+                                   add locale de, add theme terminal: a language, a theme's stylesheet
+                                   (the core holds English, Basalt and Graphite);
+                                   stops (exit 1) when Youj's code needs files of yours replaced;
+                                   prints the import for what it copied
+    --overwrite                    replace files of yours with Youj's (lib/utils.ts is always merged)
+    --path, -p <dir>               where the items go, instead of where components.json says
+    --dry-run                      list the files it would copy; write and install nothing
+    --diff[=file]                 show shadcn's diff of what would change (registry apps)
+    --view[=file]                 show the items' files as the registry has them (registry apps)
+    --yes, -y                      don't ask before replacing files of yours
+                                   other options go to shadcn as they are
+
+  npx youj doctor            check the setup and print fixes
+    --strict                       fail on what's to look at too, and typecheck the app (tsc)
+
+  npx youj mcp               add the Youj MCP server to your AI editor's config
+    --client <claude|cursor|vscode|windsurf|codex|gemini|zed|jetbrains|all>   which editor (repeatable; default: ask, or the ones found)
+    --yes, -y                      don't ask which editors
+    --print                        print the config; write nothing
+    --dry-run                      show the changes; write nothing
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj -h
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj init              detect the app, ask a few questions, set everything up
+    --yes, -y                      take the defaults; no prompts
+    --mode <package|registry>      the package, or copy-in source (default: package)
+    --theme <graphite|terminal|brutal|basalt|meadow|sandstone|cinnabar|umber|seaglass|heather>   default: basalt
+    --motion-personality <precise|calm|lively>    default: the preset's own
+    --quality <auto|high|low>          default: auto
+    --look <classic|bezel>          how components are built, with any theme (default: classic)
+    --dry-run                      show the changes; write and install nothing
+
+  npx youj create '<link>'   set the app up from a Create link (quoted): Youj, the theme
+                                   in lib/theme.ts, the link's look, the frame's blocks and components/app-shell.tsx
+    --mode <package|registry>      for an app without Youj yet (default: package)
+    --overwrite                    replace a lib/theme.ts or app-shell.tsx that's already there
+    --allow-low-contrast           write a theme that misses WCAG AA contrast (refused by default)
+    --dry-run                      show the changes and commands; write and run nothing
+
+  npx youj add <items…>       copy items in as source you own;
+                                   on the package, install what a component needs (add chart → recharts),
+                                   and copy a block on its own, importing the rest from the packages;
+                                   add sound: @youj/sound, with sound={beacon} on YoujProvider;
+                                   add locale de, add theme terminal: a language, a theme's stylesheet
+                                   (the core holds English, Basalt and Graphite);
+                                   stops (exit 1) when Youj's code needs files of yours replaced;
+                                   prints the import for what it copied
+    --overwrite                    replace files of yours with Youj's (lib/utils.ts is always merged)
+    --path, -p <dir>               where the items go, instead of where components.json says
+    --dry-run                      list the files it would copy; write and install nothing
+    --diff[=file]                 show shadcn's diff of what would change (registry apps)
+    --view[=file]                 show the items' files as the registry has them (registry apps)
+    --yes, -y                      don't ask before replacing files of yours
+                                   other options go to shadcn as they are
+
+  npx youj doctor            check the setup and print fixes
+    --strict                       fail on what's to look at too, and typecheck the app (tsc)
+
+  npx youj mcp               add the Youj MCP server to your AI editor's config
+    --client <claude|cursor|vscode|windsurf|codex|gemini|zed|jetbrains|all>   which editor (repeatable; default: ask, or the ones found)
+    --yes, -y                      don't ask which editors
+    --print                        print the config; write nothing
+    --dry-run                      show the changes; write nothing
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj --version
+exit 0
+
+---
+
+$ youj init --help
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj init              detect the app, ask a few questions, set everything up
+    --yes, -y                      take the defaults; no prompts
+    --mode <package|registry>      the package, or copy-in source (default: package)
+    --theme <graphite|terminal|brutal|basalt|meadow|sandstone|cinnabar|umber|seaglass|heather>   default: basalt
+    --motion-personality <precise|calm|lively>    default: the preset's own
+    --quality <auto|high|low>          default: auto
+    --look <classic|bezel>          how components are built, with any theme (default: classic)
+    --dry-run                      show the changes; write and install nothing
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj create --help
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj create '<link>'   set the app up from a Create link (quoted): Youj, the theme
+                                   in lib/theme.ts, the link's look, the frame's blocks and components/app-shell.tsx
+    --mode <package|registry>      for an app without Youj yet (default: package)
+    --overwrite                    replace a lib/theme.ts or app-shell.tsx that's already there
+    --allow-low-contrast           write a theme that misses WCAG AA contrast (refused by default)
+    --dry-run                      show the changes and commands; write and run nothing
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj add --help
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj add <items…>       copy items in as source you own;
+                                   on the package, install what a component needs (add chart → recharts),
+                                   and copy a block on its own, importing the rest from the packages;
+                                   add sound: @youj/sound, with sound={beacon} on YoujProvider;
+                                   add locale de, add theme terminal: a language, a theme's stylesheet
+                                   (the core holds English, Basalt and Graphite);
+                                   stops (exit 1) when Youj's code needs files of yours replaced;
+                                   prints the import for what it copied
+    --overwrite                    replace files of yours with Youj's (lib/utils.ts is always merged)
+    --path, -p <dir>               where the items go, instead of where components.json says
+    --dry-run                      list the files it would copy; write and install nothing
+    --diff[=file]                 show shadcn's diff of what would change (registry apps)
+    --view[=file]                 show the items' files as the registry has them (registry apps)
+    --yes, -y                      don't ask before replacing files of yours
+                                   other options go to shadcn as they are
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj doctor --help
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj doctor            check the setup and print fixes
+    --strict                       fail on what's to look at too, and typecheck the app (tsc)
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj mcp --help
+exit 0
+
+youj v<version>: set up Youj in a React app.
+
+  npx youj mcp               add the Youj MCP server to your AI editor's config
+    --client <claude|cursor|vscode|windsurf|codex|gemini|zed|jetbrains|all>   which editor (repeatable; default: ask, or the ones found)
+    --yes, -y                      don't ask which editors
+    --print                        print the config; write nothing
+    --dry-run                      show the changes; write nothing
+
+  --cwd <dir>                      the app's folder (default: here)
+  --latest                         init, create, add: copy items from the registry's latest alias
+                                   (/r/<name>.json) instead of this CLI's version (/r/v<version>/<name>.json)
+
+Env: YOUJ_REGISTRY_URL overrides the registry (default https://www.youj.dev/r/v<version>/{name}.json); YOUJ_REGISTRY_LATEST=1 is --latest; YOUJ_REGISTRY_TOKEN sends it a bearer token (a private registry).
+
+---
+
+$ youj bogus
+exit 1
+
+---
+
+$ youj doctor
+exit 1
+
+---
+
+$ youj add
+exit 1
+
+---
+
+$ youj create
+exit 1

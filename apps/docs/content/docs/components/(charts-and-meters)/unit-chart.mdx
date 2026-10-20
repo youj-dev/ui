@@ -1,0 +1,122 @@
+---
+title: Unit Chart
+description: "Show counts per bucket as stacked dots, one dot per unit, over a faint grid."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="unit-chart/demo" height={300} />
+
+A bistro's expected covers per quarter hour, with the dinner service highlighted.
+
+</Story>
+
+<Story id="unit" label="Unit">
+
+<ComponentPreview name="unit-chart/unit" height={260} />
+
+Support tickets per hour, where each dot counts for five tickets, in a chart tone.
+
+`unit` sets how much one dot counts for; each column rounds to whole dots. Say what a dot is next to the chart: the reader needs it to read the count.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="unit-chart" noImport />
+
+Use a unit chart when the counts are small enough to see one by one and that matters: covers through a service, tickets by hour, signups by day. Each column is a bucket and each dot one unit, stacked from the baseline over a faint grid of every dot the chart could hold, so the empty room reads as part of the scale. For larger values, or a trend with tooltips on several series, use a [Chart](/docs/components/chart); for a distribution someone filters, a [Histogram Range](/docs/components/histogram-range).
+
+```tsx
+import { UnitChart } from '@youj/react'
+
+<UnitChart
+  label="Covers through the day"
+  data={[
+    { label: '11:30', value: 3 },
+    { label: '11:45', value: 6 },
+    { label: '12:00', value: 9 },
+  ]}
+  highlight={[1, 2]}
+  formatValue={(v) => `${v} covers`}
+/>
+```
+
+The grid is as tall as the peak with some headroom; pass `rows` to keep the scale still when the data changes. Labels sit under about six columns; `tickEvery` sets the step. `highlight` takes the first and last index of a range to keep in the tone, and the rest go quiet.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="data, unit, rows, highlight… (8)">
+
+### Props
+
+<PropsTable name="UnitChart" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `unit-chart`, `unit-chart-plot`, `unit-chart-columns`, `unit-chart-column`, `unit-chart-dots`, `unit-chart-dot`, `unit-chart-axis`, `unit-chart-tick`, `unit-chart-summary`, `unit-chart-tooltip` and `unit-chart-empty`. Each dot has `data-state` (`on` or `off`); a column inside the `highlight` range has `data-highlighted`. The root sets `--unit-chart-tone`, the lit dots' color, and `--unit-chart-off`, the empty ones'.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, new data · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the dots light column by column from the start, each from the baseline up, when a third of the chart scrolls into view', duration: 'deliberate', ease: 'standard' },
+    { moment: 'New data', note: 'dots that change light or darken in the same wave', duration: 'fast', ease: 'standard' },
+    { moment: 'Hover and focus', note: 'a band washes behind the column', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; new data lands at once."
+/>
+
+#### Reduced motion
+
+The dots are drawn in place, and new data lands at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Unit chart") holding a `list` of the columns. Each is named with its label and value, and whether it's highlighted ("19:00: 19 covers, highlighted").
+- A summary describes the group: how many columns, the total and the peak.
+- One tab stop. The arrow keys walk the columns in the order they're drawn, in either text direction; Home and End go to the first and last. Focus shows the tooltip, as hover does.
+- The dots and the axis are decorative; everything they show is in the names.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

@@ -1,0 +1,152 @@
+---
+title: Collapsible
+description: "Show or hide a section of content from a single control."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="collapsible/demo" height={400} />
+
+A build command field with an Advanced settings section that grows open.
+
+</Story>
+
+<Story id="show-more" label="Show more">
+
+<ComponentPreview name="collapsible/show-more" height={420} />
+
+A file list that shows three rows and grows to show the rest, with a trigger label that follows the state.
+
+Controlled, the trigger's label can follow the state. Here the first three files stay visible and the rest of the list grows in below them.
+
+</Story>
+
+<Story id="nesting" label="Nesting">
+
+<ComponentPreview name="collapsible/nested" height={440} />
+
+A folder tree where each folder is its own Collapsible.
+
+Each folder in this tree is its own `Collapsible`, nested in its parent's panel, so opening one never closes another. Its `open` state also opens the folder icon. It's a list of disclosure buttons, not an ARIA tree: Tab moves between the folders, and Enter or Space toggles one.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="collapsible" noImport />
+
+Use it to keep secondary content out of the way until someone asks for it: advanced settings, the rest of a long list, details under a summary. For a stack of sections, use an [Accordion](/docs/components/accordion). For content that should float over the page instead of pushing it down, use a [Popover](/docs/components/popover).
+
+```tsx
+import { Button, Collapsible, CollapsibleChevron, CollapsibleContent, CollapsibleTrigger } from '@youj/react'
+
+export function AdvancedSettings() {
+  return (
+    <Collapsible>
+      <CollapsibleTrigger render={<Button variant="ghost" size="sm" />}>
+        Advanced settings
+        <CollapsibleChevron />
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="pt-3">…</div>
+      </CollapsibleContent>
+    </Collapsible>
+  )
+}
+```
+
+`CollapsibleTrigger` renders a plain button by default. Compose it with any button through `render`, as in the Demo story, and it keeps its look while gaining the disclosure behavior. Pass `defaultOpen` to start open, or `open` and `onOpenChange` to control it.
+
+### The chevron
+
+`CollapsibleChevron` is Youj's chevron icon, turned over while its trigger is expanded. It reads `aria-expanded` from the nearest trigger around it, so it works in any disclosure without wiring: a collapsible, an accordion, a navigation menu or a sidebar group, including triggers composed through `render`. It mounts in its real state, so an open section doesn't turn over on first paint. `size` sets it in pixels.
+
+```tsx
+<CollapsibleTrigger>
+  Filters
+  <CollapsibleChevron size={14} className="text-fg-muted" />
+</CollapsibleTrigger>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, className (2)">
+
+### Props
+
+#### CollapsibleChevron
+
+<PropsTable name="CollapsibleChevron" />
+
+#### Collapsible, CollapsibleTrigger and CollapsibleContent
+
+These pass their props through to Base UI's `Collapsible.Root`, `Collapsible.Trigger` and `Collapsible.Panel`. The ones you'll use most:
+
+| Part | Prop | Type | Default |
+| --- | --- | --- | --- |
+| `Collapsible` | `defaultOpen` | `boolean` | `false` |
+| `Collapsible` | `open`, `onOpenChange` | `boolean`, `(open, details) => void` | – |
+| `Collapsible` | `disabled` | `boolean` | `false` |
+| `CollapsibleTrigger` | `render` | `ReactElement \| (props, state) => ReactElement` | – |
+| `CollapsibleContent` | `keepMounted` | `boolean` | `false` |
+| `CollapsibleContent` | `hiddenUntilFound` | `boolean` | `false` |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Panel, chevron · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Panel', note: 'height to the measured size, then `auto`, with a fade', duration: 'base', ease: 'standard' },
+    { moment: 'Chevron', note: 'turns over as the panel opens', spring: 'snappy' },
+  ]}
+  reduced="The panel opens and closes at once, and the chevron flips without turning."
+/>
+
+The panel wears the `yj-collapse` [preset](/docs/motion/presets): the height eases between zero and the measured size, then settles on `auto` so the content can still grow. A toggle mid-way reverses from the current height. The panel clips while it moves, so keep padding and focus rings inside it, as the examples do.
+
+#### Reduced motion
+
+The section still opens and closes, but at once: no height easing and no fade. The chevron flips without turning.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- The trigger is a `button` with `aria-expanded`, and `aria-controls` pointing at the panel.
+- Enter and Space toggle it. Closed content is removed from the tab order, and from the document unless you pass `keepMounted` or `hiddenUntilFound`.
+- The chevron is decorative. The state is announced through `aria-expanded`, so a label that changes ("Show 4 more", "Show less") is optional.
+
+</ReferenceRow>

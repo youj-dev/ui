@@ -1,0 +1,184 @@
+---
+title: Kanban
+description: "Organize cards into columns with drag and keyboard controls, work-in-progress limits and swimlanes."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="kanban/demo" height={540} full />
+
+A sprint board of issue cards you drag between columns, with an add-card control and a context menu on each card.
+
+Press a card and move it 4px, or press and hold on touch, and it lifts out of the list into a tilted preview under the pointer. A dashed gap opens where it will land and the cards around it glide aside. Near the edge of the board, or of a long column, it scrolls. Release and the card settles into the gap; Escape puts it back.
+
+From the keyboard the cards are one Tab stop, and the arrow keys walk them. Space picks the focused card up, the arrows move it between positions and columns, and Space or Enter drops it. Every step is announced, as "Picked up Fix login. To do, position 2 of 5."
+
+The demo shows the rest of a column's kit. In progress has a WIP limit of 3: carry a fourth card over it and the count turns to a warning while you hover. `onAddCard` adds a composer at the foot of each column, `cardMenu` gives each card a context menu (right-click, or Shift+F10), and a column's collapse button folds it to a narrow rail. `defaultCollapsed` or a controlled `collapsed` sets which columns start folded.
+
+</Story>
+
+<Story id="swimlanes" label="Swimlanes">
+
+<ComponentPreview name="kanban/swimlanes" height={520} full />
+
+A sprint board split into team lanes, each card carrying a points badge.
+
+`lanes` splits the board into rows, one per team or project, and each card's `lane` places it. A move can cross lanes as well as columns. From the keyboard, the up and down arrows step into the next lane at the top and bottom of a cell.
+
+</Story>
+
+<Story id="selection" label="Selection and people">
+
+<ComponentPreview name="kanban/selection" height={520} full />
+
+A board with a lane per person (an avatar and a name), where a click or Enter selects a card and Shift, ⌘ or Ctrl adds to the selection.
+
+The selection is the app's: keep the ids in state and pass them as `selectedIds`. The board draws those cards selected (the selection fill and an accent edge), adds "selected" to each one's accessible name, and passes `selected` to `renderCard`. `onCardAction` receives the click or the Enter key's event as its second argument, so its modifier keys (`shiftKey`, `metaKey`, `ctrlKey`) decide whether to replace the selection or add to it.
+
+A lane's `title` takes a node, so a person's lane can show their avatar; give it a `label` too, the name in words, for its landmark and the announcements. `hideEmptyLanes` leaves out a lane with no cards (here Sana Noor's), and `snap` makes a swipe land a column at the board's start edge, for phones.
+
+</Story>
+
+<Story id="saving-moves" label="Saving moves">
+
+<ComponentPreview name="kanban/optimistic" height={420} full />
+
+A board whose moves save after 700 ms; the Fail saves switch makes the save reject with a conflict.
+
+Return a promise from `onMove`. The board shows the move at once, and if the promise rejects it puts the card back where it was and says so: "Couldn't move Fix login. It's back in To do." Turn Fail saves off to let the moves stick.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="kanban" noImport />
+
+Use a kanban board when work moves through stages and people move it themselves: issues through a sprint, deals through a pipeline, content through review. The board owns the card's surface, focus and dragging; you render what's inside each card. For a read-only list of stages, a [Stepper](/docs/components/stepper) or a [Timeline](/docs/components/timeline) says it with less. For items people sort and filter rather than drag, use a [data table](/docs/blocks/tables-and-lists).
+
+Cards are one flat list, and each names its `column`. A card's position is its order among the cards of its column. `onMove` hands you the move and the whole next list.
+
+```tsx
+import { useState } from 'react'
+import { Kanban, type KanbanCardData, type KanbanColumn } from '@youj/react'
+
+const columns: KanbanColumn[] = [
+  { id: 'todo', title: 'To do' },
+  { id: 'doing', title: 'In progress', limit: 3 },
+  { id: 'done', title: 'Done', tone: 'success' },
+]
+
+export function Board({ initial }: { initial: KanbanCardData[] }) {
+  const [cards, setCards] = useState(initial)
+  return (
+    <Kanban
+      aria-label="Sprint 24"
+      columns={columns}
+      cards={cards}
+      renderCard={(card) => <p className="px-(--card-spacing) font-medium">{card.title}</p>}
+      onMove={(_, next) => setCards(next)}
+    />
+  )
+}
+```
+
+Each card needs an `id`, a `column` and a `title`. The title is what the board announces, so extend `KanbanCardData` with whatever else your cards show. Inside `renderCard`, pad content with `px-(--card-spacing)` so it lines up with the card's own padding.
+
+### Column width and the space beside a sidebar
+
+A column is 18rem wide and never narrower; the board scrolls sideways when its columns don't fit. `fill` lets the columns grow to share any width left over, but it never shrinks them, so five columns need about 92rem (18rem each plus the gaps), and beside a 16rem sidebar the board scrolls below about 110rem of window. That is deliberate: a card narrower than 18rem wraps its title and crowds its badges. To fit more on screen, fold the columns people rarely drag into (Backlog, Done) to 44px rails with `defaultCollapsed`, or split the board with `lanes`. On a phone, `snap` makes the sideways scroll stop at each column.
+
+```tsx
+<Kanban fill snap defaultCollapsed={['backlog', 'done']} /* … */ />
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="columns, cards, renderCard… (15)">
+
+### Props
+
+<PropsTable name="Kanban" />
+
+A column (`KanbanColumn`) has an `id`, a `title`, and optionally a WIP `limit` and a `tone` for the dot beside its title. A lane (`KanbanLane`) has an `id`, a `title` (a string or a node) and a `label`, its name in words when the title isn't a string.
+
+`renderCard` receives the card and its state: `lifted` (picked up or dragged) and `selected` (in `selectedIds`).
+
+| Attribute | On | Means |
+| --- | --- | --- |
+| `data-lifted` | a card | picked up from the keyboard |
+| `data-selected` | a card | in `selectedIds` |
+| `data-dragging` | the board | a card is being dragged |
+| `data-fill`, `data-yj-snap` | the board, its scroller | `fill`, `snap` |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Lift, cards make room, drop… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Lift', note: 'the preview scales to 1.04 and tilts 2.5°, with a deeper shadow', spring: 'snappy' },
+    { moment: 'Cards make room', note: 'the cards around the gap glide aside (`layout`)', spring: 'smooth' },
+    { moment: 'Drop', note: 'the preview settles into the gap, level and at rest size', spring: 'smooth' },
+    { moment: 'Keyboard move', note: 'the lifted card glides from its old slot to the new one', spring: 'smooth' },
+    { moment: 'Keyboard lift', note: 'the focused card scales to 1.02 and takes the ring color', duration: 'fast', ease: 'standard' },
+    { moment: 'Column folds', note: 'width, to a rail and back', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="No lift, tilt or scale, and no gliding: a moved card appears in its new place and the others step aside at once."
+/>
+
+#### Reduced motion
+
+Cards don't lift or tilt. A dragged card still follows the pointer, but the gap and the cards around it change at once, and on release, or from the keyboard, the card appears in its new place. The announcements are the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The board is a group with `aria-roledescription="board"`, named by `aria-label`. Columns and lanes are named regions, and each column is a list.
+- Cards are buttons with `aria-roledescription="draggable card"`, described by instructions on how to move them. A lifted card is `aria-pressed`. A selected card says so at the end of its name ("Fix login, selected"); the app's own count of the selection belongs in a live region, as the Selection example's is.
+- Every pick-up, move, drop, cancel and rollback is announced politely, with the column and the position.
+- Column counts are named, including the limit when there is one, and the collapse buttons say which column they fold.
+
+| Key | Does |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves to the board's cards, as one stop. |
+| <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> | Walk the cards. With a card lifted, move it. Left and right follow the reading direction. |
+| <kbd>Home</kbd> / <kbd>End</kbd> | The first or last card in the column. |
+| <kbd>Space</kbd> | Picks the card up, or drops it. |
+| <kbd>Enter</kbd> | Drops a lifted card, or runs `onCardAction` on the focused one (with <kbd>Shift</kbd>, <kbd>⌘</kbd> or <kbd>Ctrl</kbd> in its event, to add to a selection). |
+| <kbd>Esc</kbd> | Cancels the move and puts the card back. |
+| <kbd>Shift</kbd>+<kbd>F10</kbd> | Opens the card's menu, when there's a `cardMenu`. |
+
+</ReferenceRow>

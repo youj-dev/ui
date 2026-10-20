@@ -1,0 +1,99 @@
+---
+title: Table
+description: "Show rows of data in a plain, accessible table whose rows can move with Presence List."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="table/demo" height={300} />
+
+Four invoices with a status badge, figures aligned on their digits and a total in the footer.
+
+For rows people sort, filter and act on, compose the [Data table kit](/docs/components/data-table) with these parts, or copy in a complete table from [Data tables](/docs/blocks/tables-and-lists).
+
+</Story>
+
+<Story id="toolbar-and-paging" label="Toolbar and paging">
+
+<ComponentPreview name="table/toolbar" height={420} />
+
+A deployments panel: a toolbar head, status badges with a dot, avatar-initial cells, a menu per row and paging with gaps.
+
+It's composed from parts you already have: a [Card](/docs/components/card) with `variant="panel"` whose `CardAction` holds an [Input Group](/docs/components/input-group) search, a button and a [Dropdown Menu](/docs/components/dropdown-menu); a `BadgeDot` inside each status [Badge](/docs/components/badge); an [Avatar](/docs/components/avatar) with initials as its fallback; and [Pagination](/docs/components/pagination) laid out by `paginationRange`, which keeps the pager's width while you page. Search here filters the rows on the page.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="table" noImport />
+
+Use the Table parts for a small, static table: a few rows with no sorting or filtering of their own. Their dividers sit on the cells, not the rows, so rows can move with [Presence List](/docs/motion/presence-list) and take their borders with them.
+
+```tsx
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@youj/react'
+
+<Table aria-label="Domains">
+  <TableHeader>
+    <TableRow>
+      <TableHead>Domain</TableHead>
+      <TableHead className="text-end">Redirects</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>acme.dev</TableCell>
+      <TableCell className="text-end tabular-nums">2</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Table">
+
+### Props
+
+#### Table
+
+<PropsTable name="Table" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Name, scrolling, rows that move">
+
+### Accessibility
+
+- Name a table with `aria-label` or a `<TableCaption>`; headers are `<th>` cells, so each cell is read with its column.
+- A table that scrolls sideways takes a Tab stop of its own and is named, so the keyboard can scroll it.
+- Rows that move with Presence List keep their borders, since the dividers sit on the cells.
+
+</ReferenceRow>

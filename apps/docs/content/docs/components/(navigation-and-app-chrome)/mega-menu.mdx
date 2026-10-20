@@ -1,0 +1,168 @@
+---
+title: Mega Menu
+description: "Group navigation links into columns with captions and a featured card."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="mega-menu/demo" height={440} />
+
+A header navigation whose Product panel arranges grouped links in columns beside a featured card.
+
+</Story>
+
+<Story id="featured-card" label="Featured card">
+
+<ComponentPreview name="mega-menu/resources" height={400} />
+
+A Resources panel with a featured card on one side and grouped links on the other.
+
+`featured` puts one card at the inline end of the panel. `MegaMenuFeatured` is a single link with art on top and copy below: an `eyebrow` ("New", "Changelog"), a `title` and a `description`. The art is decorative, so any [background piece](/docs/components/mesh-gradient) works as `media`. The first preview uses a [Mesh Gradient](/docs/components/mesh-gradient). Without `media`, the card gets a soft wash of the accent.
+
+
+Keep a panel to two or three columns. Past that the popup gets wider than most windows, and the reader has too many choices to scan.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="mega-menu" noImport />
+
+Use a mega menu when a top-level section has more destinations than a plain dropdown holds well: a product with a dozen features, a resources hub, a developer portal. Each panel groups links into captioned columns, and a featured card at the end can carry a launch or a case study. For a handful of links, a [Navigation Menu](/docs/components/navigation-menu) with plain panels is enough. Actions (sign out, delete, switch theme) belong in a [Dropdown Menu](/docs/components/dropdown-menu), not in navigation.
+
+The mega menu parts go inside a [Navigation Menu](/docs/components/navigation-menu): `MegaMenuContent` takes the place of `NavigationMenuContent`.
+
+```tsx
+import {
+  MegaMenuContent,
+  MegaMenuFeatured,
+  MegaMenuGroup,
+  MegaMenuLink,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@youj/react'
+import { RocketIcon, TerminalIcon } from '@youj/icons'
+
+export function ProductMenu() {
+  return (
+    <NavigationMenu aria-label="Main">
+      <NavigationMenuList>
+        <NavigationMenuItem value="product">
+          <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+          <MegaMenuContent featured={<MegaMenuFeatured href="/blog/2-0" eyebrow="New" title="Northwind 2.0" />}>
+            <MegaMenuGroup title="Build">
+              <MegaMenuLink href="/deployments" icon={<RocketIcon size={16} />} title="Deployments" description="Git-push to preview, promote to prod." />
+              <MegaMenuLink href="/functions" icon={<TerminalIcon size={16} />} title="Functions" description="Server code that scales to zero." />
+            </MegaMenuGroup>
+          </MegaMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  )
+}
+```
+
+Each `MegaMenuGroup` is a column, 15.5rem wide, under its caption. `MegaMenuLink` is a destination: an icon tile, a title and one line of description. It closes the menu when it's followed. A [Youj icon](/docs/icons) in the tile plays while the link is hovered or focused, with no wiring.
+
+### In a header
+
+A mega menu usually lives in an [App Header](/docs/components/app-header), inside `AppHeaderNav`, which hides it below `md`. Phones get the same destinations as a flat list in `AppHeaderMenu`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="featured, title, title… (9)">
+
+### Props
+
+#### MegaMenuContent
+
+<PropsTable name="MegaMenuContent" />
+
+It takes `NavigationMenuContent`'s props as well.
+
+#### MegaMenuGroup
+
+<PropsTable name="MegaMenuGroup" />
+
+#### MegaMenuLink
+
+<PropsTable name="MegaMenuLink" />
+
+#### MegaMenuFeatured
+
+<PropsTable name="MegaMenuFeatured" />
+
+`MegaMenuLink` and `MegaMenuFeatured` are `NavigationMenuLink`s, so `href`, `render` (for a router link), `active` and `closeOnClick` pass through.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Hover pill, popup in, popup out… · reduced motion">
+
+### Motion
+
+The motion is the [Navigation Menu](/docs/components/navigation-menu)'s: the panels only add layout.
+
+<MotionSpec
+  rows={[
+    { moment: 'Hover pill', note: 'glides between triggers with the pointer and keyboard focus', spring: 'smooth' },
+    { moment: 'Popup in', note: 'grows out of the trigger: scale from 0.96 and fade', duration: 'fast', ease: 'enter' },
+    { moment: 'Popup out', duration: 'instant', ease: 'exit' },
+    { moment: 'Popup between triggers', note: 'slides to the next trigger and morphs to its panel size', duration: 'slow', ease: 'standard' },
+    { moment: 'Panels trade places', note: '24px drift and fade, away from the way you moved', duration: 'slow', ease: 'standard' },
+    { moment: 'Link tile', note: 'the icon turns to ink, and a Youj icon plays its own motion', duration: 'fast', ease: 'standard' },
+    { moment: 'Featured card border', note: 'strengthens on hover', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The popup and its panels appear, resize and swap at once, the pill jumps, and link icons don't play."
+/>
+
+#### Reduced motion
+
+The panel appears, resizes and swaps with the next one at once, and the hover pill jumps between triggers. Link icons stay still. The menu opens, closes and moves focus exactly as it does with motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Each column is a `group` labeled by its caption.
+- A link is named by its title, and its description is read after it (`aria-describedby`). The featured card is named by its eyebrow and title. Icons and art are hidden from assistive technology.
+- Triggers are buttons with `aria-expanded`. The whole menu is a `nav` landmark, named by the `NavigationMenu`'s `aria-label`.
+
+| Key | Action |
+| --- | --- |
+| Enter / Space / ↓ | Open the focused trigger's panel. |
+| Tab | Move through the panel's links, then on to the next trigger. |
+| Escape | Close the panel and return focus to its trigger. |
+
+</ReferenceRow>

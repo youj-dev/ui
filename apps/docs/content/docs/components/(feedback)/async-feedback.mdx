@@ -1,0 +1,190 @@
+---
+title: Async Feedback
+description: "Show and announce pending, success and error states on the control that starts the work."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="async-feedback/demo" height={340} />
+
+An invite form with a fail switch, whose action button shows the outcome.
+
+`useAsyncAction(onAction)` returns the current `state` and a `run` function.
+
+- Resolve for success, and reject or throw for an error. A synchronous throw counts as an error, and a plain return value counts as success.
+- `run` is ignored while an action is in flight and while a success is showing. The guard is set synchronously, so a double click within one frame can't start two actions. After an error, `run` retries at once.
+- It never updates after the component unmounts, and it clears its reset timer.
+- `onStateChange` fires on every change, so the rest of the UI can follow: a status dot, a toast, a refetch.
+
+</Story>
+
+<Story id="the-four-states" label="The four states">
+
+<ComponentPreview name="async-feedback/states" height={240} />
+
+The four states side by side.
+
+`idle` shows your content. `pending` swaps it for a spinner. `success` draws a check beside `successLabel` and washes the surface in the success color. `error` draws a cross beside `errorLabel` over the danger color and shakes once, with a decaying 4, 3 and 2 px amplitude. Press Replay to draw the marks again.
+
+Each swap is a crossfade through [MorphLabel](/docs/motion/morph-label): the outgoing state blurs and shrinks a touch while the incoming one resolves, and the box morphs to the new width on the same spring. After `resetAfter` milliseconds (three `deliberate` durations by default) the control returns to `idle`.
+
+</Story>
+
+<Story id="marks-and-tint" label="Marks and tint">
+
+<ComponentPreview name="async-feedback/marks" height={200} />
+
+A quiet sync control with its own marks and no tint.
+
+Replace any of the three marks with `icons`, and turn the colored wash off with `tint={false}` for quieter, secondary controls. The tint needs a `relative overflow-hidden` parent, so it stays inside the control's shape.
+
+```tsx
+import { CheckCircleIcon, LoaderDotsIcon, RefreshIcon } from '@youj/icons'
+
+<AsyncFeedback
+  state={state}
+  tint={false}
+  icons={{ pending: <LoaderDotsIcon size={16} />, success: <CheckCircleIcon trigger="mount" size={15} /> }}
+>
+  <RefreshIcon size={14} />
+  Sync
+</AsyncFeedback>
+```
+
+The default pending mark is a quarter arc on a faint track, turning at a constant rate. For a spinner of your own, use [Spinner](/docs/components/spinner).
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="async-feedback" noImport />
+
+Use it when a control starts work that takes a moment and ends in an outcome people need to know: sending, saving, publishing, syncing. The control itself shows the state, so nobody has to look elsewhere for the result. Don't use it for work that finishes instantly, and don't use it for long jobs with progress to report. Show a [Progress](/docs/components/progress) bar for those. For a finished button, use the UI [Button](/docs/components/button)'s `onAction`, which is built on this.
+
+Three pieces make an async control. `useAsyncAction` runs the work and reports its state, `AsyncFeedback` is what the control shows, and `AsyncAnnouncer` says it out loud. Put the feedback inside a `useMorphRoot` box so the control's width morphs with its label.
+
+```tsx
+import { motion } from 'motion/react'
+import { AsyncAnnouncer, AsyncFeedback, useAsyncAction, useMorphRoot } from '@youj/motion'
+
+const labels = { pendingLabel: 'Sending…', successLabel: 'Invited', errorLabel: 'Couldn’t send' }
+
+export function InviteButton({ onInvite }: { onInvite: () => Promise<unknown> }) {
+  const { state, run } = useAsyncAction(onInvite)
+  const morph = useMorphRoot(8) // the button's corner radius, in px
+
+  return (
+    <>
+      <motion.button
+        type="button"
+        {...morph}
+        onClick={run}
+        aria-busy={state === 'pending' || undefined}
+        className="relative inline-flex h-8 items-center overflow-hidden bg-fg px-3 text-canvas"
+      >
+        <AsyncFeedback state={state} {...labels}>
+          Send invite
+        </AsyncFeedback>
+      </motion.button>
+      <AsyncAnnouncer state={state} {...labels} />
+    </>
+  )
+}
+```
+
+With a Base UI button, pass the motion element through `render`: `<ButtonPrimitive render={<motion.button {...morph} />} …>`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="state, children, pendingLabel… (11)">
+
+### Props
+
+#### AsyncFeedback
+
+<PropsTable name="AsyncFeedback" />
+
+#### AsyncAnnouncer
+
+<PropsTable name="AsyncAnnouncer" />
+
+#### useAsyncAction
+
+```ts
+function useAsyncAction(onAction: () => unknown, options?: AsyncActionOptions): { state: AsyncState; run: () => void }
+
+type AsyncState = 'idle' | 'pending' | 'success' | 'error'
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `resetAfter` | `number` |  | How long success and error hold before returning to idle, in ms. Defaults to three `deliberate` durations. |
+| `onStateChange` | `(state: AsyncState) => void` |  | Fires on every state change. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Label swap, width morph, spinner… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Label swap', note: 'crossfade with a touch of blur and scale', duration: 'fast', ease: 'standard' },
+    { moment: 'Width morph', note: 'the `useMorphRoot` box', spring: 'snappy' },
+    { moment: 'Spinner', note: 'one turn', ease: 'linear', value: 'deliberate × 1.25' },
+    { moment: 'Check', note: 'the stroke draws, then settles', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Check settle', note: 'scale, after a `base` delay', spring: 'settle' },
+    { moment: 'Cross', note: 'two strokes, the second two `base` steps later', duration: 'fast', ease: 'enter' },
+    { moment: 'Error shake', note: '4, 3, 2 px and home', duration: 'slow', ease: 'standard' },
+    { moment: 'Tint', note: 'success or danger wash, `opacity`', duration: 'fast', ease: 'standard' },
+    { moment: 'Hold', note: 'success and error, before idle, unless `resetAfter` is set', value: '3 × deliberate' },
+  ]}
+  reduced="A text label (`pendingLabel`) replaces the spinner. Swaps and tints are instant, the marks appear already drawn, and errors don't shake."
+/>
+
+Success earns the one overshoot in the system: the check settles on the `settle` spring. Errors stay level. The shake is a short, decaying nudge, never a bounce.
+
+#### Reduced motion
+
+The control still walks through all four states, and every state still has its words. `pendingLabel` replaces the spinner, so the pending state is readable without motion, and success and error appear with their marks already drawn. Swaps and tints change instantly and nothing shakes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Render `AsyncAnnouncer` next to the control, never inside it. A button flattens its content into one accessible name, so a live region inside it isn't announced.
+- The announcer speaks pending and success politely (`role="status"`) and errors assertively (`role="alert"`), so a failure interrupts and a success doesn't.
+- Set `aria-busy` on the control while it's pending, as above. The control keeps focus throughout, so keyboard users don't lose their place.
+- The outgoing label is hidden from assistive technology while it fades, so the control's name is never two labels at once. The spinner, the marks and the tints are `aria-hidden`; while pending, the name is `pendingLabel` ("Working…" by default), visually hidden beside the spinner. If you replace `icons.pending`, include the label in it. Keep `AsyncAnnouncer` beside the control so the state is still spoken.
+
+</ReferenceRow>

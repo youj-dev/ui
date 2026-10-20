@@ -1,0 +1,126 @@
+---
+title: Prism
+description: "Lock real UI in piece by piece out of its color channels: three faint copies slide together and snap into register as the real thing."
+---
+
+<ComponentPreview name="prism/demo" height={420} />
+
+Use it for an entrance that feels engineered: a hero demo, a launch moment, a product tour. Registration marks lock off the frame's corners and the frame itself registers. Then each piece, in reading order, arrives as three faint copies a few pixels apart, one per color channel; they slide together, hang a hair apart and snap into register, and the real piece takes their place. Keep it to one moment on a page: it asks to be watched.
+
+## Installation
+
+<InstallTabs name="prism" />
+
+## Usage
+
+Wrap the UI in `PrismEntrance`. It builds its first child and plays on mount.
+
+```tsx
+import { PrismEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <PrismEntrance>
+      <SignInCard />
+    </PrismEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the engine. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { prism } from '@youj/motion'
+
+const run = prism(document.querySelector('#pricing')!, { speed: 1.5 })
+await run.finished
+```
+
+## Color
+
+The copies are the piece's own colors split into their channels. On a dark theme they are red, green and blue light, which add up; on a light theme they are cyan, magenta and yellow ink, which multiply down. Either way, three copies in register are exactly the piece's colors again, so the snap hands over to the real piece without a change of color, and a primary button arrives in your accent, not in grey. It needs no color of its own and works with any theme.
+
+## Pacing
+
+The build goes through three stages: **frame** (the marks lock in, then the frame's outline and its large panels), **build** (every piece locks in, in reading order, a region at a time) and **settle** (the marks clear and anything floating fades in).
+
+The length grows with the demo: about 2 seconds for a card and about 3.5 for a small screen. Three options tune it:
+
+- `duration` fixes the whole run, in milliseconds.
+- `speed` scales it: `2` plays twice as fast. It applies on top of `duration` and the provider's speed.
+- `phases` shares the run out between the three stages. The values are weights, so they are normalized and never change the total; a stage left out keeps its default (`{ frame: 16, build: 72, settle: 12 }`), and `0` skips it.
+
+```tsx
+// a quick run that is nearly all build
+<PrismEntrance duration={1400} phases={{ frame: 8, build: 84, settle: 8 }}>
+  <PricingCard />
+</PrismEntrance>
+```
+
+`marks={false}` leaves out the registration marks.
+
+## What it reads
+
+The pieces come from the real DOM, read once before the first frame: roles, tags and `data-slot` first, then geometry. A piece is the outermost part small enough to read as one (a field, a button, a stat card, a list row, a paragraph) or a part with nothing inside it (a chart, an image); what's inside a piece comes with it. Panels too big to be a piece register with the frame. Each piece's copies are redrawn from what was read: its boxes with their fills and borders, its words in their own face, its icons' and charts' shapes. Open popovers simply fade in at the end.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, marks, onFinish">
+
+### Props
+
+<PropsTable name="PrismEntrance" />
+
+#### prism
+
+```ts
+function prism(node: HTMLElement, options?: PrismOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `PrismPhases` | `{ frame: 16, build: 72, settle: 12 }` | Each stage's share of the run, as weights. |
+| `marks` | `boolean` | `true` | Registration marks off the frame's corners while it builds. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the entrance. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Frame, build, settle · the snap · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Frame', note: 'four registration marks, then the frame’s outline and panels, lock in', value: '16% of the run' },
+    { moment: 'Build', note: 'each piece’s copies slide together and snap into register, in reading order', value: '72%' },
+    { moment: 'Settle', note: 'the marks clear; open popovers fade in', value: '12%' },
+    { moment: 'Slide', note: '`transform` on each channel’s copy, from a few px apart to a hair apart', duration: 'slow', ease: 'enter' },
+    { moment: 'Snap', note: 'the copies jump into register in one frame and the real piece fades in under them', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="No copies: the UI is just there, and nothing is added to the page."
+/>
+
+The demo is never restyled. While a piece waits it is held by its inline opacity (no animation, so no compositor layer), and it appears by a Web Animation that replaces the hold at its snap. A piece's three copies are drawn once, on small canvases made just before its moment, and from there only their `transform` and their group's `opacity` move, so a frame does no drawing at all. When the run ends, or `cancel()` is called, the animations are cancelled, the holds are put back exactly and the overlay is removed, so the page is exactly as it was. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `prism()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The copies and marks are `aria-hidden` and never take the pointer. The demo stays in the accessibility tree the whole time, so a screen reader reads the real UI.
+- Tabbing into the demo, or pressing on it, ends the run at once, so nobody uses a piece that hasn't locked in yet.
+- Nothing flashes: the copies are faint, small and move a few pixels, and the color only ever resolves into the UI's own.
+
+</ReferenceRow>

@@ -1,0 +1,138 @@
+---
+title: Tables & lists
+description: "Records to scan and act on: grids, tables, logs, grouped and bulk tables, spreadsheets and lists."
+---
+
+<BlockStories>
+
+<BlockStory id="data-grid" label="Data grid" block="tables-data-grid" story="Default" backdrop="umber">
+
+The records engine: a rich cell for every kind of value (an identity with its logo, a status, tags, a meter, a trend line, money, relative dates, people, a switch, a copyable id), row actions where the pointer is, grouping with totals, detail panels, saved views as tabs and cards on a narrow screen. Describe each column by its kind and the grid draws it.
+
+</BlockStory>
+
+<BlockStory id="data-table" label="Data table" block="tables-data-table" story="Default" backdrop="umber">
+
+The engine the others are built on. Give it your columns and rows and it handles the rest: sorting that glides rows into place, a filter for each column you declare (values with counts, ranges, dates) shown as chips, search, saved views, header menus to sort, pin, move and hide, resizing, density, CSV export, row selection with an action bar, inline editing that saves optimistically and rolls back, server mode and virtualization for thousands of rows. Arrow keys move between cells, as in a spreadsheet.
+
+</BlockStory>
+
+<BlockStory id="records" label="Records table" block="tables-records" story="Default" backdrop="umber">
+
+People you work through, shown as a sales pipeline: each record's organization, stage, amount, owner, tags and last touch, in views you define (everyone, yours, hot leads, customers). Move a record to another stage from its own row, open it for its details, or select a few to email, assign, tag, export or delete them. The stories also show job candidates and patient follow-ups.
+
+</BlockStory>
+
+<BlockStory id="bulk-actions" label="Bulk actions table" block="tables-bulk-actions" story="Default" backdrop="umber">
+
+Rows worked in bulk, shown as a store's orders. Select some and the selection bar becomes a command bar: the actions you define (here fulfill, print labels, mark as paid, refund after a confirmation that names the count, archive or export), each with its own key and all of them in a menu you can search. The statuses, channels and actions are your data. Every action shows at once and goes back, with the reason, if your app refuses it. The stories also show expense reports and library holds.
+
+</BlockStory>
+
+<BlockStory id="spreadsheet" label="Spreadsheet table" block="tables-spreadsheet" story="Default" backdrop="umber">
+
+Rows that work like a spreadsheet, shown as a stock sheet. Edit any cell in place, and read the active cell's address and contents in the name box and formula bar (Value shows its formula). Paste a block of cells from Excel or Google Sheets and it lands from the active cell on, each value checked against its column. ⌘Z and ⇧⌘Z undo and redo, a paste as one step, and the totals row stays in view as you scroll.
+
+</BlockStory>
+
+<BlockStory id="grouped" label="Grouped table" block="tables-grouped" story="Default" backdrop="umber">
+
+Planned against spent as a tree, shown as a budget. Lines gather the ways you define (the demo: by team inside their department, by category or by owner), and every group sums its plan, its spend, how far over or under it runs and how much it has used, down to a grand total. Open a group and its lines slide in under it; sort a money column and every level sorts inside itself.
+
+</BlockStory>
+
+<BlockStory id="logs" label="Logs" block="tables-logs" story="Default" backdrop="umber">
+
+A live event stream, virtualized for thousands of rows. Read from the top and it follows new events as they glow in; scroll down or pause and it holds still, counting what's waiting in a pill that takes you back up. Arrow through the events and the inspector beside them shows each one in full: request, duration and its payload as JSON to copy.
+
+</BlockStory>
+
+<BlockStory id="audit-log" label="Audit log" block="app-audit-log" story="Default" backdrop="umber">
+
+See who did what with a searchable, sortable audit log; a row opens the event in a sheet. How events end and their kinds are your data (the stories show a workspace, a clinic's records access and a shared drive). Embedded, it sits as a section inside a settings page.
+
+</BlockStory>
+
+<BlockStory id="cause-log" label="Cause log" block="app-cause-log" story="Default" backdrop="umber">
+
+Recent events with a duration as a table to filter by cause and sort, with a last-24-hours strip per source: a mark for every entry in its cause's color and a line at now. Tick entries and Assign cause files them all under one cause. Shown with a plant's downtime; stories also use support escalations and clinic delays. `format` sets how durations read and `longAfter` where an entry counts as long.
+
+</BlockStory>
+
+<BlockStory id="preview-list" label="Preview list" block="app-preview-list" story="Default" backdrop="umber">
+
+Things with a picture, listed with search, sort and a create button above: a picture of each, its name and status, where to find it, who made it and when, and its latest activity, with Details as the one primary button and Visit, Activity and Settings as icon buttons with tooltips. The statuses and the pictures it draws are your data; the stories show workspace projects, real estate listings and a course catalog.
+
+</BlockStory>
+
+<BlockStory id="transfer-list" label="Transfer list" block="app-transfer-list" story="Default" backdrop="umber">
+
+A panel for transfers in flight: overall progress, rate and time left, then a row per item with pause, resume and cancel. Failed items say why and offer Retry, and finished ones sink to the foot. `format` writes sizes and rates in your own unit, so it counts rows for a table migration or frames for video exports as well as bytes for a file sync, and loading, error and empty take the rows' place at the card's size.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Building your own" summary="the engines, the kit, server data">
+
+### Building your own
+
+Contacts, Orders and Inventory are the Data table with columns, copy and a header of their own, and Logs is the Data table virtualized beside an inspector: read them to see how a domain table is put together. For a table of your own, start from the Data table and pass `rows` and `columns` (made with `createDataTableColumnHelper` from `@youj/react/data-table`). For data that lives on a server, pass `manual` with one page of `rows` and the `rowCount`, and own the sorting, filters and pages through `state` and their `on…Change` callbacks.
+
+The parts these tables are made of are components: the [Table](/docs/components/table) primitives and the [Data table kit](/docs/components/data-table) (column header, toolbar, search, filters and chips, view options, pagination, selection column and bar, saved views, the cell editor, the keyboard grid and CSV export), from `@youj/react/data-table`. Use them when a table needs a layout the engines don't have.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="grid and treegrid roles, keyboard, announcements, motion">
+
+### Accessibility
+
+The Data table and the tables built on it are a native `<table role="grid">` named by their title, and a single Tab stop: the arrow keys move between cells, Home and End to a row's ends, Ctrl+Home and Ctrl+End to the corners, Page Up and Page Down a screen at a time. Space selects a row (Shift+Space a range), Ctrl+A or ⌘A every row and Escape clears the selection; Enter, F2 or typing edits a cell, Alt+↓ opens a header's menu and Shift+←/→ resizes a column. The keys are listed in the grid's description. `aria-rowcount` and `aria-rowindex` keep every row's place when the table is paged or virtualized, headers carry `aria-sort`, and selection uses `aria-multiselectable` and `aria-selected`. Saves, rollbacks, sorting and selection are announced in a live region.
+
+In Orders the command bar is a group named "Selection actions"; each action's key is in its `aria-keyshortcuts`, and a refund asks first in an alert dialog that names the count. In Inventory the name box is an output named "Cell", the formula bar is named for the cell it edits ("Contents of E7"), a value that doesn't fit is described on the field with `aria-invalid`, and undo, redo, copy and paste are announced. Low stock is said in words, not only in amber. The stories show other worlds, with their own names and words.
+
+Budget is a `treegrid`: every row carries `aria-level`, `aria-posinset` and `aria-setsize`, groups `aria-expanded`. Up and Down move between rows, Right opens a group (or moves into it), Left closes it (or moves to its parent), mirrored in right-to-left text, and Enter opens a line. Variance is read as over or under budget, and opening or closing a group is announced. The stories show other worlds, with their own names and words.
+
+Logs keeps the inspector in a complementary region named "Event". The pill for waiting events is a button, and a polite status says once that events are waiting rather than counting each one. Levels are written out, so color is never the only signal.
+
+Cause log lists the entries in a real table with a tick per row and one for all; every tick is named for its source and the time. Each source's strip is an image whose text gives its entries and total in the last 24 hours, and Assign cause is a menu that stays disabled until a stop is ticked and announces the result.
+
+Preview list is a labelled list of projects; each row names its status in words (the dot only echoes it), its picture is decorative, and the icon buttons carry the project's name in their labels and tooltips. Search and sort are named controls, and the list scrolls inside the card so a search never resizes it.
+
+Transfer list groups the overall meter under a label, and every row is a named progress bar with pause, resume, cancel and retry buttons named for the item. While it loads the skeletons are one named status.
+
+Under reduced motion rows change in place instead of gliding, the waiting-events pill appears without moving, the live dot stops pulsing and groups open at once.
+
+</ReferenceRow>
+
+</BlockStories>

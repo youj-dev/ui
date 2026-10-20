@@ -1,0 +1,134 @@
+---
+title: Chat Message List
+description: "Follow streaming answers while letting people scroll back through the conversation."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="message-list/demo" height={520} />
+
+A short history and a button that asks for a rollout plan, which streams while the list follows it.
+
+While an answer streams, the list sticks to the bottom: as content grows, the view glides after it on a spring that keeps its velocity as each line lands, and a resize (the composer growing, a window) keeps the bottom in place. Scroll up by wheel, touch, keys or the scrollbar and it lets go at once. Scroll back to the bottom and it holds again. Sending a message brings you back down.
+
+Scrolled up, **Jump to latest** rises in above the composer, with a dot when something new arrived below. It glides you down and hands focus to the conversation, so a keyboard user isn't dropped when the button goes. Try it in the preview: ask for the plan, then scroll up while it streams.
+
+Only the reader lets go of the bottom. A scroll they didn't make, such as the browser clamping as content shrinks or a font swapping in, doesn't unstick it.
+
+</Story>
+
+<Story id="grouping" label="Grouping">
+
+<ComponentPreview name="message-list/grouping" height={460} />
+
+A system notice, three messages in a row from you and two replies, with a typing indicator at the end.
+
+Consecutive messages from one author form a group: only the first shows its avatar and header, the rest sit closer, and user bubbles tuck their corners in where they meet. The list decides from each message's author (`role` and `name`), and anything else in the flow, like a typing indicator or suggestions, sits between messages as a keyed child.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatMessageList" noImport />
+
+Use it for the scrolling part of any chat or assistant screen, with [Chat Messages](/docs/components/chat/message) inside it. It owns the scroll behavior people notice when it's wrong: staying with an answer as it grows, stopping when they scroll up to read, and getting them back down. For a feed of events that doesn't stream, use a [Timeline](/docs/components/timeline) or a list with [Presence List](/docs/motion/presence-list).
+
+```tsx
+import { ChatMessage, ChatMessageList } from '@youj/react'
+
+export function Conversation({ messages }: { messages: Message[] }) {
+  return (
+    <ChatMessageList aria-label="Conversation with Youj">
+      {messages.map((m) => (
+        <ChatMessage key={m.id} role={m.role} content={m.stream ?? m.text} streaming={m.streaming} />
+      ))}
+    </ChatMessageList>
+  )
+}
+```
+
+Give every child a stable `key`. The list fills its parent (`flex-1`, `min-h-0`), so put it in a flex column with a height, above the composer. `contentClassName` sets the width and padding of the column the messages sit in, which is centered at `max-w-3xl` by default.
+
+`useChatMessageList()` returns the surrounding list's `scrollToBottom(behavior)` and its scroll `viewport`, for a custom jump control or a virtualizer. With a virtualizer, pass `animate={false}` so messages render as they are and the virtualizer positions the rows itself.
+
+```tsx
+import { useChatMessageList } from '@youj/react'
+
+function BackToLatest() {
+  const { scrollToBottom } = useChatMessageList()
+  return <Button onClick={() => scrollToBottom('smooth')}>Back to latest</Button>
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="aria-label, animate, contentClassName… (5)">
+
+### Props
+
+<PropsTable name="ChatMessageList" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Follow, message enters, others make room… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Follow', note: 'the scroll glides after new content, retargeting with its velocity', spring: 'smooth' },
+    { moment: 'Message enters', note: 'fades and drops 6px into its slot (Presence List)', duration: 'base', ease: 'enter' },
+    { moment: 'Others make room', spring: 'smooth' },
+    { moment: 'Message leaves', note: 'fades in place', duration: 'fast', ease: 'exit' },
+    { moment: 'Jump in', note: 'rises 8px and scales from .96 as it fades in', duration: 'fast', ease: 'enter' },
+    { moment: 'Jump out', note: 'drops 6px and fades', duration: 'fast', ease: 'exit' },
+  ]}
+  reduced="Following and jumping are instant, messages appear and disappear in place, and the jump button shows and hides at once."
+/>
+
+A token that arrives as new text re-renders only its own message's slot, never the list, so the enter and make-room motion runs only when messages come, go or move.
+
+#### Reduced motion
+
+The view jumps to new content instead of gliding, and Jump to latest takes you down at once. New messages appear in place, and the button shows and hides without a rise. Sticking, letting go and the announcements are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The column is a `log` with `aria-live="off"`, inside a scroll area named by `aria-label` (default "Conversation"). A streaming answer is never read token by token.
+- The list announces for its messages through its own live regions: "Youj is responding…" once when a reply starts, the whole answer as plain text when it's complete, and failures assertively. Messages already there when the list mounts are history and aren't announced.
+- The scroll viewport is focusable, so arrow keys, Page Up and Home scroll it, and scrolling up by key lets go of the bottom like a wheel does.
+- **Jump to latest** is a real button. Pressing it moves focus to the conversation before the button leaves.
+
+</ReferenceRow>

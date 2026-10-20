@@ -1,0 +1,834 @@
+/* @youj/react token bridge.
+ *
+ * HOW TO LOAD IT: compile it in the SAME Tailwind root as youj.css, which
+ * owns the core palette: your global stylesheet, right after Tailwind.
+ *
+ *   Copied in (npx youj add), from wherever the stylesheet sits, e.g.:
+ *     @import 'tailwindcss';
+ *     @import '../styles/youj.css';
+ *     @import '../styles/ui.css';
+ *
+ *   On the packages, one line brings both (and this file isn't copied):
+ *     @import 'tailwindcss';
+ *     @import '@youj/react/styles.css';
+ *
+ * Imported as a separate stylesheet, the @theme blocks below are ignored and
+ * no h-control utility is generated.
+ *
+ * What lives here:
+ *   1. Helpers built from the colour roles (youj.css section 3), per theme
+ *      and tone: shimmer, scrollbars, elevation, edges, the surface gradient.
+ *   2. UI-only tokens: radius, control heights (density), type, focus, elevation.
+ *      Radius and density are derived from the theme contract (--yj-radius,
+ *      --yj-density) that youj.css declares.
+ *   3. The `reduced:` variant and the loops (shimmer, spinner, indeterminate).
+ *   4. Scrollbars: the page's own, and the yj-scrollbar utility.
+ *   5. Character: the hooks that give titles and labels the theme's voice,
+ *      and cards and ink actions its surface gradient. Line weight and ink
+ *      are youj.css's; the shadow styles are in 1.
+ *
+ * Every text-on-surface pair introduced here is held to WCAG AA, in every
+ * theme preset, by src/styles/ui-tokens.test.ts. */
+
+/* Components mark themselves with data-reduced-motion when useYouj()
+ * reports reduced motion, so CSS-driven motion follows the same switch as
+ * Motion-driven motion (including the Storybook toolbar's "always"/"never"). */
+@custom-variant reduced (&:where([data-reduced-motion], [data-reduced-motion] *));
+
+/* The device the component is operated on. `touch:` is the primary pointer
+ * being coarse (a phone, a tablet) or the subtree being forced to touch
+ * (YoujProvider / ThemeScope `device="touch"`, which the docs use to show a
+ * phone's version of a component on a desktop); `fine:` is the other way
+ * round. A forced device beats the hardware in both directions. Inside a
+ * forced scope the media query stands down for the other variant, so the two
+ * never both apply. Use these instead of Tailwind's `pointer-coarse:` /
+ * `pointer-fine:` in components, which only see the hardware. */
+@custom-variant touch {
+  @media (pointer: coarse) {
+    &:where(:not([data-yj-device='pointer'] *)) {
+      @slot;
+    }
+  }
+  &:where([data-yj-device='touch'], [data-yj-device='touch'] *) {
+    @slot;
+  }
+}
+@custom-variant fine {
+  @media (pointer: fine) {
+    &:where(:not([data-yj-device='touch'] *)) {
+      @slot;
+    }
+  }
+  &:where([data-yj-device='pointer'], [data-yj-device='pointer'] *) {
+    @slot;
+  }
+}
+
+/* ── 1. Role-derived helpers ────────────────────────────────────────────
+ * The colour roles are core's (youj.css section 3). What's declared here is
+ * built from them: shimmer, scrollbars, elevation, edges, the surface
+ * gradient. Declared on every theme and tone scope (not just :root) so a
+ * nested data-theme region, data-yj-theme scope or tone re-resolves them
+ * against its own palette. Values that differ between light and dark select
+ * with --yj-dark (0 or 1) rather than a [data-theme='dark'] rule, so a scope
+ * inside a dark region still gets the dark mapping. */
+@layer base {
+  :root,
+  [data-theme],
+  [data-yj-theme],
+  [data-yj-tone] {
+    /* The skeleton's travelling band: light sweeping across a recessed block,
+     * so it is lighter than the block in both themes. */
+    --ui-shimmer: color-mix(
+      in oklab,
+      color-mix(in oklab, var(--color-surface) 75%, transparent) calc(100% - 100% * var(--yj-dark)),
+      color-mix(in oklab, var(--color-fg) 7%, transparent)
+    );
+
+    /* Scrollbar thumbs, native (section 4) and ScrollArea alike: the ink at a
+     * low alpha, so a thumb reads the same on every plane in either mode (dark
+     * takes a little less, which reads as much). Quiet at rest (about 1.5:1, a
+     * hairline's weight), the field border's 3:1 while the pointer or focus
+     * is on the region, and firmest under the pointer or while dragged. */
+    --ui-scrollbar-thumb: color-mix(in oklab, var(--color-fg) calc(20% - 4% * var(--yj-dark)), transparent);
+    --ui-scrollbar-thumb-hover: color-mix(in oklab, var(--color-fg) calc(48% - 11% * var(--yj-dark)), transparent);
+    --ui-scrollbar-thumb-active: color-mix(in oklab, var(--color-fg) calc(62% - 16% * var(--yj-dark)), transparent);
+
+    /* Elevation, in two styles the theme weighs with --yj-shadow-soft and
+     * --yj-shadow-hard (0–1 each; `none` is both at 0).
+     * Soft. Light: white cards on a soft gray page, each on a hairline, so a
+     * button or chip (xs) takes one soft contact shadow, about shadcn's; a card (sm) keeps a faint ring and a short
+     * contact shadow (enough to lift it off the page), tinted with the neutral hue, and an inner top highlight on its edge; the key
+     * shadow is for what really floats, popovers (md) and dialogs (lg).
+     * Dark: black shadows need far more opacity to register, and a faint
+     * inner top highlight does the work a shadow can't on a dark page. Layers
+     * that belong to one mode fall to nothing in the other (their alpha
+     * selects by --yj-dark), so each mode keeps its own geometry.
+     * Hard: one solid block in ink, offset down and to the right by 1.5 to 4
+     * strokes (3px to 8px on a 2px stroke), as if printed. Light doesn't flip
+     * with the reading direction, so neither does the offset. */
+    --ui--shadow-ink: color-mix(in oklab, var(--color-fg) calc(100% * var(--yj-shadow-hard)), transparent);
+    --ui--shadow-step: calc(var(--yj-stroke-width, 1px) * var(--yj-shadow-hard));
+    --ui--edge-highlight: color-mix(in oklab, var(--yj-light) calc((85% - 80% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent);
+    --ui-shadow-xs:
+      0 1px 2px 0 color-mix(in oklab, var(--color-shadow) calc((5% + 15% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      calc(var(--ui--shadow-step) * 1.5) calc(var(--ui--shadow-step) * 1.5) 0 0 var(--ui--shadow-ink);
+    --ui-shadow-sm:
+      inset 0 1px 0 0 var(--ui--edge-highlight),
+      0 0 0 1px color-mix(in oklab, var(--color-shadow) calc(4% * (1 - var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 1px 2px 0 color-mix(in oklab, var(--color-shadow) calc((5% + 30% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 2px 6px -1px color-mix(in oklab, var(--color-shadow) calc(30% * var(--yj-dark) * var(--yj-shadow-soft)), transparent),
+      calc(var(--ui--shadow-step) * 2) calc(var(--ui--shadow-step) * 2) 0 0 var(--ui--shadow-ink);
+    --ui-shadow-md:
+      inset 0 1px 0 0 var(--ui--edge-highlight),
+      0 0 0 1px color-mix(in oklab, var(--color-shadow) calc(6% * (1 - var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 2px 4px -1px color-mix(in oklab, var(--color-shadow) calc((7% + 33% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 8px 20px -4px color-mix(in oklab, var(--color-shadow) calc(50% * var(--yj-dark) * var(--yj-shadow-soft)), transparent),
+      0 12px 28px -8px color-mix(in oklab, var(--color-shadow) calc(14% * (1 - var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      calc(var(--ui--shadow-step) * 3) calc(var(--ui--shadow-step) * 3) 0 0 var(--ui--shadow-ink);
+    --ui-shadow-lg:
+      inset 0 1px 0 0 var(--ui--edge-highlight),
+      0 0 0 1px color-mix(in oklab, var(--color-shadow) calc(7% * (1 - var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 4px 8px -2px color-mix(in oklab, var(--color-shadow) calc((8% + 37% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 20px 48px -12px color-mix(in oklab, var(--color-shadow) calc(60% * var(--yj-dark) * var(--yj-shadow-soft)), transparent),
+      0 28px 60px -14px color-mix(in oklab, var(--color-shadow) calc(22% * (1 - var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      calc(var(--ui--shadow-step) * 4) calc(var(--ui--shadow-step) * 4) 0 0 var(--ui--shadow-ink);
+
+    /* The soft layers alone: for a thumb or key that sits inside a track,
+     * where a hard block would spill out of it, and for a pressed button. */
+    --ui--shadow-xs-soft: 0 1px 2px 0
+      color-mix(in oklab, var(--color-shadow) calc((5% + 15% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent);
+    --ui--shadow-sm-soft:
+      inset 0 1px 0 0 var(--ui--edge-highlight),
+      0 0 0 1px color-mix(in oklab, var(--color-shadow) calc(4% * (1 - var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 1px 2px 0 color-mix(in oklab, var(--color-shadow) calc((5% + 30% * var(--yj-dark)) * var(--yj-shadow-soft)), transparent),
+      0 2px 6px -1px color-mix(in oklab, var(--color-shadow) calc(30% * var(--yj-dark) * var(--yj-shadow-soft)), transparent);
+
+    /* The press. Soft themes scale a pressed button down by its press depth
+     * (--ui--press-depth, set per size on the button). Hard ones press it into
+     * its shadow: it moves by the xs offset as the offset collapses to xs's
+     * soft layers. --ui--press-soft is how much of the press is a scale. */
+    --ui--press-soft: calc(1 - var(--yj-shadow-hard));
+    --ui--press-shift: calc(var(--ui--shadow-step) * 1.5);
+
+    /* A filled control (a primary or destructive button) draws no edge of its
+     * own, unless the theme inks its lines: then it's outlined like the rest,
+     * so its fill meets its shadow. */
+    --ui--fill-edge: color-mix(in oklab, var(--color-line) calc(100% * var(--yj-stroke-ink)), transparent);
+    /* The selected key's edge in a choice track (tabs, toggle groups): in
+     * light the key is the white plane (the popover's fill) on the field
+     * border, 3:1 against the gray track; in dark the raised key keeps the
+     * filled control's edge. */
+    --ui--key-edge: color-mix(in oklab, var(--color-line-control) calc(100% - 100% * var(--yj-dark)), var(--ui--fill-edge));
+
+    /* The surface gradient (--yj-surface-gradient, 0–1; section 5 applies it).
+     * A card shades toward the raised step at its foot: lighter in dark, a
+     * touch deeper in light, never past a surface every pair is checked on.
+     * Light shades half as far: its raised step sits well below the white
+     * card, and a full share would turn the foot grey.
+     * An ink-filled action gets a sheen, a lit top and a deeper foot: ink
+     * has contrast to spare, while accent and danger fills stay flat so their
+     * labels keep AA. At 0 both are fully transparent. */
+    --ui--surface-gradient: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in oklab, var(--yj-raised) calc(100% * var(--yj-surface-gradient) * (0.5 + 0.5 * var(--yj-dark))), transparent)
+    );
+    --ui--fill-sheen: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--yj-light) calc(14% * var(--yj-surface-gradient) * var(--yj-action-ink)), transparent),
+      transparent 50%,
+      color-mix(in oklab, var(--yj-shade) calc(10% * var(--yj-surface-gradient) * var(--yj-action-ink)), transparent)
+    );
+
+    /* A field's edge and fill, by the theme's field style (--yj-field-soft,
+     * `fields`): outlined (0) is the field fill on a 3:1 control edge; soft (1)
+     * is a quiet band with no edge, lifting to the hover step under the
+     * pointer. Every field reads these, in both looks, so a field is never
+     * made soft or outlined where it's used. Focus and invalid draw their own
+     * edge either way. */
+    --ui--field-line: color-mix(in oklab, var(--color-line-control) calc(100% - 100% * var(--yj-field-soft)), transparent);
+    --ui--field-fill: color-mix(in oklab, var(--color-band) calc(100% * var(--yj-field-soft)), var(--color-field));
+    --ui--field-line-hover: color-mix(in oklab, var(--color-fg-subtle) calc(100% - 100% * var(--yj-field-soft)), transparent);
+    --ui--field-fill-hover: color-mix(in oklab, var(--color-hover) calc(100% * var(--yj-field-soft)), var(--color-field));
+
+    /* The focus ring is one pixel heavier than the stroke, 2px at least. */
+    --ui--focus-width: max(2px, calc(var(--yj-stroke-width, 1px) + 1px));
+  }
+
+  /* Sizes from the theme contract (--yj-radius, --yj-density) times the UI
+   * scale (--yj-scale, youj.css section 5). Declared on every theme, scaling
+   * and device scope, so each recomputes them from its own inputs; at 100%
+   * each is exactly the contract's size. */
+  :root,
+  [data-theme],
+  [data-yj-theme],
+  [data-yj-scaling],
+  [data-yj-device] {
+    /* Radius from --yj-radius, the control radius (8px in Graphite). Other
+     * steps scale with it and cap, so `full` (1rem) makes 32px controls pills
+     * while checkboxes stay square-ish (sm ≤ 6px) and cards stay rectangles. */
+    --radius-xs: calc(var(--yj-radius) / 2 * var(--yj-scale, 1));
+    --radius-sm: calc(min(calc(var(--yj-radius) * 2 / 3), 0.375rem) * var(--yj-scale, 1));
+    --radius-md: calc(var(--yj-radius) * var(--yj-scale, 1));
+    --radius-lg: calc(min(calc(var(--yj-radius) * 4 / 3), 1.25rem) * var(--yj-scale, 1));
+    --radius-xl: calc(min(calc(var(--yj-radius) * 2), 1.5rem) * var(--yj-scale, 1));
+    --radius-2xl: calc(min(calc(var(--yj-radius) * 8 / 3), 1.75rem) * var(--yj-scale, 1));
+    /* Shapes, in one place. Every control family reads its corner from here,
+     * in both looks, and nothing else sets it: a block or a component that
+     * renders another kit control never writes its radius (lint:shapes).
+     *
+     * A control's corner is a pill where the theme draws pills (--yj-pill 1,
+     * `controls: 'pill'`; a square theme stays square), else --yj-radius, the
+     * 32px control's radius, times each control's height over 32px, so every
+     * size, density step, touch step and scale keeps one proportion (8px on
+     * 32px is 9px on 36px and 11px on 44px). The --ui--k-* factors are those
+     * proportions at each control height. */
+    --ui--k-xs: max(0.75, (max(0.75, 0.75 + var(--yj-density) * 0.125) + var(--yj-touch) * 0.25) * max(var(--yj-scale, 1), var(--yj-touch)));
+    --ui--k-sm: max(0.75, (max(0.75, 0.875 + var(--yj-density) * 0.125) + var(--yj-touch) * 0.25) * max(var(--yj-scale, 1), var(--yj-touch)));
+    --ui--k: max(0.75, max(1 + var(--yj-density) * 0.125 + var(--yj-touch) * 0.25, var(--yj-touch) * 1.375) * max(var(--yj-scale, 1), var(--yj-touch)));
+    --ui--k-lg: max(0.75, (1.25 + var(--yj-density) * 0.125 + var(--yj-touch) * 0.25) * max(var(--yj-scale, 1), var(--yj-touch)));
+    /* The theme's control corner (rounded-control*), what each family follows
+     * unless the theme splits it off. */
+    --radius-control-xs: calc(var(--yj-radius) * max(100 * var(--yj-pill, 1), var(--ui--k-xs)));
+    --radius-control-sm: calc(var(--yj-radius) * max(100 * var(--yj-pill, 1), var(--ui--k-sm)));
+    --radius-control: calc(var(--yj-radius) * max(100 * var(--yj-pill, 1), var(--ui--k)));
+    --radius-control-lg: calc(var(--yj-radius) * max(100 * var(--yj-pill, 1), var(--ui--k-lg)));
+    /* The families. Each is a pill or the proportional corner by its own
+     * switch, --yj-shape-<family> (1 pill, 0 rounded), which no theme sets by
+     * default, so all four follow the theme's `controls`: within a theme a
+     * button, a field, a tab track and a badge share one shape. Set one on a
+     * theme scope to split that family off, everywhere at once.
+     *   button: Button, AsyncButton, Toggle, InputGroupButton, a link styled as a button.
+     *   field:  Input, Select and NativeSelect triggers, Combobox, InputGroup and every
+     *           field built on one (NumberInput, PasswordInput, the date and time pickers…).
+     *           A field that grows past one line (Textarea, a wrapping TagInput) caps at
+     *           --radius-field-area, 12px at most, since a pill can't hold a paragraph.
+     *   choice: the pill tracks of Tabs, SegmentedControl and ToggleGroup; the key inside
+     *           sits at the concentric corner, the track's less its inset (--ui--choice-inset).
+     *   chip:   Badge and FilterChips' chips (at their 22px height). */
+    --ui--pill-button: var(--yj-shape-button, var(--yj-pill, 1));
+    --ui--pill-field: var(--yj-shape-field, var(--yj-pill, 1));
+    --ui--pill-choice: var(--yj-shape-choice, var(--yj-pill, 1));
+    --ui--pill-chip: var(--yj-shape-chip, var(--yj-pill, 1));
+    --radius-button-xs: calc(var(--yj-radius) * max(100 * var(--ui--pill-button), var(--ui--k-xs)));
+    --radius-button-sm: calc(var(--yj-radius) * max(100 * var(--ui--pill-button), var(--ui--k-sm)));
+    --radius-button: calc(var(--yj-radius) * max(100 * var(--ui--pill-button), var(--ui--k)));
+    --radius-button-lg: calc(var(--yj-radius) * max(100 * var(--ui--pill-button), var(--ui--k-lg)));
+    --radius-field-xs: calc(var(--yj-radius) * max(100 * var(--ui--pill-field), var(--ui--k-xs)));
+    --radius-field-sm: calc(var(--yj-radius) * max(100 * var(--ui--pill-field), var(--ui--k-sm)));
+    --radius-field: calc(var(--yj-radius) * max(100 * var(--ui--pill-field), var(--ui--k)));
+    --radius-field-lg: calc(var(--yj-radius) * max(100 * var(--ui--pill-field), var(--ui--k-lg)));
+    --radius-field-area: min(var(--radius-field), var(--radius-xl), calc(0.75rem * var(--yj-scale, 1)));
+    --radius-choice-xs: calc(var(--yj-radius) * max(100 * var(--ui--pill-choice), var(--ui--k-xs)));
+    --radius-choice-sm: calc(var(--yj-radius) * max(100 * var(--ui--pill-choice), var(--ui--k-sm)));
+    --radius-choice: calc(var(--yj-radius) * max(100 * var(--ui--pill-choice), var(--ui--k)));
+    --radius-choice-lg: calc(var(--yj-radius) * max(100 * var(--ui--pill-choice), var(--ui--k-lg)));
+    --radius-chip: calc(var(--yj-radius) * max(100 * var(--ui--pill-chip), 0.6875 * var(--yj-scale, 1)));
+    /* Panels: a card (clamped by the layout density's --ui--panel-radius-max
+     * where it's drawn), a popup (popovers, menus, select lists, hover cards)
+     * and a dialog or sheet. Rows inside a popup take its corner less its
+     * padding. */
+    --radius-surface: var(--radius-xl);
+    --radius-overlay: var(--radius-xl);
+    --radius-overlay-lg: var(--radius-2xl);
+    /* A round mark (a step's number): a circle in every theme that draws
+     * pills, square ones included, else the small control's corner. */
+    --radius-mark: calc(var(--yj-pill, 1) * 9999px + (1 - var(--yj-pill, 1)) * var(--radius-control-xs));
+
+    /* Density: each --yj-density step moves every control 4px; touch adds 8px
+     * on top (--yj-touch, below), and the default control never goes under
+     * 44px there (max with 2.75rem; xs and sm reach 44px with a hit area, see
+     * `touch:yj-hit`). Scaled down, no control goes below the 24px
+     * target minimum (WCAG 2.5.8), and on touch a scale under 100% doesn't
+     * reach controls at all (the factor is at least --yj-touch), so a compact
+     * app keeps its finger-sized targets; above 100% still grows them. */
+    --spacing-control-xs: max(1.5rem, calc((max(1.5rem, 1.5rem + var(--yj-density) * 0.25rem) + var(--yj-touch) * 0.5rem) * max(var(--yj-scale, 1), var(--yj-touch))));
+    --spacing-control-sm: max(1.5rem, calc((max(1.5rem, 1.75rem + var(--yj-density) * 0.25rem) + var(--yj-touch) * 0.5rem) * max(var(--yj-scale, 1), var(--yj-touch))));
+    --spacing-control: max(1.5rem, calc((max(2rem + var(--yj-density) * 0.25rem + var(--yj-touch) * 0.5rem, var(--yj-touch) * 2.75rem)) * max(var(--yj-scale, 1), var(--yj-touch))));
+    --spacing-control-lg: max(1.5rem, calc((2.5rem + var(--yj-density) * 0.25rem + var(--yj-touch) * 0.5rem) * max(var(--yj-scale, 1), var(--yj-touch))));
+  }
+
+  /* UI type, scaled (the @theme block below holds the 100% sizes), and never
+   * under youj.css's --yj-text-min (11px): at init's 90% the 11px caption
+   * holds at 11px instead of 9.9px. */
+  [data-yj-scaling] {
+    --text-ui-xs: max(var(--yj-text-min, 0.6875rem), calc(0.6875rem * var(--yj-scale)));
+    --text-ui-xs--line-height: calc(1rem * var(--yj-scale));
+    --text-ui-sm: max(var(--yj-text-min, 0.6875rem), calc(0.75rem * var(--yj-scale)));
+    --text-ui-sm--line-height: calc(1rem * var(--yj-scale));
+    --text-ui: max(var(--yj-text-min, 0.6875rem), calc(0.8125rem * var(--yj-scale)));
+    --text-ui--line-height: calc(1.25rem * var(--yj-scale));
+    --text-ui-lg: max(var(--yj-text-min, 0.6875rem), calc(0.875rem * var(--yj-scale)));
+    --text-ui-lg--line-height: calc(1.25rem * var(--yj-scale));
+  }
+
+  /* In a scaling scope, icons drawn at a fixed size (`size={16}`) take it
+   * from the spacing unit, so they scale with the text beside them. A size
+   * utility on the icon, or one its container sets, still wins. */
+  :where([data-yj-scaling] svg.youj-icon[width='10']) {
+    width: calc(var(--spacing) * 2.5);
+    height: calc(var(--spacing) * 2.5);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='11']) {
+    width: calc(var(--spacing) * 2.75);
+    height: calc(var(--spacing) * 2.75);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='12']) {
+    width: calc(var(--spacing) * 3);
+    height: calc(var(--spacing) * 3);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='13']) {
+    width: calc(var(--spacing) * 3.25);
+    height: calc(var(--spacing) * 3.25);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='14']) {
+    width: calc(var(--spacing) * 3.5);
+    height: calc(var(--spacing) * 3.5);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='15']) {
+    width: calc(var(--spacing) * 3.75);
+    height: calc(var(--spacing) * 3.75);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='16']) {
+    width: calc(var(--spacing) * 4);
+    height: calc(var(--spacing) * 4);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='18']) {
+    width: calc(var(--spacing) * 4.5);
+    height: calc(var(--spacing) * 4.5);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='20']) {
+    width: calc(var(--spacing) * 5);
+    height: calc(var(--spacing) * 5);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='22']) {
+    width: calc(var(--spacing) * 5.5);
+    height: calc(var(--spacing) * 5.5);
+  }
+  :where([data-yj-scaling] svg.youj-icon[width='24']) {
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
+  }
+
+  /* The touch step: 1 where controls are operated by a finger, 0 under a
+   * pointer. The primary pointer sets it on the root; a forced device
+   * (YoujProvider / ThemeScope `device`, data-yj-device) sets it on its
+   * subtree, and the control sizes above are recomputed there. It is the one
+   * input that decides a control's size on touch. */
+  :root {
+    --yj-touch: 0;
+  }
+  @media (pointer: coarse) {
+    :root {
+      --yj-touch: 1;
+    }
+  }
+  [data-yj-device='touch'] {
+    --yj-touch: 1;
+  }
+  [data-yj-device='pointer'] {
+    --yj-touch: 0;
+  }
+
+  /* Layout density: how much room a panel gives its content (its padding,
+   * head, section bands, list rows and corner radius), apart from the control
+   * heights above. data-yj-density="compact" on any element tightens every
+   * panel inside it to an app's working density (16px sides, 12px bands, 36px
+   * rows, corners capped at 12px); "roomy", or no attribute, is the default.
+   * The tokens are declared on the root and on each density scope only, never
+   * on a theme scope, so a theme nested inside a compact region stays compact;
+   * and on each scaling scope, which sizes them by --yj-scale (youj.css
+   * section 5). The sizes below are at 100%.
+   * Panels read them where they're drawn: Card (both styles), FieldGroup, and
+   * the blocks built as panels. */
+  :root,
+  [data-yj-density] {
+    --ui--compact: 0;
+  }
+  [data-yj-density='compact'] {
+    --ui--compact: 1;
+  }
+  :root,
+  [data-yj-density],
+  [data-yj-scaling] {
+    /* A panel's inline padding: 24px, 16px compact. */
+    --ui--panel-x: calc((1.5rem - 0.5rem * var(--ui--compact)) * var(--yj-scale, 1));
+    /* A section band's block padding: 24px, 12px compact. */
+    --ui--panel-y: calc((1.5rem - 0.75rem * var(--ui--compact)) * var(--yj-scale, 1));
+    /* A panel's head and footer bands: 21px and 16.8px, 12px and 8px compact,
+     * so a one-line head is 44px and a footer of buttons hugs them. */
+    --ui--panel-head-y: calc((1.3125rem - 0.5625rem * var(--ui--compact)) * var(--yj-scale, 1));
+    --ui--panel-foot-y: calc((1.05rem - 0.55rem * var(--ui--compact)) * var(--yj-scale, 1));
+    /* A panel's title: 18px on 28px, the working title size (14px on 20px) compact. */
+    --ui--panel-title: calc((1.125rem - 0.25rem * var(--ui--compact)) * var(--yj-scale, 1));
+    --ui--panel-title-leading: calc((1.75rem - 0.5rem * var(--ui--compact)) * var(--yj-scale, 1));
+    /* A list row's minimum height: 48px, 36px compact. */
+    --ui--row: calc((3rem - 0.75rem * var(--ui--compact)) * var(--yj-scale, 1));
+    /* The largest corner a panel takes: the theme's own (radius-xl tops out
+     * at 24px), 12px compact. Panels clamp their radius to it where they're
+     * drawn, so it follows the theme around them. */
+    --ui--panel-radius-max: calc((1.5rem - 0.75rem * var(--ui--compact)) * var(--yj-scale, 1));
+  }
+
+  /* The calibration prototype (youj.css section 5b): under it the UI type and
+   * a panel's title hold at the step's own size while the geometry shrinks. */
+  @media (pointer: fine) {
+    :is([data-yj-calibration='next'] [data-yj-scaling], [data-yj-calibration='next'][data-yj-scaling]) {
+      --text-ui-xs: max(var(--yj-text-min, 0.6875rem), calc(0.6875rem * var(--yj-type-scale, 1)));
+      --text-ui-xs--line-height: calc(1rem * var(--yj-type-scale, 1));
+      --text-ui-sm: max(var(--yj-text-min, 0.6875rem), calc(0.75rem * var(--yj-type-scale, 1)));
+      --text-ui-sm--line-height: calc(1rem * var(--yj-type-scale, 1));
+      --text-ui: max(var(--yj-text-min, 0.6875rem), calc(0.8125rem * var(--yj-type-scale, 1)));
+      --text-ui--line-height: calc(1.25rem * var(--yj-type-scale, 1));
+      --text-ui-lg: max(var(--yj-text-min, 0.6875rem), calc(0.875rem * var(--yj-type-scale, 1)));
+      --text-ui-lg--line-height: calc(1.25rem * var(--yj-type-scale, 1));
+    }
+    :is([data-yj-calibration='next'] :is([data-yj-density], [data-yj-scaling]), [data-yj-calibration='next']:is([data-yj-density], [data-yj-scaling])) {
+      --ui--panel-title: calc((1.125rem - 0.25rem * var(--ui--compact)) * var(--yj-type-scale, 1));
+      --ui--panel-title-leading: calc((1.75rem - 0.5rem * var(--ui--compact)) * var(--yj-type-scale, 1));
+    }
+  }
+}
+
+@theme inline {
+  --shadow-xs: var(--ui-shadow-xs);
+  --shadow-sm: var(--ui-shadow-sm);
+  --shadow-md: var(--ui-shadow-md);
+  --shadow-lg: var(--ui-shadow-lg);
+  --shadow-xs-soft: var(--ui--shadow-xs-soft);
+  --shadow-sm-soft: var(--ui--shadow-sm-soft);
+}
+
+/* ── 2. UI-only tokens ──────────────────────────────────────────────────── */
+@theme {
+  /* Radius: 6px on the 32px control, stepping 2px per control size, and
+   * concentric insets (a 2px-padded group of 6px items sits in an 8px frame).
+   * These are Graphite's values; the live ones are derived above. */
+  --radius-xs: 0.1875rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  /* A control's corner (rounded-control-xs/-sm/-lg): Graphite rounds its controls at the control radius; Terminal and Brutal pin pills (square). */
+  --radius-control-xs: 37.5rem;
+  --radius-control-sm: 37.5rem;
+  --radius-control: 37.5rem;
+  --radius-control-lg: 37.5rem;
+  --radius-mark: 9999px;
+  /* The control families' corners (rounded-button, rounded-field-sm,
+   * rounded-choice, rounded-chip, rounded-surface, rounded-overlay…), derived
+   * above; these are only Tailwind's names for them. */
+  --radius-button-xs: 37.5rem;
+  --radius-button-sm: 37.5rem;
+  --radius-button: 37.5rem;
+  --radius-button-lg: 37.5rem;
+  --radius-field-xs: 37.5rem;
+  --radius-field-sm: 37.5rem;
+  --radius-field: 37.5rem;
+  --radius-field-lg: 37.5rem;
+  --radius-field-area: 0.75rem;
+  --radius-choice-xs: 37.5rem;
+  --radius-choice-sm: 37.5rem;
+  --radius-choice: 37.5rem;
+  --radius-choice-lg: 37.5rem;
+  --radius-chip: 37.5rem;
+  --radius-surface: 1rem;
+  --radius-overlay: 1rem;
+  --radius-overlay-lg: 1.3333rem;
+
+  /* Density. A 4px grid; the 32px default is one 20px line box plus 6px of
+   * padding each side, the pro-tool density of Linear and Vercel. Every size
+   * clears the 24px WCAG 2.5.8 target minimum. Coarse pointers step every
+   * size up by 8px (derived above), so touch gets 40px defaults without a
+   * prop. These are the default density's values. */
+  --spacing-control-xs: 1.5rem;
+  --spacing-control-sm: 1.75rem;
+  --spacing-control: 2rem;
+  --spacing-control-lg: 2.5rem;
+
+  /* UI type: 13px is the working size, 12px for dense labels and badges,
+   * 11px only for keycaps and captions. Line heights stay on the 4px grid. */
+  --text-ui-xs: 0.6875rem;
+  --text-ui-xs--line-height: 1rem;
+  --text-ui-sm: 0.75rem;
+  --text-ui-sm--line-height: 1rem;
+  --text-ui: 0.8125rem;
+  --text-ui--line-height: 1.25rem;
+  --text-ui-lg: 0.875rem;
+  --text-ui-lg--line-height: 1.25rem;
+
+  /* Loops. Durations are youj tokens, so the Speed toolbar scales them.
+   * (The spinner is motion's LoaderRingIcon, not a CSS loop.) */
+  --animate-shimmer: ui-shimmer calc(var(--yj-duration-deliberate) * 3) var(--ease-standard) infinite;
+  --animate-indeterminate: ui-indeterminate calc(var(--yj-duration-deliberate) * 2) var(--ease-standard) infinite;
+  --animate-tick-wave: ui-tick-wave calc(var(--yj-duration-deliberate) * 2) linear infinite;
+
+  /* The calendar's month change: the new month pushes in from the side it
+   * comes from while the old one leaves the other way, a third of the width
+   * and faded, so it reads as a step, not a carousel. Both run the base token
+   * (react-day-picker removes the old month when the exit ends, so they must
+   * be the same length). --ui--calendar-dir flips them under RTL. */
+  --animate-calendar-from-end: ui-calendar-from-end calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-enter) both;
+  --animate-calendar-from-start: ui-calendar-from-start calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-enter) both;
+  --animate-calendar-to-end: ui-calendar-to-end calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard) both;
+  --animate-calendar-to-start: ui-calendar-to-start calc(var(--yj-duration-base) * var(--yj-motion, 1)) var(--ease-standard) both;
+
+  /* The band crosses in the first 60% and rests, so the sweep reads as a
+   * calm pulse rather than a constant wash. */
+  @keyframes ui-shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    60%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  /* A 40%-wide band (scaled from the inline start) that enters just past
+   * one edge and leaves just past the other, so the track is never empty. */
+  @keyframes ui-indeterminate {
+    0% {
+      transform: translateX(-40%) scaleX(0.4);
+    }
+    100% {
+      transform: translateX(100%) scaleX(0.4);
+    }
+  }
+  /* One tick's turn in Progress's ticks wave: a quick warm-up, then a long
+   * fade, so the wave has a soft front and a trailing tail. */
+  @keyframes ui-tick-wave {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    35% {
+      opacity: 0;
+    }
+  }
+  @keyframes ui-calendar-from-end {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--ui--calendar-dir, 1) * 33%));
+    }
+  }
+  @keyframes ui-calendar-from-start {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--ui--calendar-dir, 1) * -33%));
+    }
+  }
+  @keyframes ui-calendar-to-end {
+    to {
+      opacity: 0;
+      transform: translateX(calc(var(--ui--calendar-dir, 1) * 33%));
+    }
+  }
+  @keyframes ui-calendar-to-start {
+    to {
+      opacity: 0;
+      transform: translateX(calc(var(--ui--calendar-dir, 1) * -33%));
+    }
+  }
+}
+
+/* Focus. Discrete controls get a 2px accent outline offset 2px (heavier
+ * with a heavier stroke: --ui--focus-width is derived per scope above): an
+ * outline (not a box-shadow ring) follows the radius, needs no knowledge of
+ * the surface behind it, and survives forced-colors mode. Text fields are
+ * their own focus container: the border turns accent inside a soft 3px halo. */
+:root {
+  --ui--focus-offset: 2px;
+  --ui--focus-halo: 3px;
+}
+
+/* A 44px target around a smaller control: an invisible ::after centered on
+ * the control, at least 44px each way (the WCAG 2.5.5 / Apple HIG size),
+ * growing nothing in layout. The host must be positioned (a Button is).
+ * Used as `touch:yj-hit` on the xs and sm sizes, so a toolbar or a table row
+ * stays compact and a finger still lands. Centered with a translate, so it is
+ * the same in RTL. Neighbors closer than 44px share the overlap; the later
+ * sibling wins it. */
+@utility yj-hit {
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: max(100%, 2.75rem);
+    block-size: max(100%, 2.75rem);
+    transform: translate(-50%, -50%);
+  }
+  &:dir(rtl)::after {
+    transform: translate(50%, -50%);
+  }
+}
+
+/* The key inside a choice track (a pill tab, a segment, a toggle in a pill
+ * group): the track's corner less the track's inset, so the two stay
+ * concentric at every size and in every theme. The track writes both
+ * (rounded-choice, and --ui--choice-inset beside its padding). */
+@utility rounded-choice-key {
+  border-radius: max(0px, calc(var(--radius-choice) - var(--ui--choice-inset, 0px)));
+}
+
+/* Glass chrome: a bar's chrome colour at --yj-glass (85%), over a blur, so
+ * content scrolls under it. Written on a chrome tone scope (an app header, a
+ * tab bar), so the glass is the chrome's own mode. A bar in the other mode
+ * from the page (a dark header on a light page) is solid: frost would let the
+ * page's light through and wash it to gray. */
+@utility yj-glass {
+  background-color: color-mix(
+    in oklab,
+    var(--color-chrome)
+      calc(var(--yj-glass, 85%) + (100% - var(--yj-glass, 85%)) * (var(--yj-dark) - var(--yj-page-m, var(--yj-dark))) * (var(--yj-dark) - var(--yj-page-m, var(--yj-dark)))),
+    transparent
+  );
+  backdrop-filter: blur(12px) saturate(1.5);
+}
+
+/* A solid fill's hover/press step: --yj-shade at 8% over whatever colour the
+ * element already has, so one utility serves every ink (and `own:`/variants
+ * compose: `[a&]:yj-solid-hover`, `group-hover/x:yj-solid-shade`). */
+/* A highlighted row's lettering: on-cursor, and its text roles turned to
+ * on-cursor's so a hint or a shortcut inside follows. The text roles
+ * unless the theme's overlays are ink (youj.css 3c), then paper on ink. */
+@utility yj-on-cursor {
+  color: var(--color-on-cursor);
+  --color-fg: var(--color-on-cursor);
+  --color-fg-muted: var(--color-on-cursor-muted);
+  --color-fg-subtle: var(--color-on-cursor-muted);
+}
+
+/* Undoes yj-on-cursor where the highlight is hidden (a command sheet's idle list). */
+@utility yj-off-cursor {
+  color: var(--color-fg);
+  --color-fg: inherit;
+  --color-fg-muted: inherit;
+  --color-fg-subtle: inherit;
+}
+
+@utility yj-solid-shade {
+  background-image: linear-gradient(color-mix(in oklab, var(--yj-shade) 8%, transparent), color-mix(in oklab, var(--yj-shade) 8%, transparent));
+}
+
+@utility yj-solid-hover {
+  &:hover {
+    background-image: linear-gradient(color-mix(in oklab, var(--yj-shade) 8%, transparent), color-mix(in oklab, var(--yj-shade) 8%, transparent));
+  }
+}
+
+@utility focus-ring {
+  &:focus-visible {
+    outline: var(--ui--focus-width) solid var(--color-focus);
+    outline-offset: var(--ui--focus-offset);
+  }
+}
+
+@utility focus-ring-within {
+  &:has(:focus-visible) {
+    outline: var(--ui--focus-width) solid var(--color-focus);
+    outline-offset: var(--ui--focus-offset);
+  }
+}
+
+@utility focus-field {
+  &:focus-visible {
+    border-color: var(--color-focus);
+    box-shadow: 0 0 0 var(--ui--focus-halo) color-mix(in oklab, var(--color-focus) 22%, transparent);
+    /* Invisible normally; forced-colors mode paints it. */
+    outline: 2px solid transparent;
+  }
+  /* Invalid already has the danger edge, which focus alone barely changes:
+   * the kit's ring says where focus is (WCAG 2.4.7, 1.4.11). */
+  &:is([aria-invalid='true'], [data-invalid]):focus-visible {
+    border-color: var(--color-danger);
+    box-shadow: none;
+    outline: var(--ui--focus-width) solid var(--color-focus);
+    outline-offset: var(--ui--focus-offset);
+  }
+}
+
+/* The same treatment for a frame whose text control sits inside it (an
+ * input group). Buttons inside the frame keep their own ring. */
+@utility focus-field-within {
+  &:has([data-slot='input-group-control']:focus-visible) {
+    border-color: var(--color-focus);
+    box-shadow: 0 0 0 var(--ui--focus-halo) color-mix(in oklab, var(--color-focus) 22%, transparent);
+    outline: 2px solid transparent;
+  }
+  &:has([data-slot='input-group-control']:is([aria-invalid='true'], [data-invalid]):focus-visible) {
+    border-color: var(--color-danger);
+    box-shadow: none;
+    outline: var(--ui--focus-width) solid var(--color-focus);
+    outline-offset: var(--ui--focus-offset);
+  }
+}
+
+/* ── 4. Scrollbars ─────────────────────────────────────────────────────────
+ * Native bars in ScrollArea's family: a pill thumb inset in a transparent
+ * track, in the thumb tokens above. Standard properties only: styling
+ * ::-webkit-scrollbar would turn macOS's overlay bars into permanent ones in
+ * Safari and Chrome, and Chrome ignores it once these are set.
+ *
+ * The page: every native bar takes the theme's thumb (scrollbar-color
+ * inherits, and each scope re-resolves it), and the page's own bar is thin.
+ * The browser firms a thumb under the pointer and while it's dragged.
+ * `scrollbar-color: auto` on an element hands its bars back to the platform. */
+@layer base {
+  :root,
+  [data-theme],
+  [data-yj-theme] {
+    scrollbar-color: var(--ui-scrollbar-thumb) transparent;
+  }
+  :root {
+    scrollbar-width: thin;
+  }
+}
+
+/* A scroll region: thin, quiet at rest, and clear (3:1) while the pointer or
+ * keyboard focus is on it. Only the colour changes, so nothing reflows, and
+ * it changes at once, as a native bar's does: scrollbar-color inherits, so
+ * easing it restyled every element inside the region on every frame of the
+ * fade (1,250 a frame in a data grid, each time the pointer crossed it). */
+@utility yj-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-scrollbar-thumb) transparent;
+
+  &:focus-visible,
+  &:has(:focus-visible) {
+    scrollbar-color: var(--ui-scrollbar-thumb-hover) transparent;
+  }
+  @media (hover: hover) {
+    &:hover {
+      scrollbar-color: var(--ui-scrollbar-thumb-hover) transparent;
+    }
+  }
+}
+
+/* cmdk writes the list's measured height here on every change of results,
+ * and CommandList reads it on the same element. Unregistered, a custom
+ * property inherits, so each write restyled every row in the list. */
+@property --cmdk-list-height {
+  syntax: '*';
+  inherits: false;
+}
+
+/* ── 5. Character ──────────────────────────────────────────────────────────
+ * Titles and labels take the theme's voice (youj.css section 1) through
+ * the variables their own utilities read, so a component's classes, and an
+ * app's, still win. Unset, nothing changes: family, case and spacing fall
+ * back to what the element inherits, weight and tracking to Tailwind's own
+ * semibold and tight. */
+@layer base {
+  /* Titles: card, dialog, sheet, popover and empty-state titles, and page
+   * headings, wherever they're set in font-semibold. */
+  :where(h1, h2, h3, [data-slot$='-title']):is(.font-semibold, .own\:font-semibold) {
+    font-family: var(--yj-font-display);
+    --font-weight-semibold: var(--yj-heading-weight, 600);
+    --tracking-tight: var(--yj-heading-tracking, -0.025em);
+  }
+
+  /* Labels: the short names on things, not sentences. Badges, column heads,
+   * the label over a field, menu, select and sidebar group headings, tabs
+   * and keys. A label beside a checkbox or switch reads as a sentence and
+   * stays as written. Browsers reset a button's case, so the button in a
+   * sortable column head is named too. (Attribute selectors, so these beat
+   * preflight's `button { font: inherit }` but never a utility.) */
+  [data-slot='badge'],
+  [data-slot='table-head'],
+  [data-slot='data-table-header-row'] > th,
+  [data-slot='data-grid-header-row'] > th,
+  [data-slot='field'][data-orientation='vertical'] > [data-slot='field-label'],
+  [data-slot='field'][data-orientation='vertical'] > :not([data-slot='field-content']) > [data-slot='field-label'],
+  [data-slot='select-label'],
+  [data-slot='dropdown-menu-label'],
+  [data-slot='menubar-label'],
+  [data-slot='sidebar-group-label'],
+  [cmdk-group-heading],
+  [data-slot='tabs-trigger'],
+  [data-slot='kbd'],
+  :is([data-slot='table-head'], [data-slot='data-table-header-row'] > th, [data-slot='data-grid-header-row'] > th) button {
+    font-family: var(--yj-label-font);
+    text-transform: var(--yj-label-case);
+    letter-spacing: var(--yj-label-tracking);
+  }
+
+  /* Surfaces: cards take the theme's surface gradient and the default
+   * (primary) button its sheen, both from section 1. An image a component
+   * or an app sets with a utility wins, and a button given a fill of its
+   * own (data-fill="custom") shows that fill plain. */
+  [data-slot='card'] {
+    background-image: var(--ui--surface-gradient);
+  }
+  [data-slot='button'][data-variant='default']:not([data-fill='custom']) {
+    background-image: var(--ui--fill-sheen);
+  }
+}
+
+/* ── 6. Toast media ─────────────────────────────────────────────────────────
+ * A toast's `media` stage (toast.tsx) fits whatever the caller passes, so no
+ * size has to be chosen for it: an animated icon sits at half the stage, a
+ * loader keeps its proportions inside it (any `size`), and a scene fills
+ * it. Base layer, so a size the caller sets with a utility still wins. */
+@layer base {
+  [data-slot='toast-media-content'] > svg:not([data-slot]) {
+    width: 50%;
+    height: 50%;
+  }
+  [data-slot='toast-media-content'] > [data-yj-loader] > .yj-anim__art {
+    max-height: calc(var(--ui--toast-media) - 0.75rem);
+  }
+  /* A scene frames an 8 × 8 floor with room around it: it grows past the
+   * stage so the object reads at this size, and the stage crops the floor's
+   * far corners. (Over the scene's own inline width, hence important.) */
+  [data-slot='toast-media-content'] > [data-slot='iso-scene'] {
+    width: 140% !important;
+    max-width: none !important;
+    margin-inline: -20% !important;
+  }
+}

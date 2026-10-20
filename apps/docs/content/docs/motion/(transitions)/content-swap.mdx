@@ -1,0 +1,111 @@
+---
+title: Content Swap
+description: "Replace a loading placeholder with content and smoothly adjust the container’s height."
+---
+
+<ComponentPreview name="content-swap/demo" height={340} />
+
+Use it wherever a region loads in place: a card of invoices, a profile, a chart panel, a filtered list. The skeleton drops away as the content resolves into focus, and the box morphs from one height to the other, so the page below moves instead of jumping. Don't use it for content that arrives in pieces, like rows that stream in one by one. Use [Presence List](/docs/motion/presence-list) for those.
+
+## Installation
+
+<InstallTabs name="content-swap" />
+
+## Usage
+
+```tsx
+import { ContentSwap } from '@youj/motion'
+import { Card } from '@youj/react'
+
+export function Invoices({ invoices, isLoading }: { invoices: Invoice[]; isLoading: boolean }) {
+  return (
+    <Card>
+      <ContentSwap loading={isLoading} fallback={<InvoicesSkeleton />} loadingLabel="Loading invoices">
+        <InvoiceList invoices={invoices} />
+      </ContentSwap>
+    </Card>
+  )
+}
+```
+
+`loading` decides which side shows. `fallback` stands in while it's true, and `children` is the content. `loadingLabel` adds a polite announcement while loading, off by default.
+
+## Examples
+
+<Examples>
+
+<Example id="shape-the-skeleton-like-the-content" label="Shape the skeleton like the content">
+
+### Shape the skeleton like the content
+
+The swap reads as one list resolving when the fallback has the content's shape: the same rows, avatars and column widths. When the content has more rows than the skeleton, as in the preview, the box grows the difference as the rows resolve in. Any skeleton works. The one in these examples is @youj/react's [Skeleton](/docs/components/skeleton), which times its shimmer on the provider's Speed and stops it under reduced motion.
+
+</Example>
+
+<Example id="refetching" label="Refetching">
+
+### Refetching
+
+It works in both directions. Set `loading` back to `true` and the skeleton returns, and a swap that starts mid-morph continues from the current height. Change the filter below a few times in a row.
+
+<ComponentPreview name="content-swap/filters" height={340} />
+
+Every filter here refetches, so each result replaces the skeleton with a different height: five rows, three, then one. The rows below the card would follow the same curve.
+
+</Example>
+
+<Example id="failed-loads" label="Failed loads">
+
+### Failed loads
+
+The content side is whatever the request settled on, so an error swaps in just as data does: here the first request fails, and Try again brings the skeleton back before the domains resolve.
+
+<ComponentPreview name="content-swap/failed-load" height={350} />
+
+Give the message `role="alert"` so it's announced as it appears. The retry button leaves with the error, and the outgoing side is inert, so move focus into the region before you refetch.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="loading, fallback, children… (4)">
+
+### Props
+
+<PropsTable name="ContentSwap" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Skeleton out, content in, delay… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Skeleton out', note: 'fades where it stands, out of the layout', duration: 'fast', ease: 'standard' },
+    { moment: 'Content in', note: 'fade, 4px rise and a 4px blur, one step late', duration: 'base', ease: 'enter' },
+    { moment: 'Delay', note: 'before the incoming side starts', stagger: 'base' },
+    { moment: 'Height', note: 'from the old height to the new one', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="The content replaces the skeleton in one frame, and the box takes its new height at once."
+/>
+
+The incoming side waits one stagger step, so the two layers barely double-expose. The content ends on `filter: none`, not `blur(0px)`: a leftover filter would make it the containing block for any fixed-position element inside.
+
+#### Reduced motion
+
+The swap is instant in both directions and the height changes in the same frame. The busy state and the announcement are unchanged. Stop your skeleton's own shimmer or pulse too. @youj/react's Skeleton does this for you.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- While loading, the region is `aria-busy`, and the skeleton is `aria-hidden`, so assistive technology waits for the content instead of reading placeholder shapes.
+- `loadingLabel` renders a visually hidden `role="status"` that's mounted from the start and announces the label while loading. Give it the name of what's loading, like "Loading invoices".
+- The outgoing side is inert while it fades, so it can't take focus or clicks on its way out.
+
+</ReferenceRow>

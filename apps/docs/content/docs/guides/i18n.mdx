@@ -1,0 +1,183 @@
+---
+title: Translating built-in text
+description: "Translate built-in labels, announcements and placeholders with language packs or your own text."
+status: new
+---
+
+<PageArt art="i18n" />
+
+Translate built-in text through `YoujProvider`, including close buttons, pagination labels, placeholders and screen-reader announcements. Each string is a key in `YoujLabels`. Pass only the keys you want to replace; the rest stay in English.
+
+## Use a ready-made language
+
+Youj includes ready-made language packs. Import one and pass it to the provider:
+
+```tsx title="app/layout.tsx"
+import { YoujProvider } from '@youj/core'
+import { de } from '@youj/core/locales/de'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="de">
+      <body>
+        <YoujProvider locale="de-DE" labels={de}>
+          {children}
+        </YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+| Language | Import | Locale |
+|---|---|---|
+| Arabic (right to left) | `import { ar } from '@youj/core/locales/ar'` | `ar` |
+| Chinese, Simplified | `import { zhCN } from '@youj/core/locales/zh-CN'` | `zh-CN` |
+| Dutch | `import { nl } from '@youj/core/locales/nl'` | `nl-NL` |
+| French | `import { fr } from '@youj/core/locales/fr'` | `fr-FR` |
+| German | `import { de } from '@youj/core/locales/de'` | `de-DE` |
+| Hebrew (right to left) | `import { he } from '@youj/core/locales/he'` | `he-IL` |
+| Italian | `import { it } from '@youj/core/locales/it'` | `it-IT` |
+| Japanese | `import { ja } from '@youj/core/locales/ja'` | `ja-JP` |
+| Korean | `import { ko } from '@youj/core/locales/ko'` | `ko-KR` |
+| Polish | `import { pl } from '@youj/core/locales/pl'` | `pl-PL` |
+| Portuguese (Brazil) | `import { ptBR } from '@youj/core/locales/pt-BR'` | `pt-BR` |
+| Spanish | `import { es } from '@youj/core/locales/es'` | `es-ES` |
+| Swedish | `import { sv } from '@youj/core/locales/sv'` | `sv-SE` |
+| Turkish | `import { tr } from '@youj/core/locales/tr'` | `tr-TR` |
+
+- **Only what you import ships.** Each language is its own module, so an app that uses German loads German and nothing else. With `@youj/core` alone, import from `@youj/core/locales/<code>`. With source copied in, `npx youj add locale de` (the item `youj-locale-de`) copies the pack in.
+- **Copied in, English only by default.** An app that copies the core gets English, and no language pack until it adds one: `npx youj add locale de` copies the German pack to `locales/de.ts` (`import { de } from '@/locales/de'`). The codes are `ar`, `de`, `es`, `fr`, `he`, `it`, `ja`, `ko`, `nl`, `pl`, `pt-br`, `sv`, `tr` and `zh-cn`; the item behind each is `youj-locale-<code>`. A language pack holds every key and the copied dictionary type is open, so a pack works with whichever components are present: keys of components you did not copy are inert. Each copied component brings only its own English strings, as the item `youj-labels-<component>` (a small file in `lib/youj/labels/`). `useLabels()` and `defaultLabels` are the item `youj-labels`, which components that read the whole dictionary add themselves.
+- **Plurals follow the language.** Text with a count picks its word form with `Intl.PluralRules`, so Polish says "1 plik", "2 pliki", "5 plików", and Arabic has its dual and its few and many forms. Numbers are formatted with `Intl.NumberFormat` ("1.234 Dateien").
+- **Right to left.** For Arabic and Hebrew, also set `dir="rtl"` on `<html>` and on the provider (`<YoujProvider dir="rtl">`), or on a `ThemeScope` around the part of the page in that language. Layout, arrow keys, overlays and motion then mirror. See [Right-to-left layouts](/docs/guides/rtl).
+- **Native review welcome.** The packs were translated for Youj. If a string reads wrong in your language, [CONTRIBUTING.md](repo:file/CONTRIBUTING.md#improving-a-language) explains how to fix it.
+
+### Change a few strings
+
+A pack is a plain object, so spread it and set the keys you want to read differently:
+
+```tsx
+<YoujProvider locale="de-DE" labels={{ ...de, close: 'Zu', rowsNoun: 'Rechnungen' }}>
+```
+
+## Your own translations
+
+Every key is optional. Pass only the ones you have, and the rest stay English, so you can translate a screen at a time:
+
+```tsx
+<YoujProvider
+  locale="de-DE"
+  labels={{
+    close: 'Schließen',
+    cancel: 'Abbrechen',
+    rowsPerPage: 'Zeilen pro Seite',
+  }}
+>
+```
+
+`locale` and `labels` are separate on purpose: `locale` formats numbers and dates with `Intl`, and `labels` holds the words around them.
+
+## The keys
+
+`YoujLabels` is exported from `@youj/core`, and `defaultLabels` holds the English. Your editor completes every key and shows its type. The keys are flat, grouped by the component that uses them:
+
+| Group | Examples |
+|---|---|
+| Shared | `close`, `dismiss`, `cancel`, `save`, `retry`, `clear`, `search`, `searchPlaceholder`, `selectPlaceholder`, `loading`, `loadingEllipsis`, `remove(name)` |
+| Async feedback | `working`, `done`, `failed` (AsyncButton, AsyncFeedback, toasts) |
+| Navigation | `pagination`, `previous`, `next`, `breadcrumb`, `showMoreCount(n)`, `toggleSidebar`, `menu`, `onThisPage` |
+| Carousel | `carousel`, `slide`, `previousSlide`, `nextSlide`, `slideOf(n, total)`, `slideNumber(n)` |
+| Command palette | `commandPalette`, `commandPalettePlaceholder`, `home`, `navigate`, `open`, `escKey` |
+| Inputs and pickers | `chooseDate`, `startDate`, `endDate`, `showPassword`, `increase`, `decrease`, … |
+| Data table | `rowsPerPage`, `columns`, `clearFilters`, `sortAscending`, `firstPage`, `lastPage`, `pageOf(page, total)`, … |
+| Chat, kanban, uploads, notifications | the composer, message actions, lanes, file rows, "Mark all as read", … |
+
+One key serves every component where the text means the same thing: `close` names the Dialog, Sheet and Toast close buttons alike. Text with the same English but a different job has its own key.
+
+## Text with values in it
+
+Text that contains a number or a name is a function, so each language can put the value where its grammar wants it and handle its own plurals:
+
+```tsx
+<YoujProvider
+  labels={{
+    slideOf: (n, total) => `Folie ${n} von ${total}`,
+    showMoreCount: (count) => `${count} weitere anzeigen`,
+    remove: (name) => `${name} entfernen`,
+  }}
+>
+```
+
+Numbers reach these functions already formatted where the component formats them (a data table's counts, for instance, arrive as strings in the provider's `locale`).
+
+## Translating blocks
+
+Blocks are copied into your app, so they carry their own text. Of the blocks, only those that reuse a built-in component's strings (a data table's pagination, a command palette's hints) follow `labels`. The rest keep their words in an English `copy` object, so a German app gets German components and English blocks until you translate each block's `copy`.
+
+Every block takes a `copy` prop. It is partial: pass the strings you want to replace and the rest stay English. Strings with values in them are functions, as above:
+
+```tsx
+<FileManager
+  copy={{
+    storage: 'Speicher',
+    files: 'Dateien',
+    selectFile: (name) => `${name} auswählen`,
+    movedMany: (count) => `${count} Dateien verschoben`,
+  }}
+/>
+```
+
+- **Dates, numbers and sizes** follow the app's `locale` (`<YoujProvider locale="de-DE">`), or the block's `locale` prop, without any `copy`. Sizes read "18,2 MB" in German and "18.2 MB" in English.
+- **Plurals are yours to write.** A block's English picks "1 file" or "2 files" with a plain comparison. In `copy`, write the word forms your language needs, with `Intl.PluralRules` as the language packs do: `new Intl.PluralRules('pl').select(count)` returns `one`, `few` or `many`.
+- **Read the block's `copy` type** for the keys. Your editor completes them, and the block's `DEFAULT_COPY` shows the English each one replaces.
+- **Shared words go through `labels`.** The Esc key cap on shortcut hints is the `escKey` label, so a language pack that writes it differently (French "Échap") changes it everywhere at once.
+
+## A component's own prop still wins
+
+Components that had a prop for their text keep it. The prop wins, then the provider's label, then English:
+
+```tsx
+// "Wird geladen" from the provider…
+<Button loading>Speichern</Button>
+// …unless this button says something more specific.
+<Button loading loadingLabel="Rechnung wird gespeichert">Speichern</Button>
+
+<AsyncButton onAction={save} pendingLabel="Speichert…" successLabel="Gespeichert">
+  Speichern
+</AsyncButton>
+
+<Pagination aria-label="Rechnungen, Seiten" />
+```
+
+## Nesting
+
+Providers nest the way `locale` does: an inner provider's keys win and everything else comes from the one above it. `ThemeScope` keeps the labels of the provider around it.
+
+```tsx
+<YoujProvider labels={de}>
+  <App />
+  {/* A French help widget inside a German app. */}
+  <YoujProvider labels={{ close: 'Fermer', next: 'Suivant' }}>
+    <HelpWidget />
+  </YoujProvider>
+</YoujProvider>
+```
+
+## In your own components
+
+`useLabels()` returns the labels in effect: English without a provider, merged with every provider above otherwise. Use it for text that should follow the app's language, and add a prop when a caller may need to override it.
+
+```tsx
+import { Button } from '@youj/react'
+import { useLabels } from '@youj/core'
+import { XIcon } from '@youj/icons'
+
+function ClearButton({ label, onClear }: { label?: string; onClear: () => void }) {
+  const labels = useLabels()
+  return (
+    <Button variant="ghost" size="icon-sm" aria-label={label ?? labels.clear} onClick={onClear}>
+      <XIcon />
+    </Button>
+  )
+}
+```

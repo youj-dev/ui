@@ -1,0 +1,143 @@
+---
+title: Tool Approval
+description: "Ask before an AI agent runs a risky tool: the arguments, the risk, and Allow once, Always allow or Deny."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tool-approval/demo" height={460} />
+
+A high-risk delete. Focus starts on the summary, not on Allow, and Enter does nothing here. Edit opens the arguments as fields (try `limit` above 10,000 or a word instead of a number), then Allow once runs with what you changed.
+
+</Story>
+
+<Story id="always-allow" label="Always allow">
+
+<ComponentPreview name="tool-approval/scope" height={560} />
+
+`scope` adds **Always allow for messages to finance@acme.test**. `onDecision` reports `scope: 'always'`, and your app remembers it and skips the card next time. The long body folds behind Show more, and `api_key` is masked until you reveal it.
+
+</Story>
+
+<Story id="in-a-trace" label="In an agent trace">
+
+<ComponentPreview name="tool-approval/trace" height={640} />
+
+Resolved requests as history: approved and done, denied with a reason, expired, and failed after approval. Each is one line with who decided and when; open Arguments to see what was asked.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatToolApproval" noImport />
+
+Use one before an agent runs anything people would want to check first: sending an email, deleting rows, deploying, spending money. It sits in the conversation like a [Tool Call](/docs/components/chat/tool-call), and once answered it becomes that call's quiet record.
+
+```tsx
+import { ChatToolApproval } from '@youj/react'
+
+<ChatToolApproval
+  name="delete_rows"
+  summary="Delete 1,204 rows from the orders table"
+  reason="They are test orders older than 90 days."
+  risk="high"
+  args={{ table: 'orders', limit: 5000 }}
+  scope="this project"
+  onDecision={({ decision, scope, args }) => answer(call.id, decision, scope, args)}
+/>
+```
+
+It is **uncontrolled** by default: it starts pending, and a decision resolves it to approved or denied (with `approver` and the time on the resolved line). To drive it yourself, pass `status` (`pending`, `approved`, `denied`, `expired`, `running`, `done` or `failed`) and `resolution` (`{ by, at, reason }`); it then stays as it is until you change it. `error` and `duration` fill in the failed and done states. An `expired` request is a state you set, since only your app knows when its time ran out.
+
+`risk` is `low`, `medium` (the default) or `high`, shown as an icon and a word, and a pending high-risk card also draws its border in danger. `scope` adds **Always allow for ‹scope›**; without it there is no such button. `onDecision` receives `{ decision: 'allow' | 'deny', scope: 'once' | 'always', args }`, where `args` are the arguments to run with: the originals, or the person's edits.
+
+**Arguments** show as readable key/value rows. Values over about 140 characters, or with line breaks, fold behind Show more. Keys named like `password`, `token`, `secret` or `api_key`, and any key in `sensitive`, are masked until revealed and can't be edited.
+
+**Edit** turns the editable arguments into fields. Each is parsed back to the type it had (a number must be a number, an object valid JSON), and `validate(key, value, args)` can refuse a value with a message. Errors appear under the field, and focus jumps to the first one. Escape cancels and returns focus to Edit. Pass `editable={false}` to hide it.
+
+Pass `autoFocus` to move focus to the summary when a request appears. The summary is deliberately not a button: Enter on it allows once for low and medium risk, and is never bound on high risk, so a stray keypress can't approve a dangerous action.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="name, summary, args… (18)">
+
+### Props
+
+<PropsTable name="ChatToolApproval" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Data attributes" summary="data-status, data-yj-risk">
+
+### Data attributes
+
+On the root (`data-slot="chat-tool-approval"`):
+
+- `data-status` is the current status: `pending`, `approved`, `denied`, `expired`, `running`, `done` or `failed`.
+- `data-yj-risk` is `low`, `medium` or `high`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Status badge, status badge width, check… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Status label', note: 'crossfades between states (Morph Label)', duration: 'fast', ease: 'standard' },
+    { moment: 'Status badge width', note: 'the box morphs to the new label', spring: 'snappy' },
+    { moment: 'Check', note: 'draws itself in on approved and done', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Warning', note: 'rocks once on failed', duration: 'deliberate', ease: 'standard' },
+    { moment: 'Note and error', note: 'height and fade under the resolved line (Collapse)', duration: 'base', ease: 'standard' },
+    { moment: 'Arguments open and close', note: 'on a resolved request (`yj-collapse`)', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Every swap and fold is instant, and the marks appear already drawn."
+/>
+
+#### Reduced motion
+
+The status badge changes without crossfading, the marks appear without playing, and the arguments open and close at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The card is a group named by the tool. The risk is an icon and a word ("High risk"), never colour alone, and so is the status.
+- Focus lands on the summary, not on Allow, when `autoFocus` is set. Tab then reaches Edit, Deny, Always allow and Allow once in that order, with Allow last.
+- Enter on the focused summary allows once for low and medium risk. On high risk Enter is never bound to approve.
+- In Edit, focus moves to the first field, Enter saves, Escape cancels and returns focus to Edit, and an invalid field is `aria-invalid` with its message linked and focus on the first one.
+- A masked value is read as "Hidden"; its reveal button is named by the key ("Show password") and is a toggle. Show more and Show less set `aria-expanded`.
+- A new request and each status change are announced once: through the conversation's live regions inside a [Chat Message List](/docs/components/chat/message-list), or its own status region on its own. A high-risk request and a failure are assertive. A request that mounts already resolved, as history, isn't announced.
+- All text comes from the `chatToolApprovalLabels`, so it follows the provider's locale and reads right to left in Arabic and Hebrew.
+
+</ReferenceRow>

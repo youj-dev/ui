@@ -1,0 +1,89 @@
+/* shadcn compatibility: shadcn's token names on youj's roles. Opt in.
+ *
+ * Youj's own source never reads these names; it uses the roles (canvas, fg,
+ * surface, band, line, ...). This sheet is for an app that already speaks
+ * shadcn's vocabulary, so code copied from shadcn, or a library built on it,
+ * keeps working beside youj: `bg-background`, `text-muted-foreground`,
+ * `border-input` and `var(--card)` resolve to the matching role, per theme
+ * scope and tone.
+ *
+ *   @import 'tailwindcss';
+ *   @import '@youj/react/styles.css';
+ *   @import '@youj/react/shadcn.css';
+ *
+ * Compile it in the same Tailwind root as the rest: imported as a separate
+ * stylesheet the @theme block is ignored and no `bg-background` class exists.
+ *
+ * What it can't map: shadcn's `accent` and `accent-foreground`. In youj
+ * `accent` is the brand colour, and `bg-accent` is that colour's class, so
+ * shadcn's hover surface can't take the name. `--sidebar-accent` has no such
+ * clash. `npx youj add` rewrites shadcn's `accent` to `hover` (and
+ * `accent-foreground` to `fg`) in the code it copies in. */
+
+@layer base {
+  :root,
+  [data-theme],
+  [data-yj-theme],
+  [data-yj-tone] {
+    --background: var(--color-canvas);
+    --foreground: var(--color-fg);
+    --card: var(--color-surface);
+    --card-foreground: var(--color-fg);
+    --popover: var(--color-overlay);
+    --popover-foreground: var(--color-fg);
+    --primary: var(--color-accent);
+    --primary-foreground: var(--color-on-accent);
+    --secondary: var(--color-hover);
+    --secondary-foreground: var(--color-fg);
+    --muted: var(--color-band);
+    --muted-foreground: var(--color-fg-muted);
+    --destructive: var(--color-danger);
+    --border: var(--color-line);
+    --input: var(--color-line-control);
+    --ring: var(--color-focus);
+
+    --chart-1: var(--color-chart-1);
+    --chart-2: var(--color-chart-2);
+    --chart-3: var(--color-chart-3);
+    --chart-4: var(--color-chart-4);
+    --chart-5: var(--color-chart-5);
+
+    --sidebar: var(--color-chrome);
+    --sidebar-foreground: var(--color-fg);
+    --sidebar-primary: var(--color-accent);
+    --sidebar-primary-foreground: var(--color-on-accent);
+    --sidebar-accent: var(--color-hover);
+    --sidebar-accent-foreground: var(--color-fg);
+    --sidebar-border: var(--color-line);
+    --sidebar-ring: var(--color-focus);
+
+    --radius: var(--radius-lg);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}

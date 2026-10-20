@@ -1,0 +1,119 @@
+---
+title: Distribution Strip
+description: "Show a distribution as dots on a log scale, with percentile marks and a target, such as request latency."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="distribution-strip/demo" height={300} />
+
+Request latencies before and after a deploy, as a swarm of dots with percentile flags, which you can switch between.
+
+</Story>
+
+<Story id="percentiles-and-the-objective" label="Percentiles and the objective">
+
+<ComponentPreview name="distribution-strip/percentiles" height={240} />
+
+Search latencies with the p75, p95 and p99.9 flags and no objective.
+
+`percentiles` takes any percentiles, 0 to 100, and draws the highest in the strongest ink (in the warning ink once it's past the objective). Flags that would collide spread apart and stay inside the strip. Without `slo` there's no hatch and no share, and the dots stay in the neutral ink.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="distribution-strip" noImport />
+
+Use a distribution strip where the question is "how slow is it, really": a service's or a route's latency, a job's run time. Every sampled request is a dot on a log-scaled strip, stacked into rows where they crowd, so the swarm is fattest where most requests land and the tail stays visible dot by dot. The percentiles (p50, p90 and p99 by default) are flagged hairlines, and the objective is a dashed line: past it the strip is hatched and its dots turn to the warning tone. For one latency against a limit, use a [Segmented Meter](/docs/components/segmented-meter); for a trend over time, a [Chart](/docs/components/chart).
+
+```tsx
+import { DistributionStrip } from '@youj/react'
+
+// Latencies in milliseconds, one per sampled request.
+<DistributionStrip samples={latencies} slo={300} label="checkout-api · last 24h" />
+```
+
+The axis runs over the whole decades around the samples (10 ms to 1 s for samples between 22 and 990 ms), with a tick for every step of each decade; pass `domain` for other ends. Latencies read in milliseconds, and in seconds from 1 s, in the provider's locale; pass `format` for your own. The header counts the share of samples within `slo`.
+
+`percentileOf(samples, p)` gives the same interpolated percentile the strip flags, for a headline figure beside it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="samples, slo, percentiles… (7)">
+
+### Props
+
+<PropsTable name="DistributionStrip" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `distribution-strip`, `distribution-strip-header`, `distribution-strip-label`, `distribution-strip-within`, `distribution-strip-within-label`, `distribution-strip-value`, `distribution-strip-empty`, `distribution-strip-chart`, `distribution-strip-plot`, `distribution-strip-over`, `distribution-strip-dot`, `distribution-strip-slo`, `distribution-strip-slo-flag`, `distribution-strip-marker`, `distribution-strip-line`, `distribution-strip-flag`, `distribution-strip-axis`, `distribution-strip-tick`, `distribution-strip-tick-label` and `distribution-strip-summary`. A dot past the objective has `data-over`, a marker its `data-percentile`, and a decade tick `data-major`. The labels take the theme's label voice (mono capitals in Basalt).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, wave, markers… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the dots rise from under the baseline and fade in when two fifths of the strip scroll into view', duration: 'slow', ease: 'enter' },
+    { moment: 'Wave', note: 'each dot waits for its place along the axis, so the rise sweeps from the start', value: 'the base token, spread from start to end' },
+    { moment: 'Markers', note: 'the percentile hairlines and their flags glide in from the inline start, and retarget from where they are', spring: 'smooth' },
+    { moment: 'New samples', note: 'the dots are matched by rank, so each quantile slides to where it now falls, in the same wave', duration: 'slow', ease: 'enter' },
+    { moment: 'Share within the objective', note: 'counts to its new value', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Flags', note: 'shift apart as their lines close in', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; new samples land at once."
+/>
+
+#### Reduced motion
+
+The dots and markers are drawn in place, and new samples land at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- A `figure` named by its visible label (by default the labels' "Latency distribution") and described by a text summary: how many requests were sampled, each percentile's latency, and the share within the objective ("97.4% within the 300 ms SLO.").
+- The dots, the ruler and the hatch are decorative (`aria-hidden`); the flags and the header are text.
+- With no samples it says "No data", and there's no summary.
+- The axis runs from the inline start, so right to left in RTL; the flags' figures keep their order.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

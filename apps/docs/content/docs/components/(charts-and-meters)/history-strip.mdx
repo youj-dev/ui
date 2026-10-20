@@ -1,0 +1,125 @@
+---
+title: History Strip
+description: "Show daily status as colored cells, with details on hover or focus, such as uptime."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="history-strip/demo" height={240} />
+
+Ninety days of uptime for a service, which you pick from api-gateway, webhooks and search.
+
+Days at or above `target` (default 99.9%) take the success tone. Below it the color slides through warning, and below `critical` (default 99%) on toward danger, so a day is as loud as it was bad. A day without data is a dim well, and a day with an incident carries a pip over its cell.
+
+In a narrow container it keeps the latest 60 days under about 28rem and the latest 30 under 18rem, so cells never thin past legibility; the axis says how far back it goes.
+
+</Story>
+
+<Story id="mini-strips" label="Mini strips">
+
+<ComponentPreview name="history-strip/mini" height={260} />
+
+A list of services, each with a mini strip beside its uptime figure.
+
+`size="sm"` is the mini strip for a list row: short cells, hairline gaps and no axis. With `interactive={false}` it's decoration, hidden from assistive technology and out of the tab order, for a row that says the name and the figure itself.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="history-strip" noImport />
+
+Use an history strip for day-by-day availability over a window: a status page, a service's health card, an SLA report. Each day is a slim cell whose color is its uptime, so the bad days stand out from the quiet ones at a glance, and hovering or focusing a day gives its date, uptime, downtime, incidents and a note. For one figure against a target, pair it with the big number it adds up to; for a value that moves within a range, a [Segmented Meter](/docs/components/segmented-meter).
+
+```tsx
+import { HistoryStrip, type UptimeDay } from '@youj/react'
+
+// One entry per day, oldest first; the last one is today.
+const days: UptimeDay[] = [
+  { date: '2026-09-26', uptime: 1, incidents: 0 },
+  { date: '2026-09-27', uptime: 0.8667, downtimeMinutes: 192, incidents: 1, note: 'Delivery queue stalled' },
+  { date: '2026-09-28', uptime: 0.9995 },
+]
+
+<HistoryStrip days={days} label="Daily uptime, webhooks" />
+```
+
+A day's `uptime` is the share of it the service was up, from 0 to 1, or `null` when there's no data for it; `date` is a `Date` or an ISO date, read as a calendar day. `downtimeMinutes` defaults to what the uptime implies.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="days, target, critical… (7)">
+
+### Props
+
+<PropsTable name="HistoryStrip" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `history-strip`, `history-strip-list`, `history-strip-cell`, `history-strip-pip-slot`, `history-strip-pip`, `history-strip-bar`, `history-strip-axis`, `history-strip-axis-start`, `history-strip-axis-rule`, `history-strip-axis-end`, `history-strip-summary`, and in the tooltip `history-strip-tooltip`, `history-strip-tooltip-date`, `history-strip-tooltip-value`, `history-strip-tooltip-incidents` and `history-strip-tooltip-note`. The root has `data-size` and, while a day is read, `data-reading`; each cell has `data-tone` (`success`, `warning`, `danger` or `none`) and, while read, `data-active`. A cell's color is the `--uptime-color` variable.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, reveal wave, new data… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the cells rise from the baseline (`scale`, `opacity`), oldest to newest, when a third of the strip scrolls into view', duration: 'base', ease: 'enter' },
+    { moment: 'Reveal wave', note: 'the delay from the oldest day to today', value: 'half the deliberate token, spread across the days' },
+    { moment: 'New data', note: 'the colors sweep across in the same order', duration: 'base', ease: 'enter' },
+    { moment: 'Reading a day', note: 'the day lifts 2px and the others dim, on hover or focus', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; new data and the day in reading change at once."
+/>
+
+#### Reduced motion
+
+The cells are drawn in place, and new data and the day in reading change at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Uptime") holding a `list` of days. Each day is named with its date, uptime, downtime, incidents and note ("Sat, Sep 26: 99.37% uptime, 9 min down, 1 incident. Config push"), and a day without data says so.
+- A summary describes the group: how many days, the average uptime and how many days had downtime.
+- One tab stop, on today. The arrow keys step a day in the reading direction (mirrored in right-to-left text), Page Up and Page Down a week, Home and End go to the ends. Focus shows the day's tooltip, as hover does.
+- With `interactive={false}` the strip is hidden from assistive technology and has no tab stops: the row around it has to speak.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it; dates, percentages and durations follow the provider's locale.
+
+</ReferenceRow>

@@ -1,0 +1,173 @@
+---
+title: Pagination
+description: "Move through pages of results and show the current page."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="pagination/demo" height={360} />
+
+An activity log of 320 events paged five at a time, with numbered links and previous and next.
+
+On the first page, `PaginationPrevious` takes `disabled`, and on the last page `PaginationNext` does. A disabled link renders without an `href` and with `aria-disabled`, so it can't be followed, but it stays in the tab order: paging onto the last page with Enter keeps focus on Next instead of dropping it. Below the `sm` breakpoint, Previous and Next drop their text and keep their chevrons. Change the text with `text`.
+
+</Story>
+
+<Story id="page-ranges" label="Page ranges">
+
+<ComponentPreview name="pagination/range" height={240} />
+
+Page numbers built from `paginationRange`, with ellipses for the gaps.
+
+`paginationRange(page, pageCount, siblings = 1)` returns the items to render: the first and last pages, `siblings` pages either side of the current one, and `'start-ellipsis'` or `'end-ellipsis'` for the gaps. When every page fits, it returns them all. Once pages are skipped, it always returns 5 + 2 × `siblings` items, so the control keeps its width while you page and the key never chases a moving target.
+
+
+```ts
+paginationRange(10, 20) // [1, 'start-ellipsis', 9, 10, 11, 'end-ellipsis', 20]
+paginationRange(120, 240, 2) // [1, 'start-ellipsis', 118, 119, 120, 121, 122, 'end-ellipsis', 240]
+```
+
+</Story>
+
+<Story id="previous-and-next" label="Previous and next">
+
+<ComponentPreview name="pagination/compact" height={260} />
+
+Pagination with only previous and next, for places with no room for page numbers.
+
+Leave the page numbers out when there's no room for them, as in a card footer, or when the total isn't known, as with a cursor-based API. When `text` relabels an edge, give it an `aria-label` that starts with the same word, so what people hear matches what they see. With no page marked current, the raised key stays hidden.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="pagination" noImport />
+
+Use pagination when position matters: tables, logs and search results that people come back to, share by URL, or count through. Don't use it for a feed people skim, where infinite scroll or a "Load more" button reads better, or for a list short enough to show whole.
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  paginationRange,
+} from '@youj/react'
+
+export function Pager({ page, pageCount }: { page: number; pageCount: number }) {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href={`?page=${page - 1}`} disabled={page === 1} />
+        </PaginationItem>
+        {paginationRange(page, pageCount).map((item) =>
+          typeof item === 'number' ? (
+            <PaginationItem key={item}>
+              <PaginationLink href={`?page=${item}`} isActive={item === page} aria-label={`Page ${item}`}>
+                {item}
+              </PaginationLink>
+            </PaginationItem>
+          ) : (
+            <PaginationItem key={item}>
+              <PaginationEllipsis />
+            </PaginationItem>
+          ),
+        )}
+        <PaginationItem>
+          <PaginationNext href={`?page=${page + 1}`} disabled={page === pageCount} />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  )
+}
+```
+
+Every page is a real link, so pages can be bookmarked, shared and opened in a new tab. To page without a navigation, handle `onClick`, call `event.preventDefault()` and update your state, as the Demo story does. The raised key under the current page is one indicator for the whole control, and it glides to whichever link has `isActive`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="isActive, size, disabled… (7)">
+
+### Props
+
+#### PaginationLink
+
+<PropsTable name="PaginationLink" />
+
+#### PaginationPrevious and PaginationNext
+
+They take every `PaginationLink` prop, and `text` for the label beside the chevron.
+
+<PropsTable name="PaginationNext" />
+
+#### Other parts
+
+`Pagination` is a `nav` named "Pagination", `PaginationContent` a `ul`, `PaginationItem` an `li` and `PaginationEllipsis` a `span`. Each takes the props of its element.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Current page, previous and Next, hover… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Current page', note: 'the raised key glides to the new page, transform only', spring: 'smooth' },
+    { moment: 'Previous and Next', note: 'the chevron nudges 2px toward where it goes, on hover', duration: 'fast', ease: 'standard' },
+    { moment: 'Hover', note: 'color and background', duration: 'fast', ease: 'standard' },
+    { moment: 'Press', note: 'scales to 0.97 while held', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="The key jumps to the new page, the chevrons shift without easing, and links don't scale on press."
+/>
+
+In right-to-left layouts the chevrons point, and nudge, the other way.
+
+#### Reduced motion
+
+Paging works the same. The raised key jumps to the new page instead of gliding, the chevrons shift without easing, and links don't scale on press.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- `Pagination` is a `nav` landmark. Its default name is "Pagination"; give it a more specific `aria-label` ("Invoice pages") when a page has more than one.
+- The current page's link carries `aria-current="page"`.
+- Give number links an `aria-label` such as "Page 3", so they're announced as pages, not bare numbers. Previous and Next are named "Go to previous page" and "Go to next page".
+- Ellipses and the raised key are hidden from assistive technology. The numbers either side of a gap already say pages were skipped.
+- Tab moves through the links, and Enter follows one. A disabled Previous or Next is still a Tab stop, announced as unavailable, so focus never falls back to the page.
+
+</ReferenceRow>

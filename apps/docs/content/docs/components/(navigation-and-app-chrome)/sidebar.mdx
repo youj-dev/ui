@@ -1,0 +1,349 @@
+---
+title: Sidebar
+description: "Organize your app’s main navigation in a sidebar that collapses to icons or hides."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="sidebar/demo" full height={480} />
+
+An app sidebar with grouped navigation, nested pages, badges, group actions, a footer and a rail to collapse it.
+
+</Story>
+
+<Story id="variants" label="Variants">
+
+<ComponentPreview name="sidebar/variants" full height={400} />
+
+Switch between the sidebar, floating and inset variants and between the icon and off-canvas collapse modes.
+
+`variant="floating"` detaches the sidebar into a rounded panel, and `variant="inset"` raises the page into a panel beside it instead. `side="right"` puts the sidebar on the inline end. `side="left"` is the inline start, so it moves to the right in right-to-left layouts. `surface="glass"` frosts the sidebar (and the phone's sheet) over whatever is behind it, on the kit's `yj-glass`: give the page a backdrop worth frosting, as the [Glass explorer](/create?sidebar=glass) in Create does.
+
+</Story>
+
+<Story id="collapsed-to-icons" label="Collapsed to icons">
+
+<ComponentPreview name="sidebar/collapsed" full height={360} />
+
+A sidebar that starts collapsed to icons beside a page of logs.
+
+Pass `defaultOpen={false}` to start collapsed, for pages that need the width, like logs. Collapsed, each item shows its `tooltip` on hover and focus, and the current page, web's Logs, puts its key on the web item. Expand the sidebar and the key glides down to Logs.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="sidebar" noImport />
+
+Use a sidebar for the navigation of an app with many destinations: groups of pages, projects, settings. Collapse it to icons to give the page room, or off the canvas entirely. Don't use it for a marketing site, where a [Navigation Menu](/docs/components/navigation-menu) previews sections from a top bar, or for a handful of views of one thing, where [Tabs](/docs/components/tabs) keep them in place.
+
+```tsx
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@youj/react'
+import { HomeIcon, SendIcon } from '@youj/icons'
+
+export function AppShell({ children }: { children: React.ReactNode }) {
+  return (
+    <SidebarProvider>
+      <Sidebar collapsible="icon">
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive tooltip="Home" render={<a href="/" aria-current="page" />}>
+                  <HomeIcon size={16} />
+                  <span>Home</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton tooltip="Deployments" render={<a href="/deployments" />}>
+                  <SendIcon size={16} />
+                  <span>Deployments</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <header>
+          <SidebarTrigger />
+        </header>
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
+```
+
+[Build an app frame](/docs/guides/build-an-app-frame) puts this sidebar together with a top bar, the account menu and search, in one file. `SidebarProvider` wraps the whole shell and holds the open state. `Sidebar` is the panel, with a `SidebarHeader`, a scrolling `SidebarContent` and a `SidebarFooter`. `SidebarInset` is the page beside it, rendered as your `main`. Menu buttons render links through `render`, so they work with your router's link component.
+
+The previews on this page sit inside a fixed-height frame. In an app, the provider fills the viewport and the sidebar stays in place while the page scrolls.
+
+### Collapsing
+
+`collapsible` decides what collapsing does: `icon` narrows the sidebar to a rail of icons, `offcanvas` (the default) slides it out of view, and `none` keeps it fixed open. The `SidebarTrigger` button, ⌘B or Ctrl+B, and a click on the `SidebarRail` along its edge all toggle it. Collapsing never remounts an item, so keyboard focus stays where it was.
+
+Pass `defaultOpen` to choose the starting state, or `open` and `onOpenChange` to control it. Every toggle also writes a `sidebar_state` cookie, so a server can render the sidebar the way it was left:
+
+```tsx title="app/layout.tsx"
+import { cookies } from 'next/headers'
+
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const defaultOpen = (await cookies()).get('sidebar_state')?.value !== 'false'
+  return <SidebarProvider defaultOpen={defaultOpen}>{children}</SidebarProvider>
+}
+```
+
+`useSidebar()` reads the state from anywhere inside the provider: `state` (`'expanded'` or `'collapsed'`), `open`, `setOpen`, `openMobile`, `setOpenMobile`, `isMobile` and `toggleSidebar`.
+
+### The current page
+
+Mark the current page's button with `isActive` and give its link `aria-current="page"`: `isActive` places the key, and `aria-current` tells assistive technology. `SidebarContent`'s `indicator` sets how the key looks: `raised` (the default, the key's plane on a hairline), `fill` (a quiet gray fill, shadcn's look), `mark` (a short accent bar on the inline-start edge) or `none`, when your rows mark the page themselves. A tile that stays raised whatever the page (a workspace switcher, a rail's current area) is `SidebarMenuButton variant="raised"`. There is one key for the whole sidebar, so it glides between groups as the page changes. When the current page sits inside a closed nested group, or the sidebar is down to icons, the key moves to that group's own item. Keep nested panels mounted (`keepMounted` on `CollapsibleContent`, as in the first preview) so the key can find a page in a closed group.
+
+### Menus
+
+- **Nested pages:** wrap an item in a `Collapsible` rendered as the `SidebarMenuItem`, and list its pages in a `SidebarMenuSub` of `SidebarMenuSubButton`s. `CollapsibleChevron` turns with it.
+- **Badges:** `SidebarMenuBadge` after a button shows a count or a shortcut on its end edge, every row's on one column. `variant="pill"` sets it on a well, and `tone="danger"` makes it loud, for something failed or overdue.
+- **Cards:** `SidebarCard` is a raised card for the sidebar's foot or top (a setup checklist, a plan's meter, an upgrade). It steps aside while the sidebar is folded to icons.
+- **Actions:** `SidebarMenuAction` adds a small button beside an item, and `SidebarGroupAction` beside a group's label. `showOnHover` hides an item's action until the item is hovered or focused.
+- **Loading:** `SidebarMenuSkeleton` stands in for an item while it loads. Add `showIcon` for a leading icon.
+- **Search:** `SidebarInput` is an input sized for the sidebar, and it hides when the sidebar is down to icons.
+
+Labels, badges and actions fade out before the width closes, and fade back in after it returns, so nothing squashes or truncates on the way. Group labels fold away, and nested lists close their height.
+
+#### Nested groups
+
+The `Collapsible` renders as the menu item and its trigger as the item's button, so the group keeps the row's size, key and tooltip:
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleChevron,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from '@youj/react'
+import { FolderIcon } from '@youj/icons'
+
+export function ProjectNav() {
+  return (
+    <SidebarMenu>
+      <Collapsible defaultOpen render={<SidebarMenuItem />}>
+        <CollapsibleTrigger render={<SidebarMenuButton tooltip="web" />}>
+          <FolderIcon size={16} />
+          <span>web</span>
+          <CollapsibleChevron size={14} className="ms-auto text-fg-muted" />
+        </CollapsibleTrigger>
+        <CollapsibleContent keepMounted>
+          <SidebarMenuSub>
+            <SidebarMenuSubItem>
+              <SidebarMenuSubButton href="/web/deployments" isActive aria-current="page">
+                <span>Deployments</span>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+            <SidebarMenuSubItem>
+              <SidebarMenuSubButton href="/web/logs">
+                <span>Logs</span>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+          </SidebarMenuSub>
+        </CollapsibleContent>
+      </Collapsible>
+    </SidebarMenu>
+  )
+}
+```
+
+`SidebarMenuSubButton` is a link; pass `render={<Link href="/web/logs" />}` for your router's. `keepMounted` lets the current page's key find a page in a closed group.
+
+#### The account row
+
+For the account at the foot of the sidebar, give [Account Menu](/docs/components/account-menu) a `SidebarMenuButton` as its `trigger`. The whole row (avatar, name, email and chevron) opens the menu, and collapsed to icons it's the avatar alone, named by its tooltip:
+
+```tsx
+import { AccountMenu, Avatar, AvatarFallback, SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@youj/react'
+import { ChevronsUpDownIcon } from '@youj/icons'
+
+const user = { name: 'Ada Lovelace', email: 'ada@acme.com' }
+
+export function AccountRow({ onSignOut }: { onSignOut: () => void }) {
+  return (
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <AccountMenu
+            user={user}
+            onSignOut={onSignOut}
+            side="top"
+            align="start"
+            trigger={
+              <SidebarMenuButton size="lg" tooltip={user.name} className="data-popup-open:bg-hover">
+                <Avatar size="sm" className="size-8">
+                  <AvatarFallback>AL</AvatarFallback>
+                </Avatar>
+                <span className="flex min-w-0 flex-1 flex-col leading-tight">
+                  <span className="truncate font-medium text-fg">{user.name}</span>
+                  <span className="truncate text-ui-sm text-fg-muted">{user.email}</span>
+                </span>
+                <ChevronsUpDownIcon size={14} className="ms-auto text-fg-muted" />
+              </SidebarMenuButton>
+            }
+          />
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
+  )
+}
+```
+
+Building your frame in [Create](/create)? Its account card is this row, with the standard menu rows and the menu opening to the side when the sidebar is down to icons.
+
+#### Header text on the icon rail
+
+Collapsed to icons, a `SidebarMenuButton` shows only its first child: the rest fades out. So put the brand in the header as a menu button, mark first, and it collapses to the mark on its own:
+
+```tsx
+<SidebarHeader>
+  <SidebarMenu>
+    <SidebarMenuItem>
+      <SidebarMenuButton size="lg" tooltip="Acme" render={<a href="/" />}>
+        <AcmeLogo className="size-8" />
+        <span className="truncate font-semibold">Acme</span>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  </SidebarMenu>
+</SidebarHeader>
+```
+
+`SidebarHeader` and `SidebarFooter` are plain containers and leave anything else in them alone, since it may be something to keep on the rail. Hide other text there yourself with `group-data-[collapsible=icon]:hidden`, as in `<p className="px-2 text-ui-sm group-data-[collapsible=icon]:hidden">Free plan</p>`.
+
+### Mobile
+
+Below the `md` breakpoint, the sidebar becomes a sheet: a modal dialog that slides in from its edge, with a focus trap. The trigger and ⌘B open it, and Escape or a tap outside closes it. After a navigation, close it with `setOpenMobile(false)` from `useSidebar()`. The same `useIsMobile()` hook is exported from `@youj/react` for your own layouts.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="defaultOpen, open, onOpenChange… (14)">
+
+### Props
+
+#### SidebarProvider
+
+<PropsTable name="SidebarProvider" />
+
+#### Sidebar
+
+<PropsTable name="Sidebar" />
+
+#### SidebarMenuButton
+
+It renders a `button`, or your element through `render`.
+
+<PropsTable name="SidebarMenuButton" />
+
+#### SidebarMenuSubButton
+
+It renders an `a`, or your element through `render`.
+
+<PropsTable name="SidebarMenuSubButton" />
+
+#### SidebarContent
+
+<PropsTable name="SidebarContent" />
+
+#### SidebarMenuBadge
+
+<PropsTable name="SidebarMenuBadge" />
+
+#### SidebarMenuAction and SidebarMenuSkeleton
+
+<PropsTable name="SidebarMenuAction" />
+
+<PropsTable name="SidebarMenuSkeleton" />
+
+The other parts add no props: `SidebarHeader`, `SidebarFooter`, `SidebarCard`, `SidebarGroup`, `SidebarGroupContent` and `SidebarSeparator` render `div`s, `SidebarMenu` and `SidebarMenuSub` render `ul`s, and their items render `li`s. `SidebarGroupLabel` and `SidebarGroupAction` take `render`. `SidebarTrigger` takes the props of [Button](/docs/components/button).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Collapse and expand, labels out, labels in… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Collapse and expand', note: 'the width, frame by frame', duration: 'slow', ease: 'standard' },
+    { moment: 'Labels out', note: 'labels, badges and actions, before the width closes', duration: 'instant', ease: 'standard' },
+    { moment: 'Labels in', note: 'after a `fast` delay, once the width is back', duration: 'fast', ease: 'standard' },
+    { moment: 'Group labels', note: 'fold away as the menu below rises into their place', duration: 'slow', ease: 'standard' },
+    { moment: 'Nested lists', note: 'close their height', duration: 'slow', ease: 'standard' },
+    { moment: 'Off-canvas', note: 'the panel slides out as the space closes over it', duration: 'slow', ease: 'standard' },
+    { moment: 'Current page', note: 'the raised key glides across groups', spring: 'smooth' },
+    { moment: 'Collapsed tooltip', note: 'the `yj-tooltip` preset, on the inline-end side', duration: 'fast', ease: 'enter' },
+    { moment: 'Mobile sheet', note: 'the `yj-sheet` preset; it leaves on `base`', duration: 'slow', ease: 'enter' },
+  ]}
+  reduced="The sidebar collapses and expands at once, the key jumps to the current page, and tooltips and the mobile sheet appear without moving."
+/>
+
+#### Reduced motion
+
+Everything still works, without movement: the sidebar snaps between widths, labels appear and disappear in place, the current-page key jumps, and tooltips and the mobile sheet appear at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- `SidebarTrigger` is a button named "Toggle sidebar", with `aria-expanded` and `aria-keyshortcuts="Meta+B Control+B"`.
+- ⌘B and Ctrl+B toggle the sidebar, but never while you type in a field (it's bold there), and not on key repeat. The shortcut listens on the window but acts on one sidebar at a time: with several `SidebarProvider`s on a page, the one you last clicked or focused in (the first on the page until then).
+- The rail is a pointer shortcut. It's hidden from assistive technology and out of the tab order, so the trigger is the one toggle.
+- Collapsed to icons, labels stay in the document: each item keeps its accessible name, and its tooltip shows the label to sighted users on hover and focus.
+- The sidebar renders plain containers. Wrap its menus in a `nav` with an `aria-label` to make your primary navigation a landmark.
+- On mobile, the sheet is a modal dialog named "Sidebar". It traps focus, closes on Escape, and returns focus to the trigger.
+
+</ReferenceRow>

@@ -1,0 +1,133 @@
+---
+title: Toolbar
+description: "Group controls into one tab stop, with arrow keys to move between them."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="toolbar/demo" height={200} />
+
+A formatting toolbar with history buttons, text toggles, a link and a toggle group for alignment, all in one arrow-key path.
+
+Put a [Toggle Group](/docs/components/toggle-group) in the toolbar for a single choice, like alignment or the active tool. Its items hand their focus to the toolbar, so they're part of the same arrow-key path, not a second tab stop.
+
+</Story>
+
+<Story id="vertical" label="Vertical">
+
+<ComponentPreview name="toolbar/vertical" height={360} />
+
+A vertical tool rail with a tool toggle group and undo and redo buttons.
+
+`orientation="vertical"` stacks the toolbar for a tool rail; the arrow keys become `↑` and `↓`, and separators turn across it by themselves.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="toolbar" noImport />
+
+Use a toolbar for a dense set of controls that act on one thing: a text editor's formatting, a canvas's tools, a table's bulk actions. Keyboard users tab into it once and arrow along it, instead of tabbing through every key. For two or three buttons that belong together, a [Button Group](/docs/components/button-group) is enough.
+
+```tsx
+import { Toolbar, ToolbarButton, ToolbarGroup, ToolbarSeparator, ToolbarToggle } from '@youj/react'
+import { BoldIcon, ItalicIcon, RedoIcon, UndoIcon } from '@youj/icons'
+
+export function Formatting() {
+  return (
+    <Toolbar aria-label="Formatting">
+      <ToolbarGroup aria-label="History">
+        <ToolbarButton aria-label="Undo">
+          <UndoIcon />
+        </ToolbarButton>
+        <ToolbarButton aria-label="Redo" disabled focusableWhenDisabled>
+          <RedoIcon />
+        </ToolbarButton>
+      </ToolbarGroup>
+      <ToolbarSeparator />
+      <ToolbarToggle aria-label="Bold">
+        <BoldIcon />
+      </ToolbarToggle>
+      <ToolbarToggle aria-label="Italic">
+        <ItalicIcon />
+      </ToolbarToggle>
+    </Toolbar>
+  )
+}
+```
+
+`ToolbarButton` is an action and `ToolbarToggle` a two-state key (`pressed`, `defaultPressed`, `onPressedChange`). Both wear [Toggle](/docs/components/toggle)'s key a step smaller, so actions and toggles line up. `ToolbarLink` and `ToolbarInput` join the same arrow-key order, and `ToolbarGroup` labels a cluster.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, size (2)">
+
+### Props
+
+#### ToolbarButton
+
+<PropsTable name="ToolbarButton" />
+
+#### ToolbarToggle
+
+<PropsTable name="ToolbarToggle" />
+
+`Toolbar` takes Base UI's `orientation`, `loopFocus` (default `true`) and `disabled`. `ToolbarButton` and `ToolbarToggle` take `focusableWhenDisabled`, which keeps a disabled key in the arrow-key order so focus doesn't skip past it.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Press, release and hover · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Press', note: 'each key scales to 0.97 while held', duration: 'instant', ease: 'standard' },
+    { moment: 'Release and hover', note: 'scale back, background and text colors', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Keys don't scale when pressed."
+/>
+
+#### Reduced motion
+
+Keys don't scale when pressed. Colors still change on hover and press, so what's pressed reads the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The root is a `toolbar`; name it with `aria-label`. It's a single tab stop, and the arrow keys move between its controls and wrap at the ends, mirrored in right-to-left layouts.
+- Toggles expose `aria-pressed`. A disabled key with `focusableWhenDisabled` stays focusable and reports `aria-disabled`, so people can still find it and hear why it's there.
+- Name every icon-only key with `aria-label`, and each `ToolbarGroup` with the cluster's name.
+
+</ReferenceRow>

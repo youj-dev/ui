@@ -1,0 +1,157 @@
+---
+title: Overlay presets
+description: "Animate Base UI overlays and panels with CSS utilities that follow speed and reduced-motion settings."
+---
+
+<ComponentPreview name="presets/demo" height={380} />
+
+Use a preset on any Base UI part that mounts and unmounts: popups, backdrops, sheets, toasts and collapsible panels. Base UI marks the start and end of each transition with `data-starting-style` and `data-ending-style`, and the preset animates between them. Each preset is a CSS transition, not a keyframe animation, so reopening an overlay mid-close continues from where it is. For motion Base UI doesn't mount, use a block instead: [Sliding Indicator](/docs/motion/sliding-indicator) for selection indicators and [Collapse](/docs/motion/collapse) for disclosure outside Base UI.
+
+## Installation
+
+With the package, the presets ship inside its stylesheet, so there's nothing to add:
+
+```css title="app/globals.css"
+@import '@youj/react/styles.css';
+```
+
+With source copied in, they're their own item, `youj-presets`, and there's usually nothing to add either. Every UI item that animates with a preset depends on it, and the CLI writes the utilities straight into your app's stylesheet. To use the presets on overlays of your own before you've added one of those items, add the item directly:
+
+```bash
+npx youj add youj-presets
+```
+
+## Usage
+
+Put the preset on the part that appears, and spread `useYoujScope()` on its portal:
+
+This example uses Base UI's primitives directly, so install `@base-ui/react` in your app (`pnpm add @base-ui/react`), as pnpm won't resolve it through Youj.
+
+```tsx
+import { Popover } from '@base-ui/react/popover'
+import { useYoujScope } from '@youj/core'
+
+export function SharePopover() {
+  const scope = useYoujScope()
+  return (
+    <Popover.Root>
+      <Popover.Trigger>Share</Popover.Trigger>
+      <Popover.Portal {...scope}>
+        <Popover.Positioner sideOffset={6}>
+          <Popover.Popup className="yj-pop rounded-lg border bg-overlay p-4 shadow-md">…</Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
+  )
+}
+```
+
+Every `@youj/react` overlay already does both. The preview above is those components, one preset each. Open them at ¼ speed to see each one move.
+
+### Why every portal needs the scope
+
+`YoujProvider` sets the Speed and reduced-motion settings as CSS custom properties on its wrapper element. A portal renders into `<body>`, outside that wrapper, so without the scope an overlay ignores Speed and a provider's `reducedMotion="always"`. `useYoujScope()` returns the same properties for the portal element. Call it inside the component that renders the portal, so it reads the nearest provider.
+
+## Examples
+
+<Examples>
+
+<Example id="the-presets" label="The presets">
+
+### The presets
+
+| Utility | Put it on | Motion |
+| --- | --- | --- |
+| `yj-pop` | Popover, Menu, Select, Combobox, Context Menu and Preview Card popups | Scales from 0.96 and fades in from the anchor point in `--transform-origin`. Leaves faster than it came. |
+| `yj-tooltip` | Tooltip popups | Scales from 0.97 and travels 3px from the trigger's side, mirrored under right-to-left text. |
+| `yj-dialog` | Dialog and Alert Dialog popups | Rises 6px while scaling from 0.96. A parent with a nested dialog open recedes one step per level: 0.875rem down, 6% smaller, and dimmed under a wash that keeps its text above 4.5:1. Retune the wash with `--yj-dialog-dim`. |
+| `yj-backdrop` | Every backdrop | Fades. Thins as a drawer is swiped away, tracking the finger. Bring your own color, such as `bg-scrim`. |
+| `yj-sheet-top`, `-right`, `-bottom`, `-left` | Dialog-based sheets and Drawer popups | Slides fully off its edge. With Drawer it follows the finger, and a flick leaves faster. |
+| `yj-sheet-start`, `yj-sheet-end` | The same, in right-to-left-aware layouts | As above, flipped under `dir="rtl"`. |
+| `yj-toast`, `yj-toast-top` | Toast roots, stacked against the bottom or top edge | Peeks and shrinks behind the front toast, spreads on hover or focus, rises in, and leaves in the swipe direction. |
+| `yj-toast-content` | Toast content | Hides the text of toasts behind the front one until the stack spreads. |
+| `yj-collapse` | Collapsible and Accordion panels | Height to and from the size Base UI measures, with a fade. The panel clips while it moves, so keep focus rings inside its padding. |
+| `yj-fade` | Tabs panels, item indicators, scroll arrows | Opacity only. |
+
+Replace shadcn's tw-animate classes (`data-open:animate-in`, `fade-in-0`, `zoom-in-95`, `slide-in-from-*`, `duration-*`) with the preset. Don't combine them. The presets animate `transform` and `opacity` and leave the individual `translate` and `scale` properties to you, so centering with `-translate-x-1/2 -translate-y-1/2` keeps working.
+
+Sheet classes must appear in full somewhere in your source, for example in a lookup object, because Tailwind can't see a class built with a template string.
+
+```tsx
+const side = { top: 'yj-sheet-top inset-x-0 top-0', right: 'yj-sheet-right inset-y-0 right-0', bottom: 'yj-sheet-bottom inset-x-0 bottom-0', left: 'yj-sheet-left inset-y-0 left-0' }
+```
+
+#### Tuning the toast stack
+
+`yj-toast` owns the stack's geometry: position, width and a height clamped to the front toast while collapsed. The viewport only needs a position and a width. Two custom properties set the spacing:
+
+| Property | Default | Sets |
+| --- | --- | --- |
+| `--yj-toast-gap` | `0.75rem` | Space between toasts when the stack spreads. |
+| `--yj-toast-peek` | `0.75rem` | How far each toast behind shows while collapsed. |
+
+#### Instant when Base UI asks
+
+Base UI sets `data-instant` when a transition shouldn't play: opening from the keyboard, closing with Escape, or moving between grouped tooltips. `yj-fade`, `yj-pop` and `yj-tooltip` honor it with a zero duration, so menus, popovers and tooltips opened from the keyboard never wait on an animation. The dialog, backdrop, sheet, toast and collapse presets still play their transitions.
+
+</Example>
+
+<Example id="durations-for-your-own-transitions" label="Durations for your own transitions">
+
+### Durations for your own transitions
+
+For a transition that isn't an overlay, like a chevron that turns, a switch thumb or a hover tint, the same timing is available as utilities: `yj-duration-instant`, `yj-duration-fast`, `yj-duration-base`, `yj-duration-slow` and `yj-duration-deliberate`. Each is the token, times the Speed setting, times `--yj-motion`, so it slows with Speed and turns instant under reduced motion. Pair it with an `ease-*` utility.
+
+<ComponentPreview name="presets/durations" height={240} />
+
+```tsx
+<ChevronDownIcon className="transition-transform yj-duration-base ease-standard data-panel-open:rotate-180" />
+```
+
+Don't use `duration-(--yj-duration-fast)` for movement. The raw variable follows Speed but not reduced motion.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Motion" summary="Pop in, pop out, tooltip in… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Pop in', note: '`yj-pop`: opacity, scale 0.96 → 1', duration: 'fast', ease: 'enter' },
+    { moment: 'Pop out', note: '`yj-pop`, `yj-tooltip`', duration: 'instant', ease: 'exit' },
+    { moment: 'Tooltip in', note: '`yj-tooltip`: opacity, 3px travel, scale 0.97 → 1', duration: 'fast', ease: 'enter' },
+    { moment: 'Dialog in', note: '`yj-dialog`: opacity, rise 6px, scale 0.96 → 1', duration: 'base', ease: 'enter' },
+    { moment: 'Dialog out', duration: 'fast', ease: 'exit' },
+    { moment: 'Nested recede', note: 'parent dialog behind a child', duration: 'base', ease: 'standard' },
+    { moment: 'Backdrop', note: '`yj-backdrop` in; out on `fast`', duration: 'base', ease: 'standard' },
+    { moment: 'Sheet in', note: '`yj-sheet-*`: off the edge to rest', duration: 'slow', ease: 'enter' },
+    { moment: 'Sheet out', note: 'shorter after a flick', duration: 'base', ease: 'exit' },
+    { moment: 'Toast', note: '`yj-toast`: rise, stack and spread', duration: 'slow', ease: 'enter' },
+    { moment: 'Toast height', note: 'collapsed and spread heights', duration: 'fast', ease: 'standard' },
+    { moment: 'Toast content', note: '`yj-toast-content`', duration: 'base', ease: 'standard' },
+    { moment: 'Collapse', note: '`yj-collapse`: height and opacity', duration: 'base', ease: 'standard' },
+    { moment: 'Fade', note: '`yj-fade`', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Every preset duration is multiplied by --yj-motion, which is 0 under reduced motion. Overlays appear and disappear at once, and Base UI unmounts them immediately because there's nothing to wait for."
+/>
+
+#### Reduced motion
+
+Under reduced motion every preset's duration is zero, so overlays appear and disappear at once, panels open to full height immediately, and toasts take their place in the stack without travel. The overlays still open, close, trap focus and announce themselves. Only the movement goes. It follows the OS setting, and a provider's `reducedMotion="always"` too, as long as the portal carries the scope.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The presets are visual only. Roles, focus trapping, focus return and Escape come from Base UI, and they work the same with or without motion.
+- Exits are shorter than entrances (`instant` for popups, `fast` for dialogs), so a dismissed overlay is out of the way almost at once and never covers what the reader went back to.
+- Swipe gestures on drawers and toasts track the finger even under reduced motion, because that movement is direct manipulation, not animation.
+
+</ReferenceRow>

@@ -1,0 +1,253 @@
+---
+title: Navigation Menu
+description: "Organize site navigation into panels of related links."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="navigation-menu/demo" height={440} />
+
+A site header whose triggers open panels of feature cards in one shared popup.
+
+The popup is one surface for every panel. It grows out of the first trigger you open, then slides to the next one while its box morphs to the new panel's size, and the panels trade places: the incoming one arrives from the side you moved toward, and the outgoing one drifts the other way. Move across the triggers in the preview to see it, or set it to ¼ speed.
+
+Panels can hold anything: feature cards with icons, as in the Demo story, or columns of plain links. The popup renders in a portal, and it carries the provider's scope, so Speed and reduced motion reach it.
+
+</Story>
+
+<Story id="the-current-page" label="The current page">
+
+<ComponentPreview name="navigation-menu/current" height={320} />
+
+A menu with the current page marked.
+
+Mark the link to the page you're on with `active`. It gets `aria-current="page"` and the highlight. `align` places each panel under its trigger: `start` (the default), `center` or `end`.
+
+</Story>
+
+<Story id="a-featured-link" label="A featured link">
+
+<ComponentPreview name="navigation-menu/featured" height={460} />
+
+A Developers panel laid out as a grid, with a featured quickstart link beside text links.
+
+A panel's layout is yours. This one is a grid: the quickstart link spans the panel's full height beside three text links, and stacks above them below the `sm` breakpoint. Open Developers to see it.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="navigation-menu" noImport />
+
+Use it for a site's main navigation when destinations group into a few sections worth previewing, like products, solutions and resources. Don't use it for actions or options, which belong in a [Dropdown Menu](/docs/components/dropdown-menu), or for an app's own navigation, where a [Sidebar](/docs/components/sidebar) or [Tabs](/docs/components/tabs) keep every destination in view. On narrow screens, move the links into a [Sheet](/docs/components/sheet) instead.
+
+```tsx
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@youj/react'
+
+export function SiteNav() {
+  return (
+    <NavigationMenu aria-label="Main">
+      <NavigationMenuList>
+        <NavigationMenuItem value="products">
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[520px] grid-cols-2 gap-0.5">
+              <li>
+                <NavigationMenuLink href="/deployments">Deployments</NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink href="/analytics">Analytics</NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
+            Pricing
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  )
+}
+```
+
+Each `NavigationMenuItem` holds either a trigger and its content, or a plain link. Give a plain link `navigationMenuTriggerStyle()` so it matches the triggers beside it. Set a width on each panel's content: the popup measures it, and morphs between panel sizes as you move from trigger to trigger. Add `closeOnClick` to links that should close the menu when followed.
+
+`navigationMenuTriggerStyle()` comes from a client module, so a header that calls it is a Client Component: start the file with `'use client'`. In Next.js, render the framework's link through `render` so navigation stays client-side and prefetches:
+
+```tsx
+import Link from 'next/link'
+
+<NavigationMenuLink render={<Link href="/pricing" />} className={navigationMenuTriggerStyle()}>
+  Pricing
+</NavigationMenuLink>
+```
+
+#### A header with a mobile menu
+
+Show the menu from `md` up. Below it, a Sheet opens from a menu button, holding the same links. Size the Sheet to its content with a width class (`w-64` here, which the Sheet's default width yields to):
+
+```tsx
+'use client'
+
+import Link from 'next/link'
+import {
+  Button,
+  NavigationMenu,
+  NavigationMenuLink,
+  NavigationMenuItem,
+  NavigationMenuList,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+  navigationMenuTriggerStyle,
+} from '@youj/react'
+
+const links = [
+  { href: '/features', label: 'Features' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/about', label: 'About' },
+]
+
+export function SiteHeader() {
+  return (
+    <header className="flex items-center justify-between gap-4 border-b border-line px-4 py-3">
+      <Link href="/" className="font-semibold">
+        Acme
+      </Link>
+
+      <NavigationMenu aria-label="Main" className="hidden md:flex">
+        <NavigationMenuList>
+          {links.map((link) => (
+            <NavigationMenuItem key={link.href}>
+              <NavigationMenuLink render={<Link href={link.href} />} className={navigationMenuTriggerStyle()}>
+                {link.label}
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+
+      <Sheet>
+        <SheetTrigger render={<Button variant="outline" className="md:hidden" />}>Menu</SheetTrigger>
+        <SheetContent className="w-64">
+          <SheetTitle>Menu</SheetTitle>
+          <nav aria-label="Mobile" className="flex flex-col gap-1 p-4">
+            {links.map((link) => (
+              <SheetClose key={link.href} nativeButton={false} render={<Link href={link.href} />} className="rounded-md px-3 py-2 text-ui hover:bg-hover">
+                {link.label}
+              </SheetClose>
+            ))}
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </header>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="Every part passes its props through to the Base UI part of the same…">
+
+### Props
+
+Every part passes its props through to the Base UI part of the same name. `NavigationMenu` also takes the popup's placement: `align`, `alignOffset`, `side` and `sideOffset`. The ones you'll use most:
+
+| Part | Prop | Type | Default |
+| --- | --- | --- | --- |
+| `NavigationMenu` | `align` | `'start' \| 'center' \| 'end'` | `'start'` |
+| `NavigationMenu` | `alignOffset`, `side`, `sideOffset` | `number`, `'top' \| 'bottom' \| …`, `number` | `0`, `'bottom'`, `8` |
+| `NavigationMenu` | `value`, `defaultValue`, `onValueChange` | the open item's `value` | – |
+| `NavigationMenu` | `delay` | `number`, ms before opening on hover | `50` |
+| `NavigationMenu` | `closeDelay` | `number`, ms before closing | `50` |
+| `NavigationMenuItem` | `value` | `any` | – |
+| `NavigationMenuTrigger` | `disabled` | `boolean` | `false` |
+| `NavigationMenuLink` | `active` | `boolean` | `false` |
+| `NavigationMenuLink` | `closeOnClick` | `boolean` | `false` |
+| `NavigationMenuContent` | `keepMounted` | `boolean` | `false` |
+
+<PropsTable name="NavigationMenu" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Hover pill, popup in, popup out… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Hover pill', note: 'glides between triggers and links with the pointer and keyboard focus', spring: 'smooth' },
+    { moment: 'Popup in', note: 'scales from 0.96 and fades, out of the trigger', duration: 'fast', ease: 'enter' },
+    { moment: 'Popup out', duration: 'instant', ease: 'exit' },
+    { moment: 'Popup between triggers', note: 'slides to the next trigger and morphs to its panel size', duration: 'slow', ease: 'standard' },
+    { moment: 'Panels trade places', note: '24px drift and fade, away from the way you moved', duration: 'slow', ease: 'standard' },
+    { moment: 'Chevron', note: 'turns over while its panel is open', spring: 'snappy' },
+    { moment: 'Trigger color', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The popup and its panels appear, resize and swap at once. The pill jumps and the chevron flips."
+/>
+
+In right-to-left layouts the pill, the popup's slide and the panels' drift all mirror.
+
+#### Reduced motion
+
+The menu works the same, without movement: panels appear and swap in place, the popup takes its new size at once, the pill jumps to the item under the pointer or focus, and the chevron flips instead of turning.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- `NavigationMenu` is a `nav` landmark. Name it with `aria-label` ("Main"), and give each navigation landmark on a page a different name.
+- Triggers are buttons with `aria-expanded`. Their chevron is decorative.
+- The current page's link carries `aria-current="page"` when you set `active`.
+- The hover pill is hidden from assistive technology.
+
+| Key | Action |
+| --- | --- |
+| Tab | Move between triggers and links, and into an open panel. |
+| Enter / Space / ↓ | Open the focused trigger's panel. |
+| Escape | Close the panel and return focus to its trigger. |
+
+</ReferenceRow>

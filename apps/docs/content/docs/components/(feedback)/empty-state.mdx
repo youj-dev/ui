@@ -1,0 +1,140 @@
+---
+title: Empty State
+description: "Explain why a view is empty and help people take the next step."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="empty-state/demo" height={420} />
+
+A deployments panel with an empty state; hover its header to open the plates and play the icon.
+
+The component is `Empty`, with its parts `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription` and `EmptyContent`; there is no `EmptyState` export. For a chat that has no messages yet, [Chat Empty State](/docs/components/chat/empty-state) is built on it.
+
+`EmptyMedia variant="icon"` sets an icon on a tile over two plates. The plates fan out as the empty state appears and open a little further while the header is hovered. The header is also the trigger group for [Youj icons](/docs/icons), so an animated icon on the tile plays while the header is hovered, not only when the pointer is on the icon. The default variant is a plain slot for your own illustration or image.
+
+</Story>
+
+<Story id="no-results" label="No results">
+
+<ComponentPreview name="empty-state/no-results" height={400} />
+
+A search for "webhook retries" that matches nothing, with an empty state that echoes the query.
+
+When a search or filter matches nothing, echo the query in the title so people can see what they asked for, and offer the way out.
+
+The swap between the list and the empty state is silent, so the example announces the result count in a polite live region. Clearing the search removes the button that had focus, so it hands focus back to the search field.
+
+</Story>
+
+<Story id="errors" label="Errors">
+
+<ComponentPreview name="empty-state/error" height={400} />
+
+An error empty state whose retry shows its attempt in place.
+
+When a region fails to load, say what failed and what didn't, and offer a retry. An [Async Button](/docs/components/button#async-actions) with `onAction` shows the attempt in place, from pending to the outcome.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="empty" noImport />
+
+Use an empty state wherever a list, table or panel can be empty: before the first item exists, when a search matches nothing, and when the content failed to load. Show it where the content would be, so the page keeps its shape and people know where things will appear. Keep full-page failures, like a missing route, for an error page.
+
+```tsx
+import { InboxIcon } from '@youj/icons'
+import { Button, Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@youj/react'
+
+export function NoIssues() {
+  return (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <InboxIcon />
+        </EmptyMedia>
+        <EmptyTitle>No open issues</EmptyTitle>
+        <EmptyDescription>Issues you create or are assigned will land here.</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button>New issue</Button>
+      </EmptyContent>
+    </Empty>
+  )
+}
+```
+
+`Empty` centers its content and fills the space it's given. `EmptyHeader` holds the media, the title and the description. `EmptyContent` holds the actions, outside the header. An empty state with nothing to do next, like an inbox at zero, leaves `EmptyContent` out.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant (1)">
+
+### Props
+
+<PropsTable name="EmptyMedia" />
+
+`Empty`, `EmptyHeader`, `EmptyTitle` and `EmptyContent` take the props of a `div`, and `EmptyDescription` takes those of a `p`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Plates fan out, header hover, icon · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Plates fan out', note: 'from a neat stack as the media appears', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Header hover', note: 'the plates open a few degrees further', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Icon', note: 'plays while the header is hovered', value: 'the icon’s own choreography' },
+  ]}
+  reduced="The plates rest fanned and still, and icons hold their resting pose on hover."
+/>
+
+The plates rotate about their own bottom corners, so the pair splays like cards in a hand. Only `rotate` and `translate` change.
+
+#### Reduced motion
+
+The plates appear already fanned and don't move on hover, and icons inside hold their resting pose. The layout and the message are the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="focus, announcements">
+
+### Accessibility
+
+- The plates and the icon are decorative and hidden from assistive technology. The title and description carry the message.
+- `EmptyTitle` is a `div`, so it isn't part of the page's outline. When the empty state stands in for a whole panel or page, put a heading inside it, such as `<EmptyTitle><h2>No deployments yet</h2></EmptyTitle>`.
+- An empty state that replaces content after a search or filter appears without an announcement. Report the change in a polite live region, and keep focus on a control that still exists.
+- Actions sit outside the header, so their icons play only with their own buttons.
+
+</ReferenceRow>

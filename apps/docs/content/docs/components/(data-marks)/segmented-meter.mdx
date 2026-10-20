@@ -1,0 +1,124 @@
+---
+title: Segmented Meter
+description: "Show resource usage in cells, with warning and danger thresholds."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="segmented-meter/demo" height={300} />
+
+Threads, Disk and Backlog meters, with buttons that move Disk to 52, 84 or 96 percent.
+
+Each threshold's tone applies to the lit cells from its value up. The leading cell always shows the value's own band, so a value in the danger band is never drawn only in warning. The band's `label` is spoken after the value.
+
+</Story>
+
+<Story id="score" label="Score">
+
+<ComponentPreview name="segmented-meter/score" height={300} />
+
+Workspace health scores in a list, each as twelve pips in the color of the band its score falls in.
+
+`colorBy="value"` lights every cell in the value's band instead of the band each cell sits in, so a score reads as one color. Without a visible label, name each meter with `aria-label`.
+
+</Story>
+
+<Story id="usage" label="Usage by feature">
+
+<ComponentPreview name="segmented-meter/usage" height={300} />
+
+A credit-usage dialog: the month's total over a progress bar with when it resets, a filter and a sort, and a tick meter per feature.
+
+Each row's meter is a `SegmentedMeter` with `thresholds` set from that feature's own limit (amber from 80%, red from 95%), so the tick row shows how close each feature is to running out. The band's `label` is spoken with the value. The list sits in a region of fixed height, so filtering swaps the rows without resizing the dialog.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="segmented-meter" noImport />
+
+Use a segmented meter for usage people compare across a panel: threads, disk, a backlog, seats. The discrete cells make levels countable, and the cells past a threshold light in its tone, so the warning shows exactly where usage crossed the line. For one headline score, use a [Gauge](/docs/components/gauge); for progress through a task, use [Progress](/docs/components/progress).
+
+```tsx
+import { SegmentedMeter } from '@youj/react'
+
+<SegmentedMeter label="Disk" value={84} thresholds={[{ value: 80, tone: 'warning', label: 'High' }]} />
+<SegmentedMeter label="Backlog" value={870} max={2400} format={{}} />
+```
+
+The value on the end side is a percentage of the range by default; pass `format` (`Intl.NumberFormat` options) to show the raw value, as the backlog does. `segments` sets the number of cells (default 40), `tone` the lit cells' tone below every threshold (default `neutral`, the ink) and `showValue={false}` hides the value.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, min, max… (11)">
+
+### Props
+
+<PropsTable name="SegmentedMeter" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `segmented-meter`, `segmented-meter-header`, `segmented-meter-label`, `segmented-meter-value`, `segmented-meter-track` and `segmented-meter-cell`. Each cell has `data-state` (`on` or `off`) and, when lit, `data-tone`. The label takes the theme's label voice (mono capitals in Basalt).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fill, each cell, new value · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fill', note: 'when half of it scrolls into view the cells light one after another at a constant rate, the whole row spanning the deliberate token', duration: 'deliberate' },
+    { moment: 'Each cell', note: 'fades to its tone', duration: 'fast', ease: 'standard' },
+    { moment: 'New value', note: 'lights or darkens the cells between the edge on screen and the new one, in order', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The cells are lit at once, and a new value relights them in place."
+/>
+
+#### Reduced motion
+
+Every cell is lit at once, with no stagger.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's a `meter` (Base UI Meter) named by its visible `label`; without one, give it `aria-label`.
+- The value is spoken with its band: "88%, High". A warning or danger band without a label is spoken as "Warning" or "Critical".
+- The cells are hidden from assistive tech. They fill from the inline start, so right to left in RTL.
+
+</ReferenceRow>

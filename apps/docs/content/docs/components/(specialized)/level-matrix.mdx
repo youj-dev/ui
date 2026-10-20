@@ -1,0 +1,118 @@
+---
+title: Level Matrix
+description: "Set a level for each row and column pair, with pending changes and bulk editing, such as access by role and resource."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="level-matrix/demo" height={340} />
+
+Three roles across four resources, with an Apply button that counts the pending changes.
+
+Against `baseline` (by default, the value it opened with), a changed cell keeps the level it had in view, struck through, and draws the difference in its segments: gained segments light in the success tone, lost ones stay as a hollow danger outline. `diffPermissions(baseline, value, roles, resources)` lists the changes in grid order, for a summary or a review before you save.
+
+```tsx
+const changes = diffPermissions(saved, value, roles, resources)
+// [{ role, resource, from: 'read', to: 'write' }, …]
+```
+
+A row header's box selects the role's cells, a column header's box selects the resource for every role, and the corner selects everything. The bar that opens sets every selected cell to one level.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="level-matrix" noImport />
+
+Use a level matrix when access is decided per role and per resource: who can read billing, who can deploy, who can manage members. Each cell is an access level (none, read, write, admin) drawn as three segments lit to it, so a column or a row reads at a glance. For one person's settings, a list of switches reads better.
+
+```tsx
+import { LevelMatrix, type PermissionValue } from '@youj/react'
+
+const [value, setValue] = useState<PermissionValue>(saved)
+
+<LevelMatrix
+  label="Workspace permissions"
+  roles={[
+    { id: 'owner', name: 'Owner', locked: true },
+    { id: 'editor', name: 'Editor', detail: '8 members' },
+  ]}
+  resources={[
+    { id: 'docs', name: 'Docs' },
+    { id: 'billing', name: 'Billing' },
+  ]}
+  value={value}
+  baseline={saved}
+  onValueChange={setValue}
+/>
+```
+
+A value maps a role's id to its levels by resource id; a missing cell is `none`. A `locked` role (an owner) can't change and sits out of bulk selection.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="roles, resources, value… (7)">
+
+### Props
+
+<PropsTable name="LevelMatrix" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="A cell changes, A bulk set, the bulk bar · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'A cell changes', note: 'its segments light or empty one after another', duration: 'fast', ease: 'standard' },
+    { moment: 'A bulk set', note: 'the same, as a wave across the grid from the top-start corner', duration: 'fast', ease: 'standard' },
+    { moment: 'The bulk bar', note: 'opens and closes with the selection', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Levels change in place."
+/>
+
+#### Reduced motion
+
+Levels change in place, without the segment stagger or the wave.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- It's an ARIA grid, named by `label` (or the labels' "Permissions") and multiselectable, with column and row headers and a keyboard hint as its description.
+- One tab stop, then the arrow keys move between cells, the header boxes included; Home and End go to a row's ends, and Ctrl+Home and Ctrl+End to the grid's. Space or Enter steps a cell up a level, and Shift steps it down.
+- Every change is announced: "Editor, Billing: Write", or "6 permissions set to Read". A pending cell adds "changed from Read" to its name, selected cells are `aria-selected`, and a locked role's cells are read-only.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

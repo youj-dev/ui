@@ -1,0 +1,191 @@
+---
+title: IconSwap
+description: "Transition between icons to show a change of state, including morphing one shape into another."
+---
+
+<ComponentPreview name="icon-swap/transitions" height={340} />
+
+Use it when a control's two states are two different icons: notify and muted, invite and invited, a file and the link that opens it. It takes Youj icons and lucide-react icons alike. When a [state icon](/docs/icons/morphs) already covers the pair, use that instead: its morph is choreographed for those two states.
+
+## Installation
+
+<InstallTabs name="icon-swap" />
+
+## Usage
+
+Give it the two icons and a state. `active={false}` shows `from`, `true` shows `to`.
+
+```tsx
+import { BellIcon, BellOffIcon, IconSwap } from '@youj/icons'
+
+<IconSwap from={BellIcon} to={BellOffIcon} active={muted} transition="morph" />
+```
+
+Pass the components, not elements. Youj icons are held still inside the swap, so only the transition moves.
+
+## Examples
+
+<Examples>
+
+<Example id="transitions" label="Transitions">
+
+### Transitions
+
+Every transition is a pure function of one progress value, from 0 (showing `from`) to 1 (showing `to`). Toggling mid-swap reverses from exactly where it is, and rapid toggles never jump. The default is `scale-blur`.
+
+| Transition | What it does |
+| --- | --- |
+| `scale-blur` | The old icon shrinks out of focus as the new one sharpens in. |
+| `rotate` | One continuous quarter turn: out turns away as in turns in from the other side. |
+| `morph` | A true path morph from one icon's strokes to the other's. |
+| `draw` | The old strokes run out through their ends, then the new strokes draw on. |
+| `flip` | A card turned on its vertical axis. |
+| `fold` | Hinged flaps: out folds back on its bottom edge, in swings down from the top. |
+| `slide` | One strip: the new icon pushes the old one out through the edge of the box. |
+| `wipe` | A hard edge sweeps across, with the new icon behind it. |
+| `zoom` | Out flies past the viewer, in arrives from far away. |
+| `pop` | Out shrinks away, in overshoots once and settles. Keep it for success. |
+
+`direction` steers `slide` (default `up`) and `wipe` (default `right`). Left and right follow the reading direction, so they swap under `dir="rtl"`.
+
+Chain up to ten icons in any transition, and copy the code, in [Chain](/icons?chain=bell~bell-off).
+
+</Example>
+
+<Example id="driving-the-progress" label="Driving the progress">
+
+### Driving the progress
+
+Instead of a state, pass `progress`: a number from 0 (showing `from`) to 1 (showing `to`), or a MotionValue, which repaints on every change without a render. The swap holds that moment of the transition, so a scrubber, a drag or the scroll can drive it. While `progress` is set, `active` and `trigger` are ignored, and `labels` name whichever icon it's nearer.
+
+```tsx
+import { useScroll } from 'motion/react'
+import { ArrowDownIcon, CheckIcon, IconSwap } from '@youj/icons'
+
+const { scrollYProgress } = useScroll()
+
+<IconSwap from={ArrowDownIcon} to={CheckIcon} transition="morph" progress={scrollYProgress} />
+```
+
+It's painted as given under reduced motion too: the value is yours, and the swap adds no motion of its own. If the scroll drives it, decide what reduced motion should show, for example `progress={reduced ? 1 : scrollYProgress}`.
+
+</Example>
+
+<Example id="true-morph" label="True morph">
+
+### True morph
+
+`morph` reshapes one icon into another, even two that share nothing, with no dependency. Each icon's strokes are flattened into contours. Strokes the two icons share hold still, and a stroke cut by a slash is carved out of the original, so a bell loses a gap exactly where the slash lands. The remaining strokes pair up by position and length and bend into place, turning rather than collapsing. Anything left over draws on or retracts from where it meets the rest of the icon.
+
+<ComponentPreview name="icon-swap/morph" height={420} />
+
+The plan for each pair of icons is worked out once and shared by every instance.
+
+</Example>
+
+<Example id="in-a-button" label="In a button">
+
+### In a button
+
+Drive a swap in a button from [useIconState](/docs/icons/use-icon-state). The button carries the name and the state, so the swap stays decorative.
+
+<ComponentPreview name="icon-swap/button" height={260} />
+
+```tsx
+const mute = useIconState({ label: 'Mute' })
+
+<button {...mute.buttonProps}>
+  <IconSwap {...mute.iconProps} from={BellIcon} to={BellOffIcon} transition="morph" size={16} />
+  Mute
+</button>
+```
+
+</Example>
+
+<Example id="on-hover" label="On hover">
+
+### On hover
+
+Leave `active` out and the swap follows its `trigger`, `hover` by default. Like any Youj icon, it listens to its closest button, link or `data-yj-trigger` parent, so a row can reveal the action it will take.
+
+<ComponentPreview name="icon-swap/hover" height={300} />
+
+</Example>
+
+<Example id="with-lucide-icons" label="With Lucide icons">
+
+### With Lucide icons
+
+`from` and `to` also accept Lucide icons, including for morph transitions. This optional integration needs `lucide-react` installed in your app. Here Eye changes to EyeOff as the lock opens.
+
+<ComponentPreview name="icon-swap/lucide" height={240} />
+
+```tsx
+import { Eye, EyeOff } from 'lucide-react'
+import { IconSwap } from '@youj/icons'
+
+<button type="button" aria-label="Show secret" aria-pressed={shown} onClick={() => setShown(!shown)}>
+  <IconSwap from={Eye} to={EyeOff} active={shown} transition="morph" />
+</button>
+```
+
+</Example>
+
+<Example id="on-its-own" label="On its own">
+
+### On its own
+
+A swap that stands alone and means something needs a name for each state. `labels` gives it `role="img"` and names it for the current state.
+
+```tsx
+<IconSwap from={CloudIcon} to={CheckCircleIcon} active={saved} labels={['Saving', 'Saved']} transition="pop" />
+```
+
+Without `labels` the swap is `aria-hidden`, which is right inside a labeled button.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="from, to, active… (12)">
+
+### Props
+
+<PropsTable name="IconSwap" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Scale-blur, rotate, zoom, slide, wipe, flip, fold… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'scale-blur, rotate, zoom', note: 'out on `exit`, in on `enter`', ease: 'enter', value: 'slow + fast: 480ms' },
+    { moment: 'slide, wipe', note: 'one push across the box', ease: 'emphasized', value: 'slow + fast: 480ms' },
+    { moment: 'flip, fold', note: 'out to edge-on, then in', duration: 'deliberate', ease: 'enter' },
+    { moment: 'pop', note: 'in overshoots to 114%, then settles', duration: 'deliberate', ease: 'enter' },
+    { moment: 'draw', note: 'strokes retract, then new ones draw on', duration: 'deliberate', ease: 'enter' },
+    { moment: 'morph', note: 'strokes bend into place', ease: 'emphasized', value: 'deliberate + fast: 700ms' },
+    { moment: 'Reversal', note: 'takes the remaining share of the length', value: 'length × distance left' },
+  ]}
+  reduced="The swap is instant: the new icon replaces the old one with no transition."
+/>
+
+#### Reduced motion
+
+The swap switches instantly to the icon for the new state. Nothing moves, and the state reads the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Without `labels`, the swap is decorative (`aria-hidden`). Inside a button, put the name and the state on the button, with `aria-pressed` or a name that changes, as [useIconState](/docs/icons/use-icon-state) does.
+- With `labels`, it's `role="img"` named for its current state. A new name isn't announced on its own, so pair a change that matters with a status message.
+- The swap never takes focus, and its hover trigger also answers keyboard focus on the parent.
+
+</ReferenceRow>

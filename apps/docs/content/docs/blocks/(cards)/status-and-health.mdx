@@ -1,0 +1,80 @@
+---
+title: Status & health
+description: "Is everything all right: status over 90 days, queues, tile boards and a score with what is open."
+---
+
+<BlockStories>
+
+<BlockStory id="status" label="Status" block="app-status" story="Default" backdrop="umber">
+
+A platform's services over 90 days inside your app: the SLA as a large figure and a strip with a cell per day colored by uptime. Press a service to put its history on the strip.
+
+</BlockStory>
+
+<BlockStory id="queue-monitor" label="Queue monitor" block="app-queue-monitor" story="Default" backdrop="umber">
+
+A queue as an instrument: pick a queue, read its throughput and waits, and see backlog and busy workers as lanes of cells. Background jobs, kitchen stations and printers fit. Retry a failed item on its own, pause the queue or add a worker.
+
+</BlockStory>
+
+<BlockStory id="tile-board" label="Tile board" block="app-tile-board" story="Default" backdrop="umber">
+
+A grid of things as tiles, each in one of your statuses, with the one status the board handles marked `alert`. Select a tile and the panel shows what is being done: for an alert tile a timer, the reason as one choice, who is on the way and in how many minutes, and a ring counting down to the escalation, with Escalate now and Resolve below. Shown with a plant's assembly line; stories also use checkout lanes and hospital beds.
+
+</BlockStory>
+
+<BlockStory id="score-overview" label="Score overview" block="app-score-overview" story="Default" backdrop="umber">
+
+Where anything audited stands, in one card; the default is a company's security posture, and a food safety inspection or an accessibility audit reads the same way. A ring of ticks lit up to the score with its letter grade, the score out of 100 with how it moved and a sparkline of the month, then open findings (and how many are of the worst severity), resolved, assets watched and the median time to fix. Tabs show the open findings by severity over 30 days as a stacked chart, the findings worst first, and the assets they sit on, all in one height. Your own severities set the levels, their words and colors. Scan now sweeps the ring and counts the assets in the foot; Export report sits beside it. It has loading and error states that keep its size.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="status, buttons, labels, motion">
+
+### Accessibility
+
+Status gives each service button a spoken label of its name, state and uptime, with `aria-pressed` for the one you picked and a labelled remove control on the filter badge. Errors use `role="alert"`.
+
+The queue picker in Queue monitor is a labelled segmented control. The status line does not announce each tick.
+
+Tile board makes every tile a button (`aria-pressed`) whose name includes its status in words; the colored bar only echoes it. The alert timer is a `role="timer"` that is not announced every second, the reason is one named choice, and Escalate now and Resolve announce their result in a polite live region. Timers stop in a hidden tab.
+
+Score overview puts the score on a `meter` named Security score whose value text is the score and its grade ("77 of 100, grade B"), and each figure is a group named by its label. The tabs are a named tab list; the chart is a named figure with a summary of how the open findings moved, its plot one tab stop whose arrow keys walk the days and open the tooltip. Every finding is a button named with its severity, title, asset and how long it has been open, and every asset says its counts by severity in words. A scan is announced when it finishes, and the foot's progress is a polite live region. The stories show other worlds, with their own names and words.
+
+Under reduced motion figures, bars, rings and rows are drawn in place instead of animating, and nothing loops.
+
+</ReferenceRow>
+
+</BlockStories>

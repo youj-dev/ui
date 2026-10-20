@@ -1,0 +1,80 @@
+---
+title: Company
+description: "Sections about the people and the answers behind the product: the story so far, the team, the open roles and an FAQ."
+---
+
+<BlockStories>
+
+<BlockStory id="about" label="About" block="marketing-about" story="Default" backdrop="heather">
+
+Tell the story as something to scrub through: a rail of years under a growth line the block draws, where each year rolls the figures to how they stood, draws the line up to it and swaps the chapter in. It plays through once in view, holds while you point at it, and stops when you pick a year; then the values, numbered. Under reduced motion it rests on today.
+
+</BlockStory>
+
+<BlockStory id="team" label="Team" block="marketing-team" story="Default" backdrop="heather">
+
+Introduce the people with portraits that look designed even before there's a photo: their initials set large, where they work from and their local time, ticking. A bio rises over the portrait on hover or focus, the name pins it open, and a team filter re-flows the grid.
+
+</BlockStory>
+
+<BlockStory id="careers" label="Careers" block="marketing-careers" story="Default" backdrop="heather">
+
+List the open roles so people find theirs: teams as tabs with live counts, a search that marks what it found, a location filter, and rows that line up the place, the kind and the salary band, with New on the last fortnight's. The open application closes it.
+
+</BlockStory>
+
+<BlockStory id="faq" label="FAQ" block="marketing-faq" story="Default" backdrop="heather">
+
+Answer common questions like a small help center: a search that marks its words and opens the answer that matched, topics with counts, a link to every answer that opens and flashes it, and “Was this helpful?” under each.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, tabs, disclosures, live counts">
+
+### Accessibility
+
+Each section is a `<section>` named by its own heading (`aria-labelledby`); the heading is an `h2` by default and `headingLevel` changes it, with every part's heading a level below.
+
+About's years are a tab list: the arrows, Home and End move along the rail and pick a year, and its chapter is the tab panel. Each figure ends on the same text a screen reader gets, and the tour holds while keyboard focus is in it, with a button to pause, play or replay it. The growth line is decorative; the figures carry its meaning.
+
+Team's people are articles named for them. The name is a disclosure button (`aria-expanded`) that pins the bio open, and Escape lets it go; a bio's links only join the tab order while it's open. Local times are written out in full for screen readers, with day or night named.
+
+Careers' rows are single links named with the role, its place and its kind; the team tabs are a labeled group, the search a search field (Escape clears it) and the count a polite status.
+
+FAQ is the kit's Accordion, so every question is a heading button that reports `aria-expanded`; answers stay in the page for find-in-page. The search is a search field whose count sits in it, Escape clears it and ↓ moves to the first question; the topics are a labeled group. “Was this helpful?” is a labeled group and its thanks a status. Links and buttons are real `a` and `button` elements with the kit's focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

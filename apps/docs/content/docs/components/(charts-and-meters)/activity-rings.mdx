@@ -1,0 +1,132 @@
+---
+title: Activity Rings
+description: "Show a few goals side by side as concentric rings, each filling toward its own target."
+aliases: ["progress ring", "circular progress", "radial progress", "progress circle", "goal rings"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="activity-rings/demo" height={340} />
+
+A day's move, exercise and stand goals, with each ring's glyph at its start and the legend beside.
+
+</Story>
+
+<Story id="team-quotas" label="Team quotas">
+
+<ComponentPreview name="activity-rings/quotas" height={520} />
+
+A sales team's quarter. Two quotas are past their goal, so those rings run a second lap over the first, and the head of each casts a small shadow onto the lap beneath it.
+
+</Story>
+
+<Story id="live-update" label="Live update">
+
+<ComponentPreview name="activity-rings/live" height={420} />
+
+Each new value fills from where the ring already is. A ring that reaches its goal glows once.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="activity-rings" noImport />
+
+Use activity rings when a few goals are tracked together and each has its own target: a day's fitness goals, a team's quotas, a quarter's key results, a learning streak. Each ring is one goal, a round-capped arc over a faint track of its color, running clockwise from twelve o'clock. Two to four rings fit. To show how one whole splits into parts, use a [Share Ring](/docs/components/share-ring). For a single score on a scale, use a [Gauge](/docs/components/gauge).
+
+```tsx
+import { ActivityRings, type ActivityRing } from '@youj/react'
+
+const rings: ActivityRing[] = [
+  { label: 'Move', value: 420, max: 500, unit: 'calories', tone: 'danger' },
+  { label: 'Exercise', value: 26, max: 30, unit: 'minutes', tone: 'success' },
+  { label: 'Stand', value: 9, max: 12, unit: 'hours', tone: 'info' },
+]
+
+<ActivityRings rings={rings} legend="side" />
+```
+
+A ring is `value` of `max`, with a `label`, an optional `unit` after its goal, a `tone` (accent, a chart color or a status; the chart colors in turn by default) and an `icon` drawn at its start. Rings are listed outermost first. Past its goal a ring keeps going for a second lap (it draws up to two), and the legend and the spoken value give the full share, such as 138%.
+
+The bowl shows the first ring's share in big figures with its name, or the share of the ring being pointed at. Pass `children` to put your own content there, such as a streak or a total. At `size="sm"` (96px) the bowl is left empty. The other sizes are `default`, `lg` and `xl`.
+
+`legend="side"` puts the legend beside the rings when there's room and under them when there isn't. `legend="below"` always puts it under them. Each row gives the ring's value, goal and share. Pointing at a row, or tabbing to it, singles out its ring, and pointing at a ring singles out its row. `format` formats the values (whole numbers by default, `{ notation: 'compact' }` for large figures).
+
+The rings fill as they come into view. `inView={false}` fills them on mount, and `{ once, amount, margin }` sets what counts as in view. A ring that closes plays the success cue when the provider has sound on, and `sound={false}` turns that off.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="rings, size, legend… (9)">
+
+### Props
+
+<PropsTable name="ActivityRings" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `activity-rings` (with `data-size` and `data-yj-legend`), `activity-rings-dial`, `activity-rings-ring` (with `data-index`, `data-tone`, `data-closed` once it reaches its goal and `data-yj-over` past it), `activity-rings-track`, `activity-rings-arc`, `activity-rings-overlap` (the second lap), `activity-rings-head`, `activity-rings-glow`, `activity-rings-icon`, `activity-rings-center`, `activity-rings-value`, `activity-rings-caption`, `activity-rings-legend`, `activity-rings-item` (with `data-highlighted` and `data-closed`), `activity-rings-swatch`, `activity-rings-label`, `activity-rings-amount` and `activity-rings-share`. In Bezel the labels are mono capital eyebrows.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, new values, closing a ring, pointing · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'each ring fills from zero to its value', spring: 'smooth' },
+    { moment: 'New values', note: 'each ring retargets from where it is, keeping its speed', spring: 'smooth' },
+    { moment: 'Closing a ring', note: 'a soft glow swells off the ring and fades, once', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Pointing at a ring', note: 'the other rings and rows dim', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The rings are drawn at their values and change in place, with no glow."
+/>
+
+#### Reduced motion
+
+The rings are drawn at their values from the first frame, new values jump, and closing a ring doesn't glow or play a cue.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels and assistive technology">
+
+### Accessibility
+
+- The rings are a group, named by `label` or "Activity rings", and each ring is a `meter` named by its label, with its value text spoken in full: "Move: 420 of 500 calories, 84%". Past its goal, `aria-valuenow` holds at the goal and the text gives the real value and share.
+- The legend is a list. Each row takes focus, so the keyboard can single out a ring the same way the pointer does.
+- Its words come from the labels (`activityRings`, `activityRingsValue`), translated by the language packs.
+- A dial turns clockwise in every script, so the rings keep their direction under RTL. The bowl and the legend follow the page.
+
+</ReferenceRow>

@@ -1,0 +1,118 @@
+---
+title: Proposal Card
+description: "Weigh a proposed change against the current plan, then approve or dismiss it: a reroute, a reassignment, a new slot."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="proposal-card/demo" height={480} />
+
+A route agent proposes a reroute; approving or dismissing resolves the card, and Undo brings it back.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="proposal-card" noImport />
+
+Use a proposal card where someone, often an agent, suggests a change and a person decides: a reroute that saves half an hour, a load moved to another driver, a meeting moved to a free slot. It says where the proposal came from, what it is, then weighs the options side by side, the proposed one drawn as a dashed accent outline like a proposed route on a [Route Map](/docs/components/route-map) or a proposed run on [Time Lanes](/docs/components/time-lanes). Its impact reads as figures, and your buttons decide it.
+
+```tsx
+import { Button, ProposalCard } from '@youj/react'
+
+const [status, setStatus] = useState<'pending' | 'approved' | 'dismissed'>('pending')
+
+<ProposalCard
+  source="Route agent · 92% confidence"
+  title="Reroute load 4821 via Ridge Rd"
+  options={[
+    { id: 'current', label: 'Harbor Fwy · current', value: '15:49', detail: '+47 min', tone: 'danger' },
+    { id: 'proposed', label: 'Ridge Rd · proposed', value: '15:18', detail: '−31 min', proposed: true },
+  ]}
+  facts={[{ label: 'Time saved', value: '31 min', tone: 'success' }]}
+  status={status}
+  resolution="Approved · driver notified"
+  actions={<Button size="sm" onClick={() => setStatus('approved')}>Approve reroute</Button>}
+/>
+```
+
+`options` are the plans side by side, usually the current one and the proposal (`proposed: true`). Each has a `label`, a `value` in mono (an ETA, a price) and a `detail` for how it moves against plan, inked by its `tone`. `facts` are the impact as a row of figures. `note` is a line over the actions: why it needs a person. You own `status`: `pending` shows `actions`; `approved` makes the proposal solid, steps the other options back and folds the actions away for your `resolution`; `dismissed` fades the proposal and keeps the plan.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="options, facts, status… (11)">
+
+### Props
+
+<PropsTable name="ProposalCard" />
+
+#### Options
+
+<PropsTable name="ProposalOption" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `proposal-card` (with `data-status`). Each option row carries `data-proposed` and, once stepped back, `data-muted`. The card takes the theme's radius, border and card surface; pass `className` to place it, for example over a map.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Rows, actions and resolution · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Decided', note: 'option rows change their outline, tint and opacity', duration: 'fast', ease: 'standard' },
+    { moment: 'Actions out, resolution in', note: 'the two trade places through Collapse; a reversal continues from the current height', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Rows change tone in place, and the actions and resolution swap at once."
+/>
+
+#### Reduced motion
+
+Every change lands in place. The status still reads from the outline, the struck-through figure and the resolution text.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Article, proposed row, resolution">
+
+### Accessibility
+
+- The card is an `article` named by its title; `headingLevel` sets the title's level (3 by default).
+- The proposed option says so to screen readers ("Ridge Rd · proposed, Proposed"), from the labels' `proposed`, translated by the language packs.
+- Facts are a description list: each figure is read with its label.
+- The resolution sits in a polite status region, so approving or dismissing is announced.
+
+</ReferenceRow>

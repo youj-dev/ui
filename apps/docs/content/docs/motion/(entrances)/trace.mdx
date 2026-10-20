@@ -1,0 +1,124 @@
+---
+title: Trace
+description: "Light real UI up like a circuit: a thin signal runs its layout and each part appears as the signal reaches it."
+---
+
+<ComponentPreview name="trace/demo" height={420} />
+
+Use it for an entrance that shows how a piece of UI is wired: a hero demo, a launch moment, a dashboard coming online. A thin signal comes in from beside the frame and runs both ways round its border. Then it spreads down the layout: along each box's edge, across the gutter above what the box holds and down a short square connector into each region, round that region's border, and on to every part, all branches at once. Each part glows briefly on its edge as the signal reaches it, then appears. Keep it to one moment on a page: it asks to be watched.
+
+## Installation
+
+<InstallTabs name="trace" />
+
+## Usage
+
+Wrap the UI in `TraceEntrance`. It lights up its first child and plays on mount.
+
+```tsx
+import { TraceEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <TraceEntrance>
+      <Dashboard />
+    </TraceEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the engine. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { trace } from '@youj/motion'
+
+const run = trace(document.querySelector('#overview')!, { speed: 1.5 })
+await run.finished
+```
+
+## Color
+
+The signal is the theme's foreground, so it reads on every theme. `accent` draws it in the theme's accent instead. The path it has run stays etched faintly behind it until the run settles, then fades.
+
+## Pacing
+
+The run goes through three stages: **enter** (the signal comes in and runs round the frame, and the frame fills in behind it), **spread** (it runs down the layout and lights every part) and **settle** (the etched path fades and anything floating fades in). The signal runs at one speed through the spread, so near parts light first and the farthest part lights last.
+
+The length grows with the demo: about 2 seconds for a card and about 3.5 for a small screen. Three options tune it:
+
+- `duration` fixes the whole run, in milliseconds.
+- `speed` scales it: `2` plays twice as fast. It applies on top of `duration` and the provider's speed.
+- `phases` shares the run out between the three stages. The values are weights, so they are normalized and never change the total; a stage left out keeps its default (`{ enter: 14, spread: 74, settle: 12 }`), and `0` skips it.
+
+```tsx
+// a quick run that is nearly all spread
+<TraceEntrance duration={1400} phases={{ enter: 8, spread: 84, settle: 8 }}>
+  <PricingCard />
+</TraceEntrance>
+```
+
+## What it reads
+
+The layout comes from the real DOM, read once before the first frame: roles, tags and `data-slot` first, then geometry. The main regions and the panels too big to be one part are the branches, each inside the smallest one that holds it; their borders are traced on their own edges, rounded corners included, and a panel fills in as its border is traced. The parts are the leaves: a field, a button, a stat card, a list row, a paragraph, or a part with nothing inside it (a chart, an image). What's inside a part comes with it. Open popovers simply fade in at the end.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, accent, onFinish">
+
+### Props
+
+<PropsTable name="TraceEntrance" />
+
+#### trace
+
+```ts
+function trace(node: HTMLElement, options?: TraceOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `TracePhases` | `{ enter: 14, spread: 74, settle: 12 }` | Each stage's share of the run, as weights. |
+| `accent` | `boolean` | `false` | The signal in the theme's accent instead of its foreground. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the entrance. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, spread, settle · the glow · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'in from beside the frame, then both ways round its border; the frame fills in', value: '14% of the run', ease: 'linear' },
+    { moment: 'Spread', note: 'down the layout at one speed, every branch at once; panels fill in as their borders are traced', value: '74%', ease: 'linear' },
+    { moment: 'Settle', note: 'the etched path fades; open popovers fade in', value: '12%', ease: 'exit' },
+    { moment: 'Glow', note: 'a part’s edge lights as the signal reaches it, then fades', duration: 'slow', ease: 'linear' },
+    { moment: 'Part in', note: '`opacity`, just after its glow', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="No signal: the UI is just there, and nothing is added to the page."
+/>
+
+The demo is never restyled. While a part waits it is held by its inline opacity (no animation, so no compositor layer), and it appears by a Web Animation that replaces the hold when the signal reaches it. The signal's heads are small elements moved by `transform` along their routes, made just before they set off; the etched path is drawn on one canvas, a frame adding only the few pixels run since the last one. When the run ends, or `cancel()` is called, the animations are cancelled, the holds are put back exactly and the overlay is removed, so the page is exactly as it was. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `trace()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The signal and the etched path are `aria-hidden` and never take the pointer. The demo stays in the accessibility tree the whole time, so a screen reader reads the real UI.
+- Tabbing into the demo, or pressing on it, ends the run at once, so nobody uses a part that hasn't appeared yet.
+- Nothing flashes: the signal is a 1 px line with a small head, and each glow is faint and brief.
+
+</ReferenceRow>

@@ -1,0 +1,58 @@
+---
+title: Landing page
+description: "A whole landing page stacked from ten section blocks: the header, a hero, features, metrics, customer proof, pricing, an FAQ, a closing call to action and the footer."
+---
+
+<BlockStories>
+
+<BlockStory id="landing" label="Landing page" block="marketing-landing" story="Default" backdrop="cinnabar">
+
+A complete landing page, top to bottom: the mega-menu header with its announcement bar; a centered hero with two calls to action over a soft animated aurora; a ruled grid of features, each read off a live instrument; features again as alternating text and interactive demos; headline metrics that count up for a chosen period; logos and ratings with a featured customer story; plans with a monthly and a yearly price; an FAQ with its own search; a closing call to action; and the sitemap footer. Pick it as the first draft of a product's site, then swap any band for another of its kind or leave it out.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+Each band is a block of its own, with its alternatives on its page: the [header](/docs/blocks/navigation) and [footer](/docs/blocks/navigation#footer), the [hero](/docs/blocks/hero), [features](/docs/blocks/features), [metrics](/docs/blocks/proof#metrics) and [logos and ratings](/docs/blocks/proof#logos), [pricing](/docs/blocks/pricing), the [FAQ](/docs/blocks/company#faq) and the [closing call to action](/docs/blocks/cta). The page installs as those section blocks, which Built from under Reference lists with the components they use; the page itself is the composition under Code.
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, sections, motion">
+
+### Accessibility
+
+The page is the header, one `main` that holds the eight sections, and the footer, so the header and the footer sit outside `main` as landmarks. The hero's headline is the page's one `h1`; every section below it is a region named by its own `h2` (`headingLevel` changes a section's). Each section keeps the keyboard and screen reader behavior its own page describes.
+
+Under reduced motion the hero's aurora holds one frame and its text is already in place.
+
+</ReferenceRow>
+
+</BlockStories>

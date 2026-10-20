@@ -1,0 +1,131 @@
+---
+title: Currency Swap
+description: "A converter card: what you pay over what you receive, a round button that flips them, the rate and the action. Crypto or plain money."
+---
+
+<ComponentStories>
+<Story id="demo" label="Swap crypto">
+
+<ComponentPreview name="currency-swap/demo" height={420} />
+
+Type an amount, pick the two currencies, and the received amount rolls to its new figure digit by digit. Each side shows its value in `currency` below, and the rate sits under the pair.
+
+The round button between the sides flips them: each side's amount and currency glide into the other's place while the arrows turn half a circle, and the amount you received becomes the amount you pay. Picking the currency the other side already holds flips the pair too.
+
+</Story>
+
+<Story id="checkout" label="Top up a wallet">
+
+<ComponentPreview name="currency-swap/checkout" height={460} />
+
+Plain currencies in a wallet top-up, with a fee taken off through `convert` and the action renamed with `submitLabel`.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="currency-swap" noImport />
+
+Give it the currencies, each with a `price` in `currency` (the value lines' currency, default `USD`), and an `onSubmit`. The rate is `from.price / to.price` unless you pass `rate`: a number is the live quote for the current pair (refresh it when the pair changes), a function is asked per pair. `convert` computes the received amount itself, for fees or slippage.
+
+```tsx
+'use client'
+
+import { CurrencySwap, type CurrencySwapAsset } from '@youj/react'
+
+const assets: CurrencySwapAsset[] = [
+  { id: 'btc', symbol: 'BTC', name: 'Bitcoin', price: 64250 },
+  { id: 'usdc', symbol: 'USDC', name: 'USD Coin', price: 1, decimals: 2 },
+]
+
+export function Swap() {
+  return (
+    <CurrencySwap
+      assets={assets}
+      defaultAmount={0.25}
+      pendingLabel="Swapping…"
+      successLabel="Swapped"
+      onSubmit={({ from, to, amount }) => placeOrder(from.id, to.id, amount)}
+    />
+  )
+}
+```
+
+The pair and the amount are each a value trio: `from`/`defaultFrom`/`onFromChange`, `to`/`defaultTo`/`onToChange` and `amount`/`defaultAmount`/`onAmountChange`. `onSwap` fires on a flip with the new pair. `onSubmit` is awaited as an [Async Button](/docs/components/button#async-button)'s action: resolve for success, reject or throw for an error. Without `onSubmit` there is no action button.
+
+Amounts and values format in the provider's locale (or `locale`). An asset's `decimals` caps its fraction digits; otherwise amounts show 4, or 4 significant digits below 1.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="assets, from, to, amount, rate, convert, currency, onSwap, onSubmit…">
+
+### Props
+
+<PropsTable name="CurrencySwap" />
+
+#### Data attributes
+
+The root carries `data-disabled` when disabled. The parts are named in `data-slot`: `currency-swap-pay` and `currency-swap-receive` (the two sides), `currency-swap-amount` (the field), `currency-swap-received` (the result), `currency-swap-picker` (each currency picker), `currency-swap-mark` (a currency's mark), `currency-swap-value` (each value line), `currency-swap-flip`, `currency-swap-rate` and `currency-swap-submit`. The action is an Async Button with its own `data-state`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Rolling digits, the flip · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Result', note: 'the received amount rolls digit by digit to its new figure (motion’s Counter)', spring: 'smooth' },
+    { moment: 'Flip', note: 'each side’s amount and currency glide into the other’s place, from a touch smaller', spring: 'snappy' },
+    { moment: 'Flip button', note: 'the arrows turn half a circle per flip', spring: 'snappy' },
+    { moment: 'Action', note: 'the button runs the Async Button’s pending, success and error states' },
+  ]}
+  reduced="The figure changes and the sides swap at once; the arrows don't turn."
+/>
+
+#### Reduced motion
+
+Every change lands at once. The card keeps its size throughout: the pickers have a fixed width, and long figures truncate.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels, keyboard, announcements">
+
+### Accessibility
+
+- The amount is a text field labeled “You pay”; it parses and formats in the locale, and ArrowUp/Down step it.
+- Each currency picker is a select named “Currency to pay with” or “Currency to receive”, with typeahead and the arrow keys.
+- The flip is a button named “Swap currencies”. Focus stays on it after a flip.
+- The result is an `output` labeled “You receive”. Once it rests it is announced politely (“You receive 2,549.9 HYPE”), not on every keystroke.
+- The action is an Async Button: pending and success are announced politely, an error assertively.
+- With sound on, a flip plays `tap` and a new currency `select`; the action sounds as an Async Button does. `sound={false}` keeps it silent.
+
+</ReferenceRow>
+
+Bitcoin, Ethereum, Solana and USDC logos are trademarks of their owners, shown for illustration only.

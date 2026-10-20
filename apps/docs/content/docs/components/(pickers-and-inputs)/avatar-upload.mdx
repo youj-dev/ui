@@ -1,0 +1,127 @@
+---
+title: Avatar Upload
+description: "Let people upload and crop a profile photo before saving it."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="avatar-upload/demo" height={220} />
+
+A 72px avatar whose save handler waits a moment, then shows the cropped photo; its remove handler clears it.
+
+Drag the photo to move it, and zoom from 1 to 4 times with a pinch, the scroll wheel or the Zoom slider. Zoom is anchored on the circle's center. The photo follows the pointer exactly, and pulled past an edge it gives with resistance and springs back on release, so the circle is always filled. A rule-of-thirds grid shows while it moves.
+
+From the keyboard, the arrow keys move the photo, Shift moves it further, `+` and `−` zoom, and `0` resets.
+
+</Story>
+
+<Story id="sizes-and-rules" label="Sizes and rules">
+
+<ComponentPreview name="avatar-upload/sizes" height={320} />
+
+The same upload at 48 and 96 pixels, and a disabled one.
+
+`size` sets the avatar's edge in pixels, 64 by default. `accept` defaults to PNG, JPEG and WebP, and `maxSize` to 10 MB. A file that breaks a rule is explained in a Field error under the avatar and never opens the cropper.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="avatar-upload" noImport />
+
+Use it on a profile or account page, wherever one person or workspace has one photo. The avatar itself is the button and a drop target, and a picked image opens a crop dialog, so what's saved is a square that fills the circle instead of a stretched or off-center photo. For attaching files of any kind, or several at once, use [File Upload](/docs/components/file-upload). To only show a photo, use [Avatar](/docs/components/avatar).
+
+```tsx
+import { AvatarUpload } from '@youj/react'
+
+export function ProfilePhoto({ user }: { user: User }) {
+  return (
+    <AvatarUpload
+      src={user.avatarUrl}
+      name={user.name}
+      fallback={user.initials}
+      onSave={async (file) => {
+        const url = await uploadAvatar(file)
+        await updateUser({ avatarUrl: url })
+      }}
+      onRemove={() => updateUser({ avatarUrl: null })}
+    />
+  )
+}
+```
+
+`onSave` receives the crop as a square `File`, `outputSize` pixels on a side (512 by default) in `outputType` (JPEG by default). It runs through AsyncButton's `onAction`: Save shows a spinner, then a drawn check, and the dialog closes itself. Reject to show the error. The saved crop shows at once, until you pass a new `src`. `onRemove` adds a Remove button while there's a photo.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="onSave, src, fallback… (12)">
+
+### Props
+
+<PropsTable name="AvatarUpload" />
+
+`cropRegion` is exported for doing the same crop on a server.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Hover, focus or drag over, crop dialog, drag… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Hover, focus or drag over', note: 'a scrim and the camera icon rise over the photo', duration: 'fast', ease: 'standard' },
+    { moment: 'Crop dialog', note: 'opens and closes as every Dialog (`yj-dialog`)', duration: 'base', ease: 'enter' },
+    { moment: 'Drag', note: 'the photo tracks the pointer 1:1, with resistance past an edge', value: 'no easing' },
+    { moment: 'Release past an edge', note: 'springs back so the circle stays filled', spring: 'smooth' },
+    { moment: 'Thirds grid', note: 'fades in while the photo moves', duration: 'fast', ease: 'standard' },
+    { moment: 'Save', note: 'AsyncButton: spinner, then a drawn check', duration: 'slow', ease: 'emphasized' },
+  ]}
+  reduced="The photo clamps at the circle's edge instead of springing back, the scrim appears at once and the dialog opens without motion."
+/>
+
+#### Reduced motion
+
+The scrim and camera appear at once, the dialog opens without its rise and scale, and the photo stops at the circle's edge instead of springing back. Saving still shows its states.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The avatar is a button named "Upload photo", or "Change photo" once there is one, and described by the rules line beside it. An Upload or Change button beside it does the same, for people who don't expect the photo to be clickable.
+- The crop area is a focusable group named "Photo position and zoom" with its keyboard instructions as its description.
+- The Zoom slider and the zoom buttons are named, and the buttons disable at 1× and 4×.
+- The dialog is titled "Crop your photo" and describes how to move and zoom. Removing the photo moves focus back to the avatar.
+- A rejected file is explained in a Field error, which is announced.
+
+</ReferenceRow>

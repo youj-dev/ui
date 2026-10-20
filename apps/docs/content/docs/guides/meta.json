@@ -1,0 +1,4 @@
+{
+  "title": "Guides",
+  "pages": ["index", "build-an-app-frame", "build-a-marketing-site", "light-dark-and-system", "composing-components", "styling-hooks", "(platform)", "(shadcn)"]
+}

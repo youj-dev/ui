@@ -1,0 +1,370 @@
+{
+  "name": "@youj/miniatures",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) Miniatures: interactive isometric objects for React. A turntable that plays, a server cabinet that fails over, an hourglass that is a progress indicator. Each is one import, drawn in SVG, with keys, light and dark, reduced motion and optional sound. React is the only dependency.",
+  "keywords": [
+    "alpha",
+    "isometric",
+    "illustration",
+    "interactive",
+    "svg",
+    "react",
+    "loader",
+    "progress",
+    "youj"
+  ],
+  "homepage": "https://www.youj.dev/docs/miniatures",
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/miniatures"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./3d-printer": "./src/3d-printer.tsx",
+    "./aquarium": "./src/aquarium.tsx",
+    "./cell-tower": "./src/cell-tower.tsx",
+    "./coffee-grinder": "./src/coffee-grinder.tsx",
+    "./cooling-unit": "./src/cooling-unit.tsx",
+    "./crt-television": "./src/crt-television.tsx",
+    "./cuckoo-clock": "./src/cuckoo-clock.tsx",
+    "./desk-fan": "./src/desk-fan.tsx",
+    "./drone-dock": "./src/drone-dock.tsx",
+    "./drum-machine": "./src/drum-machine.tsx",
+    "./espresso": "./src/espresso.tsx",
+    "./film-projector": "./src/film-projector.tsx",
+    "./firewall-appliance": "./src/firewall-appliance.tsx",
+    "./greenhouse": "./src/greenhouse.tsx",
+    "./ground-station": "./src/ground-station.tsx",
+    "./guitar-amp": "./src/guitar-amp.tsx",
+    "./home-battery": "./src/home-battery.tsx",
+    "./home-router": "./src/home-router.tsx",
+    "./hourglass": "./src/hourglass.tsx",
+    "./instant-camera": "./src/instant-camera.tsx",
+    "./letterpress": "./src/letterpress.tsx",
+    "./lighthouse": "./src/lighthouse.tsx",
+    "./mainframe": "./src/mainframe.tsx",
+    "./metronome": "./src/metronome.tsx",
+    "./microscope": "./src/microscope.tsx",
+    "./mixing-desk": "./src/mixing-desk.tsx",
+    "./nas": "./src/nas.tsx",
+    "./network-switch": "./src/network-switch.tsx",
+    "./nixie-clock": "./src/nixie-clock.tsx",
+    "./orrery": "./src/orrery.tsx",
+    "./oscilloscope": "./src/oscilloscope.tsx",
+    "./packaging-line": "./src/packaging-line.tsx",
+    "./parcel-locker": "./src/parcel-locker.tsx",
+    "./pinball": "./src/pinball.tsx",
+    "./pipe-organ": "./src/pipe-organ.tsx",
+    "./quantum-fridge": "./src/quantum-fridge.tsx",
+    "./receipt-printer": "./src/receipt-printer.tsx",
+    "./repair-bench": "./src/repair-bench.tsx",
+    "./retro-fridge": "./src/retro-fridge.tsx",
+    "./robot-arm": "./src/robot-arm.tsx",
+    "./rotary-phone": "./src/rotary-phone.tsx",
+    "./sbc-cluster": "./src/sbc-cluster.tsx",
+    "./server-cabinet": "./src/server-cabinet.tsx",
+    "./sewing-machine": "./src/sewing-machine.tsx",
+    "./smart-trainer": "./src/smart-trainer.tsx",
+    "./stage-synth": "./src/stage-synth.tsx",
+    "./stand-mixer": "./src/stand-mixer.tsx",
+    "./tape-library": "./src/tape-library.tsx",
+    "./telescope": "./src/telescope.tsx",
+    "./thermostat-boiler": "./src/thermostat-boiler.tsx",
+    "./toaster": "./src/toaster.tsx",
+    "./tube-radio": "./src/tube-radio.tsx",
+    "./turntable": "./src/turntable.tsx",
+    "./typewriter": "./src/typewriter.tsx",
+    "./ups-cabinet": "./src/ups-cabinet.tsx",
+    "./vintage-camera": "./src/vintage-camera.tsx",
+    "./vinyl-jukebox": "./src/vinyl-jukebox.tsx",
+    "./washing-machine": "./src/washing-machine.tsx",
+    "./weather-station": "./src/weather-station.tsx",
+    "./workstation": "./src/workstation.tsx"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./3d-printer": {
+        "types": "./dist/3d-printer.d.ts",
+        "default": "./dist/3d-printer.js"
+      },
+      "./aquarium": {
+        "types": "./dist/aquarium.d.ts",
+        "default": "./dist/aquarium.js"
+      },
+      "./cell-tower": {
+        "types": "./dist/cell-tower.d.ts",
+        "default": "./dist/cell-tower.js"
+      },
+      "./coffee-grinder": {
+        "types": "./dist/coffee-grinder.d.ts",
+        "default": "./dist/coffee-grinder.js"
+      },
+      "./cooling-unit": {
+        "types": "./dist/cooling-unit.d.ts",
+        "default": "./dist/cooling-unit.js"
+      },
+      "./crt-television": {
+        "types": "./dist/crt-television.d.ts",
+        "default": "./dist/crt-television.js"
+      },
+      "./cuckoo-clock": {
+        "types": "./dist/cuckoo-clock.d.ts",
+        "default": "./dist/cuckoo-clock.js"
+      },
+      "./desk-fan": {
+        "types": "./dist/desk-fan.d.ts",
+        "default": "./dist/desk-fan.js"
+      },
+      "./drone-dock": {
+        "types": "./dist/drone-dock.d.ts",
+        "default": "./dist/drone-dock.js"
+      },
+      "./drum-machine": {
+        "types": "./dist/drum-machine.d.ts",
+        "default": "./dist/drum-machine.js"
+      },
+      "./espresso": {
+        "types": "./dist/espresso.d.ts",
+        "default": "./dist/espresso.js"
+      },
+      "./film-projector": {
+        "types": "./dist/film-projector.d.ts",
+        "default": "./dist/film-projector.js"
+      },
+      "./firewall-appliance": {
+        "types": "./dist/firewall-appliance.d.ts",
+        "default": "./dist/firewall-appliance.js"
+      },
+      "./greenhouse": {
+        "types": "./dist/greenhouse.d.ts",
+        "default": "./dist/greenhouse.js"
+      },
+      "./ground-station": {
+        "types": "./dist/ground-station.d.ts",
+        "default": "./dist/ground-station.js"
+      },
+      "./guitar-amp": {
+        "types": "./dist/guitar-amp.d.ts",
+        "default": "./dist/guitar-amp.js"
+      },
+      "./home-battery": {
+        "types": "./dist/home-battery.d.ts",
+        "default": "./dist/home-battery.js"
+      },
+      "./home-router": {
+        "types": "./dist/home-router.d.ts",
+        "default": "./dist/home-router.js"
+      },
+      "./hourglass": {
+        "types": "./dist/hourglass.d.ts",
+        "default": "./dist/hourglass.js"
+      },
+      "./instant-camera": {
+        "types": "./dist/instant-camera.d.ts",
+        "default": "./dist/instant-camera.js"
+      },
+      "./letterpress": {
+        "types": "./dist/letterpress.d.ts",
+        "default": "./dist/letterpress.js"
+      },
+      "./lighthouse": {
+        "types": "./dist/lighthouse.d.ts",
+        "default": "./dist/lighthouse.js"
+      },
+      "./mainframe": {
+        "types": "./dist/mainframe.d.ts",
+        "default": "./dist/mainframe.js"
+      },
+      "./metronome": {
+        "types": "./dist/metronome.d.ts",
+        "default": "./dist/metronome.js"
+      },
+      "./microscope": {
+        "types": "./dist/microscope.d.ts",
+        "default": "./dist/microscope.js"
+      },
+      "./mixing-desk": {
+        "types": "./dist/mixing-desk.d.ts",
+        "default": "./dist/mixing-desk.js"
+      },
+      "./nas": {
+        "types": "./dist/nas.d.ts",
+        "default": "./dist/nas.js"
+      },
+      "./network-switch": {
+        "types": "./dist/network-switch.d.ts",
+        "default": "./dist/network-switch.js"
+      },
+      "./nixie-clock": {
+        "types": "./dist/nixie-clock.d.ts",
+        "default": "./dist/nixie-clock.js"
+      },
+      "./orrery": {
+        "types": "./dist/orrery.d.ts",
+        "default": "./dist/orrery.js"
+      },
+      "./oscilloscope": {
+        "types": "./dist/oscilloscope.d.ts",
+        "default": "./dist/oscilloscope.js"
+      },
+      "./packaging-line": {
+        "types": "./dist/packaging-line.d.ts",
+        "default": "./dist/packaging-line.js"
+      },
+      "./parcel-locker": {
+        "types": "./dist/parcel-locker.d.ts",
+        "default": "./dist/parcel-locker.js"
+      },
+      "./pinball": {
+        "types": "./dist/pinball.d.ts",
+        "default": "./dist/pinball.js"
+      },
+      "./pipe-organ": {
+        "types": "./dist/pipe-organ.d.ts",
+        "default": "./dist/pipe-organ.js"
+      },
+      "./quantum-fridge": {
+        "types": "./dist/quantum-fridge.d.ts",
+        "default": "./dist/quantum-fridge.js"
+      },
+      "./receipt-printer": {
+        "types": "./dist/receipt-printer.d.ts",
+        "default": "./dist/receipt-printer.js"
+      },
+      "./repair-bench": {
+        "types": "./dist/repair-bench.d.ts",
+        "default": "./dist/repair-bench.js"
+      },
+      "./retro-fridge": {
+        "types": "./dist/retro-fridge.d.ts",
+        "default": "./dist/retro-fridge.js"
+      },
+      "./robot-arm": {
+        "types": "./dist/robot-arm.d.ts",
+        "default": "./dist/robot-arm.js"
+      },
+      "./rotary-phone": {
+        "types": "./dist/rotary-phone.d.ts",
+        "default": "./dist/rotary-phone.js"
+      },
+      "./sbc-cluster": {
+        "types": "./dist/sbc-cluster.d.ts",
+        "default": "./dist/sbc-cluster.js"
+      },
+      "./server-cabinet": {
+        "types": "./dist/server-cabinet.d.ts",
+        "default": "./dist/server-cabinet.js"
+      },
+      "./sewing-machine": {
+        "types": "./dist/sewing-machine.d.ts",
+        "default": "./dist/sewing-machine.js"
+      },
+      "./smart-trainer": {
+        "types": "./dist/smart-trainer.d.ts",
+        "default": "./dist/smart-trainer.js"
+      },
+      "./stage-synth": {
+        "types": "./dist/stage-synth.d.ts",
+        "default": "./dist/stage-synth.js"
+      },
+      "./stand-mixer": {
+        "types": "./dist/stand-mixer.d.ts",
+        "default": "./dist/stand-mixer.js"
+      },
+      "./tape-library": {
+        "types": "./dist/tape-library.d.ts",
+        "default": "./dist/tape-library.js"
+      },
+      "./telescope": {
+        "types": "./dist/telescope.d.ts",
+        "default": "./dist/telescope.js"
+      },
+      "./thermostat-boiler": {
+        "types": "./dist/thermostat-boiler.d.ts",
+        "default": "./dist/thermostat-boiler.js"
+      },
+      "./toaster": {
+        "types": "./dist/toaster.d.ts",
+        "default": "./dist/toaster.js"
+      },
+      "./tube-radio": {
+        "types": "./dist/tube-radio.d.ts",
+        "default": "./dist/tube-radio.js"
+      },
+      "./turntable": {
+        "types": "./dist/turntable.d.ts",
+        "default": "./dist/turntable.js"
+      },
+      "./typewriter": {
+        "types": "./dist/typewriter.d.ts",
+        "default": "./dist/typewriter.js"
+      },
+      "./ups-cabinet": {
+        "types": "./dist/ups-cabinet.d.ts",
+        "default": "./dist/ups-cabinet.js"
+      },
+      "./vintage-camera": {
+        "types": "./dist/vintage-camera.d.ts",
+        "default": "./dist/vintage-camera.js"
+      },
+      "./vinyl-jukebox": {
+        "types": "./dist/vinyl-jukebox.d.ts",
+        "default": "./dist/vinyl-jukebox.js"
+      },
+      "./washing-machine": {
+        "types": "./dist/washing-machine.d.ts",
+        "default": "./dist/washing-machine.js"
+      },
+      "./weather-station": {
+        "types": "./dist/weather-station.d.ts",
+        "default": "./dist/weather-station.js"
+      },
+      "./workstation": {
+        "types": "./dist/workstation.d.ts",
+        "default": "./dist/workstation.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage.enabled",
+    "generate": "node scripts/generate.mjs",
+    "generate:check": "node scripts/generate.mjs --check",
+    "size": "node scripts/size.mjs",
+    "verify": "pnpm generate:check && pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "react-dom": "^19"
+  },
+  "peerDependencies": {
+    "react": "^19"
+  }
+}

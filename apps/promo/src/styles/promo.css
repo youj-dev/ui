@@ -1,0 +1,139 @@
+/* One Tailwind root, as in Storybook and the docs: youj.css owns the
+ * Tailwind import and the palette, ui.css bridges the shadcn names onto it,
+ * and bezel.css holds the recipes of the bezel style the Stage renders in. */
+@import '../../../../packages/core/src/styles/youj.css';
+@import '../../../../packages/ui/src/styles/ui.css';
+@import '../../../../packages/ui/src/styles/bezel.css';
+
+@source '../../../../packages/core/src';
+@source '../../../../packages/motion/src';
+@source '../../../../packages/ui/src';
+@source '../';
+
+/* ── Layers ───────────────────────────────────────────────────────────────
+ * "One system" renders the app four times, each copy showing one part of
+ * it. Stacked flat, the four add back up to the app.
+ *   theme   the paint: surfaces, hairlines, fills, shadows
+ *   motion  the moving parts: sliding indicators
+ *   ui      the structure: text, control content, the charts' marks
+ *   icons   the icons
+ * Text is hidden with -webkit-text-fill-color, never `color`, so icons keep
+ * the currentColor they inherit. --lit (0 → 1) lights each plane's part in
+ * the accent once the stack comes apart. */
+@layer utilities {
+  :is([data-layer='theme'], [data-layer='motion'], [data-layer='icons']) :not(svg, svg *) {
+    -webkit-text-fill-color: transparent !important;
+    text-decoration-color: transparent !important;
+  }
+  /* Icons belong to the icons plane; charts and sparklines are structure. */
+  :is([data-layer='theme'], [data-layer='ui'], [data-layer='motion']) :is(svg.youj-icon, svg.lucide) {
+    visibility: hidden !important;
+  }
+  :is([data-layer='theme'], [data-layer='motion'], [data-layer='icons']) svg:not(.youj-icon, .lucide) {
+    visibility: hidden !important;
+  }
+
+  /* Every plane but the theme drops the paint. */
+  :is([data-layer='ui'], [data-layer='motion'], [data-layer='icons']) :not(svg, svg *),
+  :is([data-layer='ui'], [data-layer='motion'], [data-layer='icons']) :not(svg, svg *)::before,
+  :is([data-layer='ui'], [data-layer='motion'], [data-layer='icons']) :not(svg, svg *)::after {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline-color: transparent !important;
+  }
+
+  /* The moving parts belong to the motion plane. */
+  [data-layer] [data-slot$='indicator'] {
+    visibility: hidden !important;
+  }
+  [data-layer='motion'] [data-slot$='indicator'] {
+    visibility: visible !important;
+    background-color: color-mix(in oklab, var(--color-accent) calc(var(--lit, 0) * 40%), var(--color-key)) !important;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) calc(var(--lit, 0) * 100%), var(--color-line)) !important;
+  }
+  [data-layer='icons'] :is(svg.youj-icon, svg.lucide) {
+    color: color-mix(in oklab, var(--color-accent) calc(var(--lit, 0) * 100%), currentColor);
+    filter: drop-shadow(0 0 calc(var(--lit, 0) * 5px) color-mix(in oklab, var(--color-accent) 80%, transparent));
+  }
+
+  /* The structure, apart, is drawn like a blueprint: every component outlined. */
+  [data-layer='ui']
+    :is(
+      [data-slot='card'],
+      [data-slot='button'],
+      [data-slot='badge'],
+      [data-slot='toggle-group'],
+      [data-slot='sidebar-menu-button'],
+      [data-slot='avatar'],
+      [data-slot='input-group'],
+      [data-slot='sparkline']
+    ) {
+    outline: 1px dashed color-mix(in oklab, var(--color-fg-subtle) calc(var(--lit, 0) * 85%), transparent) !important;
+    outline-offset: -1px;
+  }
+}
+
+/* ── The film's hand ───────────────────────────────────────────────────────
+ * A press focuses what it presses, as a real one does. A real pointer press
+ * doesn't light the keyboard ring, but a synthetic one can't tell Chrome it
+ * was a pointer: while the hand is a pointer, outline rings stay dark (text
+ * fields keep their focus border, as they do on a click). Scenes that drive
+ * the keyboard set data-hand="keys". The film's Toaster sits in the corner
+ * of the window a scene names. */
+:root {
+  --film-toast-bottom: 16px;
+  --film-toast-end: 16px;
+  --film-toast-zoom: 1;
+  --film-toast-opacity: 1;
+}
+/* The home film's live theme changes every frame: transitions under it
+ * would restart every frame and never move, so it runs without them, as an
+ * app switching themes does. */
+[data-live-theme] * {
+  transition: none !important;
+}
+
+/* The motion loop's dialog close-up: the dialog portals to the page, outside
+ * any camera, so its viewport (which centres the popup) is zoomed instead.
+ * Unset everywhere else. */
+[data-slot='dialog-viewport'] {
+  zoom: var(--loop-dialog-zoom, 1);
+}
+:root:not([data-hand='keys']) :is(:focus-visible, :has(:focus-visible)):not(input, textarea, select, [contenteditable]) {
+  /* No style at all, not just no colour: a control whose colour transitions
+   * (tabs) would otherwise fade its outline from the text colour. */
+  outline-style: none !important;
+  outline-color: transparent !important;
+}
+
+/* ── Apps in windows ──────────────────────────────────────────────────────
+ * The examples and blocks are full-page layouts sized in viewport units. In a
+ * film window its content box is their viewport: Window sets --window-h. */
+[data-window] :is(.h-dvh, .h-svh, .h-screen) {
+  height: var(--window-h) !important;
+}
+[data-window] :is(.min-h-dvh, .min-h-svh, .min-h-screen) {
+  min-height: var(--window-h) !important;
+}
+[data-window] [data-slot='sidebar-wrapper'] {
+  --sidebar-height: var(--window-h) !important;
+  min-height: var(--window-h) !important;
+}
+
+/* ── Viewport units ───────────────────────────────────────────────────────
+ * Every screenshot Remotion takes resizes the viewport for a moment, and the
+ * palette caps its list at 55dvh, so each captured frame restarted the list's
+ * height transition. The stage is always 810px tall: pin the cap to what
+ * 55dvh is there. */
+[cmdk-list] {
+  --command-list-max: min(24rem, 445px) !important;
+}
+
+/* The text caret blinks on the real clock. Hold it steady, as it is while
+ * someone types. */
+input,
+textarea {
+  caret-animation: manual;
+}

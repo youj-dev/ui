@@ -1,0 +1,138 @@
+---
+title: Coming from shadcn/ui
+description: "Move a shadcn/ui app onto Youj: install and import from @youj/react, then swap components at your own pace."
+---
+
+<PageArt art="shadcn" />
+
+`@youj/react` is built on shadcn/ui's `base-nova` style and Base UI, with Youj tokens and motion added. Its components keep shadcn's names, and its props where Base UI allows. Older shadcn styles are built on Radix, so some props change when you swap a component: [What changes](#what-changes) lists them, and which ones fail silently. Youj stays grateful to shadcn: see [Credits](/docs/contributing#credits-and-licenses).
+
+You install and import from `@youj/react`, not from files copied into your app, so there is one import source to keep in step. Steps 1 and 2 go together, in one change: the install switches the palette, and the rename keeps your hover states right. Steps 3 and 4 can wait, and your existing components keep working between them.
+
+## 1. Install the package and its token bridge
+
+```bash
+npx youj init
+```
+
+This installs `@youj/react`, adds its stylesheet after Tailwind and wraps the app in `YoujProvider`. [Installation](/docs/installation) covers doing it by hand.
+
+The components' stylesheet brings the palette, the tokens and the motion presets, and the shadcn bridge, `@youj/react/shadcn.css`, maps every shadcn variable onto a Youj token. Both go right after Tailwind, the bridge last:
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';
+@import '@youj/react/shadcn.css';
+```
+
+Without the bridge, your existing shadcn components (`bg-background`, `bg-primary` and the rest) render unstyled. `shadcn init` left three things in that file that would override the bridge, and `init` removes them. In a terminal it shows the diff and asks first; with `--yes` the diff is in its summary. By hand, delete them:
+
+- **`@custom-variant dark (&:is(.dark *));`** Youj defines its own `dark` variant on `data-theme`. Tailwind keeps the last definition, so shadcn's would win, and every `dark:` class in Youj's components would match nothing.
+- **The color lines in `@theme inline`**, above all `--color-accent: var(--accent)`. Once shadcn's variables are gone, it makes `bg-accent` transparent, in your code and in Youj's components. Youj's stylesheet maps the same names itself, and sizes the radii (the `--radius-*` lines). Lines of your own in the block, such as `--font-sans`, stay.
+- **The `:root` and `.dark` variable blocks.** Loaded after the bridge, they win, and the palette splits in two. A variable of your own in them stays.
+
+`npx youj doctor` fails on any of the three. Your components keep their class names; only the values behind them change:
+
+<ComponentPreview name="shadcn/bridge" height={420} />
+
+That panel is plain markup using only shadcn's names. Switch between light and dark to see both palettes. The mapping is `--background` and `--foreground` to `canvas` and `fg`, `--card` and `--popover` to `surface` and `overlay`, `--primary` to the one accent, `--muted` and `--muted-foreground` to `band` and `fg-muted`, `--destructive` to `danger`, and `--border`, `--input` and `--ring` to `line`, `line-control` and `focus` (the full table is in [Theming](/docs/theming#coming-from-shadcn)). Retune them through a Youj theme rather than by editing the bridge: [Theming](/docs/theming) derives every value from a few inputs, in both modes.
+
+Youj's palette, and its `dark:` variant, follow a `data-theme` attribute on `<html>`, not shadcn's `.dark` class. With `next-themes`, set `attribute="data-theme"`, or write both with `attribute={['class', 'data-theme']}` if other code still reads the class.
+
+## 2. Rename `accent` to `hover`
+
+The two libraries use `accent` for different things. In shadcn it's the subtle hover surface behind menu items and ghost buttons. In Youj it's the theme's one accent color, such as Basalt's amber or Graphite's ultramarine. Keep the shadcn meaning under a new name, `hover`, renaming whole class tokens only:
+
+| shadcn class | Youj class |
+| --- | --- |
+| `bg-accent`, `hover:bg-accent`, `data-highlighted:bg-accent/50` | `bg-hover`, `hover:bg-hover`, `data-highlighted:bg-hover` |
+| `text-accent-foreground` | `text-fg` |
+| `bg-sidebar-accent`, `text-sidebar-accent-foreground` | `bg-hover`, `text-fg` |
+| `var(--accent)`, `var(--accent-foreground)` | `var(--color-hover)`, `var(--color-fg)` |
+
+Skip this step and hover states turn the accent color, and `text-accent-foreground` generates no class at all. To find every use, run this in your app and rename the ones that mean the hover surface:
+
+```bash
+grep -rnE "accent|--accent" app components src --include='*.tsx' --include='*.ts' --include='*.css'
+```
+
+Afterwards, with shadcn's `--color-accent` line gone from `@theme inline` (step 1), any `bg-accent` left in your code means Youj's accent, used on purpose.
+
+## 3. Swap tw-animate for the presets
+
+shadcn animates overlays with tw-animate classes. Youj replaces them with presets that follow the Speed setting and reduced motion, and that reverse mid-flight. Remove the tw-animate classes (`data-open:animate-in`, `fade-in-0`, `zoom-in-95`, `slide-in-from-*`, `duration-*`) from the overlays you still own and add one preset, such as `yj-pop` for popovers and menus or `yj-dialog` for dialogs. [Overlay presets](/docs/motion/presets) lists every preset and what it goes on. Components you take from `@youj/react` already have them.
+
+## 4. Replace components when you're ready
+
+Swap components one at a time, whenever a Youj version earns its place. Change the import, and delete your copy of the file once nothing uses it:
+
+```tsx
+// before
+import { Button } from '@/components/ui/button'
+
+// after
+import { Button } from '@youj/react'
+```
+
+Components that need an optional peer come from their own entry: `@youj/react/chart`, `/data-table`, `/form`, `/date`, `/carousel` and `/command`. Each component's page shows its install command and import, and `npx youj add chart` installs the peer for you.
+
+## What changes
+
+Youj's components are built on Base UI, like shadcn's `base-nova` style. Coming from a Radix-based style (`new-york`, `radix-nova`), these change when you swap the import. Every one fails loudly, with a type error or a development warning: nothing compiles and then quietly misbehaves. The ban list is a type test (`shadcn-traps.test.tsx`), so it can't regress.
+
+| shadcn (Radix) | Youj | Unchanged, it… |
+| --- | --- | --- |
+| `<DropdownMenuItem onSelect={fn}>`, and the same on the checkbox, radio and sub-trigger items, `ContextMenuItem` and `MenubarItem` | `onClick={fn}` | type error that names `onClick`: `onSelect` is the DOM's text-selection event and never fires on a menu item |
+| `<Select>` with only `<SelectItem>`s inside | nothing: the labels are read from the `SelectItem`s written inside the Select. Items a component of yours renders can't be read, so pass `items={[{ value: 'free', label: 'Free' }]}` | the trigger would show the raw value (`free`); development warns once when it can't read the labels |
+| `<Select onValueChange={setPlan}>` with string state | the handler gets `string \| null`: `onValueChange={(value) => value && setPlan(value)}` | type error |
+| `asChild` on `Button`, the triggers (`DialogTrigger`, `TooltipTrigger`, `PopoverTrigger`, `SheetTrigger`, `CollapsibleTrigger`, `DropdownMenuTrigger`), `DialogClose`, `NavigationMenuLink` | `render`: `<Button render={<a href="/" />}>`, `<DialogTrigger render={<Button />}>`. `asChild` is not an alias anywhere: there is one way to compose, and it is Base UI's | type error |
+| `<Accordion type="single" collapsible defaultValue="a">` | no `type`: one item opens at a time unless you pass `multiple`, and values are arrays: `defaultValue={['a']}` | type error |
+| `<ToggleGroup type="single" value={v} onValueChange={setV}>` | no `type` (`multiple` for several), and the value is an array: `value={[v]}`, `onValueChange={(next) => setV(next[0] ?? '')}` | type error |
+| `<Checkbox checked={state}>` with `boolean \| 'indeterminate'` state | `checked` is a boolean, and `indeterminate` is a prop of its own | type error |
+| `<Slider defaultValue={[50]} onValueChange={(value: number[]) => …}>` | the value is `number \| readonly number[]`; one thumb takes a number: `defaultValue={50}` | type error |
+| `<Form {...form}><form onSubmit={form.handleSubmit(save)}>` with `FormField control render={…}`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage` | the parts have the same names and `FormField` keeps `render`, from `@youj/react/form`. `Form` takes `form={form}` and `onSubmit={save}` and renders the `<form>` itself. A shorthand lays the parts out for you: `<FormField name="email" label="Email">{(field) => <Input {...field} />}</FormField>`. See [Form](/docs/components/form) | type errors on `<Form {...form}>` |
+| `toast` from `sonner`, `<Toaster />` from `ui/sonner` | `toast` and `Toaster` from `@youj/react`. `duration` is `timeout`, and `toast.loading` is `toast.promise(promise, { loading, success, error })`. See [Toast](/docs/components/toast) | type errors |
+| `<TooltipProvider delayDuration={0}>` | `delay={0}` | type error |
+| `<HoverCard openDelay={200}>` | on the trigger: `<HoverCardTrigger delay={200}>` | type error |
+| `<Drawer direction="right">` (vaul) | `swipeDirection="right"` | type error |
+| `<ResizablePanelGroup direction="horizontal">` | `orientation="horizontal"` | type error |
+| `<Separator decorative />` | leave the prop out | type error |
+| `Calendar` from `ui/calendar`, `Table` from `ui/table` | `Calendar` from `@youj/react/date`, `Table` from `@youj/react` | import error |
+
+`Tabs`, `RadioGroup`, `Switch` and `Toggle` handlers, `Sheet`'s `side`, `Popover`'s `align` and `Avatar`'s parts carry over unchanged. Each component's page has the full set of props.
+
+## Copying source in
+
+You can still own the source. Copy it in with the Youj CLI, which handles imports and dependencies:
+
+```bash
+npx youj add button dialog
+```
+
+In an app on the package, `add` installs what a component needs instead of copying files it already ships. Blocks have no package entry, so copying them in is the only route. The shadcn CLI can add Youj items too, with fewer of those fixes: see [Using with shadcn](/docs/shadcn-registry).
+
+In an app that copies source, your shadcn files sit where Youj's go: `components/ui/button.tsx`, `dialog.tsx`, `lib/utils.ts`. Youj's components import each other, so a Youj item can't use shadcn's `dialog.tsx` in place of its own. `add` keeps a file you've edited, but when a Youj item it copies imports one of yours that can't stand in for Youj's (a shadcn component, or one without a name the item imports), it asks in a terminal whether to replace it, and otherwise stops with exit code 1 and the command to run. Replace the shared ones together:
+
+```bash
+npx youj add button input label dialog select --overwrite
+```
+
+`lib/utils.ts` is merged, with or without `--overwrite`. shadcn's stock file, only `cn`, is replaced by Youj's, whose `cn` does the same and knows Youj's tokens. A file with helpers of your own moves to `lib/utils.local.ts`, and Youj's re-exports it, so `import { formatDate } from '@/lib/utils'` keeps working. `npx youj doctor --strict` typechecks the app afterwards.
+
+## Checklist
+
+- One Tailwind root: Tailwind, then the components' stylesheet, then the shadcn bridge. shadcn's `@custom-variant dark`, its `@theme inline` color lines and its `:root` and `.dark` variable blocks are gone (`npx youj doctor` fails while they're there).
+- The theme is set with `data-theme` on `<html>`.
+- No `accent` class means "hover surface" anywhere. That's `hover` now.
+- No tw-animate classes remain on overlays.
+- Menu items use `onClick`.
+- Components import from `@youj/react`.
+
+## Related
+
+<Cards>
+  <Card title="Installation" href="/docs/installation">Package or copied source, from an empty app.</Card>
+  <Card title="Theming" href="/docs/theming">Retune the palette and the motion tokens.</Card>
+  <Card title="Overlay presets" href="/docs/motion/presets">Every preset, what it goes on, and its timing.</Card>
+  <Card title="Button" href="/docs/components/button">A first component to swap in, with async states built in.</Card>
+</Cards>

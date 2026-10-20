@@ -1,0 +1,137 @@
+---
+title: Flow Field
+description: "Add streaks drifting on a smooth current that the pointer stirs into a vortex."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="flow-field/demo" full height={400} />
+
+A hero section over the current; move the pointer across it and the streaks swirl around it and light up.
+
+`colors` takes two CSS colors: the streaks, then the highlight for streaks the pointer has caught. The defaults are `--color-fg-muted` and `--color-accent`. Token references follow the theme, and the field rereads them when the theme changes.
+
+</Story>
+
+<Story id="tuning" label="Tuning">
+
+<ComponentPreview name="flow-field/tuning" full height={320} />
+
+Controls for the size of the swirls, the length of the trails and the pointer.
+
+- `scale` sets the size of the swirls in the current. Above 1 the streaks run in broad, calm sweeps; below 1 the current is busier. It defaults to 1.
+- `trail`, from 0.3 to 1.5, multiplies the trail length. It defaults to 1.
+- `density` sets how many streaks there are per area, `intensity` (0 to 1.5) how strongly they show, and `speed` how fast the current runs.
+
+The pointer is a vortex: the current curls around it and the streaks it catches turn to the highlight. The pointer is tracked on the window, so the field responds under the content above it. Set `interactive={false}` where the field sits behind something people work in.
+
+</Story>
+
+<Story id="quiet-use" label="Quiet use">
+
+<ComponentPreview name="flow-field/quiet" height={400} />
+
+A sparse, slow current behind a status card, with no pointer response.
+
+At a low `density`, `intensity` and `speed`, and a broad `scale`, the current reads as flow rather than as an effect, a quiet signal that things are moving.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="flow-field" noImport />
+
+Use it where the idea is movement: traffic, data in flight, networks, anything that should feel alive and directed. It reads as weather over the page, and it answers the pointer without asking anything of it. Don't use it behind reading-length text, since the streaks cross everything, and keep it to one animated background per page.
+
+The field fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { FlowField } from '@youj/motion/backgrounds'
+
+export function CurrentHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <FlowField />
+      <p className="relative text-5xl font-semibold">Watch requests find their way</p>
+    </section>
+  )
+}
+```
+
+Each streak rides a smooth noise current, so neighbors flow the same way and the direction changes slowly across the canvas and over time. A streak lives for a few seconds: it fades in, drifts, fades out and starts again somewhere else. The number of streaks follows the area: at `density={1}`, one per 3,200 square pixels, capped at 800. A phone and a wide display look equally full.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (8)">
+
+### Props
+
+<PropsTable name="FlowField" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's drawn with Canvas 2D, not WebGL">
+
+### Performance
+
+It's drawn with Canvas 2D, not WebGL. Each frame redraws every trail from a short history, in a handful of strokes batched by opacity, so nothing is left behind on the canvas and a resize or a theme change is exact. The canvas renders at a device-pixel ratio capped at 2, and the low motion budget keeps 60% of the streaks. The loop pauses when the field is offscreen or the tab is hidden, and it stops and cleans up on unmount. If the browser can't create a 2D context, it falls back to a static CSS wash of the highlight color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Current, vortex, streak life · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Current', note: 'a smooth noise field that shifts slowly over time', value: 'speed ÷ time scale' },
+    { moment: 'Vortex', note: 'the current curls around the pointer within reach', value: 'per-frame physics' },
+    { moment: 'Pointer strength', note: 'eases in and out with the pointer', value: 'smoothed per frame' },
+    { moment: 'Streak life', note: 'fades in, drifts, fades out and respawns', value: '4 to 10 seconds' },
+  ]}
+  reduced="Draws one fixed, seeded field with its trails laid down: the same composition every time. There's no drift and no pointer response, and it redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The field shows a fixed composition from a seeded layout, so it's the same on every visit and in every screenshot. The streaks and trails keep their colors and density. Only the drift and the pointer response are gone. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- Streaks cross whatever sits above them. Keep a quiet pool of canvas behind the copy, as the hero preview does, or lower `intensity`, and check your text's contrast there.
+- The drift is slow and stops offscreen. Under reduced motion the field doesn't move at all.
+
+</ReferenceRow>

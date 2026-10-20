@@ -1,0 +1,112 @@
+---
+title: Severity Timeline
+description: "Trace an incident’s events, durations and resolution milestones."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="severity-timeline/demo" height={560} />
+
+An incident that began 18 minutes ago, with buttons to add an event or resolve it.
+
+While no event is the `resolved` milestone (and you pass no `end`), the incident is open: the ribbon's window runs from the first event to now, growing in whole steps (5, 15, 30 minutes and up) so the scale holds still between them, and a solid edge marks now. Ongoing durations tick every second. Once an event resolves it, the window closes at that moment, ongoing bars stop there and the clock stops. Pass `now` to pin the time (for a replay or a test) and `start` when the incident began before its first event.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="severity-timeline" noImport />
+
+Use a severity timeline for the story of one incident: the alerts that fired, the pages, the deploys and rollbacks, and the moments it was acknowledged, mitigated and resolved. Every row has its clock time and how long after the start it came, a node on a rail, a soft SEV chip and the title. Beside it runs the ribbon, a thin track spanning the whole incident on every row, with the event's own bar at its offset and length and each milestone as a dashed rule on every row, so the phases line up down the list and you can see at a glance what was still firing when someone took command. For a project's general activity feed, use a [Timeline](/docs/components/timeline).
+
+```tsx
+import { SeverityTimeline, type SeverityEvent } from '@youj/react'
+
+const events: SeverityEvent[] = [
+  { id: 'alert', at: start, severity: 2, title: 'Error rate above 5% on checkout-api', actor: 'pagerbot', ongoing: true },
+  { id: 'ack', at: start + 3 * 60_000, milestone: 'acknowledged', title: 'M. Oyelaran took command' },
+  { id: 'rollback', at: start + 11 * 60_000, severity: 3, title: 'Rolled back to v2.14.3', duration: 4 * 60_000 },
+  { id: 'mitigated', at: start + 16 * 60_000, milestone: 'mitigated', title: 'Authorisations recovering' },
+]
+
+<SeverityTimeline events={events} timeZone="UTC" />
+```
+
+Pass events in any order: they're shown oldest first. `at` is a time in ms. An event with `duration` draws a bar, one with `ongoing` runs to now (or to the resolution), and one with neither draws a tick. `severity` (1 is the worst) draws the SEV chip and tones the node and the bar: SEV1 in danger, SEV2 in warning, SEV3 in the accent and SEV4 neutral. An event without a severity can take a `tone` instead (a chart color for its kind, as the [Threat case](/docs/blocks/trends-and-comparisons) card colors each step of an attack chain); without either it is neutral.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="events, start, end… (8)">
+
+### Props
+
+<PropsTable name="SeverityTimeline" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `severity-timeline`, `severity-timeline-axis`, `severity-timeline-list`, `severity-timeline-event`, `severity-timeline-time`, `severity-timeline-node`, `severity-timeline-body`, `severity-timeline-severity`, `severity-timeline-label` (a milestone's word, in the theme's label voice), `severity-timeline-title`, `severity-timeline-detail`, `severity-timeline-actor`, `severity-timeline-value` (the since-start and duration figures), `severity-timeline-ribbon`, `severity-timeline-bar`, `severity-timeline-rule`, `severity-timeline-now` and `severity-timeline-empty`. The root has `data-state` (`open` or `closed`); each event has `data-severity`, `data-milestone` and `data-ongoing`. Under 34rem of its own width (a container query) the ribbon drops under each row.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Event arrives, node, bar… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Event arrives', note: 'the row takes its slot and fades down while the rows below glide (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Node', note: 'a new event’s dot or diamond lands, with no overshoot', spring: 'snappy' },
+    { moment: 'Bar', note: 'grows from its start edge; bars and rules move when the window re-ranges (clip-path and translate only)', duration: 'slow', ease: 'standard' },
+    { moment: 'Live end', note: 'an ongoing bar’s end breathes while the incident is open', duration: 'deliberate', ease: 'standard' },
+  ]}
+  reduced="Rows, nodes and bars appear in place, the window re-ranges at once and the live end holds still."
+/>
+
+#### Reduced motion
+
+Everything is drawn in place: new rows appear without a fade or a glide, bars take their length at once and the live end holds still.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="announcements">
+
+### Accessibility
+
+- It's an ordered list (`ol`) named by `label` (default "Incident timeline"), oldest first.
+- Each row reads in order: its time (a `time` element), its severity spoken in full ("Severity 2", the chip's SEV2 is hidden), the title, the detail, how long it lasted ("12 minutes, Ongoing") and how long after the start it came ("6 minutes after start").
+- The ribbon, the nodes and the rail are hidden from assistive tech: the text carries what they show.
+- Ticking durations aren't announced. Announce new events from your app where it matters, as the incident block does.
+
+</ReferenceRow>

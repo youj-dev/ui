@@ -1,0 +1,146 @@
+---
+title: Sliding Indicator
+description: "Highlight the selected item with an indicator that glides between options."
+---
+
+<ComponentPreview name="sliding-indicator/demo" height={360} />
+
+Use it for the selection or hover highlight of a group: tabs, segmented controls, toggle groups and navigation. It reads the selection from the items' ARIA and Base UI attributes, so it drops into a component with no wiring to its state. Don't use it as the only sign of selection. It's decoration, and the items must still carry their state, because that state is what it reads.
+
+## Installation
+
+<InstallTabs name="sliding-indicator" />
+
+## Usage
+
+Render one inside the group's container, next to the items, and give the container `relative isolate`.
+
+```tsx
+import { SlidingIndicator } from '@youj/motion'
+
+export function RangePicker({ value, onChange }: { value: string; onChange: (range: string) => void }) {
+  return (
+    <div role="group" aria-label="Time range" className="relative isolate inline-flex rounded-lg bg-well p-0.5">
+      <SlidingIndicator className="rounded-md bg-surface shadow-sm" />
+      {['24h', '7d', '30d'].map((range) => (
+        <button key={range} type="button" aria-pressed={value === range} onClick={() => onChange(range)} className="h-7 px-2.5 text-xs">
+          {range}
+        </button>
+      ))}
+    </div>
+  )
+}
+```
+
+The indicator treats the container's other children as items and looks for the selected one, on each item or inside it:
+
+- ARIA: `aria-selected="true"`, `aria-current` (any value but `false`), `aria-pressed="true"` and `aria-checked="true"`.
+- Base UI: `data-active`, `data-pressed`, `data-checked` and `data-selected`.
+- `data-state="active"`, `"on"` or `"checked"`, as Radix-style components write it.
+
+A mutation observer watches exactly those attributes, so the indicator moves however the selection changes: a click, an arrow key, or a route change. When nothing matches, it fades out, and it fades back in place when something does.
+
+## Examples
+
+<Examples>
+
+<Example id="the-container" label="The container">
+
+### The container
+
+The container needs two classes, and each one does a job:
+
+- `relative` makes the container the indicator's containing block. The indicator is absolutely positioned and measures each item against it.
+- `isolate` starts a stacking context. The indicator sits at `-z-1`, behind the items' text. Without the stacking context, it would paint behind the group's own background, out of sight.
+
+The selected item needs no background of its own, because the indicator is its background. Give the item a text color for its selected state and let the indicator do the rest.
+
+</Example>
+
+<Example id="variants" label="Variants">
+
+### Variants
+
+`pill`, the default, fills the item's box: `rounded-md bg-selected`. `underline` is a 2px bar along the item's bottom edge: `h-0.5 rounded-full bg-fg`. Restyle either with `className`, which merges over the defaults, as the segmented control in the first preview does. The corner radius is read from the computed style and set inline, so the corners stay round mid-glide.
+
+</Example>
+
+<Example id="hover-and-two-indicators" label="Hover, and two indicators">
+
+### Hover, and two indicators
+
+`follow="hover"` makes the indicator follow the pointer and keyboard focus instead of the selection. It skips disabled items, ignores touch, and fades out when the pointer and focus have both left the group. A group can hold two indicators. Here a hover pill and an underline for the current page share one nav, and each finds its own target.
+
+<ComponentPreview name="sliding-indicator/hover" height={200} />
+
+The underline is moved to the bottom of the bar with `translate-y-2`. The `translate` property composes with the transform the glide uses, so the offset holds mid-flight.
+
+In a menu, the pointer crosses separators, group labels and padding between rows, and the hover pill would blink out over each one. `linger` holds the pill on its last item for the `fast` token before it fades, so the next row takes it over in one glide. [Dropdown Menu](/docs/components/dropdown-menu) uses it. Under reduced motion there's no hold.
+
+</Example>
+
+<Example id="any-direction" label="Any direction">
+
+### Any direction
+
+Every position is measured, not assumed, so vertical lists, wrapping rows and right-to-left layouts need nothing extra. Resizes, font loads and reflows re-place the indicator without animating it. Only a change of target glides.
+
+<ComponentPreview name="sliding-indicator/vertical" height={360} />
+
+</Example>
+
+<Example id="matching-your-own-state" label="Matching your own state">
+
+### Matching your own state
+
+When your items mark the selection some other way, pass a selector as `match`. The observer then watches the attributes, or the class, that the selector names.
+
+```tsx
+<SlidingIndicator match=".is-active" />
+<SlidingIndicator match='[data-step="current"]' variant="underline" />
+```
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, follow, match… (4)">
+
+### Props
+
+<PropsTable name="SlidingIndicator" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Glide, appear and fade, linger · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Glide', note: 'position and size, as a transform', spring: 'smooth' },
+    { moment: 'Appear and fade', note: 'the hover pill, or no selection', duration: 'fast', ease: 'standard' },
+    { moment: 'Linger', note: 'with `linger`, the hold before the pill fades', duration: 'fast' },
+  ]}
+  reduced="The indicator jumps to the new item. The hover pill appears and disappears without a fade."
+/>
+
+The glide is Motion's layout projection: the indicator takes the new item's box, and a transform animates the difference, so nothing triggers layout. A new target mid-glide retargets from wherever the indicator is and keeps its velocity. Click through the tabs in the first preview quickly to see it.
+
+#### Reduced motion
+
+The indicator still marks the selected item. It moves there in one frame instead of gliding, and the hover pill shows and hides without a fade. The information is the same, it just doesn't travel.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The indicator is `aria-hidden` and ignores the pointer. The selection lives on the items, and that's what assistive technology announces.
+- Keep a visible focus ring on the items. With `follow="hover"`, the pill follows keyboard focus as well as the pointer, but only for `:focus-visible` focus, so a mouse click doesn't leave a pill behind.
+- Check the selected item's text against the indicator's color, not the group's background. That's the pair people read.
+
+</ReferenceRow>

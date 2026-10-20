@@ -1,0 +1,15 @@
+{
+  "title": "Chat",
+  "pages": [
+    "message-list",
+    "message",
+    "markdown",
+    "prompt-input",
+    "thinking",
+    "tool-call",
+    "tool-approval",
+    "citation",
+    "suggestions",
+    "empty-state"
+  ]
+}

@@ -1,0 +1,23 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks'
+import * as ColorStories from './color.stories'
+import { ColorSwatches, ContrastMatrix } from '../components/color-system'
+
+<Meta of={ColorStories} name="Overview" />
+
+# Color
+
+A precise, cool graphite neutral ramp (hue 270, chroma under 0.013) and **one electric ultramarine accent**. The success, warning and danger colors sit at the accent's lightness and share its chroma band, so status reads clearly without competing with it. That is Graphite, the default theme. Every token is derived from a small theme contract (see Foundations/Themes), and every value below is resolved live, so switch **Theme** or **Preset** in the toolbar to inspect another palette.
+
+Components use semantic classes only: `bg-canvas`, `bg-surface`, `bg-overlay`, `bg-well`, `bg-field`, `bg-key`, `bg-control`, `border-line`, `border-line-strong`, `text-fg`, `text-fg-muted`, `text-fg-subtle`, `text-accent`, `bg-accent`, `text-on-accent` and `text-success|warning|danger`. Icons use `currentColor`. Canvas and WebGL code resolves colors at runtime and re-reads them when the theme changes (`observeThemeChange`).
+
+<Unstyled>
+  <ColorSwatches />
+</Unstyled>
+
+## Contrast
+
+WCAG 2.x contrast ratios for every text token on every surface, computed from the live values. Every text color passes AA everywhere: `fg`, `fg-muted`, the accent and the semantic colors, and `fg-subtle` too, which is lighter than `fg-muted` but still real text (4.5:1), so it can carry metadata at any size. The theme tests (`src/lib/youj/theme`) hold every preset, in both themes, to these thresholds and to the sRGB gamut, and prove that any theme derived from the contract meets them.
+
+<Unstyled>
+  <ContrastMatrix />
+</Unstyled>

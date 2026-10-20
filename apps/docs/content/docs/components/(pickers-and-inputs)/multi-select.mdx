@@ -1,0 +1,164 @@
+---
+title: Multi-select
+description: "Choose several values from a searchable list and show them as compact chips."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="multi-select/demo" height={300} />
+
+A members field over nine people grouped by team, with three chosen to start.
+
+</Story>
+
+<Story id="limits" label="Limits">
+
+<ComponentPreview name="multi-select/max-count" height={300} />
+
+A labels field capped at three.
+
+`maxCount` caps the selection. The count shows under the list, and the remaining rows disable once the limit is reached, which is announced. "Select all" only appears when the limit allows every option.
+
+</Story>
+
+<Story id="overflow" label="Overflow">
+
+<ComponentPreview name="multi-select/overflow" height={300} />
+
+Five regions chosen in a narrow field, with a wider popup.
+
+The chips fill one line. As many as fit are shown, and the rest collapse into "+N", measured again whenever the value or the field's width changes. The popup follows the field's width. A narrow field can give it more room with `contentClassName`.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="multi-select" noImport />
+
+Requires `cmdk`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/command`.
+
+Use a multi-select to pick several items from a known list: members of a project, labels on an issue, regions to deploy to. The values stay visible as chips in the field. For one value from the same list, use a [Combobox](/docs/components/combobox). For values people make up, such as topics or email domains, use a [Tag Input](/docs/components/tag-input). A few options that all fit on screen read better as [Checkboxes](/docs/components/checkbox).
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel } from '@youj/react'
+import { MultiSelect } from '@youj/react/command'
+
+const people = [
+  { value: 'ada', label: 'Ada Lovelace', group: 'Engineering' },
+  { value: 'grace', label: 'Grace Hopper', group: 'Engineering' },
+  { value: 'dieter', label: 'Dieter Rams', group: 'Design' },
+]
+
+export function MembersField() {
+  const [members, setMembers] = useState<string[]>(['ada'])
+  return (
+    <Field>
+      <FieldLabel>Members</FieldLabel>
+      <MultiSelect options={people} value={members} onValueChange={setMembers} placeholder="Add members" />
+    </Field>
+  )
+}
+```
+
+The field is an [Input Group](/docs/components/input-group) frame that holds the chosen values as [Badge](/docs/components/badge) chips, each with its own remove button. The trigger beside them has `role="combobox"` and opens a [Command](/docs/components/command) of checkbox rows in a [Popover](/docs/components/popover). Enter toggles a row and the popup stays open, so several values can be picked in one go. Options take the same shape as the Combobox's: `value`, `label`, and optionally `description`, `icon`, `group`, `keywords` and `disabled`.
+
+A "Select all" row leads the list when you aren't searching. Over a partial selection it shows a mixed state. Turn it off with `selectAll={false}`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="options, value, defaultValue… (18)">
+
+### Props
+
+<PropsTable name="MultiSelect" />
+
+`MultiSelectOption` is `{ value, label, description?, icon?, group?, keywords?, disabled? }`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Long lists" summary="Past 100 options only the best matches are mounted">
+
+### Long lists
+
+Every mounted row costs a registration, a score and a re-render on each keystroke, so past 100 options the MultiSelect mounts only the 100 best matches, in order of match, and ends them with a note ("Showing 100 of 2,000. Keep typing to narrow the results."). Searching reaches every option. With 2,000 options a keystroke takes about 35 ms where it took about 265 ms, and clearing the search about 0.05 s where it took 0.36 s (Chromium on a laptop, development build; 4x CPU throttling shows the same ratios).
+
+- **Up to 100 options:** everything is mounted and cmdk filters, as before.
+- **100 to about 5,000 options:** pass them all. The filter runs on every keystroke over all options, which stays under a few milliseconds per thousand. Define the `options` array outside render, or memoise it, so unchanged rows aren't re-rendered.
+- **More than that:** MultiSelect has no async search; narrow the list before passing it (a first-level filter, a scoped query). "Select all" selects every option, shown or not.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the list opens as a bottom sheet with a grab…">
+
+### Touch
+
+On a touch device the list opens as a bottom sheet with a grab handle, a search field and a Done button at the top, and 48px checkbox rows. A tap toggles a row and the sheet stays open; Done, pulling the sheet down, tapping outside it or Escape closes it, and focus returns to the field. The sheet opens with the on-screen keyboard down. Tap the search field to type: the sheet sits on top of the keyboard with the field in view, and it keeps its height as results narrow.
+
+`presentation` chooses: `auto` (the default) is a popover under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `popover` keeps the popover on touch too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Chip enters, chip leaves, chips close the gap… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Chip enters', note: 'fades down into its slot while the others glide aside (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Chip leaves', note: 'fades where it stands', duration: 'fast', ease: 'exit' },
+    { moment: 'Chips close the gap', spring: 'smooth' },
+    { moment: 'Open', note: 'the popup grows out of the field (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Chevron', note: 'turns over while open', spring: 'snappy' },
+    { moment: 'Active row', note: 'one indicator glides between rows', spring: 'smooth' },
+    { moment: 'Check', note: 'a row\'s checkbox draws its mark', duration: 'slow', ease: 'emphasized' },
+  ]}
+  reduced="Chips appear, disappear and reflow in one frame. The popup opens at once, the highlight jumps and the chevron flips in place."
+/>
+
+#### Reduced motion
+
+Chips are added, removed and reflowed without fading or gliding, and the popup, the chevron and the active row change at once. Selection, keyboard handling and announcements are unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The trigger has `role="combobox"` and is named by its `FieldLabel`, or by `aria-label`. The Field's description and error describe it.
+- ArrowDown, Enter or Space opens the list. In the list, Enter toggles a row and Escape closes. Backspace in an empty search removes the last value.
+- On the trigger, Backspace or ArrowLeft moves to the last chip. Arrows move between chips, Backspace or Delete removes the focused chip, and focus lands on its neighbor, so a keyboard user never falls off the field.
+- Each chip's remove button is named after its value. Removals, "Select all" and reaching the limit are announced.
+- In a long list each row carries `aria-setsize` (all matches) and `aria-posinset`, so assistive tech announces "3 of 2000" rather than "3 of 100"; the note under the rows is announced when the list opens and as the search changes.
+- With `name`, each value is submitted with a native form under that name.
+
+</ReferenceRow>

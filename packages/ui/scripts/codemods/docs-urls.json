@@ -1,0 +1,17 @@
+[
+  { "name": "home", "path": "/" },
+  { "name": "components", "path": "/components" },
+  { "name": "component-page", "path": "/docs/components/button" },
+  { "name": "sections", "path": "/sections" },
+  { "name": "cards", "path": "/cards" },
+  { "name": "showroom", "path": "/miniatures" },
+  { "name": "theming", "path": "/docs/theming" },
+  { "name": "long-mdx", "path": "/docs/installation" },
+  { "name": "icons", "path": "/icons" },
+  { "name": "loaders", "path": "/loaders" },
+  { "name": "illustrations", "path": "/illustrations" },
+  { "name": "create", "path": "/create" },
+  { "name": "header-menu-open", "path": "/", "steps": [{ "click": "nav[aria-label=\"Main\"] button:has-text(\"Components\")" }, { "wait": 800 }] },
+  { "name": "mobile-menu-open", "path": "/", "viewport": "mobile", "steps": [{ "click": "button[aria-label=\"Open menu\"]" }, { "wait": 800 }] },
+  { "name": "search-open", "path": "/docs/components/button", "steps": [{ "press": "Control+k" }, { "wait": 800 }] }
+]

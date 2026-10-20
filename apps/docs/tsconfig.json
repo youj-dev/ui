@@ -1,0 +1,67 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "incremental": true,
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@youj/core/*": [
+        "../../packages/core/src/*"
+      ],
+      "@youj/motion/*": [
+        "../../packages/motion/src/*"
+      ],
+      "@youj/icons": [
+        "../../packages/icons/src/index.ts"
+      ],
+      "@youj/icons/*": [
+        "../../packages/icons/src/*"
+      ],
+      "@youj/illustrations": [
+        "../../packages/illustrations/src/index.ts"
+      ],
+      "@youj/illustrations/*": [
+        "../../packages/illustrations/src/*"
+      ],
+      "@youj/react/*": [
+        "../../packages/ui/src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    ".source/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "vitest.config.ts",
+    ".next",
+    "public",
+    "out",
+    ".wrangler",
+    ".cloudflare"
+  ]
+}

@@ -1,0 +1,159 @@
+---
+title: Motion tokens
+description: "Reference for the motion tokens: every duration, easing curve, spring and stagger step, per motion personality, with the time scale and reduced motion."
+---
+
+Every animation in Youj takes its timing from a small set of motion tokens: five durations, five easing curves, three springs and three stagger steps. No component hard-codes a duration or a curve, so the time scale, reduced motion and the theme's motion personality reach all of them. The token names are the contract; their values come from the [motion personality](#motion-personalities) in effect.
+
+The values below are read from the [token source](repo:file/packages/core/src/lib/youj/tokens.ts) and the stylesheet that mirrors it, so they match the version these docs describe.
+
+## Which token for which moment
+
+<MotionSpec
+  rows={[
+    { moment: 'Feedback', note: 'presses, toggles, icon states', spring: 'snappy' },
+    { moment: 'Layout', note: 'position and size changes', spring: 'smooth' },
+    { moment: 'Arrival and success', note: 'the one earned overshoot', spring: 'settle' },
+    { moment: 'Hover and focus', note: 'tints, rings', duration: 'fast', ease: 'standard' },
+    { moment: 'Enter', note: 'decelerate hard into place', duration: 'base', ease: 'enter' },
+    { moment: 'Exit', note: 'shorter, accelerating away', duration: 'fast', ease: 'exit' },
+    { moment: 'Hero', note: 'wind up, fast middle, long landing', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Cascade', note: 'one gesture, not a queue', stagger: 'base' },
+  ]}
+  reduced="Every token has an instant counterpart. Transitions become state changes, loops stop, and scroll and pointer effects switch off, while the information stays the same."
+/>
+
+The [Motion principles](/docs/motion/principles) give a duration and a curve for each kind of interaction, and the [Motion playground](/docs/motion/playground) plays every token against its curve.
+
+## Durations
+
+Durations form a short, roughly geometric scale. Anything that answers direct input, like a press or a toggle, finishes within `base`. Values are in milliseconds, before the time scale.
+
+| Token | Precise | Calm | Lively | CSS |
+| --- | --- | --- | --- | --- |
+| `instant` | 80ms | 110ms | 70ms | `yj-duration-instant`, `var(--yj-duration-instant)` |
+| `fast` | 140ms | 190ms | 120ms | `yj-duration-fast`, `var(--yj-duration-fast)` |
+| `base` | 220ms | 300ms | 190ms | `yj-duration-base`, `var(--yj-duration-base)` |
+| `slow` | 340ms | 460ms | 290ms | `yj-duration-slow`, `var(--yj-duration-slow)` |
+| `deliberate` | 560ms | 760ms | 480ms | `yj-duration-deliberate`, `var(--yj-duration-deliberate)` |
+
+## Easings
+
+Easing curves are cubic-bezier control points. Use `enter` for things arriving, `exit` for things leaving, and `standard` between two resting states.
+
+| Token | Precise | Calm | Lively | Use it for |
+| --- | --- | --- | --- | --- |
+| `standard` | `cubic-bezier(0.2, 0, 0, 1)` | `cubic-bezier(0.4, 0, 0.2, 1)` | `cubic-bezier(0.2, 0, 0, 1)` | Moving between two resting states. `ease-standard` |
+| `enter` | `cubic-bezier(0.16, 1, 0.3, 1)` | `cubic-bezier(0.33, 1, 0.68, 1)` | `cubic-bezier(0.34, 1.3, 0.64, 1)` | Arriving: decelerates hard into place. `ease-enter` |
+| `exit` | `cubic-bezier(0.4, 0, 1, 1)` | `cubic-bezier(0.4, 0, 0.6, 1)` | `cubic-bezier(0.4, 0, 1, 1)` | Leaving: accelerates away. `ease-exit` |
+| `emphasized` | `cubic-bezier(0.6, 0, 0.1, 1)` | `cubic-bezier(0.65, 0, 0.35, 1)` | `cubic-bezier(0.6, 0, 0.2, 1.15)` | Hero moments: a short wind-up, a fast middle, a long landing. `ease-emphasized` |
+| `linear` | `cubic-bezier(0, 0, 1, 1)` | `cubic-bezier(0, 0, 1, 1)` | `cubic-bezier(0, 0, 1, 1)` | Constant-rate loops, such as spinners and marquees. |
+
+## Springs
+
+Springs are defined by how long they feel (`visualDuration`, in seconds) and how much they bounce, not by stiffness and damping, so the time scale reaches them like everything else. They're for JavaScript animations, through `k.spring()`; CSS has no spring tokens.
+
+| Token | Precise | Calm | Lively | Use it for |
+| --- | --- | --- | --- | --- |
+| `snappy` | 0.2s, bounce 0 | 0.3s, bounce 0 | 0.18s, bounce 0.15 | Feedback: presses, toggles, icon state flips. |
+| `smooth` | 0.36s, bounce 0 | 0.5s, bounce 0 | 0.32s, bounce 0.12 | Layout and position changes. |
+| `settle` | 0.45s, bounce 0.3 | 0.6s, bounce 0 | 0.4s, bounce 0.4 | Success and arrival: the one allowed overshoot. |
+
+Under the default personality, `snappy` and `smooth` never overshoot, and `settle` overshoots once, by about 4.6%. Keep it for success and arrival: a save confirmation earns it, a menu opening doesn't.
+
+## Stagger
+
+The step between siblings in a sequence, in milliseconds. A cascade should read as one gesture, not a queue.
+
+| Token | Precise | Calm | Lively |
+| --- | --- | --- | --- |
+| `tight` | 24ms | 34ms | 20ms |
+| `base` | 40ms | 56ms | 32ms |
+| `loose` | 72ms | 100ms | 56ms |
+
+On a device in the low [motion budget](/docs/motion/in-your-components#the-motion-budget) tier, [Stagger](/docs/motion/stagger) and [Text Split](/docs/motion/text-split) compress sequences longer than six steps into six.
+
+## Motion personalities
+
+A theme picks one personality, and it re-values every token above. The names never change.
+
+- **Precise** is the default and the values the package exports as `durations`, `easings`, `springs` and `staggers`. It's fast and lands precisely, with overshoot only on `settle`. All four presets use it.
+- **Calm** is about 1.4× longer, with gentle curves at both ends and no overshoot anywhere, `settle` included.
+- **Lively** is about 15% shorter. Arrivals overshoot by about 3%, and springs keep a little bounce.
+
+Set it with a theme's `motionPersonality` field (`defineTheme({ ...basalt, motionPersonality: 'calm' })`; it was `motion` before 0.1, which `YoujProvider` now uses only for on and off), or in CSS with a `data-yj-motion` attribute on `<html>` or any element. `motionPersonalities` holds all three sets in JavaScript. [Theming](/docs/theming#motion-personality) covers it in full.
+
+## Time scale
+
+`YoujProvider`'s `timeScale` multiplies every duration, spring and stagger step: `2` plays everything twice as slowly. It's what the Speed control on every preview changes. The nearest provider wins, so a subtree can run at its own speed.
+
+```tsx
+import { YoujProvider } from '@youj/core'
+
+<YoujProvider timeScale={2}>{children}</YoujProvider>
+```
+
+In CSS, the provider sets `--yj-time-scale` on its wrapper, and each `--yj-duration-*` is the personality's value times it. Loops, canvas and shader code divide elapsed time by `k.timeScale` themselves, as [Motion in your components](/docs/motion/in-your-components#loops-canvas-and-requestanimationframe) shows.
+
+## Reduced motion
+
+To turn motion off for a whole app, `<YoujProvider motion={false}>` renders every resting state and never downloads Motion's engine; see [Motion loads on demand](/docs/installation#motion-loads-on-demand). Reduced motion, below, keeps the engine and gentle feedback.
+
+Reduced motion isn't motion switched off. Every Youj item has a designed static or instant alternative that tells the reader the same thing: a success state still appears, it just doesn't bounce in.
+
+It follows the operating system's `prefers-reduced-motion` setting unless the provider's `reducedMotion` says otherwise: `'user'` (the default) follows the OS, `'always'` forces the reduced state, and `'never'` ignores it.
+
+- **In JavaScript**, `k.reduced` is `true` when motion should give way. Render the alternative: a `{ duration: 0 }` transition, the final state, or a still frame.
+- **In CSS**, `--yj-motion` is `1` with motion and `0` when reduced. Youj sets it from the OS on `:root`, and each provider sets it for its subtree. The `yj-duration-*` utilities and the [overlay presets](/docs/motion/presets) multiply their durations by it, so under reduced motion the state still changes, instantly.
+- **`var(--yj-duration-*)`** follows the time scale but not reduced motion. Use it for loop durations, which you stop separately under reduced motion. For transitions between states, use the `yj-duration-*` utilities.
+- **Portals** render outside the provider's wrapper. Spread `{...useYoujScope()}` on them so they inherit `--yj-time-scale` and `--yj-motion`.
+
+## In code
+
+Timing comes from the hook, never from literals:
+
+```tsx
+import { m } from 'motion/react'
+import { MotionFeatures, useYouj } from '@youj/core'
+
+export function Panel({ open }: { open: boolean }) {
+  const k = useYouj()
+  return (
+    <MotionFeatures>
+      <m.div
+        animate={{ opacity: open ? 1 : 0, y: open ? 0 : 8 }}
+        transition={k.reduced ? { duration: 0 } : k.tween('base', open ? 'enter' : 'exit')}
+      />
+    </MotionFeatures>
+  )
+}
+```
+
+| Member | Returns |
+| --- | --- |
+| `k.tween(duration, ease?)` | A Motion tween. `ease` defaults to `standard`. |
+| `k.spring(token)` | A Motion spring. |
+| `k.stagger(token)` | The step in seconds. |
+| `k.duration(token)` | A duration in seconds. |
+| `k.ms(token)` | A duration in milliseconds, for timers, WAAPI and `requestAnimationFrame`. |
+| `k.ease(token)` | The curve's four control points. |
+| `k.reduced` | Whether to render the reduced alternative. |
+| `k.timeScale` | The current multiplier. |
+| `k.motion` | The personality in effect: `precise`, `calm` or `lively`. |
+
+Every value is already scaled and re-valued for the personality. In CSS:
+
+```tsx
+<button className="transition-colors yj-duration-fast ease-standard hover:bg-hover">…</button>
+```
+
+| CSS | What it is |
+| --- | --- |
+| `yj-duration-{token}` | A `transition-duration`: the token × `--yj-time-scale` × `--yj-motion`. |
+| `var(--yj-duration-{token})` | The token × `--yj-time-scale`. Doesn't follow reduced motion. |
+| `ease-{standard,enter,exit,emphasized}` | The curve, as a `transition-timing-function` utility. `var(--ease-{name})` is the value. |
+| `--yj-time-scale` | The provider's `timeScale`. |
+| `--yj-motion` | `1` with motion, `0` when reduced. |
+| `data-yj-motion` | The personality: `precise`, `calm` or `lively`. |
+
+Don't use stock durations like `duration-150` or `transition-all duration-300`: they ignore both the time scale and reduced motion. [Motion in your components](/docs/motion/in-your-components) walks through each way in.

@@ -1,0 +1,106 @@
+---
+title: Grid Backdrops
+description: "Add dot, line or isometric grids behind your content using theme colors."
+---
+
+<ComponentPreview name="grid-backdrops/demo" height={260} />
+
+A grid tells the reader they're looking at a drawing: something measured, with parts in their places. Put one behind an isometric scene, a hero figure, or an empty state's illustration. Use one grid per surface, and keep it faint: it's paper, not content.
+
+## Installation
+
+<InstallTabs name="grid-backdrops" imports="DotGrid, LineGrid, IsoGrid" />
+
+## Usage
+
+Each backdrop fills its nearest positioned ancestor and paints behind the content, like the [background components](/docs/components/mesh-gradient), so give the container `relative isolate`.
+
+```tsx
+import { IsoScene, IsoStack, LineGrid } from '@youj/illustrations'
+
+export function Figure() {
+  return (
+    <figure className="relative isolate rounded-xl border border-line bg-surface p-8">
+      <LineGrid gap={20} />
+      <IsoScene explode>…</IsoScene>
+    </figure>
+  )
+}
+```
+
+- **`DotGrid`**: dots on a square grid, `gap` px apart, of radius `size`.
+- **`LineGrid`**: hairlines `gap` px apart, a stronger line every `major` cells, and a small registration cross where two strong lines meet. `major={0}` leaves only the fine lines.
+- **`IsoGrid`**: the isometric rhombi of a scene's floor, one grid unit every `gap` px, for a backdrop that shares the drawing's angles.
+
+## Examples
+
+<Examples>
+
+<Example id="fading" label="Fading">
+
+### Fading
+
+`fade` sets how a backdrop meets the edge of its container. `radial` (the default) fades out from the middle, so the paper is densest behind the figure. `edges` fades a band along each side and keeps the middle even, for a wide panel. `none` runs it to the edge, for a container that clips it with its own border.
+
+</Example>
+
+<Example id="a-scenes-floor" label="A scene's floor">
+
+### A scene's floor
+
+`IsoFloor` goes inside an [IsoScene](/docs/illustrations/draw-your-own#the-scene): the scene's own grid on the floor, in its units, from the origin to `w` by `d`, every `step` units. Shapes placed on whole numbers stand on its lines. Draw it first, so it stays under the shapes, as lines or, with `kind="dots"`, as dots at the crossings.
+
+<ComponentPreview name="grid-backdrops/floor" height={240} />
+
+</Example>
+
+<Example id="color" label="Color">
+
+### Color
+
+The lines and dots are the ink at a low strength over transparent, so they read on a surface, a raised panel or the canvas, in either scheme and every preset, and a theme change repaints them with no JavaScript.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, gap, fade… (19)">
+
+### Props
+
+#### DotGrid
+
+<PropsTable name="DotGrid" />
+
+#### LineGrid
+
+<PropsTable name="LineGrid" />
+
+#### IsoGrid
+
+<PropsTable name="IsoGrid" />
+
+#### IsoFloor
+
+<PropsTable name="IsoFloorProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="Nothing here moves, so there's nothing to stop">
+
+### Reduced motion
+
+Nothing here moves, so there's nothing to stop: a backdrop looks the same with reduced motion on.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- Backdrops are decorative: each is `aria-hidden` and ignores pointer events.
+- They sit at a low strength, but check the contrast of any text you set over the densest part of a grid.
+
+</ReferenceRow>

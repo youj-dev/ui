@@ -1,0 +1,82 @@
+---
+title: Pricing
+description: "Pricing sections: plan cards with a billing toggle, a comparison table, a seat picker, a single plan and a usage estimator."
+---
+
+<BlockStories>
+
+<BlockStory id="plans" label="Plans" block="marketing-pricing" story="Yearly" backdrop="cinnabar">
+
+Plan cards with a monthly or yearly price toggle and a feature comparison under them. Prices roll to the new period, and on yearly the monthly price stands struck through beside each paid plan, so the toggle shows what it saves. Pick it for the usual tiered pricing page; this story opens on yearly billing.
+
+</BlockStory>
+
+<BlockStory id="compare" label="Compare" block="marketing-pricing-compare" story="Default" backdrop="cinnabar">
+
+A full feature table that keeps the plan prices and sign-up buttons in view as you scroll, with groups that fold away; the recommended plan's column carries its marks filled. Pick it when plans differ in many small ways.
+
+</BlockStory>
+
+<BlockStory id="picker" label="Seat picker" block="marketing-pricing-picker" story="Default" backdrop="cinnabar">
+
+Plan choice as radio cards beside an order summary that holds the seats and rolls the total as visitors choose. Pick it for per-seat pricing.
+
+</BlockStory>
+
+<BlockStory id="simple" label="Single plan" block="marketing-pricing-simple" story="Default" backdrop="cinnabar">
+
+One plan with its price, the features it includes and a choice of currencies. Pick it when there is only one thing to buy.
+
+</BlockStory>
+
+<BlockStory id="usage" label="Usage estimator" block="marketing-pricing-usage" story="Default" backdrop="cinnabar">
+
+Usage sliders and a cost breakdown that updates as visitors drag. Pick it for pay-as-you-go pricing.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, controls, tables">
+
+### Accessibility
+
+Each section is a `<section>` named by its own heading (`aria-labelledby`); the heading is an `h2` by default and `headingLevel` changes it.
+
+Plans labels its billing period toggle and its “included” check marks, reads a struck-through monthly price as “billed monthly”, and each plan button is described by the plan it picks (`aria-describedby`). Seat picker is a radio group of plans, each named and described by its title and blurb, with a labelled period and plan selector. Compare is a real `table` with visually hidden text for the plan and feature columns, and its folding groups use `aria-expanded` and `aria-controls`. Usage estimator’s sliders are labelled and the new total is announced in a status region. Single plan’s currency choice is a labelled control.
+
+The buttons and links are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

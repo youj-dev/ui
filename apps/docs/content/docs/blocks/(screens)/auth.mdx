@@ -1,0 +1,104 @@
+---
+title: Authentication
+description: "Authentication screens: sign in, sign up, password recovery, magic link, two-factor, device authorization and the whole flow, in a card or split shell."
+---
+
+<BlockStories>
+
+<BlockStory id="login" label="Login" block="auth-login" story="Card" backdrop="heather">
+
+Welcome returning users with a sign-in page offering social login or email and password.
+
+</BlockStory>
+
+<BlockStory id="signup" label="Sign up" block="auth-signup" story="Card" backdrop="heather">
+
+Give new users a sign-up page with social login or a name, email and password form.
+
+</BlockStory>
+
+<BlockStory id="forgot-password" label="Forgot password" block="auth-forgot-password" story="Card" backdrop="heather">
+
+Help users get back into their account with a form for requesting a password reset link.
+
+</BlockStory>
+
+<BlockStory id="reset-password" label="Reset password" block="auth-reset-password" story="Card" backdrop="heather">
+
+Help users choose a new password, with clear rules, a strength indicator and confirmation.
+
+</BlockStory>
+
+<BlockStory id="magic-link-sent" label="Magic link sent" block="auth-magic-link-sent" story="Card" backdrop="heather">
+
+Show users where to look next after they request a passwordless sign-in link.
+
+</BlockStory>
+
+<BlockStory id="two-factor" label="Two-factor" block="auth-two-factor" story="Card" backdrop="heather">
+
+Guide users through a verification code, with clear feedback when it succeeds or needs another try.
+
+</BlockStory>
+
+<BlockStory id="device-authorization" label="Device authorization" block="auth-device-authorization" story="Card" backdrop="heather">
+
+Let someone approve a command-line tool from the browser: who is asking, what it can do, the account it would use, the code as tiles to compare with the terminal and a plain safety note, then Authorize or Deny. Without a code it asks for the one the terminal shows.
+
+</BlockStory>
+
+<BlockStory id="flow" label="Full flow" block="app-auth-flow" story="Page" backdrop="heather">
+
+The whole way in as one flow: sign in or create an account, reset a forgotten password, confirm a second step or send a sign-in link, with each step sliding in as the card resizes.
+
+</BlockStory>
+
+<BlockStory id="shell" label="Shell" block="auth-shell" story="Card" backdrop="heather">
+
+The frame for your own sign-in screens: a centered card, or a split page with room for artwork.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, forms, errors, focus">
+
+### Accessibility
+
+Every screen sits in a `main`; in the split layout the artwork is a separate `aside`, hidden below the `lg` breakpoint. Two-factor uses the kit’s one-time-code input and offers a resend. Device authorization shows its code as one image named letter by letter, or takes it in the same one-time-code input; Authorize and Deny are real buttons that report their progress, and the step you arrive on is announced. In the full flow the leaving step is `inert` and a status region announces the step you arrive on. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>
+
+The Google logo is a trademark of Google, shown for illustration only.

@@ -1,0 +1,115 @@
+---
+title: Suggestions
+description: "Offer starting prompts and follow-up questions as chips or cards."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="suggestions/demo" height={300} />
+
+Four follow-up chips, where picking one fills the composer and focuses it.
+
+</Story>
+
+<Story id="cards" label="Cards">
+
+<ComponentPreview name="suggestions/cards" height={300} />
+
+Four starter prompts as cards, each with an icon and a description.
+
+`layout="cards"` sets them in a two-column grid, with an `icon` and a line of `description` under each label. Chips wrap in a centered row and show only the label and icon.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatSuggestions" noImport />
+
+Use suggestions for ways into a new conversation, or follow-ups under an answer. Picking one hands its prompt to `onSelect`, typically to fill the [Prompt Input](/docs/components/chat/prompt-input) and focus it, so people can edit it before sending. For a whole first-run screen with a greeting, use the [Chat Empty State](/docs/components/chat/empty-state), which includes them.
+
+```tsx
+import { ChatSuggestions } from '@youj/react'
+
+<ChatSuggestions
+  suggestions={[{ label: 'Show the diff' }, { label: 'Is a rollback safe?', prompt: 'Is rolling back to dpl_7c1e0b2 safe?' }]}
+  onSelect={(prompt) => {
+    setDraft(prompt)
+    composer.current?.focus()
+  }}
+/>
+```
+
+Each suggestion has a `label`, and a `prompt` when what goes in the composer should differ from what the chip says. `delay` waits that many stagger steps before the first one arrives, to follow something else in.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="suggestions, onSelect, layout… (9)">
+
+### Props
+
+<PropsTable name="ChatSuggestions" />
+
+#### ChatSuggestion
+
+Each entry in `suggestions`:
+
+<PropsTable name="ChatSuggestion" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Each suggestion, step · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Each suggestion', note: 'rises a few px and fades in (Stagger `rise`)', duration: 'slow', ease: 'enter' },
+    { moment: 'Step', note: 'between one suggestion and the next', stagger: 'base' },
+  ]}
+  reduced="All of them appear at once, in place."
+/>
+
+They arrive once, when they mount, and then hold still.
+
+#### Reduced motion
+
+Every suggestion is in place from the first frame, with no rise or fade.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="focus">
+
+### Accessibility
+
+- The suggestions are a `group` named by `label` (default "Suggested prompts"), and each one is a real button.
+- Picking one doesn't send it. Move focus to the composer in `onSelect`, as the examples do, so the next keystroke edits the prompt.
+
+</ReferenceRow>

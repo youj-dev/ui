@@ -1,0 +1,158 @@
+---
+title: Page Transition
+description: "Animate changes between routes or views and carry shared elements between them."
+---
+
+<ComponentPreview name="page-transition/demo" height={440} />
+
+Use it where a change of view is a change of place: opening a record from a list, stepping through a wizard, switching the panes of an app. It keeps people oriented between the two views. Don't animate every route of a content site: most navigations should feel instant, and a transition on each one taxes every click. Open a deployment in the preview, then go back.
+
+## Installation
+
+<InstallTabs name="page-transition" />
+
+## Usage
+
+Wrap the view in `PageTransition` and give it a `routeKey` that changes with the view, usually the path. A new key animates from the old children to the new ones.
+
+```tsx
+import { PageTransition } from '@youj/motion/interactions'
+
+export function Pane({ path }: { path: string }) {
+  return (
+    <PageTransition routeKey={path} className="h-full">
+      {path === '/deployments' ? <DeploymentList /> : <DeploymentDetail path={path} />}
+    </PageTransition>
+  )
+}
+```
+
+Both pages stack in one grid cell while they overlap, so nothing is measured or positioned absolutely, and the container clips whatever travels out of it. Give the container a height when the pages differ in height. The first render doesn't animate.
+
+## Variants
+
+`fade-through`, the default, fades the old page out quickly and the new one in just after, growing from 98% scale. `slide` pushes: both pages travel together. `clip-reveal` wipes the new page in over the old one, and `curtain` sweeps a solid panel across, swaps the page while it's covered, then sweeps away. Pick a variant, then switch tabs.
+
+<ComponentPreview name="page-transition/variants" height={360} />
+
+`direction` flips the travel of `slide`, `clip-reveal` and `curtain`. Pass `"back"` when the navigation goes back, like the Back button in the first preview or a tab to the left in this one. Color the curtain with `curtainClassName`, `bg-accent` by default.
+
+## Shared elements
+
+Wrap an element in `SharedElement` with the same `name` on both pages, and it flies from its old position to its new one while the pages fade through. In the first preview, the commit message and the status badge fly from the list to the detail page and back.
+
+```tsx
+import { SharedElement } from '@youj/motion/interactions'
+
+// On the list
+<SharedElement name={`title-${deploy.id}`}>{deploy.message}</SharedElement>
+
+// On the detail page
+<SharedElement name={`title-${deploy.id}`}>
+  <h1>{deploy.message}</h1>
+</SharedElement>
+```
+
+Shared elements only fly under `fade-through`. When the page itself travels, a flying element doubles the motion and the two copies visibly disagree, so under `slide`, `clip-reveal` and `curtain` they stay in place with their page.
+
+## Card to page
+
+A shared element can change size and shape on the way, so a card's cover can grow into the header of the page it opens.
+
+<ComponentPreview name="page-transition/grow" height={420} />
+
+Set its corner radius in `style`, not with a class. Motion corrects a radius it knows about while the element scales, so the corners stay round in flight.
+
+## Next.js App Router
+
+In the App Router, key the transition by `usePathname()` in a client component that your layout renders around `children`. The router swaps a page's content as soon as the route changes, so the leaving page would show the new route while it animates out. Freeze it: give each page the router context it was rendered with.
+
+```tsx title="app/route-transition.tsx"
+'use client'
+
+import { useContext, useRef, type ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
+import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime'
+import { PageTransition } from '@youj/motion/interactions'
+
+// Keeps a leaving page on the route it was rendered for while it animates out.
+function FrozenRoute({ children }: { children: ReactNode }) {
+  const context = useContext(LayoutRouterContext)
+  const frozen = useRef(context).current
+  return <LayoutRouterContext.Provider value={frozen}>{children}</LayoutRouterContext.Provider>
+}
+
+export function RouteTransition({ children }: { children: ReactNode }) {
+  const pathname = usePathname()
+  return (
+    <PageTransition routeKey={pathname} className="min-h-dvh">
+      <FrozenRoute>{children}</FrozenRoute>
+    </PageTransition>
+  )
+}
+```
+
+`next/dist/shared/lib/app-router-context.shared-runtime` is an internal path of Next.js, not a public API. It can move in a minor release, so pin `next` and check this file when you upgrade. Next has no public way to freeze a leaving page.
+
+```tsx title="app/layout.tsx"
+<body>
+  <RouteTransition>{children}</RouteTransition>
+</body>
+```
+
+Keep persistent chrome, like a sticky header, in the layout outside `RouteTransition`. The transition clips its pages, so a sticky element inside one would stick to the transition's box, not the viewport.
+
+<Callout type="warning" title="An internal import">
+  `LayoutRouterContext` ships with Next.js 16 but isn't public API, so check your transitions when you upgrade. Client-side views, like tabs, wizards and panes keyed by state, need no workaround.
+</Callout>
+
+## Reference
+
+<ReferenceRow title="Props" summary="routeKey, children, variant… (7)">
+
+### Props
+
+#### PageTransition
+
+<PropsTable name="PageTransition" />
+
+#### SharedElement
+
+<PropsTable name="SharedElement" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fade-through out, fade-through in, fade-through scale… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fade-through out', note: '`opacity`', duration: 'fast', ease: 'exit' },
+    { moment: 'Fade-through in', note: '`opacity`, after an `instant` delay', duration: 'base', ease: 'enter' },
+    { moment: 'Fade-through scale', note: '0.98 to 1', spring: 'smooth' },
+    { moment: 'Slide', note: 'both pages, a full width', spring: 'smooth' },
+    { moment: 'Clip reveal wipe', note: '`clip-path`', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Clip reveal rise', note: '32px', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Clip reveal exit', note: 'the old page dims and drifts 16px', duration: 'slow', ease: 'standard' },
+    { moment: 'Curtain', note: 'in on `emphasized`, a short hold, out on `standard`', ease: 'emphasized', value: '2 × slow + instant' },
+    { moment: 'Shared element', note: 'flies between positions', spring: 'smooth' },
+  ]}
+  reduced="Every variant becomes a short crossfade on the fast token, with no travel and no curtain. Shared elements jump to their new place."
+/>
+
+#### Reduced motion
+
+Every variant becomes the same short crossfade, so the change of view is still visible, without travel, wipes or a curtain. Shared elements move to their new place instantly.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus">
+
+### Accessibility
+
+- A transition doesn't move focus. After a navigation, focus belongs on the new page, not on an element that has just left: the first preview moves it forward to the Back button, and back to the item that was opened.
+- The curtain panel is `aria-hidden` and ignores the pointer.
+- The leaving page stays in the document only while it animates out, which is at most a few hundred milliseconds at normal speed.
+
+</ReferenceRow>

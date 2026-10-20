@@ -1,0 +1,260 @@
+---
+title: Build an app frame
+description: "Put a sidebar, a top bar, an account menu and search together into the shell your app's pages live in."
+---
+
+<PageArt art="guides" />
+
+An app frame is the part of the screen that doesn't change from page to page: a sidebar for the destinations, a top bar for search and the account, and a content area where each page goes. This guide builds one from Youj's components, in one file you can copy, then shows the ready-made frame parts you can copy in instead.
+
+Every piece is a component you can use on its own. The frame is only the way they sit together.
+
+| Part | Component | Job |
+| --- | --- | --- |
+| Sidebar | [Sidebar](/docs/components/sidebar) | The app's destinations. Collapses to icons, and becomes a sheet on phones. |
+| Top bar | [App Header](/docs/components/app-header) | The sticky bar over the page: the sidebar's trigger, search, the account. |
+| Account | [Account Menu](/docs/components/account-menu) | The avatar menu: profile, theme, sign out. |
+| Search | [Command Palette](/docs/components/command-palette) | The dialog that finds a page or runs an action, opened by the top bar's search button or `⌘K`. |
+| Page | [App Page](/docs/components/app-page) | The title, actions and gutter of each page, inside the content area. |
+
+## The shell
+
+`SidebarProvider` wraps everything and holds whether the sidebar is open. `Sidebar` is the panel, `SidebarInset` is the page beside it, and the top bar goes at the top of the inset. The sidebar's trigger lives in the top bar, so one control opens the sidebar on a desktop and the sheet on a phone.
+
+```tsx title="components/app-shell.tsx"
+'use client'
+
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { Suspense, useState, type ReactNode } from 'react'
+import {
+  AccountMenu,
+  AppHeader,
+  AppHeaderActions,
+  AppHeaderSearch,
+  Separator,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@youj/react'
+import { CommandGroup, CommandItem, CommandPalette } from '@youj/react/command'
+import { HomeIcon, SettingsIcon } from '@youj/icons'
+
+const pages = [
+  { href: '/', label: 'Home', icon: HomeIcon },
+  { href: '/settings', label: 'Settings', icon: SettingsIcon },
+]
+
+const user = { name: 'Ada Lovelace', email: 'ada@acme.com' }
+
+// The one place that reads the URL, so it's the one place that waits for it (see "Dynamic routes", below).
+function SidebarPages() {
+  const pathname = usePathname()
+  return (
+    <SidebarMenu>
+      {pages.map(({ href, label, icon: Icon }) => {
+        const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
+        return (
+          <SidebarMenuItem key={href}>
+            <SidebarMenuButton isActive={active} tooltip={label} render={<Link href={href} aria-current={active ? 'page' : undefined} />}>
+              <Icon size={16} />
+              <span>{label}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )
+      })}
+    </SidebarMenu>
+  )
+}
+
+export function AppShell({ children }: { children: ReactNode }) {
+  const router = useRouter()
+  const [searching, setSearching] = useState(false)
+  return (
+    <SidebarProvider>
+      <Sidebar collapsible="icon">
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" tooltip="Acme" render={<Link href="/" />}>
+                <span className="truncate font-semibold">Acme</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <Suspense
+              fallback={
+                <SidebarMenu>
+                  <SidebarMenuSkeleton showIcon />
+                  <SidebarMenuSkeleton showIcon />
+                </SidebarMenu>
+              }
+            >
+              <SidebarPages />
+            </Suspense>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>{/* an upgrade card, a plan meter… */}</SidebarFooter>
+      </Sidebar>
+
+      <SidebarInset>
+        <AppHeader>
+          <SidebarTrigger />
+          <Separator orientation="vertical" className="h-4 data-[orientation=vertical]:self-center" />
+          <AppHeaderActions>
+            <AppHeaderSearch onClick={() => setSearching(true)} />
+            <AccountMenu user={user} onSignOut={() => router.push('/sign-in')} />
+          </AppHeaderActions>
+        </AppHeader>
+        {children}
+      </SidebarInset>
+
+      <CommandPalette open={searching} onOpenChange={setSearching}>
+        <CommandGroup heading="Go to">
+          {pages.map(({ href, label }) => (
+            <CommandItem
+              key={href}
+              onSelect={() => {
+                setSearching(false)
+                router.push(href)
+              }}
+            >
+              {label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandPalette>
+    </SidebarProvider>
+  )
+}
+```
+
+Wrap the app in it once, in a layout, and give each page an [App Page](/docs/components/app-page):
+
+```tsx title="app/(app)/layout.tsx"
+import { AppShell } from '@/components/app-shell'
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return <AppShell>{children}</AppShell>
+}
+```
+
+```tsx title="app/(app)/page.tsx"
+import { AppPage } from '@youj/react'
+
+export default function Home() {
+  return <AppPage title="Home">{/* your sections */}</AppPage>
+}
+```
+
+The search button and the palette share `⌘K` (`Ctrl K` elsewhere), so the button shows the shortcut and the palette answers it. Both are in the shell above, one state apart: the button sets `searching`, the palette reads it.
+
+### Which mobile menu
+
+Below `md` the sidebar becomes a sheet, and the `SidebarTrigger` in the top bar opens it. With a sidebar in the frame, that is the phone menu: leave `AppHeaderMenu` out, or phones get two hamburgers that open two lists of the same pages.
+
+`AppHeaderMenu` is for the other shape of app, with no sidebar: the header carries the navigation (`AppHeaderNav`) on wide screens, and `AppHeaderMenu` holds the same links in a sheet on phones. For primary destinations under the thumb, a [Bottom Tab Bar](/docs/components/bottom-tab-bar) goes with either.
+
+### Dynamic routes
+
+`usePathname()` reads the URL, and on a dynamic route (`/projects/[id]`) the URL isn't known until a request arrives. With Next's `cacheComponents` on, a component that reads it must sit inside a `Suspense` boundary, or the build stops on the route. That is why `SidebarPages` is wrapped above: the sidebar's frame still prerenders, and only the list of links waits. The skeleton rows hold its place, so nothing jumps when the links arrive. A sidebar whose links don't depend on the URL needs no wrapper.
+
+## Lay out a page
+
+A page that fits on a laptop can push the whole screen sideways on a phone. The cause is almost always the same: a grid or flex item defaults to `min-width: auto`, so it won't shrink below its content. One wide table, a long code line or an unbroken email address then widens the column, the card around it, and the page.
+
+- **Let the page root shrink.** A single-column grid is one track as wide as its content. Write it as `grid-cols-[minmax(0,1fr)]`, which lets the track go below its content, or put `min-w-0` on the item. [App Page](/docs/components/app-page) is already a container that shrinks; the sections you put in it are yours.
+- **Do the same on cards in a row.** A card in a flex or grid row needs `min-w-0` for its text to truncate or wrap instead of stretching the row.
+- **Let a wide table scroll inside itself.** [Table](/docs/components/table) already scrolls sideways in its own frame, announced as a labeled region, so give it a parent that can shrink (the two rules above) and the rest of the page stays put. At 390px, keep the columns that identify the row (a name, a status) first, hide the rest with the Columns menu or `meta` on narrow screens, and set `size` on columns so they don't squeeze into unreadable slivers.
+
+```tsx
+<div className="grid grid-cols-[minmax(0,1fr)] gap-4 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+  <Card className="min-w-0">{/* text that wraps */}</Card>
+  <Card className="min-w-0">
+    <Table aria-label="Invoices">{/* many columns */}</Table>
+  </Card>
+</div>
+```
+
+To check a layout, open the page at 390px wide and scroll sideways: only a table's own frame should move.
+
+## The ready-made frame
+
+Create builds the same frame from copy-in parts, with a choice of sidebars, top bars, account parts and search, themed and exported as code. [Create](/create) shows them together; each is also an item you can add by name.
+
+Each part is a separate `add`. Nothing pulls in a sidebar when you add a top bar, or search when you add either, so add the ones you use:
+
+```bash
+npx youj add frame-shell frame-sidebar-classic frame-topbar-search frame-account-menu frame-search-palette
+```
+
+| Item | What it is |
+| --- | --- |
+| `frame-shell` | `AppFrame`, the layout all the others plug into: the sidebar slot, the top bar slot, the page, and the phone fallback. It owns the navigation and the current page, which every other part reads. Every frame item brings it along. |
+| `frame-sidebar-classic`, `-workspace`, `-rail-panel`, `-icon-rail`, `-glass` | The sidebars. Pick one. |
+| `frame-topbar-breadcrumb`, `-minimal`, `-search`, `-tabs` | The top bars. Pick one. |
+| `frame-account-card` | The account row at the foot of a sidebar. |
+| `frame-account-menu`, `frame-account-status` | The account in a top bar: the avatar menu, or one with a status picker. |
+| `frame-search-palette`, `frame-search-field` | Search for a top bar: the `⌘K` palette, or an inline field with suggestions. |
+| `frame-workspace`, `frame-upgrade-card`, `frame-notifications` | Optional extras for the sidebar's header and foot, and the top bar's actions. |
+
+The parts meet only in `AppFrame`, so any sidebar goes with any top bar. A sidebar takes a `header` and a `footer`, and a top bar takes `search`, `actions` and `account`:
+
+```tsx title="components/app-shell.tsx"
+'use client'
+
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { Suspense, type ReactNode } from 'react'
+import { AppFrame, FrameLogo, navPages, type FrameNavSection } from '@/blocks/frame/shell'
+import { FrameAccountCard } from '@/blocks/frame/account-card'
+import { FrameAccountMenu } from '@/blocks/frame/account-menu'
+import { FrameSearchPalette } from '@/blocks/frame/search-palette'
+import { FrameSidebarClassic } from '@/blocks/frame/sidebar-classic'
+import { FrameTopbarSearch } from '@/blocks/frame/topbar-search'
+
+const user = { name: 'Ada Lovelace', email: 'ada@acme.com' }
+
+function Frame({ nav, children }: { nav: FrameNavSection[]; children: ReactNode }) {
+  const pathname = usePathname()
+  const router = useRouter()
+  return (
+    <AppFrame
+      nav={nav}
+      active={navPages(nav).find((page) => page.item.href === pathname)?.item.id}
+      linkComponent={Link}
+      // Links route clicks; route the palette's and the search's picks here.
+      onNavigate={(item, event) => !event && item.href && router.push(item.href)}
+      sidebar={<FrameSidebarClassic header={<FrameLogo name="Acme" />} footer={<FrameAccountCard user={user} onSignOut={() => router.push('/sign-in')} />} />}
+      topbar={<FrameTopbarSearch search={<FrameSearchPalette />} account={<FrameAccountMenu user={user} onSignOut={() => router.push('/sign-in')} />} />}
+    >
+      {children}
+    </AppFrame>
+  )
+}
+
+export function AppShell({ nav, children }: { nav: FrameNavSection[]; children: ReactNode }) {
+  return (
+    <Suspense>
+      <Frame nav={nav}>{children}</Frame>
+    </Suspense>
+  )
+}
+```
+
+`nav` is sections of items with an `id`, a `label`, an `href` and an `icon`; the sidebars draw it, the top bars name the current page from it and the palette lists it. The `Suspense` is the same rule as above: `Frame` reads the URL.
+
+On phones, `mobileNav="tabs"` on `AppFrame` adds a bottom tab bar for the first pages. The icon-rail sidebar asks for it itself.
+
+Create wires the parts you choose together like this and exports the result, so start there if you'd rather pick than assemble.

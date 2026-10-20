@@ -1,0 +1,130 @@
+---
+title: Action List
+description: "List what needs doing, one row each, with why, by when and the action that fixes it."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="action-list/demo" height={420} />
+
+A workspace's open problems, most urgent first: each row says why, carries the date or amount that makes it urgent, and offers the one fix.
+
+</Story>
+
+<Story id="emphasis" label="Emphasis">
+
+<ComponentPreview name="action-list/steps" height={360} />
+
+Setup steps with the first set apart as the one to do now.
+
+`emphasis` draws a row as a tinted panel in its `tone`, with the icon on a plain tile. Use it for one row at most: the point is that one thing comes first.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="action-list" noImport />
+
+Use an action list where a screen asks someone to do things: alerts that need a decision, setup steps, renewals coming due, reviews waiting. Each row is an icon tile, a title, one line of detail, an optional chip and the row's own action. For a stream of events that only informs, use a [Notification Center](/docs/components/notification-center); for one record's fields, a [Property List](/docs/components/property-list).
+
+```tsx
+import { CalendarIcon, ShieldAlertIcon } from '@youj/icons'
+import { ActionList, ActionListItem, Button } from '@youj/react'
+
+<ActionList title="Waiting on you" count={9} action={<Button variant="ghost" size="sm">View all</Button>}>
+  {alerts.map((alert) => (
+    <ActionListItem
+      key={alert.id}
+      icon={<ShieldAlertIcon />}
+      tone="danger"
+      title={alert.title}
+      detail={alert.detail}
+      meta={<><CalendarIcon /> {alert.due}</>}
+      action={<Button variant="secondary" size="sm" onClick={() => resolve(alert.id)}>Resolve</Button>}
+    />
+  ))}
+</ActionList>
+```
+
+`tone` colors the icon tile (`neutral`, `accent`, `info`, `success`, `warning` or `danger`); the chip takes the same tone unless you pass `metaTone`. `count` sits in a chip beside the title and can be larger than the rows you show, with the header `action` linking to the rest. Key every row by a stable id: the rows are a [PresenceList](/docs/motion/presence-list), so removing one when it is done fades it out and closes the gap.
+
+Below 20rem of its own width, the chip and the action wrap under the text instead of squeezing it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="ActionList, ActionListItem">
+
+### Props
+
+<PropsTable name="ActionList" />
+
+#### ActionListItem
+
+<PropsTable name="ActionListItem" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `action-list`, `action-list-header`, `action-list-title`, `action-list-count`, `action-list-description`, `action-list-action`, `action-list-items`, `action-list-item` (with `data-tone` and `data-variant`: `default` or `emphasis`), `action-list-icon`, `action-list-item-title`, `action-list-item-detail`, `action-list-meta` (with `data-tone`) and `action-list-item-action`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Add, remove · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Row added', note: 'drops in and fades up', duration: 'base', ease: 'enter' },
+    { moment: 'Row removed', note: 'fades out; the rows below close the gap', duration: 'fast', ease: 'exit', spring: 'smooth' },
+  ]}
+  reduced="Rows come and go at once."
+/>
+
+#### Reduced motion
+
+Rows are added and removed at once, with no fade or slide.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Region, list">
+
+### Accessibility
+
+- With a `title` it is a `section` named by its heading (`headingLevel`, 3 by default), so it is a landmark region; the rows are a list.
+- The icon tile is decorative (`aria-hidden`); the title and detail carry the meaning, and the chip is plain text.
+- Name each row's action for what it does ("Rotate key", not "Go"), since a screen reader may reach it out of its row.
+- A row on its way out is inert, so focus can't land on it.
+
+</ReferenceRow>

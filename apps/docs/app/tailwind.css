@@ -1,0 +1,117 @@
+/* One Tailwind root: youj.css owns the Tailwind import and the palette,
+ * ui.css bridges shadcn names onto it, the component styles' recipes follow it
+ * (inert until a preview sets data-yj-look), and Fumadocs' component CSS is
+ * re-themed on top.
+ *
+ * It is compiled twice and never loaded itself: global.css (every page) adds `@source not` for the blocks and
+ * examples, and gallery.css (the pages that render them) adds nothing, then keeps only what global.css lacks
+ * (postcss/gallery-delta.mjs). */
+@import '@youj/core/styles/youj.css';
+@import '@youj/react/styles/ui.css';
+@import '@youj/react/styles/bezel.css';
+
+/* Fumadocs' component styles, minus its layouts (the site's chrome is its own)
+ * and its typography plugin: a JS plugin puts Tailwind in compat mode, which
+ * drops every theme color declared after youj's `--color-*: initial`.
+ * Prose is styled by youj instead (prose.css). */
+@import 'fumadocs-ui/css/lib/base.css';
+@import 'fumadocs-ui/css/lib/shiki.css';
+@import 'fumadocs-ui/css/generated/shared.css';
+@import 'fumadocs-ui/css/lib/default-colors.css';
+
+/* Bezel's typefaces, self-hosted (Latin, variable; OFL). A preview in the Bezel style names them 'Geist' and 'Geist
+ * Mono', so these faces answer for it and nothing is requested from Google Fonts (load-fonts.ts skips a family the
+ * page already declares); the browser fetches them only where they're shown. Basalt's Inter and JetBrains Mono, the
+ * site's own, come from @fontsource in the layout. */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-latin-v1.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* PREVIEW: the site's own type, the same in light and dark: Youj Display (packages/brand-font, v2 draft) for headings,
+ * Inter for everything else, JetBrains Mono for code, labels in sentence case: the Clean style's faces. Set on <html> only, so a preview that wears
+ * a theme (data-yj-theme on its own element) keeps that theme's fonts; `.site-face` puts it back inside one that should
+ * keep the site's face (the hero's mood, components/landing/hero-moods.tsx). */
+@font-face {
+  font-family: 'Youj Display';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/youj-display.woff2') format('woff2');
+}
+:root,
+.site-face {
+  --yj-font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif !important;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif !important;
+  --yj-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace !important;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace !important;
+  --yj-label-font: 'Inter Variable', ui-sans-serif, system-ui, sans-serif !important;
+  --yj-label-case: none !important;
+  --yj-label-tracking: 0 !important;
+  /* The kit's own titles (a semibold h1–h3, a *-title slot) in the site's chrome take the brand face too. */
+  --yj-font-display: 'Youj Display', 'Inter Variable', ui-sans-serif, system-ui, sans-serif !important;
+  /* The brand face, for the type scale's display steps (styles/site.css). */
+  --site-display: 'Youj Display', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-mono-latin-v1.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@import '../styles/theme.css';
+@import '../styles/prose.css';
+@import '../styles/site.css';
+
+/* The home hero's pinned scroll scene, decided by CSS so the server's HTML already has its layout (usePinned in
+   components/graphics/stack/scene.tsx mirrors it). [data-flat] opts a subtree out where motion is reduced in the app. */
+@custom-variant pin {
+  @media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+    &:where(:not([data-flat] *)) {
+      @slot;
+    }
+  }
+}
+
+/* The home hero's pinned stage (components/landing/hero-stage.tsx): the card coming apart into the family's grid, which
+   needs the grid's four columns and its three rows in view. hero-score.ts's HERO_PIN_QUERY is the same. */
+@custom-variant hero-pin {
+  @media (min-width: 1280px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
+    &:where(:not([data-flat] *)) {
+      @slot;
+    }
+  }
+}
+
+@source '../../../packages/core/src';
+@source '../../../packages/motion/src';
+@source '../../../packages/icons/src';
+@source '../../../packages/illustrations/src';
+@source '../../../packages/ui/src';
+/* The blocks' classes that must load with the site's own, next to classes they are ordered against (scripts/gallery-core.ts). */
+@source '../generated/gallery-core.txt';
+/* Storybook stories and tests render nothing on the site; their classes would only add rules. */
+@source not '../../../packages/ui/src/stories';
+@source not '../../../packages/ui/src/test';
+@source not '../../../packages/ui/src/**/*.{test,stories}.*';
+@source not '../../../packages/core/src/test';
+@source not '../../../packages/core/src/**/*.{test,stories}.*';
+@source not '../../../packages/motion/src/test';
+@source not '../../../packages/motion/src/**/*.{test,stories}.*';
+@source not '../../../packages/icons/src/**/*.{test,stories}.*';
+@source not '../../../packages/illustrations/src/**/*.{test,stories}.*';
+
+/* The layer stack's lit frame (components/graphics/stack/layer-stack.tsx): an accent edge and a soft glow off it.
+ * A utility, so the home page's HTML names it once per frame instead of spelling the shadow out twice. */
+@utility shadow-stack-lit {
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--color-accent) 45%, transparent),
+    0 0 0 3px color-mix(in oklab, var(--color-accent) 12%, transparent),
+    0 0 40px -8px color-mix(in oklab, var(--color-accent) 50%, transparent);
+}

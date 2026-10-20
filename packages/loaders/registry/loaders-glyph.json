@@ -1,0 +1,333 @@
+[
+  {
+    "name": "loader-inscribe",
+    "type": "registry:component",
+    "title": "Inscribe loader",
+    "description": "The word youj draws itself in outline, letter by letter, on a type designer’s guide lines; the tittle lands in the accent, then the strokes lift off the way they went down. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "inscribe",
+      "component": "LoaderInscribe",
+      "category": "glyph",
+      "technique": "paths",
+      "order": 1,
+      "title": "Inscribe",
+      "tags": [
+        "wordmark",
+        "writing",
+        "draw",
+        "outline",
+        "type",
+        "brand",
+        "stroke"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Stroke",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/inscribe.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/glyph/word.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-jot",
+    "type": "registry:component",
+    "title": "Jot loader",
+    "description": "The youj j as a solid letter, every face lit by its own angle, turns once and lands, while its tittle spins above it as a cube in the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "jot",
+      "component": "LoaderJot",
+      "category": "glyph",
+      "technique": "planes",
+      "order": 2,
+      "title": "Jot",
+      "tags": [
+        "j",
+        "letter",
+        "solid",
+        "extruded",
+        "3d",
+        "brand",
+        "tittle",
+        "turntable"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Index",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/jot.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/glyph/word.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-spell",
+    "type": "registry:component",
+    "title": "Spell loader",
+    "description": "One outline spells the word: y becomes o becomes u becomes j and back to y, the letter turning in space as it changes and landing square on its guide lines. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "spell",
+      "component": "LoaderSpell",
+      "category": "glyph",
+      "technique": "type",
+      "order": 3,
+      "title": "Spell",
+      "tags": [
+        "morph",
+        "letters",
+        "wordmark",
+        "outline",
+        "type",
+        "brand",
+        "transform"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Outline",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/spell.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/glyph/word.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-compose",
+    "type": "registry:component",
+    "title": "Compose loader",
+    "description": "The wordmark’s strokes drift in space, then fly in and lock into the word, the tittle landing last; after a beat they let go and drift apart again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "compose",
+      "component": "LoaderCompose",
+      "category": "glyph",
+      "technique": "lines",
+      "order": 4,
+      "title": "Compose",
+      "tags": [
+        "assemble",
+        "wordmark",
+        "strokes",
+        "scatter",
+        "3d",
+        "type",
+        "brand",
+        "build"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Stroke",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/compose.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/glyph/word.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-kern",
+    "type": "registry:component",
+    "title": "Kern loader",
+    "description": "The word on a type specimen: its letters open out and close up again on their sidebearing guides, and dimension lines measure every gap as it changes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "kern",
+      "component": "LoaderKern",
+      "category": "glyph",
+      "technique": "type",
+      "order": 5,
+      "title": "Kern",
+      "tags": [
+        "spacing",
+        "tracking",
+        "measure",
+        "dimension",
+        "type",
+        "specimen",
+        "wordmark"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Dimensions",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/kern.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/glyph/word.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-hint",
+    "type": "registry:component",
+    "title": "Hint loader",
+    "description": "The j hinted to whole pixels, as the favicon is: its outline lies on a pixel grid seen in perspective, then pixels drop into their cells line by line as the outline fades, and lift away again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "hint",
+      "component": "LoaderHint",
+      "category": "glyph",
+      "technique": "planes",
+      "order": 6,
+      "title": "Hint",
+      "tags": [
+        "pixel",
+        "grid",
+        "raster",
+        "hinting",
+        "favicon",
+        "j",
+        "type",
+        "render"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Outline",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/hint.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-plumb",
+    "type": "registry:component",
+    "title": "Plumb loader",
+    "description": "The youj j hangs as a hollow wireform from its fixed accent tittle, swings across a drafting plumb-line, and lands upright before the next pull. Narrow lit walls reveal the letter’s depth. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "glyph"
+    ],
+    "meta": {
+      "loader": "plumb",
+      "component": "LoaderPlumb",
+      "category": "glyph",
+      "technique": "paths",
+      "order": 7,
+      "title": "Plumb",
+      "tags": [
+        "j",
+        "tittle",
+        "pendulum",
+        "wireframe",
+        "letter",
+        "brand",
+        "plumb-line"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Plumb line",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/glyph/plumb.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

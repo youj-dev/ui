@@ -1,0 +1,153 @@
+---
+title: Drawer
+description: "Open a panel from a screen edge and swipe it away."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="drawer/demo" height={240} />
+
+A bottom drawer of deployment actions that can be swiped down or dismissed by its handle.
+
+</Story>
+
+<Story id="swiping" label="Swiping">
+
+<ComponentPreview name="drawer/activity" height={200} />
+
+A drawer with a scrollable activity list that can be swiped away.
+
+The panel tracks the finger as it's dragged toward its edge. Let go past the threshold and it leaves. A flick leaves faster than a slow drag, and a short drag springs back into place. The scrim thins as the panel is pulled away, so the page underneath shows through in proportion. With a mouse, drag the handle or the panel's chrome.
+
+The panel bleeds 3rem past its edge, so pulling it the other way never opens a gap. Scrollable content scrolls first, and a swipe from the top of the list still dismisses, as in the preview.
+
+</Story>
+
+<Story id="directions" label="Directions">
+
+<ComponentPreview name="drawer/directions" height={200} />
+
+A drawer for each swipe direction.
+
+`swipeDirection` is the direction that dismisses the drawer, so it also sets the edge the drawer sits on. `down`, the default, makes a bottom sheet. `up` hangs from the top, and `left` and `right` make side panels, which have no handle.
+
+
+`showHandle={false}` removes the grab handle from a top or bottom drawer. Keep it when the drawer can be swiped, because it's the visible sign that it can.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="drawer" noImport />
+
+Use Drawer for action sheets, pickers and short forms on touch screens. Like [Sheet](/docs/components/sheet), it is modal, with the addition of swipe dismissal. For mouse-driven layouts, consider a [Dialog](/docs/components/dialog), Sheet or [Popover](/docs/components/popover).
+
+```tsx
+import {
+  Button,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@youj/react'
+
+export function DeploymentActions() {
+  return (
+    <Drawer>
+      <DrawerTrigger render={<Button variant="outline" />}>Actions</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Preview deployment</DrawerTitle>
+          <DrawerDescription>feat/search, built in 41s.</DrawerDescription>
+        </DrawerHeader>
+        <DeploymentActionList />
+        <DrawerFooter>
+          <DrawerClose render={<Button variant="outline" />}>Cancel</DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+```
+
+`DrawerContent` renders the portal, the scrim, a viewport and the panel. A top or bottom drawer is a centered column up to 36rem wide, full width on a phone, with a grab handle. Its footer stacks actions at full width, as touch sheets do. `Drawer` is Base UI's Drawer root, so `open`, `onOpenChange`, `modal` and `swipeDirection` work as Base UI documents them.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="showHandle (1)">
+
+### Props
+
+`DrawerContent` adds one prop to Base UI's `Drawer.Popup`.
+
+<PropsTable name="DrawerContent" />
+
+`Drawer` sets `swipeDirection` to `down` by default and passes every other Base UI root prop through. `DrawerTrigger`, `DrawerClose`, `DrawerTitle` and `DrawerDescription` pass their props through to Base UI. `DrawerHeader` and `DrawerFooter` are `div`s.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, exit, swipe… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'slides in from its edge (`yj-sheet-*`)', duration: 'slow', ease: 'enter' },
+    { moment: 'Exit', note: 'slides off its edge; a flick shortens it', duration: 'base', ease: 'exit' },
+    { moment: 'Swipe', note: 'follows the finger exactly', value: 'no transition while dragging' },
+    { moment: 'Scrim in', note: 'opacity (`yj-backdrop`)', duration: 'base', ease: 'standard' },
+    { moment: 'Scrim out', note: 'thins with the swipe progress, and leaves faster after a flick', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Opens and closes instantly. A swipe still tracks the finger, because that motion is the person's own, and a released swipe dismisses at once."
+/>
+
+After a swipe, the exit duration is multiplied by the swipe's strength, a factor from 0.1 to 1 that Base UI derives from how fast the panel was released. A hard flick leaves sooner than a slow drag that is let go.
+
+#### Reduced motion
+
+The drawer appears and leaves without sliding, and the scrim with it. Dragging still moves the panel under the finger, because that movement is direct manipulation, not animation. Everything else, from focus to dismissal, is unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- A drawer is a modal dialog: `role="dialog"`, named by `DrawerTitle` and described by `DrawerDescription`.
+- Swiping is never the only way out. Escape, a press on the scrim and any `DrawerClose` close it too, and focus returns to the trigger.
+- Focus moves into the drawer when it opens and is trapped there until it closes.
+- The grab handle is decorative (`aria-hidden`). When the panel itself scrolls with nothing focusable inside, it becomes a tab stop so the keyboard can scroll it.
+
+</ReferenceRow>

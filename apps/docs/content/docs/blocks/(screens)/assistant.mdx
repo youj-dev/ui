@@ -1,0 +1,56 @@
+---
+title: Assistant
+description: "AI conversation screens: a streamed analyst workspace."
+---
+
+<BlockStories>
+
+<BlockStory id="ai-workspace" label="AI workspace" block="app-ai-workspace" story="Default" backdrop="heather">
+
+Ask an AI analyst about your team’s data, with streamed answers that show their reasoning, tool calls and sources, a history sidebar and a sheet on phones.
+
+**Demo only.** Its content is fixed in the block: it takes no data or `copy` props, only the few settings and callbacks listed in its props. Copy the source to build on it.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, conversation, keyboard">
+
+### Accessibility
+
+AI workspace has a `main` with one `h1`, a labelled history `nav` that marks the current chat with `aria-current`, a status region for progress, and a sheet for the history on phones. The streamed answer starts on its own (set `autoplay` to `false` to start it still), and under reduced motion text lands a phrase at a time and the shimmer and carets hold still. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

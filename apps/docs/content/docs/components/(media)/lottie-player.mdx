@@ -1,0 +1,153 @@
+---
+title: Lottie Player
+description: "Play Lottie animations with shared speed controls, theme colors and reduced-motion support."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="lottie-player/demo" height={380} />
+
+A payment flow in which the animation follows the phase: idle, processing, then paid.
+
+</Story>
+
+<Story id="when-it-plays" label="When it plays">
+
+<ComponentPreview name="lottie-player/triggers" height={300} />
+
+Players started by different triggers.
+
+- `autoplay` plays once the file has loaded and the player is on screen. A finished one-shot doesn't replay when it scrolls back into view.
+- `playOnView` waits until the player first scrolls into view, then plays. Use it for illustrations below the fold.
+- `playOnHover` plays forward while the pointer is over the player, and back in reverse from wherever it got to when the pointer leaves. Focus inside the player counts as hover.
+- `playing` takes over entirely: `true` plays, and `false` pauses. It overrides the three props above while it's defined. A finished run replays only after `playing` has been `false`.
+- `loop` repeats, and `segment={[start, end]}` limits playback to a range of frames.
+
+Whatever the trigger, the player pauses while it's offscreen and picks up again when it returns.
+
+</Story>
+
+<Story id="controlled-playback" label="Controlled playback">
+
+<ComponentPreview name="lottie-player/upload" height={340} />
+
+An upload list whose animations are driven by state.
+
+Drive `playing` from your own state when the animation reports something real. Here, each file gets a looping progress mark while it uploads and a check once it lands. The check is controlled, so it plays exactly once, at the moment the upload finishes.
+
+</Story>
+
+<Story id="color-and-theme" label="Color and theme">
+
+<ComponentPreview name="lottie-player/slots" height={300} />
+
+Animations recolored by the theme's tokens.
+
+Lottie files can expose colors as slots. The player binds each color slot to a Youj token, reads the token from computed CSS and sets the slot, so the animation follows your palette and recolors in place when the theme changes, even mid-play.
+
+- A slot whose id is a token name (`success`, `accent`, `fg`, `line`) binds to that token automatically. Youj's own samples are built this way, so they need no mapping.
+- `slots` maps any other slot id, or overrides a match, with a token name (`'accent'`, `'fg-muted'`) or any CSS color expression (`'color-mix(in oklab, var(--color-canvas) 30%, transparent)'`).
+- `themed={false}` leaves the file's baked colors alone.
+
+Switch between light and dark with the toggle in the header: every player on this page recolors in place.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="lottie-player" noImport />
+
+Use it for illustrated moments a designer animated in After Effects or the Lottie editor: a success mark, a loader with character, an empty-state illustration, a logo sting. For interface motion such as presses, toggles and layout, use Youj's primitives and icons instead. They're lighter, and they respond to input mid-flight.
+
+Give it a file and a size. The player fills its box and keeps the animation's aspect ratio (`fit="contain"`).
+
+```tsx
+import { LottiePlayer } from '@youj/motion/players'
+
+export function PaymentConfirmed() {
+  return <LottiePlayer src="/animations/success-check.json" autoplay label="Payment confirmed" className="size-20" />
+}
+```
+
+`src` takes a URL to a `.lottie` or Lottie `.json` file. To bundle the animation instead of fetching it, pass `data`: the parsed JSON, a JSON string or an `ArrayBuffer` of a `.lottie` file.
+
+The examples above play sample files from `/samples/`. `npx youj add lottie-samples` copies the two `.json` ones into your app's `public/samples/`, so the examples run as they are; `logo-sting.lottie` is binary, so it isn't in the item.
+
+### Layout
+
+`fit` decides how the animation fills the box: `contain` (the default), `cover`, `fill`, `none`, `fit-width` or `fit-height`. `align` places it inside the box as `[x, y]` fractions from 0 to 1, and it's centered by default.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="src, data, autoplay… (18)">
+
+### Props
+
+<PropsTable name="LottiePlayer" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="The player renders with the dotLottie runtime, which loads its…">
+
+### Performance
+
+The player renders with the dotLottie runtime, which loads its WebAssembly from a CDN the first time a player mounts. To serve it yourself, call `setWasmUrl` from `@lottiefiles/dotlottie-react` before any player mounts. The canvas resizes with its box, and playback pauses while the player is offscreen.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Playback, hover out · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Playback', note: 'the file’s own timeline', value: 'speed ÷ time scale' },
+    { moment: 'Hover out', note: '`playOnHover`, reversing from the current frame', value: 'same rate, reversed' },
+  ]}
+  reduced="Never plays. It shows the poster frame, by default the last one: the resolved state, such as the finished check."
+/>
+
+The timing lives in the file, so the player can't put it on Youj's tokens. It does keep the rest of the contract: the Speed control slows it, reduced motion stops it, and it pauses offscreen. The Youj samples on this page were generated from the motion tokens, so their curves match the rest of the system.
+
+#### Reduced motion
+
+Nothing plays. The player shows `posterFrame`, which defaults to `'last'`, the resolved state: the check fully drawn, the logo complete. Pass `'first'` or a frame number for animations whose last frame isn't the meaningful one. Within a `segment`, `'first'` and `'last'` are the segment's ends. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- Without `label`, the player is decorative and `aria-hidden`. With `label`, it's an image (`role="img"`) with that name. Label an animation only when it carries meaning that isn't in the text beside it.
+- An animation isn't an announcement. When it marks a change, like a payment going through, announce the change in a live region too. The checkout preview uses `role="status"`.
+- Keep focus with the task. When the control that was focused disappears with its view, move focus to the new view. The checkout preview moves it to the confirmation.
+
+</ReferenceRow>

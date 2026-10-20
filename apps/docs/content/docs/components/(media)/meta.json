@@ -1,0 +1,15 @@
+{
+  "title": "Media",
+  "pages": [
+    "carousel",
+    "track-timeline",
+    "annotated-image",
+    "image-compare",
+    "image-accordion",
+    "capsule-player",
+    "waveform-scrubber",
+    "voice-orb",
+    "audio-recorder",
+    "lottie-player"
+  ]
+}

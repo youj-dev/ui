@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/youj-dev/ui/security/advisories/new
+    about: Report a vulnerability privately. Don't open a public issue for it.
+  - name: Question or idea
+    url: https://github.com/youj-dev/ui/discussions
+    about: Ask a question or float an idea before writing a large change.
+  - name: Documentation
+    url: https://www.youj.dev/docs/contributing
+    about: The full contributing guide, with the repository layout and every convention.

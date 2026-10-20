@@ -1,0 +1,108 @@
+---
+title: Inspector
+description: "Show real UI first as the browser's box model, part by part, with a hover reading out each size, then hand each part to the real thing."
+---
+
+<ComponentPreview name="inspector/demo" height={460} />
+
+Use it for an entrance that shows how a piece of UI is laid out: a hero demo, a component on show, a layout walkthrough. Each part appears first the way a devtools overlay draws it: its margin, padding and content in three soft tints with a crisp edge. A hover runs through the tree ahead of them with a mono size tag (`div 72 × 40`, `p 14/20`) and the element's path under the demo. Then each part hands off to the real one, the frame first. Keep it to one moment on a page.
+
+## Installation
+
+<InstallTabs name="inspector" />
+
+## Usage
+
+Wrap the UI in `InspectorEntrance`. It plays on its first child, on mount.
+
+```tsx
+import { InspectorEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <InspectorEntrance>
+      <PricingCard />
+    </InspectorEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the look. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { inspector } from '@youj/motion'
+
+const run = inspector(document.querySelector('#pricing')!, { speed: 1.5 })
+await run.finished
+```
+
+## Pacing
+
+Two stages: **inspect** (every box lays down its model in build order, wiping in from its reading corner, while the hover runs through them) and **handoff** (the frame, then each piece in build order, fades in under its model, and the model fades off it). The hover rests on a part a little longer than a base beat, so on a busy screen it reads a sample of the parts, evenly through the run.
+
+The length grows with the demo: about 3 seconds for a card and about 5 for a small screen. `duration` fixes it in milliseconds, `speed` scales it, and `phases` shares it out as weights (default `{ inspect: 60, handoff: 40 }`).
+
+## What it reads
+
+The parts come from the real DOM, read once before the first frame (the same reading as Blueprint's). Margins, borders and padding come from each element's computed style. The content is tinted in the theme's info ink, the padding in whichever of success and warning sits farther from it (so an amber accent never makes the two alike), and the margin is hatched in a neutral. A box that holds others is drawn by its edges and bands alone, so nested tints never pile up. The tag names an element by its tag and its `data-slot` (or `id`); text shows its font size and line height.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, onFinish">
+
+### Props
+
+<PropsTable name="InspectorEntrance" />
+
+#### inspector
+
+```ts
+function inspector(node: HTMLElement, options?: InspectorOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `{ inspect?: number; handoff?: number }` | `{ inspect: 60, handoff: 40 }` | Each stage's share of the run, as weights. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the entrance. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Inspect, handoff · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Inspect', note: 'each box model wipes in from its reading corner, in build order', value: '60% of the run', ease: 'standard' },
+    { moment: 'Hover', note: 'glides from box to box; the tag and path change halfway across', duration: 'fast', ease: 'standard' },
+    { moment: 'Handoff', note: 'the frame, then each piece: the part fades in, then its model fades off it', value: '40%' },
+    { moment: 'Part in', note: '`opacity`', ease: 'enter' },
+    { moment: 'Model out', note: '`opacity` on the piece’s own canvas', ease: 'standard' },
+  ]}
+  reduced="No overlay: the UI is just there, and nothing is added to the page."
+/>
+
+The demo is never restyled. Its parts are held by their inline opacity while they wait (no animation, so no compositor layer) and each arrives as a Web Animation made just before its moment. Each piece's model is drawn once on a canvas of its own, so its hand-off is a single opacity animation. When the run ends, or `cancel()` is called, everything is put back exactly. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `inspector()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The overlay is `aria-hidden` and never takes the pointer. The demo stays in the accessibility tree the whole time.
+- Tabbing into the demo, or pressing on it, ends the run at once.
+- Nothing flashes: the tints are soft and every change is a fade or a wipe.
+
+</ReferenceRow>

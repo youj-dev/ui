@@ -1,0 +1,139 @@
+---
+title: Action Island
+description: "A floating tray of actions over a canvas, with one clear next step."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="action-island/demo" height={200} />
+
+A preview toolbar over a canvas: a mark, a Preview, Code and Info view switch, a copy-link tile and a More menu.
+
+Put a tile inside a [Dropdown Menu](/docs/components/dropdown-menu) and pass `render={<DropdownMenuTrigger />}`. The tile stays in the island's arrow-key order and keeps its accent outline while the menu is open. The More tile in the demo shows it.
+
+</Story>
+
+<Story id="floating" label="Floating">
+
+<ComponentPreview name="action-island/floating" height={320} />
+
+The island centered over a canvas, with its tiles in a row and the primary Open tile showing its label.
+
+Center the island over a canvas with a wrapper; it sizes to its tiles. The tooltips open above by default; set `side` on a tile to change that.
+
+</Story>
+
+<Story id="right-to-left" label="Right to left">
+
+<ComponentPreview name="action-island/rtl" height={160} />
+
+The same island in an Arabic interface, mirrored.
+
+The tiles run from the right, and the arrow keys rove the other way.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="action-island" noImport />
+
+Use an action island for the few actions that belong to a canvas, a preview or a map, and that should float above it. Each action is its own tile, a pressed tile marks the view that's showing, and one primary tile is the next step. For a dense row of editing controls, use a [Toolbar](/docs/components/toolbar).
+
+```tsx
+import { ActionIsland, ActionIslandGroup, ActionIslandMark, ActionIslandSeparator, ActionIslandTile } from '@youj/react'
+import { CodeIcon, EyeIcon, LayersIcon, SparklesIcon } from '@youj/icons'
+
+export function Viewer() {
+  return (
+    <ActionIsland aria-label="Preview actions">
+      <ActionIslandMark aria-hidden>
+        <LayersIcon />
+      </ActionIslandMark>
+      <ActionIslandGroup aria-label="View">
+        <ActionIslandTile label="Preview" pressed>
+          <EyeIcon />
+        </ActionIslandTile>
+        <ActionIslandTile label="Code" pressed={false}>
+          <CodeIcon />
+        </ActionIslandTile>
+      </ActionIslandGroup>
+      <ActionIslandSeparator />
+      <ActionIslandTile label="Open" variant="primary" showLabel>
+        <SparklesIcon />
+      </ActionIslandTile>
+    </ActionIsland>
+  )
+}
+```
+
+Every tile is an icon with a `label`: its tooltip, and its accessible name. `showLabel` draws the label beside the icon, for a primary action. `ActionIslandMark` names what the island acts on and isn't a control. Pass `render` to make a tile a menu's trigger or a link.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="label, pressed, variant… (8)">
+
+### Props
+
+#### ActionIslandTile
+
+<PropsTable name="ActionIslandTile" />
+
+`ActionIsland` takes Base UI's toolbar props (`orientation`, `loopFocus`, `disabled`). `ActionIslandGroup` labels a cluster of tiles with `aria-label`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Press, release and hover · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Press', note: 'each tile scales to 0.96 while held', duration: 'instant', ease: 'standard' },
+    { moment: 'Release and hover', note: 'scale back, background, outline and text colors', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Tiles don't scale when pressed."
+/>
+
+#### Reduced motion
+
+Tiles don't scale when pressed. Colors still change on hover and press.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The root is a `toolbar`; name it with `aria-label`. It's a single tab stop, and the arrow keys move between tiles and wrap at the ends, mirrored in right-to-left layouts. Home and End jump to the ends.
+- A pressed tile exposes `aria-pressed`. A disabled tile stays in the arrow-key order.
+- A tile's `label` is its accessible name and its tooltip, which also opens on a long press on touch. The mark is out of the tab order; hide it with `aria-hidden` when it's only an icon.
+
+</ReferenceRow>

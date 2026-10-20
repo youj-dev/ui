@@ -1,0 +1,80 @@
+---
+title: Networks & maps
+description: "What connects to what and where: rings out from one thing, hubs and lanes, a globe of arcs and a map of regions."
+---
+
+<BlockStories>
+
+<BlockStory id="radial-network" label="Radial network" block="app-radial-network" story="Default" backdrop="umber">
+
+What a compromised account reaches, as a radial graph: the account in the middle, what it touches one hop out and what those lead to on the next ring, each dot in its kind's color. Compromised things wear a solid ring and at-risk ones a dashed ring, with the link into them drawn the same way, so the attacker's path reads at a glance. Pick 1 or 2 hops in the header; the foot counts what is compromised, at risk and reached.
+
+</BlockStory>
+
+<BlockStory id="hub-map" label="Hub map" block="app-hub-map" story="Default" backdrop="sandstone">
+
+A network of hubs on a world map: volume handled, the share on target and hubs healthy, with lanes drawn as arcs. Pick a hub for its figures and top lanes, then act on it. A parcel carrier by default, with airline routes and a data center mesh in the stories; the statuses, metrics, thresholds and formats are yours.
+
+</BlockStory>
+
+<BlockStory id="arc-globe" label="Arc globe" block="app-arc-globe" story="Default" backdrop="seaglass">
+
+What comes in from around the world, live: a dot globe turns while each event is thrown across it as an arc to the place that serves it. Regions and places are toggles that bring a part of the globe forward; period and site re-cut every figure. Site visitors by default; card payments and flights are in the stories, and the regions, periods, sites, figures and words are all yours.
+
+</BlockStory>
+
+<BlockStory id="region-map" label="Region map" block="app-region-map" story="Default" backdrop="seaglass">
+
+Where activity comes from: the total rate, a dot map with each region lit by its share, and a table of regions with share, rate and a reading that flags the ones in trouble. API traffic by default, with ride requests and store sales in the stories; the ranges, formats, threshold and the action are yours.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="images, radio groups, tables, motion">
+
+### Accessibility
+
+Radial network picks its hops with one named choice and draws the graph as a named group described by how many things are reached within the hops shown. Every node is in a list, named with its distance ("invoice-exports, 2 hops away") and described by its state and note; the graph is one tab stop, the arrow keys walk the rings and follow links, and focus shows the same tooltip hovering does. States are words and solid or dashed rings, never color alone, and the foot's counts are a description list.
+
+On the hubs map the drawing is `aria-hidden` and the hubs are a labelled radio group: each hub is named with its figures, and the arrow keys walk west to east. Each lane in the panel has a spoken label with its direction, volume and travel time.
+
+The arc globe is an image with a text summary, drawn on a canvas that is `aria-hidden`; its figures are also in a visually hidden table and the lists beside it. Regions and places are `aria-pressed` toggles, places are named with their share, and the period and site controls and the Live toggle are labelled. The feed of latest visits has a heading.
+
+The region map makes the table the source of truth for the dot map: the map is an image with a summary, rows are named, and each region's Show on map button has `aria-pressed`. The range control and Live toggle are labelled.
+
+Under reduced motion the globe is a single still frame and values change in place.
+
+</ReferenceRow>
+
+</BlockStories>

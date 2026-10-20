@@ -1,0 +1,119 @@
+---
+title: Rollout Ruler
+description: "Set a feature’s rollout stage and show when a kill switch rolls it back."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="rollout-ruler/demo" height={260} />
+
+A ruler at 10% with a kill switch that rolls it back to 0, and a button that restores it.
+
+</Story>
+
+<Story id="meters" label="Meters">
+
+<ComponentPreview name="rollout-ruler/meters" height={220} />
+
+Four flags as small read-only rulers, one per row.
+
+`readOnly` makes it a meter with no playhead, and `size="sm"` is the bare track for a list row, one per flag.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="rollout-ruler" noImport />
+
+Use a rollout ruler to show and set how far a feature has rolled out: internal, beta, 10%, 50%, GA. The track is cut into its stages, each an equal stretch, so the early cohorts get as much room as the late ones; the axis under it says what each gate is worth. For a free percentage, use a [Slider](/docs/components/slider).
+
+```tsx
+import { RolloutRuler } from '@youj/react'
+
+const [share, setShare] = useState(10)
+
+<RolloutRuler label="Rolled out to" value={share} onValueChange={setShare} />
+```
+
+`value` is the share of users, 0–100, and while it's interactive it's always a stage's value (or 0). The default stages are Internal 1%, Beta 5%, 10%, 50% and GA 100%; pass `stages` for your own, in any order:
+
+```tsx
+<RolloutRuler
+  stages={[
+    { value: 0.5, label: 'Canary' },
+    { value: 2, label: 'Staff' },
+    { value: 25, label: '25%' },
+    { value: 100, label: 'All' },
+  ]}
+/>
+```
+
+Ticks already rolled out light in `tone` (the accent), the stretch to the next gate is a runway at a third of it, and the gate the value sits on names itself in the tone. A kill switch is a change from outside: set `value` to 0 (with `tone="danger"`) and the ruler sweeps back tick by tick.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (12)">
+
+### Props
+
+<PropsTable name="RolloutRuler" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="A step you take, A change from outside, reveal · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'A step you take', note: 'drag, a press on the ruler or a key: the playhead snaps to the gate', spring: 'snappy' },
+    { moment: 'A change from outside', note: 'a kill switch or a schedule: the ticks light or go dark one after another at a constant rate, the playhead riding the front', duration: 'deliberate', ease: 'linear' },
+    { moment: 'Reveal', note: 'it sweeps up from zero as it scrolls into view', duration: 'deliberate', ease: 'linear' },
+  ]}
+  reduced="Drawn at its value; changes jump."
+/>
+
+#### Reduced motion
+
+The ruler is drawn at its value, and changes jump without the sweep.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard">
+
+### Accessibility
+
+- Interactive, it's a slider over the stages, named by `label` (or the labels' "Rollout"). Its value is spoken with the stage's name: "Beta at 5%", "50%", "Off".
+- The arrow keys and Page keys step one gate; Home and End go to off and the last stage. A press anywhere on the ruler moves to the nearest gate.
+- `readOnly` and `size="sm"` are meters with the same spoken value.
+- Its built-in text (the default stage names, "Off") comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

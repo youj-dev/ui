@@ -1,0 +1,94 @@
+---
+title: Navigation
+description: "Website headers that are hard to get right by hand: mega menus that morph between panels, a floating bar that follows the page, a fullscreen menu with levels, a docs header, a shop's header, and the sitemap footer."
+---
+
+<BlockStories>
+
+<BlockStory id="mega-menu" label="Mega menu" block="marketing-navbar" story="MenuOpen" backdrop="cinnabar">
+
+Mega menus on one popup that morphs from panel to panel: a preview card that follows the link you point at, media cards for posts and guides, a strip for a launch. With search, an announcement bar, signed-in and signed-out states, and a drawer of folding sections on phones. Pick it for a product with many parts.
+
+</BlockStory>
+
+<BlockStory id="floating" label="Floating" block="marketing-navbar-floating" story="Default" backdrop="cinnabar">
+
+A floating island over the page that draws in around its links once you scroll, follows the section in view with a gliding pill and a progress line, steps aside as you read on and returns when you scroll back. On phones the island grows into its own menu. Pick it for a focused product or a one-page site.
+
+</BlockStory>
+
+<BlockStory id="docs" label="Docs" block="marketing-navbar-docs" story="Default" backdrop="cinnabar">
+
+A documentation header in two rows: the version menu, a ⌘K search over every page that remembers what you opened, the repository with its stars, and the sections as tabs with a gliding underline. On phones a drawer holds the section's page tree, open to the current page. Pick it for docs, guides and API references.
+
+</BlockStory>
+
+<BlockStory id="fullscreen" label="Fullscreen" block="marketing-navbar-fullscreen" story="Open" backdrop="cinnabar">
+
+A slim bar whose Menu opens the whole screen: large entries that rise into place, levels that drill in and back with focus kept in step, and a picture that follows the entry you point at. Pick it for a studio, an editorial product or any site that leads with its brand.
+
+</BlockStory>
+
+<BlockStory id="store" label="Store" block="marketing-navbar-store" story="Default" backdrop="cinnabar">
+
+A shop's header: a strip with the delivery promise and the region and currency, departments with category columns and collection tiles, a search that suggests products priced in the shopper's currency, and a bag whose count drops in. Pick it for a storefront.
+
+</BlockStory>
+
+<BlockStory id="footer" label="Footer" block="marketing-footer" story="Default" backdrop="cinnabar">
+
+A sitemap: grouped links with tags, a newsletter sign-up, trust badges, legal links, a language switch and a live status pill.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+Building an app rather than a site? Its navigation and the rest of its chrome are built in [Create](/create): a sidebar, a top bar with breadcrumbs, search or tabs, the workspace switcher, notifications and the account menu, with the screens you add as the pages of its nav.
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, menus, focus, keyboard, motion">
+
+### Accessibility
+
+Every header is a `<header>` landmark holding a labelled `nav`, and the page being shown is marked with `aria-current="page"`; the Floating bar marks the section in view with `aria-current="true"`. Each starts with a skip link to your content (`skipTo`, `#content` by default), hidden until it takes keyboard focus. Links and buttons are real `a` and `button` elements with the kit's focus ring.
+
+The Mega menu and the Store's departments are built on the kit's navigation menu, and the version and region menus on its menu: Enter, Space or ↓ opens one, Tab moves through a panel's links and the arrow keys through a menu's items, and Escape closes it and returns focus to its trigger. The previews and pictures beside the links are decorative, so the link's own words carry the meaning. ⌘K or Ctrl+K opens the Mega menu's and the Docs search from anywhere; the search palettes are dialogs whose results are a listbox you move through with the arrow keys.
+
+The Fullscreen menu is a modal dialog named Menu. Opened from the keyboard, focus lands on its first entry; a level that drills in is a group named after its parent, focus moves to its first entry, and Back returns focus to the entry it came from. Escape closes it from any level and focus returns to Menu. The phone drawers of the Mega menu, Docs and Store are modal sheets that trap focus and return it to their button. The Floating bar's phone menu is a disclosure: its button carries `aria-expanded`, Escape or a press outside folds it, and focus goes back to the button.
+
+The Floating bar hides as you scroll down, never while focus or its menu is inside it, and never under reduced motion. With reduced motion every header keeps its states (condensed, current, open) and shows them at once: nothing glides, rises or slides.
+
+Footer is a `<footer>` landmark with a labelled `nav` whose link groups sit under `h2` headings. The newsletter field has a label, and the result of signing up is announced in a status region. The language switch and trust badges are labelled.
+
+</ReferenceRow>
+
+</BlockStories>

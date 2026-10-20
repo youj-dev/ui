@@ -1,0 +1,78 @@
+---
+title: Freight
+description: "One screen for running freight: the fleet on a map, the dispatch board and one shipment in full, as views in tabs."
+---
+
+<BlockStories>
+
+<BlockStory id="logistics" label="Logistics" block="app-logistics" story="Default" backdrop="umber">
+
+Run freight from one screen: the ocean fleet on a map beside its ships, the dispatch board with its queue, route and the agent’s proposals, and one shipment in full, each a tab of the same size. Opening the at-risk load from Dispatch shows its shipment, and its reroute is one decision in both views.
+
+**Demo only.** Its content is fixed in the block: it takes no data or `copy` props, only the few settings and callbacks listed in its props. Copy the source to build on it.
+
+</BlockStory>
+
+<BlockStory id="fleet-overview" label="Fleet overview" block="app-fleet-overview" story="Default" backdrop="umber">
+
+Track an ocean-freight fleet on a map: ships steaming along their lanes, a list of what is sailing, holding or in port, a voyage panel with route, ETA, log and manifest, and a storm to reroute around.
+
+**Demo only.** Its content is fixed in the block: it takes no data or `copy` props, only the few settings and callbacks listed in its props. Copy the source to build on it.
+
+</BlockStory>
+
+<BlockStory id="dispatch-board" label="Dispatch board" block="app-dispatch-board" story="Default" backdrop="umber">
+
+Run a freight dispatch board: a queue of loads, the selected one on a route map with a reroute to approve or compare, every driver’s day as lanes with proposed runs dashed, and the dispatch agent’s proposals.
+
+**Demo only.** Its content is fixed in the block: it takes no data or `copy` props, only the few settings and callbacks listed in its props. Copy the source to build on it.
+
+</BlockStory>
+
+<BlockStory id="shipment-detail" label="Shipment detail" block="app-shipment-detail" story="AtRisk" backdrop="umber">
+
+Follow one shipment: the route as a stage rail with a detour, the vehicle with its readings called out, the route agent’s reroute to approve, the timeline, the record and the documents.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, live regions, keyboard">
+
+### Accessibility
+
+Logistics is one page heading over a tablist of three views (Fleet, Dispatch and Shipment); each view is a tab panel, and the fleet's keys answer only while Fleet is shown. Each of the other screens is a `main` with one page heading. Fleet overview names the map as an image that says how many ships are at sea and how many are holding, keeps its panels as labeled complementary regions, announces the voyage that opens in a polite live region, and answers the keyboard: `/` searches, `J` and `K` step through the list, `+` and `−` zoom, `0` frames the fleet and `Esc` closes the voyage. Dispatch board groups its figures, names the queue and the map’s route, draws proposed runs dashed as well as in a different color, and decides every proposal with buttons that can be undone. Shipment detail lists the vehicle’s readings and the route as named lists, marks the agent’s case as an article whose state is in its `data-status`, and reads its timeline as of the demo’s clock. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

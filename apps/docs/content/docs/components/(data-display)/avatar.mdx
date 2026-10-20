@@ -1,0 +1,139 @@
+---
+title: Avatar
+description: "Show a person or team’s image, with initials while it loads or if it fails."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="avatar/demo" height={220} />
+
+A member row with a large avatar and status dot, beside a small group of reviewers ending in a +4 count.
+
+</Story>
+
+<Story id="sizes-and-status" label="Sizes and status">
+
+<ComponentPreview name="avatar/sizes" height={220} />
+
+Each size with an image, with initials only, and with a status dot.
+
+`size` is `sm` (24px), `default` (32px) or `lg` (40px). `AvatarBadge` adds a status dot on the end-bottom edge, cut out of the page by a ring and sized to the avatar. It's green by default. Recolor it with a class, such as `bg-warning`.
+
+</Story>
+
+<Story id="groups" label="Groups">
+
+<ComponentPreview name="avatar/group" height={200} />
+
+A shared-with row where avatars overlap in a group ending in a +5 count.
+
+`AvatarGroup` overlaps its avatars and rings each one in the page color. `AvatarGroupCount` ends the stack with the number of people not shown, at the same size as the avatars beside it.
+
+</Story>
+
+<Story id="colors" label="Colors">
+
+<ComponentPreview name="avatar/colors" height={180} />
+
+Initials tinted with a colour picked from each person's email.
+
+`colorSeed` on `AvatarFallback` tints the initials with one of the theme's five chart colours, chosen from the seed: pass something stable (a user id or an email) and a person keeps their colour in every list and on every visit. The tint is drawn like the theme's inks, a thin wash with the initials mixed toward the text colour, so it follows the preset and holds contrast in light and dark. `avatarColor(seed)` returns the same colour's name (`chart-1`…`chart-5`) for anything else you want to match, such as a `Badge color`.
+
+```tsx
+<AvatarFallback colorSeed={user.email}>{initials}</AvatarFallback>
+```
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="avatar" noImport />
+
+Use Avatar for an author, assignee or member. Show the person’s name alongside it when space allows. For a company or project, consider an icon or logo instead of initials.
+
+```tsx
+import { Avatar, AvatarFallback, AvatarImage } from '@youj/react'
+
+export function Author() {
+  return (
+    <Avatar>
+      <AvatarImage src="/people/ana.jpg" alt="Ana Lima" />
+      <AvatarFallback>AL</AvatarFallback>
+    </Avatar>
+  )
+}
+```
+
+The fallback shows until the image has actually loaded, and stays if the image fails, so there's never a broken-image frame. When the image arrives, it fades in over the muted disc.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size (1)">
+
+### Props
+
+#### Avatar
+
+<PropsTable name="Avatar" />
+
+#### AvatarImage
+
+<PropsTable name="AvatarImage" />
+
+`AvatarImage` takes an image's `src` and `alt`, and Base UI's `onLoadingStatusChange`. `AvatarFallback` takes Base UI's `delay`, in milliseconds, to hold the initials back briefly on fast connections, and `colorSeed` to tint them with a chart colour picked from the seed. `AvatarBadge`, `AvatarGroup` and `AvatarGroupCount` render plain elements and take their usual attributes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Image in · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[{ moment: 'Image in', note: 'fades in over the fallback once loaded', duration: 'base', ease: 'standard' }]}
+  reduced="The image replaces the fallback at once."
+/>
+
+#### Reduced motion
+
+A loaded image replaces the initials at once instead of fading in. Nothing else about the avatar moves.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- An avatar next to a visible name is decorative. Mark it `aria-hidden` and give its image an empty `alt`, as in the demo, so the name isn't read twice.
+- An avatar on its own, such as one in a stack, needs the person's name. Put it in the image's `alt`, and give the fallback `role="img"` and an `aria-label` with the same name, so it reads the same before the image loads or if it fails.
+- The status dot is color only. Say the status in text nearby, or include it in the name, as in "Priya Raman, online".
+- Give the group count words for screen readers, such as "and 4 more", rather than "+4".
+
+</ReferenceRow>

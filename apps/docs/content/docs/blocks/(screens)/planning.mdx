@@ -1,0 +1,60 @@
+---
+title: Planning
+description: "Screens for planning work and time: a Kanban board and a week calendar."
+---
+
+<BlockStories>
+
+<BlockStory id="board" label="Board" block="app-task-board" story="Default" backdrop="heather">
+
+Help a team track tasks through their stages with a Kanban board and a sprint summary above it.
+
+</BlockStory>
+
+<BlockStory id="calendar" label="Calendar" block="app-week-calendar" story="Default" backdrop="heather">
+
+Plan a week on a time grid, with what is up next today and a Slot Grid to find a free hour.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, keyboard, live regions">
+
+### Accessibility
+
+Board has a `header` and one heading. Cards can be moved without a pointer: arrow keys walk the cards, Space picks one up, the arrows carry it and Space drops it, and each step is announced. Calendar’s week is a labelled group whose events open in a popover, with `aria-busy` while it loads and a live region for week changes. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

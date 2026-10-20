@@ -1,0 +1,149 @@
+---
+title: Shimmer Border
+description: "Highlight a container or button with light that travels along its border."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="shimmer-border/demo" height={320} />
+
+An AI prompt box whose border carries the light; focus or hover it to lengthen the light.
+
+</Story>
+
+<Story id="button" label="Button">
+
+<ComponentPreview name="shimmer-border/button" height={400} />
+
+A trial card with a ShimmerButton as its call to action.
+
+`ShimmerButton` is a button with the same light. It's 36px tall, with an icon gap built in, and it presses down slightly when clicked. Keyboard focus counts as hover, so Tab to it to see the light lengthen.
+
+```tsx
+import { ShimmerButton } from '@youj/motion/interactions'
+import { SparklesIcon } from '@youj/icons'
+
+<ShimmerButton onClick={openCheckout}>
+  <SparklesIcon size={16} className="text-accent" />
+  Upgrade to Pro
+</ShimmerButton>
+```
+
+Both take the effect's options: `idle` (`subtle`, `visible` or `hidden`), `speed` (`slow`, `base` or `fast`), `intensify` and `borderWidth`. See [Shimmer](/docs/components/shimmer#options) for what each one does.
+
+</Story>
+
+<Story id="featured-plan" label="Featured plan">
+
+<ComponentPreview name="shimmer-border/featured" height={380} />
+
+A pair of plans where the Pro plan's border carries the light at rest.
+
+For a featured card, give `ShimmerBorder` the radius and surface of the cards beside it, so the light is the only difference.
+
+`idle="visible"` runs the light at full strength at rest, so the plan stands out before anyone hovers it. The button inside stays plain, since a second light would compete with the first.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="shimmer-border" noImport />
+
+Use it for the one place a screen invites input or an upgrade: an AI composer, a featured plan, a trial call to action. One shimmer draws the eye, and two compete, so use one per screen. `ShimmerBorder` and `ShimmerButton` are the [Shimmer](/docs/components/shimmer) effect with a surface and a button look. Reach for the effect when the element already has its own look.
+
+`ShimmerBorder` is a container with a 12px radius, the surface color and the traveling light on its border. Keep its content above the light with `relative z-2`.
+
+```tsx
+import { ShimmerBorder } from '@youj/motion/interactions'
+
+export function Composer() {
+  return (
+    <ShimmerBorder className="rounded-2xl">
+      <div className="relative z-2">
+        <label htmlFor="prompt" className="sr-only">Ask the assistant</label>
+        <textarea id="prompt" rows={3} placeholder="Ask anything about your workspace…" />
+        <ComposerToolbar />
+      </div>
+    </ShimmerBorder>
+  )
+}
+```
+
+Focus the prompt in the preview: focus inside the container intensifies the light exactly like hover does.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="idle, intensify, speed… (10)">
+
+### Props
+
+#### ShimmerBorder
+
+<PropsTable name="ShimmerBorder" />
+
+Other props pass through to the container's `div`.
+
+#### ShimmerButton
+
+<PropsTable name="ShimmerButton" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Lap, intensify, press · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Lap', note: '`speed`: `slow`, `base`, `fast`', ease: 'linear', value: 'deliberate × 10, × 6, × 3.5' },
+    { moment: 'Intensify', note: 'on hover and keyboard focus', duration: 'slow', ease: 'standard' },
+    { moment: 'Press', note: '`ShimmerButton` scales to 0.98', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The light is parked at a fixed point on the border and doesn't travel. Hover and focus still intensify it, instantly."
+/>
+
+The loop is pure CSS on a registered `@property` angle, so it costs no JavaScript per frame, and it pauses while the element is offscreen or the tab is hidden.
+
+#### Reduced motion
+
+The light stops at a fixed point on the border, so the container keeps its accent glint without movement, and hover or focus still brightens it instantly.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- `ShimmerButton` is a native `button`, `type="button"` unless you pass another type, with a visible focus ring.
+- The light's layers are `aria-hidden`. In `ShimmerBorder`, label the controls inside it as you would anywhere else, like the visually hidden label on the prompt in the demo.
+- Keyboard focus intensifies the light like hover, so the emphasis never depends on a pointer.
+
+</ReferenceRow>

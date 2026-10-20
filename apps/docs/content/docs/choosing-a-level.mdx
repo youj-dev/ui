@@ -1,0 +1,89 @@
+---
+title: Choosing a level
+description: "Youj is a ladder: components and blocks (cards, sections and screens), each with its own place to browse. Create assembles an app frame from copy-in parts and fills it with screens; the copy-in levels are single pieces to add to an app you have."
+---
+
+<PageArt art="choosing-a-level" />
+
+Everything Youj ships sits on one ladder, from a single control to a whole screen: **Components, Blocks**. Components come in two sizes, simple and composite, and blocks in three: cards, sections and screens. Each rung is built from the rungs below it, never above, and each has its own place, so you can browse one level at a time: the Components and Blocks pages of these docs. Next to the ladder, **Create assembles an app frame** from copy-in parts (`frame-shell`, a sidebar, a top bar, an account menu and search), with the screens you add from the Screens catalog inside it, themed and exported as code. To wire a frame by hand from the components instead, follow [Build an app frame](/docs/guides/build-an-app-frame).
+
+<Cards>
+  <Card title="Create" href="/create">Pick a sidebar, top bar, account and search, add screens, theme it, and take the frame home as code.</Card>
+</Cards>
+
+| Level | What it is | You get it by | Browse |
+| --- | --- | --- | --- |
+| Component, simple | One control, surface, mark or effect with plain props: a button, a dialog, a sparkline. | Importing from `@youj/react` or `@youj/motion` | [Components](/docs/components) |
+| Component, composite | Several parts, or a model of rows, series or steps, with generic props: a data table, a chart, a date range picker. | Importing from `@youj/react` | [Components](/docs/components) |
+| Card | A self-contained card or panel with content of its own, in a product domain: a deploy pipeline, a recipe. | `npx youj add <name>` | [Cards](/docs/blocks/activity-and-conversations) |
+| Section | A full-width band of a website: a hero, pricing, a footer. | `npx youj add <name>` | [Sections](/docs/blocks/hero) |
+| Screen | A full screen: sign-in, settings, a dashboard. | `npx youj add <name>` | [Screens](/docs/blocks/checkout) |
+
+An item is built from items on its own level or below, never above: a screen uses cards, a card uses composite components, and a date range picker is built on the date picker. Cards, sections and screens are together the **blocks**: their registry type is `registry:block` and `add` writes them under `blocks/`.
+
+### Components
+
+Components are the basics: code you depend on and update with the package. Each component's [docs page](/docs/components) shows it live, with its install command (`npx youj add <name>`), its import and its props, variants and states. Find one by what it does, then compose it.
+
+```tsx
+import { Button } from '@youj/react'
+```
+
+### Blocks
+
+The copy-in levels are bigger: whole cards, bands and screens built from those components, which you copy into your app as source with the CLI and then own. Each block's docs page shows it live, with its code and the install command.
+
+### When to use which
+
+- **A new app, or an app with no shell yet:** [Create](/create). It composes the frame (sidebar, top bar, account, search) with the screens you add, each a page in its nav, and exports one install command.
+- **A control or a building block to compose yourself:** a [component](/docs/components) for one control, surface or mark, or for parts that work together (a table, a chart, a picker). Import it from the package.
+- **A piece for an app that has its own frame:** a [card](/docs/blocks/activity-and-conversations) for a card or panel, a [section](/docs/blocks/hero) for a band of a website, or a [screen](/docs/blocks/checkout) for a whole screen.
+- **A frame with no screens:** [Create](/create) with none added. You get the shell and its nav, ready for pages of your own.
+
+Browse a level, smallest first. The rest of this page is about adding the copy-in ones.
+
+<Cards>
+  <Card title="Components" href="/docs/components">Buttons, inputs, dialogs, tables, charts and pickers: the parts you compose.</Card>
+  <Card title="Cards" href="/docs/blocks/activity-and-conversations">Cards and panels for a dashboard or a screen: status, usage, settings, everyday life.</Card>
+  <Card title="Sections" href="/docs/blocks/hero">Bands to stack into a landing page: hero, features, pricing, calls to action.</Card>
+  <Card title="Screens" href="/docs/blocks/checkout">Whole screens: dashboards, settings, sign-in, content and tools.</Card>
+</Cards>
+
+## Blocks
+
+A block is one card, section or screen, ready to use as it is. Add it by its registry name, which its page shows:
+
+```bash
+npx youj add app-analytics-overview
+```
+
+In an app on the packages, `add` writes the block's own files under your `@/` alias, `blocks/app/analytics-overview.tsx` and its parts in `blocks/app/analytics-overview/`, and copies no component: the block imports those from `@youj/react`, `@youj/core`, `@youj/motion` and `@youj/icons`. It installs whatever the block needs that the app doesn't have yet, here `recharts` for its charts and `date-fns` and `react-day-picker` for its date range picker. Then render it:
+
+```tsx title="app/analytics/page.tsx"
+import { AnalyticsOverview } from '@/blocks/app/analytics-overview'
+
+export default function AnalyticsPage() {
+  return <AnalyticsOverview />
+}
+```
+
+Every block takes the same kinds of props, so you don't edit its source to use it:
+
+- **Data:** named for what it holds, such as `kpis`, `members` or `plans`. The defaults are the demo's data. A few blocks are demo-only and take no data or `copy` props: AI workspace, Dispatch board, Fleet overview, Money overview and Theme playground, and Exploded view takes `copy`, `parts` and `specs` but draws a fixed device. Their pages say so; copy the source to build on them.
+- **Text:** `copy` rewrites any string, labels and announcements included.
+- **Actions:** `on…` callbacks, such as `onRangeChange` or `onSave`. When one returns a promise, the block shows it pending, then its error if it rejects. A callback you haven't passed plays the demo's behavior, and in development the console says so once, for example `Login: onSignIn isn't wired; showing demo behaviour`, so a forgotten handler can't pass for a working one. Production builds drop the warning.
+- **State you own:** a `value`, `defaultValue` and `onValueChange` trio, or a named one such as `range`, `defaultRange` and `onRangeChange`.
+- **Loading:** `loading`, `error` with `onRetry`, and `empty`.
+- **Theme and locale:** a block wears your app's theme, the one set on `YoujProvider` or a `ThemeScope` around it, and formats numbers and dates in the provider's `locale`. Its `theme` prop forces another theme and its `locale` prop another locale; their lists show some blocks in another preset by passing `theme` from their stories. A preset you force brings its type, so load that preset's fonts (see the Type column of [Presets](/docs/theming#presets)), or the block falls back to the system face.
+- **Demo data:** a block that shows live operational data, such as rate limits, a job queue or a deploy pipeline, runs a simulation only while you pass none of its data, and marks that with a small dashed **Demo data** badge. Pass your data and the simulation stops: re-render the block with fresh data to keep it live. `demoMarker={false}` hides the badge in a demo of your own.
+- **Where it goes:** a block is a card (a card or panel inside a screen), a section of a website or a screen; its registry item says which as `meta.level` (and an overlay card says what it opens in as `meta.opens`), and its page shows it that way. A card renders as the card itself, at its natural width, for your screen to place; `fill` takes the width you give it, and `embedded={false}` draws a screen of its own around it.
+
+Each block's page lists its props and shows it fed with other data. A block takes its density from the app, so it's compact in an app set up with `density="compact"` (see [Density and scaling](/docs/theming#density-and-scaling)).
+
+## Related
+
+<Cards>
+  <Card title="CLI" href="/docs/cli#add">Everything `youj add` does, and its options.</Card>
+  <Card title="Create" href="/create">Build the app frame these blocks sit in, then export it.</Card>
+  <Card title="Composing components" href="/docs/guides/composing-components">Building your own screens from the same parts.</Card>
+</Cards>

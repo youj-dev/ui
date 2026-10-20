@@ -1,0 +1,54 @@
+---
+title: Custom sounds
+description: "Replace built-in sounds with your own files or another sound from the library."
+---
+
+## definePack
+
+Define a pack to replace the sounds you want to change. Each cue can use a built-in sound or your own file. Unchanged cues use the `base` pack, which defaults to Beacon. The [Sound builder](/docs/sound#sound-builder) can generate the pack for you.
+
+```ts title="lib/sounds.ts"
+import { candidates, definePack } from '@youj/sound'
+
+export const sounds = definePack({
+  sounds: {
+    tap: candidates.tap.halo,
+    notify: candidates.notify.glyph,
+    error: '/sounds/error.wav',
+  },
+})
+```
+
+Then give it to the provider: `<YoujProvider sound={sounds}>`. Define it at module scope, as above, so it's one pack for the page's life: each pack is loaded and decoded once.
+
+A sound can be:
+
+- **A candidate** from `candidates`, by cue and family: `candidates.tap.halo`, `candidates.error.glyph`. The [Sound builder](/docs/sound#sound-builder) lists them all. Each is a chunk of its own, loaded only when a pack plays it.
+- **A URL**, as a string or a `URL`: a file in your public folder, or on your CDN.
+- **Bytes**, an `ArrayBuffer` or a `Uint8Array`.
+- **A function** that loads one of those, called when sound first turns on: `() => import('./sounds/tap.mp3')` where your bundler serves an audio import as a URL (the module's `default` is used).
+
+## When a file fails
+
+Nothing loads until sound is on and unmuted. Then each sound is fetched or loaded once and decoded in the browser. A file that doesn't load (a 404, say) or won't decode (a page served in its place, or a format the browser can't read) leaves its cue to the base pack, and in development the console says which cue, which file and why. A cue that isn't one, or a source that isn't a URL, bytes or a function, is warned about as soon as the pack is defined. It's all server-safe: `definePack` only describes the pack, and fetches nothing on the server.
+
+## Your files
+
+Every browser decodes MP3 and WAV. Ogg and AAC play in most, but not all, so prefer MP3 or WAV. Keep your sounds short (a press under 60 ms, an outcome under 400), mono and free of leading silence and clicks, and level them to sit with the rest: the provider plays them at its volume, squared, so 0.5 is 12 dB down. The Sound builder does all of that for a file you add, and exports it as WAV.
+
+## A pack from scratch
+
+A `SoundPack` carries the player's `arm()` and `play()` as well as its sounds, so `definePack` is the way to make one. The cues you leave out play its `base`, Beacon by default:
+
+```ts
+import { definePack } from '@youj/sound'
+
+export const studio = definePack({
+  name: 'studio',
+  sounds: { tap: '/sounds/tap.mp3', success: '/sounds/success.mp3' },
+})
+```
+
+## A pack in Youj itself
+
+In the repository, `packages/sound/packs.config.ts` names the candidate each built-in pack plays for each cue, and which pack is the default. After an edit, `pnpm -F @youj/sound render` renders every candidate, writes each pack to `src/packs/` and every candidate to `src/candidates/`, and fails if a file passes 6 KB or a pack 40 KB. A new key in the config is a new pack, exported from `@youj/sound` by its name.

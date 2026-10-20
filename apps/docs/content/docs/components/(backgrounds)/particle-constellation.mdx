@@ -1,0 +1,144 @@
+---
+title: Particle Constellation
+description: "Show drifting, connected particles that gather around the pointer."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="particle-constellation/demo" full height={400} />
+
+A hero section over the particle graph; move the pointer across it and nearby links light up.
+
+`colors` takes three CSS colors: the particles, the links, then the highlight for links and particles near the pointer. The defaults are `--color-fg-muted`, `--color-fg-subtle` and `--color-accent`. Token references follow the theme, and the constellation rereads them when the theme changes.
+
+</Story>
+
+<Story id="pointer" label="Pointer">
+
+<ComponentPreview name="particle-constellation/pointer" full height={340} />
+
+A switch between particles that gather around the pointer and particles that part around it.
+
+The pointer is a node of its own. It links to every particle in reach and lights the links around it in the highlight color. With `pointer="attract"` (the default), particles gather into a loose ring around it instead of collapsing onto the cursor. With `"repel"`, they part around it. When the pointer leaves, the particles ease back to their own drift.
+
+The pointer is tracked on the window, so the field responds under the content above it. Touch doesn't gather particles, because it produces no hover. Set `interactive={false}` where the field sits behind something people work in.
+
+</Story>
+
+<Story id="signals" label="Signals">
+
+<ComponentPreview name="particle-constellation/signals" full height={340} />
+
+Pulses of light firing along the links, like neurons.
+
+Set `signals` and a node fires: a small bright pulse with a short tail runs down a link to the next node, which brightens and sometimes fires on, so the signal cascades. Each chain takes one color of a soft rainbow (mint, sky, violet and orange), brighter on a dark canvas. Pass `{ colors, rate }` to choose the CSS colors and how many chains start per second. The number of pulses in flight is capped, lower on the low motion tier, and none run under reduced motion.
+
+</Story>
+
+<Story id="quiet-use" label="Quiet use">
+
+<ComponentPreview name="particle-constellation/empty-state" height={400} />
+
+A sparse, still constellation behind an empty state, with no pointer response.
+
+At a low `density` and `intensity`, and without pointer response, the constellation becomes a hint of structure behind an empty state: the graph to come, not a show.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="particle-constellation" noImport />
+
+Use it where the idea is connection: service graphs, networks, integrations, collaboration. It reads as a living diagram, and it's the one background that answers the pointer directly. Don't use it behind reading-length text, since the hairlines cross everything, and keep it to one per page.
+
+The constellation fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { ParticleConstellation } from '@youj/motion/backgrounds'
+
+export function GraphHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <ParticleConstellation />
+      <p className="relative text-5xl font-semibold">See every dependency before it breaks</p>
+    </section>
+  )
+}
+```
+
+Each particle drifts at its own slow velocity and wraps around the edges. Two particles closer than `linkDistance` are joined by a hairline that fades with distance. The number of particles follows the area: at `density={1}`, one particle per 9,000 square pixels, capped at 900. A phone and a wide display look equally full.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (9)">
+
+### Props
+
+<PropsTable name="ParticleConstellation" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's drawn with Canvas 2D, not WebGL">
+
+### Performance
+
+It's drawn with Canvas 2D, not WebGL. A spatial grid sized to the link distance means each particle only checks its neighboring cells, and links are batched into a handful of strokes per frame by opacity. The canvas renders at a device-pixel ratio capped at 2. The loop pauses when the constellation is offscreen or the tab is hidden, and it stops and cleans up on unmount. If the browser can't create a 2D context, it falls back to a static CSS wash of the highlight color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drift, pointer pull, pointer strength · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drift', note: 'per-particle velocity, wrapping at the edges', value: 'speed ÷ time scale' },
+    { moment: 'Pointer pull', note: 'attract or repel within reach, then relax', value: 'per-frame physics' },
+    { moment: 'Pointer strength', note: 'eases in and out with the pointer', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one fixed, seeded constellation: the same composition every time. There's no drift and no pointer response, and it redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The constellation shows a fixed composition from a seeded layout, so it's the same on every visit and in every screenshot. The particles and links keep their colors and density. Only the drift and the pointer response are gone. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- Hairlines cross whatever sits above them. Keep a quiet pool of canvas behind the copy, as the hero preview does, or lower `intensity`, and check your text's contrast there.
+- The drift is slow and stops offscreen. Under reduced motion the field doesn't move at all.
+
+</ReferenceRow>

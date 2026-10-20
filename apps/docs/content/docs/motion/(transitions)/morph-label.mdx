@@ -1,0 +1,159 @@
+---
+title: Morph Label
+description: "Change a label with a crossfade while its container adjusts to the new width."
+---
+
+<ComponentPreview name="morph-label/demo" height={340} />
+
+Use it for controls that say something new once they're used: copy feedback, a follow toggle, a status chip, a save button that reports how it went. The label changes in place, so the eye stays where it was. Don't use it for content longer than a line, or for text that changes on a timer while nobody is interacting. It's for a change of state that someone caused.
+
+## Installation
+
+<InstallTabs name="morph-label" />
+
+## Usage
+
+Key the label with `value`, and spread `useMorphRoot` on the box around it.
+
+```tsx
+import { useState } from 'react'
+import { m } from 'motion/react'
+import { MotionFeatures } from '@youj/core'
+import { MorphLabel, useMorphRoot } from '@youj/motion'
+import { CheckIcon, CopyIcon } from '@youj/icons'
+
+export function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+  const morph = useMorphRoot(8) // the box's corner radius, in px
+
+  return (
+    <MotionFeatures features="max">
+      <m.button
+        {...morph}
+        type="button"
+        onClick={() => {
+          navigator.clipboard.writeText(text)
+          setCopied(true)
+        }}
+        className="relative inline-flex h-8 items-center overflow-hidden rounded-md border px-3 text-sm"
+      >
+        <MorphLabel value={copied ? 'copied' : 'copy'} contentClassName="gap-1.5">
+          {copied ? <CheckIcon trigger="mount" size={14} /> : <CopyIcon size={14} />}
+          {copied ? 'Copied' : 'Copy'}
+        </MorphLabel>
+      </m.button>
+    </MotionFeatures>
+  )
+}
+```
+
+- `value` keys the content. A new value crossfades to the new children. The same value re-renders in place, with no crossfade, so a count inside a label can update quietly.
+- Give the box `overflow-hidden`. The outgoing label leaves the layout at once and fades where it was, so without clipping it would spill past a box that's shrinking.
+- `contentClassName` styles each state's row. The default row is `inline-flex items-center gap-2 whitespace-nowrap`. Pass the gap your control uses, such as `gap-1.5`.
+
+## Examples
+
+<Examples>
+
+<Example id="the-box" label="The box">
+
+### The box
+
+`useMorphRoot(radius)` returns the props for the element that morphs: `layout`, a layout `transition` on the same spring the label uses, and an inline `borderRadius`. Spread them on an `m.button`, an `m.span` or any other Motion element, inside `<MotionFeatures features="max">` (layout animation needs the full feature set). The box's width animates as a transform while the label counter-scales, so text never squashes, and the inline radius keeps the corners round while the box scales.
+
+With a Base UI part, render the Motion element through `render`:
+
+```tsx
+const morph = useMorphRoot(6)
+
+<ButtonPrimitive render={<m.button {...morph} />}>
+  <MorphLabel value={state}>…</MorphLabel>
+</ButtonPrimitive>
+```
+
+Without a morph root, the label still crossfades and glides to its new position, but the box around it jumps to its new width.
+
+</Example>
+
+<Example id="async-states" label="Async states">
+
+### Async states
+
+Key the label by the state of the work. Hold the outcome for a beat on the token grid, here `k.ms('deliberate') * 3`, so it scales with Speed. Then return to rest. Announce the outcome from a live region, because a changed label isn't read out on its own.
+
+<ComponentPreview name="morph-label/async" height={300} />
+
+For the full pattern, with a spinner, a drawn check, an error shake and announcements for each state, use [Async Feedback](/docs/components/async-feedback). It's built on MorphLabel.
+
+</Example>
+
+<Example id="effects-on-the-label" label="Effects on the label">
+
+### Effects on the label
+
+`ref` points at an inner span that stays the same element across values. Animate it for a shake or a nudge. It sits inside the layout projection rather than on it, so the effect doesn't fight the box's morph, and it can start on one value and finish on the next. Submit a wrong code below.
+
+<ComponentPreview name="morph-label/shake" height={280} />
+
+```tsx
+const label = useRef<HTMLSpanElement>(null)
+
+if (label.current && !k.reduced) {
+  animate(label.current, { x: [0, -4, 4, -3, 3, -2, 0] }, k.tween('base'))
+}
+
+<MorphLabel ref={label} value={state}>…</MorphLabel>
+```
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, children, contentClassName… (8)">
+
+### Props
+
+#### MorphLabel
+
+<PropsTable name="MorphLabel" />
+
+#### useMorphRoot
+
+`useMorphRoot(radius?: number | string)` returns these props. Spread all of them on the box.
+
+<PropsTable name="MorphRootProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Crossfade, width morph · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Crossfade', note: 'opacity, scale from `0.9` and a 2px blur, both ways', duration: 'fast', ease: 'standard' },
+    { moment: 'Width morph', note: 'the box and the label, as a transform', spring: 'snappy' },
+  ]}
+  reduced="The new label replaces the old one at once, and the box takes its new width in the same frame."
+/>
+
+Both halves share the `snappy` spring, which is why the box needs `useMorphRoot` rather than a transition of its own. On different curves, the label would drift against the edge of the box mid-morph.
+
+#### Reduced motion
+
+Every swap is instant. The new label and the box's new width arrive in the same frame, and any effect on the `ref` should check `k.reduced` and skip itself, as the shake above does. What the control says is unchanged.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- Only the current label is in the accessibility tree. The outgoing row is `aria-hidden` while it fades, so a button's accessible name is never both labels at once.
+- A changed label isn't announced on its own. When the change is news, such as "Copied" or "Saved", say it from a `role="status"` region outside the button. A button flattens its content, so a live region inside it isn't heard.
+- Don't pair a changing label with `aria-pressed`. A toggle button's name should stay the same while its pressed state changes. When the label itself states the state, as Follow and Following do, leave `aria-pressed` off.
+- Youj icons inside the label are decorative by default, so the text carries the meaning.
+
+</ReferenceRow>

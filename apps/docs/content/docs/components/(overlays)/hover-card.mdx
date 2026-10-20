@@ -1,0 +1,143 @@
+---
+title: Hover Card
+description: "Preview a link’s destination on hover or keyboard focus."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="hover-card/demo" height={380} />
+
+A pull request link that previews its title, labels and checks when hovered or focused.
+
+The card opens after the pointer rests on the link for 500ms and closes 250ms after it leaves both the link and the card, so the pointer can travel onto the card without losing it. Passing over a row of links doesn't flash a card for each. Tune `delay` and `closeDelay` on the trigger. They measure intent, not motion, so the Speed control leaves them alone.
+
+</Story>
+
+<Story id="in-lists" label="In lists">
+
+<ComponentPreview name="hover-card/commits" height={380} />
+
+A list of commits where each hash previews its commit.
+
+A list of references is where hover cards earn their keep: each commit hash previews its commit, and the list stays dense. Here the card opens above the row (`side="top"`), aligned to the end of the hash.
+
+</Story>
+
+<Story id="on-avatars" label="On avatars">
+
+<ComponentPreview name="hover-card/presence" height={280} />
+
+A row of avatars that each preview a person.
+
+An avatar with initials doesn't say who it is. Make each one a link with the person's name as its `aria-label`, and let the card say the rest.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="hover-card" noImport />
+
+Use a hover card to let people peek at a link's destination without leaving the page: mentions, references, commit hashes. It's a visual shortcut for sighted pointer, touch and keyboard users, and the link stays the real interface, so everything in the card must also be at its destination. Keep controls out of the card. For content people open on purpose, including on touch, use a [Popover](/docs/components/popover). For a one-line label, use a [Tooltip](/docs/components/tooltip).
+
+```tsx
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@youj/react'
+
+export function Mention() {
+  return (
+    <HoverCard>
+      <HoverCardTrigger href="/people/priya">@priya</HoverCardTrigger>
+      <HoverCardContent>
+        <PersonSummary handle="priya" />
+      </HoverCardContent>
+    </HoverCard>
+  )
+}
+```
+
+`HoverCardTrigger` renders an `<a>`, so it stays a plain link: it navigates on click and reads as a link to assistive technology. Style it like the links around it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="HoverCardTrigger passes through to Base UI's preview card trigger">
+
+### Props
+
+#### HoverCardContent
+
+<PropsTable name="HoverCardContent" />
+
+`HoverCardTrigger` passes through to Base UI's preview card trigger. Here it defaults `delay` to 500 and `closeDelay` to 250, and takes `href` and the other link attributes. `HoverCard` takes the root props (`open`, `defaultOpen`, `onOpenChange`).
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="Touch has no hover, so on a touch device a tap on the link opens its…">
+
+### Touch
+
+Touch has no hover, so on a touch device a tap on the link opens its card instead of following the link. A second tap on the link follows it and closes the card, and a tap anywhere else closes the card without leaving the page. Base UI's preview card doesn't respond to touch on its own; `HoverCardTrigger` adds this. On a phone the card is still a preview: a screen reader user never sees it, so keep everything in it at the destination too.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, keyboard focus, Escape… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'scale .96 → 1 and fade, out of the link (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Keyboard focus, Escape', note: 'Base UI sets `data-instant`', value: '0ms' },
+    { moment: 'Open and close delays', note: 'hover intent, not motion', value: '500ms, 250ms' },
+  ]}
+  reduced="The card appears and disappears at once. The delays stay the same."
+/>
+
+#### Reduced motion
+
+The card appears in place when the delay ends and closes at once. The delays are kept, because they separate a glance from a pass-by rather than animate anything.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- The trigger is an ordinary link, and it's the only accessible interface. The card isn't announced, and its content isn't in the tab order.
+- Keyboard focus on the link opens the card, so keyboard users get the same preview. `Escape` closes it and leaves focus on the link.
+- On touch, the first tap on the link shows the card and the second follows the link. The card's content isn't navigable by touch, keyboard or screen reader, which is why it must repeat what the destination says.
+
+| Key | Action |
+| --- | --- |
+| `Tab` | Focusing the link opens its card. |
+| `Enter` | Follows the link. |
+| `Escape` | Closes the card and keeps focus on the link. |
+
+</ReferenceRow>

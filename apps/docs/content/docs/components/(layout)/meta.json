@@ -1,0 +1,4 @@
+{
+  "title": "Layout",
+  "pages": ["card", "separator", "scroll-area", "resizable", "inspector-panel", "aspect-ratio"]
+}

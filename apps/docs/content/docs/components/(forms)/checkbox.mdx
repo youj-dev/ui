@@ -1,0 +1,153 @@
+---
+title: Checkbox
+description: "Select an option with checked, unchecked and mixed states."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="checkbox/demo" height={400} />
+
+Email notification topics under an "Everything" checkbox that is mixed while only some of them are on.
+
+A parent that stands for a group is mixed while only some of its children are checked. Derive `checked` and `indeterminate` from the children, and let the parent's change set all of them. The mixed state draws a dash and reports `aria-checked="mixed"`. Try it in the demo.
+
+```tsx
+const all = on.length === topics.length
+const some = on.length > 0 && !all
+
+<Checkbox
+  checked={all}
+  indeterminate={some}
+  onCheckedChange={(next) => setOn(next ? topics.map((t) => t.id) : [])}
+/>
+```
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="checkbox/states" height={220} />
+
+Disabled, invalid and read-only checkboxes.
+
+`disabled` and `invalid` go on the `Field`, which passes them to the control and dims or colors the label with it. `readOnly` keeps the value visible and reachable by keyboard, but it can't change.
+
+</Story>
+
+<Story id="choice-cards" label="Choice cards">
+
+<ComponentPreview name="checkbox/cards" height={300} />
+
+Checkboxes as choice cards.
+
+Wrap a `Field` in a `FieldLabel` to turn the whole card into the target. The card takes the focus ring from the checkbox inside it, and it tints when checked. Use `FieldTitle` for the card's title, since a label can't contain another label.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="checkbox" noImport />
+
+Use Checkbox for options submitted with a form or for selecting several items. Use a [Switch](/docs/components/switch) for settings that apply immediately, or a [Radio Group](/docs/components/radio-group) for a single choice.
+
+Put the checkbox in a `Field` with a `FieldLabel`. The label names the control, and clicking it toggles the box.
+
+```tsx
+import { Checkbox, Field, FieldLabel } from '@youj/react'
+
+export function RememberDevice() {
+  return (
+    <Field orientation="horizontal">
+      <Checkbox defaultChecked />
+      <FieldLabel>Remember this device</FieldLabel>
+    </Field>
+  )
+}
+```
+
+It's uncontrolled with `defaultChecked`. To own the state, pass `checked` and `onCheckedChange`. Inside a form, `name` and `value` submit it like a native checkbox, and `required` on the surrounding `Field` marks the label and makes the box required.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="sound (1)">
+
+### Props
+
+<PropsTable name="Checkbox" />
+
+The props you'll use most come from Base UI:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `checked` | `boolean` | Controlled state. Pair it with `onCheckedChange`. |
+| `defaultChecked` | `boolean` | Initial state, uncontrolled. Default `false`. |
+| `onCheckedChange` | `(checked, details) => void` | Called on every tick and untick. |
+| `indeterminate` | `boolean` | Shows the mixed state and reports `aria-checked="mixed"`. |
+| `disabled` | `boolean` | Ignores presses. Set it on the `Field` to dim the label too. |
+| `readOnly` | `boolean` | Keeps the current value. |
+| `required` | `boolean` | Must be checked before the form submits. Defaults to the `Field`'s `required`. |
+| `name`, `value` | `string` | What the hidden input submits. With no `value`, a checked box submits `"on"`. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Check, check lands, mixed dash… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Check', note: 'the stroke draws from zero on every tick', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Check lands', note: 'the mark settles from 88% scale, after a `base` delay', spring: 'settle' },
+    { moment: 'Mixed dash', note: 'draws from the start of the line', duration: 'fast', ease: 'enter' },
+    { moment: 'Uncheck', note: 'the glyph fades', duration: 'instant', ease: 'standard' },
+    { moment: 'Box fill', note: 'background and border color', duration: 'fast', ease: 'standard' },
+    { moment: 'Press', note: 'the box squeezes to 90%', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="The check and the dash appear whole, and the box doesn't squeeze on press. The fill still changes color."
+/>
+
+A tick is a small arrival, so the check earns the `settle` spring, Youj's one overshoot. The indicator stays mounted while unchecked, so a tick that reverses mid-draw continues from where the stroke is, with no jump.
+
+#### Reduced motion
+
+The check appears whole instead of drawing, and pressing doesn't squeeze the box. Checked, unchecked and mixed still look different, so the state reads the same without the motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a `checkbox` role with `aria-checked` of `true`, `false` or `mixed`. `Space` toggles it and `Enter` doesn't, as with a native checkbox.
+- A `FieldLabel` in the same `Field` names it. Outside a `Field`, use `Label` with `htmlFor` and an `id`, or an `aria-label`.
+- The 16px box has a 24px hit area, and 40px on touch screens.
+- The box's border clears 3:1 against the page, and focus shows a 2px accent outline.
+
+</ReferenceRow>

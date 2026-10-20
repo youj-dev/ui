@@ -1,0 +1,251 @@
+---
+title: Card
+description: "Group related content and actions on a card, with optional lift or lighting effects."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="card/demo" height={420} />
+
+A usage card with an action in its header, progress bars in its content and a footer.
+
+`variant="inset"` is for the [Bezel look](/docs/looks): the card becomes a shell that carries the head, with everything under it in a well inset at the concentric radius. Classic draws it as the default card, so the choice is safe to leave in place when you switch styles.
+
+</Story>
+
+<Story id="panel" label="Panel">
+
+<ComponentPreview name="card/panel" height={360} />
+
+A dashboard panel: build minutes by queue, under a slim header strip.
+
+`variant="panel"` turns the header into one slim line: the `CardTitle` in the theme's label face (mono capitals in Bezel), room in the title for an info tip, and the `CardAction` at the end for a menu button. Everything under it sits on a raised surface inset in the shell. It draws the same way in every look.
+
+</Story>
+
+<Story id="size" label="Size">
+
+<ComponentPreview name="card/sizes" height={340} />
+
+Default and small cards.
+
+`size="sm"` tightens the card's spacing from 20px to 16px and sets the title one step smaller. Use it in dense grids and sidebars.
+
+</Story>
+
+<Story id="lift" label="Lift">
+
+<ComponentPreview name="card/lift" height={260} />
+
+Cards that lift on hover and keyboard focus.
+
+For a card that is one big target, like a project in a grid, `lift` raises the card 2px on hover or keyboard focus and deepens its shadow. Pressing sets it back down. Make the title a stretched link, so the whole card responds to the pointer while the link stays the card's only tab stop. The card wears the link's focus ring.
+
+```tsx
+<Card lift>
+  <CardHeader>
+    <CardTitle>
+      <a href="/projects/web" className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none">
+        web
+      </a>
+    </CardTitle>
+  </CardHeader>
+</Card>
+```
+
+The demo cards also carry `data-yj-trigger=""`, which you add yourself (Card doesn't set it), so the [Youj icons](/docs/icons) inside them play while a card is hovered or focused, not only when the pointer lands on an icon.
+
+</Story>
+
+<Story id="spotlight" label="Spotlight">
+
+<ComponentPreview name="card/spotlight" height={320} />
+
+Cards lit by a spotlight that follows the pointer.
+
+`spotlight` lights the card with the [Spotlight](/docs/components/spotlight) effect. A soft glow follows the pointer across the surface, and the border brightens where the light passes over it. Put several cards in a `SpotlightGroup` from `@youj/motion` and they share one light, so a neighbor's nearest edge glows as the pointer approaches it.
+
+Tab through the buttons: keyboard focus parks the light on the focused card and glides it from card to card. Touch input doesn't move the light. Save the effect for a few cards that deserve attention, like integrations or plans, not every card in an app.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="card" noImport />
+
+Use Card to group content and actions for a project, integration or usage summary. Use headings and spacing for sections that do not need a separate surface. Reserve `lift` and `spotlight` for cards that are themselves interactive.
+
+```tsx
+import { Button, Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@youj/react'
+
+export function UsageCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Usage this cycle</CardTitle>
+        <CardDescription>Resets in 12 days, on October 1.</CardDescription>
+        <CardAction>
+          <Button variant="outline" size="sm">
+            Details
+          </Button>
+        </CardAction>
+      </CardHeader>
+      <CardContent>{/* meters, a chart, a list */}</CardContent>
+      <CardFooter>
+        <Button size="sm">Upgrade</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+`CardHeader` sets the title and description in a grid. A `CardAction` inside it takes its own column at the end and spans both rows, so a long title wraps without pushing the action down. `CardContent` shares the header's inset. `CardFooter` is recessed onto the muted surface, with a hairline above it and the card's inner radius below. An image as the card's first child runs edge to edge, with its top corners rounded to match.
+
+### Cards of equal height
+
+A card is a flex column, and grid items stretch to the row's height, so cards in a grid are already as tall as the tallest. To keep the footers on one line, push each footer to the bottom with `mt-auto`. If a wrapper sits between the grid and the card, such as a link, give the wrapper `h-full` and the Card `h-full` too:
+
+```tsx
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {plans.map((plan) => (
+    <Card key={plan.name} className="h-full">
+      <CardHeader>
+        <CardTitle>{plan.name}</CardTitle>
+        <CardDescription>{plan.summary}</CardDescription>
+      </CardHeader>
+      <CardContent>{plan.features}</CardContent>
+      <CardFooter className="mt-auto">
+        <Button className="w-full">Choose {plan.name}</Button>
+      </CardFooter>
+    </Card>
+  ))}
+</div>
+```
+
+### A featured card
+
+Mark the card to look at first, such as the recommended plan, with a ring in the accent color. A `Badge` in the header names why:
+
+```tsx
+<Card className="ring-2 ring-accent">
+  <CardHeader>
+    <CardTitle>Pro</CardTitle>
+    <CardAction>
+      <Badge>Most popular</Badge>
+    </CardAction>
+  </CardHeader>
+  {/* … */}
+</Card>
+```
+
+### With a form
+
+To submit what a card holds, wrap its parts in a `<form>` inside the card, so the footer's button submits it:
+
+```tsx
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Field, FieldLabel, Input } from '@youj/react'
+
+export function ProjectNameCard({ onSave }: { onSave: (name: string) => void }) {
+  return (
+    <Card>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          onSave(String(new FormData(event.currentTarget).get('name')))
+        }}
+      >
+        <CardHeader>
+          <CardTitle>Project name</CardTitle>
+          <CardDescription>Shown in the sidebar and in links.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Field>
+            <FieldLabel htmlFor="project-name">Name</FieldLabel>
+            <Input id="project-name" name="name" defaultValue="Orion" />
+          </Field>
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" size="sm">
+            Save
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
+  )
+}
+```
+
+The card lays out a `<form>` that is its direct child as if it weren't there (`display: contents`), so the parts keep the card's spacing and Bezel's header band, dividers and section shading. Without that, the form would be the card's only child: the gap between parts would go, and Bezel's rules, which style the card's own children, would miss the header and footer. Put the form directly in the card, around the parts. A form nested deeper, or another wrapper element, isn't looked through. Card has no `render` prop, so it can't render as the form itself.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, variant, lift… (4)">
+
+### Props
+
+<PropsTable name="Card" />
+
+`CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent` and `CardFooter` take the props of a `div`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Lift, press, spotlight in and out… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Lift', note: 'rise 2px, deeper shadow, on hover and focus', duration: 'base', ease: 'standard' },
+    { moment: 'Press', note: 'sets the card back down', duration: 'instant', ease: 'standard' },
+    { moment: 'Spotlight in and out', note: 'the glow and the lit edge fade', duration: 'slow', ease: 'standard' },
+    { moment: 'Spotlight tracking', note: 'the light follows the pointer', value: 'every animation frame' },
+    { moment: 'Focus glide', note: 'the light moves to the focused card', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="Lift drops the rise and changes the shadow and border at once. Spotlight stops tracking and shows a static accent border on hover and focus."
+/>
+
+The light is a radial gradient moved with `transform`, and the lit edge is the same gradient masked to a 1px ring, so tracking never triggers layout.
+
+#### Reduced motion
+
+A lifting card stays in place. Its shadow and border still change on hover and focus, at once. A spotlight card doesn't track the pointer. Hovering or focusing it shows a static accent border instead, so it still answers.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- A card is a `div` with no role. Give a set of cards list semantics by rendering them in a `ul`, one card per `li`.
+- `CardTitle` is a `div`, so it doesn't appear in the page's outline. When a card titles a section, put a heading inside it, such as `<CardTitle><h2>Usage this cycle</h2></CardTitle>`. The heading keeps the card's type.
+- A lifting card needs one real target. A stretched link gives it a name, link semantics and a single tab stop. Keep other controls out of a stretched-link card, or lift them above the link's overlay with `relative z-10`.
+- Spotlight's light layers are `aria-hidden`. The card's content and tab order don't change.
+
+</ReferenceRow>

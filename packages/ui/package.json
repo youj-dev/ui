@@ -1,0 +1,177 @@
+{
+  "name": "@youj/react",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) Youj UI: accessible React components on shadcn + Base UI, animated with @youj/motion, with @youj/icons.",
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "keywords": [
+    "alpha",
+    "ui",
+    "components",
+    "shadcn",
+    "base-ui",
+    "animated",
+    "data-table",
+    "themes",
+    "dark-mode",
+    "blocks",
+    "youj",
+    "react",
+    "accessible",
+    "tailwindcss",
+    "design-system"
+  ],
+  "homepage": "https://www.youj.dev/docs/components",
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/ui"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./chart": "./src/chart.ts",
+    "./form": "./src/form.ts",
+    "./date": "./src/date.ts",
+    "./carousel": "./src/carousel.ts",
+    "./command": "./src/command.ts",
+    "./data-table": "./src/data-table.ts",
+    "./workspace-switcher": "./src/workspace-switcher.ts",
+    "./*": "./src/*"
+  },
+  "files": [
+    "dist",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./chart": {
+        "types": "./dist/chart.d.ts",
+        "default": "./dist/chart.js"
+      },
+      "./form": {
+        "types": "./dist/form.d.ts",
+        "default": "./dist/form.js"
+      },
+      "./date": {
+        "types": "./dist/date.d.ts",
+        "default": "./dist/date.js"
+      },
+      "./carousel": {
+        "types": "./dist/carousel.d.ts",
+        "default": "./dist/carousel.js"
+      },
+      "./command": {
+        "types": "./dist/command.d.ts",
+        "default": "./dist/command.js"
+      },
+      "./data-table": {
+        "types": "./dist/data-table.d.ts",
+        "default": "./dist/data-table.js"
+      },
+      "./workspace-switcher": {
+        "types": "./dist/workspace-switcher.d.ts",
+        "default": "./dist/workspace-switcher.js"
+      },
+      "./styles.css": "./dist/styles.css",
+      "./shadcn.css": "./dist/shadcn.css",
+      "./package.json": "./package.json"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "generate": "node ../illustrations/scripts/generate-illustrations.mjs && node scripts/generate.mjs",
+    "generate:check": "node scripts/generate.mjs --check",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --coverage.enabled",
+    "lint:tokens": "node scripts/check-tokens.mjs",
+    "lint:structure": "node scripts/check-structure.mjs",
+    "lint:direction": "node scripts/check-direction.mjs",
+    "lint:blocks": "node scripts/check-blocks.mjs",
+    "lint:shapes": "node scripts/check-shapes.mjs ui",
+    "size": "node scripts/size.mjs",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "ui:add": "node scripts/shadcn-add.mjs",
+    "verify": "pnpm typecheck && pnpm lint:tokens && pnpm lint:structure && pnpm lint:direction && pnpm lint:blocks && pnpm lint:shapes && pnpm generate:check && pnpm registry:check && pnpm test"
+  },
+  "dependencies": {
+    "@youj/icons": "workspace:*",
+    "@tanstack/react-table": "^9.2.4",
+    "@tanstack/react-virtual": "^3.14.13",
+    "class-variance-authority": "^0.7.1",
+    "react-resizable-panels": "^4.14.0"
+  },
+  "devDependencies": {
+    "@base-ui/react": "~1.8.0",
+    "@hookform/resolvers": "^5.9.1",
+    "@youj/core": "workspace:*",
+    "@youj/illustrations": "workspace:*",
+    "@youj/miniatures": "workspace:*",
+    "@youj/motion": "workspace:*",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.4.0",
+    "embla-carousel-react": "^8.6.0",
+    "motion": "^13.4.4",
+    "react-day-picker": "^10.0.1",
+    "react-hook-form": "^7.89.0",
+    "recharts": "3.8.0",
+    "zod": "^4.6.5"
+  },
+  "peerDependencies": {
+    "@base-ui/react": ">=1.8.0 <1.10.0",
+    "@youj/core": "workspace:*",
+    "@youj/motion": "workspace:*",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.4.0",
+    "embla-carousel-react": "^8.6.0",
+    "motion": "^13.4.4 || ^14",
+    "react": "^19",
+    "react-day-picker": "^10.0.1",
+    "react-dom": "^19",
+    "react-hook-form": "^7.89.0",
+    "recharts": "^3.8.0",
+    "tailwindcss": "^4"
+  },
+  "peerDependenciesMeta": {
+    "cmdk": {
+      "optional": true
+    },
+    "date-fns": {
+      "optional": true
+    },
+    "embla-carousel-react": {
+      "optional": true
+    },
+    "react-day-picker": {
+      "optional": true
+    },
+    "react-hook-form": {
+      "optional": true
+    },
+    "recharts": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,171 @@
+---
+title: Share Dialog
+description: "Share a document, board or file with people and by link: invite, see who has access and set what the link allows."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Share a document">
+
+<ComponentPreview name="share-dialog/demo" height={220} />
+
+A roadmap shared with an editor, a commenter and a pending invitation. Type an address or pick a person or group, choose a role and send.
+
+The dialog is Google-Drive-style sharing in one window. Everyone's role can change from their row, access can be removed, and a pending invitation is marked and can be resent or cancelled. Each action waits for your handler and fails on its own row, so nothing closes while something is wrong.
+
+</Story>
+
+<Story id="organization" label="Organization link">
+
+<ComponentPreview name="share-dialog/organization" height={220} />
+
+A document anyone at the company can comment on, and no one outside it can open.
+
+General access offers `Restricted`, `Anyone at <organization>` (only when you pass `organization`) and `Anyone with the link`. The two open ones take a role for the people who arrive by the link. A change is applied once your `onAccessChange` resolves; if it rejects, the old value stays and its message shows under the setting.
+
+</Story>
+
+<Story id="read-only" label="Read-only viewer">
+
+<ComponentPreview name="share-dialog/read-only" height={220} />
+
+A viewer who may see who has access but can change nothing.
+
+`readOnly` removes the invite field, turns every role select into plain text and drops the remove buttons. Copy link stays: the viewer can still pass the link on, within what general access allows.
+
+</Story>
+
+<Story id="with-preview" label="Share with a preview">
+
+<ComponentPreview name="share-dialog/with-preview" height={220} />
+
+A file shared from its own screen: a card with its name and one line of detail sits above the invite field, and general access is a short list of switches.
+
+`preview` takes `{ title, description?, thumbnail? }`; without a `thumbnail` the card shows a document icon. `accessLayout="switches"` is the compact general access for a narrower dialog: no message field, and one row per way in, each a title, a line and a Switch on the same edge. **Only people invited** carries the role invitations start on (so the invite field loses its own role menu) and its switch stays on until you turn another row on. **Anyone at `<organization>`** and **Anyone with the link** open the document when on, with their own role menu beside the switch; turning one off goes back to invited people only. `onAccessChange` and the rest work as in the default layout.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="share-dialog" noImport />
+
+Use a Share Dialog where someone shares one thing with others: a document, a board, a file or a folder. For inviting people to a whole workspace, use the [Team members](/docs/blocks/billing-and-team#team-members) block; for an ordinary short task in a modal, a [Dialog](/docs/components/dialog).
+
+It is a component with a data contract, not a page: you own the list of people, so each handler updates your data and the dialog shows what you pass back.
+
+```tsx
+'use client'
+
+import { useState } from 'react'
+import { Button, ShareDialog, type SharePerson } from '@youj/react'
+
+export function ShareRoadmap({ initial }: { initial: SharePerson[] }) {
+  const [people, setPeople] = useState(initial)
+
+  return (
+    <ShareDialog
+      trigger={<Button variant="outline">Share</Button>}
+      resource="Q3 roadmap"
+      link="https://acme.test/docs/q3-roadmap"
+      organization="Acme"
+      people={people}
+      suggestions={directory}
+      onInvite={async ({ recipients, role, message }) => {
+        const invited = await api.invite(recipients, role, message)
+        setPeople((current) => [...current, ...invited])
+      }}
+      onRoleChange={async (person, role) => {
+        await api.setRole(person.id, role)
+        setPeople((current) => current.map((p) => (p.id === person.id ? { ...p, role } : p)))
+      }}
+      onRemove={async (person) => {
+        await api.remove(person.id)
+        setPeople((current) => current.filter((p) => p.id !== person.id))
+      }}
+      onAccessChange={(access) => api.setAccess(access)}
+    />
+  )
+}
+```
+
+Every handler may return a promise. Resolve and update `people`; reject with an `Error` and its message shows next to the action, with the dialog still open. Roles default to Viewer, Commenter and Editor; pass `roles` for your own (`{ value, label }`). Pass `loading` while the list is on its way and the people area shows skeleton rows in the same space.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="resource, link, people, suggestions, organization, access, readOnly, loading, handlers…">
+
+### Props
+
+<PropsTable name="ShareDialog" />
+
+#### Invite field
+
+Type an address and press Enter or a comma (a semicolon works too); a pasted list is split into one chip each. Suggestions open on focus and filter as you type; people already in `people` are left out, and a group suggestion (one with `members`) shows its size. An address that isn't valid, or belongs to someone who already has access, stays as a danger chip with its reason and blocks Send until it is removed. Backspace on an empty field takes the last chip back. Send is an [Async Button](/docs/components/button#async-button): `onInvite` receives `{ recipients, role, message }`, and on success the chips and message clear.
+
+#### Data attributes
+
+The preview card is `share-dialog-preview`. The invite, people and general access areas carry `data-slot` values `share-dialog-invite`, `share-dialog-people` and `share-dialog-access`; the chip field is `share-dialog-recipients`, and an invalid chip carries `data-invalid`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Labels" summary="Every string, in every built-in language">
+
+### Labels
+
+Every string is a core label (`shareDialog…`) in every built-in language, so the provider's `locale` or `labels` (see [Internationalization](/docs/guides/i18n)) rewrites them. The roles' names are labels too (`shareDialogViewer`, `shareDialogCommenter`, `shareDialogEditor`); your own `roles` bring their own names. The organization, the resource and people's names are yours and arrive inside the sentences.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Rows enter and leave · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open and close', note: 'the dialog’s own rise and scrim, as any Dialog' },
+    { moment: 'A person added or removed', note: 'their row fades into its slot and the rows below glide', duration: 'fast', ease: 'standard' },
+    { moment: 'Send and Copy link', note: 'the Async Button’s pending, success and error states' },
+  ]}
+  reduced="Rows appear and leave at once and the buttons change without morphing; every message is still shown and announced."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Focus, combobox, live regions">
+
+### Accessibility
+
+- The dialog is named by its title (`Share “<resource>”`) and focus opens in the invite field, so people can type straight away. In `readOnly`, where there's no field, focus starts on the first control as in any dialog.
+- The invite field is an ARIA combobox over a listbox of suggestions: ArrowDown and ArrowUp move through them, Enter chooses, and Escape closes the list before a second Escape closes the dialog. Each chip's remove button is named after its person (`Remove Ada`).
+- An invalid chip says why in text (read with the chip) and in an alert under the field, which the field points to with `aria-describedby` and `aria-invalid`.
+- The people list is a named list inside a fixed-height scroll region; each role select is named after its person (`Role for Grace Hopper`) and each icon button says what it does and to whom (`Cancel invitation for Alan Turing`).
+- While loading, the area is `aria-busy` and says `Loading people…`.
+- A polite live region announces invitations sent, access removed, a role changed, general access changed and the link copied. A failure is an alert on the row, setting or button it belongs to.
+
+</ReferenceRow>

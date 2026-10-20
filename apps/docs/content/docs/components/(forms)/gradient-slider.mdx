@@ -1,0 +1,122 @@
+---
+title: Gradient Slider
+description: "Set a value on a scale that runs from one feel to another, with named zones along it."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="gradient-slider/demo" height={240} />
+
+A Creativity slider with Literal, Balanced and Exploratory zones under its track.
+
+</Story>
+
+<Story id="colors" label="Colors">
+
+<ComponentPreview name="gradient-slider/tones" height={320} />
+
+The same slider in each tone.
+
+The gradient comes from your theme, so it changes with it. Pick it with `tone`:
+
+- `spectrum`, the default, uses the theme's chart colors from cool to warm. It suggests nothing good or bad, so it suits a preference such as creativity. In a theme without chart colors, it runs from gray to the accent.
+- `accent` runs the accent from faint to full.
+- `status` runs from success through warning to danger. Use it only when the far end really is a risk, such as how much work goes unchecked. On a scale like creativity, a red end would tell people that high values are wrong.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="gradient-slider" noImport />
+
+Use a gradient slider when a value is a feel rather than a number: how freely a model writes, how warm a light is, how strong an effect is. The track is a color gradient, lit up to the thumb. The thumb shows the exact value, and named zones under the track say which stretch you're in, such as "Literal", "Balanced" or "Exploratory".
+
+```tsx
+import { GradientSlider } from '@youj/react'
+
+<GradientSlider
+  label="Creativity"
+  value={creativity}
+  onValueChange={setCreativity}
+  min={0}
+  max={1.5}
+  step={0.05}
+  zones={[{ label: 'Literal', to: 0.4 }, { label: 'Balanced', to: 0.95 }, { label: 'Exploratory' }]}
+/>
+```
+
+Each zone runs up to its `to` value, and the last one runs to `max`. `ticks` sets how many divisions the ruler under the track shows, and zone edges get longer ticks. `format` takes `Intl.NumberFormat` options for the value. Use `onValueCommitted` for work that should wait until the thumb is let go, like a save.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (12)">
+
+### Props
+
+<PropsTable name="GradientSlider" />
+
+It's built on Base UI's slider, and also takes `min`, `max`, `step`, `largeStep`, `disabled`, `name` and `locale`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `gradient-slider` (with `data-tone`), `gradient-slider-label`, `gradient-slider-control`, `gradient-slider-track`, `gradient-slider-rail`, `gradient-slider-fill`, `gradient-slider-thumb`, `gradient-slider-value`, `gradient-slider-ruler`, `gradient-slider-tick` (with `data-major`), `gradient-slider-zones` and `gradient-slider-zone` (with `data-active`). In Bezel the label and the zone names are small mono capitals.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Thumb, hold or focus, new zone">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Thumb', note: 'follows the pointer exactly, and keyboard steps land at once', value: 'no easing' },
+    { moment: 'Hold or focus', note: 'the glass thumb swells slightly', duration: 'fast', ease: 'enter' },
+    { moment: 'New zone', note: 'its name lights up as you cross into it', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The thumb doesn't swell, and colors change at once. The thumb still follows the pointer and the keys."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- `label` names the thumb. Without one, use `aria-label`.
+- The value is spoken with its zone ("0.65, Balanced"). The wording comes from the labels' `gradientSliderValue`, which the language packs translate.
+- The arrow keys step. Page Up, Page Down and Shift with an arrow take large steps, and Home and End jump to the ends.
+- In a right-to-left page the scale runs from the right, and the arrow keys follow.
+- With sound on, crossing into another zone plays `tick`. `sound={false}` turns it off.
+
+</ReferenceRow>

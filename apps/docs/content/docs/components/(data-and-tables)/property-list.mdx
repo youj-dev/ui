@@ -1,0 +1,135 @@
+---
+title: Property List
+description: "Show a record's properties as rows of icon, label and value, each one editable."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="property-list/demo" height={520} />
+
+A deal's properties: owner, deal, industry, stage, probability, closing date, age, value and last editor, each with an icon and a label.
+
+</Story>
+
+<Story id="inline-edit" label="Inline edit">
+
+<ComponentPreview name="property-list/editable" height={260} />
+
+A deal's properties where an editable row turns into an input in place.
+
+`onEdit` puts an edit button at the end of the row. It shows while the row is hovered or holds focus, and always on touch. What editing means is yours: in the preview, the value turns into a field in place, and Enter keeps it.
+
+The button is in the tab order wherever it is, named "Edit Deal", so a keyboard reaches it like any other control. When the edit ends, send focus back to it.
+
+</Story>
+
+<Story id="side-by-side" label="Side by side">
+
+<ComponentPreview name="property-list/side-by-side" height={220} />
+
+A narrow panel of short properties that keeps each label beside its value.
+
+Below 20rem of its own width a property list stacks each label above its value. `stack={false}` keeps them side by side at any width: right for a narrow side panel of short values (a person, a status, a tag). Narrow the label column to fit with `--property-label-width`.
+
+```tsx
+<PropertyList stack={false} className="[--property-label-width:5.5rem]">
+```
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="property-list" noImport />
+
+Use a property list for the fields of one record in a detail panel or a drawer: a deal's owner, stage and value, a ticket's assignee and priority, a file's size and dates. Each row is an icon, a label and a value, and the value is any node. Helpers lay out the common kinds and format them in the app's locale. For many records side by side, use a [data table](/docs/blocks/tables-and-lists). For a form people fill in from scratch, use [Field](/docs/components/field).
+
+```tsx
+import { BanknoteIcon, CircleDashedIcon, CircleUserIcon } from '@youj/icons'
+import { PropertyList, PropertyListItem, PropertyMoney, PropertyPerson, PropertyStatus } from '@youj/react'
+
+export function DealProperties({ deal }: { deal: Deal }) {
+  return (
+    <PropertyList>
+      <PropertyListItem icon={<CircleUserIcon />} label="Owner">
+        <PropertyPerson name={deal.owner.name} src={deal.owner.avatar} />
+      </PropertyListItem>
+      <PropertyListItem icon={<CircleDashedIcon />} label="Stage">
+        <PropertyStatus tone="warning">Proposal</PropertyStatus>
+      </PropertyListItem>
+      <PropertyListItem icon={<BanknoteIcon />} label="Value">
+        <PropertyMoney value={deal.value} currency="USD" />
+      </PropertyListItem>
+    </PropertyList>
+  )
+}
+```
+
+The label column is 9rem wide and every value starts after it. Set `--property-label-width` on the list (`className="[--property-label-width:--spacing(28)]"`) for shorter or longer labels. A long value truncates on one line; `PropertyText` shows the full text on hover. When the list is narrower than 20rem, each label sits above its value.
+
+| Helper | Shows |
+|---|---|
+| `PropertyPerson` | an avatar (a photo, or the initials) and the name |
+| `PropertyTag` | a quiet Badge; any Badge `variant` passes through |
+| `PropertyStatus` | a colored dot and its label; `tone` is `neutral`, `accent`, `success`, `warning`, `danger` or a chart tone |
+| `PropertyProgress` | a bar and its percent, named by the row's label |
+| `PropertyDate` | a date in a `<time>`; `format` takes `Intl.DateTimeFormat` options |
+| `PropertyMoney` | an amount in its `currency`, whole amounts without cents |
+| `PropertyAge` | how long since `since`: "12 days", "3 months", "2 years" |
+| `PropertyText` | text that truncates |
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="stack, icon, label, onEdit (4)">
+
+### Props
+
+#### PropertyList
+
+<PropsTable name="PropertyList" />
+
+#### PropertyListItem
+
+<PropsTable name="PropertyListItem" />
+
+`PropertyList` is a `dl` and takes its props. `PropertyAge` takes `since` and `now`; pass `now` from the server so the text is the same after hydration. `PropertyDate`, `PropertyMoney` and `PropertyAge` take `locale`, defaulting to the app's.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Description list, edit buttons">
+
+### Accessibility
+
+- It is a description list: each row is a `dt` and its `dd`, so a screen reader reads every label with its value.
+- Icons and the status dot are decorative (`aria-hidden`). The label and the status text carry the meaning.
+- `PropertyProgress` is a `progressbar` named by its row's label, with its value as text.
+- Edit buttons are named "Edit" and the row's label (`editProperty` in `YoujProvider`'s labels), and stay in the tab order while hidden, showing as soon as they take focus.
+
+</ReferenceRow>

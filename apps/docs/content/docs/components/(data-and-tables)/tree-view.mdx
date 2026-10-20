@@ -1,0 +1,163 @@
+---
+title: Tree View
+description: "Browse and manage nested data with selection, lazy loading and inline renaming."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tree-view/demo" height={380} />
+
+A file explorer: a project tree with a detail pane, rename, a context menu and packages that load on first open.
+
+In the demo, a click selects and a double click or Enter opens a file through `onAction`. With `onRename`, F2 renames the focused node in place: Enter keeps the new name and Escape drops it. `contextMenu` gives every node a menu, on right-click or Shift+F10, and hands you a `rename` action for it. `node_modules` is lazy: it loads its children the first time it opens.
+
+</Story>
+
+<Story id="checkbox-trees" label="Checkbox trees">
+
+<ComponentPreview name="tree-view/multiple" height={320} />
+
+A folder picker for syncing, with checkboxes that show a mixed state and a count of selected files.
+
+`selectionMode="multiple"` turns the tree into a checkbox tree. Checking a folder checks everything loaded inside it, and a folder shows mixed when only some of its contents are chosen. Disabled nodes can't be checked themselves.
+
+`selected` then holds every checked id, folders included, so count the leaves when you report a total.
+
+</Story>
+
+<Story id="lazy-branches" label="Lazy branches">
+
+<ComponentPreview name="tree-view/lazy" height={260} />
+
+Two branches that load their children on first open; the flaky one fails once and shows a retry row.
+
+Give a node `hasChildren` and no `children`, and pass `loadChildren`. The first time the branch opens, the tree shows a loading row and calls it. Put the children into `data` and resolve. If the promise rejects, a retry row takes the place of the children; Enter on it tries again. In this preview `flaky` fails once.
+
+</Story>
+
+<Story id="large-trees" label="Large trees">
+
+<ComponentPreview name="tree-view/virtual" height={400} />
+
+A tree of 100 folders with 100 files each, all open, windowed to the rows in view.
+
+`virtual` windows the rows, for trees of thousands of items: only the rows in view are in the page, and the one the keyboard lands on scrolls into view. Give the tree a height.
+
+The virtual tree is a flat list of rows that carry their level, position and set size, so branches open instantly rather than animating their height.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="tree-view" noImport />
+
+Use a tree view for a hierarchy people browse and act on: files in a project, pages in a site, folders to sync, categories and their items. It's a WAI-ARIA tree with one Tab stop and the full keyboard model. For two levels of links in an app's navigation, use a [Sidebar](/docs/components/sidebar). For sections of content that open and close, use an [Accordion](/docs/components/accordion).
+
+```tsx
+import { TreeView, type TreeNode } from '@youj/react'
+
+const files: TreeNode[] = [
+  {
+    id: 'src',
+    name: 'src',
+    children: [
+      { id: 'src/app.tsx', name: 'app.tsx' },
+      { id: 'src/main.tsx', name: 'main.tsx' },
+    ],
+  },
+  { id: 'package.json', name: 'package.json' },
+]
+
+export function Files() {
+  return <TreeView aria-label="Files" data={files} defaultExpanded={['src']} onAction={(node) => openFile(node.id)} />
+}
+```
+
+A node with `children` is a branch, and one without is a leaf. Folders get icons that open with them and files get icons by type; set `icons={false}` for a plain tree, or give a node its own `icon`. `meta` puts a status letter or a count at the end of the row. It's decorative, so say the same thing in `description`, which is read after the name.
+
+Selection and open branches can each be controlled (`selected`, `expanded`) or left to the tree (`defaultSelected`, `defaultExpanded`).
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="data, expanded, defaultExpanded… (14)">
+
+### Props
+
+<PropsTable name="TreeView" />
+
+A node (`TreeNode`) has an `id` and a `name`, and optionally `children`, `hasChildren` for a lazy branch, an `icon`, `meta`, a `description` and `disabled`. `TreeFileIcon` and `TreeFolderIcon` are the tree's icons, for use beside it, as the editor tabs in a file explorer would.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Branch opens, branch closes, chevron… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Branch opens', note: 'height to auto and opacity (Collapse); closing mid-open reverses from where it is', duration: 'base', ease: 'standard' },
+    { moment: 'Branch closes', note: 'height on `base`, opacity out on `fast`', duration: 'base', ease: 'standard' },
+    { moment: 'Chevron', note: 'turns a quarter as the branch opens' },
+    { moment: 'Folder', note: 'its front panel tips open with the branch' },
+    { moment: 'Row hover and selection', note: 'background', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="Branches open and close instantly, and the chevron and folder switch state without turning."
+/>
+
+#### Reduced motion
+
+Branches appear and disappear at once, with no height animation, and the chevron and folder show their new state without turning or tipping. Everything else, including the loading row and the announcements, is the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- It's a `tree` of `treeitem`s, named by `aria-label`, with `aria-expanded` on branches and `aria-level`, `aria-posinset` and `aria-setsize` on every item.
+- One Tab stop: the focused item carries `tabIndex={0}` and the rest `-1`, so Tab moves past the tree in one step.
+- Single selection uses `aria-selected`. The checkbox tree uses `aria-checked`, `mixed` included. Disabled items are `aria-disabled`.
+- A loading branch is `aria-busy`, and loads are announced: "Loading node_modules", then "node_modules loaded" or "Couldn't load node_modules". Renames are announced too.
+
+| Key | Does |
+| --- | --- |
+| <kbd>↑</kbd> <kbd>↓</kbd> | Move between visible items. |
+| <kbd>→</kbd> | Opens a closed branch, or moves into an open one. Flipped under right-to-left text. |
+| <kbd>←</kbd> | Closes an open branch, or moves out to the parent. |
+| <kbd>Home</kbd> / <kbd>End</kbd> | The first or last visible item. |
+| <kbd>*</kbd> | Opens every sibling branch. |
+| Typing | Jumps to the next item whose name starts with the letters typed. |
+| <kbd>Enter</kbd> | Opens a file (`onAction`) or toggles a folder. Retries a failed load. |
+| <kbd>Space</kbd> | Selects the item, or checks it in a checkbox tree. |
+| <kbd>F2</kbd> | Renames it, with `onRename`. |
+| <kbd>Shift</kbd>+<kbd>F10</kbd> | Opens its context menu, with `contextMenu`. |
+
+</ReferenceRow>

@@ -1,0 +1,311 @@
+---
+title: Form
+description: "Build forms with react-hook-form, connected labels, validation and submission feedback."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="form/demo" height={340} />
+
+A project form with a name and a URL, validated with zod as each field is touched, and a Save button that shows the submission.
+
+Clear the name in the demo and press Save. The error grows in under the field, focus lands on it, and the button shakes to "Check the form". Enter in any field presses `FormSubmit`, so the keyboard gets the same states as a click, and a second press while the submission runs is ignored.
+
+On an invalid submit, focus moves to the first invalid control in document order and scrolls it to the middle of the view: smoothly, or at once under reduced motion. `mode: 'onTouched'` validates each field as it's left, which is the gentlest default for long forms.
+
+A rule only the server knows, such as a URL that's already taken, comes back as a field error. Set it with `form.setError` inside `onSubmit`, then throw: the message appears on its field, focus moves there, and the button shows its `errorLabel`. Type "taken" in the demo's URL field to see it. An `onSubmit` that throws without setting a field error shakes the button to `errorLabel` and leaves the fields as they were.
+
+```tsx
+onSubmit={async (values) => {
+  const result = await api.save(values)
+  if (result.error === 'slug_taken') {
+    form.setError('slug', { message: `orion.dev/${values.slug} is already in use.` })
+    throw new Error('slug_taken')
+  }
+}}
+```
+
+</Story>
+
+<Story id="pickers" label="Pickers">
+
+<ComponentPreview name="form/pickers" height={520} />
+
+Pickers mapped onto a form field.
+
+`FormField` passes its render function react-hook-form's `field`. Spread it onto an [Input](/docs/components/input). The pickers take `value` and `onValueChange` instead of an event, so map the parts: `ref`, `value`, `onValueChange={field.onChange}` and `onBlur`. Empty pickers hold `null`, so a required one refines it away in the schema.
+
+```tsx
+<FormField name="owner" label="Owner" required>
+  {(field) => (
+    <Combobox ref={field.ref} options={owners} value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} />
+  )}
+</FormField>
+```
+
+Passing `ref` matters: it's how the form finds the control to focus when it's invalid.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="form" noImport />
+
+Requires `react-hook-form`, an [optional dependency](/docs/installation#optional-dependencies), and the examples below also use `zod` and `@hookform/resolvers` (`pnpm add react-hook-form zod @hookform/resolvers`). Import it from `@youj/react/form`.
+
+`Form` builds on [react-hook-form](https://react-hook-form.com). Validate with any resolver: `zodResolver(schema)` from `@hookform/resolvers` is the usual one.
+
+Use `Form` when you need validation, such as in settings, sign-in or a create flow. It connects labels and errors, focuses the first invalid control, and shows submission states in the button. For a field without validation, wrap an [Input](/docs/components/input) in a [Field](/docs/components/field).
+
+Install what it needs first, or the build fails on a missing export:
+
+<PackageInstall command="pnpm add react-hook-form @hookform/resolvers zod" />
+
+In the Next.js App Router, render this from a Client Component, a file that starts with `'use client'`: it takes functions (`onSubmit` and a `resolver`), and a Server Component can't pass those. [Server rendering](/docs/guides/ssr) has the rest.
+
+```tsx
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { FieldGroup, Input } from '@youj/react'
+import { Form, FormField, FormSubmit } from '@youj/react/form'
+
+const schema = z.object({ name: z.string().trim().min(3, 'Use at least 3 characters.') })
+
+export function RenameProject() {
+  const form = useForm({ resolver: zodResolver(schema), defaultValues: { name: 'Orion' }, mode: 'onTouched' })
+
+  return (
+    <Form form={form} onSubmit={(values) => api.rename(values)}>
+      <FieldGroup>
+        <FormField name="name" label="Project name" required>
+          {(field) => <Input {...field} />}
+        </FormField>
+        <FormSubmit successLabel="Saved">Save</FormSubmit>
+      </FieldGroup>
+    </Form>
+  )
+}
+```
+
+`Form` takes the `useForm()` return value and an `onSubmit` that receives the resolver's output. Resolve for success, and reject or throw for failure. `FormField` is a [Field](/docs/components/field) around one controlled value: its `label` names the control, its `description` and error describe it, and the control is marked invalid while the error shows. `FormSubmit` is an [Async Button](/docs/components/button#async-actions) that validates and then runs `onSubmit`.
+
+The parts are shadcn's: `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription` and `FormMessage`. The shorthand above lays them out for you; to place them yourself, or to move a shadcn form over, give `FormField` a `render` (see [shadcn's parts](#shadcns-parts)). The difference from shadcn's Form: `Form` takes the `useForm()` return value as `form` and an `onSubmit`, and renders the `<form>` itself, so there is no `<form onSubmit={form.handleSubmit(…)}>` to write.
+
+### shadcn's parts
+
+Give `FormField` a `render` and it only provides the field to its parts, as shadcn's does. `FormItem` is a [Field](/docs/components/field): it groups the label, control, description and message. `FormControl` marks its control invalid, `FormMessage` shows the field's error and `useFormField()` reads the name, validity and error for a part of your own.
+
+```tsx
+import { Input } from '@youj/react'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, FormSubmit } from '@youj/react/form'
+
+<Form form={form} onSubmit={(values) => api.rename(values)}>
+  <FormField
+    name="name"
+    render={({ field }) => (
+      <FormItem required>
+        <FormLabel>Project name</FormLabel>
+        <FormControl>
+          <Input {...field} />
+        </FormControl>
+        <FormDescription>Shown on the dashboard.</FormDescription>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+  <FormSubmit successLabel="Saved">Save</FormSubmit>
+</Form>
+```
+
+The `label` and `description` props and the `children` function are the shorthand for exactly this: a `FormItem` with a `FormLabel`, your control, a `FormDescription` and a `FormMessage`. Use `render` when you want a different order, or no label.
+
+### Select
+
+`FormSelect` is a `FormField` with a [Select](/docs/components/select) in it, built from `options`. It wires the field's value, change, blur and focus target for you, and takes the same `name`, `label`, `description` and `required`. An empty select holds `null`, so a required one refines it away in the schema (see [Required pickers with zod](#required-pickers-with-zod)).
+
+```tsx
+import { Form, FormSelect } from '@youj/react/form'
+
+const regions = [
+  { value: 'fra', label: 'Frankfurt' },
+  { value: 'iad', label: 'Washington, D.C.' },
+  { value: 'sin', label: 'Singapore', disabled: true },
+]
+
+<FormSelect name="region" label="Region" options={regions} placeholder="Choose a region" required />
+```
+
+For grouped or custom items, compose a `Select` inside `FormField` and map the parts as below: `value`, `onValueChange` and `items` on `Select`, and `ref` and `onBlur` on `SelectTrigger`.
+
+### Checkbox and Radio Group
+
+A [Checkbox](/docs/components/checkbox) holds a boolean and a [Radio Group](/docs/components/radio-group) a string, and both take a value and a change handler instead of an event. Map `value` to `checked` for the checkbox, and `onChange` to `onCheckedChange` and `onValueChange`. Start the checkbox at `false` in `defaultValues`; an unchosen radio group holds `undefined`.
+
+```tsx
+import { Checkbox, Field, FieldLabel, RadioGroup, RadioGroupItem } from '@youj/react'
+
+<FormField name="terms" label="Terms" required>
+  {(field) => (
+    <Checkbox ref={field.ref} checked={field.value} onCheckedChange={field.onChange} onBlur={field.onBlur} />
+  )}
+</FormField>
+
+<FormField name="plan" label="Plan" required>
+  {(field) => (
+    <RadioGroup ref={field.ref} value={field.value} onValueChange={field.onChange} onBlur={field.onBlur}>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="free" />
+        <FieldLabel>Free</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="pro" />
+        <FieldLabel>Pro</FieldLabel>
+      </Field>
+    </RadioGroup>
+  )}
+</FormField>
+```
+
+### Required pickers with zod
+
+An empty picker or select holds `null`, so the form's values (the schema's input) allow `null` while the submitted values (its output) don't. Two things make TypeScript see that:
+
+- **Refine with a type guard.** `(value): value is string => value !== null` narrows the output to `string`. A refine that only returns a boolean keeps `string | null`.
+- **Give `useForm` the input and the output.** Let it infer both from `zodResolver(schema)`, or name all three generics: `useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>`. `useForm<z.infer<typeof schema>>` names only the output, so `defaultValues: { region: null }` and the resolver no longer type-check.
+
+```tsx
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { FieldGroup } from '@youj/react'
+import { Combobox } from '@youj/react/command'
+import { Form, FormField, FormSelect, FormSubmit } from '@youj/react/form'
+
+const chosen = (value: string | null): value is string => value !== null
+
+const schema = z.object({
+  region: z.string().nullable().refine(chosen, 'Choose a region.'),
+  owner: z.string().nullable().refine(chosen, 'Choose an owner.'),
+})
+
+export function CreateService() {
+  // Values hold null while empty (the input); onSubmit gets strings (the output).
+  const form = useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: { region: null, owner: null },
+    mode: 'onTouched',
+  })
+
+  return (
+    <Form form={form} onSubmit={(values) => api.createService(values)}>
+      <FieldGroup>
+        <FormSelect name="region" label="Region" options={regions} placeholder="Choose a region" required />
+        <FormField name="owner" label="Owner" required>
+          {(field) => (
+            <Combobox ref={field.ref} options={owners} value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} />
+          )}
+        </FormField>
+        <FormSubmit successLabel="Created">Create service</FormSubmit>
+      </FieldGroup>
+    </Form>
+  )
+}
+```
+
+`values` in `onSubmit` is `{ region: string; owner: string }`, and an empty field shows its refine message.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="form, onSubmit, name… (30+)">
+
+### Props
+
+<PropsTable name="Form" />
+
+#### FormField
+
+<PropsTable name="FormField" />
+
+With `children` it also takes every [Field](/docs/components/field) prop except `invalid`, which it sets from the field's state, such as `required`, `disabled` and `orientation`.
+
+#### FormItem
+
+<PropsTable name="FormItem" />
+
+The other parts (`FormLabel`, `FormControl`, `FormDescription`, `FormMessage`) take the props of the [Field](/docs/components/field) part they are named after.
+
+#### FormSelect
+
+<PropsTable name="FormSelect" />
+
+It also takes every `FormField` prop except `children`. Each option is `{ value, label, disabled? }`.
+
+#### FormSubmit
+
+<PropsTable name="FormSubmit" />
+
+`FormSubmit` takes every [Async Button](/docs/components/button#async-actions) prop except `onAction`, `status` and `type`, including `pendingLabel`, `successLabel`, `errorLabel` and `resetAfter`. `FormInvalidError` is the error `FormSubmit` sees when validation fails, for code that calls the submission itself.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Error in, error out, submit pending… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Error in', note: 'the message grows from 0 height and fades in under its control (Field)', duration: 'base', ease: 'standard' },
+    { moment: 'Error out', note: 'the text fades before the height closes', duration: 'fast', ease: 'exit' },
+    { moment: 'Submit pending', note: 'the label crossfades to a spinner (Async Button)', duration: 'fast', ease: 'standard' },
+    { moment: 'Button width', note: 'follows each new label', spring: 'snappy' },
+    { moment: 'Submit success', note: 'a check draws on beside `successLabel`', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Invalid or failed', note: 'a 4, 3 and 2px shake to `invalidLabel` or `errorLabel`', duration: 'slow', ease: 'standard' },
+    { moment: 'Focus first invalid', note: 'scrolls it to the middle of the view', value: 'smooth scroll' },
+  ]}
+  reduced="Errors appear and disappear at once, the button's states swap instantly without a shake, and the first invalid control is scrolled to without smooth scrolling."
+/>
+
+#### Reduced motion
+
+Errors appear and disappear without the height animation. The submit button's states swap at once and don't shake, and focusing the first invalid control scrolls straight to it. Validation, messages and focus behave exactly the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The `<form>` sets `noValidate`: the schema validates, and messages are written in your voice rather than the browser's.
+- Each `FormField` label names its control, and the description and error are linked to it with `aria-describedby`. The control carries `aria-invalid` while its error shows, and `required` marks it required: native `required` on an Input, `aria-required` on custom controls such as Combobox, MultiSelect, TagInput and TimePicker.
+- An invalid submit moves focus to the first invalid control, with a visible focus ring, so keyboard and screen reader users land on the problem rather than having to find it.
+- `FormSubmit` announces pending and success politely and failures assertively, as Async Button does. Presses while it runs are ignored.
+
+</ReferenceRow>

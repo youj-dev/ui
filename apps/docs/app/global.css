@@ -1,0 +1,11 @@
+/* The sheet every page loads: the site, the docs and the kit (tailwind.css), without the classes only the blocks
+ * use. Pages that render those load gallery.css on top. */
+@import './tailwind.css';
+
+@source not '../../../packages/ui/src/blocks';
+/* What the build writes holds the blocks' source as text (the Code tab, the registry). Ignored by git,
+ * so skipped by the scan, but a build without a git checkout would read it and put their classes back here.
+ * (generated/gallery-core.txt is a source on purpose: tailwind.css names it.) */
+@source not '../generated/*.json';
+@source not '../public/r';
+@source not '../../../packages/*/public/r';

@@ -1,0 +1,8 @@
+* @louis-henry
+
+/.github/ @louis-henry
+/scripts/release.mjs @louis-henry
+/scripts/ship.sh @louis-henry
+/scripts/check-changesets.mjs @louis-henry
+/scripts/check-changelog.mjs @louis-henry
+/.changeset/ @louis-henry

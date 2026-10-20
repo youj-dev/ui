@@ -1,0 +1,113 @@
+---
+title: Filter Chips
+description: "Build a filter query from editable chips."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="filter-chips/demo" height={240} />
+
+An Issues field holding the chips `label:bug` and `priority:in(p1,p2)`, with a hint to type `assignee:me` and a space.
+
+Chips are keyed by their field (the text before the colon), so when a control changes a filter, its chip rewrites itself in place instead of leaving and coming back. Derive `value` from your filters, and parse the tokens back in `onValueChange`: the [Filter panel](/docs/blocks/forms-and-inputs) block's order search does both.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="filter-chips" noImport />
+
+Use filter chips where filters also read as text: a log search, an order list, an issue tracker. Each filter is a chip like `priority:in(p1,p2)`, people who think in queries can type them, and the chips can mirror controls elsewhere on the page. For free-form values that aren't a query (topics, email domains), use a [Tag Input](/docs/components/tag-input).
+
+```tsx
+import { Field, FieldLabel, FilterChips } from '@youj/react'
+
+export function IssueSearch() {
+  const [query, setQuery] = useState(['priority:in(p1,p2)'])
+  return (
+    <Field>
+      <FieldLabel>Issues</FieldLabel>
+      <FilterChips
+        value={query}
+        onValueChange={setQuery}
+        validate={(token) => (/^[a-z]+:\S/.test(token) ? undefined : 'Write a filter as field:value.')}
+      />
+    </Field>
+  )
+}
+```
+
+A token ends at a space, never inside brackets or quotes, so `priority:in(p1, p2)` stays whole. A finished `field:value` becomes a chip as you type the space after it, and Enter adds whatever is typed. A pasted query adds each of its tokens. Click a chip, or focus it and press Enter, and its text returns to the field to edit.
+
+`validate` gets the new token and the current list, and returns a reason to refuse it. A refused token stays in the field: the frame shakes, the border turns destructive, and the reason grows in under it and is read out. A duplicate isn't added; the chip that already holds it flashes.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (13)">
+
+### Props
+
+<PropsTable name="FilterChips" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Chip enters, chip leaves, chips reflow… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Chip enters', note: 'fades into its slot while the field makes room (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Chip leaves', note: 'fades where it stands, then the rest close up', duration: 'fast', ease: 'exit' },
+    { moment: 'Chips reflow', note: 'glide to their new places', spring: 'smooth' },
+    { moment: 'Refused', note: 'the frame shakes a decaying 4, 3 and 2px', duration: 'slow', ease: 'standard' },
+    { moment: 'Reason', note: 'grows in under the field (Collapse)', duration: 'base', ease: 'standard' },
+    { moment: 'Duplicate flash', note: 'the chip that holds it tints at once, then fades back', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="No shake and no glide: chips appear and leave in one frame. The duplicate flash and the reason still show, because they carry the message."
+/>
+
+#### Reduced motion
+
+A refused token doesn't shake and chips don't glide. The flash and the reason still appear.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The field is named by its `FieldLabel`, `aria-label` or `aria-labelledby`, and the chips are a list named "Active filters". A refused token sets `aria-invalid` and is described by its reason, a `role="alert"` message.
+- In the field, Backspace when it's empty, or the left arrow at its start, reaches the last chip. On a chip, the arrows move between chips, Home and End jump to the ends, Enter or F2 edits it, Backspace or Delete removes it and focus lands on its neighbor, and Escape returns to the field. Each chip describes these keys.
+- Each chip's remove button is named after its filter. Additions, removals and duplicates are announced politely.
+- With `name`, each token is submitted with a native form under that name.
+
+</ReferenceRow>

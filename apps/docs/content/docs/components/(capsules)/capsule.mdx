@@ -1,0 +1,81 @@
+---
+title: Capsule
+description: "Put one row of controls or figures on a floating pill: live stats, a now-playing player, steppers, a search and small toggles."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="capsule/demo" height={200} />
+
+Each capsule type in a row: a tool toggle, a stepper, a stat pill, a search, and a bare capsule holding a button.
+
+`Capsule` holds any controls you put in it, and `CapsuleLabel` gives a control a short name. Its height is the control height plus a 4px inset, so the controls inside sit evenly within its rounded ends and the capsule lines up with buttons and fields of its size.
+
+```tsx
+import { Button, Capsule, CapsuleLabel } from '@youj/react'
+
+<Capsule>
+  <CapsuleLabel>Export</CapsuleLabel>
+  <Button size="sm">Render</Button>
+</Capsule>
+```
+
+`size="sm"` makes a capsule for a dense toolbar.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+The shell on its own:
+
+<InstallTabs name="capsule" />
+
+Each member installs the shell with it.
+
+Capsules are for controls that float over what they control: a toolbar over a canvas, a dock over a timeline, vitals in the corner of an editor. Each one is a single row on its own surface, the height of a control plus a small inset, so capsules line up with each other and with buttons and fields of the same size. [Stat Pill](/docs/components/stat-pill), [Capsule Stepper](/docs/components/capsule-stepper), [Capsule Search](/docs/components/capsule-search) and [Capsule Toggle](/docs/components/capsule-toggle) are made on it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size (1)">
+
+### Props
+
+<PropsTable name="Capsule" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Every capsule carries `data-capsule`, and a `data-slot` of its own: `capsule`, `stat-pill`, `capsule-player`, `capsule-stepper-group`, `capsule-search` and `capsule-toggle`. Short names inside use `capsule-label` and units use `capsule-unit`. In Bezel a capsule is a pill lifted on a hairline, with its labels in small mono capitals. A theme with square corners keeps it square. In Classic it's a bordered rounded panel.
+
+</ReferenceRow>

@@ -1,0 +1,107 @@
+---
+title: Chat Empty State
+description: "Welcome people to a new conversation with context and suggested prompts."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="chat-empty-state/demo" height={560} />
+
+A greeting and four starter prompts above a composer, where picking one fills the composer.
+
+It's one arrival, in order, then stillness. The icon tile's plates fan out, the greeting rises word by word from behind its line, the description fades in once the greeting has landed, and the suggestions stagger in two steps after that. The greeting's word count sets the timing, so a longer greeting pushes the rest back.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatEmptyState" noImport />
+
+Show it in place of the [message list](/docs/components/chat/message-list) until the first message is sent. It sets expectations (what this assistant can see and do) and offers [suggestions](/docs/components/chat/suggestions) so nobody faces a blank field. For empty views elsewhere in an app, use [Empty State](/docs/components/empty-state), the primitive this is built on.
+
+```tsx
+import { ChatEmptyState, ChatMessageList } from '@youj/react'
+
+{messages.length === 0 ? (
+  <ChatEmptyState
+    greeting="Good morning, Ada"
+    description="Ask about your deployments, logs and metrics."
+    suggestions={starters}
+    onSelect={(prompt) => {
+      setDraft(prompt)
+      composer.current?.focus()
+    }}
+  />
+) : (
+  <ChatMessageList>{/* … */}</ChatMessageList>
+)}
+```
+
+Suggestions show when both `suggestions` and `onSelect` are set, as cards by default (`suggestionsLayout="chips"` for a row). `icon` replaces the tile's sparkles, and `children` render below everything else.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="greeting, description, icon… (6)">
+
+### Props
+
+<PropsTable name="ChatEmptyState" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Greeting, greeting step, description… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Greeting', note: 'each word rises from behind a mask (TextSplit)', duration: 'slow', ease: 'enter' },
+    { moment: 'Greeting step', note: 'between words', stagger: 'base' },
+    { moment: 'Description', note: 'fades in after one step per word', duration: 'slow', ease: 'enter' },
+    { moment: 'Suggestions', note: 'rise in sequence, from two steps after the description', stagger: 'base' },
+  ]}
+  reduced="The greeting, description and suggestions are all in place at once."
+/>
+
+#### Reduced motion
+
+Everything is in place from the first frame: no plates fanning out, no rising words, no stagger.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="focus, announcements">
+
+### Accessibility
+
+- Screen readers get the greeting whole, not word by word.
+- The suggestions are a group of real buttons (see [Suggestions](/docs/components/chat/suggestions)). Pick one and move focus to the composer, as the example does.
+
+</ReferenceRow>

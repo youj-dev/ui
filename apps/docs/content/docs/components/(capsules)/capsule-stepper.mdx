@@ -1,0 +1,95 @@
+---
+title: Capsule Stepper
+description: "Nudge a number up or down with − and + in a capsule."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="capsule-stepper/demo" height={180} />
+
+A Tempo stepper with a BPM unit, and a Zoom stepper that shows percentages in quarter steps.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="capsule-stepper" noImport />
+
+Use a capsule stepper for a number people adjust in small steps rather than type: a tempo, a zoom level, a count of takes. You can still click the number and type one.
+
+```tsx
+import { CapsuleStepper } from '@youj/react'
+
+<CapsuleStepper label="Tempo" defaultValue={124} min={60} max={200} unit="BPM" />
+```
+
+It's built on Base UI's number field, like [Number Input](/docs/components/number-input). Values are read and written for the locale, kept between `min` and `max`, and step by `step`. Shift with an arrow key steps by `largeStep`. Holding a button keeps stepping, and a button turns off at its end of the range. `format` takes `Intl.NumberFormat` options, such as `{ style: 'percent' }`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (19)">
+
+### Props
+
+<PropsTable name="CapsuleStepper" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and class names">
+
+### Styling
+
+Parts: `capsule-stepper`, `capsule-stepper-group` (the capsule), `capsule-stepper-window`, `capsule-stepper-value` and `capsule-unit`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Step">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Step', note: 'the new number rolls in from the side it moved, up for more and down for less', spring: 'snappy' },
+  ]}
+  reduced="The number changes in place."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- `label` names the field. Without one, use `aria-label`.
+- `unit` is read after the value.
+- The buttons are named "Increase" and "Decrease" by the labels, which the language packs translate.
+
+</ReferenceRow>

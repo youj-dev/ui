@@ -1,0 +1,133 @@
+---
+title: Wheel Picker
+description: "Spin a drum of values to pick one: a time, a date or any short list, one column per part."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="wheel-picker/demo" height={300} />
+
+An alarm in three columns: hours, minutes in fives, and AM or PM.
+
+Drag a column, or flick it and let it coast onto a row. The mouse wheel and trackpad turn it too, and a click on a row brings it to the band. Each column wraps neither way here; pass `loop` to make every column run round.
+
+</Story>
+
+<Story id="date" label="Date">
+
+<ComponentPreview name="wheel-picker/date" height={300} />
+
+A date of birth: month, day and year.
+
+The day column always has 31 rows, so it never changes length as the month turns; the days a month lacks are `disabled`, and the wheel won't rest on them. The app clamps the day when the month changes.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="wheel-picker" noImport />
+
+Use a wheel picker where spinning is the natural gesture: touch-first forms, a timer, an alarm, a short list to choose from in place. For a time typed at a keyboard, use a [Time Picker](/docs/components/time-picker); for a long list to search, a [Select](/docs/components/select) or a [Combobox](/docs/components/combobox).
+
+```tsx
+import { WheelPicker } from '@youj/react'
+
+<WheelPicker
+  aria-label="Alarm"
+  columns={[
+    { id: 'hour', label: 'Hours', options: hours },
+    { id: 'minute', label: 'Minutes', options: minutes },
+  ]}
+  value={alarm}
+  onValueChange={setAlarm}
+/>
+```
+
+Each column is `{ id, label, options }`, and each option `{ value, label, disabled? }`. With columns, the value is an object of each column's value by its `id`. One column has a shorthand: `options` and `label` on the picker, with a plain string value.
+
+```tsx
+<WheelPicker label="Fruit" options={fruit} defaultValue="cherry" />
+```
+
+It is uncontrolled with `defaultValue` (a column left out starts on its first row it can rest on), or controlled with `value` and `onValueChange`. The value is committed when a column is let go, so `onValueChange` fires once per spin, not on every row it passes.
+
+`size` (`sm`, `default` or `lg`) sets the row height and type, following the theme's control heights. The picker keeps its size while it turns: each column is as wide as its widest label.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="columns or options, value, loop, size, disabled, sound…">
+
+### Props
+
+<PropsTable name="WheelPicker" />
+
+#### Data attributes
+
+The root carries `data-size`, plus `data-yj-loop` with `loop` and `data-disabled` when disabled. Each column is `wheel-picker-column` with `data-id` (its column id) and `data-dragging` while a pointer holds it; each drawn row is `wheel-picker-item` with `data-index`, and `data-selected` in the band and `data-disabled` when it can't be chosen. The band is `wheel-picker-band`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drag, flick, wheel · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drag', note: 'the column follows the pointer 1:1; past either end it pulls less the further it goes' },
+    { moment: 'Flick', note: 'the column coasts on with the flick’s momentum and decays onto the row it reaches', duration: 'slow' },
+    { moment: 'Let go past an end', note: 'the column springs back to the first or last row', spring: 'smooth' },
+    { moment: 'Key, click, wheel or new value', note: 'the column turns to the row', spring: 'smooth' },
+    { moment: 'Rows', note: 'rows curve away on a drum and fade towards the top and bottom; the row in the band is full strength' },
+  ]}
+  reduced="A drag still follows the pointer. There is no momentum: a release, key, click or new value puts the row in the band at once."
+/>
+
+#### Reduced motion
+
+Dragging works the same. A release lands on the nearest row with no momentum, and keys, clicks and new values turn the column at once.
+
+#### Sound
+
+With sound on (`YoujProvider`'s `sound`), every row that passes the band ticks. `sound={false}` keeps the picker silent.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Spinbuttons, keyboard, type-ahead">
+
+### Accessibility
+
+- Each column is a `spinbutton` named by its `label`, its value text the chosen row's label, so a screen reader reads "Hours, 7" and each new row as it turns. Give the picker an `aria-label` too when it has more than one column; it is a `group`.
+- ArrowUp turns to the next row and ArrowDown to the one before; Page Up and Page Down turn five rows; Home and End go to the first and last. Disabled rows are skipped.
+- Typing jumps to the next row whose label starts with what was typed; the same letter again moves on to the next match.
+- ArrowLeft and ArrowRight move between columns, mirrored in right-to-left, where the columns run from the right too.
+- Each column is one tab stop with a visible focus ring. `disabled` takes the columns out of the tab order and sets `aria-disabled`.
+- Touch, pen and mouse drag; each pointer is captured, so a drag keeps going outside the column. The wheel turns the column under the pointer without scrolling the page.
+
+</ReferenceRow>

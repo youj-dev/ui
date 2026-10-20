@@ -1,0 +1,168 @@
+---
+title: Progress
+description: "Show how far a task has progressed, or that work is still running."
+aliases: ["progress bar", "progress ring", "circular progress", "loading bar", "percent complete"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="progress/demo" height={300} />
+
+File uploads that advance chunk by chunk, each with a name and a percentage.
+
+</Story>
+
+<Story id="parts-and-states" label="Parts and states">
+
+<ComponentPreview name="progress/states" height={260} />
+
+A determinate bar, a finished one, an indeterminate one and one with a custom format.
+
+`value` runs from `min` to `max`, 0 to 100 by default. `ProgressValue` shows the percentage, or takes a function to write its own text. `format` takes `Intl.NumberFormat` options for both the readout and the spoken value, and `getAriaValueText` lets the spoken text say more, such as the total.
+
+The bar fills in the accent in Classic and in a neutral ink in the [Bezel look](/docs/looks), which keeps the accent for emphasis. A `tone` (`accent`, `neutral`, `success`, `warning` or `danger`) pins the fill in every style. `size` (`sm`, `default` or `lg`) sets the bar's thickness.
+
+`Progress` renders its own track and indicator after its children, so a label and a readout sit above the bar. `ProgressTrack` and `ProgressIndicator` are exported for building your own bar inside Base UI's `Progress.Root`. They need that root, so they don't work outside it.
+
+</Story>
+
+<Story id="switching-to-indeterminate" label="Switching to indeterminate">
+
+<ComponentPreview name="progress/phases" height={260} />
+
+A deploy that uploads in chunks, then finalizes on an indeterminate bar, then goes live.
+
+Pass `null` as soon as what's left can't be measured, like a deploy finalizing after its files upload. The bar hands over to the sweep, and `ProgressValue` shows nothing until there's a number again.
+
+</Story>
+
+<Story id="ticks" label="Ticks">
+
+<ComponentPreview name="progress/ticks" height={260} />
+
+A render whose frames light up as fine ticks, and an encode step waiting on a traveling wave.
+
+`variant="ticks"` draws the track as a row of fine vertical ticks, like a ruler or a level meter. They light from the inline start as the value grows; the tick at the edge lights partway and the next few warm up a little before the edge reaches them. With `value={null}` a wave of lit ticks travels from the start to the end, then rests. `ticks` sets how many there are (40 by default), and `size` sets their length. Everything else is the same progress: the role, the value, the label and the readout.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="progress" noImport />
+
+Use Progress for measurable work, such as an upload or migration. Pass `value={null}` when progress is not yet known. Use a [Spinner](/docs/components/spinner) for short, unmeasured waits, or a [Slider](/docs/components/slider) for values people adjust themselves.
+
+```tsx
+import { Progress, ProgressLabel, ProgressValue } from '@youj/react'
+
+export function Upload({ percent }: { percent: number }) {
+  return (
+    <Progress value={percent}>
+      <ProgressLabel>Uploading hero@2x.png</ProgressLabel>
+      <ProgressValue />
+    </Progress>
+  )
+}
+```
+
+`Progress` renders the track and the bar for you. Put a `ProgressLabel` and a `ProgressValue` inside it: they share the first line, and the track wraps below them. Without a visible label, give `Progress` an `aria-label`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="tone, variant, size, ticks (4)">
+
+### Props
+
+#### Progress
+
+<PropsTable name="Progress" />
+
+It takes Base UI's `value` (a number, or `null` for indeterminate), `min`, `max`, `format`, `locale` and `getAriaValueText`.
+
+| Data attribute | Values |
+| --- | --- |
+| `data-variant` | `default`, `ticks` |
+| `data-size` | `sm`, `default`, `lg` |
+| `data-tone` | `accent`, `neutral`, `success`, `warning`, `danger` (unset: the style decides) |
+| `data-indeterminate`, `data-progressing`, `data-complete` | Base UI's state |
+
+#### ProgressValue
+
+<PropsTable name="ProgressValue" />
+
+Its children can be a function of the formatted value and the raw value, `(formatted, value) => ReactNode`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Value change, indeterminate sweep · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Value change', note: 'the bar scales along its length, retargeting mid-glide', spring: 'smooth' },
+    { moment: 'Indeterminate sweep', note: 'a 40% band crosses the track, on a loop', duration: 'deliberate', ease: 'standard', value: '× 2 per sweep' },
+  ]}
+  reduced="New values jump into place, and the indeterminate band becomes still stripes."
+/>
+
+#### Ticks
+
+<MotionSpec
+  rows={[
+    { moment: 'Value change', note: 'the lit count follows the value; the edge tick lights partway and the next three warm up', spring: 'smooth' },
+    { moment: 'Indeterminate wave', note: 'each tick warms quickly and fades slowly, its turn later along the row, so a wave crosses in 70% of the loop and rests', duration: 'deliberate', ease: 'linear', value: '× 2 per loop' },
+  ]}
+  reduced="The lit count jumps to each value, and indeterminate shows every other tick lit, still."
+/>
+
+The ticks only change opacity. They light from the inline start, so under right-to-left they fill and the wave travels from the right.
+
+#### Bar
+
+The bar stays full width and scales on its X axis, so only transform animates. A burst of updates retargets the spring with its velocity intact instead of restarting a tween, which is why the uneven upload chunks in the demo read as one steady glide. It fills from the inline start, so under right-to-left it fills from the right.
+
+#### Reduced motion
+
+The bar jumps to each new value instead of gliding, and the indeterminate sweep becomes still diagonal stripes across the track. The ticks light at once, and their indeterminate wave becomes every other tick lit, still. The amount done and the "still working" state both stay visible.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- It's a `progressbar` with `aria-valuenow` and a formatted `aria-valuetext`, named by its `ProgressLabel` or `aria-label`.
+- Indeterminate progress has no `aria-valuenow`, which tells assistive technology the amount isn't known.
+- The ticks are decorative and hidden from assistive tech; the progressbar's value says the same thing.
+- Screen readers don't reliably announce each change. When the work finishes, say so in a polite status, as "All files uploaded." does in the demo.
+
+</ReferenceRow>

@@ -1,0 +1,858 @@
+{
+  "preset": "basalt",
+  "modes": [
+    "light",
+    "dark"
+  ],
+  "categories": [
+    {
+      "id": "data",
+      "name": "Data"
+    },
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure"
+    },
+    {
+      "id": "app",
+      "name": "App"
+    },
+    {
+      "id": "lifecycle",
+      "name": "Lifecycle"
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce"
+    },
+    {
+      "id": "finance",
+      "name": "Finance"
+    },
+    {
+      "id": "health",
+      "name": "Health"
+    },
+    {
+      "id": "education",
+      "name": "Education"
+    },
+    {
+      "id": "travel",
+      "name": "Travel"
+    },
+    {
+      "id": "food",
+      "name": "Food"
+    },
+    {
+      "id": "media",
+      "name": "Media"
+    },
+    {
+      "id": "social",
+      "name": "Social"
+    },
+    {
+      "id": "home",
+      "name": "Home"
+    },
+    {
+      "id": "work",
+      "name": "Work"
+    },
+    {
+      "id": "sports",
+      "name": "Sports"
+    },
+    {
+      "id": "play",
+      "name": "Play"
+    },
+    {
+      "id": "events",
+      "name": "Events"
+    },
+    {
+      "id": "pets",
+      "name": "Pets"
+    },
+    {
+      "id": "weather",
+      "name": "Weather"
+    },
+    {
+      "id": "nature",
+      "name": "Nature"
+    },
+    {
+      "id": "energy",
+      "name": "Energy"
+    },
+    {
+      "id": "transport",
+      "name": "Transport"
+    },
+    {
+      "id": "places",
+      "name": "Places"
+    },
+    {
+      "id": "outdoors",
+      "name": "Outdoors"
+    },
+    {
+      "id": "science",
+      "name": "Science"
+    },
+    {
+      "id": "security",
+      "name": "Security"
+    },
+    {
+      "id": "devices",
+      "name": "Devices"
+    },
+    {
+      "id": "business",
+      "name": "Business"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "database",
+      "name": "Database",
+      "category": "data"
+    },
+    {
+      "id": "warehouse",
+      "name": "Data warehouse",
+      "category": "data"
+    },
+    {
+      "id": "pipeline",
+      "name": "Pipeline",
+      "category": "data"
+    },
+    {
+      "id": "storage",
+      "name": "Storage",
+      "category": "data"
+    },
+    {
+      "id": "backups",
+      "name": "Backups",
+      "category": "data"
+    },
+    {
+      "id": "server-rack",
+      "name": "Server rack",
+      "category": "infrastructure"
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud regions",
+      "category": "infrastructure"
+    },
+    {
+      "id": "network",
+      "name": "Network",
+      "category": "infrastructure"
+    },
+    {
+      "id": "load-balancer",
+      "name": "Load balancer",
+      "category": "infrastructure"
+    },
+    {
+      "id": "edge",
+      "name": "Edge network",
+      "category": "infrastructure"
+    },
+    {
+      "id": "mail",
+      "name": "Mail",
+      "category": "app"
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "category": "app"
+    },
+    {
+      "id": "documents",
+      "name": "Documents",
+      "category": "app"
+    },
+    {
+      "id": "analytics",
+      "name": "Analytics",
+      "category": "app"
+    },
+    {
+      "id": "search",
+      "name": "Search",
+      "category": "app"
+    },
+    {
+      "id": "notifications",
+      "name": "Notifications",
+      "category": "app"
+    },
+    {
+      "id": "deploy",
+      "name": "Deploy",
+      "category": "lifecycle"
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "category": "lifecycle"
+    },
+    {
+      "id": "team",
+      "name": "Team",
+      "category": "lifecycle"
+    },
+    {
+      "id": "success",
+      "name": "Success",
+      "category": "lifecycle"
+    },
+    {
+      "id": "not-found",
+      "name": "Not found",
+      "category": "lifecycle"
+    },
+    {
+      "id": "empty",
+      "name": "Empty",
+      "category": "lifecycle"
+    },
+    {
+      "id": "storefront",
+      "name": "Shop front",
+      "category": "commerce"
+    },
+    {
+      "id": "shopping-bag",
+      "name": "Shopping bag",
+      "category": "commerce"
+    },
+    {
+      "id": "delivery",
+      "name": "Delivery",
+      "category": "commerce"
+    },
+    {
+      "id": "payment",
+      "name": "Payment",
+      "category": "finance"
+    },
+    {
+      "id": "wallet",
+      "name": "Wallet",
+      "category": "finance"
+    },
+    {
+      "id": "savings",
+      "name": "Savings",
+      "category": "finance"
+    },
+    {
+      "id": "heart-rate",
+      "name": "Heart rate",
+      "category": "health"
+    },
+    {
+      "id": "fitness",
+      "name": "Fitness",
+      "category": "health"
+    },
+    {
+      "id": "first-aid",
+      "name": "First aid",
+      "category": "health"
+    },
+    {
+      "id": "books",
+      "name": "Books",
+      "category": "education"
+    },
+    {
+      "id": "graduation",
+      "name": "Graduation",
+      "category": "education"
+    },
+    {
+      "id": "idea",
+      "name": "Idea",
+      "category": "education"
+    },
+    {
+      "id": "suitcase",
+      "name": "Suitcase",
+      "category": "travel"
+    },
+    {
+      "id": "flight",
+      "name": "Flight",
+      "category": "travel"
+    },
+    {
+      "id": "map",
+      "name": "Map",
+      "category": "travel"
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "category": "food"
+    },
+    {
+      "id": "restaurant",
+      "name": "Restaurant",
+      "category": "food"
+    },
+    {
+      "id": "groceries",
+      "name": "Groceries",
+      "category": "food"
+    },
+    {
+      "id": "camera",
+      "name": "Camera",
+      "category": "media"
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "category": "media"
+    },
+    {
+      "id": "video",
+      "name": "Video",
+      "category": "media"
+    },
+    {
+      "id": "chat",
+      "name": "Chat",
+      "category": "social"
+    },
+    {
+      "id": "video-call",
+      "name": "Video call",
+      "category": "social"
+    },
+    {
+      "id": "announcement",
+      "name": "Announcement",
+      "category": "social"
+    },
+    {
+      "id": "home",
+      "name": "Home",
+      "category": "home"
+    },
+    {
+      "id": "plant",
+      "name": "Plant",
+      "category": "home"
+    },
+    {
+      "id": "gift",
+      "name": "Gift",
+      "category": "home"
+    },
+    {
+      "id": "checklist",
+      "name": "Checklist",
+      "category": "work"
+    },
+    {
+      "id": "briefcase",
+      "name": "Briefcase",
+      "category": "work"
+    },
+    {
+      "id": "trophy",
+      "name": "Trophy",
+      "category": "work"
+    },
+    {
+      "id": "bicycle",
+      "name": "Bicycle",
+      "category": "sports"
+    },
+    {
+      "id": "basketball",
+      "name": "Basketball",
+      "category": "sports"
+    },
+    {
+      "id": "stopwatch",
+      "name": "Stopwatch",
+      "category": "sports"
+    },
+    {
+      "id": "tennis",
+      "name": "Tennis",
+      "category": "sports"
+    },
+    {
+      "id": "game-controller",
+      "name": "Game controller",
+      "category": "play"
+    },
+    {
+      "id": "arcade",
+      "name": "Arcade",
+      "category": "play"
+    },
+    {
+      "id": "dice",
+      "name": "Dice",
+      "category": "play"
+    },
+    {
+      "id": "puzzle",
+      "name": "Puzzle",
+      "category": "play"
+    },
+    {
+      "id": "party",
+      "name": "Party",
+      "category": "events"
+    },
+    {
+      "id": "ticket",
+      "name": "Ticket",
+      "category": "events"
+    },
+    {
+      "id": "stage",
+      "name": "Stage",
+      "category": "events"
+    },
+    {
+      "id": "cake",
+      "name": "Cake",
+      "category": "events"
+    },
+    {
+      "id": "dog-house",
+      "name": "Dog house",
+      "category": "pets"
+    },
+    {
+      "id": "fish-bowl",
+      "name": "Fish bowl",
+      "category": "pets"
+    },
+    {
+      "id": "pet-bowl",
+      "name": "Pet bowl",
+      "category": "pets"
+    },
+    {
+      "id": "cat-tree",
+      "name": "Cat tree",
+      "category": "pets"
+    },
+    {
+      "id": "sun-cloud",
+      "name": "Sun and cloud",
+      "category": "weather"
+    },
+    {
+      "id": "rain",
+      "name": "Rain",
+      "category": "weather"
+    },
+    {
+      "id": "snowflake",
+      "name": "Snowflake",
+      "category": "weather"
+    },
+    {
+      "id": "lightning",
+      "name": "Lightning",
+      "category": "weather"
+    },
+    {
+      "id": "tree",
+      "name": "Tree",
+      "category": "nature"
+    },
+    {
+      "id": "mountain",
+      "name": "Mountain",
+      "category": "nature"
+    },
+    {
+      "id": "island",
+      "name": "Island",
+      "category": "nature"
+    },
+    {
+      "id": "flower",
+      "name": "Flower",
+      "category": "nature"
+    },
+    {
+      "id": "recycling",
+      "name": "Recycling",
+      "category": "nature"
+    },
+    {
+      "id": "greenhouse",
+      "name": "Greenhouse",
+      "category": "nature"
+    },
+    {
+      "id": "water-drop",
+      "name": "Water drop",
+      "category": "nature"
+    },
+    {
+      "id": "solar-panel",
+      "name": "Solar panel",
+      "category": "energy"
+    },
+    {
+      "id": "wind-turbine",
+      "name": "Wind turbine",
+      "category": "energy"
+    },
+    {
+      "id": "battery",
+      "name": "Battery",
+      "category": "energy"
+    },
+    {
+      "id": "ev-charger",
+      "name": "EV charger",
+      "category": "energy"
+    },
+    {
+      "id": "car",
+      "name": "Car",
+      "category": "transport"
+    },
+    {
+      "id": "bus",
+      "name": "Bus",
+      "category": "transport"
+    },
+    {
+      "id": "train",
+      "name": "Train",
+      "category": "transport"
+    },
+    {
+      "id": "scooter",
+      "name": "Scooter",
+      "category": "transport"
+    },
+    {
+      "id": "ship",
+      "name": "Ship",
+      "category": "transport"
+    },
+    {
+      "id": "office-tower",
+      "name": "Office tower",
+      "category": "places"
+    },
+    {
+      "id": "bank",
+      "name": "Bank",
+      "category": "places"
+    },
+    {
+      "id": "hospital",
+      "name": "Hospital",
+      "category": "places"
+    },
+    {
+      "id": "school",
+      "name": "School",
+      "category": "places"
+    },
+    {
+      "id": "museum",
+      "name": "Museum",
+      "category": "places"
+    },
+    {
+      "id": "lighthouse",
+      "name": "Lighthouse",
+      "category": "places"
+    },
+    {
+      "id": "tent",
+      "name": "Tent",
+      "category": "outdoors"
+    },
+    {
+      "id": "compass",
+      "name": "Compass",
+      "category": "outdoors"
+    },
+    {
+      "id": "binoculars",
+      "name": "Binoculars",
+      "category": "outdoors"
+    },
+    {
+      "id": "hot-air-balloon",
+      "name": "Hot-air balloon",
+      "category": "outdoors"
+    },
+    {
+      "id": "beach",
+      "name": "Beach",
+      "category": "outdoors"
+    },
+    {
+      "id": "microscope",
+      "name": "Microscope",
+      "category": "science"
+    },
+    {
+      "id": "lab-flask",
+      "name": "Lab flask",
+      "category": "science"
+    },
+    {
+      "id": "atom",
+      "name": "Atom",
+      "category": "science"
+    },
+    {
+      "id": "telescope",
+      "name": "Telescope",
+      "category": "science"
+    },
+    {
+      "id": "dna",
+      "name": "DNA",
+      "category": "science"
+    },
+    {
+      "id": "padlock",
+      "name": "Padlock",
+      "category": "security"
+    },
+    {
+      "id": "key",
+      "name": "Key",
+      "category": "security"
+    },
+    {
+      "id": "fingerprint",
+      "name": "Fingerprint",
+      "category": "security"
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "category": "security"
+    },
+    {
+      "id": "vault",
+      "name": "Vault",
+      "category": "security"
+    },
+    {
+      "id": "phone",
+      "name": "Phone",
+      "category": "devices"
+    },
+    {
+      "id": "laptop",
+      "name": "Laptop",
+      "category": "devices"
+    },
+    {
+      "id": "smartwatch",
+      "name": "Smartwatch",
+      "category": "devices"
+    },
+    {
+      "id": "vr-headset",
+      "name": "VR headset",
+      "category": "devices"
+    },
+    {
+      "id": "printer",
+      "name": "Printer",
+      "category": "devices"
+    },
+    {
+      "id": "drone",
+      "name": "Drone",
+      "category": "devices"
+    },
+    {
+      "id": "handshake",
+      "name": "Handshake",
+      "category": "business"
+    },
+    {
+      "id": "presentation",
+      "name": "Presentation",
+      "category": "business"
+    },
+    {
+      "id": "meeting",
+      "name": "Meeting",
+      "category": "business"
+    },
+    {
+      "id": "org-chart",
+      "name": "Org chart",
+      "category": "business"
+    },
+    {
+      "id": "target",
+      "name": "Target",
+      "category": "business"
+    },
+    {
+      "id": "contract",
+      "name": "Contract",
+      "category": "business"
+    },
+    {
+      "id": "scales",
+      "name": "Scales",
+      "category": "business"
+    },
+    {
+      "id": "stock-chart",
+      "name": "Stock chart",
+      "category": "finance"
+    },
+    {
+      "id": "calculator",
+      "name": "Calculator",
+      "category": "finance"
+    },
+    {
+      "id": "coins",
+      "name": "Coins",
+      "category": "finance"
+    },
+    {
+      "id": "invoice",
+      "name": "Invoice",
+      "category": "finance"
+    },
+    {
+      "id": "phone-call",
+      "name": "Phone call",
+      "category": "social"
+    },
+    {
+      "id": "newsletter",
+      "name": "Newsletter",
+      "category": "social"
+    },
+    {
+      "id": "podcast",
+      "name": "Podcast",
+      "category": "social"
+    },
+    {
+      "id": "community",
+      "name": "Community",
+      "category": "social"
+    },
+    {
+      "id": "reactions",
+      "name": "Reactions",
+      "category": "social"
+    },
+    {
+      "id": "pizza",
+      "name": "Pizza",
+      "category": "food"
+    },
+    {
+      "id": "bakery",
+      "name": "Bakery",
+      "category": "food"
+    },
+    {
+      "id": "cocktail",
+      "name": "Cocktail",
+      "category": "food"
+    },
+    {
+      "id": "cooking",
+      "name": "Cooking",
+      "category": "food"
+    },
+    {
+      "id": "pills",
+      "name": "Pills",
+      "category": "health"
+    },
+    {
+      "id": "stethoscope",
+      "name": "Stethoscope",
+      "category": "health"
+    },
+    {
+      "id": "tooth",
+      "name": "Tooth",
+      "category": "health"
+    },
+    {
+      "id": "yoga",
+      "name": "Yoga",
+      "category": "health"
+    },
+    {
+      "id": "globe",
+      "name": "Globe",
+      "category": "education"
+    },
+    {
+      "id": "school-backpack",
+      "name": "School backpack",
+      "category": "education"
+    },
+    {
+      "id": "library",
+      "name": "Library",
+      "category": "education"
+    },
+    {
+      "id": "abacus",
+      "name": "Abacus",
+      "category": "education"
+    },
+    {
+      "id": "easel",
+      "name": "Easel",
+      "category": "media"
+    },
+    {
+      "id": "guitar",
+      "name": "Guitar",
+      "category": "media"
+    },
+    {
+      "id": "film-reel",
+      "name": "Film reel",
+      "category": "media"
+    },
+    {
+      "id": "design-tools",
+      "name": "Design tools",
+      "category": "media"
+    }
+  ]
+}

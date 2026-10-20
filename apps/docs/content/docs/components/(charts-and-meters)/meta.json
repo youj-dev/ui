@@ -1,0 +1,29 @@
+{
+  "title": "Charts & meters",
+  "pages": [
+    "chart",
+    "flow-graph",
+    "flow-lanes",
+    "lollipop-chart",
+    "hierarchy-chart",
+    "stat-card",
+    "limit-meter",
+    "treemap",
+    "unit-chart",
+    "waffle-chart",
+    "radar-chart",
+    "radial-graph",
+    "density-lanes",
+    "coverage-matrix",
+    "share-ring",
+    "activity-rings",
+    "dot-map",
+    "lane-meter",
+    "day-ring",
+    "distribution-strip",
+    "history-strip",
+    "forecast-band",
+    "calendar-heatmap",
+    "allocation-meter"
+  ]
+}

@@ -1,0 +1,41 @@
+/* Docs site only: the layers ./code.ts draws with the Code entrance. The panel is the site's code style (theme.css
+   --code-*: one surface, one face, one palette in light and dark); the rest are canvases and surface copies. */
+.t-code-under, .t-code-fx, .t-code-panel { position: absolute; pointer-events: none; }
+.t-code-under { z-index: -1; }
+.t-code-fx { z-index: 1; }
+.t-code-surface { position: absolute; opacity: 0; transform-origin: 50% 50%; will-change: transform, opacity; }
+
+.t-code-panel {
+  z-index: 2; display: flex; flex-direction: column; overflow: hidden; opacity: 0;
+  border-radius: var(--code-radius, 0.75rem);
+  background: var(--code-bg); color: var(--code-fg);
+  font: var(--code-font); font-variant-ligatures: none;
+  box-shadow: 0 0 0 1px var(--code-line), 0 18px 40px -18px rgb(0 0 0 / 0.45);
+  will-change: transform, opacity;
+}
+/* over the stage: a touch see-through, so the stage still reads behind it */
+.t-code-panel.is-over { background: color-mix(in oklab, var(--code-bg) 92%, transparent); }
+.t-code-head {
+  /* --z: the panel's scale in a scaled-down frame (./code.ts) */
+  flex: none; height: calc(32px * var(--z, 1)); display: flex; align-items: center; justify-content: space-between;
+  gap: calc(12px * var(--z, 1)); padding: 0 calc(12px * var(--z, 1));
+  border-bottom: 1px solid var(--code-line); font-family: var(--font-mono, ui-monospace, monospace); font-size: calc(11.5px * var(--z, 1)); line-height: 1;
+  white-space: nowrap; color: var(--code-muted);
+}
+.t-code-file { overflow: hidden; text-overflow: ellipsis; }
+.t-code-file em { font-style: normal; opacity: 0.6; }
+.t-code-file span { color: var(--code-fg); }
+.t-code-status { display: flex; align-items: center; gap: 6px; }
+.t-code-status i { width: calc(6px * var(--z, 1)); height: calc(6px * var(--z, 1)); border-radius: 50%; background: var(--color-accent); animation: t-code-pulse 560ms ease-in-out infinite alternate; }
+.t-code-status.is-done { color: var(--code-fg); }
+.t-code-status.is-done i { animation: none; background: var(--color-success); }
+.t-code-status.is-done b { animation: t-code-in 260ms var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) both; }
+.t-code-status b { font-weight: 400; }
+.t-code-status.is-done b::before { content: '✓ '; color: var(--color-success); }
+.t-code-body { flex: none; display: block; }
+@keyframes t-code-pulse { from { transform: scale(0.55); opacity: 0.6; } to { transform: scale(1); opacity: 1; } }
+@keyframes t-code-in { from { opacity: 0; transform: translateY(3px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .t-code-under, .t-code-fx, .t-code-panel { display: none; } /* ./entrances.ts never plays it: the demo is just there */
+}

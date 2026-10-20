@@ -1,0 +1,123 @@
+---
+title: Histogram Range
+description: "Choose a range while seeing the distribution of values it filters."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="histogram-range/demo" height={240} />
+
+A file-size filter: a range from 0 to 64 MB drawn over a histogram of uploads.
+
+</Story>
+
+<Story id="new-data" label="New data">
+
+<ComponentPreview name="histogram-range/data" height={300} />
+
+The bars gliding to new heights as the data changes.
+
+When the data changes, the bars glide to their new heights; the range stays where it was.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="histogram-range" noImport />
+
+Use a histogram range when the shape of the data should guide the cut: file sizes, prices, response times, scores. People see where the values bunch up before they choose, and the bars inside the range show what they're keeping. For a range on its own, a [Slider](/docs/components/slider) with two values is enough.
+
+```tsx
+import { useState } from 'react'
+import { HistogramRange } from '@youj/react'
+
+export function SizeFilter({ bins }: { bins: number[] }) {
+  const [range, setRange] = useState<[number, number]>([4.8, 38])
+  return (
+    <HistogramRange
+      label="File size"
+      bins={bins}
+      min={0}
+      max={64}
+      step={0.1}
+      value={range}
+      onValueChange={setRange}
+      format={(v) => `${v.toFixed(1)} MB`}
+    />
+  )
+}
+```
+
+Pass counts you've already binned as `bins`, evenly spaced from `min` to `max`, or raw values as `data` and it counts them into `binCount` bins (40 by default); values outside `min` and `max` are left out. It's controlled with `value` and `onValueChange`, or uncontrolled with `defaultValue`; `onValueCommitted` fires once a drag or key press ends.
+
+`format` turns a value into text: the readout above the plot, what a screen reader says for each thumb, and the axis. `formatTick` formats the axis on its own (say "0" rather than "0.0 MB"), and `ticks` picks the values it marks.
+
+The accent stays on the track between the thumbs and on the readout, and the bars in range are a stronger neutral. `tone="accent"` puts the accent on those bars too. Each thumb is drawn as a caliper's jaw: an upright tab on the track with a hairline guide that rises through the plot, so you read each end of the cut against the bars it falls in.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="data, bins, binCount… (18)">
+
+### Props
+
+<PropsTable name="HistogramRange" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Thumbs and range, data changes, first paint… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Thumbs and range', note: 'track the pointer 1:1; the bars in range are a copy clipped to it, so a bar under a thumb is cut at its center', value: 'no easing' },
+    { moment: 'Data changes', note: 'each bar’s height glides (a clip-path, so corners stay crisp) in a quick wave from the first bin', duration: 'slow', ease: 'emphasized' },
+    { moment: 'First paint', note: 'the bars rise from the baseline the same way', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Thumb halo', note: 'the Slider’s halo on hover, focus and drag', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="The bars take their heights in one frame, on first paint and on every change. The thumbs and the range were direct already."
+/>
+
+#### Reduced motion
+
+Only the bars move, so only they change: they take their new heights at once. Dragging was never animated.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- The component is a `group` named by `label`. Its thumbs are the [Slider](/docs/components/slider)'s: each is a `slider` named as the label's minimum and maximum ("Minimum file size"), or by `thumbLabels`, and speaks its value through `format`.
+- The arrow keys step, Page Up, Page Down and Shift with an arrow take large steps, and Home and End jump to the ends. The whole plot is the hit area: a press anywhere moves the nearest thumb.
+- The bars and the axis are hidden from assistive tech. The readout is spoken through a polite live region half a second after the range stops changing, not on every step.
+- Under right-to-left, the minimum sits on the right, and the bars, the accent and the axis mirror with the thumbs.
+
+</ReferenceRow>

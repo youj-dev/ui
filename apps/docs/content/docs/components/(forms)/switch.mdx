@@ -1,0 +1,165 @@
+---
+title: Switch
+description: "Turn a setting on or off and apply it immediately."
+aliases: ["toggle", "on off"]
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="switch/demo" height={400} />
+
+A list of project settings, each with a label, a description and a switch.
+
+</Story>
+
+<Story id="it-applies-immediately" label="It applies immediately">
+
+<ComponentPreview name="switch/immediate" height={260} />
+
+A switch that applies its change as soon as it is flipped.
+
+A switch promises that the change has already happened. Reflect it right away, in the same view, and don't pair it with a Save button. If the change can fail, show that too, and flip the switch back.
+
+</Story>
+
+<Story id="sizes-and-states" label="Sizes and states">
+
+<ComponentPreview name="switch/sizes" height={220} />
+
+Switches in each size and state.
+
+`size="sm"` fits dense rows and tables, and `size="lg"` suits touch-first and spacious settings. `disabled` on the `Field` dims the label with the switch. `readOnly` keeps the value but ignores presses.
+
+</Story>
+
+<Story id="liquid" label="Liquid">
+
+<ComponentPreview name="switch/liquid" height={320} />
+
+A settings list with liquid switches.
+
+`variant="liquid"` draws the thumb as a glass droplet on a wider track. It stretches as it travels, overshoots its end and settles, and the accent pours into the track behind it. Everything else is the same switch: the role, the keyboard, the props and the Field wiring. Use it where the product has a softer, more playful look; keep one variant per screen.
+
+</Story>
+
+<Story id="liquid-sizes" label="Liquid sizes">
+
+<ComponentPreview name="switch/liquid-sizes" height={220} />
+
+Liquid switches in each size, and disabled.
+
+The liquid track is wider than the default one at every size, to give the droplet room to stretch. The thumb catches a little of the accent in its lower edge as it crosses the fill, and its highlight stays at the top in both themes.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="switch" noImport />
+
+Use Switch for settings that apply immediately, such as muting a channel or turning on previews. For a value saved with a form, use a [Checkbox](/docs/components/checkbox). For named alternatives such as light and dark, use a [Toggle Group](/docs/components/toggle-group) or [Radio Group](/docs/components/radio-group).
+
+```tsx
+import { Field, FieldLabel, Switch } from '@youj/react'
+
+export function AirplaneMode() {
+  return (
+    <Field orientation="horizontal">
+      <Switch />
+      <FieldLabel>Airplane mode</FieldLabel>
+    </Field>
+  )
+}
+```
+
+In a settings row, put the label and its description in a `FieldContent` first and the switch last, so the label leads and the control lines up at the end of every row.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, variant, sound (3)">
+
+### Props
+
+<PropsTable name="Switch" />
+
+| Data attribute | Values |
+| --- | --- |
+| `data-size` | `sm`, `default`, `lg` |
+| `data-variant` | `default`, `liquid` |
+| `data-checked`, `data-unchecked`, `data-disabled` | Base UI's state |
+
+It also takes Base UI's `checked`, `defaultChecked`, `onCheckedChange`, `disabled`, `readOnly`, `required`, `name` and `value`. The `required` default comes from the surrounding `Field`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Thumb travel, track color, press, liquid · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Thumb travel', note: 'one thumb width, mirrored under right-to-left', spring: 'snappy' },
+    { moment: 'Track color', note: 'off to on', duration: 'fast', ease: 'standard' },
+    { moment: 'Press', note: 'the thumb squeezes to 85%', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="The thumb jumps to its end and doesn't squeeze on press. The track still changes color."
+/>
+
+The spring drives a single value from 0 to 1, and CSS turns it into the thumb's translate. A switch flipped back mid-flight retargets the spring from where the thumb is, so rapid toggling never jumps.
+
+#### Liquid
+
+<MotionSpec
+  rows={[
+    { moment: 'Droplet travel', note: 'overshoots its end and settles', spring: 'settle' },
+    { moment: 'Stretch', note: 'up to 30% wider and 18% flatter with the spring’s speed, squashed against the end while it overshoots', spring: 'settle' },
+    { moment: 'Fill', note: 'the accent, clipped to the traveled part of the track, follows the same value', spring: 'settle' },
+    { moment: 'Press', note: 'the droplet swells to 110%', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="The plain switch's: the droplet jumps to its end, doesn't stretch or swell, and the fill shows at once."
+/>
+
+The liquid switch springs on `settle`, the kit's one spring that overshoots, so the droplet lands with a small wobble. Its stretch is read from the spring's speed, so a rapid toggle that retargets mid-flight stretches it the right amount.
+
+#### Reduced motion
+
+The thumb moves to its end at once and the press doesn't squeeze it. The thumb's position and the track color still show the state. The liquid droplet does the same: no stretch, no swell, and the fill shows at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- It's a `switch` role with `aria-checked`. `Space` toggles it.
+- A `FieldLabel` in the same `Field` names it. Outside a `Field`, give it `aria-label`, or pair `Label htmlFor` with the switch's `id`.
+- In both states the thumb clears 3:1 against the track, and the track clears 3:1 against the page. The liquid droplet is a near-white glass on the same off track and the accent fill. The thumb's side shows the state too, so it doesn't rest on color alone.
+- The hit area extends past the track, and grows on touch screens.
+
+</ReferenceRow>

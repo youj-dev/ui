@@ -1,0 +1,182 @@
+---
+title: Tabs
+description: "Switch between related panels of content in the same space."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tabs/demo" height={400} />
+
+A project page with Overview, Deployments and Analytics tabs on a full-bleed list.
+
+A list that runs edge to edge, like the one under a project's name in the Demo story, still wants its tabs on the content's inset. Pass `inset` and set the inset with `--tabs-inset` on the list. Inside a Card it defaults to the card's own inset, and elsewhere to 1rem.
+
+```tsx
+<TabsList inset aria-label="Project" className="[--tabs-inset:--spacing(5)]">
+```
+
+Underline tabs line their labels up with the inset, and their hairline still spans the row. A track lines its edge up with the inset instead, which is how pill tabs behave. Don't pad the list for this. A pill list in the Bezel style resets its padding and is a track just wide enough for its tabs. For split tabs that share the row, give the list `flex-1` and each trigger `flex-1`.
+
+</Story>
+
+<Story id="pill" label="Pill">
+
+<ComponentPreview name="tabs/pill" height={240} />
+
+Tabs in the pill variant, a recessed track with a raised key.
+
+`variant="pill"` raises a key out of a recessed track. It suits a few short labels in a toolbar or a card header.
+
+</Story>
+
+<Story id="vertical" label="Vertical">
+
+<ComponentPreview name="tabs/vertical" height={440} />
+
+A vertical tab list beside its panels, for a settings page.
+
+Set `orientation="vertical"` on `Tabs` to stack the list beside its panels. The arrow keys become ↑ and ↓, and the underline becomes a bar on the list's start edge. It suits settings pages with more sections than fit across.
+
+</Story>
+
+<Story id="many-tabs" label="Many tabs">
+
+<ComponentPreview name="tabs/overflow" height={260} />
+
+A tab list that scrolls when it runs out of room.
+
+A horizontal list that runs out of room scrolls without a scrollbar. Its edges fade in proportion to how far there is left to scroll, chevrons appear for pointer users, and a newly selected tab scrolls itself into view. Keyboard users keep pressing the arrow keys.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="tabs" noImport />
+
+Use Tabs for related views, such as a project’s overview, deployments and settings. Each tab shows its own panel. To choose a value or filter, use a segmented [Toggle Group](/docs/components/toggle-group). To navigate between pages, use links in a [Sidebar](/docs/components/sidebar) or [Navigation Menu](/docs/components/navigation-menu).
+
+```tsx
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@youj/react'
+
+export function ProjectTabs() {
+  return (
+    <Tabs defaultValue="overview">
+      <TabsList aria-label="Project">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="deployments">Deployments</TabsTrigger>
+        <TabsTrigger value="settings">Settings</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview">…</TabsContent>
+      <TabsContent value="deployments">…</TabsContent>
+      <TabsContent value="settings">…</TabsContent>
+    </Tabs>
+  )
+}
+```
+
+Each `TabsTrigger` selects the `TabsContent` with the same `value`. Name the list with `aria-label` or `aria-labelledby`, so screen readers announce what the tabs switch between. To control the selection, pass `value` and `onValueChange` to `Tabs`.
+
+The default `underline` list is plain labels on a hairline: muted until hovered, the selected one in full ink over a 2px accent bar that glides between tabs. It looks the same in every component style. Move across the tabs in the Demo story, or Tab into them and press ← and →.
+
+### Selection and focus
+
+By default the arrow keys move focus and select in one step (`activateOnFocus`), which the ARIA Authoring Practices recommend when panels show without delay. If a panel fetches data or takes a while to render, turn it off: the arrows then only move focus, and Enter or Space selects.
+
+```tsx
+<TabsList aria-label="Reports" activateOnFocus={false}>
+```
+
+A disabled tab stays focusable, so people can discover it, but it's never selected.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, activateOnFocus, inset (3)">
+
+### Props
+
+#### TabsList
+
+<PropsTable name="TabsList" />
+
+#### Tabs, TabsTrigger and TabsContent
+
+These pass their props through to Base UI's `Tabs.Root`, `Tabs.Tab` and `Tabs.Panel`. The ones you'll use most:
+
+| Part | Prop | Type | Default |
+| --- | --- | --- | --- |
+| `Tabs` | `defaultValue` | `any` | `0` |
+| `Tabs` | `value`, `onValueChange` | `any`, `(value, details) => void` | – |
+| `Tabs` | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| `TabsTrigger` | `value` (required) | `any` | – |
+| `TabsTrigger` | `disabled` | `boolean` | `false` |
+| `TabsContent` | `value` (required) | `any` | – |
+| `TabsContent` | `keepMounted` | `boolean` | `false` |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Indicator, panel… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Indicator', note: 'glides to the selected tab, transform only', spring: 'smooth' },
+    { moment: 'Panel', note: 'fades in with a 4px drift from the side the selection moved to', duration: 'base', ease: 'enter' },
+    { moment: 'Tab color', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The indicator jumps to the selected tab, panels appear without a fade or drift, and a long list scrolls to the selected tab without smoothing."
+/>
+
+The outgoing panel hides at once, so two panels never share the space. A new selection mid-glide retargets the indicator from where it is, keeping its velocity. Resizes, font loads and right-to-left layouts re-place the indicator without animating.
+
+#### Reduced motion
+
+Selection works exactly the same. The indicator jumps instead of gliding, the panel appears without its fade and drift, and a long list jumps to the selected tab instead of scrolling smoothly. Switch on Reduced motion in any preview to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The list is a `tablist`, named by its `aria-label`. Each trigger is a `tab` with `aria-selected`, and each panel is a `tabpanel` labeled by its tab.
+- The list is one tab stop. Tab moves from the selected tab into the panel.
+- The indicators and the scroll chevrons are hidden from assistive technology. The chevrons are pointer-only and never take focus, because the focused tab scrolls itself into view.
+
+| Key | Action |
+| --- | --- |
+| ← → | Move to the previous or next tab and select it. Focus loops at the ends. |
+| ↑ ↓ | The same, in a vertical list. |
+| Home / End | Move to the first or last tab. |
+| Enter / Space | Select the focused tab, when `activateOnFocus` is off. |
+| Tab | Leave the list for the panel. |
+
+</ReferenceRow>

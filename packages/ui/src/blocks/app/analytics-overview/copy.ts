@@ -1,0 +1,48 @@
+import type { Metric, Summary } from './data'
+
+/** Every string the overview shows or speaks. */
+export const DEFAULT_COPY = {
+  title: 'Analytics overview',
+  section: 'Analytics',
+  badge: 'Online store',
+  comparedWith: 'compared with',
+  dateRange: 'Date range',
+  announce: (span: string, revenue: string) => `Showing ${span}: ${revenue} revenue`,
+  loading: 'Loading the overview',
+  empty: 'No sales in this range',
+  emptyDetail: 'Pick another range, or check back once orders come in.',
+  retry: 'Try again',
+  kpis: 'Key metrics',
+  vsPrevious: 'vs. previous period',
+  byUnit: (label: string, unit: Summary['unit']) => `${label} by ${unit}`,
+  metric: 'Metric',
+  metrics: { revenue: 'Revenue', orders: 'Orders', visitors: 'Visitors' } as Record<Metric, string>,
+  overTime: (label: string) => `${label} over time`,
+  per: { hour: 'By hour', day: 'By day', week: 'By week', month: 'By month' } as Record<Summary['unit'], string>,
+  against: (days: number) => `against the previous ${days === 1 ? 'day' : `${days} days`}`,
+  thisPeriod: 'This period',
+  previousPeriod: 'Previous period',
+  trendSummary: (label: string, peak: string, at: string, change: number) =>
+    `${label} peaked at ${peak} (${at}) and is ${change >= 0 ? 'up' : 'down'} ${Math.abs(Math.round(change * 1000) / 10)}% on the previous period.`,
+  period: 'Period',
+  trendCaption: (label: string) => `${label}, this period against the previous one.`,
+  channelsTitle: 'Revenue by channel',
+  channelsDescription: 'Where this period’s orders came from',
+  channelsSummary: (top: string, share: string, total: string) => `${top} brought the most revenue, ${share} of ${total}.`,
+  channels: 'Channels',
+  revenue: 'Revenue',
+  productsTitle: 'Top products',
+  productsDescription: 'By revenue this period',
+  productsTable: 'Top products by revenue',
+  rank: 'Rank',
+  product: 'Product',
+  units: 'Units',
+  change: 'Change',
+  trend: 'Trend',
+  categoriesTitle: 'Sales by category',
+  categoriesLead: (name: string) => `${name} lead this period`,
+  noSales: 'No sales this period',
+  categoriesLabel: 'Revenue by category',
+}
+
+export type AnalyticsOverviewCopy = typeof DEFAULT_COPY

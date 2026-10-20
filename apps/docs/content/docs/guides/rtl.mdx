@@ -1,0 +1,96 @@
+---
+title: Right-to-left layouts
+description: "Lay out Arabic, Hebrew and Persian apps right to left: sides, arrow keys, overlays and motion mirror from one dir prop."
+---
+
+<PageArt art="i18n" />
+
+Set the reading direction once, with `dir` on `YoujProvider`, and every component follows it. Spacing, borders and corners use logical sides, so they mirror in CSS. Arrow keys, menu and popover placement, sliders, sheets, carousels and directional motion read the same direction in JavaScript, so they mirror too.
+
+## Turn it on
+
+Set `dir` on `<html>` and on the provider. The `<html>` attribute covers the page and your own CSS. The provider's `dir` reaches the components, Base UI and everything they portal.
+
+```tsx title="app/layout.tsx"
+import { YoujProvider } from '@youj/core'
+import { ar } from '@youj/core/locales/ar'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="ar" dir="rtl">
+      <body>
+        <YoujProvider dir="rtl" locale="ar" labels={ar}>
+          {children}
+        </YoujProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+- **Without `dir` on the provider,** components follow `<html dir>` in the browser and update when it changes. A server can't read the document, so the server render and the hydration render use `ltr` until then. Pass `dir` on the provider for a server-rendered RTL app, so the first paint is already mirrored.
+- **`dir="auto"`** takes the direction from the first strong character of the content, the way the HTML attribute does. Use it for a region whose language you don't know in advance, such as user-written content.
+- **The language pack is separate.** `dir` lays the page out right to left and `labels` translates the built-in text. An Arabic app usually sets both. See [Translating built-in text](/docs/guides/i18n).
+
+## One part of the page
+
+`ThemeScope` takes `dir` too, so you can mirror part of a page. The overlays that part opens (menus, popovers, dialogs and sheets) are mirrored as well.
+
+```tsx
+import { ThemeScope } from '@youj/core'
+
+<ThemeScope dir="rtl">
+  <HebrewSupportWidget />
+</ThemeScope>
+```
+
+## In your own components
+
+`useDirection()` returns the direction in effect: `'ltr'` or `'rtl'`. Use it for anything CSS can't express, such as the sign of a horizontal offset, the key that means "next", or the side a panel opens on.
+
+```tsx
+import { useDirection } from '@youj/core'
+
+function Pager({ onNext, onPrevious }: { onNext: () => void; onPrevious: () => void }) {
+  const rtl = useDirection() === 'rtl'
+  return (
+    <div
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === (rtl ? 'ArrowLeft' : 'ArrowRight')) onNext()
+        if (event.key === (rtl ? 'ArrowRight' : 'ArrowLeft')) onPrevious()
+      }}
+    />
+  )
+}
+```
+
+For styling, use logical utilities rather than reading the direction: `ms-2` instead of `ml-2`, `ps-4` instead of `pl-4`, `start-0` instead of `left-0`, `text-start`, `rounded-s-md` and `border-e`. To mirror an icon, add `rtl:-scale-x-100`. If you use Base UI primitives directly under the provider, wrap them in Base UI's `DirectionProvider` with `direction={useDirection()}`. Youj's own components already do this.
+
+## What mirrors
+
+| Area | Under RTL |
+|---|---|
+| Layout | Padding, margins, borders, corners, insets and text alignment, through logical properties. |
+| Keyboard | Left and right arrows in Tabs, Radio Group, Toggle Group, Toolbar, Menubar, Slider, Carousel, Rating, Tree View, Kanban, Data Table and Data Grid follow what the reader sees. ArrowLeft goes to the next tab. |
+| Overlays | Submenus open on the left. Placements set to `inline-start` or `inline-end` flip, and every portal carries `dir`. |
+| Sheets and drawers | `side="start"` / `side="end"` on Sheet and `swipeDirection="start"` / `"end"` on Drawer follow the direction. `left` and `right` stay physical. |
+| Icons | Chevrons, arrows, back and forward, send, reply, undo and redo, and log in and log out point the other way. |
+| Motion | Tab and segmented indicators, Marquee, PageTransition's `slide` and `curtain`, IconSwap's slide and wipe, icon nudges and the toast's swipe all travel in the reading direction. |
+
+## What doesn't mirror
+
+Some things keep their direction in every script, because their meaning is physical or universal:
+
+- **Media controls.** Play, fast forward, skip and a video's scrubber keep their direction, as they do on every RTL platform.
+- **Clocks and dials.** Gauges, rings and the Dial knob turn clockwise.
+- **Timelines on a time axis.** The Track Timeline and Waveform Scrubber run left to right, as audio and video editors do.
+- **Numbers, codes and maps.** Phone numbers, amounts, IDs and code stay left to right inside RTL text (components isolate them with `dir="ltr"`), and maps keep their geography.
+- **Symmetric and two-way glyphs.** Swap arrows, expand and collapse chevrons pointing up or down, and alignment icons are unchanged.
+
+## Testing
+
+- **Storybook:** the toolbar's Direction control renders every story as an Arabic app: `dir="rtl"` on the document and on the provider, the Arabic locale and labels.
+- **Docs previews:** the RTL button in a preview's toolbar mirrors that example's stage.
+- **Unit tests:** render under `<YoujProvider dir="rtl">` and press the keys a reader would. ArrowLeft moves to the next tab, and the submenu opens with ArrowLeft.
+- **Lint:** in this repository, `pnpm -F @youj/react lint:direction` (part of `verify`) rejects physical `left`/`right` utilities and unmirrored directional icons in component and block sources. When a side really is physical, such as map coordinates, mark the line with `// youj-allow: physical side <reason>`.

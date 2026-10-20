@@ -1,0 +1,77 @@
+{
+  "name": "@youj/sound",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) Interface sounds for Youj: a provider that plays designed, pre-rendered sounds for the cues Youj components emit. Off until you add it; nothing downloads until sound is on.",
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "keywords": [
+    "alpha",
+    "sound",
+    "audio",
+    "ui-sounds",
+    "interface-sounds",
+    "sound-design",
+    "youj",
+    "react",
+    "accessible",
+    "tailwindcss",
+    "design-system"
+  ],
+  "homepage": "https://www.youj.dev/docs/sound",
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/sound"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./lab": "./lab/index.ts",
+    "./*": "./src/*"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "render": "node scripts/render.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage.enabled",
+    "size": "node scripts/size.mjs",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "verify": "pnpm typecheck && pnpm registry:check && pnpm test"
+  },
+  "devDependencies": {
+    "@youj/core": "workspace:*",
+    "react-dom": "^19"
+  },
+  "peerDependencies": {
+    "@youj/core": "workspace:*",
+    "react": "^19"
+  }
+}

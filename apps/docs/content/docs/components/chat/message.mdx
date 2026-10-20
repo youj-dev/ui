@@ -1,0 +1,137 @@
+---
+title: Chat Message
+description: "Display a conversation turn with actions such as copy, regenerate, rate and edit."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="message/demo" height={420} />
+
+An editable question and an assistant answer you can rate and regenerate.
+
+</Story>
+
+<Story id="actions" label="Actions">
+
+<ComponentPreview name="message/actions" height={300} />
+
+A system notice and an assistant message with two actions of its own, Save and Share.
+
+Copy is on by default (`copyable={false}` removes it). Regenerate shows on assistant messages when `onRegenerate` is set, the good and bad pair when `feedback` or `onFeedbackChange` is, and Edit on user messages when `onEdit` is. Editing swaps the bubble for a field: Enter saves, Escape cancels, and focus returns to Edit.
+
+Actions sit in one toolbar that stays quiet until wanted: it shows on hover and focus, always on touch screens and on the latest message, and never while the message streams. Add your own after the built-in ones with `actions` and `ChatMessageAction`, which is an icon button with a tooltip, or a toggle when you pass `pressed`. A custom `avatar` replaces the default one.
+
+</Story>
+
+<Story id="errors-and-stopping" label="Errors and stopping">
+
+<ComponentPreview name="message/error" height={260} />
+
+An answer that drops part-way through, with the error and a retry that streams it whole.
+
+`error` shows under whatever arrived, with Retry when `onRetry` is set, and is announced assertively. The partial answer stays, and its unfinished end renders as it did while streaming. For an answer the reader stopped, set `incomplete` instead. The preview drops its first try part-way. Retry streams it again.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatMessage" noImport />
+
+Use one for every turn in a conversation, inside a [Chat Message List](/docs/components/chat/message-list), which groups consecutive messages and announces them. An assistant message renders its `content` as streamed [markdown](/docs/components/chat/markdown) across the column. A user message is a bubble on the inline-end side, and a system message is a centered notice between hairlines. Hover the answer in the preview to see its actions, or edit the question.
+
+```tsx
+import { ChatMessage } from '@youj/react'
+
+<ChatMessage role="user" name="Ada Lovelace" content="Why did checkout get slower?" onEdit={resend} />
+<ChatMessage
+  role="assistant"
+  name="Youj"
+  content={reply.stream}
+  streaming={reply.streaming}
+  feedback={reply.feedback}
+  onFeedbackChange={rate}
+  onRegenerate={regenerate}
+/>
+```
+
+Names default to "Assistant", "You" and "System". `timestamp` takes a `Date`, a string or a number, and shows the time with the full date in its title. Messages are memoised, so pass stable callbacks and a message re-renders only when its own props change.
+
+`children` render before the text, for what the assistant did first: a [typing indicator or reasoning](/docs/components/chat/thinking), [tool calls](/docs/components/chat/tool-call), attachments. `footer` renders after it, for follow-ups. `sources` turns `[1]` in the text into a [citation](/docs/components/chat/citation) and adds a row of sources under the answer once it's done.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="role, name, avatar… (27)">
+
+### Props
+
+<PropsTable name="ChatMessageProps" />
+
+#### ChatMessageAction
+
+<PropsTable name="ChatMessageAction" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Actions show and hide, writing, copied… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Actions show and hide', note: 'the toolbar fades on hover and focus', duration: 'fast', ease: 'standard' },
+    { moment: 'Writing', note: 'the assistant avatar’s sparkles twinkle while it streams', value: 'loop' },
+    { moment: 'Copied', note: 'the back sheet tucks in behind the front one', duration: 'base', ease: 'exit' },
+    { moment: 'Copied check', note: 'written on the page, after a `base` delay', duration: 'slow' },
+    { moment: 'Copied hold', note: 'before the icon and the tooltip return to rest', duration: 'deliberate', value: '× 3' },
+    { moment: 'Good or bad response', note: 'the thumb rocks −16°, 5°, 0° as it turns on', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Error mark', note: 'the warning rocks once as it mounts', duration: 'deliberate', ease: 'standard' },
+  ]}
+  reduced="The toolbar shows and hides at once, the avatar holds still, and the icons change without playing."
+/>
+
+The text's own motion (words fading in, the caret) belongs to [Chat Markdown](/docs/components/chat/markdown).
+
+#### Reduced motion
+
+The toolbar appears without fading, the assistant's avatar stops twinkling, and the copy, rating and warning icons change state without animating. Streamed text arrives in whole sentences (see [Chat Markdown](/docs/components/chat/markdown)).
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Each message is an `article` named by its header, the author and the time, even when grouping hides the header visually.
+- While streaming it sets `aria-busy`. Inside a list, a finished assistant answer is announced once, whole, and a failure assertively.
+- The actions are one toolbar named "Message actions": a single tab stop, with arrow keys moving inside it. Every action has a name and a tooltip, and the rating buttons are toggles with `aria-pressed`.
+- The edit field is named "Edit message" and takes focus with the caret at the end. Escape cancels and returns focus to Edit.
+
+</ReferenceRow>

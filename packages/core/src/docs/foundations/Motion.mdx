@@ -1,0 +1,48 @@
+import { Meta, Unstyled } from '@storybook/addon-docs/blocks'
+import * as MotionStories from './motion.stories'
+import { EasingVisualiser } from '../components/easing-visualiser'
+import { DurationScale } from '../components/duration-scale'
+import { SpringPlayground } from '../components/spring-playground'
+import { StaggerDemo } from '../components/stagger-demo'
+
+<Meta of={MotionStories} name="Overview" />
+
+# Motion
+
+Precise and kinetic: motion that starts **immediately**, travels **fast**, and lands **exactly**, with no drift and no wobble. Every value lives in `src/lib/youj/tokens.ts` and reaches components through `useYouj()`. The toolbar's **Speed** control scales all of it, and **Motion: reduced** switches every demo to its end state.
+
+## Easing
+
+Five curves. `standard` is the default. `enter` and `exit` are asymmetric on purpose: arrivals are at full speed from the first frame and decelerate into place, and exits accelerate away and commit.
+
+<Unstyled>
+  <EasingVisualiser />
+</Unstyled>
+
+## Duration
+
+A geometric-ish scale (about 1.6× per step) that stays short. Anything that responds to direct input should finish within `base`.
+
+<Unstyled>
+  <DurationScale />
+</Unstyled>
+
+## Springs
+
+Springs are defined by **perceived duration and bounce**, so they scale with the Speed control like everything else. `snappy` and `smooth` are critically damped. `settle` has ζ = 0.7: one legible overshoot of about 4.6% and a second too small to see. It is reserved for success and arrival.
+
+<Unstyled>
+  <SpringPlayground />
+</Unstyled>
+
+### The spring in CSS
+
+`--ease-spring` is the `smooth` spring as a CSS `linear()` curve, sampled from the same physics `useYouj` hands Motion, and `--yj-duration-spring` is the time it takes to settle (640ms in precise, Speed included). Each motion personality re-values both: calm is longer, lively keeps its small overshoot. Use the pair for **transforms** that should land like a spring without JavaScript, and keep opacity on a short tween, so the element is visible at once and settles after: `yj-pop`, `yj-tooltip` and `yj-dialog` enter this way, and a Button releases its press on it. Multiply by `--yj-motion` as with every duration: `transform calc(var(--yj-duration-spring) * var(--yj-motion, 1)) var(--ease-spring)`, or the `ease-spring` utility with `duration-(--yj-duration-spring)` where depth already scales by `--yj-motion`.
+
+## Stagger
+
+The step between siblings. `tight` is about a frame and a half at 60 Hz, a ripple more than a sequence. `base` reads as one gesture. `loose` is for a few large items.
+
+<Unstyled>
+  <StaggerDemo />
+</Unstyled>

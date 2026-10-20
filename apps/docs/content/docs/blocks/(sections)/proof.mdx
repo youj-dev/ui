@@ -1,0 +1,92 @@
+---
+title: Social proof
+description: "Sections that build trust: a wall of what customers say, logos and ratings, a logo cloud, a customer story, headline metrics and a security overview."
+---
+
+<BlockStories>
+
+<BlockStory id="testimonial-wall" label="Testimonial wall" block="marketing-testimonial-wall" story="Default" backdrop="cinnabar">
+
+Let customers make the case in their own words: columns of quotes drift past each other with no seam, the column you point at eases to a stop while the others recede, and one button pauses the whole wall. Each quote sets the phrase that matters in full ink. Under reduced motion the columns stand still, folded, with Show all.
+
+</BlockStory>
+
+<BlockStory id="logos" label="Logos and ratings" block="marketing-social-proof" story="Default" backdrop="cinnabar">
+
+Show who else uses the product in one section: a rating summary, the customers' wordmarks on a hairline grid lit by the pointer with an industry filter, and the featured customer story as an editorial panel whose results roll up. Pointing at a customer with a story says so.
+
+</BlockStory>
+
+<BlockStory id="logo-cloud" label="Logo cloud" block="marketing-logo-cloud" story="Default" backdrop="cinnabar">
+
+The customers' logos under one quiet line: a grid that trades its logos in place, one cell at a time (the leaving logo drifts up and blurs away as the next rises in), so twice the customers fit in the same room; or, with `variant="marquee"`, a row that drifts with no seam. It rests while pointed at or off screen, and a small button pauses it.
+
+</BlockStory>
+
+<BlockStory id="customer-story" label="Customer story" block="marketing-customer-story" story="Default" backdrop="cinnabar">
+
+Tell a customer story as a long read: results as counting figures with a before and now bar, chapters with a contents that follows the reader, a pull quote and the next story.
+
+</BlockStory>
+
+<BlockStory id="metrics" label="Metrics" block="marketing-metrics" story="Default" backdrop="cinnabar">
+
+Back claims with numbers that come with context: figures that count up for a chosen period, the change on the one before, a trend line, a baseline and a footnote for the source.
+
+</BlockStory>
+
+<BlockStory id="security" label="Security" block="marketing-security" story="Default" backdrop="cinnabar">
+
+Answer a security review in one place: live status with a strip of daily uptime, certifications with a report on request, data residency on a map, the practices behind it and the policy documents.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, filters, moving content, live regions">
+
+### Accessibility
+
+Each section is a `<section>` named by its own heading (`aria-labelledby`); the heading is an `h2` by default and `headingLevel` changes it. Customer story is an `article` with its own `header` and `footer`.
+
+Testimonial wall is a named list that screen readers read once: the columns' repeats are `inert` and hidden from assistive technology. The moving wall has a Pause button (WCAG 2.2.2) and stops a column while it is pointed at or holds focus, bringing a focused link clear of the faded edge; stars are read as "Rated 5 out of 5", and the folded wall's Show all reports `aria-expanded`.
+
+Logo cloud gives screen readers every customer once, as a named list, and hides the moving picture; its pause button names what it does, and it never moves under reduced motion.
+
+Logos and ratings names its rating group and gives the logo wall a labelled filter whose buttons use `aria-pressed`; customers with a story are buttons named "read the story", the others images with a label, and the story tabs work from the keyboard. Metrics reads each figure with visually hidden context (the change and period) and announces a period switch in a status region. Customer story gives its results and contents nav labels. Security labels its lists, and the data residency list announces the selected region in a live region.
+
+Figures that count up end on the same text a screen reader gets. The animated parts check the reduced-motion setting. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

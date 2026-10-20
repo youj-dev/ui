@@ -1,0 +1,21 @@
+{
+  "name": "@fixture/kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./extra": "./src/extra.ts",
+    "./locales/*": "./src/locales/*.ts",
+    "./*": "./src/*"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "./extra": { "types": "./dist/extra.d.ts", "default": "./dist/extra.js" },
+      "./locales/*": { "types": "./dist/locales/*.d.ts", "default": "./dist/locales/*.js" },
+      "./styles.css": "./dist/styles.css",
+      "./package.json": "./package.json"
+    }
+  }
+}

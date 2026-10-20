@@ -1,0 +1,141 @@
+---
+title: Noise Field
+description: "Add a topographic background with contour lines and accent-tinted peaks."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="noise-field/demo" full height={400} />
+
+A hero section over the contour map, which fades out behind the copy.
+
+With `interactive` on (the default), the pointer raises a smooth mound in the terrain, and the contours bunch up around it. The mound follows the pointer on a short smoothing curve and fades in and out as the pointer enters and leaves. The pointer is tracked on the window, so the field responds under content that takes the events. Touch doesn't raise a mound, because it produces no hover.
+
+Set `interactive={false}` for fields behind panels and forms, where a moving surface under the cursor would distract.
+
+</Story>
+
+<Story id="color" label="Color">
+
+<ComponentPreview name="noise-field/status" height={420} />
+
+A status panel whose map has green summits, a lower density and no pointer response.
+
+`colors` takes two CSS colors: the contour lines, then the summits. The defaults are `--color-fg` lines with `--color-accent` summits. Token references keep the map in step with the theme, and it rereads them when the theme changes.
+
+Here the summits take the success color, and a lower `intensity` and `density` keep the map calm behind a status panel. The field works inside any positioned box, not only full-bleed sections.
+
+</Story>
+
+<Story id="tuning" label="Tuning">
+
+<ComponentPreview name="noise-field/tuning" full height={320} />
+
+Controls for the density and intensity of the contour lines.
+
+- `density` is the number of contour intervals across the height range. It defaults to 14. Lower values draw a few broad landforms, and higher values draw a dense survey.
+- `intensity`, from 0 to 1.5, sets the strength of the lines and the summit tint. Keep it at 1 or below behind copy.
+- `speed` multiplies the flow. It stacks with the time scale, which slows everything together.
+
+Changes apply on the next frame, without restarting the loop or recompiling the shader.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="noise-field" noImport />
+
+Use it behind technical products: networks, infrastructure, maps and data. The precise hairlines there read as measurement, not decoration. It suits heroes and section backdrops with short copy. Don't put it behind long text or dense UI, because the lines compete with small type. Reach for [Mesh Gradient](/docs/components/mesh-gradient) when you want color without line work.
+
+The field fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { NoiseField } from '@youj/motion/backgrounds'
+
+export function NetworkHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <NoiseField />
+      <p className="relative text-5xl font-semibold">Route every request along the shortest path</p>
+    </section>
+  )
+}
+```
+
+Terrain drifts slowly through a domain-warped noise, so ridges flow into new shapes instead of sliding across the screen. Every fifth contour is an index line, drawn heavier. The summits pick up the accent, and a vignette keeps the edges quiet so the field frames the content instead of competing with it.
+
+Keep a quiet zone behind the copy. In the preview, a gradient from `canvas` to transparent sits between the field and the text.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (6)">
+
+### Props
+
+<PropsTable name="NoiseField" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's one WebGL2 fragment shader on a single full-screen triangle,…">
+
+### Performance
+
+It's one WebGL2 fragment shader on a single full-screen triangle, rendered at a device-pixel ratio capped at 2. Contour lines are anti-aliased from screen-space derivatives, so they stay one device pixel wide at any size. The loop pauses when the field is offscreen or the tab is hidden, recovers from a lost GL context, and releases the context on unmount. Without WebGL2, it falls back to a static CSS wash of the summit color over the canvas.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Flow, pointer mound · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Flow', note: 'continuous shader clock', value: 'speed ÷ time scale' },
+    { moment: 'Pointer mound', note: 'follows the pointer, fades in and out', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one still map and stops. There's no flow and no pointer mound, and the map redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The field draws one composed map and holds it. Nothing flows and the pointer raises no mound, but the survey, its colors and its framing stay the same, so the page looks as intended without motion. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events, so it never takes focus or clicks from the content above it.
+- Check your text's contrast over the densest part of the survey. A quiet zone behind the copy, or a lower `intensity`, keeps small type readable.
+- The flow is slow, and it stops when the field is offscreen. Under reduced motion the field doesn't move at all.
+
+</ReferenceRow>

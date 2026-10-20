@@ -1,0 +1,95 @@
+---
+title: Scrub Number Field
+description: "A compact field you scrub: press its handle and move sideways, or type, or use the arrow keys."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="scrub-number-field/demo" height={240} />
+
+A blur radius, scrubbed with the mouse and shown on the bar below.
+
+Press the **B** and move left or right: the value changes one step for every few pixels, and keeps following the pointer when it leaves the field. Hold Shift to go ten times coarser and Alt ten times finer, and change your mind mid-drag: the pace follows the key as it is now. The value stops at `min` and `max`. A click on the handle, without moving, just focuses the field.
+
+</Story>
+
+<Story id="in-a-panel" label="In a panel">
+
+<ComponentPreview name="scrub-number-field/pair" height={240} />
+
+Pairs of small fields, with a letter, a symbol, a unit and a 0 to 1 range.
+
+The `label` is the drag handle: a letter, a symbol or an icon. `size="sm"` fits a dense panel such as an [Inspector Panel](/docs/components/inspector-panel). `step={0.1}` makes Alt drag in hundredths.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="scrub-number-field" noImport />
+
+Use a scrub number field where people tune a number by feel and want the exact value too: a position, a blur, a rotation, an opacity. For a quantity entered in a form, with steppers and locale formatting, use a [Number Input](/docs/components/number-input); for a value on a visible range, a [Slider](/docs/components/slider).
+
+```tsx
+import { useState } from 'react'
+import { ScrubNumberField } from '@youj/react'
+
+export function Blur() {
+  const [blur, setBlur] = useState(24)
+  return <ScrubNumberField aria-label="Blur" label="B" unit="px" min={0} max={100} value={blur} onValueChange={setBlur} />
+}
+```
+
+The value is a `number`. Typed text commits on Enter or blur and is clamped but not snapped to the step, so `12.5` stays `12.5`; text that isn't a number is put back. Both `.` and `,` are read as a decimal separator.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange, min, max, step, label, unit…">
+
+### Props
+
+<PropsTable name="ScrubNumberField" />
+
+#### Data attributes
+
+The root carries `data-slot="scrub-number-field"` and `data-size` (`sm` or `default`), plus `data-yj-scrubbing` while the handle is being dragged. The handle is `scrub-number-field-handle` in `data-slot`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Spinbutton, keys, value text">
+
+### Accessibility
+
+- The field is an input with `role="spinbutton"` and `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-valuetext` that reads the value with its unit ("24 px"). Name it with `aria-label` or `aria-labelledby`; the handle is hidden from assistive technology.
+- ArrowUp and ArrowDown step by `step`, with Shift ×10 and Alt ×0.1. PageUp and PageDown step by `largeStep` (default ten steps). Home and End go to `min` and `max`.
+- Dragging is an extra for pointer users: everything it does is available from the keyboard.
+- The mouse wheel never changes the value, so a scrolling page doesn't edit a form.
+- Nothing animates, so there is no reduced motion to honor; a drag changes the value directly.
+
+</ReferenceRow>

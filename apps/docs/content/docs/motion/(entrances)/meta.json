@@ -1,0 +1,5 @@
+{
+  "title": "Entrances",
+  "pagesIndex": "entrances",
+  "pages": ["blueprint", "generate", "prism", "trace", "inspector", "layers", "render-passes"]
+}

@@ -1,0 +1,354 @@
+[
+  {
+    "name": "loader-tittle",
+    "type": "registry:component",
+    "title": "Tittle loader",
+    "description": "The youj o, built in particles and given depth, turns and lands while the j’s square tittle orbits it in the accent, passing behind the letter and through its counter. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "tittle",
+      "component": "LoaderTittle",
+      "category": "depth",
+      "technique": "particles",
+      "order": 1,
+      "title": "Tittle",
+      "tags": [
+        "brand",
+        "letter",
+        "o",
+        "orbit",
+        "3d",
+        "logo",
+        "particle"
+      ],
+      "beats": 4,
+      "colors": [
+        {
+          "part": "Letter",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/tittle.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-drop",
+    "type": "registry:component",
+    "title": "Drop loader",
+    "description": "The brand’s square particle falls onto an isometric floor of particles, and a ring runs out through it, lifting each particle it passes before the floor settles. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "drop",
+      "component": "LoaderDrop",
+      "category": "depth",
+      "technique": "particles",
+      "order": 2,
+      "title": "Drop",
+      "tags": [
+        "ripple",
+        "floor",
+        "isometric",
+        "impact",
+        "wave",
+        "particle",
+        "grid"
+      ],
+      "beats": 3.5,
+      "colors": [
+        {
+          "part": "Ripple",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/drop.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-layers",
+    "type": "registry:component",
+    "title": "Layers loader",
+    "description": "A card comes apart into what it’s made of, its surface, content, outline and accent, in an exploded view with construction lines, then closes again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "layers",
+      "component": "LoaderLayers",
+      "category": "depth",
+      "technique": "mixed",
+      "order": 3,
+      "title": "Layers",
+      "tags": [
+        "card",
+        "exploded",
+        "stack",
+        "build",
+        "ui",
+        "axonometric",
+        "compose"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Content",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/layers.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-corridor",
+    "type": "registry:component",
+    "title": "Corridor loader",
+    "description": "The docs’ construction frame, repeated into the distance and flown through: dotted frames with registration marks twist past, the accent particle waiting at the vanishing point. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "corridor",
+      "component": "LoaderCorridor",
+      "category": "depth",
+      "technique": "mixed",
+      "order": 4,
+      "title": "Corridor",
+      "tags": [
+        "tunnel",
+        "frames",
+        "registration",
+        "crop marks",
+        "blueprint",
+        "fly-through",
+        "perspective"
+      ],
+      "beats": 2.25,
+      "colors": [
+        {
+          "part": "Corridor",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/corridor.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-slice",
+    "type": "registry:component",
+    "title": "Slice loader",
+    "description": "A cube of particles turns slowly while a scan plane sweeps up through it and back, each layer lighting up as the plane passes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "slice",
+      "component": "LoaderSlice",
+      "category": "depth",
+      "technique": "mixed",
+      "order": 5,
+      "title": "Slice",
+      "tags": [
+        "scan",
+        "lattice",
+        "cube",
+        "voxel",
+        "section",
+        "3d",
+        "compute"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Scan",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/slice.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-vortex",
+    "type": "registry:component",
+    "title": "Vortex loader",
+    "description": "Particles stream down a funnel in three spiral arms, quickening and drawing streaks as they near the bottom, where the accent particle takes them in. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "vortex",
+      "component": "LoaderVortex",
+      "category": "depth",
+      "technique": "mixed",
+      "order": 6,
+      "title": "Vortex",
+      "tags": [
+        "funnel",
+        "spiral",
+        "drain",
+        "gather",
+        "sync",
+        "download",
+        "particle"
+      ],
+      "beats": 4,
+      "colors": [
+        {
+          "part": "Arms",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/vortex.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-murmur",
+    "type": "registry:component",
+    "title": "Murmur loader",
+    "description": "A flock of dots wheels and folds through space as one body, then gathers into the brand’s square, the tittle, in the accent, holds it a moment, and lets go again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "murmur",
+      "component": "LoaderMurmur",
+      "category": "depth",
+      "technique": "particles",
+      "order": 7,
+      "title": "Murmur",
+      "tags": [
+        "flock",
+        "swarm",
+        "gather",
+        "form",
+        "square",
+        "tittle",
+        "organize"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Flock",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/murmur.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-reeve",
+    "type": "registry:component",
+    "title": "Reeve loader",
+    "description": "A square shuttle threads two upright gates on an isometric circuit, its short ink wake passing through the openings and behind the lit jambs. It lands briefly at each square corner. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "depth"
+    ],
+    "meta": {
+      "loader": "reeve",
+      "component": "LoaderReeve",
+      "category": "depth",
+      "technique": "lines",
+      "order": 8,
+      "title": "Reeve",
+      "tags": [
+        "shuttle",
+        "gate",
+        "thread",
+        "square",
+        "circuit",
+        "isometric",
+        "occlusion"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Wake",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/depth/reeve.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

@@ -1,0 +1,123 @@
+---
+title: Calendar Heatmap
+description: "Show a day grid by week with intensity and the current streak, such as habit completion."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="calendar-heatmap/demo" height={600} />
+
+A morning-run habit shown as a half-year grid of days, with a check for today.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="calendar-heatmap" noImport />
+
+Use a calendar heatmap for anything done day by day, where the run matters as much as the total: a habit, a practice, a daily check-in. Each week is a column and each weekday a row, with the newest week at the inline end. A done dot is lit in the tone, stronger the more got done; a missed day is a recessed well; a day a freeze token covered is hatched and keeps the run alive; days still to come are empty rings. `StreakSummary` sits over it with the current run and how far it is to the next milestone, and `StreakCheck` is the "Mark done" button for a header or a list row. The [Streaks block](/docs/blocks/calendars-and-schedules) puts all three together. For a count per day without a run to keep, use a [Chart](/docs/components/chart); for one bounded value, a [Segmented Meter](/docs/components/segmented-meter).
+
+```tsx
+import { StreakCheck, CalendarHeatmap, StreakSummary, streakStats, type StreakDay } from '@youj/react'
+
+const [days, setDays] = useState<StreakDay[]>([
+  { date: '2026-09-26' },
+  { date: '2026-09-27', frozen: true },
+])
+const setToday = (done: boolean) =>
+  setDays((list) => [...list.filter((d) => d.date !== '2026-09-28'), ...(done ? [{ date: '2026-09-28' }] : [])])
+
+<StreakCheck pressed={streakStats(days, '2026-09-28').today} onPressedChange={setToday} />
+<StreakSummary days={days} today="2026-09-28" freezes={{ left: 2, total: 3 }} />
+<CalendarHeatmap days={days} today="2026-09-28" onTodayChange={setToday} />
+```
+
+A day is an ISO `date`, a `value` out of the grid's `max` (1 by default, so a listed day is done), and `frozen` for a day a freeze token covered. Days not listed are missed. With `max` above 1 the dots take four levels of heat, and the legend reads from Less to More; `tone` sets their color (the accent by default). `weeks` is how many columns show (26 by default) and `weekStart` whether a week starts on Monday (`1`, the default) or Sunday (`0`).
+
+`today` is the newest day. Leave it out and the grid reads the browser's date once the page is live, and moves on at midnight. Give `onTodayChange` and today's dot becomes a toggle, called with whether today is now done; the grid is controlled, so update `days` there. `size="sm"` draws a mini grid for a list row: dots only, not interactive, and an image named by `label` if you give one.
+
+`StreakSummary` takes the same `days` and `today`, and shows the current run, cells toward the next of its `milestones` (7, 30, 100 and 365 days by default), the longest run, the completion rate and, with `freezes`, the tokens left. `streakStats(days, today)` returns the same figures (`current`, `longest`, `rate` and whether `today` counts yet) for your own copy. `StreakCheck` is a toggle: pass `pressed` and `onPressedChange`, and `label` and `doneLabel` to change its words.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="days, today, weeks… (19)">
+
+### Props
+
+<PropsTable name="CalendarHeatmap" />
+
+<PropsTable name="StreakSummary" />
+
+<PropsTable name="StreakCheck" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `calendar-heatmap` (with `data-size`), `calendar-heatmap-body`, `calendar-heatmap-month`, `calendar-heatmap-weekday`, `calendar-heatmap-day` (with `data-state`, `data-level` and `data-today`), `calendar-heatmap-dot`, `calendar-heatmap-footer`, `calendar-heatmap-readout` and `calendar-heatmap-legend`; `streak-summary`, `streak-summary-value`, `streak-summary-flame-icon`, `streak-summary-milestone`, `streak-summary-meter`, `streak-summary-cell` (with `data-state`), `streak-summary-stats`, `streak-summary-stat` and `streak-summary-token` (with `data-state`). `StreakCheck` is a `button` part with `data-streak-check`. The dots' color is `--streak-tone`, frozen days `--streak-frozen`, the summary's flame `--streak-flame`, and a mini grid's dot `--streak-mini` (5px).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Mark today done, today still open, summary first paint… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Mark today done', note: 'the dot pops in with one ripple', spring: 'settle' },
+    { moment: 'Today still open', note: 'the dot breathes once a beat, three times the token', duration: 'deliberate' },
+    { moment: 'Summary first paint', note: 'the meter’s cells light from the tail of the run to its head', duration: 'deliberate', ease: 'standard' },
+    { moment: 'Run grows', note: 'the new head cell flares once, and the flame grows toward the milestone', duration: 'slow', ease: 'exit' },
+    { moment: 'Mark done', note: 'the pill morphs to Done and the check draws in', spring: 'snappy' },
+  ]}
+  reduced="Dots and cells light at once, nothing breathes or ripples, the flame holds still and the check is drawn."
+/>
+
+#### Reduced motion
+
+Today's dot lights without the pop or the ripple and doesn't breathe while open. The summary's cells light at once, the flame holds still, and the check in `StreakCheck` is drawn without its stroke.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- The grid is a group named by `label` (default: the labels' "Daily history"); each day is a button named by its date and state ("Sat, Sep 26, Done", "Sun, Sep 27, Frozen"). Days to come are disabled; past days are `aria-disabled`.
+- The days are one tab stop, starting on today. Up and down step a day, left and right a week (mirrored in RTL), Home goes to the first day and End to today.
+- With `onTodayChange`, today is a toggle with `aria-pressed`, named "Today, …, Mark done" whichever state it's in. Marking it announces the new run ("Done for today. Streak: 24 days") in a polite live region.
+- The readout under the grid, the legend and the summary's meter are hidden from screen readers; the summary's figures are a description list.
+- `StreakCheck` is a toggle with `aria-pressed`, named "Mark done" unless you pass a name.
+- Its words come from the labels (`calendarHeatmap`, `streakDay`, `streakDone`, `streakMissed`, `streakFrozen`, `streakPartial`, `streakToday`, `streakMarkDone`, `streakTodayDone`, `streakTodayUndone`, `streakCurrent`, `streakLongest`, `streakRate`, `streakFreezes`, `streakDays`, `streakFreezesLeft`, `streakMilestone`, `streakLess` and `streakMore`), translated by the language packs.
+
+</ReferenceRow>

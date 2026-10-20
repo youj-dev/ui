@@ -1,0 +1,113 @@
+---
+title: Annotated Image
+description: "Point at parts of an image with numbered callouts joined by leader lines to their labels."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="annotated-image/demo" height={420} />
+
+A refrigerated truck drawn in the theme's tones, with numbered callouts joined by leader lines to labels in the gutters.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="annotated-image" noImport />
+
+Use an annotated image to say what matters in a picture: a vehicle's sensors, the parts of a product, the regions of a screenshot. Each point carries its number and a leader line runs to its label in the gutter beside the media, so the eye goes from the point along the line to the words. For a sequence of screens to step through, use a [Carousel](/docs/components/carousel).
+
+```tsx
+import { AnnotatedImage, type ImageAnnotation } from '@youj/react'
+
+const notes: ImageAnnotation[] = [
+  { id: 'reefer', x: 71, y: 34, title: 'Reefer unit', detail: '34.1°F · set 34°F' },
+  { id: 'load', x: 40, y: 44, title: 'Load', detail: '14 of 26 pallets' },
+]
+
+<AnnotatedImage src="/truck.jpg" alt="Refrigerated truck, side view" annotations={notes} />
+```
+
+A point sits at `x` and `y`, from 0 to 100 across and down the media. Its label goes in the gutter on the point's side, or the one `side` names; labels in a gutter keep their order and are nudged apart so they never overlap, and they follow the media as it resizes. Under 40rem of its own width the gutters fold into a numbered list under the media, without lines. Pass `media` instead of `src` for a video, an illustration or a canvas, and `caption` for a line under the figure.
+
+Hovering or focusing a callout, or hovering its label, lights the pair. Pressing a callout pins it: `value`, `defaultValue` and `onValueChange` hold the pinned id, or `null`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="annotations, src, media… (9)">
+
+### Props
+
+<PropsTable name="AnnotatedImage" />
+
+#### Annotations
+
+<PropsTable name="ImageAnnotation" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `annotated-image`, `annotated-image-stage` (with `data-layout` `wide` or `stacked`), `annotated-image-media`, `annotated-image-callout`, `annotated-image-lines`, `annotated-image-line`, `annotated-image-labels`, `annotated-image-label` (with `data-side`), `annotated-image-title`, `annotated-image-detail` and `annotated-image-caption`; the lit pair carries `data-active`. The gutters are set by `--annotated-gutter` (between 9rem and 13rem).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Callouts, lines, labels · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Callouts', note: 'pop in one after another as the figure scrolls into view', spring: 'snappy' },
+    { moment: 'Leader lines', note: 'draw from the point to the label', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Labels', note: 'fade in as their line lands', duration: 'base', ease: 'enter' },
+    { moment: 'Resize', note: 'labels glide to their new places', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; labels jump to their new places."
+/>
+
+#### Reduced motion
+
+Callouts, lines and labels are drawn in place, and labels jump when the media resizes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Figure, callouts, list">
+
+### Accessibility
+
+- It is a `figure`; `caption` is its `figcaption`. Give the image its `alt`, or your `media` its own name.
+- Callouts are buttons in number order, each named by its number and described by its label; pressing one sets `aria-pressed`. They have a wider hit area than the disc.
+- The labels are an ordered list named "Annotations" (`annotations` in the labels); the lines are decorative.
+- The media never mirrors, so neither do the points; in RTL the labels' text runs right to left in the same gutters.
+
+</ReferenceRow>

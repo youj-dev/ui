@@ -1,0 +1,16 @@
+{
+  "title": "Pickers & inputs",
+  "pages": [
+    "combobox",
+    "multi-select",
+    "color-picker",
+    "color-opacity-field",
+    "currency-swap",
+    "date-picker",
+    "date-range-picker",
+    "signature-pad",
+    "file-upload",
+    "avatar-upload",
+    "multi-language-input"
+  ]
+}

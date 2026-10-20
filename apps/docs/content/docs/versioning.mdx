@@ -1,0 +1,157 @@
+---
+title: Versioning and releases
+sidebarTitle: Versioning & releases
+description: "What a Youj version number promises while it's in alpha, what counts as a breaking change, how settled each part is, and where each release's changes and upgrade guides are."
+---
+
+<PageArt art="versioning" />
+
+Youj is in alpha: ready to try and build with, but the API will still change before 1.0. Every package is at 0.x, and it goes to 1.0 once the API has settled. Until then, this page is the promise.
+
+## What a version means
+
+Youj follows [semantic versioning](https://semver.org) the way 0.x projects do. The first number stays 0 until 1.0, so the second one does the work a major version would.
+
+| Release | For example | What's in it |
+| --- | --- | --- |
+| Patch | 0.1.1 → 0.1.2 | Fixes and additions. Nothing you use breaks, so take it any time. |
+| Minor | 0.1.2 → 0.2.0 | May break things. Every breaking change is listed, with how to migrate. Read the notes first. |
+| Major | 1.0.0 | The API is settled. From then on only a major release breaks anything. |
+
+The range a package manager writes, such as `^0.1.2`, already stops before 0.2.0, so a plain install or update never takes a breaking release by surprise.
+
+All the packages release together at one version: `@youj/react`, `@youj/core`, `@youj/motion`, `@youj/icons`, `@youj/illustrations`, `@youj/loaders`, `@youj/miniatures`, `@youj/sound`, `@youj/mcp` and the `youj` CLI. Keep them on the same one; `npx youj doctor` tells you when they drift.
+
+## The alpha promise
+
+While Youj is in alpha (0.x):
+
+- **Breaking changes come only in a minor release**, never in a patch.
+- **Every one is announced** under Breaking in the [changelog](/changelog), with before and after code. A release that breaks something you're likely to use gets an [upgrade guide](/docs/versioning#upgrade-guides).
+- **Deprecation comes first, wherever it's cheap.** When something is replaced rather than removed (a renamed prop, a renamed value), the old name keeps working for at least one more minor release. The docs mark it. Then it goes.
+- **Parts labeled stable always get that deprecation step.** Experimental ones may change in any minor release without one. See [stability labels](#stability-labels).
+
+## What counts as breaking
+
+| Change | Breaking? |
+| --- | --- |
+| Removing or renaming an export, a component part or a prop | Yes |
+| Narrowing a prop: a value it no longer accepts, an optional prop made required | Yes |
+| Changing a default: a prop's, a token's, a provider setting's | Yes |
+| Removing or renaming a CSS variable, a token, or a `data-slot` or `data-*` state name your styles or tests can select | Yes |
+| A visible change to size or layout: a control's height, a component's padding or default width | Yes |
+| Raising a peer's minimum (React, Tailwind CSS, Motion) | Yes |
+| Renaming a registry item, or changing the paths its files are written to | Yes |
+| Adding an export, a prop, a value, a token or a component | No |
+| A refined color, shadow or motion within the same tokens | No, noted under Changed |
+| Fixing behavior to match the docs, including accessibility fixes | No, noted under Fixed |
+| Widening a peer range | No |
+
+When in doubt, it's treated as breaking.
+
+## Upgrading between releases
+
+Moving from one 0.x release to the next is a minor upgrade, so it can break things. The [releases page](/docs/versioning#upgrading) has the commands. In order:
+
+1. Read the Breaking section of every release you're skipping over, in the [changelog](/changelog), and follow its upgrade guide if it has one.
+2. Upgrade every Youj package to the same version, then run `npx youj doctor`. Your `^0.1.2` range won't take 0.2.0 by itself: change it on purpose.
+3. Fix what the changelog says, and what TypeScript reports. A deprecated API still works for at least one minor release, so you can upgrade first and migrate after.
+4. Copied-in items stay as they are. Run `npx youj add <item> --dry-run` to see what the new version would change, and add it again only when you want it.
+
+On the `next` channel, prereleases such as `0.2.0-next.1` may change before the release ships. Pin the exact version while you test one.
+
+## Copy-in code is yours
+
+What `npx youj add` copies into your app is your code: an upgrade never touches it. What changes between versions is what the next `youj add` writes.
+
+- **Copy the version you run.** Each release publishes its registry items under its version number as well as the latest, so a 0.1 CLI copies 0.1's items. The CLI uses its own version, so run it at the version of your packages (`npx youj@0.1.2 add …`); `--latest` takes the latest items instead.
+- **Updating a copied item is a choice.** Run `npx youj add <item>` again and review the diff before you keep it, as you would any upstream change. A `youj diff <item>` command, to show what changed upstream since you copied it, is planned.
+- **Blocks update the same way.** A block is copy-in source: once added it's yours, and later changes on the site don't touch your copy. Because `npx youj add` copies the items of the CLI's own version, which stay archived per release, running it never breaks an existing install. Notable block changes, renames and removals are listed in the changelog.
+- **The changelog covers registry items too.** A breaking change to a block's or component's source is listed like one to a package.
+
+## Stability labels
+
+Youj is in alpha, so every component, block, loader and package entry is alpha unless it says otherwise. Only the riskiest parts carry a label: **experimental**. You'll find it in the header of the part's docs page, and the [MCP server](/docs/mcp) states each part's label in its answers.
+
+| Label | What it promises |
+| --- | --- |
+| **Alpha** | The default, so it has no badge. Ready to use and tested. Its API may still change in a minor release, announced in the changelog with a migration note, deprecated first where that's cheap. |
+| **Experimental** | Still being shaped. It may change or go in any minor release without a deprecation. Pin the exact version if you depend on it. |
+
+A third label, **stable**, is kept for the road to 1.0. Nothing carries it yet: a part moves up to stable when its API has held through a release or two with no changes asked for. A stable item depends only on stable items, and a stable entry point exports only stable items; a test enforces both. A stable part always gets the deprecation step before a breaking change, even while Youj is 0.x.
+
+How a label is decided:
+
+- **Alpha** is the default for everything that's tested: the component package (`@youj/react`, whose names are still being aligned across components), blocks, motion, loaders, icons, illustrations, sounds, the CLI and the MCP server.
+- **Experimental** is for what's new or not yet covered by tests: the Data grid block, Presentation, the voice orb, the audio recorder, the WebGL backgrounds, the Lottie player, the illustration builder and Create.
+
+Moving up never happens silently, and neither does moving down: either is a changelog entry.
+
+The labels live in one file, `stability.json` at the root of the repository: a default per kind of item, the items that differ from it, and a label for each package entry.
+
+## Deprecations
+
+A deprecated API keeps working until the release named for its removal, at least one minor release later. Three things mark it:
+
+- **In the docs:** its props table strikes it through and says what replaces it, and its page says so in prose:
+
+<Deprecated name="An old prop" since="0.1.0" removeIn="0.3.0">
+  Use `variant` instead. Until 0.3.0 the old prop keeps working.
+</Deprecated>
+
+- **In the changelog:** under Changed in the release that deprecates it, under Breaking in the one that removes it.
+
+Mark the old path `@deprecated` in its JSDoc; the docs and the API reference pick it up.
+
+## Release channels
+
+| Channel | Install | What it is |
+| --- | --- | --- |
+| `latest` | `pnpm add @youj/react` | The current release. What everyone gets by default. |
+| `next` | `pnpm add @youj/react@next` | Prereleases (`0.2.0-next.1`) for testers, ahead of a minor release. They may change before it ships. |
+
+With the CLI, `npx youj@next init` sets an app up on the prerelease. Put every Youj package on the same channel.
+
+## Supported versions
+
+| | Supported |
+| --- | --- |
+| React | 19 |
+| Motion (`motion`) | 13.4.4 or later, and 14 |
+| Base UI (`@base-ui/react`) | 1.8 and 1.9 |
+| Tailwind CSS | 4 |
+| Browsers | Chrome 123, Safari 17.5 and the current Firefox, or later (Edge follows Chrome). Below that, `light-dark()` and other CSS the components rely on aren't supported. A theme's own derived colors need Chrome 120, Safari 18 or Firefox 128; Safari 17.5 keeps Graphite's (see [Theming](/docs/theming)). |
+| Node.js | 22 or later, for the CLI and the MCP server |
+
+Only the latest minor release gets fixes while Youj is 0.x. After 1.0, the previous major will get security fixes for a time we'll state when it ships.
+
+## Releases and upgrade guides
+
+Every Youj package releases together, at one version.
+
+### What changed
+
+- **[The changelog](/changelog)** has every release, newest first, with its Breaking, Added, Changed and Fixed changes. Subscribe to its [feed](/changelog.xml) to hear about new ones.
+- **[CHANGELOG.md](repo:file/CHANGELOG.md)** in the repository is the same record, as one file.
+- **Each package's own `CHANGELOG.md`** (`packages/ui/CHANGELOG.md` for `@youj/react`, and so on) lists every change to it, one line each, written when the release is versioned.
+
+### Upgrading
+
+Upgrade every Youj package at once, to the same version:
+
+```bash
+pnpm up "@youj/*" --latest
+npx youj doctor
+```
+
+`youj doctor` checks the packages agree and the setup still holds. Before a minor upgrade, read its Breaking section in the changelog and follow its upgrade guide, if it has one. Deprecated APIs keep working for at least one minor release, so you can upgrade first and migrate after.
+
+Code you copied in with `npx youj add` doesn't change when you upgrade. To take an item's new version, add it again and review the diff before you keep it.
+
+To try a release before it ships, install the `next` channel: `pnpm add @youj/react@next`, with the other Youj packages on `@next` too.
+
+### Upgrade guides
+
+A minor release that breaks something you're likely to use gets a guide here: what changed and why, before and after code, the codemod to run if there is one, and the steps to do by hand.
+
+There are none yet: 0.1.0 is the first release.

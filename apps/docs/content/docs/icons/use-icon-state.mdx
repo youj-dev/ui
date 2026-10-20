@@ -1,0 +1,133 @@
+---
+title: useIconState
+description: "Keep a toggle button’s state, icon and accessible labels in sync."
+---
+
+<ComponentPreview name="use-icon-state/demo" height={360} />
+
+Use it for any button whose icon changes with its state: save, like, mute, play and pause, show and hide. It keeps the state, the icon and the button's ARIA in step, so the icon never says one thing while assistive technology hears another. For a menu or a panel that opens, use `aria-expanded` on the trigger instead, with the icon's `active` bound to the open state.
+
+## Installation
+
+<InstallTabs name="use-icon-state" />
+
+## Usage
+
+Spread `buttonProps` on a native `<button>` and `iconProps` on the icon.
+
+```tsx
+import { BookmarkIcon, useIconState } from '@youj/icons'
+
+export function SaveButton() {
+  const save = useIconState({ label: 'Save episode' })
+  return (
+    <button {...save.buttonProps}>
+      <BookmarkIcon {...save.iconProps} />
+    </button>
+  )
+}
+```
+
+`buttonProps` sets `type="button"`, the click handler and the ARIA. `iconProps` is `{ active }`, which a state icon or an [IconSwap](/docs/icons/icon-swap) takes as it is.
+
+## Examples
+
+<Examples>
+
+<Example id="two-kinds-of-toggle" label="Two kinds of toggle">
+
+### Two kinds of toggle
+
+The accessible pattern depends on what the button does, and the options decide it.
+
+- **A pressed toggle** (`label`): save, like, mute, bold. The button keeps one name, and `aria-pressed` reports whether it's on, so a screen reader announces "Save episode" and whether it's pressed.
+- **An action that flips** (`labels`): play and pause, show and hide password. The name says what the button will do next, so it changes with the state, and there's no `aria-pressed`. While a track plays, the button is announced as "Pause".
+
+```tsx
+const like = useIconState({ label: 'Like' })
+const play = useIconState({ labels: ['Play', 'Pause'] })
+```
+
+Never combine the two: a pressed button whose name also changes reads as "Pause, pressed", which means the opposite of what it does. The types allow `label` or `labels`, not both.
+
+</Example>
+
+<Example id="controlled" label="Controlled">
+
+### Controlled
+
+Pass `active` to let your app own the state, and `onActiveChange` to hear presses. Here the host can mute everyone, and the button follows.
+
+<ComponentPreview name="use-icon-state/controlled" height={280} />
+
+```tsx
+import { useState } from 'react'
+const [muted, setMuted] = useState(false)
+const mic = useIconState({ label: 'Mute', active: muted, onActiveChange: setMuted })
+```
+
+Without the owner updating `active`, a controlled button stays where it is. `defaultActive` sets the starting state of an uncontrolled one.
+
+</Example>
+
+<Example id="a-confirmation-that-reverts" label="A confirmation that reverts">
+
+### A confirmation that reverts
+
+The hook keeps no timer. For a state that should undo itself, like a copy button's "copied", call `setActive` from your own code and schedule the revert. Here it waits three `deliberate` steps, read from `useYouj()` so the Speed control reaches it too.
+
+<ComponentPreview name="use-icon-state/copy" height={260} />
+
+A name that changes isn't announced on its own, so the example adds a polite status message for the result.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="API" summary="Pass exactly one of label and labels">
+
+### API
+
+#### Options
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `label` | `string` | A pressed toggle's one name. It gets `aria-pressed`. |
+| `labels` | `readonly [string, string]` | An action's names for `[inactive, active]`. No `aria-pressed`. |
+| `active` | `boolean` | Controlled state. |
+| `defaultActive` | `boolean` | Starting state when uncontrolled. Default `false`. |
+| `onActiveChange` | `(active: boolean) => void` | Called with the next state on every press, and on `setActive`. |
+
+Pass exactly one of `label` and `labels`.
+
+#### Returns
+
+| Value | Type | Description |
+| --- | --- | --- |
+| `active` | `boolean` | The current state. |
+| `toggle` | `() => void` | Flips the state. |
+| `setActive` | `(active: boolean) => void` | Sets the state. |
+| `buttonProps` | `IconStateButtonProps` | `type`, `onClick`, `aria-label`, and `aria-pressed` for a pressed toggle. Spread onto a native `<button>`. |
+| `iconProps` | `{ active: boolean }` | Spread onto a state icon or an IconSwap. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="The hook has no motion of its own">
+
+### Reduced motion
+
+The hook has no motion of its own. The icon it drives switches state instantly under reduced motion, and the ARIA is the same either way.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- `buttonProps` gives the button its name through `aria-label`, so an icon-only button is named. If the button also shows text, make the text match the name.
+- Space and Enter toggle it, as with any native button.
+- The icon stays decorative. The button carries the state, so there's one source of truth for assistive technology.
+
+</ReferenceRow>

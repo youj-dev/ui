@@ -1,0 +1,4 @@
+{
+  "name": "fixture-next",
+  "dependencies": { "next": "^16.0.0", "react": "^19.0.0", "tailwindcss": "^4.0.0" }
+}

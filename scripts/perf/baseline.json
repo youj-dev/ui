@@ -1,0 +1,598 @@
+{
+  "darwin-arm64-Apple M2 Max": {
+    "recorded": "2026-09-27T06:02:47.695Z",
+    "quality": "auto",
+    "runs": 3,
+    "load": {
+      "before": [
+        15.78,
+        10.66,
+        7.16
+      ],
+      "after": [
+        4.36,
+        4.22,
+        4.97
+      ],
+      "cpus": 12
+    },
+    "results": {
+      "desktop-4x": {
+        "mesh-gradient": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 38.9
+        },
+        "noise-field": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 39.3
+        },
+        "aurora": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 39.1
+        },
+        "particle-constellation": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "dot-matrix-wave": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 39.1
+        },
+        "cursor-follower": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "dock": {
+          "fps": 59.3,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "spotlight-grid": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "marquee": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "parallax": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "text-split": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 64,
+          "shadedMPps": 0
+        },
+        "counter-roll": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 17.4,
+          "shadedMPps": 0
+        },
+        "datatable-scroll": {
+          "fps": 43.8,
+          "p50": 16.7,
+          "p95": 33.4,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 19,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "datatable-toggle": {
+          "fps": 57.1,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 3,
+          "inp": 109,
+          "shadedMPps": 0
+        },
+        "datatable-filter": {
+          "fps": 58,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 46,
+          "shadedMPps": 0
+        },
+        "command-palette": {
+          "fps": 56.9,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 77,
+          "inp": 178.7,
+          "shadedMPps": 0
+        },
+        "toast-stack": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 87.2,
+          "shadedMPps": 0
+        },
+        "icon-gallery": {
+          "fps": 59,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "theme-switch": {
+          "fps": 58.8,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 74.6,
+          "shadedMPps": 4.2
+        }
+      },
+      "desktop-6x": {
+        "mesh-gradient": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 39.1
+        },
+        "noise-field": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 39.1
+        },
+        "aurora": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 38.9
+        },
+        "particle-constellation": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "dot-matrix-wave": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 38.9
+        },
+        "cursor-follower": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "dock": {
+          "fps": 59.4,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "spotlight-grid": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "marquee": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "parallax": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "text-split": {
+          "fps": 59.4,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 81.5,
+          "shadedMPps": 0
+        },
+        "counter-roll": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 24,
+          "shadedMPps": 0
+        },
+        "datatable-scroll": {
+          "fps": 35.1,
+          "p50": 16.7,
+          "p95": 50.1,
+          "hitches": 10,
+          "longTasks": 2,
+          "tbt": 40,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "datatable-toggle": {
+          "fps": 52.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 2,
+          "longTasks": 4,
+          "tbt": 52,
+          "inp": 165.1,
+          "shadedMPps": 0
+        },
+        "datatable-filter": {
+          "fps": 56.6,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 2,
+          "tbt": 24,
+          "inp": 56,
+          "shadedMPps": 0
+        },
+        "command-palette": {
+          "fps": 55.2,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 150,
+          "inp": 265.2,
+          "shadedMPps": 0
+        },
+        "toast-stack": {
+          "fps": 58,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 4,
+          "inp": 128.6,
+          "shadedMPps": 0
+        },
+        "icon-gallery": {
+          "fps": 53.5,
+          "p50": 16.7,
+          "p95": 33.3,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 2,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "theme-switch": {
+          "fps": 51.5,
+          "p50": 16.7,
+          "p95": 50,
+          "hitches": 4,
+          "longTasks": 3,
+          "tbt": 36,
+          "inp": 159.2,
+          "shadedMPps": 3.7
+        }
+      },
+      "mobile-4x": {
+        "mesh-gradient": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 9.9
+        },
+        "noise-field": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 9.9
+        },
+        "aurora": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 9.9
+        },
+        "particle-constellation": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "dot-matrix-wave": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 9.9
+        },
+        "cursor-follower": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "dock": {
+          "fps": 59.3,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "spotlight-grid": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "marquee": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "parallax": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "text-split": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 64,
+          "shadedMPps": 0
+        },
+        "counter-roll": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 16,
+          "shadedMPps": 0
+        },
+        "datatable-scroll": {
+          "fps": 60,
+          "p50": 16.7,
+          "p95": 16.7,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "datatable-toggle": {
+          "fps": 57.1,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 2,
+          "inp": 120.9,
+          "shadedMPps": 0
+        },
+        "datatable-filter": {
+          "fps": 58,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 1,
+          "tbt": 4,
+          "inp": 48.1,
+          "shadedMPps": 0
+        },
+        "command-palette": {
+          "fps": 56.6,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 1,
+          "tbt": 89,
+          "inp": 195.9,
+          "shadedMPps": 0
+        },
+        "toast-stack": {
+          "fps": 59.4,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 105.9,
+          "shadedMPps": 0
+        },
+        "icon-gallery": {
+          "fps": 59.7,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 0,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": null,
+          "shadedMPps": 0
+        },
+        "theme-switch": {
+          "fps": 56.9,
+          "p50": 16.7,
+          "p95": 16.8,
+          "hitches": 1,
+          "longTasks": 0,
+          "tbt": 0,
+          "inp": 83.5,
+          "shadedMPps": 2.1
+        }
+      }
+    }
+  }
+}

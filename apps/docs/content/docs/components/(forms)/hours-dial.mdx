@@ -1,0 +1,107 @@
+---
+title: Hours Dial
+description: "Set a window of the day on a 24-hour face, with two handles that may run past midnight."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="hours-dial/demo" height={480} />
+
+A sleep schedule for weekdays and the weekend: drag either handle, or the lit band to move the whole night.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="hours-dial" noImport />
+
+Use an hours dial for a stretch of the day: a sleep schedule, quiet hours, a shift, opening hours. The face is a whole day, midnight at the top and turning clockwise, with a ruler of quarter-hour ticks all the way round. A hollow handle marks the start and a solid one the end; the ticks between them light in the tone, and the center reads the length large in mono with the two times under it. For one bounded value on an arc, such as a temperature or a volume, use a [Dial](/docs/components/dial); for a single time, a [Time Picker](/docs/components/time-picker).
+
+```tsx
+import { HoursDial } from '@youj/react'
+
+<HoursDial
+  label="Sleep schedule"
+  caption="Asleep"
+  value={sleep}
+  onValueChange={setSleep}
+/>
+```
+
+The value is `{ start, end }` in minutes after midnight (0–1439); an `end` before the `start` runs past midnight, so `{ start: 1350, end: 420 }` is 22:30 to 07:00. `step` (15 minutes) is what an arrow key moves and what a drag snaps to, and `largeStep` (an hour) is what Page Up and Down move. The handles never meet: the window stays at least a step long and a step short of a whole day. `tone` colors the lit stretch (the accent, a chart color or neutral), `caption` puts a mono capital over the length, and the times read in the provider's locale (12- or 24-hour as it writes them). It's uncontrolled with `defaultValue`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (11)">
+
+### Props
+
+<PropsTable name="HoursDial" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `hours-dial` (with `data-tone`, `data-dragging` set to `start`, `end` or `window` while a pointer holds it, and `data-disabled`), `hours-dial-face`, `hours-dial-band`, `hours-dial-ruler`, `hours-dial-range`, `hours-dial-numerals`, `hours-dial-start` and `hours-dial-end` (the handles, with `data-dragging`), `hours-dial-center`, `hours-dial-label`, `hours-dial-value` and `hours-dial-times`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Keyboard or click, drag, hover or drag · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Keyboard or click', note: 'the handles and the lit stretch glide to the new times together, the short way round, retargeting mid-flight', spring: 'snappy' },
+    { moment: 'Drag', note: 'a handle, or the whole window, follows the pointer 1:1, snapping to the step', duration: 'instant', ease: 'standard' },
+    { moment: 'Hover or drag', note: 'the handle grows a little', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Every change jumps."
+/>
+
+#### Reduced motion
+
+The handles and the lit stretch jump to each new time.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- It's a group named by `label` (default: the labels' "Time range") holding two sliders, "Start" and "End", each valued in minutes after midnight. Their value text is the time and the window's length in the locale ("10:30 PM, 8 hours, 30 minutes in all").
+- Arrows move a handle by the step, Page Up and Down by an hour, Home to midnight and End to the last step before it; steps wrap round midnight. A press on the face focuses the handle it moves, so the keys carry on from there.
+- A clock turns clockwise in every script, so the face and its keys keep their direction under RTL: right and up move later. The text in the center follows the page.
+- Every step plays the tick cue, like a detent, behind `sound` (on by default).
+- Its words come from the labels (`hoursDial`, `hoursDialStart`, `hoursDialEnd`, `hoursDialValue`), translated by the language packs.
+
+</ReferenceRow>

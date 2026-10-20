@@ -1,0 +1,138 @@
+---
+title: Presence List
+description: "Animate items as they enter, leave or reorder in lists and tables."
+---
+
+<ComponentPreview name="presence-list/demo" height={420} />
+
+Use it for lists that change while people watch: notifications, a queue, a filtered list, a table whose rows are added, removed or re-sorted. Each change happens where the eye can follow it. Don't use it when the whole list is replaced at once, like the next page of results. Key the list by page instead, or use [Content Swap](/docs/motion/content-swap).
+
+## Installation
+
+<InstallTabs name="presence-list" />
+
+## Usage
+
+```tsx
+import { PresenceItem, PresenceList } from '@youj/motion'
+
+export function Notifications({ items }: { items: Notification[] }) {
+  return (
+    <PresenceList className="flex flex-col gap-1">
+      {items.map((item) => (
+        <PresenceItem key={item.id} className="rounded-lg bg-surface px-3 py-2">
+          {item.title}
+        </PresenceItem>
+      ))}
+    </PresenceList>
+  )
+}
+```
+
+- Every `PresenceItem` is a direct, keyed child of its `PresenceList`. The key is how a row is recognized as the same row after a change, so use a stable id, never the index.
+- `as` picks the elements: `ul` (the default), `ol`, `tbody` or `div` for the list, and `li` (the default), `tr`, `div`, `article` or `section` for items.
+- Items on the first render start settled. Pass `initial` to animate them in as well.
+
+## Examples
+
+<Examples>
+
+<Example id="enter-leave-reorder" label="Enter, leave, reorder">
+
+### Enter, leave, reorder
+
+- **Enter:** the item takes its slot and fades down a few pixels, while the items below glide to make room.
+- **Leave:** the item fades where it stands and keeps its space, so column widths hold, then it's removed and the items below glide up.
+- **Reorder:** items glide to their new slots.
+
+Movement is a translate-only FLIP, with no scale, so text, borders and cells never distort. Items are measured against the list, so when the list itself moves, because a toolbar appears above it or a card re-centers, the items don't glide for nothing. Each list is its own layout group, so two lists never fight, and memoized rows still animate.
+
+</Example>
+
+<Example id="reordering" label="Reordering">
+
+### Reordering
+
+Sort on every render. When a change moves an item, it glides to its new slot, and the items it passes glide the other way. Vote a few times.
+
+<ComponentPreview name="presence-list/reorder" height={330} />
+
+</Example>
+
+<Example id="table-rows" label="Table rows">
+
+### Table rows
+
+Table rows rule out the usual tricks: an absolutely positioned `<tr>` loses table layout, and a row can't be clipped or collapsed by height. Presence List avoids both, and a table needs four rules of its own:
+
+1. **`border-separate border-spacing-0`, with dividers on the cells.** `border-collapse`, Tailwind's default for tables, paints borders on the table grid, so they'd stay behind while rows move. A `border-b` on the row does nothing in separate mode.
+2. **A background on every row**, such as `bg-surface`, so rows that cross during a re-sort cover each other cleanly.
+3. **Fixed column widths**, with `table-fixed` or column sizing, so removing the widest row doesn't reflow every column mid-animation.
+4. **A keyed `tbody` for whole-page swaps.** Key it by page for pagination, so a page change isn't twenty exits and twenty enters.
+
+<ComponentPreview name="presence-list/table" height={380} />
+
+```tsx
+<table className="w-full table-fixed border-separate border-spacing-0">
+  <thead>…</thead>
+  <PresenceList as="tbody">
+    {rows.map((row) => (
+      <PresenceItem as="tr" key={row.id} className="bg-surface">
+        <td className="border-b border-line [tr:last-child>&]:border-b-0">…</td>
+      </PresenceItem>
+    ))}
+  </PresenceList>
+</table>
+```
+
+Don't use it with a virtualizer such as TanStack Virtual, which positions rows itself.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="children, as, initial… (5)">
+
+### Props
+
+#### PresenceList
+
+<PropsTable name="PresenceList" />
+
+#### PresenceItem
+
+<PropsTable name="PresenceItem" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, leave, move · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'fade and a 6px drop into the slot', duration: 'base', ease: 'enter' },
+    { moment: 'Leave', note: 'fade in place, keeping the space', duration: 'fast', ease: 'exit' },
+    { moment: 'Move', note: 'making room, closing gaps, reordering', spring: 'smooth' },
+  ]}
+  reduced="Items are added, removed and reordered in one frame, with no layout animation at all."
+/>
+
+#### Reduced motion
+
+Every change applies at once: new items appear in their slot, removed ones are gone, and reordered ones are in their new place. The list is the same as with motion. It just doesn't travel.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="focus, announcements">
+
+### Accessibility
+
+- The list keeps its semantics: a `ul` or `ol` of `li`, or a real `tbody` of `tr`. Screen readers announce the list and its length, and a table stays navigable by row and column.
+- A leaving item is `inert` from its first frame, so it can't take focus or clicks while it fades.
+- Removing the focused item would drop focus on the page body. When an item is removed with a button inside it, move focus first, to a neighbor's matching button or to the list's own controls. The notifications example does this.
+- The list doesn't announce changes. When a change is news, like a notification arriving, announce it from a live region.
+
+</ReferenceRow>

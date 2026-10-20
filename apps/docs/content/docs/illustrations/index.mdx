@@ -1,0 +1,234 @@
+---
+title: Illustrations
+description: Ready-made isometric scenes for the moments every product has, drawn from your theme. Install one on its own, draw it by id, or hand it to a block.
+sidebarTitle: Overview
+---
+
+<TopicLoop topic="illustrations" />
+
+Put a scene in an empty state, an onboarding step or a hero, and it's drawn in your theme's colors, light or dark. This one assembles as it comes into view. Point at it and it lifts off.
+
+<ComponentPreview name="illustrations/demo" height={420} />
+
+Each illustration is a small isometric scene: plinths, boxes, cylinders, stacks, turned solids and extruded profiles, shaded from your tokens, with one part in the accent. They cover the moments a product is built around (where its data lives, the machines that serve it, the screens people spend the day in, shipping, safety and the states nobody plans for) and the things people use products for, from shopping and money to travel, food, pets and the weather.
+
+They all frame the same volume, so one scene swaps for another without the layout moving. Draw one by id with `<Illustration>`, import it as its own component, or pass its id to a block's `illustration` prop. Each assembles as it comes into view, and comes apart on hover when you ask it to.
+
+The [illustrations explorer](/illustrations) is the gallery: search every scene by name, category or tag, preview one live in any preset, light or dark, copy its code or its install command, and download it as SVG or PNG.
+
+To make a scene of your own, use the [illustration builder](/illustrations/build) (experimental): drag the kit's parts into place, preview it assembling, and export code, SVG or PNG. [Draw your own](/docs/illustrations/draw-your-own) covers the same parts in code.
+
+## Installation
+
+### From the package
+
+Every scene ships in `@youj/illustrations`. Draw one by id, or import its component:
+
+```bash
+pnpm add @youj/illustrations
+```
+
+```tsx
+import { Illustration, IllustrationCoffee } from '@youj/illustrations'
+```
+
+Then add the package's stylesheet to your global CSS, after Tailwind and the tokens. Its sheet points Tailwind at the scenes; without it the classes they use are never generated:
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';
+@import '@youj/illustrations/styles.css';
+```
+
+### One scene, as source
+
+To own and edit a single scene, copy it in with the Youj CLI in an app set up from source (`npx youj init --mode registry`). Every scene is its own item, `illustration-<id>`. It brings the kit the scenes are drawn with (`illustration-kit`) and the shapes it uses, and nothing else. In an app on the packages, the same command installs `@youj/illustrations` and adds its stylesheet instead:
+
+```bash
+npx youj add illustration-coffee
+```
+
+It lands in `components/youj/graphics/illustrations/scenes/<id>.tsx`, and you import it from there through your `@/` alias:
+
+```tsx
+import { IllustrationCoffee } from '@/components/youj/graphics/illustrations/scenes/coffee'
+```
+
+Each scene's id and install command are on its card in the [explorer](/illustrations).
+
+### Every scene
+
+A scene's id is what `<Illustration scene>` takes, and its component is `Illustration` and the id in PascalCase (`server-rack` is `IllustrationServerRack`). The ids, by category:
+
+<KitNames kit="illustrations" />
+
+<InstallTabs name="illustrations" imports="Illustration" />
+
+From the package, everything on this page comes from `@youj/illustrations` (`pnpm add @youj/illustrations`).
+
+```css title="app/globals.css"
+@import 'tailwindcss';
+@import '@youj/react/styles.css';   /* or '@youj/core/styles.css' without the components */
+@import '@youj/illustrations/styles.css';
+```
+
+Its sheet points Tailwind at the built scenes, so it generates the classes they use; it goes after the tokens, in the same file. `npx youj add` adds it for you.
+
+From the registry, the `illustrations` item copies every scene into `@/components/youj/graphics/illustrations/`, with the kit's shapes they're built from.
+
+## Usage
+
+```tsx
+import { Illustration } from '@youj/illustrations'
+
+export function NoInvoices() {
+  return <Illustration scene="documents" title="No invoices yet" />
+}
+```
+
+Each scene is also its own component, for when you know which one you want and would rather import it directly:
+
+```tsx
+import { IllustrationDatabase } from '@youj/illustrations'
+
+<IllustrationDatabase explode="hover" />
+```
+
+An id that names no scene draws `fallback` instead, so an id you stored that outlives its scene still draws something:
+
+```tsx
+import { Illustration } from '@youj/illustrations'
+
+function Empty({ sceneId }: { sceneId: string }) {
+  return <Illustration scene={sceneId} fallback="empty" />
+}
+```
+
+Every scene frames one volume, so swapping never moves the layout. Keyed on the id, the new one assembles in place:
+
+<ComponentPreview name="illustrations/swap" height={440} />
+
+## Colour
+
+Scenes are gray by default, with the accent as the one coloured part. Turn colour on with `colors="theme"` and each scene's subject takes one soft hue, and a second hue sets apart a second kind of thing, such as raw and processed data in a pipeline or two people shaking hands. The structure stays neutral and the accent is still the one lit part.
+
+```tsx
+<Illustration scene="pipeline" colors="theme" />
+```
+
+The theme's pair is derived from the accent, so it follows every preset, light or dark:
+
+- **Hue 1** is the accent's hue at a muted chroma, the scene's main colour.
+- **Hue 2** is the hue opposite the accent, for the second kind of thing.
+- **Hue 3** is a quarter turn away. It is rare, for a third kind.
+
+Hues are mixed toward the surface, so they always sit quieter than the accent.
+
+<ComponentPreview name="illustrations/color" height={440} />
+
+`colors` also takes your own colours, in hue order: tokens, brand colours or `oklch()`. They're softened the same way, and an empty string or a missing entry keeps the theme's:
+
+```tsx
+<Illustration scene="pipeline" colors={['var(--color-success)', 'var(--color-warning)']} />
+```
+
+When you [draw your own](/docs/illustrations/draw-your-own), give a shape `hue={1}` or `hue={2}` on top of its `tone`, and set `colors` on the scene. Without `colors` the shape shows its `tone`.
+
+## Examples
+
+<Examples>
+
+<Example id="in-a-block" label="In a block">
+
+### In a block
+
+Blocks with room for a picture take an `illustration` prop: a scene's id, your own node, or `null` for the block's plainer look. Each opens on a scene that fits it.
+
+```tsx
+<AuthShell variant="split" illustration="security">…</AuthShell>
+<NoResults illustration="not-found" />
+<MarketingCta illustration={<img src="/launch.svg" alt="" />} />
+<NoProjects illustration={null} /> {/* the icon on its plates instead */}
+```
+
+| Block | Default | `null` |
+| --- | --- | --- |
+| [App / Empty states](/docs/blocks/onboarding-and-states) | `empty`, `search`, `security` and `cloud`, one per state | The icon on its fanned plates |
+| [App / First source](/docs/blocks/onboarding-and-states#first-source) | Its own floor, with the chosen source waiting to land | No picture |
+| [App / Onboarding](/docs/blocks/onboarding) | `team`, on the welcome step | The sparkles icon |
+| [Auth / Layout](/docs/blocks/auth#shell) and [Login](/docs/blocks/auth) | `deploy`, in the split layout's art panel | The gradient and the quote alone |
+| [Marketing / CTA](/docs/blocks/cta) | `deploy`, beside the call to action from `lg` up | No picture |
+
+On those blocks' pages, the preview's **Illustration** menu swaps the scene live. An id that names no scene falls back to the block's own.
+
+</Example>
+
+<Example id="listing-the-scenes" label="Listing the scenes">
+
+### Listing the scenes
+
+`illustrations` lists every scene as `{ id, name, category, tags, Component }`, in the explorer's order, for a picker or a gallery of your own. `illustrationCategories` lists the categories as `{ id, name }`, in the order the explorer shows them. `getIllustration(id)` returns one entry, or `undefined` for an id that isn't registered, and `isIllustrationId(value)` says whether a string names a scene.
+
+```tsx
+import { illustrationCategories, illustrations, isIllustrationId } from '@youj/illustrations'
+
+const byCategory = illustrationCategories.map((category) => ({
+  ...category,
+  scenes: illustrations.filter((scene) => scene.category === category.id),
+}))
+
+// A scene from a URL or a setting, narrowed to one that exists.
+const scene = isIllustrationId(params.scene) ? params.scene : 'empty'
+```
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="title, description, assemble… (22)">
+
+### Props
+
+Every scene component, and `<Illustration>`, takes these.
+
+<PropsTable name="IllustrationProps" />
+
+`<Illustration>` adds the scene to draw:
+
+<PropsTable name="IllustrationComponentProps" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Assemble, float, explode · reduced motion">
+
+### Motion
+
+Scenes move on their [stage's](/docs/illustrations/draw-your-own#assemble-part-and-float) shared springs and clock, so the Speed control and the theme's personality reach them.
+
+<MotionSpec
+  rows={[
+    { moment: 'Assemble', note: 'parts drop in, far ones first, the first time the scene is seen', spring: 'settle', stagger: 'loose' },
+    { moment: 'Float', note: 'the hero part bobs, out of step with its neighbors, paused offscreen', value: 'one bob per 10 × deliberate' },
+    { moment: 'Explode', note: '`explode="hover"`: stacks part and the lit part rises; a reversal carries on from where it is', spring: 'smooth' },
+  ]}
+  reduced="The finished scene, drawn once: nothing drops, nothing bobs, and a scene that's apart is shown apart."
+/>
+
+#### Reduced motion
+
+Scenes are drawn finished and still. Nothing drops in, nothing bobs, and with `explode` set they're shown apart.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- Scenes are decorative by default (`aria-hidden`): the words beside them carry the meaning, as in an empty state. Give one a `title`, and a `description` if it needs one, when the picture itself says something, and it becomes a named image.
+- The accent marks one part, never the only difference: the lit part is also the one that floats, rises or is named nearby.
+- Hues are decoration, not information: every part keeps its shape and its edges in any colour, and with colour off.
+- Coming apart on hover is a flourish, not a control: it answers a mouse pointer only.
+
+</ReferenceRow>

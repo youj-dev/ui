@@ -1,0 +1,90 @@
+[
+  {
+    "name": "iso-scene",
+    "type": "registry:component",
+    "title": "Iso Scene",
+    "description": "The stage for the isometric graphics kit: an SVG that frames its shapes' projected extent (exploded state included), paints them far to near (isoSort), keeps a callout rail beside the drawing, and shares one separation spring (explode, or explode on hover), one assemble-in (shapes drop in on the settle spring) and one float clock that pauses offscreen. The projection maths (project, boxFaces, isoEllipse, sceneViewBox) and the face shading from theme tokens (faceVars) ride along. Decorative by default; reduced motion draws the final state.",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core"],
+    "files": [
+      { "path": "src/components/youj/graphics/iso.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/graphics/tones.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/graphics/iso-scene.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "iso-shapes",
+    "type": "registry:component",
+    "title": "Iso Shapes",
+    "description": "IsoBox, IsoCylinder and IsoPlatform for an IsoScene: faces shaded from the theme in both schemes (neutral, raised, sunken, accent and status tones, or any CSS colour), solid, wireframe with dashed hidden edges, or a dashed ghost for a place something will go. Tiles and discs at no height, children drawn on the top face, float and lift.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "iso-scene"],
+    "files": [
+      { "path": "src/components/youj/graphics/iso-box.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/iso-cylinder.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/iso-platform.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "iso-stack",
+    "type": "registry:component",
+    "title": "Iso Stack",
+    "description": "An exploded view for an IsoScene: slabs or disks that part along an axis with the scene's separation, the top travelling furthest, with callouts (hairline leaders to the scene's rail, mono capital labels and a detail line) fading in as they part. A lit layer takes the accent; IsoCallout marks any other point.",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core", "iso-shapes"],
+    "files": [
+      { "path": "src/components/youj/graphics/iso-stack.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/iso-callout.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "illustrations",
+    "type": "registry:component",
+    "title": "Illustrations",
+    "description": "Ready-made isometric scenes for product moments (data, infrastructure, app and lifecycle, and the everyday, from commerce, food and travel to sports, weather, pets and science: a database, a shop front, a jar of savings, a rocket on its pad, a missing tile…), each a composition of the graphics kit framed to one shared volume, so any scene swaps for any other. They assemble as they come into view, their hero part floats, and explode on hover parts them or raises the lit part. Listed by id in `illustrations`, and drawn by id with `<Illustration scene=\"deploy\" />`, which is what a block's `illustration` prop takes. Decorative unless titled; reduced motion draws them finished and still.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "iso-shapes", "iso-stack"],
+    "files": [
+      { "path": "src/components/youj/graphics/illustrations/kit.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/data.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/infrastructure.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/app.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/lifecycle.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/commerce.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/finance.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/health.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/education.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/travel.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/food.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/media.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/social.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/home.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/work.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/sports.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/play.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/events.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/pets.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/weather.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/nature.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/energy.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/transport.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/places.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/outdoors.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/science.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/security.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/devices.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/business.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/graphics/illustrations/categories.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/graphics/illustrations/registry.tsx", "type": "registry:component" }
+    ]
+  },
+  {
+    "name": "grid-backdrops",
+    "type": "registry:component",
+    "title": "Grid Backdrops",
+    "description": "Drafting paper from the tokens: DotGrid, LineGrid (major lines and registration crosses) and IsoGrid, each filling its container behind the content and fading toward its edges, plus IsoFloor, an IsoScene's own floor grid in its units. Static and decorative.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "iso-scene"],
+    "files": [{ "path": "src/components/youj/graphics/grids.tsx", "type": "registry:component" }]
+  }
+]

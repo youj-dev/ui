@@ -1,0 +1,465 @@
+---
+title: Data table kit
+description: "The parts a data table is made of, on TanStack Table v9: headers that sort and resize, search and filters with chips, pages, selection, saved views, inline editing, a keyboard grid and CSV."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="data-table/demo" height={620} />
+
+A tasks table built from the kit: a search, two value filters with counts and their chips, headers that sort and open a column menu, the Columns menu, pages, a checkbox column and the bar a selection raises.
+
+The complete tables are blocks: [Data tables](/docs/blocks/tables-and-lists) has a dense data table, a records grid with a rich cell for every kind of value, and tables for contacts, orders, inventory (a spreadsheet), live logs and grouped budgets, all built from these parts. Copy one in when it's close to what you need, or compose the parts yourself as this example does.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="data-table" noImport />
+
+Compose the kit's parts with the [Table](/docs/components/table) parts for rows people sort, filter and act on. They're built on TanStack Table v9, which installs with them. `cmdk` is an [optional dependency](/docs/installation#optional-dependencies) the filter menus need, so the kit ships from `@youj/react/data-table`:
+
+<PackageInstall command="pnpm add cmdk" />
+
+`useDataTable` is TanStack's `useTable` with the kit's features (sorting, the toolbar's filters, faceting, pagination, selection and the column features), and every part takes the table it returns. The table keeps its own state; pass `state` and its change callbacks for any slice you own. It also puts each column's alignment in `meta.cellClassName` (a `numeric` column's cells end-aligned in tabular figures, like its header), so give that to each `TableCell`.
+
+```tsx
+import { Table, TableBody, TableCell, TableHeader, TableRow } from '@youj/react'
+import { useLocale } from '@youj/core'
+import {
+  DataTableColumnFilter,
+  DataTableColumnHeader,
+  DataTableFilterChips,
+  DataTablePagination,
+  DataTableSearch,
+  DataTableToolbar,
+  DataTableViewOptions,
+  createDataTableColumnHelper,
+  dataTableFilterChips,
+  useDataTable,
+} from '@youj/react/data-table'
+
+const col = createDataTableColumnHelper<Task>()
+const columns = col.columns([
+  col.accessor('title', { header: 'Title' }),
+  col.accessor('status', { header: 'Status', meta: { filter: { type: 'select' } } }),
+  col.accessor('estimate', { header: 'Estimate', meta: { numeric: true } }),
+])
+
+export function Tasks({ tasks }: { tasks: Task[] }) {
+  const locale = useLocale()
+  const table = useDataTable({ data: tasks, columns, getRowId: (task) => task.id })
+  return (
+    <>
+      <DataTableToolbar actions={<DataTableViewOptions table={table} />}>
+        <DataTableSearch table={table} />
+        <DataTableColumnFilter column={table.getColumn('status')!} />
+      </DataTableToolbar>
+      <DataTableFilterChips
+        chips={dataTableFilterChips(table, locale)}
+        onClearAll={() => {
+          table.resetColumnFilters(true)
+          table.setGlobalFilter('')
+        }}
+      />
+      <Table aria-label="Tasks">
+        <TableHeader>
+          {table.getHeaderGroups().map((group) => (
+            <TableRow key={group.id}>
+              {group.headers.map((header) => <DataTableColumnHeader key={header.id} header={header} />)}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id} className={cell.column.columnDef.meta?.cellClassName}>
+                  <table.FlexRender cell={cell} />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <DataTablePagination table={table} noun="tasks" />
+    </>
+  )
+}
+```
+
+The toolbar's search and filters change what the table shows, but they don't list what is in force. `DataTableFilterChips` does: one chip for the search and one per active filter, each removable, and Clear all. It takes the chips from `dataTableFilterChips(table, locale)`, so it needs the table and the locale (`useLocale()`), and it renders nothing while no filter is on.
+
+### Where things come from
+
+The `Table` parts (`Table`, `TableHeader`, `TableBody`, `TableRow`, `TableCell`) come from `@youj/react`. The kit (`useDataTable`, the toolbar, the headers, pagination, selection) comes from `@youj/react/data-table`, so the table's `cmdk` dependency stays out of apps that don't use it. A table imports from both, as the example above does.
+
+### Custom cells and alignment
+
+A column's `cell` renders its value however you like. It receives TanStack's cell context, with `getValue()` and the row's `original`:
+
+```tsx
+import { Badge } from '@youj/react'
+
+col.accessor('status', {
+  header: 'Status',
+  cell: (ctx) => <Badge variant={ctx.getValue() === 'done' ? 'success' : 'neutral'}>{ctx.getValue()}</Badge>,
+})
+col.accessor('estimate', { header: 'Estimate', cell: (ctx) => `${ctx.getValue()} pt`, meta: { numeric: true } })
+```
+
+`meta: { numeric: true }` marks a column of numbers: its header and cells align to the end, so digits line up down the column whatever your `cell` renders. `meta.align` (`'start'`, `'center'` or `'end'`) sets it for any other column.
+
+### Reading the selection
+
+With `createSelectColumn` in the columns, the table keeps the selection by row id (your `getRowId`). Read the selected rows with `table.getSelectedRowModel()`, and clear them with `table.resetRowSelection()`:
+
+```tsx
+const selected = table.getSelectedRowModel().rows.map((row) => row.original)
+
+<DataTableSelectionBar count={selected.length} noun="tasks" onClear={() => table.resetRowSelection()}>
+  <Button
+    variant="ghost"
+    size="sm"
+    onClick={async () => {
+      await deleteTasks(selected.map((task) => task.id))
+      table.resetRowSelection()
+    }}
+  >
+    Delete
+  </Button>
+</DataTableSelectionBar>
+```
+
+Put the bar inside the element that frames the table, as its last child, after the pagination. That element needs `position: relative`. The bar rides a zero-height sticky anchor at the frame's lower edge, so it floats over the bottom of the viewport while a long table scrolls and never moves the layout. Keep the pagination row under the rows: the bar settles over it, not over the last row. A table with no pagination needs bottom padding on its frame (`pb-16`) for the same reason.
+
+```tsx
+<div className="relative overflow-clip rounded-xl border border-line bg-surface">
+  <Table aria-label="Tasks">{/* … */}</Table>
+  <div className="border-t border-line">
+    <DataTablePagination table={table} noun="tasks" />
+  </div>
+  <DataTableSelectionBar count={selected.length} onClear={() => table.resetRowSelection()}>
+    {/* actions */}
+  </DataTableSelectionBar>
+</div>
+```
+
+### Number and date filters
+
+Besides `select`, a column's `meta.filter` can be a range. `number-range` gives a two-thumb slider with exact bounds, spanning the column's values unless you pass `min` and `max`; `format` writes the bounds in the key and its chip. `date-range` gives presets (Today, Last 7 days…) and two exact days; its column holds dates, or `YYYY-MM-DD` strings.
+
+```tsx
+col.accessor('aqi', {
+  header: 'AQI',
+  meta: { numeric: true, filter: { type: 'number-range', min: 0, max: 300, step: 5 } },
+})
+col.accessor('date', { header: 'Date', meta: { filter: { type: 'date-range', title: 'Day' } } })
+```
+
+Each writes plain JSON (`{ min, max }`, `{ from, to }`), so a saved view or a link can hold it. The date filter's presets read today when it opens, never while the page renders, so a prerendered page is stable.
+
+### Export to CSV
+
+`dataTableToCsv(table, rows)` writes the rows you pass, in the columns on screen, as CSV that spreadsheets read; `downloadCsv(csv, filename)` hands it to the browser. To export everything the filters and search leave, in the order on screen, across every page, pass `table.getSortedRowModel().rows` (`getRowModel()` is only the current page):
+
+```tsx
+import { Button } from '@youj/react'
+import { dataTableToCsv, downloadCsv } from '@youj/react/data-table'
+
+<Button
+  variant="outline"
+  size="sm"
+  disabled={table.getFilteredRowModel().rows.length === 0}
+  onClick={() => downloadCsv(dataTableToCsv(table, table.getSortedRowModel().rows), 'readings.csv')}
+>
+  Export CSV
+</Button>
+```
+
+For the selection, pass `table.getSelectedRowModel().rows`. A column's `meta.exportValue` writes its value its own way, and `meta.exportable: false` leaves it out.
+
+### All rows on one page
+
+A short list (a sprint's issues, a board's backlog) doesn't need pages. Pass `paginate: false` and the table shows every row that passes its filters, in order; leave out `DataTablePagination`:
+
+```tsx
+const table = useDataTable({ data: issues, columns, getRowId: (issue) => issue.id, paginate: false })
+```
+
+The pagination state and its methods still exist (the parts that read them keep working), but `getRowModel()` returns every row. For thousands of rows, keep pages or virtualize the body.
+
+### Editing a cell
+
+The kit has the editor, not the save. Give a column `meta.editor` (`text`, `number` or `select`) and, if it needs one, `meta.validate`; keep which cell is being edited in state; and render `DataTableCellEditor` in that cell (its `TableCell` needs `position: relative`, since the editor lies over it). Its `onCommit` hands you the parsed value: return a reason to keep the editor open with it, or `null` to accept, then save the value however your app saves.
+
+```tsx
+import { DataTableCellEditor } from '@youj/react/data-table'
+
+const [editing, setEditing] = useState<{ rowId: string; columnId: string } | null>(null)
+
+<TableCell key={cell.id} className="relative" onDoubleClick={() => meta?.editor && setEditing({ rowId: row.id, columnId: cell.column.id })}>
+  <table.FlexRender cell={cell} />
+  {meta?.editor && editing?.rowId === row.id && editing.columnId === cell.column.id && (
+    <DataTableCellEditor
+      editor={meta.editor}
+      value={cell.getValue()}
+      label={`${dataTableColumnLabel(cell.column)}, ${row.id}`}
+      onCommit={(value) => {
+        const reason = meta.validate?.(value)
+        if (reason) return reason
+        setEditing(null)
+        void saveTask(row.id, cell.column.id, value)
+        return null
+      }}
+      onTab={(value) => { /* commit, then move to the next editable cell */ return null }}
+      onCancel={() => setEditing(null)}
+    />
+  )}
+</TableCell>
+```
+
+with `const meta = cell.column.columnDef.meta`. The [Data table](/docs/blocks/tables-and-lists) block wires the whole flow (Enter, F2 or typing to start, Tab to the next cell, an optimistic value that rolls back if the save fails) behind one prop, `onCellEdit`: copy it in when you want that rather than building it.
+
+### Coming from TanStack Table v8
+
+The kit is on TanStack Table v9, and code from v8 examples needs these renames:
+
+| v8 | v9 (and the kit) |
+| --- | --- |
+| `useReactTable({ getCoreRowModel: getCoreRowModel(), … })` | `useDataTable({ data, columns })`: the features and row models come with it (`dataTableFeatures`) |
+| `createColumnHelper<Task>()` | `createDataTableColumnHelper<Task>()` (v9's helper also takes the features: `createColumnHelper<DataTableFeatures, Task>()`) |
+| `flexRender(cell.column.columnDef.cell, cell.getContext())` | `<table.FlexRender cell={cell} />` (also `header=` and `footer=`) |
+| `sortingFn: 'datetime'` | `sortFn: 'datetime'` (the kit registers `alphanumeric`, `basic`, `datetime` and `text`) |
+| `sortingFns`, `filterFns` in the options | registered in the features (`tableFeatures({ sortFns, filterFns })`); the kit's set is in `dataTableFeatures` |
+| `table.getState().sorting` | `table.state.sorting` |
+| `ColumnDef<Task>` | `DataTableColumnDef<Task>` (v9's `ColumnDef` takes the features first) |
+
+`getSortedRowModel()`, `getFilteredRowModel()` and `getPaginationRowModel()` are gone as options: each is a row model in the features (`sortedRowModel: createSortedRowModel()`), and `useDataTable` includes them. Methods on the table, a column and a row (`table.getRowModel()`, `column.toggleSorting()`, `row.getIsSelected()`) are unchanged.
+
+### Empty and loading states
+
+The kit renders rows; what shows when there are none is yours. Use one `TableRow` with a single cell that spans the columns. While data loads, draw placeholder rows with [Skeleton](/docs/components/skeleton) so the table keeps its size, and when a filter leaves nothing, say so and offer the way out:
+
+```tsx
+import { Button, Skeleton, TableBody, TableCell, TableRow } from '@youj/react'
+
+const rows = table.getRowModel().rows
+const span = table.getVisibleLeafColumns().length
+
+<TableBody>
+  {loading ? (
+    Array.from({ length: 5 }, (_, i) => (
+      <TableRow key={i}>
+        <TableCell colSpan={span}>
+          <Skeleton className="h-5 w-full" />
+        </TableCell>
+      </TableRow>
+    ))
+  ) : rows.length === 0 ? (
+    <TableRow>
+      <TableCell colSpan={span} className="h-32 text-center text-fg-muted">
+        No tasks match.{' '}
+        <Button variant="link" onClick={() => { table.resetColumnFilters(true); table.setGlobalFilter('') }}>
+          Clear filters
+        </Button>
+      </TableCell>
+    </TableRow>
+  ) : (
+    rows.map((row) => /* … */)
+  )}
+</TableBody>
+```
+
+For a table with nothing in it at all, an [Empty State](/docs/components/empty-state) in place of the whole table says more than an empty row.
+
+### A row opens a detail sheet
+
+Keep the open row's id in state, and render a [Sheet](/docs/components/sheet) for it beside the table. Two things make the row safe to click and usable without a mouse:
+
+- **The row's click is a convenience for the pointer.** Ignore it when it began on something interactive inside the row (the select checkbox, a row-actions menu, a link, a status Select), or a click meant for those opens the sheet too. Ignore it too when it came from outside the row's DOM: React bubbles events through portals, so picking an option in a cell's Select or a menu item reaches the row's `onClick` although the popup isn't in the row.
+- **The keyboard opens the sheet from a button.** A table row isn't a button and shouldn't pretend to be one. Render the row's id as a real `button` in its cell: it is a Tab stop, Enter and Space open the sheet, and it gives the row an accessible name for what opens.
+
+```tsx
+import { Sheet, SheetBody, SheetContent, SheetDescription, SheetHeader, SheetTitle, Table, TableBody, TableCell, TableRow } from '@youj/react'
+import { createDataTableColumnHelper, createSelectColumn, useDataTable } from '@youj/react/data-table'
+import { useState } from 'react'
+
+const col = createDataTableColumnHelper<Task>()
+
+// What is interactive inside a row: its own controls and the roles Base UI gives its triggers and popups.
+const ROW_CONTROLS =
+  'button, a[href], input, textarea, select, label, [contenteditable="true"], [role="checkbox"], [role="switch"], [role="combobox"], [role="listbox"], [role="option"], [role="menu"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="slider"], [role="tab"]'
+
+export function Tasks({ tasks }: { tasks: Task[] }) {
+  const [openId, setOpenId] = useState<string | null>(null)
+  const columns = col.columns([
+    createSelectColumn<Task>({ label: (task) => task.id }),
+    col.accessor('id', {
+      header: 'Task',
+      cell: (ctx) => (
+        <button type="button" className="font-mono text-ui-sm underline-offset-4 hover:underline" onClick={() => setOpenId(ctx.getValue())}>
+          {ctx.getValue()}
+        </button>
+      ),
+    }),
+    col.accessor('title', { header: 'Title' }),
+  ])
+  const table = useDataTable({ data: tasks, columns, getRowId: (task) => task.id })
+  const task = tasks.find((t) => t.id === openId)
+
+  return (
+    <>
+      <Table aria-label="Tasks">
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow
+              key={row.id}
+              className="cursor-pointer"
+              data-state={row.getIsSelected() ? 'selected' : undefined}
+              onClick={(event) => {
+                const target = event.target as HTMLElement
+                // A popup's option or menu item (portaled out of the row) isn't the row's click.
+                if (!event.currentTarget.contains(target)) return
+                // Nor is a click on the checkbox, a menu, a link or a select inside the row.
+                const control = target.closest(ROW_CONTROLS)
+                if (control && event.currentTarget.contains(control)) return
+                setOpenId(row.id)
+              }}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  <table.FlexRender cell={cell} />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Sheet open={task !== undefined} onOpenChange={(open) => !open && setOpenId(null)}>
+        <SheetContent side="end">
+          <SheetHeader>
+            <SheetTitle>{task?.title}</SheetTitle>
+            <SheetDescription>{task?.id}</SheetDescription>
+          </SheetHeader>
+          <SheetBody>{/* the task's details */}</SheetBody>
+        </SheetContent>
+      </Sheet>
+    </>
+  )
+}
+```
+
+The id button is itself something interactive in the row, so the guard also keeps it from opening the sheet twice. The `closest` match is checked against the row, so a table that sits inside a focusable element or a `[role="tab"]` panel doesn't swallow every row click. The sheet is a modal dialog: it traps focus, closes on Escape and returns focus to the element that had it, which is the id button when the keyboard opened it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="The kit's parts" summary="what each part is for">
+
+### The kit's parts
+
+| Part | Does |
+| --- | --- |
+| `useDataTable` | TanStack's `useTable` with the kit's features. |
+| `createDataTableColumnHelper` | A column helper that types each column's `meta`: `label`, `numeric`, `align`, `grow`, `filter`, `editor`, `skeleton`, `exportValue`. |
+| `DataTableColumnHeader` | A header cell (a `<th>`): its label sorts the column (Shift adds it to the sort), a chevron, a right-click or <kbd>Alt</kbd>+<kbd>↓</kbd> open its menu (sort, pin, move, hide), and its edge resizes it. |
+| `DataTableToolbar` | The row above a table: search and filters at the start, `actions` at the end, each side wrapping on its own. |
+| `DataTableSearch` | A search over every column, after a short pause (<kbd>Enter</kbd> at once), with <kbd>/</kbd> to focus it from anywhere. |
+| `DataTableColumnFilter` | The filter a column declares in `meta.filter`: `DataTableFacetedFilter` (values with counts), `DataTableDateRangeFilter` (presets and exact days) or `DataTableNumberRangeFilter` (a two-thumb slider and exact bounds). |
+| `DataTableFilterChips` | The filters in force as chips, from `dataTableFilterChips(table, locale)`, and Clear all. |
+| `DataTableViewOptions` | The Columns menu: show and hide columns, and reset them. |
+| `DataTableDensityToggle` | Compact, standard or comfortable rows. |
+| `DataTablePagination` | The range in view, rows per page and the page steps, from a `table` or from values. |
+| `createSelectColumn` | A checkbox column: the header's selects the page, each row's its row. |
+| `DataTableSelectionBar` | The bar a selection raises over the table's lower edge, with a rolling count, Select all and your actions. |
+| `DataTableConfirmAction` | A destructive action that names the count and, from three rows, asks for it to be typed. |
+| `createRowActionsColumn`, `DataTableRowActions` | A row's ⋯ menu, named for its row. |
+| `DataTableViews` | Saved views: named filters, sort, columns and density, saved and updated through `onViewsChange`. |
+| `DataTableCellEditor` | An editor laid over its cell (text, number or select), for inline editing. |
+| `useDataTableNavigation` | The ARIA grid's keyboard: one Tab stop, the arrows between cells, Home/End, PageUp/PageDown, and `onActiveChange` when the active cell moves. |
+| `dataTableToCsv`, `downloadCsv` | CSV that spreadsheets read: quoted, CRLF, a BOM, and formulas defused. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Props" summary="DataTableColumnHeader, DataTablePagination, DataTableSelectionBar…">
+
+### Props
+
+#### DataTableColumnHeader
+
+<PropsTable name="DataTableColumnHeader" />
+
+#### DataTableToolbar
+
+<PropsTable name="DataTableToolbar" />
+
+#### DataTablePagination
+
+<PropsTable name="DataTablePagination" />
+
+#### DataTableSelectionBar
+
+<PropsTable name="DataTableSelectionBar" />
+
+#### DataTableConfirmAction
+
+<PropsTable name="DataTableConfirmAction" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Sort arrow, selection bar, chips · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Sort arrow', note: 'turns to the new direction', spring: 'snappy' },
+    { moment: 'Sort priority', note: 'badge in, and out on `instant`', duration: 'fast', ease: 'enter' },
+    { moment: 'Selection bar', note: 'rises and settles, with a rolling count', spring: 'snappy' },
+    { moment: 'Selection bar leaves', duration: 'fast', ease: 'exit' },
+    { moment: 'Filter chips', note: 'glide in and out; the row eases open and shut', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Every change applies at once: the arrow flips, the bar and the chips appear and leave in place, and the count changes without rolling."
+/>
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Headers, menus, selection">
+
+### Accessibility
+
+- `DataTableColumnHeader` is named by its label alone and reports `aria-sort` for the first sorted column. Its menu opens from the keyboard with <kbd>Alt</kbd>+<kbd>↓</kbd>, <kbd>Shift</kbd>+<kbd>F10</kbd> or the context-menu key, and focus returns to the header when it closes.
+- Each row checkbox is named for its row ("Select TSK-1041"); the header's says it selects the page and is indeterminate while some rows are.
+- The selection bar is a named group, <kbd>Escape</kbd> inside it clears the selection, and Clear keeps its name when the bar is narrow.
+- Removing a filter chip hands focus to its neighbor, or out of the row when it was the last.
+- `useDataTableNavigation` makes a `role="grid"` table one Tab stop with a roving cell, the keyboard model the [Data tables](/docs/blocks/tables-and-lists) blocks share.
+
+</ReferenceRow>

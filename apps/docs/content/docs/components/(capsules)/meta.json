@@ -1,0 +1,10 @@
+{
+  "title": "Capsules",
+  "pages": [
+    "capsule",
+    "stat-pill",
+    "capsule-stepper",
+    "capsule-search",
+    "capsule-toggle"
+  ]
+}

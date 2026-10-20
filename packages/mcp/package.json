@@ -1,0 +1,65 @@
+{
+  "name": "@youj/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) The Youj MCP server: lets AI coding tools find, understand and install Youj components, icons, morphs, blocks, themes and motion.",
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "keywords": [
+    "alpha",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "claude",
+    "cursor",
+    "llm",
+    "youj"
+  ],
+  "homepage": "https://www.youj.dev/docs/mcp",
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/mcp"
+  },
+  "bin": {
+    "youj-mcp": "./dist/server.mjs"
+  },
+  "files": [
+    "dist",
+    "data",
+    "THIRD_PARTY_LICENSES.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm generate && tsdown",
+    "prepack": "pnpm generate && tsdown",
+    "generate": "node scripts/build-index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm generate && vitest run",
+    "test:coverage": "pnpm generate && vitest run --coverage.enabled",
+    "verify": "pnpm generate && pnpm typecheck && vitest run",
+    "licenses": "node scripts/licenses.ts",
+    "cf:build": "pnpm generate && CF_SEND_TELEMETRY=false cf-wrangler build",
+    "cf:check": "pnpm cf:build && CF_SEND_TELEMETRY=false cf deploy --prebuilt --dry-run",
+    "cf:deploy": "pnpm cf:build && CF_SEND_TELEMETRY=false cf deploy --prebuilt",
+    "cf:dev": "pnpm generate && CF_SEND_TELEMETRY=false cf-wrangler dev --port 8789"
+  },
+  "devDependencies": {
+    "@youj/core": "workspace:*",
+    "@youj/icons": "workspace:*",
+    "@youj/illustrations": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "zod": "^4.6.5",
+    "cf": "1.0.0-beta.5",
+    "wrangler": "^4.144.0"
+  }
+}

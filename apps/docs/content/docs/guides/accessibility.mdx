@@ -1,0 +1,68 @@
+---
+title: Accessibility
+description: "Understand Youj’s accessibility support, automated checks and what you need to test in your app."
+status: new
+---
+
+<PageArt art="accessibility" />
+
+Youj components build on Base UI’s roles, states and keyboard support. Each component page explains its keyboard controls, focus behavior and screen-reader announcements. Modal overlays trap focus and return it when closed. Live regions announce changes such as busy states, toasts and sorting.
+
+You still need to check your app’s copy, heading order, alt text, icon-only button names and task flows. A component library cannot verify these choices for you.
+
+## Contrast
+
+The theme derivation keeps every text color at 4.5:1 and every field border at 3:1 on every surface, in light and dark, for any theme you define. `checkTheme` reports a pair that misses AA as an error, and the provider, [Create](/create), the CLI and the MCP server refuse a theme that misses it unless you opt out. See [Theming › Guardrails](/docs/theming#guardrails).
+
+## Target size
+
+WCAG 2.2's 2.5.8 asks for pointer targets of at least 24 by 24 CSS pixels, or enough space around a smaller one that a 24px circle on it touches no other target.
+
+- Buttons are at least 24px in every size and density: `icon-xs` and `xs` are 24px, `sm` 28px, the default 32px, and compact density never takes a control below 24px. On touch screens every control grows by 8px.
+- Controls drawn smaller than 24px widen their hit area with an invisible pseudo-element, so the pointer reaches 24px or more while the drawing stays small: checkboxes and radios (16px drawn), a chip's remove button (16px drawn, inside a 20px chip), slider thumbs, the switch, and a data table's sort buttons (20px tall). On a coarse pointer, checkboxes, radios, switches and slider thumbs grow to 40px.
+- Links inside a sentence are exempt, as the criterion allows.
+
+If you build a small control of your own, give it the same treatment: `relative after:absolute after:-inset-1` on a 16px button makes a 24px target without moving anything. Make sure no ancestor clips it with `overflow: hidden`.
+
+## Announcements
+
+For a change a screen reader wouldn't otherwise hear (a chip removed, a selection cleared), `useAnnouncer` returns `announce(text)` and an `announcer` element to render once, from the first render, since several screen readers ignore a live region that arrives with its message already inside. Saying the same thing twice is still announced.
+
+```tsx
+import { useAnnouncer } from '@youj/react'
+
+function Tags({ tags, onRemove }: { tags: string[]; onRemove: (tag: string) => void }) {
+  const { announce, announcer } = useAnnouncer()
+  return (
+    <>
+      {announcer}
+      {tags.map((tag) => (
+        <button key={tag} onClick={() => { onRemove(tag); announce(`${tag} removed`) }}>{tag}</button>
+      ))}
+    </>
+  )
+}
+```
+
+`useLiveRegion` is the same idea for regions you render yourself: it returns `politeRef`, `assertiveRef` and `announce(message, { assertive, delay })`, writes straight to the node, and so never re-renders the component. Attach the refs to two `sr-only` elements (`role="status"` and `role="alert"`) that exist from the first render.
+
+## Conformance
+
+What's tested automatically, on every change in CI, against the built Storybook:
+
+- **axe** ([axe-core](https://github.com/dequelabs/axe-core), its default rule set: WCAG 2 A and AA plus best practices) over every story, in light and dark mode.
+- **Right to left.** axe again over every UI, block and example story with the document in Arabic: `dir="rtl"`, `lang="ar"`, Base UI's direction and Youj's Arabic labels. The Storybook toolbar's Direction control shows the same setup.
+- **Target size** (2.5.8) over every UI story, measured by hit-testing what a pointer actually reaches, so widened hit areas count.
+- **Unit tests** for keyboard behavior, ARIA attributes, announcements and reduced motion, per component.
+
+A short list of accepted findings is kept in the repository (`tests/storybook/a11y-known.json`, explained in the suite's README); any new finding fails the build.
+
+What isn't automated:
+
+- Screen-reader behavior with real assistive technology (VoiceOver, NVDA, JAWS, TalkBack). Components are built to the WAI-ARIA patterns and their announcements are unit-tested, but manual screen-reader passes aren't run on a schedule or recorded.
+- Zoom and reflow (200%, 400%, 320px wide), text spacing, and forced-colors (Windows high contrast) mode.
+- Anything in your app: content, heading structure, flows, and the pages you compose.
+
+Automated tools find only part of what WCAG covers, so passing them doesn't make a product conformant. Youj has **no published VPAT or Accessibility Conformance Report (ACR)** yet, and no third-party audit. If you need one for procurement, for example under the European Accessibility Act, test your own product; the results above are a starting point, not a claim of conformance.
+
+Found a barrier? [Open an issue](repo:issues/new) with the component, the browser and assistive technology, and the steps.

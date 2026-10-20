@@ -1,0 +1,126 @@
+---
+title: Route Map
+description: "Draw a route on a tile-free map, with delayed stretches, a proposed reroute and cards anchored to stops."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="route-map/demo" height={520} />
+
+A truck's route from the depot to the distribution center, with a delayed leg, a proposed reroute and your own overlay.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="route-map" noImport />
+
+Use a route map where the question is where a load, a courier or a crew is on its way, which stretch is late and what the alternative would be. There are no tiles: land, water, parks and roads are abstract shapes in the theme's tones, so the routes are the loudest thing on it and nothing loads from a map provider. For a world view of where traffic comes from, use a [Dot Map](/docs/components/dot-map); for the same stops as a line of steps, a [Stepper](/docs/components/stepper) with a detour.
+
+```tsx
+import { RouteMap, type RouteMapRoute, type RouteMapStop } from '@youj/react'
+
+const stops: RouteMapStop[] = [
+  { id: 'depot', name: 'Harbor depot', kind: 'origin', x: 12, y: 72, detail: 'Departed 09:14' },
+  { id: 'truck', name: 'Load 4821', kind: 'current', x: 43, y: 45, card: <p>+47 min</p> },
+  { id: 'summit', name: 'Summit DC', kind: 'destination', x: 86, y: 18, detail: 'ETA 15:49' },
+]
+const routes: RouteMapRoute[] = [
+  { id: 'driven', status: 'done', path: ['depot', [24, 60], 'truck'] },
+  { id: 'ahead', status: 'delayed', path: ['truck', 'summit'] },
+  { id: 'reroute', status: 'proposed', label: 'Proposed via river road', path: ['truck', [66, 57], 'summit'] },
+]
+
+<RouteMap stops={stops} routes={routes} />
+```
+
+Stops sit at `x` and `y`, from 0 to 100 across and down the map. Their `kind` picks the marker: `origin`, `stop`, `destination`, or `current` for where the vehicle is now (it pulses). Any stop takes your own `icon`: the current one wears it on the accent, the others on an ink disc, as a fleet map's other trucks do. A route's `path` lists what it passes through: stop ids, and `[x, y]` waypoints to bend it along the roads; the line is smoothed through them. Its `status` is `done` (driven, quiet), `on-time` (ink), `delayed` (the danger tone) or `proposed` (a dotted line in the accent), and its `label` names it in the legend.
+
+A stop's `card` is anchored beside its marker and always shown: an ETA, a warning, a reroute to approve. It sits toward the middle of the map unless `cardSide` says `left`, `right`, `top` or `bottom`. Anything else you lay over the map (a summary card, zoom controls) goes in `children`. `terrain` swaps the built-in coast for your own shapes, as path data in a 100 × 100 box; `ratio` sets the map's width over its height (16 / 10).
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="stops, routes, terrain… (9)">
+
+### Props
+
+<PropsTable name="RouteMap" />
+
+#### Stops
+
+<PropsTable name="RouteMapStop" />
+
+#### Routes
+
+<PropsTable name="RouteMapRoute" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `route-map`, `route-map-land`, `route-map-terrain`, `route-map-routes`, `route-map-route` (with `data-status`), `route-map-stop` (with `data-kind`), `route-map-marker`, `route-map-tag`, `route-map-card` (with `data-side`) and `route-map-legend`. Lines keep their width at any size; the map never mirrors in RTL, since geography doesn't.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Draw-in, markers, cards, pulse · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Land', note: 'fades in as the map scrolls into view', duration: 'slow', ease: 'enter' },
+    { moment: 'Routes', note: 'each draws along its length: driven, then on time, delayed and proposed, one state after another', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Markers', note: 'land as their first line starts; the destination settles', spring: 'snappy' },
+    { moment: 'Cards', note: 'rise in after their marker', duration: 'base', ease: 'enter' },
+    { moment: 'Current position', note: 'a ring opens and fades, only while the map is on screen', duration: 'deliberate', ease: 'exit' },
+  ]}
+  reduced="Everything is drawn in place, and the current position doesn't pulse."
+/>
+
+#### Reduced motion
+
+Routes, markers and cards are drawn in place and the current position holds still. The states read the same: color, dots and the legend carry them.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Group, markers, text alternative">
+
+### Accessibility
+
+- The map is a group named by `label` (default: the labels' "Route map").
+- Markers are buttons in stop order, named by place, kind and detail ("Summit DC, Destination, ETA 15:49"); pressing one picks it (`aria-pressed`), and hover or focus shows its name.
+- The routes and stops are written out for screen readers: every stop with its kind and detail, every route with its state and the stops it runs through ("Proposed via river road: Load 4821 → Summit DC").
+- Cards are ordinary content, read where they sit after their marker. The land, lines and legend are decorative.
+- Its words come from the labels (`routeMap`, `routeOrigin`, `routeStop`, `routeDestination`, `routeCurrent`, `routeDone`, `routeOnTime`, `routeDelayed`, `proposed`), translated by the language packs.
+
+</ReferenceRow>

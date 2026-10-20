@@ -1,0 +1,116 @@
+---
+title: Progress List
+description: "List items with progress, speed, time remaining and controls for each, such as file transfers."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="progress-list/demo" height={620} />
+
+Six files, one in each state, with a summary above them and pause, resume, retry and cancel handlers.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="progress-list" noImport />
+
+Use a progress list wherever files move and people wait on them: uploads, downloads, syncs, exports. Each file is a row with a run of cells that lights as its bytes arrive, what has moved of its size, and while it moves, its rate and the time left. A finished row settles into a compact done row with a drawn check and sinks to the foot, so the list keeps what still needs attention at the top. For one bounded value use a [Segmented Meter](/docs/components/segmented-meter); for a queue's load across lanes, a [Lane Meter](/docs/components/lane-meter).
+
+```tsx
+import { ProgressList, TransferSummary, type TransferItem } from '@youj/react'
+
+const files: TransferItem[] = [
+  { id: 'film', name: 'launch-film-master.mov', size: 2_310_000_000, transferred: 1_402_000_000, rate: 18_900_000, status: 'active' },
+  { id: 'traces', name: 'eval-traces.jsonl', size: 386_000_000, transferred: 243_000_000, status: 'failed', error: 'Connection reset at 63%' },
+]
+
+<TransferSummary items={files} onPauseAll={pauseAll} onResumeAll={resumeAll} onCancelAll={cancelAll} />
+<ProgressList items={files} max={6} onPause={pause} onResume={resume} onCancel={cancel} onRetry={retry} />
+```
+
+An item is a file's `name`, its `size` and the bytes `transferred` so far, a `status` (`queued`, `active`, `paused`, `done` or `failed`), the `rate` in bytes a second while it's active, and an `error` for a failed one. The list is controlled: it draws what you pass and calls `onPause`, `onResume`, `onCancel` and `onRetry` with the row's `id`. Leave a callback out and its button goes with it; with none, the list is read-only.
+
+Rows sort themselves: failed first, then moving and paused, then queued, and the done ones last. Past `max` rows (6 by default, `0` for all) the rest fold under "Show N more", which says what they hold. Sizes and rates pick the largest unit under a thousand (`48.2 MB`, `18.9 MB/s`), and bytes moved read in their size's unit, so an empty file says "0 MB of 940 MB".
+
+`TransferSummary` is the header: the bytes moved of the whole, an overall [Segmented Meter](/docs/components/segmented-meter) named by how many files are done, the combined rate and the time left. Give it `onPauseAll`, `onResumeAll` and `onCancelAll` for the all-row actions.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, max, segments… (15)">
+
+### Props
+
+<PropsTable name="ProgressList" />
+
+<PropsTable name="TransferSummary" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `progress-list`, `progress-list-item` (with `data-status`), `progress-list-row`, `progress-list-icon`, `progress-list-body`, `progress-list-name`, `progress-list-value`, `progress-list-progress`, `progress-list-track`, `progress-list-cell` (with `data-state`), `progress-list-meta`, `progress-list-status`, `progress-list-error`, `progress-list-actions`, `progress-list-action` and `progress-list-more`; and `transfer-summary`, `transfer-summary-figure`, `transfer-summary-actions`, `transfer-summary-meter` and `transfer-summary-stat`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Bytes arrive, done, reorder, add, remove · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Bytes arrive', note: 'cells light one at a time; the next cell to fill breathes while the file moves', duration: 'fast', ease: 'standard' },
+    { moment: 'Done', note: 'the row lets go of its well and its cells fold away; the file glyph turns into a drawn check and the row glides to the foot', spring: 'snappy' },
+    { moment: 'Reorder, add, remove', note: 'rows glide to their new places and fade in or out through PresenceList', spring: 'smooth' },
+  ]}
+  reduced="Cells light at once, rows fold and move in place, the check is drawn and nothing breathes."
+/>
+
+#### Reduced motion
+
+Cells are lit at once, finished rows fold and move in place, the check is drawn without its stroke, and the next cell doesn't breathe.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- Each unfinished row is a `progressbar` named by its file, with the percentage and state as `aria-valuetext` ("50%, 48 MB of 120 MB", "38%, Paused", or the error).
+- Every button is named for its file: "Pause launch-film-master.mov", "Retry eval-traces.jsonl".
+- A file that finishes or fails is announced once, in a polite live region.
+- When a row's buttons leave from under focus (canceled, or finished), focus moves to the row now in its place, so it's never dropped on the page.
+- "Show N more" is a button with `aria-expanded`.
+- Its words come from the labels (`transfers`, `transferPause`, `transferResume`, `transferCancel`, `transferProgress`, `transferLeft`, `transferFiles`, …), translated by the language packs.
+
+</ReferenceRow>

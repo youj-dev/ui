@@ -1,0 +1,109 @@
+---
+title: Inspector Panel
+description: "One property group of a design tool's side panel: a header with its switches and actions, and rows of fields."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="inspector-panel/demo" height={440} />
+
+A shadow group with every part of the header.
+
+The header holds, from the left: a checkbox that switches the group on or off, the title (a menu when you give it `types`), and on the right an eye, a plus, a trash and a chevron. Each appears when its props are given. Switched off, the body dims and every field in it is disabled. The chevron folds the body away.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="inspector-panel" noImport />
+
+Use it to build the side panel of an editor: one panel per property group, stacked. The body is rows; a row is a label on the left and one or two fields on a two-column grid. [Scrub Number Field](/docs/components/scrub-number-field) and [Color Opacity Field](/docs/components/color-opacity-field) are made for it, and any other field fits. For the whole panel with a live preview, see the [Effects inspector](/docs/blocks/forms-and-inputs#effects-inspector) block.
+
+```tsx
+import { InspectorPanel, InspectorRow, ScrubNumberField } from '@youj/react'
+
+export function BlurPanel({ blur, onBlur }: { blur: number; onBlur: (blur: number) => void }) {
+  return (
+    <InspectorPanel title="Layer blur" enabled onEnabledChange={() => {}} onRemove={() => {}}>
+      <InspectorRow label="Amount">
+        <ScrubNumberField size="sm" aria-label="Amount" label="A" unit="px" min={0} value={blur} onValueChange={onBlur} />
+      </InspectorRow>
+    </InspectorPanel>
+  )
+}
+```
+
+The state is yours: `enabled`, `visible` and `type` are controlled, and `open` follows `defaultOpen` until you control it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="title, enabled, types, visible, onAdd, onRemove, open…">
+
+### Props
+
+<PropsTable name="InspectorPanel" />
+
+#### Inspector Row
+
+<PropsTable name="InspectorRow" />
+
+#### Data attributes
+
+The panel carries `data-slot="inspector-panel"`, `data-yj-enabled` and `data-yj-visible` (`true` or `false`, when their props are given) and Base UI's `data-open` while the body is open. The header is `inspector-panel-header`, the type menu's trigger `inspector-panel-type`, and the body `inspector-panel-body`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Fold · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Fold and unfold', note: 'the body eases between zero and its height while its content fades', duration: 'base', ease: 'standard' },
+    { moment: 'Switched off', note: 'the body dims', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The body opens and closes at once, and dims without a fade."
+/>
+
+#### Reduced motion
+
+Folding and dimming happen at once; the chevron turns over without a spring.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Section, header controls, disabled body">
+
+### Accessibility
+
+- The panel is a `section` named by its title. A row's fields are a `group` named by the row's label.
+- The checkbox is named "Enable" followed by the title. The eye says what it will do ("Hide", or "Show" while hidden) and is a toggle (`aria-pressed`). The plus is "Add", the trash "Remove" and the title, and the chevron "Collapse" or "Expand" with `aria-expanded`. All of these are translated through the labels.
+- With `types`, the title is a menu button named "Change type" and the title. Arrow keys move through the kinds, Enter picks one and Escape closes it.
+- Switched off, the body is a disabled `fieldset`, so nothing in it is reachable until the checkbox is on again.
+</ReferenceRow>

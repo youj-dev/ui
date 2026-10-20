@@ -1,0 +1,104 @@
+---
+title: Motion principles
+sidebarTitle: Principles
+description: "The motion principles behind Youj shown side by side, then a duration and curve for each kind of interaction, reduced motion, and when to leave content still."
+---
+
+Youj uses short, precise motion to show what changed. These principles explain when to animate, how to time it and how to keep the result clear. Further down, the guidelines pick a duration and a curve for each interaction and check how it behaves with reduced motion. Those values are tokens, so they follow the theme's motion settings and Speed; try them in the [Motion playground](/docs/motion/playground).
+
+<PrincipleCards />
+
+## Shown, not described
+
+Each pair plays the same moment twice: once in the Youj language, and once the way it usually goes wrong. The "don't" side deliberately uses values that aren't tokens, and it still follows the time scale, so the comparison stays fair.
+
+<Principles />
+
+## Timing lives in tokens
+
+No component hard-codes a duration or a curve. Every value comes from one set of motion tokens, and every component reads it through `useYouj()`, so tuning a token retunes the whole library. The durations form a short geometric scale, and anything that answers direct input finishes within `base`. Feedback takes the `snappy` spring, layout changes `smooth`, and only success and arrival get `settle`, the one spring that overshoots.
+
+[Motion tokens](/docs/motion/tokens) lists every duration, easing, spring and stagger step, with which one each moment takes and how the time scale and reduced motion reach them.
+
+## In code
+
+Timing comes from the hook, never from literals.
+
+```tsx
+import { m } from 'motion/react'
+import { MotionFeatures, useYouj } from '@youj/core'
+
+export function Panel({ open }: { open: boolean }) {
+  const k = useYouj()
+  return (
+    <MotionFeatures>
+      <m.div
+        animate={{ opacity: open ? 1 : 0, y: open ? 0 : 8 }}
+        transition={k.reduced ? { duration: 0 } : k.tween('base', open ? 'enter' : 'exit')}
+      />
+    </MotionFeatures>
+  )
+}
+```
+
+- `k.tween(duration, ease)` and `k.spring(token)` return ready Motion transitions.
+- `k.stagger(token)` is a step in seconds, and `k.ms(token)` a duration in milliseconds for CSS, WAAPI and `requestAnimationFrame` code.
+- `k.reduced` is true when motion should give way to an instant or static alternative.
+- `k.timeScale` multiplies every duration. Loops and shaders divide elapsed time by it.
+
+In CSS, use the `yj-duration-*` utilities (`yj-duration-fast` and its siblings) with the `ease-standard`, `ease-enter`, `ease-exit` and `ease-emphasized` utilities. They follow the provider's speed and reduced motion. The raw `var(--yj-duration-fast)` follows the speed but not reduced motion, so keep it for loops you stop yourself.
+
+## Durations by interaction
+
+<DurationBands />
+
+Three rules hold the table together:
+
+- **Feedback lands within `base`.** The answer to a press, a toggle or a menu shows inside `base` (220 ms with the `precise` character, 300 ms with `calm`, 190 ms with `lively`), even while an indicator is still gliding. Later than that reads as lag, however good the curve.
+- **Farther is longer, never slow.** A sheet crossing the screen gets `slow`; nothing a person waits on gets more than `deliberate`.
+- **Out is shorter than in.** An exit takes the next token down and accelerates away on `exit`. Nobody waits for something to leave.
+
+Springs for anything that can be interrupted or moves with the hand: toggles, indicators, rows that reorder. Tweens for things that come and go on their own: overlays, toasts, entrances. `settle`'s one overshoot is for a success or an arrival, once per moment.
+
+## Should this animate?
+
+1. **Does it explain a change?** Motion earns its place by showing where something came from, where it went or what changed. Decoration gets one moment per screen, if any.
+2. **Will people see it all day?** The more often it plays, the shorter it gets. A menu opened fifty times a day pops in on `fast`; a list that filters as you type doesn't animate its results at all.
+3. **Is anyone waiting on it?** Motion never delays input or content. Start on the press, not the release, and let the next action interrupt it from where it is.
+4. **Does it hold up at ¼ speed and under reduced motion?** If a state only makes sense while it's moving, the design is in the motion, not the state. Fix the state.
+5. **Is something else already moving?** One focal motion at a time. A second competes; a third is noise.
+
+## Reduced motion: keep the meaning, remove the travel
+
+Under reduced motion nothing travels, scales or bounces, and nothing is lost: every state still changes, the same words and icons appear, focus moves and announcements are made. It isn't motion switched off. It's a designed state.
+
+<DoDont example="reduced" />
+
+How Youj does it:
+
+- **In JavaScript**, `useYouj().reduced` is true when the OS asks or a provider sets `reducedMotion="always"`. Components render their end state and swap every transition for `{ duration: 0 }`.
+- **In CSS**, every overlay preset and `yj-duration-*` utility multiplies its token by `--yj-motion`, which is 0 when reduced, so transitions become instant state changes and Base UI unmounts at once.
+- **Loops** stop on a designed frame; live data still updates, in steps. **Pointer and scroll effects** switch off.
+- **Direct manipulation** still follows the finger: a swiped sheet or toast tracks it, because that isn't animation.
+
+## Do and don't
+
+### Grow from the trigger
+
+An overlay scales from where it was asked for, so the eye never has to find it.
+
+<DoDont example="origin" />
+
+### Move only what changed
+
+A new row enters and the others make room. Replaying every entrance on every change says everything changed.
+
+<DoDont example="only-changed" />
+
+### Hover keeps up with the pointer
+
+A hover state is where the pointer is, now. A slow fade leaves a trail of half-lit rows.
+
+<DoDont example="hover" />
+
+To feel every token against its curve, open the [Motion playground](/docs/motion/playground).

@@ -1,0 +1,183 @@
+---
+title: Command Palette
+description: "Find app actions and destinations from a keyboard shortcut, with nested pages and key hints."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="command-palette/demo" height={260} />
+
+A palette with grouped rows, shortcuts and project rows that open a second page of actions.
+
+</Story>
+
+<Story id="pages" label="Pages">
+
+<ComponentPreview name="command-palette/pages" height={260} />
+
+Choosing a team member opens a page of roles, and choosing a role steps back to the team.
+
+A row can open a page with `push({ id, label, placeholder })`. The page's label joins a breadcrumb under the search field and names the field for screen readers. Each page starts with an empty search and its first row active. `Backspace` on an empty search, or `Escape`, steps back one page. The last `Escape` closes the palette, and the next time it opens, it starts from the first page.
+
+Rows in their own components reach the stack with `useCommandPalette()`, which returns the same state as the render function: `page`, `pages`, `search`, `push`, `pop` and `close`. `pop()` steps back one page, and `pop(0)` returns to the first.
+
+
+Here, choosing a role steps back to the team with `pop()`, so several people can be changed in one visit. `checked` on a row draws a check for the current value.
+
+</Story>
+
+<Story id="results-as-you-type" label="Results as you type">
+
+<ComponentPreview name="command-palette/search" height={260} />
+
+A search page that shows a loading row while it waits for issues, then the results or an empty message.
+
+The render function receives the live `search`, so a page can fetch results as the user types. Show a `CommandLoading` row while the request runs and a `CommandEmpty` once the answer is in. Pass `shouldFilter={false}` when the results arrive already matched, or pass `search` and `onSearchChange` to control the query yourself.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="command-palette" noImport />
+
+Requires `cmdk`, an [optional dependency](/docs/installation#optional-dependencies). Import it from `@youj/react/command`.
+
+Use a command palette to put every action and destination in the app one shortcut away, for people who live on the keyboard. It isn't the only way to reach anything: each command should also have a visible home in the interface. For a searchable list inside a page, a picker or a filter, use [Command](/docs/components/command) on its own.
+
+<Callout type="note" title="Why ⌘/ here">
+  `CommandPalette` listens for ⌘K (Ctrl+K on Windows and Linux) by default. This site already uses ⌘K for its own search, so the palette in the Demo story listens for ⌘/ instead, and the other examples open from their buttons.
+</Callout>
+
+```tsx
+import { CommandGroup, CommandItem, CommandPalette } from '@youj/react/command'
+
+export function AppPalette() {
+  return (
+    <CommandPalette>
+      {({ page, push, close }) =>
+        page?.id === 'projects' ? (
+          <ProjectRows onOpen={close} />
+        ) : (
+          <CommandGroup heading="Suggestions">
+            <CommandItem onSelect={() => push({ id: 'projects', label: 'Projects', placeholder: 'Search projects…' })}>
+              Switch project…
+            </CommandItem>
+            <CommandItem onSelect={() => { deploy(); close() }}>Deploy to production</CommandItem>
+          </CommandGroup>
+        )
+      }
+    </CommandPalette>
+  )
+}
+```
+
+Render it once, near the root of the app. It's a [CommandDialog](/docs/components/command#in-a-dialog) with pages: the rows are yours, built from Command's parts (`CommandGroup`, `CommandItem`, `CommandShortcut`, `CommandLoading`…), and `children` can be a function of the palette's state. `shortcut` sets the key that toggles it with ⌘ or Ctrl from anywhere on the page. It's `k` by default, and `false` turns it off. The shortcut steps aside when something else on the page has already handled the keystroke.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="children, open, defaultOpen… (13)">
+
+### Props
+
+<PropsTable name="CommandPalette" />
+
+`useCommandPalette()` returns `CommandPaletteState` and throws outside a palette. `CommandPalettePage` is `{ id: string; label: string; placeholder?: string }`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the palette is a tall bottom sheet">
+
+### Touch
+
+On a touch device the palette is a tall bottom sheet. The search field is at the top, rows are 48px, and the footer of keyboard hints is gone. On a page, the breadcrumb is how you go back (its crumbs are big enough to tap). Pulling the sheet down closes the palette from any page, while Escape still steps back one page first. While the on-screen keyboard is up the sheet sits on top of it, so the search field stays visible.
+
+The palette opens with the list in view and the keyboard down. If a search button opens it to type in, pass `autoFocusField`, and on iOS call `primeKeyboard()` from `@youj/react` in the button's tap handler before you open it. iOS only raises the keyboard for a focus that happens during the tap itself.
+
+```tsx
+import { primeKeyboard } from '@youj/react'
+import { CommandPalette } from '@youj/react/command'
+
+<button
+  onClick={() => {
+    primeKeyboard()
+    setOpen(true)
+  }}
+>
+  Search
+</button>
+<CommandPalette open={open} onOpenChange={setOpen} autoFocusField>
+  …
+</CommandPalette>
+```
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, close, backdrop… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'rises and scales in from the top third (`yj-dialog`)', duration: 'base', ease: 'enter' },
+    { moment: 'Close', duration: 'fast', ease: 'exit' },
+    { moment: 'Backdrop', note: 'fades in behind it (`yj-backdrop`)', duration: 'base', ease: 'standard' },
+    { moment: 'Active row', note: 'glides as you arrow through, and across page changes', spring: 'smooth' },
+    { moment: 'List height', note: 'eases between pages and result sets', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="The palette opens and closes at once, the highlight jumps and the list snaps to each new height. Pages, the breadcrumb and every key work the same."
+/>
+
+The palette hangs from the top third of the screen, so the search field never moves while the list below it grows and shrinks between pages.
+
+#### Reduced motion
+
+The dialog appears and disappears without rising or fading, the active row's highlight jumps, and the list snaps between heights. Nothing about pages, search or the keys changes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus, announcements">
+
+### Accessibility
+
+- It's a modal dialog named by `title` ("Command palette" by default). Focus goes to the search field when it opens and returns to where it was when it closes.
+- The search field is a combobox over a listbox, as in [Command](/docs/components/command#accessibility). On a page, the field is named after the page.
+- Changing page is announced ("Projects page"), and the breadcrumb is for the pointer: `Backspace` and `Escape` walk it from the keyboard.
+- The footer spells out the keys, and `Escape` reads Back while there's a page to go back to.
+
+| Key | Action |
+| --- | --- |
+| `⌘K` / `Ctrl+K` | Toggles the palette, or the key set by `shortcut`. |
+| `↑` / `↓` | Moves the active row. |
+| `Enter` | Runs the active row, or opens its page. |
+| `Backspace` | On an empty search, steps back one page. |
+| `Escape` | Steps back one page, then closes the palette. |
+
+</ReferenceRow>

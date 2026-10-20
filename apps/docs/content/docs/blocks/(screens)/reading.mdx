@@ -1,0 +1,54 @@
+---
+title: Reading
+description: "A screen for long-form reading: documentation with a page tree."
+---
+
+<BlockStories>
+
+<BlockStory id="docs" label="Docs" block="content-docs" story="Default" backdrop="heather">
+
+Documentation with a page tree beside each article and an outline of its headings, a search palette, code tabs and a feedback prompt.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, headings, navigation">
+
+### Accessibility
+
+Docs has a `main`, a labelled page-tree `nav` that marks the current page with `aria-current`, a sheet for the tree on phones, code tabs that follow the kit’s Tabs keyboard pattern, and a feedback result announced in a status region. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

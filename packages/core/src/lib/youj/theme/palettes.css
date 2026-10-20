@@ -1,0 +1,277 @@
+/* The palettes: colour only (neutral, accent, status inks, chart). Put
+ * data-yj-palette="<id>" next to data-yj-theme (which marks the scope where the
+ * roles re-derive) on <html> or any element, with a style beside it:
+ * <html data-yj-theme data-yj-palette="meadow" data-yj-style="bezel" data-yj-look="bezel">. */
+
+/* Youj. */
+[data-yj-palette='youj'] {
+  --yj-neutral-hue: 285;
+  --yj-neutral-chroma: 0.008;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 1;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.54 0.25 268);
+  --yj-accent-dark: oklch(0.8 0.165 73);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.504 0.114 158);
+  --yj-success-dark: oklch(0.85 0.165 160);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.527 0.124 58);
+  --yj-warning-dark: oklch(0.74 0.17 50);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.542 0.197 25);
+  --yj-danger-dark: oklch(0.665 0.175 18);
+  --yj-info: initial;
+  --yj-info-light: initial;
+  --yj-info-dark: initial;
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.54 0.22 266);
+  --yj-chart-1-dark: oklch(0.9 0.2 129);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.62 0.19 12);
+  --yj-chart-2-dark: oklch(0.67 0.21 354);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.46 0.19 302);
+  --yj-chart-3-dark: oklch(0.61 0.22 293);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.62 0.135 68);
+  --yj-chart-4-dark: oklch(0.8 0.165 73);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.58 0.095 200);
+  --yj-chart-5-dark: oklch(0.8 0.13 210);
+}
+
+/* Meadow. */
+[data-yj-palette='meadow'] {
+  --yj-neutral-hue: 100;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.4;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.5 0.11 148);
+  --yj-accent-dark: oklch(0.79 0.13 150);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.085 185);
+  --yj-success-dark: oklch(0.79 0.1 185);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.52 0.11 68);
+  --yj-warning-dark: oklch(0.8 0.13 75);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.53 0.17 25);
+  --yj-danger-dark: oklch(0.72 0.15 25);
+  --yj-info: initial;
+  --yj-info-light: initial;
+  --yj-info-dark: initial;
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.46 0.099 148);
+  --yj-chart-1-dark: oklch(0.81 0.13 150);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.62 0.12 72);
+  --yj-chart-2-dark: oklch(0.72 0.143 76);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.4 0.06 168);
+  --yj-chart-3-dark: oklch(0.65 0.08 170);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.58 0.09 252);
+  --yj-chart-4-dark: oklch(0.79 0.08 252);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.41 0.08 258);
+  --yj-chart-5-dark: oklch(0.62 0.1 260);
+}
+
+/* Sandstone. */
+[data-yj-palette='sandstone'] {
+  --yj-neutral-hue: 65;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.5;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.52 0.12 55);
+  --yj-accent-dark: oklch(0.77 0.12 62);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.09 150);
+  --yj-success-dark: oklch(0.79 0.1 150);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.52 0.1 88);
+  --yj-warning-dark: oklch(0.83 0.12 90);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.52 0.17 25);
+  --yj-danger-dark: oklch(0.72 0.14 25);
+  --yj-info: initial;
+  --yj-info-light: oklch(0.46 0.08 243);
+  --yj-info-dark: oklch(0.79 0.06 240);
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.56 0.12 55);
+  --yj-chart-1-dark: oklch(0.77 0.12 62);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.39 0.11 36);
+  --yj-chart-2-dark: oklch(0.6 0.13 36);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.62 0.1 38);
+  --yj-chart-3-dark: oklch(0.77 0.088 42);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.46 0.05 78);
+  --yj-chart-4-dark: oklch(0.93 0.04 78);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.34 0.072 243);
+  --yj-chart-5-dark: oklch(0.66 0.08 240);
+}
+
+/* Cinnabar. */
+[data-yj-palette='cinnabar'] {
+  --yj-neutral-hue: 50;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.8;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.535 0.17 38);
+  --yj-accent-dark: oklch(0.71 0.17 42);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.1 155);
+  --yj-success-dark: oklch(0.8 0.13 155);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.53 0.11 82);
+  --yj-warning-dark: oklch(0.84 0.13 86);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.52 0.19 10);
+  --yj-danger-dark: oklch(0.7 0.17 6);
+  --yj-info: initial;
+  --yj-info-light: initial;
+  --yj-info-dark: initial;
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.54 0.17 38);
+  --yj-chart-1-dark: oklch(0.73 0.17 42);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.37 0.13 28);
+  --yj-chart-2-dark: oklch(0.56 0.16 28);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.61 0.11 82);
+  --yj-chart-3-dark: oklch(0.9 0.07 86);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.41 0.022 60);
+  --yj-chart-4-dark: oklch(0.61 0.017 60);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.57 0.036 229);
+  --yj-chart-5-dark: oklch(0.77 0.042 229);
+}
+
+/* Umber. */
+[data-yj-palette='umber'] {
+  --yj-neutral-hue: 72;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.6;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.52 0.1 86);
+  --yj-accent-dark: oklch(0.83 0.12 90);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.09 160);
+  --yj-success-dark: oklch(0.79 0.11 160);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.53 0.12 50);
+  --yj-warning-dark: oklch(0.76 0.13 55);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.52 0.17 25);
+  --yj-danger-dark: oklch(0.71 0.15 25);
+  --yj-info: initial;
+  --yj-info-light: oklch(0.48 0.06 218);
+  --yj-info-dark: oklch(0.79 0.06 215);
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.56 0.11 86);
+  --yj-chart-1-dark: oklch(0.83 0.12 90);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.4 0.063 62);
+  --yj-chart-2-dark: oklch(0.64 0.07 65);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.6 0.09 112);
+  --yj-chart-3-dark: oklch(0.8 0.09 115);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.47 0.11 45);
+  --yj-chart-4-dark: oklch(0.68 0.12 45);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.47 0.065 215);
+  --yj-chart-5-dark: oklch(0.72 0.065 212);
+}
+
+/* Seaglass. */
+[data-yj-palette='seaglass'] {
+  --yj-neutral-hue: 215;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.4;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.5 0.093 226);
+  --yj-accent-dark: oklch(0.79 0.09 215);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.1 155);
+  --yj-success-dark: oklch(0.8 0.12 155);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.53 0.11 70);
+  --yj-warning-dark: oklch(0.82 0.12 76);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.53 0.18 22);
+  --yj-danger-dark: oklch(0.71 0.15 22);
+  --yj-info: initial;
+  --yj-info-light: initial;
+  --yj-info-dark: initial;
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.5 0.093 226);
+  --yj-chart-1-dark: oklch(0.77 0.1 220);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.61 0.12 72);
+  --yj-chart-2-dark: oklch(0.86 0.11 78);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.37 0.07 245);
+  --yj-chart-3-dark: oklch(0.62 0.1 248);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.49 0.055 75);
+  --yj-chart-4-dark: oklch(0.72 0.04 75);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.6 0.096 195);
+  --yj-chart-5-dark: oklch(0.87 0.07 192);
+}
+
+/* Heather. */
+[data-yj-palette='heather'] {
+  --yj-neutral-hue: 340;
+  --yj-neutral-chroma: 0.004;
+  --yj-neutral-wash: 0;
+  --yj-neutral-lift: 0.4;
+  --yj-neutral-page: 0;
+  --yj-accent: initial;
+  --yj-accent-light: oklch(0.49 0.12 335);
+  --yj-accent-dark: oklch(0.78 0.1 335);
+  --yj-success: initial;
+  --yj-success-light: oklch(0.5 0.08 140);
+  --yj-success-dark: oklch(0.8 0.1 140);
+  --yj-warning: initial;
+  --yj-warning-light: oklch(0.53 0.11 66);
+  --yj-warning-dark: oklch(0.8 0.12 72);
+  --yj-danger: initial;
+  --yj-danger-light: oklch(0.52 0.16 15);
+  --yj-danger-dark: oklch(0.72 0.14 15);
+  --yj-info: initial;
+  --yj-info-light: initial;
+  --yj-info-dark: initial;
+  --yj-chart-1: initial;
+  --yj-chart-1-light: oklch(0.48 0.12 335);
+  --yj-chart-1-dark: oklch(0.8 0.1 335);
+  --yj-chart-2: initial;
+  --yj-chart-2-light: oklch(0.63 0.143 12);
+  --yj-chart-2-dark: oklch(0.64 0.12 12);
+  --yj-chart-3: initial;
+  --yj-chart-3-light: oklch(0.46 0.083 130);
+  --yj-chart-3-dark: oklch(0.79 0.08 130);
+  --yj-chart-4: initial;
+  --yj-chart-4-light: oklch(0.62 0.075 330);
+  --yj-chart-4-dark: oklch(0.9 0.055 330);
+  --yj-chart-5: initial;
+  --yj-chart-5-light: oklch(0.41 0.1 295);
+  --yj-chart-5-dark: oklch(0.62 0.12 295);
+}

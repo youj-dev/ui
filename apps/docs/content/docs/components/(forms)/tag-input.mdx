@@ -1,0 +1,135 @@
+---
+title: Tag Input
+description: "Enter free-form values as chips, with validation and duplicate removal."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tag-input/demo" height={240} />
+
+A Topics field holding three tags, validated as lowercase words and capped at eight.
+
+`validate` receives the new tag and the current list, and returns a reason to reject it, or nothing to accept it. A rejected tag stays in the field so it can be fixed: the frame shakes, its border turns destructive, and the reason grows in under it and is read out. A duplicate isn't added. The chip that already holds it flashes instead, so you can see where it is. Try "motion" or "UI Kit" in the demo.
+
+`maxTags` caps the list, and the field stops accepting new tags at the limit.
+
+Chips can be reordered from the keyboard: focus one and press Alt with an arrow key to move it. Moves are announced, and the chips glide to their new places.
+
+</Story>
+
+<Story id="pasting-a-list" label="Pasting a list">
+
+<ComponentPreview name="tag-input/paste" height={240} />
+
+Pasting a list of values into the field.
+
+Paste "alpha, beta, gamma", or a list with one item per line, and each becomes a chip. Commas, new lines, tabs and semicolons all separate. Items that fail `validate` stay in the field with the reason.
+
+</Story>
+
+<Story id="email-recipients" label="Email recipients">
+
+<ComponentPreview name="tag-input/emails" height={240} />
+
+Inviting people by email, three addresses already added.
+
+Each address is checked by `validate` as it's added, so a typo stays in the field with the reason instead of becoming a chip. `maxTags` caps one batch of invites, and `name` submits every address with the form.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="tag-input" noImport />
+
+Use a tag input for values people make up: repository topics, allowed email domains, keywords, recipients. Nothing is chosen from a list. For values from a known list, use a [Multi-select](/docs/components/multi-select), which searches and groups them.
+
+```tsx
+import { Field, FieldLabel, TagInput } from '@youj/react'
+
+export function TopicsField() {
+  const [topics, setTopics] = useState(['react', 'motion'])
+  return (
+    <Field>
+      <FieldLabel>Topics</FieldLabel>
+      <TagInput
+        value={topics}
+        onValueChange={setTopics}
+        validate={(tag) => (/^[a-z0-9-]+$/.test(tag) ? undefined : 'Use lowercase letters, numbers and hyphens.')}
+        maxTags={8}
+      />
+    </Field>
+  )
+}
+```
+
+The field is an [Input Group](/docs/components/input-group) whose text input sits inline after the chips and wraps with them. Enter or a comma adds what you typed. `delimiters` changes the keys besides Enter, and `addOnBlur` (on by default) adds the text when the field is left.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (15)">
+
+### Props
+
+<PropsTable name="TagInput" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Chip enters, chip leaves, chips reflow or reorder… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Chip enters', note: 'fades down into its slot (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Chip leaves', note: 'fades where it stands', duration: 'fast', ease: 'exit' },
+    { moment: 'Chips reflow or reorder', note: 'glide to their new places', spring: 'smooth' },
+    { moment: 'Rejected', note: 'the frame shakes a decaying 4, 3 and 2px', duration: 'slow', ease: 'standard' },
+    { moment: 'Reason', note: 'grows in under the field (Collapse)', duration: 'base', ease: 'standard' },
+    { moment: 'Duplicate flash', note: 'the existing chip tints at once, then fades back', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="No shake and no glide: chips appear, leave and reorder in one frame. The duplicate flash and the reason still show, so the feedback survives."
+/>
+
+#### Reduced motion
+
+The rejection doesn't shake and chips don't glide. The duplicate chip still flashes and the reason still appears, because they carry the message rather than decorate it.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The text input is named by its `FieldLabel`, or by `aria-label`. While a tag is rejected, it carries `aria-invalid` and is described by the reason, which is a `role="alert"` message and is read out at once.
+- In the field, Backspace when empty, or ArrowLeft at the start, reaches the last chip. On a chip, arrows move between chips, Alt with an arrow moves the chip itself, Home and End jump to the ends, Backspace or Delete removes it and focus lands on its neighbor, and Escape returns to the field.
+- Each chip's remove button is named after its tag. Additions, removals, moves and duplicates are announced politely.
+- With `name`, each tag is submitted with a native form under that name.
+
+</ReferenceRow>

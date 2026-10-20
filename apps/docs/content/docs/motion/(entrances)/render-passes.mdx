@@ -1,0 +1,107 @@
+---
+title: Render passes
+description: "Play real UI in as the browser's pipeline: a layout pass, a paint pass and a composite pass, each sweeping through the parts with its count."
+---
+
+<ComponentPreview name="render-passes/demo" height={460} />
+
+Use it for an entrance with a technical voice: a hero demo, a launch page, a talk about rendering. The browser's pipeline is played as theatre, three passes, each named over the demo with its count (`layout 12/54`) and each sweeping through the parts in build order. **Layout** outlines every box with its size. **Paint** fills each in a flat grey, with its text and icons in grey: square, no shadows, no radii. **Composite** hands each piece to the real part, with its colour, radii, shadows and images. Keep it to one moment on a page.
+
+## Installation
+
+<InstallTabs name="render-passes" />
+
+## Usage
+
+Wrap the UI in `RenderPassesEntrance`. It plays on its first child, on mount.
+
+```tsx
+import { RenderPassesEntrance } from '@youj/motion'
+
+export function Hero() {
+  return (
+    <RenderPassesEntrance>
+      <PricingCard />
+    </RenderPassesEntrance>
+  )
+}
+```
+
+Change `play` to play it again (a counter works), or set it to `false` to show the UI as it is. `onFinish` is called when the run ends.
+
+For an element you don't render with React, call the look. It returns a `cancel()` and a `finished` promise, and an `AbortSignal` in `signal` cancels it too. To drive it from a clock of your own (a video rendered frame by frame, a scrubber), pass `paused: true` and call `seek(t)` with the time in ms from its start: it shows that moment and holds it. It only goes forwards, and a time at or past its end ends it.
+
+```ts
+import { renderPasses } from '@youj/motion'
+
+const run = renderPasses(document.querySelector('#pricing')!, { speed: 1.5 })
+await run.finished
+```
+
+## Pacing
+
+The three passes run in turn, each sweeping through the parts so the build is visibly in progress from the first box to the last. In paint, a box paints before anything inside it, as a browser does, so a filled panel covers its children's layout boxes and they paint again on top.
+
+The length grows with the demo: about 3 seconds for a card and about 5 for a small screen. `duration` fixes it in milliseconds, `speed` scales it, and `phases` shares it out as weights (default `{ layout: 30, paint: 30, composite: 40 }`).
+
+## What it reads
+
+The parts come from the real DOM, read once before the first frame (the same reading as Blueprint's). Layout lines are the theme's info ink; the paint greys are mixed from its foreground and canvas, darker for a stronger fill, and type that sits on a strong fill is set light. The pass names are labels, so `<YoujProvider labels>` translates them.
+
+## Reference
+
+<ReferenceRow title="Props" summary="play, duration, speed, phases, onFinish">
+
+### Props
+
+<PropsTable name="RenderPassesEntrance" />
+
+#### renderPasses
+
+```ts
+function renderPasses(node: HTMLElement, options?: RenderPassesOptions): { cancel(): void; finished: Promise<void>; seek(t: number): void }
+```
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | from the demo's size | The whole run in ms, before `speed`. |
+| `speed` | `number` | `1` | Multiplies the pace. |
+| `phases` | `{ layout?: number; paint?: number; composite?: number }` | `{ layout: 30, paint: 30, composite: 40 }` | Each pass's share of the run, as weights. |
+| `labels` | `Partial<RenderPassesLabels>` | Youj's labels | The passes' names. `<RenderPassesEntrance>` takes them from `<YoujProvider labels>`. |
+| `signal` | `AbortSignal` |  | Aborting cancels the run. |
+| `reduced` | `boolean` | the provider, else the OS | Skip the entrance. |
+| `personality` | `MotionPersonality` | the theme's | The motion personality its timing and curves come from. |
+| `paused` | `boolean` | `false` | Hold the run at its start until `seek(t)` moves it, for a clock of your own. |
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Layout, paint, composite · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Layout', note: 'each box traces its 1px outline, its size typed in its corner', value: '30% of the run', ease: 'standard' },
+    { moment: 'Paint', note: 'each box wipes in its flat grey, text and icons in grey', value: '30%', ease: 'linear' },
+    { moment: 'Composite', note: 'the frame, then each piece: the real part fades in, then its drawing fades off it', value: '40%', ease: 'enter' },
+  ]}
+  reduced="No passes: the UI is just there, and nothing is added to the page."
+/>
+
+The demo is never restyled. Its parts are held by their inline opacity while they wait and each arrives as a Web Animation made just before its moment. Each piece draws on a canvas of its own, so compositing it is a single opacity animation. When the run ends, or `cancel()` is called, everything is put back exactly. Focus or a press in the demo ends the run at once.
+
+#### Reduced motion
+
+The UI shows as it is, with no overlay and no animation. `renderPasses()` returns a run that has already finished.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, pointer">
+
+### Accessibility
+
+- The passes are `aria-hidden` and never take the pointer. The demo stays in the accessibility tree the whole time.
+- Tabbing into the demo, or pressing on it, ends the run at once.
+- Nothing flashes: every change is a trace, a wipe or a fade.
+
+</ReferenceRow>

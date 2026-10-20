@@ -1,0 +1,119 @@
+---
+title: Image Accordion
+description: "A row of pictures where one opens wide and the rest wait as slim strips, each with a caption."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="image-accordion/demo" height={420} />
+
+Six product shots, each `{ src, alt }`. Point at a strip, focus it or tap it to open it; the open panel shows its caption.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="image-accordion" noImport />
+
+Use an image accordion to show a handful of pictures in the room of one: destinations, product shots, case studies. One panel is open wide with its title and a short line; the others stay visible as strips, so the whole set reads at a glance. For a long sequence to step through, use a [Carousel](/docs/components/carousel).
+
+```tsx
+import { ImageAccordion, type ImageAccordionItem } from '@youj/react'
+
+const places: ImageAccordionItem[] = [
+  { id: 'coast', media: { src: '/coast.jpg', alt: 'Coast road at sunrise' }, title: 'Coast road', description: 'Morning light over the headland' },
+  { id: 'dunes', media: { src: '/dunes.jpg', alt: 'Sand dunes at dusk' }, title: 'Dunes', description: 'Wind-cut ridges at dusk' },
+  { id: 'valley', media: <MyIllustration />, title: 'Valley' },
+]
+
+<ImageAccordion items={places} />
+```
+
+`media` is `{ src, alt }` for an image (it covers the panel) or any node: an illustration, a video, a gradient. The first panel is open at first; `value`, `defaultValue` and `onValueChange` hold the open id.
+
+With `activation="hover"` (the default) a panel opens when the pointer rests on it or it takes focus, and on touch when it's tapped. `activation="click"` opens only on a press, Enter or Space, and hover and the arrow keys just point. `orientation="vertical"` stacks the panels.
+
+The component keeps its size: the panels share its box (`h-80` across, `h-120` stacked), so opening one only moves the split. Set your own height with `className`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, value, activation, orientation… (7)">
+
+### Props
+
+<PropsTable name="ImageAccordion" />
+
+#### Items
+
+<PropsTable name="ImageAccordionItem" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `image-accordion` (with `data-orientation` `horizontal` or `vertical` and `data-yj-activation` `hover` or `click`), `image-accordion-panel` (with `data-state` `active` or `inactive`), `image-accordion-media`, `image-accordion-caption`, `image-accordion-title` and `image-accordion-description`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Split, caption, strips · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Split', note: 'the opening panel widens as the others narrow, retargeting mid-glide', spring: 'smooth' },
+    { moment: 'Caption', note: 'fades up once its panel has started to open', duration: 'base', ease: 'enter' },
+    { moment: 'Strips', note: 'sit a little quieter, and brighten under the pointer', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="The split and the caption jump."
+/>
+
+#### Sound
+
+With sound on (`YoujProvider`'s `sound`), opening a panel by a press or a key plays `select`; hovering stays silent. `sound={false}` keeps one accordion quiet.
+
+#### Reduced motion
+
+The split and the caption jump; nothing glides.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Group, buttons, keys">
+
+### Accessibility
+
+- It is a `group` named "Gallery" (`imageAccordion` in the labels), or your `aria-label`.
+- Each panel is a button named by its title and described by its line; the open one carries `aria-current`. Captions stay in the page for screen readers whichever panel is open.
+- The panels are one tab stop. The arrow keys of the orientation move between them (Left and Right across, mirrored in RTL; Up and Down stacked), and Home and End go to the first and last. In hover mode focus opens the panel; in click mode Enter or Space does.
+- Give each image its `alt`, or your `media` its own name if it carries meaning.
+
+</ReferenceRow>

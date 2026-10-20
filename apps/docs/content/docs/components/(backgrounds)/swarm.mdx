@@ -1,0 +1,137 @@
+---
+title: Swarm
+description: "Add a flock that roams the page, then gathers and circles the pointer."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="swarm/demo" full height={400} />
+
+A hero section over the flock; move the pointer across it and the boids gather around it and circle.
+
+`colors` takes two CSS colors: the boids, then the highlight for the ones circling the pointer. The defaults are `--color-fg-muted` and `--color-accent`. Token references follow the theme, and the flock rereads them when the theme changes.
+
+</Story>
+
+<Story id="tuning" label="Tuning">
+
+<ComponentPreview name="swarm/tuning" full height={320} />
+
+Controls for the size of the flock, the size of each boid and the pointer.
+
+- `density` sets how many boids there are per area. It defaults to 1, which is one per 3,800 square pixels, capped at 480.
+- `size`, from 0.5 to 2.5, scales each boid. It defaults to 1.
+- `intensity` (0 to 1.5) sets how strongly the flock shows, and `speed` how fast it flies.
+
+The pointer calls the flock. Boids within reach turn toward it, settle on a circle around it and keep turning, and the ones in the circle take the highlight color. When the pointer leaves, the flock goes back to roaming. Set `interactive={false}` where the flock sits behind something people work in.
+
+</Story>
+
+<Story id="quiet-use" label="Quiet use">
+
+<ComponentPreview name="swarm/quiet" height={400} />
+
+A small, slow flock behind an empty state, with no pointer response.
+
+At a low `density`, `intensity` and `speed`, and without pointer response, the flock is company for an empty room rather than a show.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="swarm" noImport />
+
+Use it where the idea is a group moving as one: teams, communities, collaboration, anything with many small parts and one direction. It's playful without being busy, and the pointer gives it a hook that people reach for. Don't use it behind reading-length text, and keep it to one animated background per page.
+
+The flock fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { Swarm } from '@youj/motion/backgrounds'
+
+export function TeamHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <Swarm />
+      <p className="relative text-5xl font-semibold">Everyone moving the same way</p>
+    </section>
+  )
+}
+```
+
+Each boid steers by three rules: back away from a neighbor that is too close, match the heading of the neighbors in sight, and drift toward their center. A slow personal wander keeps the flock roaming instead of settling, and the edges turn boids back before they leave. The number of boids follows the area, so a phone and a wide display look equally full.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (7)">
+
+### Props
+
+<PropsTable name="Swarm" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's drawn with Canvas 2D, not WebGL">
+
+### Performance
+
+It's drawn with Canvas 2D, not WebGL. Boids only look at their neighbors, which come from a spatial grid sized to their sight, so the cost grows with the size of the flock and not with its square. The boids are darts batched into a few fills by opacity. The canvas renders at a device-pixel ratio capped at 2, and the low motion budget keeps 60% of the flock. The loop pauses when the flock is offscreen or the tab is hidden, and it stops and cleans up on unmount. If the browser can't create a 2D context, it falls back to a static CSS wash of the highlight color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Flocking, wander, pointer orbit · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Flocking', note: 'separation, alignment and cohesion with neighbors in sight', value: 'speed ÷ time scale' },
+    { moment: 'Wander', note: 'a slow sideways drift that is different for every boid', value: 'per-boid phase' },
+    { moment: 'Pointer orbit', note: 'boids in reach turn toward the pointer and circle it', value: 'per-frame physics' },
+    { moment: 'Pointer strength', note: 'eases in and out with the pointer', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one fixed, seeded flock: the same composition every time. There's no flight and no pointer response, and it redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The flock shows a fixed composition from a seeded layout that has already settled into streams, so it's the same on every visit and in every screenshot. Only the flight and the pointer response are gone. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- Boids pass over whatever sits above them. Keep a quiet pool of canvas behind the copy, as the hero preview does, or lower `intensity`, and check your text's contrast there.
+- The flight is slow and stops offscreen. Under reduced motion the flock doesn't move at all.
+
+</ReferenceRow>

@@ -1,0 +1,185 @@
+---
+title: Dialog
+description: "Focus on a short task in a modal window that keeps keyboard focus inside."
+aliases: ["modal", "popup", "lightbox", "overlay"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="dialog/demo" height={240} />
+
+A project card whose Rename button opens a form dialog with a validated name field and a save that takes a moment.
+
+The Demo story is a form in a dialog. Four details make it hold up:
+
+- Put the `<form>` inside `DialogContent`, around the header, the fields and the footer, so Enter submits from any field.
+- Control `open` and ignore close requests while the save runs. The outcome then shows in the dialog, next to the choice that caused it, and not on a page the person has already left.
+- Make the field `readOnly` instead of `disabled` while saving. Disabling the focused field would drop focus onto the page.
+- Focus starts on the first field, so people can type straight away. Select its text on focus when the task is to replace it.
+
+```tsx
+<Dialog open={open} onOpenChange={(next) => !saving && setOpen(next)}>
+```
+
+</Story>
+
+<Story id="nested-dialogs" label="Nested dialogs">
+
+<ComponentPreview name="dialog/nested" height={200} />
+
+A dialog that opens a second dialog on top of it.
+
+A dialog can open another one. The parent moves down, shrinks and dims under a wash, so the stack reads as depth, and it comes forward again when the child closes. Base UI keeps one scrim for the whole stack. Escape closes only the top dialog, and focus goes back to the control that opened it.
+
+
+Nest sparingly. One level for a follow-up question reads clearly. A third level is a sign that the task wants a page of its own.
+
+</Story>
+
+<Story id="long-content" label="Long content">
+
+<ComponentPreview name="dialog/long" height={200} />
+
+A dialog taller than the window, scrolling inside the viewport.
+
+A dialog taller than the window scrolls inside the viewport, while the page behind it stays put. When the first control sits below the fold, focus starts on the dialog itself, so the reader begins at the title and not at the bottom. `showCloseButton={false}` removes the × when the footer already offers the way out.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="dialog" noImport />
+
+Use Dialog for a short task that needs attention, such as renaming a project or inviting a teammate. It blocks the rest of the page, so keep it focused. Use a [Sheet](/docs/components/sheet) for more space, a [Drawer](/docs/components/drawer) for swipe dismissal, or a [Popover](/docs/components/popover) for controls that leave the page usable. Confirm destructive actions with an [Alert Dialog](/docs/components/alert-dialog).
+
+In the Next.js App Router, render this from a Client Component, a file that starts with `'use client'`: it takes functions (`onOpenChange`), and a Server Component can't pass those. [Server rendering](/docs/guides/ssr) has the rest.
+
+```tsx
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@youj/react'
+
+export function InviteDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button />}>Invite</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Invite to Orion</DialogTitle>
+          <DialogDescription>They can see and deploy every branch of the project.</DialogDescription>
+        </DialogHeader>
+        <InviteForm id="invite" />
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <Button type="submit" form="invite">
+            Send invite
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+```
+
+`DialogContent` renders the whole overlay: a portal, the scrim, a viewport that centers the popup, and the popup with a × button in its top corner. `DialogTrigger` and `DialogClose` take a `render` prop, so any [Button](/docs/components/button) can open or close the dialog. `Dialog` is Base UI's root, so `open`, `defaultOpen`, `onOpenChange`, `modal` and `disablePointerDismissal` work as Base UI documents them.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="showCloseButton, presentation (2)">
+
+### Props
+
+`DialogContent` adds two props to Base UI's `Dialog.Popup`: `showCloseButton` and `presentation`.
+
+<PropsTable name="DialogContent" />
+
+`Dialog` (Root) passes its props through to Base UI and adds `sound`: with sound on (`YoujProvider`’s `sound`) opening plays the `open` cue and closing the `close` cue, and `sound={false}` keeps that dialog silent. The other parts add styling only and pass their props through to Base UI: `DialogTrigger`, `DialogClose`, `DialogTitle`, `DialogDescription`, `DialogOverlay` (Backdrop) and `DialogPortal`. `DialogHeader` and `DialogFooter` are plain `div`s. The footer stacks its actions with the primary one on top on narrow screens, and lines them up at the end from the `sm` breakpoint; in a touch sheet they always stack at full width.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device the dialog is a bottom sheet">
+
+### Touch
+
+On a touch device the dialog is a bottom sheet. It rises from the bottom of the screen over the scrim, spans the screen's width up to 36rem and has a grab handle. Pull it down to close it, alongside Escape, the × and a tap on the scrim: a quick flick closes it from a short pull, and a short, slow pull springs back. Focus returns to the trigger, as it does for the centered dialog. Content taller than 90% of the screen scrolls inside the sheet, and a pull only moves the sheet once that content is scrolled to the top. The sheet clears the home indicator and moves up to stay above the on-screen keyboard.
+
+The footer's actions stack at full width with the primary one on top, each at least 44px tall, and the × gets a 44px target. Opened by a tap, focus goes to the sheet rather than its first field, so the keyboard comes up only when someone taps the field. A dialog opened from a sheet is a sheet too, and the one below recedes. A dialog that refuses to close, say while it saves, springs back when pulled. A control that handles its own drag, such as a crop area or a slider, should carry `data-sheet-no-drag` (an element with `touch-action: none` is skipped too), so dragging it never moves the sheet.
+
+`presentation` on `DialogContent` chooses: `auto` (the default) is the centered dialog under a mouse or trackpad and a sheet on touch, `sheet` always uses the sheet, and `dialog` keeps the centered dialog on touch too. Touch follows the device, not the screen width, and `YoujProvider`'s `device` can force it for a part of the page. For a panel that is a swipeable sheet everywhere, use [Drawer](/docs/components/drawer).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, exit, scrim in… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'rises 6px and scales up from .96 as it fades in (`yj-dialog`)', duration: 'base', ease: 'enter' },
+    { moment: 'Exit', note: 'the same path back, faster', duration: 'fast', ease: 'exit' },
+    { moment: 'Scrim in', note: 'opacity (`yj-backdrop`)', duration: 'base', ease: 'standard' },
+    { moment: 'Scrim out', duration: 'fast', ease: 'standard' },
+    { moment: 'Parent recedes', note: '0.875rem down and 6% smaller per nested level, under a dimming wash', duration: 'base', ease: 'standard' },
+    { moment: 'Parent returns', note: 'when the nested dialog closes', duration: 'base', ease: 'enter' },
+    { moment: 'Touch: enter', note: 'the sheet slides up from the bottom edge (`yj-sheet-bottom`)', duration: 'slow', ease: 'enter' },
+    { moment: 'Touch: pull', note: 'the sheet follows the finger and the scrim thins', value: '1:1' },
+    { moment: 'Touch: release', note: 'past a quarter of its height or on a flick it leaves (a flick twice as fast); otherwise it springs back', duration: 'base', ease: 'exit' },
+  ]}
+  reduced="Opens and closes instantly. A parent under a nested dialog takes its receded place and dims at once. On touch the sheet appears and leaves at once, and a pull still tracks the finger."
+/>
+
+The presets run on CSS transitions, not keyframes, so closing a dialog halfway through its entrance reverses from where it is. The popup is centered by the viewport's layout, not by a `-50%` translate, so its text stays sharp at every height.
+
+#### Reduced motion
+
+The dialog and its scrim appear and disappear at once, with no rise, scale or fade. Focus handling and the scrim are unchanged, so the dialog behaves the same, only without motion. Portaled content follows the preview's Reduced motion switch because `DialogContent` spreads `useYoujScope()` on its portal.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The popup has `role="dialog"` and `aria-modal`. `DialogTitle` names it and `DialogDescription` describes it, through `aria-labelledby` and `aria-describedby`. Always render a title, even a visually hidden one.
+- Focus moves into the dialog when it opens: to the first field or button, or to the dialog itself when that control is below the fold or the dialog was opened by a tap. Pass `initialFocus` to choose another element.
+- Focus is trapped while the dialog is open. Tab and Shift+Tab cycle through its controls, and the page behind is inert.
+- Escape, a press on the scrim and the × button close it. Focus then returns to the trigger, or to the element that had it before the dialog opened.
+- The × button is named "Close" for screen readers.
+
+</ReferenceRow>

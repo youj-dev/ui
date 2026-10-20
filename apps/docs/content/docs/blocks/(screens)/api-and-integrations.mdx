@@ -1,0 +1,78 @@
+---
+title: API and integrations
+description: "Developer-facing screens: API keys, webhooks and an integrations directory."
+---
+
+<BlockStories>
+
+<BlockStory id="api-keys" label="API keys" block="app-api-keys" story="Default" backdrop="umber">
+
+Manage API keys in a table with scopes and recent use, and a dialog for creating a new key that shows its secret once.
+
+</BlockStory>
+
+<BlockStory id="create-key" label="Create key" block="app-api-keys" story="CreateWithScopes" backdrop="umber">
+
+The create-key flow: name the key, choose None, Read or Write for each resource, pick an expiry, then copy the secret, which is shown once. A key with no access, or without a name, is refused before anything is sent.
+
+</BlockStory>
+
+<BlockStory id="webhooks" label="Webhooks" block="app-webhooks" story="Default" backdrop="umber">
+
+Manage webhook endpoints with delivery status and subscribed events in one table, a delivery log with filters and a sheet for editing an endpoint.
+
+</BlockStory>
+
+<BlockStory id="integrations" label="Integrations" block="app-integrations" story="Default" backdrop="umber">
+
+Help users find integrations and review what each one can access before installing it.
+
+</BlockStory>
+
+<BlockStory id="integration-detail" label="Integration detail" block="app-integrations" story="Detail" backdrop="umber">
+
+One connected app as a page: a sample of what it posts, the connection's details with a status menu to pause, reconnect or disconnect, and a switch for each permission it holds.
+
+</BlockStory>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<BlockInstall />
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<BlockCode />
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<BlockReference />
+
+<ReferenceRow title="Accessibility" summary="landmarks, dialogs, secrets, status">
+
+### Accessibility
+
+Each screen is a `main` with labelled sections. API keys and Webhooks are tables whose row actions sit in a menu with arrow-key navigation. The create-key dialog and the secret reveal trap focus and close with Escape. Webhooks’ delivery filters use `aria-pressed` and its event picker is a labelled group. Integrations has a labelled search field, a category rail of toggle buttons (`aria-pressed`), a result count in a status region, and a detail sheet that lists the access an app asks for. The integration detail is a labelled region with a breadcrumb, a status menu button that names the current status, and a labelled switch for every permission (switches are disabled once the app is disconnected). Each resource in the create-key dialog is a labelled group of None, Read and Write buttons. Links and buttons are real `a` and `button` elements with the kit’s focus ring.
+
+</ReferenceRow>
+
+</BlockStories>

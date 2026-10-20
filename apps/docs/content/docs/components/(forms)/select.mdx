@@ -1,0 +1,186 @@
+---
+title: Select
+description: "Choose one option from a popup list."
+aliases: ["dropdown", "picker", "select box", "combobox"]
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="select/demo" height={260} />
+
+A function region Select with regions grouped by continent.
+
+`SelectGroup` with a `SelectLabel` titles a run of options, and `SelectSeparator` draws a hairline between groups. Items can hold more than text: in the demo, each region carries its code in muted type. Keep a space between the label and the extra text, so the option's accessible name reads "Frankfurt fra1".
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="select/states" height={280} />
+
+A placeholder, sizes and states.
+
+`SelectValue` takes a `placeholder` for when nothing is chosen. `size="sm"` fits toolbars and dense forms. By default the popup opens over the trigger with the chosen option lined up on it. Pass `alignItemWithTrigger={false}` to open it below the trigger, like a menu. `disabled` and `invalid` go on the `Field`, and a `FieldError` explains what's wrong.
+
+</Story>
+
+<Story id="multiple-values" label="Multiple values">
+
+<ComponentPreview name="select/multiple" height={260} />
+
+A select that takes several values.
+
+With `multiple`, the value is an array: each option toggles, and the popup stays open until you close it. The trigger lists the chosen labels, separated by commas. Give `SelectValue` a function of the value to write a shorter summary, like "Failed deployments and 2 more".
+
+</Story>
+
+<Story id="soft" label="Soft">
+
+<ComponentPreview name="select/soft" height={200} />
+
+A borderless picker inside a card.
+
+`variant="soft"` drops the edge and fills the trigger with the theme's quiet band, with the same corner and height as any field, a hover step and the usual focus ring. Use it for a picker that sits inside a card or panel (a model, category or sort picker), where the card already frames it. The fill is a little under 3:1 against the card, so the chevron and the value identify the control rather than an edge: keep the default outlined field where a select has to read on its own, such as in a form. `ghost` goes further and has no fill until hover.
+
+</Story>
+
+<Story id="dense" label="Dense rows">
+
+<ComponentPreview name="select/dense" height={220} />
+
+A status picker on each row of a list, with no chevron.
+
+`hideIcon` leaves out the trigger's chevron, for a row of selects where the value alone says it opens (an issue's status, a table cell). With `variant="ghost"` and `size="sm"` the trigger is just its value until hover. It stays a combobox, named by its `aria-label` and reporting `aria-expanded`, so nothing changes for the keyboard or a screen reader. Keep the chevron where a select stands alone.
+
+```tsx
+<SelectTrigger variant="ghost" size="sm" hideIcon aria-label="Status of ENG-188">
+  <SelectValue />
+</SelectTrigger>
+```
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="select" noImport />
+
+Use Select for one value from a list, such as a region or role. For a short list, a [Radio Group](/docs/components/radio-group) keeps every option visible. Use a [Command](/docs/components/command) list when people need to search.
+
+In the Next.js App Router, render this from a Client Component, a file that starts with `'use client'`: it takes functions (`onValueChange`), and a Server Component can't pass those. [Server rendering](/docs/guides/ssr) has the rest.
+
+```tsx
+import { Field, FieldLabel, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@youj/react'
+
+const roles = [
+  { value: 'admin', label: 'Admin' },
+  { value: 'member', label: 'Member' },
+  { value: 'viewer', label: 'Viewer' },
+]
+
+export function RoleSelect() {
+  return (
+    <Field>
+      <FieldLabel>Role</FieldLabel>
+      <Select items={roles} defaultValue="member" name="role">
+        <SelectTrigger className="w-full">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {roles.map((role) => (
+            <SelectItem key={role.value} value={role.value}>
+              {role.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </Field>
+  )
+}
+```
+
+Pass `items`, either an array of `{ value, label }` or an object that maps values to labels, so the trigger can show the chosen label before the popup has ever opened. Without it, the labels are read from the `SelectItem`s written inside the Select. Items that a component of your own renders can't be read, so there `SelectValue` would show the raw value, and development warns once to pass `items`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="size, presentation (2)">
+
+### Props
+
+#### Select
+
+<PropsTable name="Select" />
+
+It takes Base UI's `items`, `value`, `defaultValue`, `onValueChange`, `open`, `onOpenChange`, `multiple`, `disabled`, `readOnly`, `required` and `name`. The `required` default comes from the surrounding `Field`.
+
+#### SelectTrigger
+
+<PropsTable name="SelectTrigger" />
+
+#### SelectContent
+
+<PropsTable name="SelectContent" />
+
+The popup's position comes from `side`, `sideOffset`, `align`, `alignOffset` and `alignItemWithTrigger`, which default to `bottom`, `6`, `center`, `0` and `true`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Open, open over the trigger, close… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open', note: 'scales from 96% and fades in, from its transform origin', duration: 'fast', ease: 'enter' },
+    { moment: 'Open over the trigger', note: 'fades only', duration: 'fast', ease: 'enter' },
+    { moment: 'Close', duration: 'instant', ease: 'exit' },
+    { moment: 'Chevron', note: 'turns over while open', spring: 'snappy' },
+    { moment: 'Scroll arrows', note: 'fade in and out on long lists', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The popup appears and closes at once, and the chevron flips without turning."
+/>
+
+The popup wears motion's `yj-pop` preset. When it opens lined up over the trigger, it only fades: growing out of the option you're already looking at reads as a jump.
+
+#### Reduced motion
+
+The popup opens and closes without scaling or fading, and the chevron flips straight to its new direction. The highlighted and chosen options still show the same way.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The trigger is a `combobox` that opens a `listbox`. `Space`, `Enter` and `ArrowDown` open it, and typing jumps to a matching option.
+- In the popup, the arrow keys, `Home` and `End` move the highlight, `Enter` chooses, and `Escape` closes and returns focus to the trigger.
+- A `FieldLabel` names the trigger, and a `FieldDescription` or `FieldError` describes it. Outside a `Field`, give the trigger an `aria-label`.
+- A `FieldError` renders as an `alert`, so it's announced when it appears.
+
+</ReferenceRow>

@@ -1,0 +1,130 @@
+[
+  {
+    "name": "spotlight",
+    "type": "registry:component",
+    "title": "Spotlight",
+    "description": "The pointer-tracked spotlight for any surface: useSpotlight (tracker writing --yj-spot-x / --yj-spot-y), SpotlightSurface (lit layers, no look of its own) and SpotlightGroup (one light shared across surfaces). Keyboard focus glides the light; off for touch and reduced motion.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core"],
+    "files": [{ "path": "src/components/youj/effects/spotlight.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "shimmer",
+    "type": "registry:component",
+    "title": "Shimmer",
+    "description": "The travelling border light for any element: useShimmer (rootProps + layers) and a look-free Shimmer wrapper. Pure CSS loop on a registered @property, intensifies on hover and focus, pauses offscreen, parks under reduced motion.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core"],
+    "files": [{ "path": "src/components/youj/effects/shimmer.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "async-feedback",
+    "type": "registry:component",
+    "title": "Async Feedback",
+    "description": "Pending → success / error feedback for async controls: useAsyncAction (guarded state machine), AsyncFeedback (MorphLabel swap to spinner, drawn CheckIcon or cross, decaying error shake, state tints) and AsyncAnnouncer (polite / assertive live regions).",
+    "dependencies": ["motion"],
+    "registryDependencies": ["youj-core", "youj-presets", "morph-label", "youj-labels-async-feedback"],
+    "files": [{ "path": "src/components/youj/effects/async-feedback.tsx", "type": "registry:component" }]
+  },
+  {
+    "name": "blueprint",
+    "type": "registry:component",
+    "title": "Blueprint",
+    "description": "An entrance for real UI: the demo is drafted as an architect's blueprint (paper grid, dotted bounds with dimensions, regions, every part pencilled by kind, build and value columns), then a ruled edge inks it into the real thing. Blueprint (React, plays on mount) and blueprint(node) (the engine, loaded on first play). Reads the DOM once, animates only opacity, clip-path and transform, leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance", "youj-labels-blueprint"],
+    "files": [
+      { "path": "src/components/youj/effects/blueprint/blueprint.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/blueprint/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "generate",
+    "type": "registry:component",
+    "title": "Generate",
+    "description": "An entrance for real UI that builds it in part by part, in its real colours: the frame and its main regions are dragged out with selection outlines, then every part arrives its own way (surfaces drag out, text types in line by line, controls pop, icons draw their strokes, charts and images wipe in). Generate (React, plays on mount) and generate(node) (the engine, loaded on first play). Needs no script; animates only opacity, clip-path and transform; leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance"],
+    "files": [
+      { "path": "src/components/youj/effects/generate/generate.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/generate/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "inspector",
+    "type": "registry:component",
+    "title": "Inspector",
+    "description": "An entrance for real UI: each part appears first as the browser's box model (margin, padding and content in soft tints with a crisp edge), in build order, while a hover with a mono size tag and the element's path runs through the tree; then each part hands off to the real one. Inspector (React, plays on mount) and inspector(node) (the look, loaded on first play). Animates only opacity; leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance"],
+    "files": [
+      { "path": "src/components/youj/effects/inspector/inspector.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/inspector/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "layers",
+    "type": "registry:component",
+    "title": "Layers",
+    "description": "An entrance for real UI: the demo starts as an exploded isometric stack of its layers (frame, regions, boxes, content), each a thin plane with its depth label, like a view-hierarchy debugger; the camera settles flat as the stack collapses layer by layer into the real UI. Layers (React, plays on mount) and layers(node) (the look, loaded on first play). Transforms and opacity only; leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance", "youj-labels-layers"],
+    "files": [
+      { "path": "src/components/youj/effects/layers/layers.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/layers/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "render-passes",
+    "type": "registry:component",
+    "title": "Render Passes",
+    "description": "An entrance for real UI: the browser pipeline as theatre. Layout outlines every part with its size, paint fills each in flat greys with its text in grey, composite hands each piece to the real part, each pass sweeping through the parts in build order with its name and count. RenderPasses (React, plays on mount) and renderPasses(node) (the look, loaded on first play). Animates only opacity; leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance", "youj-labels-render-passes"],
+    "files": [
+      { "path": "src/components/youj/effects/passes/passes.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/passes/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "prism",
+    "type": "registry:component",
+    "title": "Prism",
+    "description": "An entrance for real UI that locks it in piece by piece out of its color channels: registration marks and the frame lock first, then each piece arrives as three faint copies a few px apart (its own colors split into red, green and blue light on dark themes, cyan, magenta and yellow ink on light ones) that slide together and snap into register as the real piece. PrismEntrance (React, plays on mount) and prism(node) (the engine, loaded on first play). Copies are drawn once and only moved by transform and opacity; leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance"],
+    "files": [
+      { "path": "src/components/youj/effects/prism/prism.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/prism/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "trace",
+    "type": "registry:component",
+    "title": "Trace",
+    "description": "An entrance for real UI that lights it up like a circuit: a thin signal comes in beside the frame, runs both ways round its border, then spreads down the layout along edges, gutters and short square connectors into every region and piece, all branches at once; each piece glows on its edge and appears as the signal reaches it. Monochrome or in the theme accent. Trace (React, plays on mount) and trace(node) (the engine, loaded on first play). Heads move by transform, the path is etched on one canvas; leaves nothing behind; reduced motion shows the UI.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core", "entrance"],
+    "files": [
+      { "path": "src/components/youj/effects/trace/trace.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/trace/engine.ts", "type": "registry:lib" }
+    ]
+  },
+  {
+    "name": "entrance",
+    "type": "registry:lib",
+    "title": "Entrance",
+    "description": "The shared runtime of the entrance effects: reads a demo once (its parts, kinds, build order, type and shapes), times a run from its size, duration, speed and stage shares, keeps one clock for canvas marks and Web Animations, and ends cleanly on cancel, focus, press, abort or reduced motion, leaving the demo exactly as it was.",
+    "dependencies": [],
+    "registryDependencies": ["youj-core"],
+    "files": [
+      { "path": "src/components/youj/effects/entrance/run.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/effects/entrance/read.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/effects/entrance/draw.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/effects/entrance/facts.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/effects/entrance/pieces.ts", "type": "registry:lib" },
+      { "path": "src/components/youj/effects/entrance/host.tsx", "type": "registry:component" },
+      { "path": "src/components/youj/effects/entrance/ready.ts", "type": "registry:lib" }
+    ]
+  }
+]

@@ -1,0 +1,160 @@
+---
+title: Stepper
+description: "Show progress through a sequence, including completed, current, upcoming and failed steps."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="stepper/demo" height={260} />
+
+A four-step checkout stepper with Back and Continue buttons; done steps can be pressed to go back.
+
+</Story>
+
+<Story id="vertical" label="Vertical">
+
+<ComponentPreview name="stepper/vertical" height={380} />
+
+A vertical stepper with descriptions.
+
+`orientation="vertical"` stacks the steps with their descriptions, for a sidebar beside the flow. The connector fills downwards.
+
+
+A step's `description` sits under its title, and `optional` adds "Optional" to it.
+
+</Story>
+
+<Story id="states" label="States">
+
+<ComponentPreview name="stepper/states" height={300} />
+
+Steps showing an error and every step complete.
+
+A step with `error` shows a warning mark and a danger title, whatever its position, so a failed validation stays visible after the person moves on. The last row shows every step complete.
+
+
+On narrow screens, `compact` hides the titles and descriptions below the `sm` breakpoint and leaves the discs and connectors. The titles are still read out, so the steps keep their names.
+
+</Story>
+
+<Story id="detour" label="Detour">
+
+<ComponentPreview name="stepper/detour" height={260} />
+
+A horizontal stepper with a detour drawn over the steps it bypasses.
+
+`detour` draws a rerouted stretch on a horizontal stepper: a dotted arc in the accent leaves the step at `from`, passes over the steps it bypasses and lands on the step at `to`, with its `label` and `detail` riding the top. Bypassed steps carry `data-bypassed`. It's measured from the discs, so it follows resizes and RTL; a vertical stepper ignores it.
+
+</Story>
+
+<Story id="flagged" label="Flagged">
+
+<ComponentPreview name="stepper/flagged" height={200} />
+
+A launch plan as dated milestones, with the submission deadline flagged.
+
+`flagged` calls a step out without failing it: until it's done, its disc wears a flag and its description takes the danger ink, and the disc carries `data-yj-flagged`. The flag is decorative, so put the reason in the `description` ("Oct 30, deadline"), which is read with the title. Use `invalid` instead when the step has actually gone wrong.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="stepper" noImport />
+
+Use a stepper to show progress through a fixed sequence people move through in order: checkout, onboarding, a setup flow. It shows state, it doesn't hold the steps' content. For a flow that shows one step at a time with Back and Continue built in, use a [Wizard](/docs/components/wizard), which draws its own stepper. For a flow that spans pages, with steps as links, use [Stepper Nav](/docs/components/stepper-nav). For progress that has no named steps, use a [Progress](/docs/components/progress) bar.
+
+```tsx
+import { Stepper, type StepperStep } from '@youj/react'
+
+const steps: StepperStep[] = [
+  { id: 'cart', title: 'Cart' },
+  { id: 'shipping', title: 'Shipping' },
+  { id: 'payment', title: 'Payment' },
+  { id: 'review', title: 'Review' },
+]
+
+export function CheckoutProgress({ current }: { current: number }) {
+  return <Stepper steps={steps} current={current} aria-label="Checkout" />
+}
+```
+
+`current` is the index of the step in progress. Steps before it are complete, and `current={steps.length}` marks every step done. The current step's disc is the solid one, in the accent; done steps step back to a tint with their check, and upcoming ones are outlined. Pass `onStepClick` and done steps, and the current one, become buttons that go back to them. Upcoming steps stay inert, so the stepper can't skip ahead of the flow's own validation.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="steps, current, orientation… (12)">
+
+### Props
+
+<PropsTable name="Stepper" />
+
+#### Steps
+
+Each entry in `steps` is a `StepperStep`:
+
+<PropsTable name="StepperStep" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Connector fill, disc, title color… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Connector fill', note: 'scales from the inline start (or down) when the step before it is done, and drains back if you return', duration: 'slow', ease: 'standard' },
+    { moment: 'Disc', note: 'background, border and ring change as the step changes state', duration: 'base', ease: 'standard' },
+    { moment: 'Title color', duration: 'base', ease: 'standard' },
+    { moment: 'Check and warning marks', note: 'Youj icons draw on when they mount' },
+    { moment: 'Detour', note: 'the arc draws from the step it leaves, and its label rises in as the line arrives', duration: 'deliberate', ease: 'emphasized' },
+  ]}
+  reduced="Connectors fill and drain at once, and marks appear without drawing."
+/>
+
+The fill is a transform on a Motion value, so going back mid-fill drains from where the fill is instead of restarting.
+
+#### Reduced motion
+
+Connectors fill and drain instantly, discs change color at once, the check and warning marks appear without drawing and a detour is drawn in place. The state reads exactly the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, focus, announcements">
+
+### Accessibility
+
+- The stepper is an ordered list named "Progress" by default. Name it after the flow with `aria-label`.
+- The current step has `aria-current="step"`, and every step's state is written out after its title for screen readers: "Payment, has an error".
+- With `onStepClick`, the done steps and the current one are real buttons, and with `stepHref` they're links. Upcoming steps aren't focusable.
+- The discs, connectors and marks are decorative (`aria-hidden`); the text carries the state.
+- A detour's label is read after the step it leaves, with where it rejoins ("Detour, rejoins at step 4", `stepDetour` in the labels).
+
+</ReferenceRow>

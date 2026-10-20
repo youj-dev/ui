@@ -1,0 +1,124 @@
+---
+title: Tilt
+description: "Tilt a surface toward the pointer, with optional glare, then return it to flat."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tilt/demo" height={360} />
+
+A ticket-style event card that tilts toward the pointer, with glare and a slight scale.
+
+</Story>
+
+<Story id="options" label="Options">
+
+<ComponentPreview name="tilt/options" height={330} />
+
+Templates with different rotation, glare and scale settings.
+
+`max` is the rotation, in degrees, at the edges: the pointer's position across the surface maps linearly from `-max` to `max` on both axes. `perspective` is the CSS perspective distance, where lower is more dramatic. `scale` grows the surface while it's hovered, and `glare` adds a soft highlight that follows the pointer.
+
+The glare is a pre-drawn gradient, twice the surface's size, that translates under a soft-light blend. It never repaints, so it stays on the compositor. Its color follows the theme.
+
+</Story>
+
+<Story id="depth" label="Depth">
+
+<ComponentPreview name="tilt/depth" height={330} />
+
+A card whose icon and text sit at different depths in front of the surface.
+
+Tilt's inner layer preserves 3D. Keep `transform-style: preserve-3d` on the way down, and avoid `overflow: hidden` in between, which flattens it. Then children can sit in front of the surface with `translate-z-*`, and they shift against it as it turns.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="tilt" noImport />
+
+Use it on one showcase surface that invites a closer look: a ticket, a pricing card, a product shot. Keep it off grids of everyday cards, text-heavy panels, where tilted type is harder to read, and anything people click with precision. For a lighter touch on many cards, use a [Spotlight](/docs/components/spotlight).
+
+Wrap the surface, and put the rounded corners on Tilt itself. Its inner layer inherits them, so the glare clips to the same shape.
+
+```tsx
+import { Tilt } from '@youj/motion'
+
+export function Ticket() {
+  return (
+    <Tilt glare scale={1.02} className="rounded-2xl">
+      <div className="rounded-[inherit] border bg-surface p-5">…</div>
+    </Tilt>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="max, perspective, glare… (6)">
+
+### Props
+
+<PropsTable name="Tilt" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Tilt, hover scale and glare, return · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Tilt', note: '`rotateX` and `rotateY`, up to `max` degrees at the edges', spring: 'smooth' },
+    { moment: 'Hover scale and glare', note: 'grow and fade in together', spring: 'smooth' },
+    { moment: 'Return', note: 'springs flat when the pointer leaves', spring: 'smooth' },
+  ]}
+  reduced="Flat and still: no rotation, no scale and no glare."
+/>
+
+`spring` swaps the default for another spring token. Every value is a transform or an opacity, so a tilt never triggers layout or paint.
+
+#### Reduced motion
+
+The surface stays flat and still. There's no rotation, no hover scale and no glare, and the content reads exactly as it does at rest.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- Tilt adds no roles and no focus stop. The content inside keeps its semantics, and interactive children keep their focus rings.
+- It responds to a mouse only. Touch and pen input scroll and tap as usual, and keyboard focus doesn't tilt the surface.
+- The glare layer is `aria-hidden` and ignores the pointer.
+- Keep `max` small on anything with text. Past about 10 degrees, type foreshortens enough to slow reading.
+
+</ReferenceRow>

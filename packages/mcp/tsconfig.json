@@ -1,0 +1,39 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "noUncheckedIndexedAccess": true,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@youj/core/*": [
+        "../core/src/*"
+      ],
+      "@youj/icons": [
+        "../icons/src/index.ts"
+      ],
+      "@youj/icons/*": [
+        "../icons/src/*"
+      ],
+      "@youj/illustrations": [
+        "../illustrations/src/index.ts"
+      ],
+      "@youj/illustrations/*": [
+        "../illustrations/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "worker",
+    "cloudflare.config.ts",
+    "wrangler.config.ts",
+    "test",
+    "scripts",
+    "tsdown.config.ts",
+    "vitest.config.ts"
+  ]
+}

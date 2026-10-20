@@ -1,0 +1,2562 @@
+[
+  {
+    "name": "loader-nacre",
+    "type": "registry:component",
+    "title": "Nacre loader",
+    "description": "A nacreous shell opens its overlapping, ridged scales in a wave from rim to throat. Articulated ribs follow the lift, a single accent seam slips around the revealed bore, and the scales settle back into their nested courses. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "nacre",
+      "component": "LoaderNacre",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 1,
+      "title": "Nacre",
+      "tags": [
+        "shell",
+        "scales",
+        "articulated",
+        "choreography",
+        "facets",
+        "perspective",
+        "hinges",
+        "3d"
+      ],
+      "beats": 6.25,
+      "colors": [
+        {
+          "part": "Scale edges",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/nacre.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-draft",
+    "type": "registry:component",
+    "title": "Draft loader",
+    "description": "An isometric box goes from a dashed ghost to a drawing: the accent pen traces its outline in one stroke, the lit edges catch, light floods the faces and a dimension line is set, then it returns to its ghost. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "draft",
+      "component": "LoaderDraft",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 2,
+      "title": "Draft",
+      "tags": [
+        "isometric",
+        "box",
+        "blueprint",
+        "construction",
+        "pen",
+        "hidden line",
+        "dimension"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Dimension",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/draft.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-carton",
+    "type": "registry:component",
+    "title": "Carton loader",
+    "description": "A cube’s net, drawn as a die-cut with dashed creases, folds up face by face into a box while the view closes in; the lid shuts on the accent square printed on it, then the box opens flat again. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "carton",
+      "component": "LoaderCarton",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 3,
+      "title": "Carton",
+      "tags": [
+        "cube",
+        "net",
+        "fold",
+        "box",
+        "package",
+        "isometric",
+        "crease"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Creases",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/carton.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-extrude",
+    "type": "registry:component",
+    "title": "Extrude loader",
+    "description": "Tiles on an isometric floor extrude into columns in square rings from an accent seed, stepping up into a ziggurat, then settle back flat in the same order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "extrude",
+      "component": "LoaderExtrude",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 4,
+      "title": "Extrude",
+      "tags": [
+        "isometric",
+        "columns",
+        "grid",
+        "ziggurat",
+        "build",
+        "blocks",
+        "bar chart"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Columns",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/extrude.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-section",
+    "type": "registry:component",
+    "title": "Section loader",
+    "description": "A wireframe cube stands on its corner, turning; a plane rises through it and leaves it solid, its cut face in the accent going from triangle to hexagon to triangle, and a second plane follows and returns it to lines. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "section",
+      "component": "LoaderSection",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 5,
+      "title": "Section",
+      "tags": [
+        "cube",
+        "slice",
+        "cross-section",
+        "hexagon",
+        "scan",
+        "print",
+        "hidden line",
+        "wireframe"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Hidden edges",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/section.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-ridge",
+    "type": "registry:component",
+    "title": "Ridge loader",
+    "description": "A surface drawn only in profile lines, nearer ones hiding the farther: a squared swell runs through it toward the viewer, lifting each line into a plateau, with the accent square riding its crest. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "ridge",
+      "component": "LoaderRidge",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 6,
+      "title": "Ridge",
+      "tags": [
+        "wave",
+        "sheet",
+        "profile",
+        "hidden line",
+        "terrain",
+        "signal",
+        "plateau"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Ridges",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/ridge.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-contour",
+    "type": "registry:component",
+    "title": "Contour loader",
+    "description": "A hill drawn only in contour lines, rounded squares stacked at their heights like a cut model: the contours climb toward the accent summit mark and close over it while the model turns a quarter turn. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "contour",
+      "component": "LoaderContour",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 7,
+      "title": "Contour",
+      "tags": [
+        "topography",
+        "contour lines",
+        "terrain",
+        "map",
+        "squircle",
+        "survey",
+        "hidden line"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Contours",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/contour.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-pleat",
+    "type": "registry:component",
+    "title": "Pleat loader",
+    "description": "A strip of square panels folds like an accordion, crease by crease from one end, into a tight stack, then opens out flat again; each panel is lit by where it faces, one of them in the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "pleat",
+      "component": "LoaderPleat",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 8,
+      "title": "Pleat",
+      "tags": [
+        "fold",
+        "accordion",
+        "zigzag",
+        "panels",
+        "paper",
+        "bellows",
+        "origami"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Fold marks",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/pleat.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lathe",
+    "type": "registry:component",
+    "title": "Lathe loader",
+    "description": "A part is turned on a lathe: its profile, in the accent, revolves once about a chain-line axis and leaves the circles and meridians of a turned shape behind it, then revolves again and clears them. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "lathe",
+      "component": "LoaderLathe",
+      "category": "geometry",
+      "technique": "paths",
+      "order": 9,
+      "title": "Lathe",
+      "tags": [
+        "revolve",
+        "cad",
+        "turned",
+        "wireframe",
+        "hidden line",
+        "axis",
+        "meridian"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Sweep",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/lathe.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-saddle",
+    "type": "registry:component",
+    "title": "Saddle loader",
+    "description": "A square grid of straight lines flexes into a saddle and through to the opposite one, every line staying straight, on four posts like a hypar roof, while the accent line that generates it sweeps across. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "saddle",
+      "component": "LoaderSaddle",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 10,
+      "title": "Saddle",
+      "tags": [
+        "hyperbolic paraboloid",
+        "hypar",
+        "ruled surface",
+        "grid",
+        "roof",
+        "flex",
+        "wireframe"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Rulings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/saddle.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-torsion",
+    "type": "registry:component",
+    "title": "Torsion loader",
+    "description": "A square tower drawn in slices and edges takes a quarter turn from the base up, so it wrings into a twist and straightens again, its accent cap turning last; edges round the back are dashed. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "torsion",
+      "component": "LoaderTorsion",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 11,
+      "title": "Torsion",
+      "tags": [
+        "twist",
+        "tower",
+        "square",
+        "prism",
+        "helix",
+        "wireframe",
+        "hidden line"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Hidden lines",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/torsion.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-facet",
+    "type": "registry:component",
+    "title": "Facet loader",
+    "description": "A cube cuts its corners in steps, through the cuboctahedron to the octahedron and back, every face lit by where it points; the facet cut into the near corner is edged in the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "facet",
+      "component": "LoaderFacet",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 12,
+      "title": "Facet",
+      "tags": [
+        "polyhedron",
+        "cube",
+        "octahedron",
+        "cuboctahedron",
+        "truncate",
+        "faceted",
+        "solid"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Cuts",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/facet.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-core",
+    "type": "registry:component",
+    "title": "Core loader",
+    "description": "A cube parts into its eight corner blocks in an exploded view, showing a small accent cube turning at its heart, then closes over it and lands square. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "core",
+      "component": "LoaderCore",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 13,
+      "title": "Core",
+      "tags": [
+        "cube",
+        "exploded view",
+        "octants",
+        "isometric",
+        "reveal",
+        "assemble",
+        "blocks"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Exploded view",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/core.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-band",
+    "type": "registry:component",
+    "title": "Band loader",
+    "description": "A band stands round a rounded square, the youj o’s plan, and a full roll travels round it: the wall turns over and back as the wave passes, its top edge tracing the twist in the accent. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "band",
+      "component": "LoaderBand",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 14,
+      "title": "Band",
+      "tags": [
+        "ribbon",
+        "twist",
+        "loop",
+        "rim",
+        "squircle",
+        "roll",
+        "wave"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Rail",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/band.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-curl",
+    "type": "registry:component",
+    "title": "Curl loader",
+    "description": "A ruled sheet curls up from its far edge into a roll that travels toward you and stops on the accent line, then unrolls flat again; drawn only in its edges and rulings. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "curl",
+      "component": "LoaderCurl",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 15,
+      "title": "Curl",
+      "tags": [
+        "sheet",
+        "roll",
+        "scroll",
+        "paper",
+        "document",
+        "spiral",
+        "ruled"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Rulings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/curl.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tenon",
+    "type": "registry:component",
+    "title": "Tenon loader",
+    "description": "Two complementary stepped solids slide together into a square joint, the accent square riding the tongue. Flat-lit walls show the socket before it closes; the halves hold, then withdraw in reverse order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "tenon",
+      "component": "LoaderTenon",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 16,
+      "title": "Tenon",
+      "tags": [
+        "join",
+        "interlock",
+        "solid",
+        "assembly",
+        "isometric",
+        "blueprint",
+        "tab"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Witness marks",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/tenon.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-selvedge",
+    "type": "registry:component",
+    "title": "Selvedge loader",
+    "description": "A cloth fixed to a slender mast catches a travelling gust. Its woven lines bow through depth, its free hem lags behind the body, and a short accent stitch follows the fluttering corner. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "selvedge",
+      "component": "LoaderSelvedge",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 17,
+      "title": "Selvedge",
+      "tags": [
+        "cloth",
+        "wind",
+        "fabric",
+        "weave",
+        "soft",
+        "flag"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Hem",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/selvedge.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-meniscus",
+    "type": "registry:component",
+    "title": "Meniscus loader",
+    "description": "Liquid rises inside an open cylindrical vessel, holds while concentric ripples expand, then drains. A sloshing meniscus and the visible rear wall keep the changing level grounded in a real volume. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "meniscus",
+      "component": "LoaderMeniscus",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 18,
+      "title": "Meniscus",
+      "tags": [
+        "liquid",
+        "fill",
+        "vessel",
+        "ripples",
+        "volume",
+        "fluid"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Liquid",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/meniscus.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-atlas",
+    "type": "registry:component",
+    "title": "Atlas loader",
+    "description": "Two journeys trace great circles over a wireframe globe. Meridians dim behind the sphere, route wakes brighten on the near hemisphere, and the whole graticule rocks gently as the journeys pass. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "atlas",
+      "component": "LoaderAtlas",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 19,
+      "title": "Atlas",
+      "tags": [
+        "globe",
+        "cartography",
+        "routes",
+        "graticule",
+        "great circle"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "First journey",
+          "mono": "ink"
+        },
+        {
+          "part": "Second journey",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/atlas.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-arbor",
+    "type": "registry:component",
+    "title": "Arbor loader",
+    "description": "A branching structure grows from its trunk to its finest forks, each generation waiting for the one below. It holds its canopy, then retracts from the tips back to the root while the view reveals the branches in depth. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "arbor",
+      "component": "LoaderArbor",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 20,
+      "title": "Arbor",
+      "tags": [
+        "tree",
+        "branching",
+        "recursion",
+        "growth",
+        "structure"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Growth",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/arbor.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-banyan",
+    "type": "registry:component",
+    "title": "Banyan loader",
+    "description": "A great spatial canopy unfolds one generation at a time, breathes in a slow wind, and carries a single sap-light from its root to its finest tips before returning home. Its eighteen-beat cycle deliberately gives a pre-launch hero time to grow, hold and reward long viewing; reduced motion keeps the illuminated crown. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "banyan",
+      "component": "LoaderBanyan",
+      "category": "geometry",
+      "technique": "paths",
+      "order": 21.5,
+      "title": "Banyan",
+      "tags": [
+        "tree",
+        "canopy",
+        "hero",
+        "phyllotaxis",
+        "growth",
+        "sap",
+        "depth"
+      ],
+      "beats": 18,
+      "colors": [
+        {
+          "part": "Blossoms",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/banyan.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tessera",
+    "type": "registry:component",
+    "title": "Tessera loader",
+    "description": "Six triangular tiles share a hexagonal footprint. A travelling fold lifts their inner tips in sequence, showing both lit sides before each tile settles into the tessellation; one hinge catches the accent at the crest. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "tessera",
+      "component": "LoaderTessera",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 22,
+      "title": "Tessera",
+      "tags": [
+        "tessellation",
+        "triangles",
+        "hinges",
+        "tiling",
+        "wave"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Hinges",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/tessera.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-vault",
+    "type": "registry:component",
+    "title": "Vault loader",
+    "description": "Wedge-shaped stones seat in pairs from the springings toward a final keystone. Extruded inner walls reveal the open arch; a short accent joint closes at the crown before the stones withdraw in reverse order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "vault",
+      "component": "LoaderVault",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 23,
+      "title": "Vault",
+      "tags": [
+        "arch",
+        "masonry",
+        "voussoir",
+        "keystone",
+        "architecture",
+        "assembly"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Centering",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/vault.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-knead",
+    "type": "registry:component",
+    "title": "Knead loader",
+    "description": "A guided platen compresses a gridded elastic volume against a bed. The body spreads sideways while preserving volume, its lit skin and meridians following the deformation, then regains its height as the platen rises. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "knead",
+      "component": "LoaderKnead",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 24,
+      "title": "Knead",
+      "tags": [
+        "elastic",
+        "soft body",
+        "compression",
+        "volume",
+        "membrane",
+        "press"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Grid",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/knead.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lacuna",
+    "type": "registry:component",
+    "title": "Lacuna loader",
+    "description": "A recursive carpet of square wells opens from its central void into successively smaller courtyards. Lit inner walls descend beneath the fine rims; each generation waits for its parent, then the apertures contract from the outside inward. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "lacuna",
+      "component": "LoaderLacuna",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 25,
+      "title": "Lacuna",
+      "tags": [
+        "fractal",
+        "carpet",
+        "recursive",
+        "void",
+        "courtyard",
+        "negative space"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Generations",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/lacuna.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-stave",
+    "type": "registry:component",
+    "title": "Stave loader",
+    "description": "Three floating compression struts open a tensegrity prism. Triangular cable crowns countertwist as the structure lengthens, the diagonal stays remain taut, and a brief accent travels between the tensioned upper joints. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "stave",
+      "component": "LoaderStave",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 26,
+      "title": "Stave",
+      "tags": [
+        "tensegrity",
+        "cables",
+        "prism",
+        "struts",
+        "tension",
+        "structure"
+      ],
+      "beats": 5.75,
+      "colors": [
+        {
+          "part": "Stays",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/stave.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-suture",
+    "type": "registry:component",
+    "title": "Suture loader",
+    "description": "Paired cross-stitches lace two separate strips together. Each upper thread passes over its partner in depth, loose arches tighten as the seam closes, and the stitches withdraw in reverse order while the strips ease apart. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "suture",
+      "component": "LoaderSuture",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 27,
+      "title": "Suture",
+      "tags": [
+        "stitch",
+        "seam",
+        "lacing",
+        "thread",
+        "textile",
+        "tension"
+      ],
+      "beats": 6.25,
+      "colors": [
+        {
+          "part": "Thread",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/suture.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-ravel",
+    "type": "registry:component",
+    "title": "Ravel loader",
+    "description": "Three cords exchange places in a travelling plait. Each crossing passes at its own depth, the strands open and tighten together, and a short accent filament rides one cord through the over-and-under structure. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "ravel",
+      "component": "LoaderRavel",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 28,
+      "title": "Ravel",
+      "tags": [
+        "braid",
+        "cord",
+        "textile",
+        "interlace",
+        "depth",
+        "plait"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Cord",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/ravel.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-throat",
+    "type": "registry:component",
+    "title": "Throat loader",
+    "description": "A soap-film throat stretches between two wire hoops. Their separation increases as the catenoid neck narrows; sparse meridians follow the minimal surface, the hoops return, and a short accent arc travels around the waist. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "throat",
+      "component": "LoaderThroat",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 29,
+      "title": "Throat",
+      "tags": [
+        "catenoid",
+        "minimal surface",
+        "soap film",
+        "membrane",
+        "neck",
+        "rings"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Film",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/throat.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-truss",
+    "type": "registry:component",
+    "title": "Truss loader",
+    "description": "Two triangulated bridge frames assemble bay by bay and lock together with transverse ties. A small proof load rolls across the deck, revealing a restrained elastic deflection, then returns as the braces withdraw toward the abutments. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "truss",
+      "component": "LoaderTruss",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 30,
+      "title": "Truss",
+      "tags": [
+        "bridge",
+        "structure",
+        "space frame",
+        "triangulation",
+        "load",
+        "architecture"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Members",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/truss.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-mosaic",
+    "type": "registry:component",
+    "title": "Mosaic loader",
+    "description": "A slab partitions into moving nearest-neighbour cells. Every shared boundary follows its two sites exactly; shallow cell walls rise in a circulating wave, and one short edge catches the accent as the tessellation relaxes back. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "mosaic",
+      "component": "LoaderMosaic",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 31,
+      "title": "Mosaic",
+      "tags": [
+        "voronoi",
+        "cells",
+        "partition",
+        "tessellation",
+        "nearest neighbour",
+        "relaxation"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Cells",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/mosaic.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tributary",
+    "type": "registry:component",
+    "title": "Tributary loader",
+    "description": "Two narrow streams descend a cut terrain model and meet in a wider channel. Paired flow fronts arrive together, become one double-width front at the junction, and continue downstream beneath the raised banks. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "tributary",
+      "component": "LoaderTributary",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 32,
+      "title": "Tributary",
+      "tags": [
+        "river",
+        "confluence",
+        "channel",
+        "terrain",
+        "fluid",
+        "cartography"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Streams",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/tributary.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-alveole",
+    "type": "registry:component",
+    "title": "Alveole loader",
+    "description": "Four stitched membrane chambers inflate in a diagonal pressure wave. Their sealed borders stay flat while the skins rise into softly lit pillows; a narrow inlet seam carries the pressure onward as the preceding chamber relaxes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "alveole",
+      "component": "LoaderAlveole",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 33,
+      "title": "Alveole",
+      "tags": [
+        "pneumatic",
+        "quilt",
+        "membrane",
+        "chambers",
+        "soft body",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Quilting",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/alveole.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-calyx",
+    "type": "registry:component",
+    "title": "Calyx loader",
+    "description": "Six curved sepals peel away from a closed bud in a staggered spiral. Their central veins stay attached to the stalk, the tips open into a shallow crown, and the shells close in the same order around a fine accent stamen. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "calyx",
+      "component": "LoaderCalyx",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 34,
+      "title": "Calyx",
+      "tags": [
+        "botanical",
+        "sepals",
+        "shell",
+        "unfurl",
+        "veins",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Veins",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/calyx.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-quarry",
+    "type": "registry:component",
+    "title": "Quarry loader",
+    "description": "A cutaway terrain block opens along a fault and one bank slips upward. Five continuous strata become offset across the exposed rock walls; the short accent fault trace climbs through the section before the banks settle back into register. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "quarry",
+      "component": "LoaderQuarry",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 35,
+      "title": "Quarry",
+      "tags": [
+        "geology",
+        "fault",
+        "strata",
+        "cutaway",
+        "terrain",
+        "3d"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Marker bed",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/quarry.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-newel",
+    "type": "registry:component",
+    "title": "Newel loader",
+    "description": "Cantilevered treads swing out around a slender central newel, ascending into a spiral stair. Each lit wedge seats before its outer handrail grows to meet the next; a brief accent nosing reaches the landing and the stair folds back into its core. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "newel",
+      "component": "LoaderNewel",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 36,
+      "title": "Newel",
+      "tags": [
+        "stair",
+        "spiral",
+        "architecture",
+        "helix",
+        "treads",
+        "balustrade"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Handrail",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/newel.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-infill",
+    "type": "registry:component",
+    "title": "Infill loader",
+    "description": "An open square part builds in deposited courses. Each layer completes its outer and inner walls before alternating cross-hatched infill bridges the ring; the active bead follows the exact toolpath and the completed courses expose the central well in depth. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "infill",
+      "component": "LoaderInfill",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 37,
+      "title": "Infill",
+      "tags": [
+        "fabrication",
+        "additive",
+        "toolpath",
+        "layers",
+        "hatch",
+        "construction"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Toolpath",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/infill.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-atrium",
+    "type": "registry:component",
+    "title": "Atrium loader",
+    "description": "A courtyard plan becomes an open architectural shell. Paired piers rise along each side, their lintels seat only after the supports, and four gallery ledges register around the central opening before the building returns to its measured footprint. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "atrium",
+      "component": "LoaderAtrium",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 38,
+      "title": "Atrium",
+      "tags": [
+        "architecture",
+        "courtyard",
+        "plan",
+        "walls",
+        "lintel",
+        "construction"
+      ],
+      "beats": 6.2,
+      "colors": [
+        {
+          "part": "Piers",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/atrium.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/fabric.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-shingle",
+    "type": "registry:component",
+    "title": "Shingle loader",
+    "description": "Paired roof panels seat course by course in alternating banks. Each new row tucks beneath the previous one, thin return edges expose the underlap, and a final ridge seam closes across the assembled roof before the panels lift in reverse order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "shingle",
+      "component": "LoaderShingle",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 39,
+      "title": "Shingle",
+      "tags": [
+        "roof",
+        "panels",
+        "overlap",
+        "architecture",
+        "assembly",
+        "construction"
+      ],
+      "beats": 6.5,
+      "colors": [
+        {
+          "part": "Courses",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/shingle.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-carve",
+    "type": "registry:component",
+    "title": "Carve loader",
+    "description": "A Boolean corner subtraction advances through a square stock in two measured cuts. The remaining L-shaped solid exposes two new lit inner walls, a wire operand marks the removed volume, and witness dimensions track the opening before the stock restores itself. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "carve",
+      "component": "LoaderCarve",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 40,
+      "title": "Carve",
+      "tags": [
+        "boolean",
+        "difference",
+        "solid",
+        "modeling",
+        "construction",
+        "cutaway"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Operand",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/carve.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/drafting.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-lamella",
+    "type": "registry:component",
+    "title": "Lamella loader",
+    "description": "Waisted annular sheets register in alternating arrivals around an open bore. Their cut walls and top faces stay lit as each lamination seats, a short bond travels around the final rim, and the sheets peel away from the top course downward. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "lamella",
+      "component": "LoaderLamella",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 41,
+      "title": "Lamella",
+      "tags": [
+        "lamination",
+        "sheets",
+        "fabrication",
+        "courses",
+        "hollow",
+        "assembly"
+      ],
+      "beats": 6.2,
+      "colors": [
+        {
+          "part": "Bore",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/lamella.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-simplex",
+    "type": "registry:component",
+    "title": "Simplex loader",
+    "description": "An irregular tetrahedral cell receives an interior sample. The sample rises from its barycentric foot, spokes connect it to all four vertices, and a sectional face opens to expose the four child volumes before the cell recombines. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "simplex",
+      "component": "LoaderSimplex",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 42,
+      "title": "Simplex",
+      "tags": [
+        "tetrahedron",
+        "volume",
+        "meshing",
+        "triangulation",
+        "insertion",
+        "structure"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Spokes",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/simplex.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-ashlar",
+    "type": "registry:component",
+    "title": "Ashlar loader",
+    "description": "A bonded masonry wall seats from its footing upward. Alternate courses bridge the joints below, paired stones enter from opposite sides, and a short accent bed joint certifies the last course before the wall releases from the top down. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "ashlar",
+      "component": "LoaderAshlar",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 43,
+      "title": "Ashlar",
+      "tags": [
+        "masonry",
+        "bond",
+        "wall",
+        "courses",
+        "construction",
+        "assembly"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Stones",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/ashlar.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/fabric.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-laminate",
+    "type": "registry:component",
+    "title": "Laminate loader",
+    "description": "Three courses of slats lay in alternating grain directions. The open layers register above one another, their gaps close in sequence into a cross-laminated panel, and a narrow edge bond travels along the finished stock before the layers separate. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "laminate",
+      "component": "LoaderLaminate",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 44,
+      "title": "Laminate",
+      "tags": [
+        "lamination",
+        "cross grain",
+        "panel",
+        "fabrication",
+        "layers",
+        "assembly"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Grain",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/laminate.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/fabric.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-loft",
+    "type": "registry:component",
+    "title": "Loft loader",
+    "description": "Unequal transverse ribs erect along a curved keel, then longitudinal battens connect matching profile points into a lofted hull. A narrow lit skin advances between the ribs, exposing the hollow interior before the shell and its supporting profiles withdraw. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "loft",
+      "component": "LoaderLoft",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 45,
+      "title": "Loft",
+      "tags": [
+        "loft",
+        "profiles",
+        "hull",
+        "ribs",
+        "surface",
+        "cad",
+        "fabrication"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Battens",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/loft.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-stayed",
+    "type": "registry:component",
+    "title": "Stayed loader",
+    "description": "A twin-leg pylon erects above a registered crossing. Opposed deck segments advance from the tower in balanced pairs, each held by its own taut stay; a short closure seam joins the outer tips before the span withdraws toward its foundation. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "stayed",
+      "component": "LoaderStayed",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 46,
+      "title": "Stayed",
+      "tags": [
+        "construction",
+        "cable",
+        "bridge",
+        "cantilever",
+        "tension",
+        "assembly"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Stays",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/stayed.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/fabric.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-reciprocal",
+    "type": "registry:component",
+    "title": "Reciprocal loader",
+    "description": "Six sloping rafters erect around an open roof eye, each crossing above its neighbour and carrying the next. A temporary shore holds the first joint until the final rafter closes the support circuit, then drops away; it returns before the roof dismantles. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "reciprocal",
+      "component": "LoaderReciprocal",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 47,
+      "title": "Reciprocal",
+      "tags": [
+        "roof",
+        "timber",
+        "construction",
+        "reciprocal frame",
+        "oculus",
+        "support"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Shore",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/reciprocal.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/fabric.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-envelope",
+    "type": "registry:component",
+    "title": "Envelope loader",
+    "description": "A support ray tests inner samples and wraps the outermost sites into a convex boundary. Accepted edges join in order, the closed enclosure lifts on fine witness lines, and its perimeter unwrites back to the starting support. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "envelope",
+      "component": "LoaderEnvelope",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 48,
+      "title": "Envelope",
+      "tags": [
+        "convex hull",
+        "boundary",
+        "support",
+        "spatial",
+        "wrapping",
+        "enclosure"
+      ],
+      "beats": 5.8,
+      "colors": [
+        {
+          "part": "Boundary",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/envelope.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-retile",
+    "type": "registry:component",
+    "title": "Retile loader",
+    "description": "A mesh legalizes its diagonals one quadrilateral at a time. Each long edge contracts to its crossing, the alternate edge opens into place, and the two new facets settle; circumcircle witnesses inspect the exchange before the mesh restores its original connectivity. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "retile",
+      "component": "LoaderRetile",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 49,
+      "title": "Retile",
+      "tags": [
+        "triangulation",
+        "edge flip",
+        "mesh",
+        "legalization",
+        "rendering",
+        "optimization"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Flip",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/retile.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-cupola",
+    "type": "registry:component",
+    "title": "Cupola loader",
+    "description": "A triangulated dome erects from its circular footing. Meridian struts raise successive rings, diagonal braces close each bay, and lit panels settle along one open bank before the crown joins and the shell dismantles from the top. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "cupola",
+      "component": "LoaderCupola",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 50,
+      "title": "Cupola",
+      "tags": [
+        "dome",
+        "shell",
+        "triangulation",
+        "construction",
+        "panels",
+        "architecture"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Struts",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/cupola.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-coarea",
+    "type": "registry:component",
+    "title": "Coarea loader",
+    "description": "Eight volume cells extract a common level surface from sampled scalar values. Interpolated tetrahedral sections register into one lit faceted body, the active cell exposes its crossing edges, and the surface releases in reverse cell order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "coarea",
+      "component": "LoaderCoarea",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 51,
+      "title": "Coarea",
+      "tags": [
+        "volume",
+        "isosurface",
+        "marching tetrahedra",
+        "meshing",
+        "samples",
+        "reconstruction"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Crossing",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/coarea.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-corbel",
+    "type": "registry:component",
+    "title": "Corbel loader",
+    "description": "Opposed horizontal courses step inward over an open portal. Each projecting stone waits for its supporting course, a cap bridges the remaining throat, and paired bearing witnesses travel down the completed corbels before the courses withdraw from the crown. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "corbel",
+      "component": "LoaderCorbel",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 52,
+      "title": "Corbel",
+      "tags": [
+        "construction",
+        "cantilever",
+        "masonry",
+        "portal",
+        "courses",
+        "support"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Stones",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/corbel.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/geometry/fabric.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-notch",
+    "type": "registry:component",
+    "title": "Notch loader",
+    "description": "A concave floor plan triangulates by removing one valid boundary ear at a time. Each accepted diagonal closes before its triangular floor plate seats, a fine inspection fan checks the next corner, and the four plates unseat in reverse order to restore the open plan. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "notch",
+      "component": "LoaderNotch",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 53,
+      "title": "Notch",
+      "tags": [
+        "triangulation",
+        "concave",
+        "plan",
+        "mesh",
+        "construction",
+        "ear"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Diagonals",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/notch.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-datum",
+    "type": "registry:component",
+    "title": "Datum loader",
+    "description": "Paired bearings from a fixed baseline locate four survey corners. Their short range arcs meet at each measured site, the parcel perimeter closes, and height witnesses raise a two-facet terrain model before the survey lowers and releases in reverse order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "datum",
+      "component": "LoaderDatum",
+      "category": "geometry",
+      "technique": "lines",
+      "order": 54,
+      "title": "Datum",
+      "tags": [
+        "survey",
+        "cartography",
+        "triangulation",
+        "map",
+        "terrain",
+        "measurement"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Bearings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/datum.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-arris",
+    "type": "registry:component",
+    "title": "Arris loader",
+    "description": "Three finishing passes chamfer the three edge families of a solid blank. Every new bevel is the exact intersection of its cutting plane with the remaining stock; short witness strokes inspect the fresh facets before the edge families restore in reverse order. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "arris",
+      "component": "LoaderArris",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 55,
+      "title": "Arris",
+      "tags": [
+        "fabrication",
+        "bevel",
+        "chamfer",
+        "finishing",
+        "solid",
+        "edges"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Witness",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/arris.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-cast",
+    "type": "registry:component",
+    "title": "Cast loader",
+    "description": "Two profiled mould halves register around a tapered casting. A cutaway exposes the rising material and its level rim; the formwork parts only after the pour sets, revealing the lit shoulders and waist before the casting clears into its bed. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "cast",
+      "component": "LoaderCast",
+      "category": "geometry",
+      "technique": "planes",
+      "order": 56,
+      "title": "Cast",
+      "tags": [
+        "casting",
+        "formwork",
+        "fabrication",
+        "mould",
+        "construction",
+        "solid"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Material",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/cast.tsx",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-ogive",
+    "type": "registry:component",
+    "title": "Ogive loader",
+    "description": "Four diagonal groins erect above a square footing and meet at one crown. Perimeter arches join the springings, curved shell courses infill two wings of the intersecting barrel vault, and a crown witness closes before the shell and ribs dismantle. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "geometry"
+    ],
+    "meta": {
+      "loader": "ogive",
+      "component": "LoaderOgive",
+      "category": "geometry",
+      "technique": "mixed",
+      "order": 57,
+      "title": "Ogive",
+      "tags": [
+        "vault",
+        "architecture",
+        "groin",
+        "shell",
+        "ribs",
+        "construction"
+      ],
+      "beats": 6,
+      "colors": [
+        {
+          "part": "Courses",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/geometry/ogive.tsx",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

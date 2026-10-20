@@ -1,0 +1,27 @@
+---
+title: Transitions
+description: "Animate state changes in your components, from labels and selections to lists and pages."
+---
+
+Use these transitions for changing labels, selections, lists and views. You supply the appearance and accessible behavior. Each transition supports interruption, follows Speed and has a reduced-motion state. They also power `@youj/react`.
+
+<Cards>
+  <Card title="Sliding Indicator" href="/docs/motion/sliding-indicator">A highlight that glides to the selected item of any group, found from the attributes the items already carry.</Card>
+  <Card title="Morph Label" href="/docs/motion/morph-label">Content that crossfades between states while its box morphs to the new width.</Card>
+  <Card title="Collapse" href="/docs/motion/collapse">Height-auto disclosure that reverses from wherever it is.</Card>
+  <Card title="Content Swap" href="/docs/motion/content-swap">A skeleton that resolves into the content it stood in for.</Card>
+  <Card title="Presence List" href="/docs/motion/presence-list">List items and table rows that enter, leave and reorder without jumps.</Card>
+  <Card title="Page Transition" href="/docs/motion/page-transition">Fade-through, slide, clip reveal and curtain for routes and views.</Card>
+</Cards>
+
+## Where they're used
+
+| Transition | For example, in `@youj/react` |
+| --- | --- |
+| Sliding Indicator | [Tabs](/docs/components/tabs), [Toggle Group](/docs/components/toggle-group), [Dropdown Menu](/docs/components/dropdown-menu), [Command](/docs/components/command), [Pagination](/docs/components/pagination), [Navigation Menu](/docs/components/navigation-menu), [Sidebar](/docs/components/sidebar) |
+| Morph Label | [Async Button](/docs/components/button#async-actions), through [Async Feedback](/docs/components/async-feedback) |
+| Collapse | [Alert](/docs/components/alert) dismissal, [Field](/docs/components/field) errors, [Data tables](/docs/blocks/tables-and-lists), [Tag Input](/docs/components/tag-input), [Timeline](/docs/components/timeline), [Tree View](/docs/components/tree-view) |
+| Content Swap | [Data tables](/docs/blocks/tables-and-lists) loading, [Stat Card](/docs/components/stat-card) |
+| Presence List | [Data tables](/docs/blocks/tables-and-lists) rows, [Notification Center](/docs/components/notification-center), [Prompt Input](/docs/components/chat/prompt-input) |
+
+For Base UI's own Collapsible, Accordion, popovers and dialogs, use the CSS [Overlay presets](/docs/motion/presets) instead. [Composing components](/docs/guides/composing-components) builds a full component from these.

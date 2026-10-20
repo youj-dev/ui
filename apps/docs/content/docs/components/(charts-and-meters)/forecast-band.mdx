@@ -1,0 +1,132 @@
+---
+title: Forecast Band
+description: "Show a running total’s forecast range and when it may cross a budget."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="forecast-band/demo" height={380} />
+
+September cloud spend as a running total, with a forecast range that crosses the budget and a button to change the daily pace.
+
+</Story>
+
+<Story id="within-budget" label="Within budget">
+
+<ComponentPreview name="forecast-band/within-budget" height={340} />
+
+An ad spend forecast whose range stays under the budget line, drawn in a different tone.
+
+When the forecast stays under the line there's no marker, and the summary says so. The range can still reach past the budget: that's the risk, drawn honestly.
+
+</Story>
+
+<Story id="scenario" label="Scenario">
+
+<ComponentPreview name="forecast-band/scenario" height={380} />
+
+An API bill on pace to cross its budget, with a second path for moving batch jobs to a cheaper tier, which lands under the line.
+
+`scenario` draws a second running total from today as a solid line in its own tone (`chart-2` unless you pass one), ending in a dot, with its `label` in the legend. The summary adds where it ends and whether it crosses the budget. Its values cover the same remaining days as `forecast`.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="forecast-band" noImport />
+
+Use a forecast band for a total that only grows through a period (cloud spend, ad spend, API calls against a quota) when the question is where it lands and when it crosses the line. Spend so far is a solid ink line over a faint wash. From today the forecast carries on as a dashed line in its tone, inside its likely range, over a hatched projected area: solid for what's settled, hatched for what isn't, as in the [Hatched Bar](/docs/components/hatched-bar). The budget is a dashed line. If the forecast crosses it, the stretch above the line is hatched in danger and a marker lands on the crossing day, with its flag over the plot. For a budget read as what's left, use an [Limit Meter](/docs/components/limit-meter); for values over time with axes and tooltips, a [Chart](/docs/components/chart).
+
+```tsx
+import { ForecastBand } from '@youj/react'
+
+<ForecastBand
+  // The running total at the end of each elapsed day; the last one is today.
+  actual={[412, 880, 1335 /* … */]}
+  // The forecast running total for each remaining day, with its likely range.
+  forecast={[{ value: 8500, low: 8370, high: 8710 } /* … */]}
+  budget={12000}
+  start="2026-09-01"
+  format={{ style: 'currency', currency: 'USD' }}
+/>
+```
+
+The period runs from `start` for as many days as `actual` and `forecast` hold between them. Its days are named in the locale ("Sep 28"). Without `start`, the crossing is named from today ("in 9 days") and the axis numbers the days. The scale tops out at a round number above the budget and the forecast's high. Pass `max` to hold it still when the data changes, so the axis stays put while the paths morph. For a unit Intl has none for (tickets, kWh), pass `formatValue` instead of `format`: a function that writes every amount and the axis labels.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="actual, forecast, budget… (11)">
+
+### Props
+
+<PropsTable name="ForecastBand" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `forecast-band`, `forecast-band-legend`, `forecast-band-swatch`, `forecast-band-chart` (the image), `forecast-band-axis` (with `data-axis` `x` or `y`), `forecast-band-tick`, `forecast-band-plot`, `forecast-band-data`, `forecast-band-grid`, `forecast-band-art` (the drawing, mirrored in RTL), `forecast-band-actual`, `forecast-band-actual-area`, `forecast-band-actual-line`, `forecast-band-forecast`, `forecast-band-range`, `forecast-band-forecast-line`, `forecast-band-projection`, `forecast-band-overshoot`, `forecast-band-today`, `forecast-band-today-label`, `forecast-band-now`, `forecast-band-budget`, `forecast-band-flag` (the budget's and the crossing's), `forecast-band-flag-name`, `forecast-band-flag-value`, `forecast-band-crossing` (with `data-day`), `forecast-band-marker`, `forecast-band-pulse`, `forecast-band-leader`, `forecast-band-scenario-line`, `forecast-band-scenario-end` and `forecast-band-summary`. The root has `data-state` (`over` or `within`). `tone` sets the forecast's color, a chart color by default, as `--forecast-tone`, and the scenario's tone is `--forecast-scenario-tone`. `--forecast-band-height` sets the plot's height (13rem). The flags and the today chip take the theme's label voice.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal: actual, reveal: forecast, crossing… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal: actual', note: 'when a third of the chart scrolls into view, the spend line and its wash draw in from the start to today (a clip, so nothing stretches)', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Reveal: forecast', note: 'the forecast, its range and the hatch wipe on from today to the period’s end, starting as the actual line lands', duration: 'slow', ease: 'enter' },
+    { moment: 'Crossing', note: 'the marker arrives as the wipe reaches it, and its ring pulses once; the flag fades in over it', spring: 'settle' },
+    { moment: 'New data', note: 'every path morphs to the new values (keep the point counts stable), and the budget line and the marker glide; the ring pulses once more only if the crossing day moves', spring: 'smooth' },
+    { moment: 'No crossing', note: 'the marker and its flag leave', duration: 'fast', ease: 'exit' },
+  ]}
+  reduced="Drawn in place: no draw or wipe, the marker's ring static, new data landing at once."
+/>
+
+#### Reduced motion
+
+Everything is drawn in place. There's no draw, no wipe and no pulse, and new data lands at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Labels and assistive technology">
+
+### Accessibility
+
+- The plot is an `img` named by `label` (by default the labels' "Spend forecast"). It's described by a text summary: what's spent of the budget, the forecast at the period's end and its likely range, and the crossing day ("Crosses budget Sep 28") or "Stays within budget".
+- The legend over the plot is a list of text, so it reads as it looks. The lines, the hatch, the marker and the axes are inside the image.
+- Time runs from the inline start, like the kit's other rulers, so the plot mirrors in RTL. It holds no text; the flags and axis labels stay upright and in their own order.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

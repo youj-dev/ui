@@ -1,0 +1,126 @@
+---
+title: Phone Input
+description: "Enter a phone number with a country picker, live formatting and E.164 storage."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="phone-input/demo" height={260} />
+
+A mobile number field starting with a US number, with the stored E.164 value shown beneath it.
+
+</Story>
+
+<Story id="typing-and-pasting" label="Typing and pasting">
+
+<ComponentPreview name="phone-input/formats" height={260} />
+
+Formatting as you type, and the country switching on a pasted international number.
+
+The national number is formatted from a pattern per country as you type: `(415) 555-0123` in the US, `2079 460958` in the UK, where the pattern groups the national digits without the leading 0. The caret stays after the digit you typed, whatever punctuation the pattern adds, and Backspace over a space or dash deletes the digit before it. Typing or pasting an international number, such as `+44 20 7946 0958` or `0044…`, switches the country by itself.
+
+Formatting is deliberately small: one pattern per country and no carrier rules. Validate strictly on the server, or with a library such as libphonenumber-js, before you rely on a number.
+
+</Story>
+
+<Story id="countries" label="Countries">
+
+<ComponentPreview name="phone-input/countries" height={240} />
+
+A narrowed set of countries.
+
+The starter set, `PHONE_COUNTRIES`, covers 51 countries. Pass `countries` to narrow it to where you operate, or to add your own as `{ code, name, dial, pattern }`, with a `#` per digit in the pattern. `defaultCountry` sets the starting country by ISO code, `US` by default.
+
+`flagOf`, `formatNational` and `parsePhone` are exported for showing and parsing stored numbers elsewhere in your app.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="phone-input" noImport />
+
+Use it wherever you ask for a phone number: a mobile for verification codes, a contact for deliveries, a support callback. People pick a country from a list of flags (type a country's name to jump to it), type the national number in the pattern they know, and your code gets one unambiguous value, `+14155550123`. For a verification code sent to that number, use [Input OTP](/docs/components/input-otp). For a free-form contact field that might hold anything, a plain [Input](/docs/components/input) with `type="tel"` is enough.
+
+```tsx
+import { useState } from 'react'
+import { Field, FieldLabel, PhoneInput } from '@youj/react'
+
+export function MobileNumber() {
+  const [phone, setPhone] = useState('')
+  return (
+    <Field>
+      <FieldLabel>Mobile number</FieldLabel>
+      <PhoneInput value={phone} onValueChange={setPhone} defaultCountry="GB" />
+    </Field>
+  )
+}
+```
+
+The value is E.164: a `+`, the calling code and the national digits, with no spaces. `onValueChange` also passes the chosen `country`, the `national` digits and whether the number is `complete` for that country's pattern, which the demo uses to flag a short number when the field loses focus. Give it a `name` to submit the E.164 value with a form.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (13)">
+
+### Props
+
+<PropsTable name="PhoneInput" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Country list opens, country list closes, hover and focus · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Country list opens', note: 'the Select popup scales from 96% and fades in (`yj-pop`)', duration: 'fast', ease: 'enter' },
+    { moment: 'Country list closes', duration: 'instant', ease: 'exit' },
+    { moment: 'Hover and focus', note: 'the trigger and the field, like every control', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The country list opens and closes at once. Formatting is unchanged."
+/>
+
+#### Reduced motion
+
+The country list appears and disappears at once. Typing, formatting and country detection behave the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- The number is a `type="tel"` input with `autocomplete="tel-national"`, so browsers and password managers can fill it, and phones show the dial pad.
+- The country trigger has its own name, such as "Country, United Kingdom +44", so inside a Field the Field's label names the number and not the country.
+- The country list is a [Select](/docs/components/select): type a country's name to jump to it, arrow through the list and press Enter. Choosing one moves focus back to the number.
+- Flags are decorative and hidden from assistive technology. Each option reads as its country name.
+
+</ReferenceRow>

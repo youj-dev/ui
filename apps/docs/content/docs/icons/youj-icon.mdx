@@ -1,0 +1,185 @@
+---
+title: YoujIcon
+description: "Animate lucide-react icons with the same triggers as Youj icons."
+---
+
+<ComponentPreview name="youj-icon/demo" height={440} />
+
+Use YoujIcon to animate a [lucide-react](https://lucide.dev) icon with hover, mount or loop triggers. When a Youj icon fits, use it for animation designed around that icon’s meaning.
+
+## Installation
+
+<InstallTabs name="youj-icon" />
+
+This integration is optional. Youj icons need no Lucide dependency. To use the Lucide examples below, add it to your app:
+
+```bash
+pnpm add lucide-react
+```
+
+## Usage
+
+Pass the lucide component itself, not an element, and pick an effect.
+
+```tsx
+import { Rocket } from 'lucide-react'
+import { YoujIcon } from '@youj/icons'
+
+export function DeployButton() {
+  return (
+    <button type="button">
+      <YoujIcon icon={Rocket} effect="bounce" size={16} />
+      Deploy
+    </button>
+  )
+}
+```
+
+It plays on hover by default and follows the same trigger rules as Youj's icons: hovering or keyboard-focusing the button bounces the rocket. `size` and `strokeWidth` pass through to the lucide icon.
+
+## Examples
+
+<Examples>
+
+<Example id="effects" label="Effects">
+
+### Effects
+
+Seventeen move the whole glyph, and five animate each stroke's `pathLength`.
+
+| Effect | What it does |
+| --- | --- |
+| `pop` | Squeezes, pops past full size and settles. The default. |
+| `wiggle` | A damped rotation, back and forth. |
+| `spin` | One full turn, always forwards. Two when `strong`. |
+| `nudge` | Out and back along `direction`. |
+| `pulse` | Swells and dims, then returns. |
+| `ring` | Swings from near the top, like a bell. |
+| `bounce` | Two hops, the second smaller. |
+| `flip` | A coin turned once on its vertical axis, with perspective. |
+| `swing` | A pendulum hung from the top edge, dying away. |
+| `float` | Lifts, then bobs for as long as it's active. |
+| `heartbeat` | A strong beat, a softer one, then a long release. |
+| `shake` | A hard horizontal shake that decays, for errors. |
+| `jelly` | Squash and stretch on the ground line. Use it sparingly. |
+| `orbit` | One lap around its own center. |
+| `tilt` | Cocks to one side and holds while active. |
+| `zoom-in` | Dips away and returns from small. On mount, arrives from small. |
+| `zoom-out` | Dips away and lands from large, like a stamp. On mount, arrives from large. |
+| `draw` | Re-traces every stroke. |
+| `draw-in` | Rests undrawn, draws on while active, and retracts when it ends. |
+| `draw-out` | Strokes run out through their ends while active, and grow back after. |
+| `draw-sequence` | Writes the icon one stroke at a time, at a constant pen speed. |
+| `stagger-draw` | A wave through the strokes: each rewinds and redraws in turn, so the icon never goes blank. |
+
+Four effects hold while active instead of playing once: `float`, `tilt`, `draw-in` and `draw-out`. The rest are one-shots. Every effect starts from the icon's current pose, so triggering it again mid-flight carries on from where the icon is instead of jumping.
+
+</Example>
+
+<Example id="intensity" label="Intensity">
+
+### Intensity
+
+`intensity` scales each effect in the way that suits it.
+
+- **Transforms:** the amplitude is 0.55× at `subtle`, 1× at `default` and 1.6× at `strong`.
+- **Draws:** the pace is `base`, `slow` or `deliberate`, and `draw` and `stagger-draw` offset their strokes by the `tight`, `base` or `loose` stagger step. `draw-sequence` takes 1.4, 2 or 2.8 times `deliberate` for the whole icon.
+- **Turns:** `spin` and `flip` turn once, and twice at `strong`.
+
+<ComponentPreview name="youj-icon/intensity" height={300} />
+
+```tsx
+<YoujIcon icon={CircleAlert} effect="shake" intensity="strong" />
+```
+
+</Example>
+
+<Example id="direction" label="Direction">
+
+### Direction
+
+`direction` steers `nudge`: `up`, `down`, `left` or `right`, the default. Left and right follow the reading direction, so under `dir="rtl"` they swap. `orbit` and `tilt` mirror the same way. A glyph that's already mirrored with CSS `scale` isn't flipped twice.
+
+```tsx
+<YoujIcon icon={ArrowRight} effect="nudge" direction="right" />
+```
+
+</Example>
+
+<Example id="triggers" label="Triggers">
+
+### Triggers
+
+YoujIcon takes the same `trigger` values as every Youj icon: `hover` (the default), `mount`, `loop` and `none`. `draw-in` rests undrawn, so it defaults to `mount` and draws on as it appears.
+
+<ComponentPreview name="youj-icon/triggers" height={340} />
+
+A controlled `active` plays the effect each time it turns `true`, and a held effect holds for as long as it stays `true`. That suits effects that answer your app rather than the pointer:
+
+```tsx
+import { CloudUpload } from 'lucide-react'
+import { YoujIcon } from '@youj/icons'
+
+// Bobs while a sync runs, and settles when it ends.
+<YoujIcon icon={CloudUpload} effect="float" active={syncing} />
+```
+
+To replay a one-shot for every event, even when the state stays the same, remount it with a new `key` and let `mount` play it:
+
+```tsx
+// Shakes once for every failed attempt.
+<YoujIcon key={attempts} icon={CircleAlert} effect="shake" trigger="mount" aria-label="Invalid" />
+```
+
+`float` pauses offscreen and in hidden tabs even while `active` or `mount` holds it on.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Props" summary="icon, effect, trigger… (11)">
+
+### Props
+
+<PropsTable name="YoujIcon" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="One-shots, longer one-shots, nudge… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'One-shots', note: 'pop, wiggle, pulse, ring, bounce, shake, jelly, zoom-in, zoom-out', duration: 'deliberate' },
+    { moment: 'Longer one-shots', note: 'heartbeat ×1.25, orbit ×1.4, swing ×1.5', duration: 'deliberate' },
+    { moment: 'Nudge', note: 'out and back', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Spin', note: 'one turn', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Flip', note: 'one turn in 3D', duration: 'deliberate', ease: 'emphasized' },
+    { moment: 'Tilt', note: 'cocks and holds', spring: 'snappy' },
+    { moment: 'Float', note: 'lifts, then bobs on a 3 × deliberate cycle', duration: 'slow', ease: 'enter' },
+    { moment: 'Draws', note: 'the default pace', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Stroke offset', note: 'between strokes at the default intensity', stagger: 'base' },
+    { moment: 'Release', note: 'back to rest when the trigger ends', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The icon stays still and fully drawn. A controlled `draw-in` that's off, or `draw-out` that's on, stays hidden while that state holds."
+/>
+
+#### Reduced motion
+
+The icon stays still and fully drawn, so it reads exactly like the plain lucide icon. A controlled `draw-in` that's off, or `draw-out` that's on, stays hidden, because hidden is the state it describes.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The icon is decorative by default (`aria-hidden`) and never focusable. Inside a labeled button, leave it that way.
+- `aria-label` makes it `role="img"` with that name, for an icon that stands alone and means something, like an error mark.
+- Hover effects also play on keyboard focus of the trigger, so keyboard users see the same feedback.
+- An effect doesn't announce anything. If `shake` reports an error, the error text still has to be in the page, tied to its field.
+
+</ReferenceRow>

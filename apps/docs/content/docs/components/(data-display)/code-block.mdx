@@ -1,0 +1,107 @@
+---
+title: Code Block
+description: "Display highlighted code with a file name or language, optional line numbers and a copy button."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="code-block/demo" height={380} />
+
+A TSX snippet with a filename and line numbers.
+
+The copy button copies `code` exactly. Its name and tooltip are `copyLabel`, "Copy code" by default. Pass `actions` to put your own controls in its place, such as a run button next to a copy button of your own.
+
+</Story>
+
+<Story id="languages" label="Languages">
+
+<ComponentPreview name="code-block/languages" height={380} />
+
+Three blocks: a shell command, a diff and a JSON file.
+
+Highlighting is a small built-in tokenizer: TypeScript and JavaScript (with JSX), C-like languages (Go, Rust, Java, C#, Swift, Kotlin, PHP), Python, Ruby, shell, JSON, CSS, HTML and XML, SQL, YAML and diffs. Anything else shows as plain text. It produces tokens, never HTML, so code from a user or a model can't inject markup. The colors are theme tokens, so they follow the theme in both modes.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="code-block" noImport />
+
+Use a code block to show code someone will read or copy: an install command, a config file, a snippet in a changelog or an empty state. It's the same block the [Chat](/docs/components/chat) renders for fenced code in a model's answer. For code inside a sentence, use [Typography](/docs/components/typography)'s `TypographyInlineCode`.
+
+```tsx
+import { CodeBlock } from '@youj/react'
+
+export function InstallCommand() {
+  return <CodeBlock code="pnpm dlx youj@latest init" language="sh" />
+}
+```
+
+The header shows `filename` when you pass one, with the `language` value beside it as written (`ts`, `sh`), or else that value alone, or `text`. Long lines scroll sideways instead of wrapping, so indentation stays true; the scrollbar appears only when it's needed. `lineNumbers` adds a gutter that holds still while the code scrolls.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="code, language, filename… (8)">
+
+### Props
+
+<PropsTable name="CodeBlock" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Copied, back to rest · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Copied', note: 'the back sheet tucks behind the front one and a check is written on it', value: 'the copy icon’s own choreography' },
+    { moment: 'Back to rest', note: 'after a beat', value: '3 × deliberate' },
+  ]}
+  reduced="The icon swaps to the check at once and back again, with no drawing."
+/>
+
+#### Reduced motion
+
+The copy icon swaps straight to its check and back. Everything else is the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, announcements">
+
+### Accessibility
+
+- The block is a `figure` whose `figcaption` holds the file name or language and the copy button.
+- The code sits in a scroll region named by the file name, or "TypeScript code" and so on, so a keyboard user can scroll a long line.
+- The copy button is named by `copyLabel`. Its tooltip says "Copied" after a copy, and the result is announced politely. A clipboard that refuses (no permission, an insecure page) is announced as "Couldn’t copy", not faked.
+- Line numbers are decorative (`aria-hidden`) and can't be selected, so copying by hand takes only the code.
+
+</ReferenceRow>

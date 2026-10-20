@@ -1,0 +1,155 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/.next",
+      "!**/public",
+      "!**/generated",
+      "!**/*.json",
+      "!**/*.css",
+      "!**/*.md",
+      "!**/*.mdx",
+      "!exports",
+      "!pnpm-lock.yaml",
+      "!labs",
+      "!packages/cli/test/fixtures",
+      "!**/*.html"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 150
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all",
+      "arrowParentheses": "always"
+    }
+  },
+  "assist": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        "recommended": true,
+        "noNoninteractiveTabindex": "off",
+        "useAriaPropsSupportedByRole": "off",
+        "noLabelWithoutControl": "off",
+        "useSemanticElements": "off",
+        "noSvgWithoutTitle": "off",
+        "noStaticElementInteractions": "off",
+        "useFocusableInteractive": "off",
+        "useKeyWithClickEvents": "off",
+        "noAutofocus": "off",
+        "useButtonType": "off",
+        "useValidAriaRole": "off",
+        "useAnchorContent": "off",
+        "useValidAnchor": "off",
+        "noNoninteractiveElementToInteractiveRole": "off",
+        "useHeadingContent": "off",
+        "useValidAriaValues": "off",
+        "useMediaCaption": "off",
+        "noRedundantRoles": "off"
+      },
+      "style": {
+        "recommended": false
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn",
+        "useHookAtTopLevel": "error",
+        "noUnusedVariables": "error",
+        "noUnusedFunctionParameters": "error",
+        "noUnusedPrivateClassMembers": "error",
+        "noUnusedImports": "error",
+        "useParseIntRadix": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off",
+        "useIterableCallbackReturn": "off",
+        "noImplicitAnyLet": "off",
+        "noConfusingVoidType": "off",
+        "noApproximativeNumericConstant": "off",
+        "noTemplateCurlyInString": "off",
+        "noShadowRestrictedNames": "off",
+        "noThenProperty": "off",
+        "noDocumentCookie": "off",
+        "noGlobalIsFinite": "off",
+        "noGlobalIsNan": "off",
+        "noSelfCompare": "off"
+      },
+      "complexity": {
+        "recommended": false
+      },
+      "performance": {
+        "noImgElement": "off",
+        "noAccumulatingSpread": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "error"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "**/*.test.*",
+        "**/*.stories.*",
+        "**/test/**"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useJsxKeyInIterable": "off",
+            "noUnsafeOptionalChaining": "off",
+            "noChildrenProp": "off",
+            "useHookAtTopLevel": "off"
+          },
+          "suspicious": {
+            "noSelfCompare": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/tsdown.config.ts"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useHookAtTopLevel": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "packages/miniatures/src/figures/**"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedFunctionParameters": "off"
+          }
+        }
+      }
+    }
+  ]
+}

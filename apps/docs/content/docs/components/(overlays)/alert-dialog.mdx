@@ -1,0 +1,300 @@
+---
+title: Alert Dialog
+description: "Ask for confirmation before a destructive or hard-to-reverse action."
+aliases: ["confirm", "confirmation", "are you sure"]
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="alert-dialog/demo" height={240} />
+
+A danger-zone row whose Delete button opens a confirmation that names the project and runs the deletion while it waits.
+
+</Story>
+
+<Story id="when-the-work-fails" label="When the work fails">
+
+<ComponentPreview name="alert-dialog/failure" height={200} />
+
+A confirmation whose work rejects, so the dialog stays open and shows the error.
+
+If the promise rejects, the dialog stays open, the confirm button settles back, and the error's message appears as an alert above the actions, beside the choice that caused it. The typed challenge is kept, so trying again takes one press. The phrase and the error clear when the dialog closes.
+
+</Story>
+
+<Story id="type-to-confirm" label="Type to confirm">
+
+<ComponentPreview name="alert-dialog/type-to-confirm" height={260} />
+
+Deleting a project: the consequences with counts, the phrase in a copyable chip, and a confirm that stays disabled until it is typed exactly.
+
+Pass `challenge` for a high-impact delete of a named thing (a project, workspace, repository or account). The phrase shows in a chip with a copy button; the field arms the danger button only on an exact match, case-sensitive, ignoring spaces at either end. Pasting is allowed. Enter does nothing until it matches. `consequences` lists what will be lost, with counts, so the person reads what they are about to do.
+
+```tsx
+<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  destructive
+  title="Delete acme/orion?"
+  consequences={['12 deployments and their logs', '3 custom domains', 'Access for 7 members']}
+  confirmLabel="Delete project"
+  challenge="acme/orion"
+  onConfirm={() => deleteProject(id)}
+/>
+```
+
+</Story>
+
+<Story id="delete-account" label="Delete account">
+
+<ComponentPreview name="alert-dialog/delete-account" height={260} />
+
+An async delete whose first attempt fails: the dialog stays open with the reason and the typed phrase, and the second attempt lands.
+
+</Story>
+
+<Story id="plain-confirm" label="Plain confirm">
+
+<ComponentPreview name="alert-dialog/plain" height={240} />
+
+The plain tier: no `challenge`, so no typing. Focus starts on Cancel. Use it where the action is serious but narrow.
+
+</Story>
+
+<Story id="composing-the-parts" label="Composing the parts">
+
+<ComponentPreview name="alert-dialog/compose" height={220} />
+
+Alert dialogs built from the parts, in the default and `sm` sizes.
+
+`AlertDialogContent` comes in two sizes. The default puts an `AlertDialogMedia` badge beside the title and the actions in a band along the bottom. `size="sm"` centers a short question over two equal buttons. `AlertDialogCancel` closes the dialog and is an outline button by default. `AlertDialogAction` is a [Button](/docs/components/button) and doesn't close anything by itself, so close the dialog from its handler.
+
+</Story>
+
+<Story id="async-actions" label="Async actions">
+
+<ComponentPreview name="alert-dialog/action" height={260} />
+
+A confirm button that runs its own action and plays the whole lifecycle on the button.
+
+Because `AlertDialogAction` is a Button that becomes an [Async Button](/docs/components/button#async-actions) when you pass `onAction` or `status`, it takes `onAction`, and the action's whole lifecycle plays on the button itself. The label morphs to a spinner and `pendingLabel`, then to a drawn check and `successLabel`, or shakes to a cross and `errorLabel`. Close the dialog once success has shown. After an error, keep it open so the person can try again. Flip the switch in the preview to see the failure path.
+
+
+```tsx
+<AlertDialog
+  open={open}
+  // The dialog can't be dismissed while the work runs.
+  onOpenChange={(next) => state !== 'pending' && setOpen(next)}
+>
+  …
+  <AlertDialogAction
+    onAction={rollBack}
+    pendingLabel="Rolling back…"
+    successLabel="Rolled back"
+    errorLabel="Rollback failed"
+    onActionStateChange={(next) => {
+      if (next === 'idle' && state === 'success') setOpen(false)
+      setState(next)
+    }}
+  >
+    Roll back to 3f9c2a1
+  </AlertDialogAction>
+</AlertDialog>
+```
+
+Reach for `ConfirmDialog` first. It holds the dialog through the work and shows failures as text, which suits most confirmations. `onAction` suits a dialog where the result belongs on the button.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="alert-dialog" noImport />
+
+Use Alert Dialog before deleting a project, revoking a key or discarding unsaved work. Unlike [Dialog](/docs/components/dialog), it stays open when you press outside. Reserve confirmation for actions that are hard to reverse. For reversible actions, offer Undo in a [Toast](/docs/components/toast).
+
+`ConfirmDialog` is the whole pattern in one component. Its confirm button says what it does, it stays open while async work runs, and it can ask for a typed phrase before a wide destructive action.
+
+```tsx
+import { useState } from 'react'
+import { Button, ConfirmDialog } from '@youj/react'
+import { TrashIcon } from '@youj/icons'
+
+export function DeleteProject({ project }: { project: Project }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="danger" onClick={() => setOpen(true)}>
+        Delete…
+      </Button>
+      <ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        destructive
+        icon={<TrashIcon />}
+        title={`Delete ${project.name}?`}
+        description="Its deployments and domains go with it. This can’t be undone."
+        confirmLabel="Delete project"
+        challenge={project.name}
+        onConfirm={() => deleteProject(project.id)}
+      />
+    </>
+  )
+}
+```
+
+`destructive` here is a boolean on `ConfirmDialog`; the trigger [Button](/docs/components/button) takes `variant="danger"`.
+
+To lay one out by hand, compose the parts:
+
+```tsx
+import { useState } from 'react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
+} from '@youj/react'
+
+const [open, setOpen] = useState(false)
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogTrigger render={<Button variant="outline" />}>Close editor</AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Discard changes?</AlertDialogTitle>
+      <AlertDialogDescription>Your edits haven’t been saved.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Keep editing</AlertDialogCancel>
+      <AlertDialogAction
+        variant="danger"
+        // The action doesn't close the dialog by itself.
+        onClick={() => {
+          discard()
+          setOpen(false)
+        }}
+      >
+        Discard
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+### Confirm and challenge
+
+Name the action on the button: "Delete project" or "Delete 12 projects", never "OK" or "Yes". The label is the last thing people read before they commit.
+
+`challenge` arms the confirm only once the exact phrase is typed, shown in a copyable chip above the field, and a check draws itself in the field when it matches. Reserve it for actions that are destructive and wide, like a bulk delete or anything with a name. On a small, common action it's friction that people learn to rush.
+
+`onConfirm` decides how the dialog closes:
+
+- A plain function runs and the dialog closes.
+- A function that returns a promise keeps the dialog open while it runs. The confirm button shows a spinner and announces `pendingLabel`, Cancel and Escape are held, and the dialog closes when the promise resolves.
+- `loading` forces the busy state, for work that something else drives.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="open, onOpenChange, title… (30)">
+
+### Props
+
+#### ConfirmDialog
+
+<PropsTable name="ConfirmDialog" />
+
+#### AlertDialogContent
+
+<PropsTable name="AlertDialogContent" />
+
+#### AlertDialogAction
+
+`AlertDialogAction` takes every [Button](/docs/components/button) prop, including the async ones.
+
+<PropsTable name="AlertDialogAction" />
+
+#### AlertDialogMedia
+
+<PropsTable name="AlertDialogMedia" />
+
+`AlertDialogCancel` takes Base UI's `AlertDialog.Close` props plus Button's `variant` (default `outline`) and `size`. `AlertDialog`, `AlertDialogTrigger`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogOverlay` and `AlertDialogPortal` pass their props through to Base UI. `AlertDialogHeader` and `AlertDialogFooter` are plain `div`s.
+
+</ReferenceRow>
+
+<ReferenceRow title="Touch" summary="On a touch device an alert dialog stays a centered alert, the way a…">
+
+### Touch
+
+On a touch device an alert dialog stays a centered alert, the way a phone's own alerts are. Unlike [Dialog](/docs/components/dialog), it doesn't become a sheet and can't be pulled away: it's asking a question, and a swipe isn't an answer. Its actions stack at full width with the primary one on top, each at least 44px tall, and show the same press feedback as every button. The small size keeps its two buttons side by side. Nothing in it depends on hover.
+
+Opened by a tap, focus goes to the alert itself rather than to Cancel or a challenge field, so the on-screen keyboard comes up only when someone taps the field.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Enter, exit, scrim… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Enter', note: 'rises 6px and scales up from .96 as it fades in (`yj-dialog`)', duration: 'base', ease: 'enter' },
+    { moment: 'Exit', duration: 'fast', ease: 'exit' },
+    { moment: 'Scrim', note: 'fades in, then out on `fast` (`yj-backdrop`)', duration: 'base', ease: 'standard' },
+    { moment: 'Challenge match', note: 'the check draws itself in the field, then settles', duration: 'slow', ease: 'emphasized', spring: 'settle' },
+    { moment: 'Async label', note: '`AlertDialogAction` with `onAction`: the label and the button width morph together', spring: 'snappy' },
+    { moment: 'Error shake', note: '4, 3 and 2px, then home', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="Opens and closes instantly. The check appears drawn, spinners hold still, and an async label swaps without a morph or a shake, with its pending text in place of the spinner."
+/>
+
+#### Reduced motion
+
+The dialog appears and leaves at once. Everything that reports progress still does, without moving: the challenge's check appears already drawn, a pending confirm shows a still spinner, and `onAction` swaps its label for text, with no morph and no shake.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The popup has `role="alertdialog"`. `AlertDialogTitle` names it and `AlertDialogDescription` describes it, so screen readers read the question and its consequence together.
+- In `ConfirmDialog`, focus starts on the least destructive control: Cancel, or the challenge field when there is one. When you compose the parts, focus starts on the first focusable control in the popup, so keep `AlertDialogCancel` before the action, as in the snippets. Enter from the field confirms once the phrase matches. Opened by a tap, focus starts on the alert itself.
+- A press outside neither closes the dialog nor moves focus. Escape cancels, unless async work is running. Focus returns to the element that opened it.
+- While a confirm runs, the button keeps focus and sets `aria-busy`, and `pendingLabel` is announced. A failure is announced assertively through `role="alert"`. A matching phrase is announced as "Phrase matches".
+- The media badge is decorative (`aria-hidden`), so put the meaning in the title.
+
+</ReferenceRow>

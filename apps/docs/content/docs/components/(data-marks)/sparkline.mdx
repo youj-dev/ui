@@ -1,0 +1,114 @@
+---
+title: Sparkline
+description: "Show a compact trend beside a metric or inside a table row."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="sparkline/demo" height={260} />
+
+A requests-per-minute figure with its sparkline, and a button that generates new data.
+
+</Story>
+
+<Story id="in-a-list" label="In a list">
+
+<ComponentPreview name="sparkline/rows" height={220} />
+
+A list of services, each with a trend line and no area wash.
+
+Without `label` a sparkline is decorative and hidden from assistive technology, which is right when the number beside it already says what matters. `area={false}` drops the wash for tight rows, and `color` takes any CSS color, best one of the chart colors.
+
+</Story>
+
+<Story id="comparable-scales" label="Comparable scales">
+
+<ComponentPreview name="sparkline/domain" height={200} />
+
+CPU sparklines for several regions, all on a 0 to 100 domain.
+
+Each sparkline scales to its own range by default, which makes a flat line look as busy as a steep one. Give sparklines that sit side by side the same `domain` so their heights compare.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="sparkline" noImport />
+
+Use a sparkline to show the shape of recent values next to the number they lead to: requests per minute beside the current rate, a week of revenue in a KPI, a trend in each row of a list. It has no axes, no tooltip and no legend, so it says "rising" or "falling" and nothing more. When people need to read values off it, use a [Chart](/docs/components/chart). Inside a KPI card, pass it to [Stat Card](/docs/components/stat-card)'s `chart` slot.
+
+```tsx
+import { Sparkline } from '@youj/react'
+
+<Sparkline data={[12, 14, 13, 17, 16, 19, 22]} className="h-8 w-32" label="Signups this week, rising" />
+```
+
+It stretches to its box, so give it a height (the default is `h-8`) and a width from its container. The stroke keeps its width at any size, and the curve is monotone: it passes through every point and never overshoots one, so a flat stretch stays flat.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="data, color, area… (6)">
+
+### Props
+
+<PropsTable name="Sparkline" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, end dot lands, data change… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the curve and its wash wipe in from the start when 40% of it scrolls into view, once', duration: 'deliberate', ease: 'enter' },
+    { moment: 'End dot lands', note: 'scales in as the line reaches it, 70% of the way through the reveal', spring: 'settle' },
+    { moment: 'Data change', note: 'the curve and wash morph point by point; a change mid-morph continues from where it is', duration: 'slow', ease: 'standard' },
+    { moment: 'Dot follows', note: 'glides to the new latest value', duration: 'slow', ease: 'standard' },
+  ]}
+  reduced="Drawn in place with its dot, and data changes jump to the new shape."
+/>
+
+#### Reduced motion
+
+The line, its wash and the dot are drawn in their final place, with no reveal, and new data replaces the old shape at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- With `label` it's an image (`role="img"`) named by the label. Write the label as the takeaway: "Revenue, last 30 days, rising".
+- Without `label` it's `aria-hidden`. Say what it shows in the text beside it.
+- A trend reads left to right in every text direction, so the sparkline sets `dir="ltr"` on itself.
+
+</ReferenceRow>

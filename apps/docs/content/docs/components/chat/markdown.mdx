@@ -1,0 +1,111 @@
+---
+title: Chat Markdown
+description: "Render streaming Markdown with highlighted code, tables and a writing caret."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="markdown/demo" height={560} />
+
+Markdown streaming in token by token: a heading, code, a table, a quote and a link.
+
+Paragraphs, headings, nested lists (ordered or not), fenced code, blockquotes, GFM tables and rules; inline code, strong, emphasis, strikethrough, links, autolinks and numbered citations (`[1]`, when `sources` is set). Code blocks are highlighted, labeled with their language and have a copy button, and wide code and tables scroll sideways inside their own box.
+
+`headingLevel` places the answer in the page's outline. Models often start at `##`, so the answer's top heading becomes `headingLevel` (default 2) whatever level the model used, and deeper ones follow.
+
+With `streaming`, each word fades up as it arrives, and a caret marks where writing happens. The caret holds solid while tokens flow, and blinks only when the stream pauses. Unfinished syntax renders optimistically: `**bol` is already bold and an unclosed fence is already code, while a last line that can't be read yet (a lone `-`, `#` or `|`) waits a few characters. Nothing flickers from raw asterisks into formatting.
+
+When a stream is cut off, by a stop or an error, set `incomplete`: the unfinished end keeps rendering as it did while streaming, without the caret.
+
+</Story>
+
+<Story id="safe-by-construction" label="Safe by construction">
+
+<ComponentPreview name="markdown/safety" height={300} />
+
+A model's HTML, a javascript: link, an image and a script tag, none of which becomes markup.
+
+The source is parsed into data and rendered as React elements, never as HTML, so an answer can't inject markup. Raw HTML stays text, images become links, and a link is only a link when its URL is `http(s)` or `mailto`. `safeHref` and `markdownToPlainText` are exported for the same rules elsewhere.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="chat" imports="ChatMarkdown" noImport />
+
+Chat Markdown renders a model's answer while it's still arriving. Every assistant [Chat Message](/docs/components/chat/message) uses it for its `content`, and [reasoning](/docs/components/chat/thinking) uses it too. Use it on its own for any other place a model writes: a summary panel, an inline explanation, a generated description.
+
+```tsx
+import { ChatMarkdown } from '@youj/react'
+
+<ChatMarkdown content={answer.stream} streaming={answer.streaming} />
+```
+
+`content` is a string or a `ChatTextSource`. With a source, a token re-renders only this component, and inside it only the block the token lands in: blocks are memoised by their source text.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="content, streaming, incomplete… (5)">
+
+### Props
+
+<PropsTable name="ChatMarkdown" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Word arrives, caret blink, link hover · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Word arrives', note: 'fades up once as it mounts (`@starting-style`), and costs nothing after', duration: 'slow', ease: 'enter' },
+    { moment: 'Caret blink', note: 'only after the stream pauses; one on-off cycle per 2 × deliberate', duration: 'deliberate', ease: 'linear' },
+    { moment: 'Link hover', note: 'the underline takes the accent', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="No fades and no blink. The text is revealed in whole sentences and lines rather than word by word."
+/>
+
+#### Reduced motion
+
+Words don't fade and the caret doesn't blink. A streaming answer is shown up to its last finished sentence or line, so it arrives in calm chunks instead of a constant trickle. `revealedUnderReducedMotion(text)` is that rule, exported.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, announcements">
+
+### Accessibility
+
+- Output is real structure: headings at the level you choose, lists, tables with header cells, and code in `<pre><code>`.
+- Code blocks and wide tables scroll inside a named scroll area ("TypeScript code", "Table"), which is a tab stop once it overflows.
+- The caret and the fades are decoration. Inside a [Chat Message List](/docs/components/chat/message-list), the finished answer is announced once as plain text, never token by token.
+
+</ReferenceRow>

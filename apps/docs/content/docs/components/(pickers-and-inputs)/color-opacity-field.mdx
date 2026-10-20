@@ -1,0 +1,80 @@
+---
+title: Color Opacity Field
+description: "A color and its opacity as one control: a swatch, a hex field and a percentage."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="color-opacity-field/demo" height={260} />
+
+A fill color with its opacity, and the color it makes below.
+
+The swatch opens a [Color Picker](/docs/components/color-picker) in a popover. The hex field shows six digits without the `#`; paste or type what you have. The percentage next to it is a [Scrub Number Field](/docs/components/scrub-number-field): drag its drop, type a value, or use the arrow keys.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="color-opacity-field" noImport />
+
+Use it where a color comes with an alpha, as in a shadow, a stroke or a fill. For a color alone, use a [Color Picker](/docs/components/color-picker).
+
+```tsx
+import { useState } from 'react'
+import { ColorOpacityField, type ColorOpacityValue } from '@youj/react'
+
+export function Fill() {
+  const [fill, setFill] = useState<ColorOpacityValue>({ color: '#4c6fff', opacity: 80 })
+  return <ColorOpacityField value={fill} onValueChange={setFill} aria-label="Fill" />
+}
+```
+
+The value is `{ color, opacity }`: `color` is `#rrggbb` and `opacity` runs from 0 to 100. The hex field reads 3, 4, 6 and 8 digits, with or without the `#`: `f80`, `#ff8800`, `ff880080`. The 4- and 8-digit forms carry an alpha, which sets the opacity. A paste that parses is applied at once; typed text commits on Enter or blur, is marked invalid while it isn't a color, and is put back on blur or Escape.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange, size, disabled…">
+
+### Props
+
+<PropsTable name="ColorOpacityField" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Group, names, keyboard">
+
+### Accessibility
+
+- The control is a `group` named by `aria-label` (default "Color"). Inside it, the swatch button says "Color, #4c6fff", the hex field is "Hex color" and the percentage is "Opacity".
+- The hex field is a text field: Enter commits, Escape reverts, and invalid text sets `aria-invalid`.
+- The opacity is a spinbutton with the keys of a [Scrub Number Field](/docs/components/scrub-number-field#accessibility).
+- The popover is the Color Picker's, so it keeps its keyboard support and becomes a sheet on touch.
+
+</ReferenceRow>

@@ -1,0 +1,119 @@
+---
+title: Progress Path
+description: "Show progress through ordered sections of items, with mastery and section milestones, such as a course."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="progress-path/demo" height={560} />
+
+Two sections of lessons with a checkpoint each, where Finish lesson moves the current lesson on.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="progress-path" noImport />
+
+Use a progress path for anything learned in order: a language course, an onboarding program, a training plan. Lessons are nodes on a trail that swings across the column, grouped into sections that each take a chart color and close on a trophy milestone. Each node wears a segmented ring, one segment per level of mastery. Lessons before the current one are done, the current one is an ink disc glowing in its section's color with a Start callout beside it, and the rest are locked. The trail is solid behind you and dotted ahead. For steps of a form, use a [Stepper](/docs/components/stepper); for a pipeline's stages, a [Stage Rail](/docs/components/stage-rail).
+
+```tsx
+import { ProgressPath, type ProgressPathSection } from '@youj/react'
+
+const sections: ProgressPathSection[] = [
+  {
+    id: 'basics',
+    eyebrow: 'Section 1',
+    title: 'Basics',
+    lessons: [
+      { id: 'greetings', title: 'Greetings', detail: '6 min', mastery: 4 },
+      { id: 'numbers', title: 'Numbers', detail: '7 min', mastery: 1 },
+      { id: 'basics-check', title: 'Basics checkpoint', milestone: true },
+    ],
+  },
+]
+
+<ProgressPath sections={sections} current="numbers" onSelect={(lesson) => open(lesson.id)} />
+```
+
+`current` is the lesson up next: those before it are done and those after it locked; `null` means the course is finished. Leave it out and the first lesson not fully mastered is up next. `mastery` counts the levels a lesson has mastered, out of `levels` (4 by default), and a done lesson at full mastery wears a crown. `detail` adds a mono line beside a lesson's title, and `milestone` draws a lesson as a trophy that closes its section. Sections take the chart colors in turn, or their own `tone`.
+
+The trail swings wider as the column grows, and lesson titles sit beside their nodes once it's at least 32rem wide; narrower, the nodes carry the path alone. `onSelect` opens a lesson that's done or current. A locked one shakes its head and plays the error cue.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="sections, current, levels… (7)">
+
+### Props
+
+<PropsTable name="ProgressPath" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `progress-path`, `progress-path-trail`, `progress-path-walked` (with `data-walked`), `progress-path-section`, `progress-path-head`, `progress-path-eyebrow`, `progress-path-title`, `progress-path-value`, `progress-path-node` (with `data-state` and `data-milestone`), `progress-path-glow`, `progress-path-ring`, `progress-path-level` (with `data-state`), `progress-path-disc`, `progress-path-label` (with `data-side`) and `progress-path-callout`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, current moves on, current lesson… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'the walked trail draws itself, segment by segment', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Current moves on', note: 'the next segment draws and the Start callout glides after it', duration: 'slow', ease: 'emphasized' },
+    { moment: 'Current lesson', note: 'a slow ping from its glow while the path is on screen', duration: 'deliberate', ease: 'exit' },
+    { moment: 'Locked lesson pressed', note: 'the node shakes its head', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="The trail is drawn in place, the callout jumps, and there's no ping or shake."
+/>
+
+#### Reduced motion
+
+The trail is drawn in place, the callout jumps to the next lesson, and the current lesson glows without pinging.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA">
+
+### Accessibility
+
+- The path is a group named by `label` (default: the labels' "Progress path") and described by how to move through it; each section is named by its title.
+- Each lesson is a button named by its title, its place in the course, its status and its mastery ("Numbers, lesson 2 of 3, up next, mastery 1 of 4"). The current one has `aria-current="step"`, and locked ones are `aria-disabled`.
+- The lessons are one tab stop, starting on the current lesson. Up and down walk the path, left and right do too (mirrored in RTL), and Home and End jump to its ends.
+- A section's progress is spoken with its count ("1 of 3 lessons").
+- Its words come from the labels (`progressPath`, `progressPathHint`, `lessonItem`, `milestoneItem`, `lessonDone`, `lessonCurrent`, `lessonLocked`, `lessonStart`, `sectionProgress`), translated by the language packs.
+
+</ReferenceRow>

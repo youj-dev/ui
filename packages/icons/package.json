@@ -1,0 +1,87 @@
+{
+  "name": "@youj/icons",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "(alpha) Animated icons for React: the Youj icon set, the icon engine (createIcon, useIconState, IconSwap) and YoujIcon for lucide.",
+  "keywords": [
+    "alpha",
+    "icons",
+    "animated-icons",
+    "svg",
+    "react",
+    "morph",
+    "lucide",
+    "youj"
+  ],
+  "homepage": "https://www.youj.dev/docs/icons",
+  "bugs": {
+    "url": "https://github.com/youj-dev/ui/issues"
+  },
+  "author": {
+    "name": "louis-henry",
+    "url": "https://www.youj.dev"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youj-dev/ui.git",
+    "directory": "packages/icons"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./styles.css": "./dist/styles.css",
+      "./package.json": "./package.json"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage.enabled",
+    "lint:tokens": "node ../core/scripts/check-tokens.mjs",
+    "icons:generate": "node scripts/generate-icons.mjs",
+    "icons:check": "node scripts/generate-icons.mjs --check",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "check:treeshake": "node scripts/check-treeshake.mjs",
+    "verify": "pnpm typecheck && pnpm lint:tokens && pnpm icons:check && pnpm registry:check && pnpm test && pnpm build && pnpm check:treeshake"
+  },
+  "devDependencies": {
+    "@youj/core": "workspace:*",
+    "lucide-react": "^1.48.0",
+    "motion": "^13.4.4"
+  },
+  "peerDependencies": {
+    "@youj/core": "workspace:*",
+    "motion": "^13.4.4 || ^14",
+    "react": "^19",
+    "react-dom": "^19",
+    "tailwindcss": "^4"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  }
+}

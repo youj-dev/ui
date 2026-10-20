@@ -1,0 +1,36 @@
+{
+  "extends": "../../tsconfig.library.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@youj/core": [
+        "../core/src/index.ts"
+      ],
+      "@youj/core/*": [
+        "../core/src/*"
+      ],
+      "@youj/icons": [
+        "../icons/src/index.ts"
+      ],
+      "@youj/icons/*": [
+        "../icons/src/*"
+      ],
+      "@youj/illustrations": [
+        "../illustrations/src/index.ts"
+      ],
+      "@youj/illustrations/*": [
+        "../illustrations/src/*"
+      ],
+      "@youj/react/*": [
+        "../ui/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "lab",
+    "scripts",
+    "packs.config.ts",
+    "vitest.config.ts"
+  ]
+}

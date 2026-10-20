@@ -1,0 +1,15 @@
+{
+  "title": "Navigation & app chrome",
+  "pages": [
+    "command-palette",
+    "mega-menu",
+    "stepper-nav",
+    "wizard",
+    "app-header",
+    "app-page",
+    "sidebar",
+    "account-menu",
+    "workspace-switcher",
+    "notification-center"
+  ]
+}

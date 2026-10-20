@@ -1,0 +1,114 @@
+---
+title: Waveform Scrubber
+description: "Navigate a recording’s waveform with chapters, keyboard controls and clip selection."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="waveform-scrubber/demo" height={260} />
+
+A 24-minute recording with four chapters that you can drag to seek, or clip.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="waveform-scrubber" noImport />
+
+Use a waveform scrubber as the seek bar of a podcast, a voice note, a lecture or a workout recording, anywhere the shape of the sound helps people find their place. The loudness samples you pass become bars: played in ink, the rest dim. Chapter starts are ticks with their titles above, a ruler of minutes runs underneath, and hovering shows the time and chapter under the pointer. Drag anywhere on the wave, or use the keys: a Base UI slider does the work underneath. With `clip` it becomes a range with two accent handles, zoomed to a window round the clip, for sharing a moment. It decodes no audio: bring the samples from your pipeline, or decode a file once and store them.
+
+```tsx
+import { WaveformScrubber } from '@youj/react'
+
+<WaveformScrubber
+  // Loudness from 0 to 1, spread evenly over the recording.
+  peaks={peaks}
+  duration={audio.duration}
+  value={time}
+  onValueChange={setTime}
+  onValueCommitted={(t) => (audio.currentTime = t)}
+  chapters={[
+    { start: 0, title: 'Cold open' },
+    { start: 192, title: 'The brief' },
+  ]}
+/>
+```
+
+`duration` is the recording's length in seconds and `value` the playhead. `onValueChange` follows the drag frame by frame; `onValueCommitted` fires when a drag or a key press ends, the moment to seek a real player. The samples are resampled to the bars that fit (one every 5px, or `bars` of them), each bar taking the loudest sample in its slice so short peaks survive; there are never more bars than samples.
+
+`clip` (a `[start, end]` range in seconds) turns the scrubber into two handles in the accent, with `onClipChange` reporting each move. While it clips, the wave zooms to a window round the range with at least a minute either side, and the handles step by the second. `formatTimecode(seconds, locale)` formats times the way the scrubber does (0:42, 12:34, 1:02:10), for the labels around it. The [Podcast](/docs/blocks/media) block puts it together with a player, a speed control and chapter rows.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="peaks, duration, value… (15)">
+
+### Props
+
+<PropsTable name="WaveformScrubber" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `waveform-scrubber` (with `data-clipping`), `waveform-chapters`, `waveform-chapter` (with `data-current`), `waveform-slider`, `waveform-control`, `waveform-track`, `waveform-bars`, `waveform-chapter-tick`, `waveform-range`, `waveform-hover`, `waveform-value`, `waveform-playhead`, `waveform-handle` (with `data-kind`), `waveform-ruler` and `waveform-time`. In Bezel the chapter titles are mono capital eyebrows and the times are mono. In a narrow scrubber only the chapter playing keeps its title.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="First view, scrub · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'First view', note: 'the wave rises from its midline as it’s revealed from the start', duration: 'deliberate', ease: 'enter' },
+    { moment: 'Scrub', note: 'the playhead stays under the finger, never eased; its dot grows while held', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="The wave is drawn in place."
+/>
+
+#### Reduced motion
+
+The wave is drawn in place from the first frame; scrubbing is unchanged, since it never animates.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard">
+
+### Accessibility
+
+- The playhead is a slider named by `label` (default: the labels' "Seek"), whose value is spoken as the time, the length and the chapter ("12:34 of 42:10, Night shift").
+- Arrow keys step by `step` seconds (5), Page Up and Page Down ten times as far, and Home and End jump to the ends. A clip's handles, "Clip start" and "Clip end", step by the second.
+- With sound on, crossing into another chapter while scrubbing plays `tick` (`sound={false}` keeps it quiet).
+- Time runs left to right in every script, like a tape, so the wave keeps its direction under RTL, the arrow keys included; the text around it follows the page.
+- Its words come from the labels (`waveformSeek`, `waveformPosition`, `waveformClipStart`, `waveformClipEnd`), translated by the language packs.
+
+</ReferenceRow>

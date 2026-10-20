@@ -1,0 +1,193 @@
+---
+title: Sound
+description: "Add interface sounds for actions and feedback. Audio loads only when sound is enabled and unmuted."
+sidebarTitle: Overview
+status: new
+---
+
+<TopicLoop topic="sound" />
+
+Youj components can play a short, quiet sound as their motion starts, so a press, a toggle or a new toast can be heard as well as seen. Press a key below to hear each sound in the default pack.
+
+<SoundStrip />
+
+Add sound to actions and feedback such as presses, selections, outcomes, toasts and dialogs. Components emit a **cue**, an event that `@youj/sound` can play. **Beacon** is the pack to start with, and five more built-in packs (Halo, Rill, Glyph, Zephyr and Glass) are one prop away.
+
+The sounds are rendered offline and checked for loudness and harshness. Audio downloads only when sound is enabled and unmuted. Without a `sound` prop, cues play nothing and no sound code is downloaded.
+
+## Installation
+
+```bash
+pnpm add @youj/sound
+```
+
+Or `npx youj add sound`, which installs the package in an app on the packages and copies the source in an app on the registry.
+
+## Usage
+
+Give `YoujProvider` a pack with its `sound` option:
+
+```tsx title="app/providers.tsx"
+'use client'
+
+import type { ReactNode } from 'react'
+import { YoujProvider } from '@youj/core'
+import { beacon } from '@youj/sound'
+
+export function Providers({ children }: { children: ReactNode }) {
+  return <YoujProvider sound={beacon}>{children}</YoujProvider>
+}
+```
+
+A pack is an object of functions, so in the Next.js App Router it must reach the provider from a Client Component: that's why the file starts with `'use client'`, and the root layout (a Server Component) renders `<Providers>` instead of passing `sound={beacon}` itself. A theme such as `theme={basalt}` is plain data and can stay on the layout's provider. `npx youj add sound` writes this file and wires the layout for you. Vite and Pages Router apps need no directive.
+
+That's all the components need. Button, Switch, Checkbox, Toggle, Tabs, Segmented Control, Dialog, Sheet, Toaster and the copy buttons play their cue as their motion starts. To silence one, pass `sound={false}`, as in `<Switch sound={false} />`. To silence part of the page, nest a `<YoujProvider sound={false}>` around it.
+
+## Sound builder
+
+Preview interface sounds, choose a sound for each cue and export your pack as code.
+
+<SoundBuilder />
+
+### Your files
+
+Add a WAV, MP3, OGG or M4A file to a cue, or drop it onto the cue. The builder decodes it in your browser without uploading it. It mixes the audio to mono, trims silence, adjusts loudness and fades the tail.
+
+Loudness uses a K-weighted meter over the loudest 100 ms, with a peak limit below −1 dBTP. You’ll see warnings for sounds longer than 400 ms, clipping, or files that cannot match the pack’s loudness without clipping.
+
+Your picks among the built-in sounds are in this page's link, so you can share them or come back to them. Your files stay in the tab: download the .zip to keep them.
+
+### Use the export
+
+The export is `lib/sounds.ts`, a [`definePack`](/docs/sound/custom-sounds) that names each built-in pick by its candidate (`candidates.tap.halo`) and each of your files by the path it's served from (`/sounds/tap.wav`). The .zip adds your files as WAV, which every browser decodes, under `public/sounds/`, and a README. Copy them into your app and give the pack to the provider:
+
+```tsx
+import { YoujProvider } from '@youj/core'
+import { sounds } from '@/lib/sounds'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <YoujProvider sound={sounds}>{children}</YoujProvider>
+}
+```
+
+Only the sounds you changed load, each in a chunk of its own, and only once sound is on. The cues you left alone play the Beacon pack.
+
+### How the candidates are made
+
+Each cue has a candidate from each built-in pack, the default first. **Beacon**, the default, is pure, dry sine pings with a natural decay. **Halo** is soft chord swells with a slow shimmer. **Rill** is round droplets that rise and fall. **Glyph** is square pulses and quick arpeggios. **Zephyr** is a tiny blown pipe in a quiet room. **Glass** is a glass rod or bead, struck hard, in a small bright room. Glass's error is **Classic**, the first palette's two falling knocks. None is a sample: every sound is rendered by code in `packages/sound/scripts`, from seeded generators, so a render is the same on every machine.
+
+The candidates of a cue are matched in loudness, stay under −1 dBTP after encoding, start and end at silence, and keep their energy out of the 2–5 kHz band where interface sounds turn shrill. The pitched sounds share the notes of E minor pentatonic, so any two that overlap agree.
+
+## Examples
+
+<Examples>
+
+<Example id="let-people-mute-it" label="Let people mute it">
+
+### Let people mute it
+
+Offering sound is the app's choice, and muting it is the user's. `useSound()` (from `@youj/core`) reads and sets the mute from anywhere under the provider.
+
+To start muted, so sound is there when someone turns it on, pass `defaultMuted` in the provider's `sound` object: `<YoujProvider sound={{ pack: beacon, defaultMuted: true }}>`. Without it, sound is on as soon as a pack is installed. The provider remembers the choice: once someone mutes or unmutes, their choice is stored in the browser and wins over `defaultMuted` on their next visit.
+
+To keep the choice yourself instead, such as in a user's settings on your server, pass it as `muted` in the `sound` object and save it from `onMutedChange`:
+
+```tsx
+'use client'
+
+import { useState, type ReactNode } from 'react'
+import { YoujProvider, useSound } from '@youj/core'
+import { beacon } from '@youj/sound'
+import { Switch } from '@youj/react'
+
+export function Providers({ children }: { children: ReactNode }) {
+  const [muted, setMuted] = useState(false) // load it from your settings
+  return (
+    <YoujProvider sound={{ pack: beacon, muted, onMutedChange: setMuted }}>
+      {children}
+    </YoujProvider>
+  )
+}
+
+export function SoundSetting() {
+  const sound = useSound()
+  return <Switch aria-label="Interface sounds" checked={!sound.muted} onCheckedChange={(on) => sound.setMuted(!on)} />
+}
+```
+
+</Example>
+
+<Example id="the-cues" label="The cues">
+
+### The cues
+
+| Cue | Plays when | In the Beacon pack |
+| --- | --- | --- |
+| `tap` | A button is pressed. | One short, dry sine ping at E6. |
+| `select` | A tab or segment is chosen. | A lighter ping at A6, quieter than the tap. |
+| `toggleOn`, `toggleOff` | A switch, checkbox or toggle turns on or off. | Two quick pings stepping up E5–B5, or back down and softer. |
+| `success` | An action succeeds, a copy lands, a success toast arrives. | Two pings rising E5–B5, the upper one held a little longer. |
+| `error` | An action fails, an error toast arrives. | Two lower pings falling G4–E4, gently. |
+| `notify` | Any other toast arrives. | One clear ping at A5. |
+| `open`, `close` | A dialog or sheet opens or closes. | Two pings opening up an octave, E5–E6, or folding back down, quieter. |
+| `tick` | A detent in your own controls: a slider or stepper step. | A tiny ping at A6, barely there. |
+
+</Example>
+
+<Example id="packs" label="Packs">
+
+### Packs
+
+Pass any of these as `sound`. Each built-in pack is one instrument across all ten cues, and loads only when it's chosen and sound is on:
+
+| Pack | Character |
+| --- | --- |
+| `beacon` | Pure, dry sine pings with a natural decay: calm and exact. |
+| `halo` | Soft chord swells with a slow shimmer: ambient and warm. |
+| `rill` | Round droplets that rise and fall: playful and wet. |
+| `glyph` | Square pulses and quick arpeggios: precise, retro-modern. |
+| `zephyr` | A tiny blown pipe in a quiet room: airy and pentatonic. |
+| `glass` | Struck glass beads, rods and a small bell: the first default, still available. |
+
+```tsx
+import { YoujProvider } from '@youj/core'
+import { halo } from '@youj/sound'
+
+<YoujProvider sound={halo}>{children}</YoujProvider>
+```
+
+To change a few sounds, or all of them, pick from the built-in candidates or bring your own files in the [Sound builder](#sound-builder), which exports the result as a pack. Or write one with `definePack`: the cues you name play your sounds, and Beacon plays the rest. See [Custom sounds](/docs/sound/custom-sounds).
+
+</Example>
+
+<Example id="the-rules" label="The rules">
+
+### The rules
+
+- **Opt-in, then on.** Nothing plays and nothing downloads without `sound` on `YoujProvider`. Once you set it, sound starts unmuted: every press is audible after the visitor's first gesture, until they mute it (pass `muted` to start muted). The player and the pack's audio load in chunks of their own, and not at all while sound is muted.
+- **Tied to motion.** A sound starts with its animation: a press on pointer down, an outcome as its check draws. Speed never changes its pitch or length.
+- **Silent under reduced motion,** because the sound belongs to the motion. `whenReduced` keeps it, and `motion={false}` silences it too for an app whose sounds carry meaning of their own.
+- **Only after a gesture.** Browsers allow audio once someone has pressed or typed on the page, so nothing plays before that.
+- **Never in a hidden tab.** The audio device is released while the tab is hidden and after half a minute of silence.
+- **Never a machine gun.** A cue can't retrigger within its cooldown, quick repeats play quieter (a held arrow key ticks rather than hammers), and at most four sounds play at once.
+- **Server-safe.** Nothing touches the browser until an effect or an event handler runs.
+
+</Example>
+
+</Examples>
+
+## Reference
+
+<ReferenceRow title="Accessibility" summary="announcements">
+
+### Accessibility
+
+Sound never carries information on its own. Every cue doubles a visible change, such as the thumb moving, the check drawing or the dialog arriving, and, where there is one, an announcement, such as a button's outcome or a toast. Someone who can't hear it, or has muted it, misses nothing. Keep the same rule for your own sounds: play one only alongside a state change that is visible and announced.
+
+<Cards>
+  <Card title="Sound builder" href="/docs/sound#sound-builder" demo="">Every candidate for every cue, or a file of your own: hear them as a set and export a pack.</Card>
+  <Card title="Custom sounds" href="/docs/sound/custom-sounds" demo="">definePack: your sounds for the cues you name, the Beacon pack for the rest.</Card>
+  <Card title="API" href="/docs/sound/api" demo="">YoujProvider's sound options, useSound, definePack, the pack format, and the cue bus for your own components.</Card>
+</Cards>
+
+</ReferenceRow>

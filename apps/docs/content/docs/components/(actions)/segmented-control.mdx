@@ -1,0 +1,133 @@
+---
+title: Segmented Control
+description: "Choose one option from a small set, with the selection always visible."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="segmented-control/demo" height={260} />
+
+A range control that works as a card's header and swaps the visitor total as you pick 24h, 7d, 30d or 90d.
+
+</Story>
+
+<Story id="sizes" label="Sizes">
+
+<ComponentPreview name="segmented-control/sizes" height={260} />
+
+The three sizes beside each other.
+
+`size` is `sm`, `default` or `lg`. Each is the height of the matching control, so a segmented control sits in a row with inputs and buttons of the same size. Icon-only segments need an `aria-label`. Give the control `className="w-full"` to stretch it, and the segments share the width.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="segmented-control" noImport />
+
+Use a segmented control for a small, fixed set of options where one is always chosen and the choice changes a view in place: a time range, a billing period, a layout. It's a thin wrapper over [Toggle Group](/docs/components/toggle-group)'s `segmented` look (plain labels on a hairline, a 2px accent bar under the pressed one) with a simpler contract: the value is one string, and it can't be emptied.
+
+Reach for something else when the shape is different:
+
+- **[Toggle Group](/docs/components/toggle-group)** when several options can be on at once (bold, italic, underline), or when the choice may be cleared.
+- **[Tabs](/docs/components/tabs)** when each option owns a panel of content that the others hide.
+- **[Radio Group](/docs/components/radio-group)** for a choice inside a form that's submitted later.
+- **[Select](/docs/components/select)** when there are more options than fit in a row.
+
+```tsx
+import { SegmentedControl, SegmentedControlItem } from '@youj/react'
+
+export function RangePicker() {
+  const [range, setRange] = useState('7d')
+  return (
+    <SegmentedControl aria-label="Range" value={range} onValueChange={setRange}>
+      <SegmentedControlItem value="24h">24h</SegmentedControlItem>
+      <SegmentedControlItem value="7d">7d</SegmentedControlItem>
+      <SegmentedControlItem value="30d">30d</SegmentedControlItem>
+    </SegmentedControl>
+  )
+}
+```
+
+`onValueChange` receives the pressed segment's value as a string. Pressing the segment that's already pressed does nothing, so there's always a choice. `variant="pill"` sets the segments in a recessed track with a raised key instead, which suits a control that sits inside a capsule or on a well. Leave `defaultValue` out to start with nothing pressed; the first press picks one.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultValue, onValueChange… (8)">
+
+### Props
+
+#### SegmentedControl
+
+<PropsTable name="SegmentedControl" />
+
+It also takes Toggle Group's `size`, `orientation`, `loopFocus` and `disabled`, and the props of a `div`.
+
+#### SegmentedControlItem
+
+<PropsTable name="SegmentedControlItem" />
+
+Each segment takes a `value` and `disabled`, and the props of a `button`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Indicator, indicator appears, press… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Indicator', note: 'glides to the pressed segment and retargets if you press again mid-glide', spring: 'smooth' },
+    { moment: 'Indicator appears', note: 'when a control with no value gets its first', duration: 'fast', ease: 'standard' },
+    { moment: 'Press', note: 'each segment scales to 0.97 while held', duration: 'instant', ease: 'standard' },
+    { moment: 'Hover and text color', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="The indicator jumps to the pressed segment, and segments don't scale when pressed."
+/>
+
+The bar (or the key, in `pill`) is one [Sliding Indicator](/docs/motion/sliding-indicator): transform-only layout projection, so its corners stay round in flight and nothing around it reflows. Resizes and font loads move it into place without animating.
+
+#### Reduced motion
+
+The indicator moves straight to the pressed segment, and presses don't scale. Which segment is pressed reads exactly the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The control is a `group` named by its `aria-label`, and each segment is a `<button>` with `aria-pressed`.
+- It's a single tab stop. The arrow keys move between segments and wrap at the ends, `Home` and `End` jump to the first and last, and `Space` or `Enter` presses the focused one.
+- The indicator is decorative (`aria-hidden`), so roving focus only visits real segments.
+- Name icon-only segments with `aria-label`.
+
+</ReferenceRow>

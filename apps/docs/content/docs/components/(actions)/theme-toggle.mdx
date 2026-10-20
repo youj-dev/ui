@@ -1,0 +1,167 @@
+---
+title: Theme Toggle
+description: "Switch the page between light and dark, or let it follow the system."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="theme-toggle/demo" height={320} />
+
+A header toggle and a Light, Dark and System segmented control, both driving a card's theme.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="theme-toggle" noImport />
+
+Youj's palette follows `data-theme` on `<html>`: `"light"` or `"dark"`, and dark when it's unset. ThemeToggle switches that attribute. Use the `button` variant in a header, where one press flips light and dark. Use `segmented` in settings, where Light, Dark and System are all offered.
+
+```tsx
+import { ThemeToggle } from '@youj/react'
+
+<ThemeToggle />
+<ThemeToggle variant="segmented" />
+```
+
+Pair it with an early script so the first paint is already right: `ThemeScript` on a server-rendered page (see [Without next-themes](#without-next-themes)), or `<ModeScript mode="system" />` with `<YoujProvider mode="system">`, where the provider's mode is the default and the toggle's stored choice wins over it. Without one, a page that ships `data-theme="dark"` flashes dark before a light-system visitor's theme applies. In a Vite app, the same script goes inline in `index.html` ([Installation](/docs/installation#manual) has it).
+
+On its own, ThemeToggle keeps the choice itself. It stores it in `localStorage` under `"theme"`, writes `data-theme` and `color-scheme` on `<html>`, and follows the operating system while System is chosen. Every toggle on the page shares the choice, and so do other tabs.
+
+To switch the mode from your own control, such as a menu item, call `setThemeMode()` or read `{ mode, scheme, setMode }` from `useThemeMode()`, both from `@youj/core` ([Light, dark and system](/docs/guides/light-dark-and-system#from-your-own-control)). They share the choice with every toggle.
+
+Controlled, with `value` and `onValueChange`, it only reports the choice and leaves `<html>` to whatever owns it, such as next-themes.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Next.js App Router
+
+For the whole setup in one place, ThemeScript with a ThemeToggle, see [Light, dark and system in Next.js](/docs/guides/light-dark-and-system). The rest of this section is the next-themes route.
+
+next-themes is the usual owner in Next.js. Install it (`pnpm add next-themes`, or `npm install`, `yarn add`, `bun add`), let it write `data-theme`, and hand the toggle its `theme` and `setTheme`. next-themes sets the attribute from an inline script before the page paints, so there's no flash of the other theme. `suppressHydrationWarning` on `<html>` covers the one attribute the server couldn't know. This is the same setup as [Installation](/docs/installation#theme).
+
+```tsx title="app/layout.tsx"
+import { basalt, YoujProvider, themeProps } from '@youj/core'
+import { ThemeProvider } from 'next-themes'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    // next-themes writes data-theme before the page paints; suppressHydrationWarning covers that one attribute.
+    <html lang="en" suppressHydrationWarning {...themeProps(basalt)}>
+      <body>
+        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+          <YoujProvider theme={basalt}>{children}</YoujProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+```tsx title="components/theme-switch.tsx"
+'use client'
+
+import { useTheme } from 'next-themes'
+import { ThemeToggle } from '@youj/react'
+
+export function ThemeSwitch() {
+  const { theme, setTheme } = useTheme()
+  return <ThemeToggle value={theme} onValueChange={setTheme} />
+}
+```
+
+`defaultTheme="system"` follows the operating system until someone chooses; use `"dark"` for a dark-first app and keep `enableSystem` so System stays a choice.
+
+On the server `theme` is `undefined`, but on the client's first render next-themes already returns the stored choice (or `defaultTheme`). So the toggle ignores `value` until it has mounted: the server markup and the hydrating render agree, with no mismatch and no `mounted` guard of your own. Until then the button draws the sun or the moon from the `data-theme` next-themes has already set, in the same box, so the icon doesn't flash or shift when the toggle takes over. The segmented variant shows its choice once mounted.
+
+### Without next-themes
+
+An uncontrolled ThemeToggle needs the same early script. Render `ThemeScript` in `<head>`. It sets `data-theme` and `color-scheme` from the stored choice before the page paints, so `<html>` needs `suppressHydrationWarning` too, or React reports the attributes the server couldn't know. `npx youj init` writes both in a Next.js or React Router app; add them by hand otherwise.
+
+```tsx title="app/layout.tsx"
+import { basalt, themeProps } from '@youj/core'
+import { ThemeScript } from '@youj/react'
+
+<html lang="en" suppressHydrationWarning {...themeProps(basalt)}>
+  <head>
+    <ThemeScript />
+  </head>
+  <body>…</body>
+</html>
+```
+
+Give `ThemeScript` the same `storageKey` and `defaultValue` as the toggles if you change them. In a single-page app without server rendering, put the script's contents in `index.html` instead, or accept one frame in the default theme.
+
+## Reference
+
+<ReferenceRow title="Props" summary="variant, value, onValueChange… (18)">
+
+### Props
+
+<PropsTable name="ThemeToggle" />
+
+The `button` variant also takes the props of a [Button](/docs/components/button), such as `size` and `className`. `segmented` reads `size` (`sm` or the default) and `aria-label`.
+
+#### ThemeScript
+
+<PropsTable name="ThemeScript" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="To dark, to light, segmented key · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'To dark', note: 'the rays draw back into the core one after another, then a bite sweeps in to carve the moon', duration: 'slow', ease: 'emphasized' },
+    { moment: 'To light', note: 'the moon fills back to a disc and the rays draw out', duration: 'base', ease: 'standard' },
+    { moment: 'Segmented key', note: 'glides to the choice and retargets mid-flight', value: 'smooth spring' },
+  ]}
+  reduced="The icon swaps at once and the key jumps."
+/>
+
+The page's colors change in one step. Components that ease their own colors do so on their usual tokens.
+
+#### Reduced motion
+
+The icon swaps between sun and moon without drawing, and the segmented key jumps to the choice. The theme itself changes the same way.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="announcements">
+
+### Accessibility
+
+- The button is a toggle button named "Dark", pressed while dark is chosen, so a screen reader says "Dark, toggle button, pressed". The name comes from the provider's labels, so it's translated with them.
+- The segmented control is a group named "Theme" with Light, Dark and System, each a button that reports whether it's pressed.
+- Until it has mounted (the server render and hydration), the button reports no pressed state and ignores presses.
+- `color-scheme` is set with `data-theme`, so native scrollbars and form controls match the theme.
+
+</ReferenceRow>

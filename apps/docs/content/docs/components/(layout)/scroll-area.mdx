@@ -1,0 +1,152 @@
+---
+title: Scroll Area
+description: "Contain scrolling content with slim scrollbars and fading edges that show more is available."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="scroll-area/demo" height={420} />
+
+A list of releases in a fixed-height Scroll Area, with slim scrollbars and fading edges.
+
+Each edge with more to scroll fades out over 24px, by how far there is left to go on that side. At the start only the bottom edge fades. Scroll down and the top fade grows in, then the bottom one clears as you reach the end. The fades come straight from Base UI's overflow values, so they track the scroll exactly instead of switching on.
+
+`fade={false}` turns them off, for content with edges of its own, like a table with a sticky header.
+
+</Story>
+
+<Story id="horizontal" label="Horizontal">
+
+<ComponentPreview name="scroll-area/horizontal" height={260} />
+
+A strip that scrolls horizontally.
+
+`orientation="horizontal"` renders a horizontal scrollbar and fades the side edges. Give the content `w-max` so it can grow past the viewport.
+
+</Story>
+
+<Story id="both-axes" label="Both axes">
+
+<ComponentPreview name="scroll-area/both" height={340} />
+
+A region that scrolls on both axes.
+
+`orientation="both"` renders both scrollbars and the corner where they meet. The two fades intersect, so each axis fades its own edges.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="scroll-area" noImport />
+
+Use Scroll Area for a fixed-size region, such as a feed, build log or strip of items. Let main content scroll with the page. Avoid nested scrolling for long forms or content people must read in full.
+
+```tsx
+import { ScrollArea } from '@youj/react'
+
+export function Activity() {
+  return (
+    <ScrollArea aria-label="Activity" className="h-72">
+      <ActivityList />
+    </ScrollArea>
+  )
+}
+```
+
+Give it a height, or a width for horizontal scrolling. Scrolling is native: the wheel, touch, and the keyboard once the viewport has focus. The scrollbars overlay the content, appear while you hover or scroll, and fade away after.
+
+### Native scrollbars
+
+`ui.css` gives the browser's own scrollbars the same thumb, on a transparent track. The page's bar is thin, and every other native bar takes the theme's colors, scopes included. Add `yj-scrollbar` to an element that scrolls natively, like a code panel or a long list, to make its bar thin and bring the thumb up to 3:1 contrast while the pointer or focus is on it.
+
+```tsx
+<pre className="max-h-80 overflow-auto yj-scrollbar">{source}</pre>
+```
+
+It sets only `scrollbar-width` and `scrollbar-color`, so bars that macOS overlays stay overlays, and hovering changes the color, never the layout. The thumb colors are the `--ui-scrollbar-thumb`, `--ui-scrollbar-thumb-hover` and `--ui-scrollbar-thumb-active` tokens. Set `scrollbar-color: auto` on an element to hand its bars back to the platform.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="orientation, fade, viewportClassName (3)">
+
+### Props
+
+<PropsTable name="ScrollArea" />
+
+`ScrollBar`, the bar and its thumb, is exported for custom compositions and takes Base UI's scrollbar props, such as `orientation`. `ScrollArea` already renders the bars its `orientation` needs.
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling the viewport" summary="className styles the root, the element that has the size, border and…">
+
+### Styling the viewport
+
+`className` styles the root, the element that has the size, border and radius. `viewportClassName` reaches the element that actually scrolls, for padding that should scroll with the content or for scroll snapping.
+
+```tsx
+<ScrollArea orientation="horizontal" viewportClassName="snap-x snap-mandatory" className="w-full">
+  <ul className="flex w-max gap-3 p-3">{slides}</ul>
+</ScrollArea>
+```
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Scrollbar in, on hover, scrollbar in, while scrolling, scrollbar out… · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Scrollbar in, on hover', note: '`opacity`', duration: 'slow', ease: 'standard' },
+    { moment: 'Scrollbar in, while scrolling', note: 'appears almost at once', duration: 'instant', ease: 'standard' },
+    { moment: 'Scrollbar out', note: 'after hovering or scrolling stops', duration: 'slow', ease: 'standard' },
+    { moment: 'Thumb', note: 'widens from 6px to 8px and firms up on hover and press', duration: 'fast', ease: 'standard' },
+    { moment: 'Native thumb (yj-scrollbar)', note: 'firms up while the pointer or focus is on the region', duration: 'fast', ease: 'standard' },
+    { moment: 'Edge fades', note: 'follow the scroll position', value: 'tied to scroll, no timing' },
+  ]}
+  reduced="Scrollbars appear and leave at once, and thumbs change at once. Scrolling and the edge fades don't change."
+/>
+
+#### Reduced motion
+
+The scrollbars appear and disappear at once, and thumbs change width and color at once. Scrolling itself, and the edge fades that follow it, are unchanged: they move only as you scroll.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, ARIA, focus">
+
+### Accessibility
+
+- The viewport is a tab stop only when it can scroll, so a short list adds nothing to the tab order. Once it has focus, the arrow keys, Page Up, Page Down, Home and End scroll it.
+- Name it with `aria-label` or `aria-labelledby`. The name goes on the viewport, which becomes a `region`, so screen reader users can find it and hear what it holds. Without a name it adds no landmark.
+- The focus ring is drawn by the root, outside the viewport, so the edge fades can't hide it.
+- The scrollbars are for the pointer. Keyboard and screen reader users scroll the viewport directly.
+
+</ReferenceRow>

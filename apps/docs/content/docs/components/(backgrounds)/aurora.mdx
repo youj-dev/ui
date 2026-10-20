@@ -1,0 +1,135 @@
+---
+title: Aurora
+description: "Add curtains of light behind a hero, with space below for your copy."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="aurora/demo" full height={420} />
+
+A hero section with the aurora curtains behind its headline, the copy in the quiet lower part of the frame.
+
+With `interactive` on (the default), the ribbons lean gently toward the pointer's horizontal position. The lean eases in when the pointer enters the frame and out when it leaves. The pointer is tracked on the window, so the aurora responds under the content above it. Touch doesn't lean the ribbons, because it produces no hover.
+
+</Story>
+
+<Story id="horizon-and-color" label="Horizon and color">
+
+<ComponentPreview name="aurora/tuning" full height={320} />
+
+Controls for the horizon height and the color family, so you can see both change in place.
+
+`horizon` sets the height of the lowest curtain edge, from `0` (the bottom of the frame) to `1` (the top). The default, `0.58`, leaves the lower part of the frame for content. Lower it for a taller glow behind short copy. Raise it to keep the curtains above a form or a card.
+
+`colors` takes three CSS colors, from the back layer to the front. By default they're a family around `--color-accent`: a cooler teal-leaning layer at the back, the accent in the middle and a violet at the front. Token references stay in step with the theme.
+
+`intensity`, from 0 to 1.5, sets the brightness of the ribbons, and `speed` multiplies the drift. The speed stacks with the time scale, which slows everything together.
+
+</Story>
+
+<Story id="behind-a-form" label="Behind a form">
+
+<ComponentPreview name="aurora/sign-in" full height={440} />
+
+A sign-in card over a calmer aurora with a raised horizon, lower intensity and no pointer response.
+
+For sign-in and onboarding screens, raise the horizon so the curtains hang behind the top of the card, lower the intensity, and turn off `interactive`. A surface that moves with the pointer is a distraction while someone types.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="aurora" noImport />
+
+Use it for a launch or a hero that should feel atmospheric: a new product, a beta, a sign-in screen. The curtains hang in the upper part of the frame and fade out below the horizon, so the lower part stays calm for a headline and a call to action. Don't use it behind dense content or in more than one section per page. Its glow is a statement, and two of them compete.
+
+The aurora fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`. Place the copy below the horizon.
+
+```tsx
+import { Aurora } from '@youj/motion/backgrounds'
+
+export function LaunchHero() {
+  return (
+    <section className="relative isolate flex min-h-[640px] flex-col justify-end pb-24">
+      <Aurora />
+      <p className="relative text-5xl font-semibold">Answers that arrive before the question</p>
+    </section>
+  )
+}
+```
+
+Three layers drift at different depths. Each has a bright lower edge that swells and folds, rays that hang upward and fade over the curtain's height, and pulses of brightness that travel along it. On a dark canvas the layers add light. On a light canvas they tint it, so the same component works in both modes.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (6)">
+
+### Props
+
+<PropsTable name="Aurora" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="It's one WebGL2 fragment shader on a single full-screen triangle,…">
+
+### Performance
+
+It's one WebGL2 fragment shader on a single full-screen triangle, rendered at a device-pixel ratio capped at 2, with dithering against 8-bit banding in the soft gradients. The loop pauses when the aurora is offscreen or the tab is hidden, recovers from a lost GL context, and releases the context on unmount. Without WebGL2, it falls back to a static CSS wash of the same colors.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drift, pointer lean · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drift', note: 'layers, folds and pulses, on one shader clock', value: 'speed ÷ time scale' },
+    { moment: 'Pointer lean', note: 'eases in and out with the pointer', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one still frame of the curtains and stops. There's no drift and no lean, and the frame redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The aurora draws one composed frame and holds it. The curtains, their colors and the quiet space for your copy stay the same, so the hero looks as designed, only still. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- Keep text below the horizon, where the frame is quiet, and check its contrast there. On a light canvas the curtains tint, so muted text over the brightest band can drop below 4.5:1.
+- The drift is slow, and it stops offscreen. Under reduced motion the aurora doesn't move at all.
+
+</ReferenceRow>

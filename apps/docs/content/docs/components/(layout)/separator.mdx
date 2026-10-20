@@ -1,0 +1,110 @@
+---
+title: Separator
+description: "Separate groups of content with a horizontal or vertical line."
+---
+
+<ComponentStories>
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="separator/demo" height={240} />
+
+A separator under a project title, and vertical separators between its links.
+
+</Story>
+
+<Story id="in-toolbars-and-forms" label="In toolbars and forms">
+
+<ComponentPreview name="separator/toolbar" height={300} />
+
+Separators in a toolbar and in a form.
+
+A vertical separator splits a row of tools into groups. `FieldSeparator`, from Field, centers a word on the line for a labeled break.
+
+</Story>
+
+<Story id="responsive-layouts" label="Responsive layouts">
+
+<ComponentPreview name="separator/responsive" height={240} />
+
+A separator that turns with its layout.
+
+When groups sit side by side on wide screens and stack on narrow ones, the line has to turn with them, and so does the `aria-orientation` it exposes. Render one separator of each orientation and show the one that matches, at the same breakpoint as the layout. A hidden separator leaves the accessibility tree too, so only the visible one is announced.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="separator" noImport />
+
+Use Separator when spacing alone does not clearly distinguish groups of content. For a labeled break in a form, such as “or” between sign-in methods, use `FieldSeparator`.
+
+```tsx
+import { Separator } from '@youj/react'
+
+export function Section() {
+  return (
+    <div>
+      <p>Deployments</p>
+      <Separator className="my-4" />
+      <p>Domains</p>
+    </div>
+  )
+}
+```
+
+It draws a 1px line in the border token and spans its container. `orientation="vertical"` draws it down instead, and it stretches to the height of its row, so a flex row of links needs no fixed height on the line.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="orientation is horizontal or vertical, and defaults to horizontal">
+
+### Props
+
+<PropsTable name="Separator" />
+
+`orientation` is `horizontal` or `vertical`, and defaults to `horizontal`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Reduced motion" summary="Separator is static">
+
+### Reduced motion
+
+Separator is static. Nothing changes under reduced motion.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA, announcements">
+
+### Accessibility
+
+- It's a `separator` role with `aria-orientation`, from Base UI, so assistive technology hears the break between groups.
+- A purely visual line inside a single group, such as a divider between list rows, doesn't need to be announced. Draw it with a border instead.
+
+</ReferenceRow>

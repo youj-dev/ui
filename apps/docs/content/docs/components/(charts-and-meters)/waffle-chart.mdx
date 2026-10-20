@@ -1,0 +1,119 @@
+---
+title: Waffle Chart
+description: "Show a whole as countable cells colored by part, square or hexagonal, with a legend that lights each part."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="waffle-chart/demo" height={400} />
+
+A kitchen's food waste over a week by source, as a cluster of hexagons, one per kilogram.
+
+</Story>
+
+<Story id="rows" label="Rows">
+
+<ComponentPreview name="waffle-chart/rows" height={300} />
+
+A team's storage by file type in square cells filled row by row, each cell ten gigabytes, with the remainder in the neutral tone.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="waffle-chart" noImport />
+
+Use a waffle chart when a whole splits into a few parts and the count matters as much as the share: waste by source, seats by plan, storage by type. Each cell is one unit, colored by its part, so shares read as areas you could count. For many parts, or parts that differ by orders of magnitude, use a [Treemap](/docs/components/treemap); for one share in a row, a [Share Bar](/docs/components/share-bar).
+
+```tsx
+import { WaffleChart } from '@youj/react'
+
+<WaffleChart
+  label="Waste by source"
+  items={[
+    { id: 'trim', name: 'Produce trim', value: 22 },
+    { id: 'plates', name: 'Plate returns', value: 17 },
+    { id: 'bread', name: 'Bread', value: 11 },
+  ]}
+  formatValue={(v) => `${v} kg`}
+/>
+```
+
+`unit` sets how much one cell counts for, and each part rounds to whole cells. `layout="rows"` (the default) fills from the top-start corner row by row; `layout="cluster"` gathers the cells into a round patch at the center, each part a wedge, with empty cells around it. `shape="hex"` draws hexagons. The grid is `columns` wide (20 by default) and as tall as it needs, or `rows` tall; it grows when the cells don't fit. Parts take the chart colors in order unless they set a `tone`. Say what a cell is next to the chart.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="items, unit, columns, layout… (9)">
+
+### Props
+
+<PropsTable name="WaffleChart" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `waffle-chart`, `waffle-chart-cells`, `waffle-chart-cell`, `waffle-chart-legend`, `waffle-chart-legend-item`, `waffle-chart-swatch`, `waffle-chart-legend-name`, `waffle-chart-legend-share`, `waffle-chart-summary` and `waffle-chart-empty`. Each cell has `data-state` (`on` or `off`) and, when filled, `data-tone`; a legend item has `data-tone`, and `data-active` while its part is lit. `--waffle-chart-off` on the root is the empty cells' color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Reveal, new data, lighting a part · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reveal', note: 'the cells fill in order, along the rows or outward from the center for a cluster, when a third of the chart scrolls into view', duration: 'deliberate', ease: 'standard' },
+    { moment: 'New data', note: 'cells that change part recolor in the same order', duration: 'fast', ease: 'standard' },
+    { moment: 'Lighting a part', note: 'the other parts fade back at once, without waiting', duration: 'fast', ease: 'standard' },
+  ]}
+  reduced="Drawn in place; new data lands at once."
+/>
+
+#### Reduced motion
+
+The cells are drawn in place, and new data lands at once.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, focus">
+
+### Accessibility
+
+- A named `group` (your `label`, or the labels' "Waffle chart"), described by a summary: how many parts, their total and the largest.
+- The legend is a `list`; each part is named with its value and share ("Bread: 11 kg, 15% of total").
+- The legend is one tab stop. The arrow keys walk the parts, Home and End go to the first and last, and Escape lets go. Focusing a part lights its cells, as hovering it or one of its cells does.
+- The cells are decorative; everything they show is in the legend and the summary. Color is never the only cue: each part's name and share are written beside its swatch.
+- Its built-in text comes from the labels, so `<YoujProvider labels>` translates it.
+
+</ReferenceRow>

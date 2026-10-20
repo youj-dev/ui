@@ -1,0 +1,130 @@
+---
+title: Inline Confirm
+description: "A button that asks “Are you sure?” in its own place instead of opening a dialog, then runs the action."
+---
+
+<ComponentStories>
+<Story id="demo" label="Delete a row">
+
+<ComponentPreview name="inline-confirm/demo" height={220} />
+
+A file row's own delete: press it and the button splits into a cross and a tick, right where the person was looking.
+
+Pressed, the trigger's box morphs into two icon buttons, a cross to cancel and a tick to confirm, and focus moves to the tick. The question (`prompt`) is the pair's accessible name and is announced. Confirming runs `onConfirm` as an [Async Button](/docs/components/button#async-button) does: a spinner, then a check or a cross; `pendingLabel`, `successLabel` and `errorLabel` are announced. Once the outcome has shown, the pair folds back into the trigger.
+
+</Story>
+
+<Story id="publish" label="Not destructive">
+
+<ComponentPreview name="inline-confirm/publish" height={200} />
+
+Publishing, with a question of its own in `prompt` for screen readers.
+
+Without `destructive` the confirm button takes the action fill. With it, the danger fill, for an action that deletes or can't be undone.
+
+</Story>
+
+<Story id="failure" label="Async failure">
+
+<ComponentPreview name="inline-confirm/failure" height={200} />
+
+Revoking a key that is still in use.
+
+When `onConfirm` rejects (or throws), the tick shakes to a cross and `errorLabel` is announced assertively. After `resetAfter` the pair folds back, and the person can try again.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="inline-confirm" noImport />
+
+Use an Inline Confirm for a small action that is easy to trigger by mistake, such as deleting a row, revoking a key or leaving a team, where a dialog would interrupt more than it helps. For a costlier action, use a [Slide to Confirm](/docs/components/slide-to-confirm) or `hold` on an [Async Button](/docs/components/button#hold); for one that needs explaining, use an [Alert Dialog](/docs/components/alert-dialog).
+
+```tsx
+'use client'
+
+import { InlineConfirm } from '@youj/react'
+
+export function DeleteFile({ file }: { file: File }) {
+  return (
+    <InlineConfirm destructive variant="ghost" pendingLabel="Deleting…" successLabel="Deleted" onConfirm={() => deleteFile(file.id)}>
+      Delete
+    </InlineConfirm>
+  )
+}
+```
+
+`onConfirm` is awaited: resolve for success, reject or throw for an error. A second press while it runs is ignored, and while it runs the question can't be dismissed. An open question that isn't answered folds back after `timeout` (5 seconds, paused while the pointer is on it); pass `timeout={false}` to wait for an answer.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="onConfirm, prompt, confirmLabel, destructive, timeout, variant, size…">
+
+### Props
+
+<PropsTable name="InlineConfirm" />
+
+#### Data attributes
+
+The root carries `data-state` (`closed` or `open`) and `data-size` (`sm`, `default` or `lg`). The confirm button is an Async Button with its own `data-state` (`idle`, `pending`, `success` or `error`) and `data-variant` (`danger` when `destructive`, else `default`). The parts are named `inline-confirm-box`, `inline-confirm-trigger`, `inline-confirm-cancel` and `inline-confirm-action` in `data-slot`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Width morph, crossfade, outcome · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open and fold back', note: 'the box morphs between the trigger’s width and the pair’s', spring: 'snappy' },
+    { moment: 'Content', note: 'the trigger and the pair crossfade with a touch of scale and blur', duration: 'fast', ease: 'standard' },
+    { moment: 'Outcome', note: 'the confirm button runs the Async Button’s pending, success and error states' },
+    { moment: 'Outcome hold', note: 'before the pair folds back, unless `resetAfter` is set', duration: 'deliberate', value: '× 3' },
+  ]}
+  reduced="The trigger and the pair swap at once, with no morph or crossfade; the confirm button's outcome shows without motion."
+/>
+
+#### Reduced motion
+
+The question opens and folds back at once. Focus moves the same way.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Focus, Escape, announcements">
+
+### Accessibility
+
+- The trigger is a button. Pressing it (click, Enter or Space) opens the question and moves focus to the confirm button.
+- The open row is a `group` named by the question, which is also announced politely as it opens.
+- Escape and Cancel fold it back and return focus to the trigger; Escape is handled here and doesn't reach a dialog or menu around it. Focus leaving the row folds it back too, and focus stays where it went.
+- While `onConfirm` runs the confirm button is busy, Cancel is disabled and Escape does nothing. Pending and success are announced politely, an error assertively.
+- When the row folds back on its own (the timeout, or after the outcome) with focus inside it, focus lands on the trigger rather than the page.
+- With sound on, opening plays `open` and folding back plays `close`; the confirm sounds as an Async Button does. `sound={false}` keeps it silent.
+
+</ReferenceRow>

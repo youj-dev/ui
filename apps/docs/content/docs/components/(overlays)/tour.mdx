@@ -1,0 +1,142 @@
+---
+title: Tour
+description: "Walk people through a screen one element at a time, with a spotlight and a card beside it."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="tour/demo" height={420} />
+
+A first-run tour of a small dashboard: the sidebar, search, the figures and Export, one at a time.
+
+Each step dims the page and cuts a rounded hole over its target, with a card beside it: the step's title and text, the count ("2 of 4") and dots, Back, Next (Done on the last step) and Skip. Between steps the hole glides to the next target. The arrow keys go Back and Next, and Escape skips.
+
+</Story>
+
+<Story id="beacon" label="New feature beacon">
+
+<ComponentPreview name="tour/beacon" height={340} />
+
+A pulsing dot beside a new control starts a one-step tour about it, and goes away once it has been seen.
+
+`TourBeacon` is a small button: a dot with a ring that swells out of it and fades. Put it where you want attention and open a tour from its `onClick`. Here the tour sets `allowInteraction`, so the bell under the spotlight can be clicked while the card is open.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="tour" noImport />
+
+Use a Tour to show someone around a screen they haven't used before, or a few new things on one they have. Keep it short: three to five steps, each about one thing they can see. For one new control a [Popover](/docs/components/popover) or a TourBeacon with a one-step tour is enough.
+
+```tsx
+import { useState } from 'react'
+import { Button, Tour, type TourStep } from '@youj/react'
+
+const steps: TourStep[] = [
+  { target: '#search', title: 'Find any order', body: 'Search by number, customer or amount.' },
+  { target: '#filters', title: 'Narrow the list', body: 'Filter by status, channel or date.' },
+  { target: '#export', title: 'Take it with you', body: 'Export what you see as CSV.', placement: 'top' },
+]
+
+export function OrdersTour() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Take the tour</Button>
+      <Tour steps={steps} open={open} onOpenChange={setOpen} onComplete={markSeen} onSkip={markSeen} />
+    </>
+  )
+}
+```
+
+A step's `target` is a CSS selector (the first match on the page) or a ref. A step whose target isn't on the page, or is hidden, is skipped in the direction you were going. `placement` puts the card on a side of the target (`bottom` by default; `top`, `inline-start` or `inline-end`), and it flips when there's no room. `action` adds your own content under the text, such as a link or a button that does the thing.
+
+`open` and `step` can each be controlled (`onOpenChange`, `onStepChange`), or left to the tour with `defaultOpen` and `defaultStep`; an uncontrolled tour starts again from `defaultStep` each time it opens. `onComplete` runs when Done is pressed, `onSkip` with the step index when Skip or Escape ends it early.
+
+To keep the tour inside part of the page, as these previews do, pass that element as `container` and give it `contain: paint` (or a `transform`), so the scrim covers it rather than the window.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="steps, open, step, onComplete, onSkip, allowInteraction, dismissible, container…">
+
+### Props
+
+#### Tour
+
+<PropsTable name="Tour" />
+
+#### TourBeacon
+
+<PropsTable name="TourBeacon" />
+
+`TourBeacon` also takes a button's props (`onClick`, `className`…).
+
+#### Data attributes
+
+The card is `data-slot="tour"`, the scrim `data-slot="tour-scrim"` and the outline around the hole `data-slot="tour-spotlight"`. In the card, `tour-count`, `tour-title`, `tour-body` and `tour-dots` mark the parts, and the current dot carries `data-state="active"`. The beacon is `data-slot="tour-beacon"`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Glide · card · open, close · beacon · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Glide', note: 'the hole moves and resizes from the last target to the next, following it live while the page scrolls it into view', spring: 'smooth' },
+    { moment: 'Card', note: 'the next step’s text fades in, rising 4px, where the card lands', duration: 'fast', ease: 'enter' },
+    { moment: 'Open, close', note: 'the scrim fades (`yj-backdrop`) and the card opens with `yj-pop`', duration: 'fast', ease: 'enter' },
+    { moment: 'Scroll', note: 'a target off screen scrolls to the middle smoothly' },
+    { moment: 'Beacon', note: 'a ring swells out of the dot and fades, repeating while it is on screen', duration: 'deliberate', ease: 'exit' },
+  ]}
+  reduced="The hole moves to each target at once and scrolling is instant; only the card's text fades. The beacon's ring rests still around the dot."
+/>
+
+#### Reduced motion
+
+Every step lands at once, so nothing glides or slides; what changes is still shown, and announced.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Focus, keyboard, ARIA, live region">
+
+### Accessibility
+
+- The card is a dialog named by the step's title and described by its text, followed by a hint on the keys. Focus moves into it (to Next) when the tour opens and stays in it while the tour runs.
+- ← and → go Back and Next (swapped in right-to-left), Tab moves between the buttons, and Escape skips the tour when it's `dismissible`.
+- Each new step is announced politely: "Step 2 of 4: Find any order".
+- The spotlighted element is described by the step's text (`aria-describedby`) while it's shown, and its own description is put back afterwards.
+- With `allowInteraction`, clicks reach the spotlighted element and focus isn't held in the card, so the element can be used from the keyboard too.
+- The count and the dots say the same thing; the dots are hidden from assistive technology.
+- `TourBeacon` is a button named "Start the tour" by default; pass `label` to say what it's about.
+
+</ReferenceRow>

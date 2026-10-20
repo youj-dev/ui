@@ -1,0 +1,481 @@
+[
+  {
+    "name": "loader-fulgur",
+    "type": "registry:component",
+    "title": "Fulgur loader",
+    "description": "An electromagnetic pulse leaves a small emitter post. Its expanding front strains a wire grid clamped in a lit frame, lifting a narrow annular ridge; a weaker afterfront follows, and the next pulse leaves as the last one reaches the frame. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "fulgur",
+      "component": "LoaderFulgur",
+      "category": "waves",
+      "technique": "lines",
+      "order": 1,
+      "title": "Fulgur",
+      "tags": [
+        "pulse",
+        "emp",
+        "shockwave",
+        "grid",
+        "distortion",
+        "propagation",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Echoes",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/fulgur.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-tensor",
+    "type": "registry:component",
+    "title": "Tensor loader",
+    "description": "Two equal masses orbit in their own wells in a spacetime mesh. A quadrupolar ripple stretches one direction as it contracts the other, radiating outward twice per orbit, and an L-shaped detector at the mesh’s corner trades its arm lengths as each ripple passes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "tensor",
+      "component": "LoaderTensor",
+      "category": "waves",
+      "technique": "lines",
+      "order": 2,
+      "title": "Tensor",
+      "tags": [
+        "gravity",
+        "binary",
+        "quadrupole",
+        "spacetime",
+        "mesh",
+        "strain",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Second mass",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/tensor.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-duplex",
+    "type": "registry:component",
+    "title": "Duplex loader",
+    "description": "Two fixed exciters send coherent ripples across a lit square surface. Their heights add into moving crests and quiet corridors; a sparse wire skin reveals the cancellation while two small emitter rims breathe out of phase. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "duplex",
+      "component": "LoaderDuplex",
+      "category": "waves",
+      "technique": "planes",
+      "order": 3,
+      "title": "Duplex",
+      "tags": [
+        "interference",
+        "surface",
+        "ripple",
+        "coherent",
+        "water",
+        "superposition",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Second exciter",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/duplex.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-chirp",
+    "type": "registry:component",
+    "title": "Chirp loader",
+    "description": "A sonar head sends a chirped front across its beam toward three solid reflectors, each casting a shadow in it. Each face answers only after the ping reaches it; narrow echo trains travel back at different times and light the head’s receiver as they arrive. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "chirp",
+      "component": "LoaderChirp",
+      "category": "waves",
+      "technique": "lines",
+      "order": 4,
+      "title": "Chirp",
+      "tags": [
+        "sonar",
+        "echo",
+        "ping",
+        "reflector",
+        "time-of-flight",
+        "pulse",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Ping",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/chirp.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-overtone",
+    "type": "registry:component",
+    "title": "Overtone loader",
+    "description": "Opposing travelling waves combine on a string drawn over two saddle bridges to anchor pins on a lit bed. Three antinodes exchange displacement while two interior nodes stay pinned; faint envelopes and a small exciter riding an antinode expose the standing mode. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "overtone",
+      "component": "LoaderOvertone",
+      "category": "waves",
+      "technique": "lines",
+      "order": 5,
+      "title": "Overtone",
+      "tags": [
+        "string",
+        "standing-wave",
+        "nodes",
+        "reflection",
+        "resonance",
+        "3d"
+      ],
+      "beats": 4.5,
+      "colors": [
+        {
+          "part": "Incoming wave",
+          "mono": "ink"
+        },
+        {
+          "part": "Reflected wave",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/overtone.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-fletch",
+    "type": "registry:component",
+    "title": "Fletch loader",
+    "description": "A finned dart outruns the spherical fronts it emits. Each front drifts back and swells, its ring of contact sliding along the trailing Mach cone; bright tangent rails reveal the common envelope while the ground scale streams past beneath. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "fletch",
+      "component": "LoaderFletch",
+      "category": "waves",
+      "technique": "lines",
+      "order": 6,
+      "title": "Fletch",
+      "tags": [
+        "mach",
+        "shock-cone",
+        "supersonic",
+        "wavefront",
+        "envelope",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Contact rings",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/fletch.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-sounding",
+    "type": "registry:component",
+    "title": "Sounding loader",
+    "description": "A hammer strikes an anvil post at the head of two cut ribbons of layered ground. A fast longitudinal packet bunches the upper ribbon’s rulings; the slower transverse packet heaves the lower ribbon, its lit surface tilting as it passes, and both settle as the hammer rises for the next blow. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "sounding",
+      "component": "LoaderSounding",
+      "category": "waves",
+      "technique": "lines",
+      "order": 7,
+      "title": "Sounding",
+      "tags": [
+        "seismic",
+        "compression",
+        "shear",
+        "p-wave",
+        "s-wave",
+        "strata",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Moving ground",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/sounding.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-evanesce",
+    "type": "registry:component",
+    "title": "Evanesce loader",
+    "description": "A guided wave leaves a rapidly decaying field above its lower rail. A receiving guide, carried on two posts, eases into that field and acquires a stronger travelling trace; as the gap opens, the upper wave weakens while the source keeps propagating. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "evanesce",
+      "component": "LoaderEvanesce",
+      "category": "waves",
+      "technique": "lines",
+      "order": 8,
+      "title": "Evanesce",
+      "tags": [
+        "near-field",
+        "evanescent",
+        "coupling",
+        "waveguide",
+        "decay",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Field",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/evanesce.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-bragg",
+    "type": "registry:component",
+    "title": "Bragg loader",
+    "description": "Three ruled crystal planes on a mount breathe apart under a collimated beam. Travelling fronts reflect at successive depths toward a detector; the outgoing strokes strengthen and its window lights when the interplane spacing restores their phase agreement, then soften as the crystal detunes. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "bragg",
+      "component": "LoaderBragg",
+      "category": "waves",
+      "technique": "lines",
+      "order": 9,
+      "title": "Bragg",
+      "tags": [
+        "crystal",
+        "diffraction",
+        "coherence",
+        "lattice-plane",
+        "reflection",
+        "3d"
+      ],
+      "beats": 5,
+      "colors": [
+        {
+          "part": "Reflection",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/bragg.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  },
+  {
+    "name": "loader-whisper",
+    "type": "registry:component",
+    "title": "Whisper loader",
+    "description": "A cutaway annular resonator confines a circulating three-lobed wave. Its lid and outer wall are cut back over the foreground, their hatched sections exposed, so the trace rises and falls along the open channel while short pressure bars on its floor answer the crests. One of the Youj loaders: a polite status with one API (size, color, speed, label, paused), drawn on a shared ticker only while it’s on screen; reduced motion holds a still frame.",
+    "categories": [
+      "loaders",
+      "waves"
+    ],
+    "meta": {
+      "loader": "whisper",
+      "component": "LoaderWhisper",
+      "category": "waves",
+      "technique": "mixed",
+      "order": 10,
+      "title": "Whisper",
+      "tags": [
+        "resonator",
+        "whispering-gallery",
+        "annulus",
+        "guided-wave",
+        "cutaway",
+        "3d"
+      ],
+      "beats": 5.5,
+      "colors": [
+        {
+          "part": "Pressure",
+          "mono": "ink"
+        }
+      ]
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "loader-kit"
+    ],
+    "files": [
+      {
+        "path": "src/components/youj/loaders/waves/whisper.tsx",
+        "type": "registry:component"
+      },
+      {
+        "path": "src/components/youj/loaders/waves/propagation.ts",
+        "type": "registry:component"
+      }
+    ]
+  }
+]

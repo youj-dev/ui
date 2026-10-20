@@ -1,0 +1,138 @@
+---
+title: Atmosphere
+description: "Float a card on a painted, grainy ground: a meadow, dunes, a copper glow or a dusk, each with a preset to match."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="atmosphere/demo" full height={440} />
+
+A card on each scene in turn, wearing the preset of the scene's name.
+
+Every scene is drawn in its own palette for light and dark, and each palette comes from a combination in Sanzo Wada's *A Dictionary of Color Combinations*. The preset of the same name (`meadow`, `sandstone`, `cinnabar`, `umber` from `@youj/core`) takes its accent, neutrals and chart colors from that same combination, so the card and its ground read as one scheme. The middle of each composition is its quietest part, where the card sits. See all six, with the two photographs the docs use, on [Backdrops](/docs/backdrops).
+
+</Story>
+
+<Story id="scenes" label="Scenes">
+
+<ComponentPreview name="atmosphere/scenes" full height={520} />
+
+The four scenes:
+
+- `meadow`: a meadow under sky, panned so the grass streaks. At night it's the blue hour.
+- `sandstone`: broad dunes lit from the top left, with a fine suede grain lit by the same light. At night the sand sits under a navy sky, with a sienna rim on the crests.
+- `cinnabar`: near-black glowing into English red, crossed by soft shadow bands, under heavy grain. By day it's ivory warming to the red.
+- `umber`: a dusk going down from a pale sky to umber, with a coarse stipple. At night it's a slate sky over a brass horizon.
+
+</Story>
+
+<Story id="colors" label="Colors">
+
+<ComponentPreview name="atmosphere/colors" full height={320} />
+
+The sandstone scene in your theme's colors.
+
+Pass five CSS colors to `colors`, in the scene's own order, and they replace its palette in both modes. Tokens keep them in step with your theme. The orders are:
+
+- `meadow`: sky, haze, grass, deep, glint.
+- `sandstone`: light, mid, shadow, deep, rim.
+- `cinnabar`: base, low, mid, glow, band.
+- `umber`: sky, glow, middle, low, deepest.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="atmosphere" noImport />
+
+Use it for a launch page, a sign-up or a product shot: anywhere one card should be the hero on a ground with some weather to it. Give it the preset of the same name, and keep one per page.
+
+It fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { meadow, YoujProvider } from '@youj/core'
+import { Atmosphere } from '@youj/motion/backgrounds'
+
+export function Launch() {
+  return (
+    <YoujProvider theme={meadow}>
+      <section className="relative isolate grid min-h-dvh place-items-center p-6">
+        <Atmosphere scene="meadow" />
+        <YourCard />
+      </section>
+    </YoujProvider>
+  )
+}
+```
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="scene, colors, speed… (5)">
+
+### Props
+
+<PropsTable name="Atmosphere" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="One fragment shader, at most 24 frames a second, paused off screen">
+
+### Performance
+
+Each scene is one WebGL2 fragment shader on a single full-screen triangle, at a device-pixel ratio capped at 1.5 (1 on a low-power device). It draws at most 24 frames a second, since its drift is slow, and pauses off screen and in a hidden tab. It survives a lost GL context and releases the context on unmount. Without WebGL2 it's a still CSS gradient in the same palette, with grain, chosen for the page's light or dark.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Drift · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Drift', note: 'the meadow slides along its streaks, the dunes and bands shift, the dusk glow wanders', value: 'speed ÷ time scale' },
+    { moment: 'Grain', note: 'a fresh pattern each frame, like film', value: 'at most 24 frames a second' },
+  ]}
+  reduced="Draws one composed still frame with the grain halved, and stops. It redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+Each scene draws one composed frame and holds it, with the grain halved and still. The composition and the palette stay the same, so the page looks as designed, only still. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Decorative">
+
+### Accessibility
+
+It's decorative, so it's `aria-hidden` and ignores pointer events. Keep text on a card, not on the scene: the grounds vary in lightness across the frame, and only the card's surface is held to your theme's contrast.
+
+</ReferenceRow>

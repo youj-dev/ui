@@ -1,0 +1,124 @@
+---
+title: Magnetic Field
+description: "Show a dot grid that bends away from the pointer and springs back."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="magnetic-field/demo" full height={400} />
+
+A hero section over the dot grid; move the pointer across it and the dots make room, then settle back.
+
+`colors` takes two CSS colors: the dots at rest, then the color they take as they are pushed. The defaults are `--color-fg-subtle` and `--color-accent`. Token references follow the theme, and the field rereads them when the theme changes.
+
+</Story>
+
+<Story id="pointer" label="Pointer">
+
+<ComponentPreview name="magnetic-field/pointer" full height={340} />
+
+A switch between dots that bend away from the pointer and dots that lean toward it.
+
+Each dot follows a target on a damped spring. The target moves it along the line from the pointer, by an amount that falls off smoothly toward the edge of `radius`, so the field flows around the cursor instead of snapping. When the pointer leaves, the springs carry every dot home with one small wobble. With `pointer="attract"` the dots lean in and can never cross the pointer.
+
+A press shoves the dots near it, and they rebound. The pointer is tracked on the window, so the field responds under the content above it. Set `interactive={false}` where the field sits behind something people work in.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="magnetic-field" noImport />
+
+Use it where the idea is a live surface that reacts to you: a product hero, a dashboard landing, a 404. It is the most tactile of the grid backgrounds, so keep it to one per page, and keep it quiet behind reading-length text.
+
+The field fills its nearest positioned ancestor and paints behind your content, so make the container `relative` and `isolate`.
+
+```tsx
+import { MagneticField } from '@youj/motion/backgrounds'
+
+export function LiveHero() {
+  return (
+    <section className="relative isolate min-h-[560px]">
+      <MagneticField />
+      <p className="relative text-5xl font-semibold">Every signal, held in place</p>
+    </section>
+  )
+}
+```
+
+`spacing` is the grid pitch in CSS pixels. A finer pitch looks denser and costs more dots: at the default 18px a 1440 x 900 screen draws about 4,000. Dots resting in place are one color; pushed dots take the second color, brighter and a little larger the further they are displaced.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="colors, intensity, speed… (8)">
+
+### Props
+
+<PropsTable name="MagneticField" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Performance" summary="Canvas 2D, a handful of paths per frame">
+
+### Performance
+
+It's drawn with Canvas 2D, not WebGL. Every dot is steered by a spring each frame, which is a few multiplications per dot, and the dots are batched into six paths by how far they are displaced, so a frame is six fills. The canvas renders at a device-pixel ratio capped at 2. On the low motion-budget tier the pitch widens by 30%, which keeps about 60% of the dots, and the loop runs at 30 fps. The loop pauses when the field is offscreen or the tab is hidden, and it stops and cleans up on unmount. If the browser can't create a 2D context, it falls back to a static CSS wash of the accent color.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Spring, pointer strength · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Bend', note: 'each dot springs toward a target pushed away from the pointer', value: 'damped spring, speed ÷ time scale' },
+    { moment: 'Press', note: 'an outward shove near the press point', value: 'impulse, then spring' },
+    { moment: 'Pointer strength', note: 'eases in and out with the pointer', value: 'smoothed per frame' },
+  ]}
+  reduced="Draws one still grid, bent around a fixed point: the same composition every time. There's no spring and no pointer response, and it redraws only when the size, the props or the theme change."
+/>
+
+#### Reduced motion
+
+The grid is bent around one fixed point, so it's the same on every visit and in every screenshot, and it still shows what the field does. Only the spring and the pointer response are gone. Switch on Reduced motion in any preview above to compare.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="ARIA">
+
+### Accessibility
+
+- It's decorative: the element is `aria-hidden` and ignores pointer events.
+- Dots are small and low in contrast by default, but they cross whatever sits above them. Keep a quiet pool of canvas behind the copy, as the hero preview does, or lower `intensity`, and check your text's contrast there.
+- Nothing moves until the pointer does, and the field stops offscreen. Under reduced motion it doesn't move at all.
+
+</ReferenceRow>

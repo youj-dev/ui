@@ -1,0 +1,128 @@
+---
+title: Time Lanes
+description: "Show shifts or runs in lanes across a week or a day, with overrides, proposals, handoffs and now, such as an on-call rota."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="time-lanes/demo" height={360} />
+
+A week of on-call shifts for four people, with two overrides and the time line pinned mid-week.
+
+</Story>
+
+<Story id="day" label="Day view">
+
+<ComponentPreview name="time-lanes/day" height={300} />
+
+One day of driver runs, with a late run, a dock conflict and proposed reassignments.
+
+`hours` shows a day instead of a week: the axis counts hours from `start` (every hour or two), and the now line runs across every lane at the time. A shift's `label` replaces its start time on the bar (a load, a job) and is read first; its `tone` overrides its lane's, so a late run can wear `danger`. A `proposed` shift is a suggestion not yet accepted: a dashed outline in the accent, never on call, with no handoff, and its detail says Proposed.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="time-lanes" noImport />
+
+Use time lanes for any rotation where the question is who holds it when: on-call pagers, support shifts, a release captain. There's a lane per person or team, each shift a bar from its start to its end, an override hatched over the lane of whoever covers, a dashed baton where one lane hands off to another, and now as a line in the accent. For events that already happened, use a [Timeline](/docs/components/timeline); for jobs that run on a daily clock, a [Day Ring](/docs/components/day-ring).
+
+```tsx
+import { TimeLanes, type RotaLane, type RotaShift } from '@youj/react'
+
+const lanes: RotaLane[] = [
+  { id: 'mara', name: 'Mara Quinn', detail: 'Platform' },
+  { id: 'theo', name: 'Theo Park', detail: 'Platform' },
+]
+const shifts: RotaShift[] = [
+  { id: 'a', lane: 'mara', start: new Date('2026-09-28T09:00'), end: new Date('2026-09-29T09:00') },
+  { id: 'b', lane: 'theo', start: new Date('2026-09-29T09:00'), end: new Date('2026-09-30T09:00') },
+  { id: 'c', lane: 'theo', start: new Date('2026-09-28T13:00'), end: new Date('2026-09-28T17:00'), override: true, note: 'Covering Mara' },
+]
+
+<TimeLanes lanes={lanes} shifts={shifts} start={new Date('2026-09-28T00:00')} />
+```
+
+`start` is the first moment shown (usually a Monday at midnight) and `days` how many follow (7 by default). A shift sits in its `lane` from `start` to `end`; `override` draws it hatched above the lane, and `note` adds a line to its detail. Lanes take the chart colors in turn, or their own `tone`. Where one lane's shift ends as another lane's begins, a dashed baton joins them, with a diamond on the day axis.
+
+`now` places the line: by default it follows the clock, read every 30 seconds once the page is live (on the server there's no line until the browser has the time); pass a time to pin it, or `null` to hide it. Shifts that ended fade and the one on call now is lit. `renderDetail` adds your own actions to a shift's detail: Swap, Page, a link to the schedule.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="lanes, shifts, start… (9)">
+
+### Props
+
+<PropsTable name="TimeLanes" />
+
+#### Shifts
+
+<PropsTable name="RotaShift" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+Parts: `time-lanes`, `time-lanes-heads`, `time-lanes-head`, `time-lanes-avatar`, `time-lanes-body`, `time-lanes-axis`, `time-lanes-day` (with `data-today`), `time-lanes-hour`, `time-lanes-handoff`, `time-lanes-grid`, `time-lanes-baton`, `time-lanes-lane`, `time-lanes-shift` (with `data-state`, `data-override` and `data-proposed`), `time-lanes-label`, `time-lanes-detail`, `time-lanes-when` and `time-lanes-now`. A lane is `--rota-lane` tall (2.75rem).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Clock tick, detail · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Clock tick', note: 'the now line glides to its new place', duration: 'slow', ease: 'standard' },
+    { moment: 'Detail', note: 'the shift’s popover opens from the bar', duration: 'fast', ease: 'enter' },
+  ]}
+  reduced="The line jumps; the popover appears in place."
+/>
+
+#### Reduced motion
+
+The now line jumps to each new time, and the detail opens in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard">
+
+### Accessibility
+
+- The rota is a group named by `label` (default: the labels' "On-call rota") and described by how to move through it; each lane is a group named by its person or team.
+- Each shift is a button named by its label, who, from and until when, whether it's an override and whether it's proposed ("4935, Iris Okafor, Mon 10:30 to Mon 13:00, Proposed").
+- The shifts are one tab stop, starting on the shift on call now. Left and right move along a lane (mirrored in RTL), up and down to the nearest shift in the next lane, Home and End to a lane's ends, and Enter or Space opens the detail.
+- The detail says when, for how long, whether it's an override, who takes over, and whether the shift is on call now, upcoming or ended.
+- Its words come from the labels (`rota`, `rotaShift`, `rotaHint`, `rotaHandoff`, `rotaOverride`, `rotaOnCall`, `rotaUpcoming`, `rotaEnded`, `proposed`), translated by the language packs.
+
+</ReferenceRow>

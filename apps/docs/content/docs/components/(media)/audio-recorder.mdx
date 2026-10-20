@@ -1,0 +1,127 @@
+---
+title: Audio Recorder
+description: "Record a voice note or an audio clip, listen back on its waveform, then save it or discard it."
+---
+
+<ComponentStories>
+<Story id="demo" label="Voice note">
+
+<ComponentPreview name="audio-recorder/demo" height={300} />
+
+A message composer's voice note: record, listen back, then Save. The microphone is a synthesized hum here, and the upload is simulated.
+
+</Story>
+
+<Story id="time-limit" label="With time limit">
+
+<ComponentPreview name="audio-recorder/time-limit" height={260} />
+
+`maxDuration={15}`: the ring around stop runs down, turns red for the last ten seconds, and the take stops at the limit.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="audio-recorder" noImport />
+
+Use an audio recorder wherever people leave a voice note or a short clip: a message composer, a support form, a spoken answer in a survey. The first press of the record button asks for the microphone. While it records, the sound scrolls past as bars, a timer counts up, and pause and stop sit beside it. A stopped take opens on a [waveform scrubber](/docs/components/waveform-scrubber) with play, its length, discard and **Save**, which hands you the take. The recorder keeps one size through every state: the controls change, the box doesn't.
+
+```tsx
+import { AudioRecorder } from '@youj/react'
+
+<AudioRecorder
+  maxDuration={60}
+  onRecordingComplete={(blob, { duration, mimeType }) => upload(blob, { duration, mimeType })}
+/>
+
+// A recording you already have opens on playback.
+<AudioRecorder value={savedNote} />
+```
+
+It records with `MediaRecorder`, in `mimeType` when the browser supports it and otherwise in the first of WebM with Opus, MP4 and Ogg that it does (Safari records MP4). **Save** is an [async button](/docs/components/button#async-button): it awaits `onRecordingComplete`, which gets the Blob with its `duration` in seconds and its `mimeType`, shows a spinner and then a check with "Saved", and the take becomes read-only: playback only, with a quiet Saved mark where the actions were. If the promise rejects, the button shows the error and the take stays unsaved, so it can be saved again. Pass `saved={false}` to give a saved take back its discard and Save (to re-record, say); `saved` is controlled when you pass it. Nothing plays by itself: playback starts only from the play button.
+
+Discard keeps the take for a few seconds behind an **Undo** link; `onDiscard` fires once the discard is final (the window closes, a new take starts, or the recorder unmounts). A take passed as `value` (a Blob or a URL) opens saved, for playback only.
+
+The microphone, the analyzer and the recorder are released when a take stops and when the recorder unmounts, so the browser's recording indicator goes out. `getStream` replaces the microphone with any `MediaStream` (a chosen device, a tab's audio, or the simulated voice these demos use).
+
+If the browser refuses the microphone, finds none, or can't record at all, the caption says so and what to do, and the record button tries again. A permission refused earlier shows before the first press where the browser reports it.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="onRecordingComplete, maxDuration, mimeType, value, saved, onDiscard… (12)">
+
+### Props
+
+<PropsTable name="AudioRecorder" />
+
+</ReferenceRow>
+
+<ReferenceRow title="Styling" summary="Parts and data attributes">
+
+### Styling
+
+The root `audio-recorder` carries `data-state` (`idle`, `requesting`, `recording`, `paused`, `recorded` or `saved`), `data-size` (`sm` or `default`) and `data-disabled`. Its parts are `audio-recorder-stage` (the live wave, `audio-recorder-wave`, or under reduced motion the meter, `audio-recorder-meter`, then the scrubber), `audio-recorder-controls`, `audio-recorder-primary` (record, stop, play), `audio-recorder-ring`, `audio-recorder-dot`, `audio-recorder-timer`, `audio-recorder-remaining`, `audio-recorder-pause`, `audio-recorder-time`, `audio-recorder-discard`, `audio-recorder-save` (the AsyncButton), `audio-recorder-saved` (the read-only mark), `audio-recorder-caption` and `audio-recorder-error`. A lit meter bar has `data-yj-lit`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Live wave, countdown · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Live wave', note: 'one bar per twentieth of a second, sliding toward the start between samples, so the strip scrolls with the sound', duration: 'instant', value: 'every frame' },
+    { moment: 'Recording dot', note: 'breathes while recording and holds still while paused', duration: 'slow' },
+    { moment: 'Countdown ring', note: 'runs down with the time left; accent, then danger for the last ten seconds', duration: 'instant', value: 'every frame' },
+    { moment: 'Take opens', note: 'the scrubber’s bars rise from the midline from the start', duration: 'deliberate' },
+  ]}
+  reduced="A still level meter that lights up with the sound instead of the scrolling bars; the dot holds still."
+/>
+
+#### Reduced motion
+
+The wave doesn't scroll: a row of bars of rising height lights up to the current level, so you can still see that the microphone hears you. The recording dot holds still, and the scrubber's bars are drawn in place.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Names, timer, announcements, keyboard">
+
+### Accessibility
+
+- The recorder is a group named by `label` (default "Audio recorder"). Every button is named: Start recording, Stop recording, Pause recording, Resume recording, Play, Pause, Discard recording, Save.
+- The record button keeps its place and its focus as it becomes stop and then play, so Space starts a take, stops it and plays it back without moving.
+- The recording clock is a `role="timer"` named "Recording time"; it is not announced every second.
+- Starting, pausing, stopping (with the take's length), reaching the limit, discarding and restoring are announced politely, as are the microphone messages.
+- After a discard, an undo or a save, focus returns to the record or play button.
+- Save announces its progress and outcome through the AsyncButton ("Saving…", "Saved").
+- The waves are decorative; the scrubber is a slider with the time and length as its value.
+- Time runs left to right in every script, like the scrubber; the controls follow the page's direction.
+- Its words come from the labels (`audioRecorder…`, with `play`, `pause` and `undo`), translated by the language packs.
+
+</ReferenceRow>

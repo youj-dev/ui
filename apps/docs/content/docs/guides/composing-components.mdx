@@ -1,0 +1,192 @@
+---
+title: Composing components
+description: "Build your own components with shared motion, icons and accessible controls."
+---
+
+<PageArt art="composing" />
+
+Build your own components from Youj pieces to share the library’s timing. This guide creates a plan picker with sliding radio selections, prices that animate between billing periods and a button label that follows the chosen plan.
+
+<ComponentPreview name="composing-components/plan-picker" height={460} />
+
+Use the arrow keys in either group, switch the period a few times in quick succession, and try the preview at ¼ speed and with Reduced motion on. Every behavior you see comes from a Youj piece. The component itself only holds state.
+
+## The approach
+
+1. **Semantics first.** Build the component so it works with no motion at all: the right roles, names, states and keyboard behavior.
+2. **Let pieces own the movement.** A component or motion piece that already solves a motion problem is interruptible, scaled by Speed and designed for reduced motion. Hand-rolled motion usually isn't.
+3. **Timing only from tokens.** If you still need a transition of your own, take it from `useYouj()` or the `yj-duration-*` utilities. See [Motion in your own components](/docs/motion/in-your-components).
+4. **Check the three states.** Normal speed, ¼ speed (hard-coded timing shows up at once) and reduced motion.
+
+## Build it
+
+<Steps>
+<Step>
+
+### Start with semantics
+
+A plan picker is two single-choice groups, so both are `radiogroup`s of `radio`s. Only the checked radio is in the tab order (a roving tab stop), and the arrow keys move the selection and the focus together, reversed under right-to-left text. No package ships that key handling, so the guide writes a small helper:
+
+```tsx
+import { useState, type KeyboardEvent } from 'react'
+
+const PERIODS = ['monthly', 'yearly'] as const
+
+/** Arrow keys, Home and End move the selection within a radio group, and focus follows it. */
+function radioKeys<T extends string>(options: readonly T[], current: T, select: (next: T) => void) {
+  return (event: KeyboardEvent<HTMLElement>) => {
+    const forward = getComputedStyle(event.currentTarget).direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight'
+    const index = options.indexOf(current)
+    const last = options.length - 1
+    let next: number
+    if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = last
+    else if (event.key === 'ArrowDown' || event.key === forward) next = index === last ? 0 : index + 1
+    else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') next = index === 0 ? last : index - 1
+    else return
+    event.preventDefault()
+    select(options[next]!)
+    event.currentTarget.querySelector<HTMLElement>(`[data-value="${options[next]}"]`)?.focus()
+  }
+}
+```
+
+The group calls it with its options, the current value and the setter. Each radio carries `data-value` so the helper can move focus to it:
+
+```tsx
+const [period, setPeriod] = useState<(typeof PERIODS)[number]>('yearly')
+
+<div role="radiogroup" aria-label="Billing period" onKeyDown={radioKeys(PERIODS, period, setPeriod)}>
+  {PERIODS.map((p) => (
+    <button
+      key={p}
+      type="button"
+      role="radio"
+      data-value={p}
+      aria-checked={period === p}
+      tabIndex={period === p ? 0 : -1}
+      onClick={() => setPeriod(p)}
+    >
+      {p === 'monthly' ? 'Monthly' : 'Yearly · save 20%'}
+    </button>
+  ))}
+</div>
+```
+
+Plan cards hold a lot of text, so each gets a short `aria-label` ("Pro, $19 per seat per month") and points `aria-describedby` at its feature list. A screen reader announces the name, the checked state and the position, then the features.
+
+</Step>
+<Step>
+
+### Glide the selection
+
+Drop a [Sliding Indicator](/docs/motion/sliding-indicator) into each group. It finds the selected item from the `aria-checked` the radios already carry, so there's nothing to wire. The container needs `relative isolate`, because the indicator sits behind the items.
+
+```tsx
+import { SlidingIndicator } from '@youj/motion'
+
+<div role="radiogroup" aria-label="Billing period" className="relative isolate flex rounded-lg border border-line p-0.5">
+  <SlidingIndicator className="rounded-md bg-key shadow-sm" />
+  {/* radios */}
+</div>
+```
+
+The indicator is a plain element you restyle with `className`. The period switch uses it as a filled pill. The plan cards use the same block as a 2px accent ring, with a transparent fill. It sits behind each card, so only the ring shows around the selected one:
+
+```tsx
+<SlidingIndicator className="rounded-xl bg-transparent ring-2 ring-accent" />
+```
+
+It glides on the `smooth` spring, keeps its corners round mid-flight, and retargets from wherever it is when the selection changes again.
+
+</Step>
+<Step>
+
+### Count the prices
+
+Each price is a [Counter](/docs/motion/counter). Passing the current price as `from` means the first render shows the number instead of counting up to it, and `inView={false}` lets it animate as soon as the value changes. Switch the period mid-count and it retargets without a jump.
+
+```tsx
+import { Counter } from '@youj/motion'
+
+<Counter value={price} from={price} inView={false} format={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }} />
+```
+
+The numerals are tabular, so the cards don't reflow while digits change, and the formatted value is always in the document for assistive technology.
+
+</Step>
+<Step>
+
+### Morph the call to action
+
+The button's label follows the selected plan. [Morph Label](/docs/motion/morph-label) crossfades the old label out and the new one in, and `useMorphRoot` morphs the button's width on the same spring. Give the button `overflow-hidden` so the outgoing label doesn't spill while it shrinks.
+
+```tsx
+import { m } from 'motion/react'
+import { MotionFeatures } from '@youj/core'
+import { MorphLabel, useMorphRoot } from '@youj/motion'
+import { ArrowRightIcon } from '@youj/icons'
+
+function ContinueButton({ plan }: { plan: { id: string; name: string } }) {
+  const morph = useMorphRoot(8) // the button's corner radius, kept round while it morphs
+  return (
+    <MotionFeatures features="max">
+      <m.button {...morph} type="button" className="relative inline-flex h-9 items-center overflow-hidden px-4">
+        <MorphLabel value={plan.id} contentClassName="gap-1.5">
+          Continue with {plan.name}
+          <ArrowRightIcon size={16} />
+        </MorphLabel>
+      </m.button>
+    </MotionFeatures>
+  )
+}
+```
+
+The button is an `m` element inside `MotionFeatures`, so it also works in an app on `<LazyMotion strict>`. `features="max"` loads layout animation, which the width morph needs.
+
+The outgoing label is hidden from assistive technology as soon as it starts to leave, so the button's name is only ever the current one. The arrow is a Youj icon: the button is its trigger, so it plays when the button is hovered or focused.
+
+</Step>
+<Step>
+
+### Check the states
+
+Nothing in the component names a duration, so the checks pass without extra code:
+
+- **¼ speed.** The glide, the count and the morph all slow down together. A transition that keeps its speed is hard-coded.
+- **Reduced motion.** The rings jump, the prices swap, and the label changes in place. The same information arrives, only without the travel.
+- **Interruption.** Arrow through the plans quickly, or toggle the period twice mid-count. Every piece continues from where it is, with no jump back to its start.
+
+</Step>
+</Steps>
+
+## Which piece to reach for
+
+| You need | Reach for |
+| --- | --- |
+| A selection that glides between items | [Sliding Indicator](/docs/motion/sliding-indicator) |
+| A label or icon that changes in place | [Morph Label](/docs/motion/morph-label) with `useMorphRoot` |
+| A number that changes | [Counter](/docs/motion/counter) |
+| A region that opens and closes | [Collapse](/docs/motion/collapse), or `yj-collapse` on a Base UI panel |
+| A skeleton that becomes content | [Content Swap](/docs/motion/content-swap) |
+| Items that arrive, leave and reorder | [Presence List](/docs/motion/presence-list) |
+| Pending, success and error on a control | [Async Feedback](/docs/components/async-feedback), or [Async Button](/docs/components/button#async-actions) |
+| Content arriving on screen | [Reveal](/docs/motion/reveal), [Stagger](/docs/motion/stagger), [TextSplit](/docs/motion/text-split) |
+| Popovers, dialogs, sheets and toasts | [Overlay presets](/docs/motion/presets) |
+| Icons that answer an interaction | [Icons](/docs/icons), [IconSwap](/docs/icons/icon-swap) |
+
+## Accessibility checklist
+
+- Every control has a role, a name and a state before any motion is added. Motion never carries meaning on its own.
+- Keyboard focus is visible and sits outside decorative layers. Here the focus outline is offset past the selection ring.
+- Decorative layers are `aria-hidden`. The indicator and the morphing label's outgoing copy already are.
+- Changing values are announced once, at their final value. Counter keeps the formatted number in the document for that reason.
+- Arrow keys follow the reading direction, so the component works under `dir="rtl"`.
+
+## Related
+
+<Cards>
+  <Card title="Motion in your own components" href="/docs/motion/in-your-components">useYouj, the presets, and reduced motion in your own code.</Card>
+  <Card title="Icons in your own components" href="/docs/icons/in-your-components">Triggers, sizing and labels for Youj icons.</Card>
+  <Card title="Coming from shadcn/ui" href="/docs/guides/shadcn">Bring the tokens and the motion into an existing shadcn app.</Card>
+</Cards>
