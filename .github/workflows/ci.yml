@@ -173,6 +173,9 @@ jobs:
   visual:
     name: Visual regression
     needs: storybook
+    # Main only: deliberate design changes would fail a pull request's screenshots every time. A pull request
+    # labelled `visual` runs it too (add the label, then push or re-run the workflow).
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'visual')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
