@@ -9,7 +9,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['**/*.test.*', '**/*.stories.*', '**/*.d.ts', 'src/test/**'],
+      // Storybook docs demos (src/docs) and the tests-only helpers are in no entry or build.
+      exclude: ['**/*.test.*', '**/*.stories.*', '**/*.d.ts', 'src/test/**', 'src/test-utils.tsx', 'src/docs/**'],
       reporter: ['text-summary', 'json-summary'],
       // Floor: just under what the suite covered when this was set. Raise it as coverage rises.
       thresholds: { statements: 93, branches: 83, functions: 95, lines: 93 },
