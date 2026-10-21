@@ -50,6 +50,8 @@ afterEach(() => {
 
 describe('LiveMetric block', () => {
   test('demo traffic, marked as such: the people now, the strip and the top pages, ticking each second', () => {
+    // The live walk seeds from the clock; a fixed one keeps "it moved" from landing on the same number by chance.
+    vi.setSystemTime(new Date('2026-10-22T12:00:00Z'))
     reduced(<LiveMetric />)
     expect(screen.getByRole('heading', { level: 2, name: 'Right now' })).toBeInTheDocument()
     expect(document.querySelector('[data-slot=demo-marker]')).toHaveTextContent('Demo data')
