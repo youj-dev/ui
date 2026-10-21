@@ -17,7 +17,18 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['**/*.test.*', '**/*.stories.*', '**/*.d.ts', 'src/test/**'],
+      // Storybook-only helpers (imported by *.stories.* alone, in no entry or registry item) are not product code.
+      exclude: [
+        '**/*.test.*',
+        '**/*.stories.*',
+        '**/*.d.ts',
+        'src/test/**',
+        'src/components/youj/transitions/presets-story-kit.tsx',
+        'src/components/youj/motion/story-kit.tsx',
+        'src/components/youj/backgrounds/story-hero.tsx',
+        'src/components/youj/effects/entrance/story-demos.tsx',
+        'src/components/youj/effects/entrance/demos.fixtures.tsx',
+      ],
       reporter: ['text-summary', 'json-summary'],
       // Floor: just under what the suite covered when this was set. Raise it as coverage rises.
       thresholds: { statements: 75, branches: 70, functions: 80, lines: 77 },
