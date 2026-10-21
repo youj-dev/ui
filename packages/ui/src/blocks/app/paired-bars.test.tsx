@@ -80,6 +80,20 @@ describe('Paired bars block', () => {
     expect(names()).toHaveLength(6)
   })
 
+  test('a room narrower than its rows scrolls sideways, so the keyboard can reach it', () => {
+    const width = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(900)
+    const client = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(320)
+    reduced(<PairedBars />)
+    expect(screen.getByRole('region', { name: 'All models' })).toHaveAttribute('tabindex', '0')
+    width.mockRestore()
+    client.mockRestore()
+  })
+
+  test('a room that fits is not a stop of its own until View all', () => {
+    reduced(<PairedBars />)
+    expect(screen.queryByRole('region', { name: 'All models' })).not.toBeInTheDocument()
+  })
+
   test('no View all when everything already shows', () => {
     reduced(<PairedBars rows={[{ id: 'a', name: 'Only', values: [1, 2] }]} />)
     expect(screen.queryByRole('button', { name: /View all/ })).not.toBeInTheDocument()
