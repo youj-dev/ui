@@ -68,7 +68,7 @@ export const SOURCES: Source[] = [
     file: 'packages/ui/src/components/ui/time-lanes.tsx',
     classes: [
       "'bg-[color-mix(in_oklab,var(--rota-tone)_26%,transparent)] shadow-[inset_2px_0_0_var(--rota-tone)]",
-      "state === 'current' && !s.override && 'bg-[color-mix(in_oklab,var(--rota-tone)_44%,transparent)] ring-1 ring-(--rota-tone)'",
+      "state === 'current' && !s.override && 'bg-[color-mix(in_oklab,var(--rota-tone)_38%,transparent)] ring-1 ring-(--rota-tone)'",
       "state === 'ended' && 'opacity-70 hover:opacity-100'",
     ],
   },
@@ -871,7 +871,7 @@ async function drawTimeLanes(c: ComponentNode) {
       w: f((b - a) * col),
       h: lane - 16,
       radius: 'radius/sm',
-      fill: [tone, kind === 'override' ? 0.12 : kind === 'current' ? 0.44 : 0.26],
+      fill: [tone, kind === 'override' ? 0.12 : kind === 'current' ? 0.38 : 0.26],
       stroke: kind === 'current' ? tone : kind === 'override' ? [tone, 0.75] : undefined,
       opacity: kind === 'ended' ? 0.7 : undefined,
     })
@@ -2064,7 +2064,7 @@ export const ENTRIES: Entry[] = [
       key: 'component:time-lanes',
       title: 'Time lanes',
       usage: '<TimeLanes lanes={team} shifts={rota} start={monday} now={Date.now()} />',
-      tokens: 'Lanes role/chart-1…5: shifts the tone at 26% with a 2px edge, on call at 44% ringed in the tone, ended at 45% opacity, override dashed at 12%  ·  Hand-offs role/line-strong dashed  ·  Day rules role/line-subtle  ·  Now role/accent  ·  Axis Mono/xs  ·  Corner radius/sm',
+      tokens: 'Lanes role/chart-1…5: shifts the tone at 26% with a 2px edge, on call at 38% ringed in the tone, ended at 45% opacity, override dashed at 12%  ·  Hand-offs role/line-strong dashed  ·  Day rules role/line-subtle  ·  Now role/accent  ·  Axis Mono/xs  ·  Corner radius/sm',
       file: file('time-lanes'),
     },
     spec: () => timeLanesSpec(),
