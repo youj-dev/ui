@@ -11,6 +11,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '../../componen
 import { Input } from '../../components/ui/input'
 import { Skeleton } from '../../components/ui/skeleton'
 import { useControllableState } from '../../hooks/use-controllable-state'
+import { useResizeMeasure } from '../../hooks/use-resize-measure'
 import { cn } from '../../lib/utils'
 import { DEFAULT_COPY, SIDES, ROWS, type PairedBarsCopy, type PairedBarsRow, type PairedBarsSide } from './paired-bars/data'
 import { makeScale, type ScaleKind } from './paired-bars/scale'
@@ -125,6 +126,11 @@ function PairedBars({
 
   // The room is the header and `visible` rows, whatever the search or the expansion.
   const room = `calc(var(--spacing) * ${HEAD + ROW * visible})`
+  // Keyboard users reach the room whenever it scrolls: expanded, or narrower than its rows (WCAG 2.1.1).
+  const roomRef = useRef<HTMLDivElement>(null)
+  const [scrolls, setScrolls] = useState(false)
+  useResizeMeasure(roomRef, (el) => setScrolls(el.scrollWidth > el.clientWidth + 1), [shownRows.length])
+  const reachable = expanded || scrolls
 
   const toggle = () => {
     setExpanded(!expanded)
@@ -181,9 +187,10 @@ function PairedBars({
         {actions}
       </div>
       <div
-        role={expanded ? 'region' : undefined}
-        aria-label={expanded ? copy.region : undefined}
-        tabIndex={expanded ? 0 : undefined}
+        ref={roomRef}
+        role={reachable ? 'region' : undefined}
+        aria-label={reachable ? copy.region : undefined}
+        tabIndex={reachable ? 0 : undefined}
         data-slot="paired-bars-room"
         data-expanded={expanded || undefined}
         className={cn(

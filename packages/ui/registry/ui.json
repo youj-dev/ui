@@ -10830,6 +10830,7 @@
       "input",
       "skeleton",
       "use-controllable-state",
+      "use-resize-measure",
       "youj-core",
       "youj-presets",
       "youj-ui-core"

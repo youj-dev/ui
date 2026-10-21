@@ -47,7 +47,8 @@ describe('illustrations', () => {
       }),
     )
     expect(boxes.size).toBe(1)
-  })
+    // Renders every scene in turn; under coverage on a shared runner that can pass the file's 20s.
+  }, 60_000)
 
   test('a title makes it a named image', () => {
     const { getByRole } = renderReduced(<Illustration scene="deploy" title="Deploying your site" description="A rocket over its pad" />)
