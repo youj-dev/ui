@@ -252,7 +252,7 @@ function Workspace() {
           <p className="text-sm font-medium text-fg">Delete workspace</p>
           <p className="mt-0.5 text-xs text-fg-muted">{confirming ? 'This removes 4 members and every project. It can’t be undone.' : 'Removes everything in Northwind for everyone.'}</p>
         </div>
-        <button type="button" onClick={() => setConfirming((c) => !c)} className={cn('rounded-lg border border-danger-line px-2.5 py-1.5 text-xs font-medium text-danger hover:bg-danger-subtle', ease, focusRing)}>
+        <button type="button" onClick={() => setConfirming((c) => !c)} className={cn('rounded-lg border border-danger-line px-2.5 py-1.5 text-xs font-medium text-danger-text hover:bg-danger-subtle', ease, focusRing)}>
           {confirming ? 'Cancel' : 'Delete…'}
         </button>
       </div>

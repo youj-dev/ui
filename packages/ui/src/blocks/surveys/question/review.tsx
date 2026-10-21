@@ -46,15 +46,15 @@ export function Review({ questions, answers, format, heading: Heading, copy, fai
         </Heading>
         <p className="text-ui text-fg-muted">{copy.reviewDescription}</p>
       </div>
-      <dl className="flex flex-col divide-y divide-line border-y border-line">
+      <ul className="flex flex-col divide-y divide-line border-y border-line">
         {questions.map((question) => {
           const answer = readable(question, answers[question.id], format, copy)
           return (
-            <div key={question.id} className="flex items-start justify-between gap-4 py-3">
-              <div className="flex min-w-0 flex-col gap-0.5">
+            <li key={question.id} className="flex items-start justify-between gap-4 py-3">
+              <dl className="flex min-w-0 flex-col gap-0.5">
                 <dt className="text-ui-sm text-pretty text-fg-muted">{question.title}</dt>
                 <dd className={answer ? 'text-ui break-words whitespace-pre-line text-fg' : 'text-ui text-fg-subtle'}>{answer ?? copy.skipped}</dd>
-              </div>
+              </dl>
               <Button
                 variant="link"
                 size="sm"
@@ -64,10 +64,10 @@ export function Review({ questions, answers, format, heading: Heading, copy, fai
               >
                 {copy.edit}
               </Button>
-            </div>
+            </li>
           )
         })}
-      </dl>
+      </ul>
       {failure && (
         <Alert variant="danger">
           <AlertTitle>{copy.failedTitle}</AlertTitle>

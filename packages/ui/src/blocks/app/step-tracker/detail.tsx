@@ -49,12 +49,14 @@ interface StepDetailProps {
   when: (msAfter: number) => string
   /** How many rows to keep (detailRows). */
   rows: number
+  /** The stage's heading, one level under the block's title. */
+  Heading: 'h2' | 'h3'
 }
 
-export function StepDetail({ id, item, stages, index, state, copy, when, rows }: StepDetailProps) {
+export function StepDetail({ id, item, stages, index, state, copy, when, rows, Heading }: StepDetailProps) {
   const k = useYouj()
   const last = item.scans.length - 1
-  const body = <Body item={item} stages={stages} index={index} state={state} copy={copy} when={when} />
+  const body = <Body item={item} stages={stages} index={index} state={state} copy={copy} when={when} Heading={Heading} />
   return (
     <div
       id={id}
@@ -104,7 +106,7 @@ function Layer({ children }: { children: ReactNode }) {
 
 const ROWS = 'grid grid-cols-1 grid-flow-col grid-rows-[repeat(var(--rows-n),1lh)] gap-x-6 gap-y-1 text-ui-sm @lg/track:grid-cols-2 @lg/track:grid-rows-[repeat(var(--rows-w),1lh)]'
 
-function Body({ item, stages, index, state, copy, when }: Omit<StepDetailProps, 'id' | 'rows'>) {
+function Body({ item, stages, index, state, copy, when, Heading }: Omit<StepDetailProps, 'id' | 'rows'>) {
   const stage = item.scans[index]!
   const def = stageOf(stages, stage.id)
   const stopped = item.scans.find((s) => s.outcome === 'failed')
@@ -119,7 +121,7 @@ function Body({ item, stages, index, state, copy, when }: Omit<StepDetailProps, 
       <div className="flex min-w-0 items-center gap-2">
         <span aria-hidden className={cn('size-2 shrink-0 rounded-full', TONE[state], interim && 'bg-warning')} />
         {def.icon && <def.icon size={16} />}
-        <h3 className="shrink-0 text-ui font-medium text-fg">{def.label}</h3>
+        <Heading className="shrink-0 text-ui font-medium text-fg">{def.label}</Heading>
         {(reached || interim) && stage.place && <span className="min-w-0 truncate text-ui-sm text-fg-muted">{stage.place}</span>}
         <span className="ms-auto shrink-0 ps-3 text-ui-sm text-fg-muted tabular-nums">{at === undefined ? copy.states[state] : when(at)}</span>
       </div>

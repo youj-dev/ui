@@ -74,6 +74,7 @@ export const Hero: Story = {
       <div className="rounded-xl border border-line bg-surface p-6">
         <LaneMeter
           {...args}
+          segments={9}
           lanes={lanes}
           onItemAction={(item) => {
             setFailed((list) => list.filter((i) => i.id !== item.id))
@@ -115,6 +116,7 @@ export const Items: Story = {
       <div className="flex flex-col gap-4">
         <LaneMeter
           {...args}
+          segments={16}
           lanes={[{ id: 'failed', label: 'Failed', value: failed.length, tone: 'danger', items: failed }]}
           onItemAction={(item) => setFailed((list) => list.filter((i) => i.id !== item.id))}
         />

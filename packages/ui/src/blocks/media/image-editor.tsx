@@ -345,6 +345,7 @@ function ImageEditor({
           inert={status !== 'ready'}
         >
           <Controls
+            Heading={embedded ? 'h3' : 'h2'}
             edit={edit}
             aspects={aspects}
             copy={copy}
@@ -354,7 +355,7 @@ function ImageEditor({
             onTurn={turn}
             onFlip={flip}
           />
-          <Previews live={live} natural={natural} src={status === 'ready' ? src : null} previews={previews} round={round} copy={copy} />
+          <Previews Heading={embedded ? 'h3' : 'h2'} live={live} natural={natural} src={status === 'ready' ? src : null} previews={previews} round={round} copy={copy} />
         </div>
       </div>
       {!round && <AltText value={edit.alt} disabled={status !== 'ready'} copy={copy} onChange={(alt) => commit({ alt })} />}

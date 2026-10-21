@@ -9,7 +9,8 @@ import { progressiveMask, effectsToCss, type EffectsInspectorCopy, type EffectsV
 function Preview({ value, copy }: { value: EffectsValue; copy: EffectsInspectorCopy }) {
   const { css, blurred } = effectsToCss(value)
   const { filter, 'mask-image': mask, ...paint } = css
-  const style: CSSProperties = { background: paint.background, boxShadow: paint['box-shadow'] }
+  // Black or white, whichever reads on the fill the user picked (not the theme's accent ink).
+  const style: CSSProperties = { background: paint.background, boxShadow: paint['box-shadow'], color: `oklch(from ${paint.background} calc((0.72 - l) * 100) 0 0)` } // youj-allow: ink derived from the picked fill
   const face = (extra: CSSProperties, hidden?: boolean) => (
     <div
       aria-hidden={hidden || undefined}

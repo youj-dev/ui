@@ -362,14 +362,15 @@ function Wheel({ column, value, onPick, loop, size, disabled, sound, onSibling }
         data-index={r}
         data-selected={Math.abs(r - pos) < 0.5 || undefined}
         data-disabled={o.disabled || undefined}
+        aria-disabled={o.disabled || undefined}
         className={cn(
           'absolute inset-x-0 top-[calc(50%-var(--ui--wheel-row)/2)] own:flex h-(--ui--wheel-row) items-center justify-center own:px-3 whitespace-nowrap backface-hidden',
           'own:text-fg data-selected:font-medium data-disabled:own:text-fg-muted',
         )}
         style={{
           transform: `translateZ(calc(var(--ui--wheel-radius) * -1)) rotateX(${-angle}deg) translateZ(var(--ui--wheel-radius))`,
-          // Rows turn away and fade; the ones too faint to read at 4.5:1 drop out instead of lingering.
-          opacity: facing * facing < 0.4 ? 0 : facing * facing * (o.disabled ? 0.7 : 1),
+          // Rows turn away and fade; the ones too faint to read at 4.5:1 (under 0.7 on a light page) drop out instead of lingering.
+          opacity: facing * facing < 0.7 ? 0 : facing * facing * (o.disabled ? 0.7 : 1),
         }}
       >
         {o.label}

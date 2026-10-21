@@ -114,6 +114,7 @@ function SlotSorter({
   const titleId = useId()
   const hintId = useId()
   const Title = embedded ? 'h2' : 'h1'
+  const Sub = embedded ? 'h3' : 'h2'
   const { announce, announcer } = useAnnouncer()
   const slotEls = useRef(new Map<string, HTMLElement>())
   const slotRef = (id: string) => (el: HTMLLIElement | null) => {
@@ -167,7 +168,7 @@ function SlotSorter({
       </div>
 
       <div className="flex flex-col gap-5 px-(--ui--panel-x) pt-(--ui--panel-y) pb-(--ui--panel-y)">
-        <h3 className="text-ui-lg font-medium text-fg">{copy.heading}</h3>
+        <Sub className="text-ui-lg font-medium text-fg">{copy.heading}</Sub>
 
         <section aria-label={copy.splitLabel} className="flex flex-col gap-2.5">
           <div className="flex items-baseline justify-between gap-3 text-ui-sm text-fg-muted">

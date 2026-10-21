@@ -180,6 +180,7 @@ function FrameSearchField({ placeholder, onSearch, className }: FrameSearchField
   return (
     <div
       role="search"
+      aria-label={labels.search}
       data-frame-search="field"
       data-slot="frame-search-field"
       // The phone's field folds away once focus leaves it and its buttons.

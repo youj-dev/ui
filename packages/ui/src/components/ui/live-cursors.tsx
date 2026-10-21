@@ -104,8 +104,8 @@ const placed = (user: LiveCursorUser): user is LiveCursorUser & LiveCursorPositi
 
 /** Black or white, whichever reads on the person's color (a fallback to the page's canvas where relative colors aren't supported). */
 const INK = 'oklch(from var(--ui--live-cursor) calc((0.72 - l) * 100) 0 0)' // youj-allow: a relative color of the person's color, not a raw one
-// The pills keep the person's hue but pull their lightness off the middle, so INK reads on them at 4.5:1: down to 0.56 under white, up to 0.72 under black.
-const PILL = 'oklch(from var(--ui--live-cursor) calc(min(l, 0.56) + (max(l, 0.72) - min(l, 0.56)) * clamp(0, (l - 0.715) * 1000, 1)) c h)' // youj-allow: a relative color of the person's color, not a raw one
+// The pills keep the person's hue but pull their lightness off the middle, so INK reads on them at 4.5:1: down to 0.54 under white, up to 0.72 under black.
+const PILL = 'oklch(from var(--ui--live-cursor) calc(min(l, 0.54) + (max(l, 0.72) - min(l, 0.54)) * clamp(0, (l - 0.715) * 1000, 1)) c h)' // youj-allow: a relative color of the person's color, not a raw one
 const TINT = 'color-mix(in oklab, var(--ui--live-cursor) 14%, transparent)'
 
 interface Track {
@@ -544,6 +544,8 @@ interface PresenceAvatarsProps extends Omit<ComponentProps<'div'>, 'children'> {
 }
 
 const overlap = { sm: '-space-x-1', default: '-space-x-1.5', lg: '-space-x-2' } as const
+// Avatars that can be pressed overlap less, so each keeps 24px of its own width uncovered (WCAG 2.5.8).
+const overlapPressable = { sm: 'space-x-0', default: '-space-x-1', lg: '-space-x-2' } as const
 
 function PresenceAvatars({ users, max = 5, size = 'default', following: followingProp, defaultFollowing = null, onFollowingChange, label, className, ...props }: PresenceAvatarsProps) {
   const labels = useComponentLabels(liveCursorsLabels)
@@ -569,7 +571,7 @@ function PresenceAvatars({ users, max = 5, size = 'default', following: followin
         role="group"
         aria-label={label ?? labels.liveCursorsPeople}
         data-slot="presence-avatars"
-        className={cn('isolate own:flex items-center', overlap[size], className)}
+        className={cn('isolate own:flex items-center', (followable ? overlapPressable : overlap)[size], className)}
         {...props}
       >
         {shown.map((user, index) => {

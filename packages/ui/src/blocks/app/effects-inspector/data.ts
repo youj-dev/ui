@@ -23,7 +23,7 @@ export interface EffectsValue {
 export const DEFAULT_EFFECTS: EffectsValue = {
   shadow: { enabled: true, visible: true, present: true, type: 'drop', x: 0, y: 8, blur: 24, spread: -2, color: '#4c6fff', opacity: 55 }, // youj-allow: demo values the user edits
   stroke: { enabled: true, visible: true, present: true, color: '#ffffff', opacity: 28, position: 'inside', weight: 1 }, // youj-allow: demo values the user edits
-  fill: { enabled: true, visible: true, present: true, color: '#4c6fff', opacity: 100 }, // youj-allow: demo values the user edits
+  fill: { enabled: true, visible: true, present: true, color: '#4666f2', opacity: 100 }, // youj-allow: demo values the user edits
   blur: { enabled: false, visible: true, present: true, type: 'uniform', radius: 4, start: 30, end: 100 },
 }
 

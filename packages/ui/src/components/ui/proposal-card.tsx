@@ -16,7 +16,7 @@ import { cn } from '../../lib/utils'
  * and `actions` hold your buttons (Approve, Compare, Dismiss).
  * - `status`: once `approved`, the proposed row turns solid and the others
  *   step back, and `actions` fold away for your `resolution` (who approved
- *   it, when); `dismissed` keeps the current row and fades the proposal.
+ *   it, when); `dismissed` keeps the current row and steps the proposal back.
  * - The card is an article named by its title; the proposed row says so to
  *   screen readers ("Proposed").
  * - Motion: rows change tone on the fast token, and the actions and the
@@ -129,21 +129,20 @@ function ProposalCard({
                 data-muted={muted || undefined}
                 className={cn(
                   'flex items-center justify-between gap-3 rounded-lg border px-3 py-2',
-                  'transition-[background-color,border-color,opacity] yj-duration-fast ease-standard reduced:transition-none',
+                  'transition-[background-color,border-color] yj-duration-fast ease-standard reduced:transition-none',
                   proposed
                     ? status === 'approved'
                       ? 'border-accent-line bg-accent-subtle'
                       : 'border-dashed border-accent-line bg-accent-subtle'
                     : 'border-transparent bg-transparent',
-                  muted && 'opacity-55',
                 )}
               >
                 <div className="own:flex min-w-0 flex-col">
-                  <span className="truncate own:text-ui-sm own:text-fg">
+                  <span className={cn('truncate own:text-ui-sm', muted ? 'own:text-fg-muted' : 'own:text-fg')}>
                     {option.label}
                     {proposed && <span className="sr-only">, {labels.proposed}</span>}
                   </span>
-                  {option.detail && <span className={cn('own:font-mono own:text-ui-xs own:tabular-nums', INK[tone])}>{option.detail}</span>}
+                  {option.detail && <span className={cn('own:font-mono own:text-ui-xs own:tabular-nums', muted ? 'own:text-fg-muted' : INK[tone])}>{option.detail}</span>}
                 </div>
                 {option.value && (
                   <span className={cn('shrink-0 own:font-mono own:text-ui-lg own:tabular-nums', muted ? 'own:text-fg-muted line-through decoration-1' : INK[tone])}>{option.value}</span>

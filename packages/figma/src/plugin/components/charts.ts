@@ -189,7 +189,7 @@ export const SOURCES: Source[] = [
   },
   {
     file: 'packages/ui/src/components/ui/proposal-card.tsx',
-    classes: ["'flex flex-col gap-3 rounded-xl border border-line bg-surface p-4 text-fg shadow-xs'", "'border-dashed border-accent-line bg-accent-subtle'", "muted && 'opacity-55'"],
+    classes: ["'flex flex-col gap-3 rounded-xl border border-line bg-surface p-4 text-fg shadow-xs'", "'border-dashed border-accent-line bg-accent-subtle'", "muted ? 'text-fg-muted' : 'text-fg'"],
   },
   {
     file: 'packages/ui/src/components/ui/data-table/data-table-toolbar.tsx',
@@ -2182,6 +2182,7 @@ async function drawProposal(c: ComponentNode, status: 'pending' | 'approved', de
     ['Current route', '+47 min', '15:20', false],
     ['Via Harbor St', '−12 min of delay', '14:33', true],
   ] as const) {
+    const muted = approved && !proposed
     const row = await box({
       name: proposed ? 'Proposed' : 'Option',
       dir: 'row',
@@ -2193,13 +2194,11 @@ async function drawProposal(c: ComponentNode, status: 'pending' | 'approved', de
       radius: 'radius/lg',
       fill: proposed ? 'role/accent-subtle' : undefined,
       stroke: proposed ? 'role/accent-line' : undefined,
-      opacity: approved && !proposed ? 0.55 : undefined,
     })
     if (proposed && !approved) row.dashPattern = [4, 3]
-    const muted = approved && !proposed
     const v = await text(value, 'Mono/base', muted ? 'role/fg-muted' : proposed ? 'role/accent-text' : 'role/danger-text', { name: 'Value' })
     if (muted) v.textDecoration = 'STRIKETHROUGH'
-    add(row, await box({ name: 'Text', dir: 'col' }, await text(name, 'UI/sm/Regular', 'role/fg'), await text(detail, 'Mono/xs', proposed ? 'role/accent-text' : 'role/danger-text', { name: 'Detail' })), v)
+    add(row, await box({ name: 'Text', dir: 'col' }, await text(name, 'UI/sm/Regular', muted ? 'role/fg-muted' : 'role/fg'), await text(detail, 'Mono/xs', muted ? 'role/fg-muted' : proposed ? 'role/accent-text' : 'role/danger-text', { name: 'Detail' })), v)
     add(options, row)
   }
   const facts = await box({ name: 'Facts', dir: 'row', gap: 'space/3', pad: [10, 12], w: 'fill' })

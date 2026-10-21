@@ -33,7 +33,7 @@ function Brand() {
         <span className="rounded-md px-3 py-1.5 text-ui font-medium text-[white]" style={{ backgroundColor: color }}>
           Preview
         </span>
-        <span className="text-ui" style={{ color }}>
+        <span className="text-ui" style={{ color: `color-mix(in oklab, ${color} 55%, var(--color-fg))` }}>
           A link in your color
         </span>
       </div>

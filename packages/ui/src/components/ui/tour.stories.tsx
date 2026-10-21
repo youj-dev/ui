@@ -71,7 +71,7 @@ function Dashboard({ id, onStart, beacon }: { id: string; onStart?: () => void; 
               <Button id={`${id}-alerts`} variant="outline" size="icon" aria-label="Notifications">
                 <BellIcon />
               </Button>
-              {beacon && <span className="absolute -end-1.5 -top-1.5">{beacon}</span>}
+              {beacon && <span className="absolute -end-2 -top-3">{beacon}</span>}
             </span>
             {onStart && (
               <Button variant="secondary" onClick={onStart}>

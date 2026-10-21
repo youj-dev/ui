@@ -171,7 +171,7 @@ function FollowAUserDemo() {
         <span className="text-ui-sm text-fg-muted">{following ? `Following ${users.find((u) => u.id === following)?.name}` : 'Press an avatar to follow'}</span>
         <PresenceAvatars users={users} following={following} onFollowingChange={setFollowing} />
       </div>
-      <div className="h-80 overflow-auto yj-scrollbar rounded-2xl border border-line bg-canvas">
+      <div tabIndex={0} role="region" aria-label="Board" className="h-80 overflow-auto yj-scrollbar rounded-2xl border border-line bg-canvas focus-ring">
         <LiveCursors users={users} following={following} className={`h-[1200px] w-full max-w-[1800px] ${dots}`} />
       </div>
     </div>

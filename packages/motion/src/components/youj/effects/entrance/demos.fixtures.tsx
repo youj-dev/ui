@@ -22,17 +22,16 @@ export function Stage({ children, replay }: { children: React.ReactNode; replay:
 export function SignInCard() {
   return (
     <form
-      aria-label="Sign in to Northwind"
       className="flex w-[360px] flex-col gap-5 rounded-xl border border-line bg-surface p-6 shadow-sm"
       onSubmit={(e) => e.preventDefault()}
     >
-      <header className="flex items-center gap-3">
+      <div className="flex items-center gap-3">
         <span className="grid size-9 place-items-center rounded-lg bg-fg text-sm font-semibold text-canvas">N</span>
         <div>
           <h2 className="text-base font-semibold text-fg">Sign in to Northwind</h2>
           <p className="text-sm text-fg-muted">Welcome back. Pick up where you left off.</p>
         </div>
-      </header>
+      </div>
       <label className="flex flex-col gap-1.5 text-sm font-medium text-fg">
         Email
         <input

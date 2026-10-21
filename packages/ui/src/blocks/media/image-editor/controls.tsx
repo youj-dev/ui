@@ -17,6 +17,8 @@ import { numberFormat } from '../../../lib/utils'
 const MAX_ZOOM = 8
 
 interface ControlsProps {
+  /** Each group's heading, one level under the block's title. */
+  Heading: 'h2' | 'h3'
   edit: ImageEditorEdit
   aspects: ImageEditorAspect[]
   copy: ImageEditorCopy
@@ -60,7 +62,7 @@ function Shape({ ratio }: { ratio: number | 'original' }) {
 
 const label = 'text-ui-sm font-medium text-fg-muted'
 
-export function Controls({ edit, aspects, copy, onAspect, onStraighten, onZoom, onTurn, onFlip }: ControlsProps) {
+export function Controls({ Heading, edit, aspects, copy, onAspect, onStraighten, onZoom, onTurn, onFlip }: ControlsProps) {
   const { straighten } = splitRotation(edit.rotation)
   const degrees = numberFormat(copy.locale, { maximumFractionDigits: 1, signDisplay: 'exceptZero' }).format(straighten)
   const percent = numberFormat(copy.locale, { style: 'percent', maximumFractionDigits: 0 })
@@ -68,7 +70,7 @@ export function Controls({ edit, aspects, copy, onAspect, onStraighten, onZoom, 
     <div className="flex flex-col gap-5">
       {aspects.length > 1 && (
         <section className="flex flex-col gap-2">
-          <h3 className={label}>{copy.crop}</h3>
+          <Heading className={label}>{copy.crop}</Heading>
           {/* Two lines a choice (its shape over its name), so the track grows to fit them. */}
           {/* shape: two lines a choice, so the track grows to fit them: `!` frees the height the control fixes */}
           <SegmentedControl variant="pill" aria-label={copy.crop} value={edit.aspect} onValueChange={onAspect} className="h-auto! w-full">
@@ -83,7 +85,7 @@ export function Controls({ edit, aspects, copy, onAspect, onStraighten, onZoom, 
       )}
       <section className="flex flex-col gap-1">
         <div className="flex items-center justify-between">
-          <h3 className={label}>{copy.straighten}</h3>
+          <Heading className={label}>{copy.straighten}</Heading>
           <output aria-hidden className="text-ui-sm text-fg tabular-nums">
             {copy.degrees(degrees)}
           </output>
@@ -121,7 +123,7 @@ export function Controls({ edit, aspects, copy, onAspect, onStraighten, onZoom, 
       </section>
       <section className="flex flex-col gap-1">
         <div className="flex items-center justify-between">
-          <h3 className={label}>{copy.zoom}</h3>
+          <Heading className={label}>{copy.zoom}</Heading>
           <output aria-hidden className="text-ui-sm text-fg tabular-nums">
             {percent.format(edit.zoom)}
           </output>

@@ -42,6 +42,8 @@ export interface FeedListProps {
   copy: ActivityFeedCopy
   now: number | null
   titleId: string
+  /** The heading of each day, one level under the block's title. */
+  DayHeading: 'h2' | 'h3' | 'h4'
   linkComponent: ElementType
   held: number
   onReveal: () => void
@@ -64,6 +66,7 @@ export function FeedList({
   copy,
   now,
   titleId,
+  DayHeading,
   linkComponent,
   held,
   onReveal,
@@ -149,12 +152,12 @@ export function FeedList({
         <div role="group" aria-labelledby={titleId} onKeyDown={onKeyDown} className="flex flex-col pb-1">
           {days.map((day, d) => (
             <div key={day.day}>
-              <h3
+              <DayHeading
                 id={`${id}-${day.day}`}
                 className="sticky top-0 z-10 border-b border-line-subtle bg-surface px-(--card-spacing) py-1.5 text-ui-xs font-medium tracking-wide text-fg-muted uppercase"
               >
                 {day.label ? copy[day.label] : heading.format(day.day)}
-              </h3>
+              </DayHeading>
               <PresenceList
                 as="div"
                 role="feed"

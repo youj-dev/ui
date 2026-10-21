@@ -198,7 +198,7 @@ function VoiceCall({
           <span aria-hidden className={cn('size-2 rounded-full', ended ? 'bg-fg-subtle' : muted ? 'bg-warning' : 'bg-success')} />
           {ended ? `${copy.ended} · ${copy.lasted(clock)}` : line}
         </p>
-        <p aria-live="polite" aria-label={copy.captions} data-slot="voice-call-caption" className="line-clamp-2 min-h-10 max-w-80 text-center text-ui-sm text-pretty text-fg-muted">
+        <p role="status" aria-live="polite" aria-label={copy.captions} data-slot="voice-call-caption" className="line-clamp-2 min-h-10 max-w-80 text-center text-ui-sm text-pretty text-fg-muted">
           {ended ? '' : said}
         </p>
       </CardContent>

@@ -459,13 +459,18 @@ function TourBeacon({ label, className, ref, ...props }: TourBeaconProps) {
       type="button"
       data-slot="tour-beacon"
       aria-label={label ?? labels.tourStart}
-      className={cn('focus-ring relative own:inline-grid size-5 shrink-0 place-items-center own:rounded-full', className)}
+      className={cn(
+        'focus-ring relative own:inline-grid size-5 shrink-0 place-items-center own:rounded-full',
+        // A 24px hit area around the 20px beacon (WCAG 2.5.8).
+        "after:absolute after:-inset-0.5 after:content-['']",
+        className,
+      )}
       {...props}
     >
       <MotionFeatures>
         <m.span
           aria-hidden
-          className="col-start-1 row-start-1 size-2.5 rounded-full bg-accent"
+          className="pointer-events-none col-start-1 row-start-1 size-2.5 rounded-full bg-accent"
           initial={false}
           animate={pulsing ? { scale: [1, 2.6], opacity: [0.5, 0] } : { scale: 1.8, opacity: 0.3 }}
           transition={pulsing ? { ...pulse, repeat: Number.POSITIVE_INFINITY } : k.tween('instant')}
