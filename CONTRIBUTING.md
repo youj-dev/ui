@@ -34,6 +34,7 @@ pnpm -F docs dev      # http://localhost:3100: the docs site
 - **Describe it for the changelog.** If it changes a published package, run `pnpm changeset`, pick the bump and write one line. While the packages are 0.x, a breaking change is a `minor` and anything else a `patch`; never `major` (`pnpm check:changesets` stops it). [RELEASING.md](RELEASING.md#1-describe-each-change) has examples.
 - **Keep the API snapshot current.** `api/<package>.api.md` records each package's public API: exports, signatures, defaults and props. If you changed it on purpose, run `pnpm api:update` and commit `api/`; `pnpm check:api` fails otherwise. A removed or renamed export or prop, or a changed default, is breaking: deprecate first where it's cheap (keep the old name working, mark it `@deprecated` in its JSDoc), as the [versioning policy](https://www.youj.dev/docs/versioning) describes.
 - **Use the template.** The pull request template asks for what and why, the areas touched and a short checklist.
+- **Title it "Type: Summary".** For example "Fix: Keep full screen working after a page switch". The types are Feat, Fix, Docs, Design, Refactor, Perf, Test, Build, CI, Chore, Security, Deps, Release and Revert, and an area may follow the type ("Fix(cli): …"). The "PR conventions" check assigns you, adds the type label and fails until the title, "What and why", a label and an assignee are in place. Every change to `main` goes through a pull request and is squash-merged.
 
 ## Map: where to read next
 
