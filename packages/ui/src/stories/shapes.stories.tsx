@@ -64,7 +64,7 @@ function Panel() {
         <div className="grid grid-cols-3 gap-2">
           <Input placeholder="Name" />
           <Select items={FRUIT} defaultValue="apple">
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full" aria-label="Fruit">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -76,7 +76,7 @@ function Panel() {
             </SelectContent>
           </Select>
           <Select items={FRUIT} defaultValue="pear">
-            <SelectTrigger variant="ghost" className="w-full">
+            <SelectTrigger variant="ghost" className="w-full" aria-label="Fruit">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

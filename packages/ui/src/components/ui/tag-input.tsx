@@ -278,6 +278,7 @@ function TagInput({
           as="ul"
           data-slot="tag-input-chips"
           aria-label={labels.tags}
+          aria-disabled={disabled || undefined}
           className="own:flex own:min-w-0 own:flex-1 flex-wrap items-center gap-1"
         >
           {tags.map((tag, index) => (

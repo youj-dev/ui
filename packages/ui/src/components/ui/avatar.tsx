@@ -60,7 +60,7 @@ function avatarColor(seed: string): (typeof CHART_COLORS)[number] {
 /* A seeded fallback is tinted like an ink (unlayered, as the disc's fill is): the chart colour mixed thin over the
  * disc, its initials the colour with a fifth of fg mixed back in. */
 const colorClass =
-  'bg-[color-mix(in_oklab,var(--ui--avatar-color)_calc(16%_+_6%_*_var(--yj-dark)),transparent)] own:text-[color-mix(in_oklab,var(--ui--avatar-color)_80%,var(--color-fg))]'
+  'bg-[color-mix(in_oklab,var(--ui--avatar-color)_calc(16%_+_6%_*_var(--yj-dark)),transparent)] own:text-[color-mix(in_oklab,var(--ui--avatar-color)_60%,var(--color-fg))]'
 const colorVar: Record<(typeof CHART_COLORS)[number], string> = {
   'chart-1': '[--ui--avatar-color:var(--color-chart-1)]',
   'chart-2': '[--ui--avatar-color:var(--color-chart-2)]',

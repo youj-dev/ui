@@ -114,7 +114,7 @@ function CapsuleStepper({
       name={name}
       className="own:inline-flex max-w-full"
     >
-      <NumberFieldPrimitive.Group render={<Capsule size={size} data-slot="capsule-stepper-group" />} className={cn('gap-0.5 data-disabled:opacity-50', className)}>
+      <NumberFieldPrimitive.Group render={<Capsule size={size} data-slot="capsule-stepper-group" />} aria-disabled={disabled || undefined} className={cn('gap-0.5 data-disabled:opacity-50', className)}>
         {label && <CapsuleLabel aria-hidden>{label}</CapsuleLabel>}
         <NumberFieldPrimitive.Decrement render={<Button variant="ghost" size={disc} aria-label={labels.decrease} className="own:text-fg-muted" />}>
           <MinusIcon trigger="none" />

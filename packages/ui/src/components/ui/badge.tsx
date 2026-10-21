@@ -17,7 +17,7 @@ function chipColor(color: string) {
 /* A coloured chip is tinted like the inks: the colour thin under the label,
  * and the label the colour with a fifth of fg mixed back in. */
 const colorClass =
-  'own:bg-[color-mix(in_oklab,var(--ui--badge-color)_calc(12%_+_4%_*_var(--yj-dark)),transparent)] own:text-[color-mix(in_oklab,var(--ui--badge-color)_80%,var(--color-fg))] own:border-transparent'
+  'own:bg-[color-mix(in_oklab,var(--ui--badge-color)_calc(12%_+_4%_*_var(--yj-dark)),transparent)] own:text-[color-mix(in_oklab,var(--ui--badge-color)_68%,var(--color-fg))] own:border-transparent'
 
 function Badge({
   className,

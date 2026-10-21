@@ -441,7 +441,7 @@ function TrackTimeline({
                     {t.name}
                   </span>
                   {t.caption && (
-                    <span data-slot="track-timeline-track-caption" className="own:hidden truncate own:text-ui-xs own:leading-none own:text-fg-muted own:@min-[36rem]/timeline:block">
+                    <span data-slot="track-timeline-track-caption" className={cn('own:hidden truncate own:text-ui-xs own:leading-none own:@min-[36rem]/timeline:block', audible(t) ? 'own:text-fg-muted' : 'own:text-fg')}>
                       {t.caption}
                     </span>
                   )}
@@ -614,8 +614,8 @@ function TrackTimeline({
                                   onPointerUp={onPointerUp}
                                   onPointerCancel={onPointerUp}
                                   onKeyDown={nudge(c, edge)}
-                                  className="group/handle absolute inset-y-1.5 z-10 own:flex w-3 cursor-ew-resize touch-none justify-center outline-none focus-ring"
-                                  style={{ left: (edge === 'start' ? c.start : c.end) * zoom - 6 }}
+                                  className="group/handle absolute inset-y-1.5 z-10 own:flex w-6 cursor-ew-resize touch-none justify-center outline-none focus-ring"
+                                  style={{ left: (edge === 'start' ? c.start : c.end) * zoom - 12 }}
                                 >
                                   <span aria-hidden className="own:my-2 w-1 rounded-full bg-(--track) shadow-sm transition-[width] yj-duration-fast ease-standard group-hover/handle:w-1.5" />
                                 </div>

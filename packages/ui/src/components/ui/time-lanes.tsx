@@ -277,7 +277,7 @@ function TimeLanes({ lanes, shifts, start, days = 7, hours: hoursProp, now: nowP
                           : s.override
                           ? cn(HATCH, 'z-10 border border-dashed own:border-[color-mix(in_oklab,var(--rota-tone)_75%,transparent)]')
                           : 'own:bg-[color-mix(in_oklab,var(--rota-tone)_26%,transparent)] shadow-[inset_2px_0_0_var(--rota-tone)] hover:bg-[color-mix(in_oklab,var(--rota-tone)_36%,transparent)] rtl:shadow-[inset_-2px_0_0_var(--rota-tone)]',
-                        state === 'current' && !s.override && 'own:bg-[color-mix(in_oklab,var(--rota-tone)_44%,transparent)] ring-1 ring-(--rota-tone)',
+                        state === 'current' && !s.override && 'own:bg-[color-mix(in_oklab,var(--rota-tone)_38%,transparent)] ring-1 ring-(--rota-tone)',
                         state === 'ended' && 'opacity-70 hover:opacity-100',
                         'data-popup-open:ring-2 data-popup-open:ring-(--rota-tone)',
                       )}

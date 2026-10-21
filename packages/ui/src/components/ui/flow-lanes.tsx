@@ -353,14 +353,14 @@ function FlowLanes({
             }}
             onKeyDown={(event) => onKeyDown(event, i)}
             className={cn(
-              'own:-mx-1.5 own:flex min-w-0 items-center own:gap-3 own:rounded-md own:px-1.5 own:text-ui focus-ring',
+              'group/lane own:-mx-1.5 own:flex min-w-0 items-center own:gap-3 own:rounded-md own:px-1.5 own:text-ui focus-ring',
               'transition-[background-color,opacity] yj-duration-fast ease-standard data-[state=active]:bg-hover data-[state=inactive]:opacity-60',
             )}
           >
             <span data-slot="flow-lanes-label" className="min-w-0 flex-1 truncate own:text-fg">
               {lane.label}
             </span>
-            <span data-slot="flow-lanes-value" className="shrink-0 own:font-mono own:text-ui-sm own:text-fg-muted own:tabular-nums">
+            <span data-slot="flow-lanes-value" className="shrink-0 own:font-mono own:text-ui-sm own:text-fg-muted own:group-data-[state=inactive]/lane:text-fg own:tabular-nums">
               {format(value(lane))}
             </span>
           </li>

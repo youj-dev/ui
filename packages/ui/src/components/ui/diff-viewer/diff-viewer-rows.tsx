@@ -83,7 +83,7 @@ function splitTokens(tokens: CodeToken[]): CodeToken[][] {
 }
 
 /** A line's tokens, cut where a mark of what changed inside it starts or ends. */
-export function LineCode({ tokens, marks, tone }: { tokens: CodeToken[]; marks?: DiffMark[]; tone: 'add' | 'del' }) {
+export function LineCode({ tokens, marks, tone, tinted = false }: { tokens: CodeToken[]; marks?: DiffMark[]; tone: 'add' | 'del'; tinted?: boolean }) {
   const out: ReactNode[] = []
   let at = 0
   let m = 0
@@ -98,8 +98,8 @@ export function LineCode({ tokens, marks, tone }: { tokens: CodeToken[]; marks?:
       const text = token.text.slice(start, end)
       const key = `${t}-${start}`
       const span = token.kind ? (
-        // The mark's tint is strong: token colors written for the row's own tint fall under 4.5:1 on it, so a marked word reads in plain text.
-        <span key={key} className={inside ? 'own:text-fg' : tokenClass[token.kind]}>
+        // The mark's tint is strong: token colors written for the row's own tint fall under 4.5:1 on it, so a marked word reads in plain text. A comment is quieter than text, but on a changed line's tint fg-subtle is under 4.5:1.
+        <span key={key} className={inside ? 'own:text-fg' : tinted && token.kind === 'comment' ? 'own:text-fg-muted' : tokenClass[token.kind]}>
           {text}
         </span>
       ) : (

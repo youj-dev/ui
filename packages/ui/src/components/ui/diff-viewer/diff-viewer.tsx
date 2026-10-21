@@ -164,7 +164,7 @@ function DiffViewer({
         </td>
         <td data-yj-line={line.type} className={cn('h-5 own:pe-4 own:align-top', wraps ? 'whitespace-pre-wrap [overflow-wrap:anywhere]' : 'whitespace-pre', tint)}>
           {tone && <span className="sr-only">{`${tone === 'add' ? labels.diffAddedLine(line.newNumber!) : labels.diffRemovedLine(line.oldNumber!)}: `}</span>}
-          <LineCode tokens={tokens.get(line) ?? [{ text: line.text }]} marks={line.marks} tone={tone ?? 'add'} />
+          <LineCode tokens={tokens.get(line) ?? [{ text: line.text }]} marks={line.marks} tone={tone ?? 'add'} tinted={!!tone} />
           {line.noNewline && tone && (
             <span className="own:ms-2 own:rounded-sm border own:border-line own:px-1 own:font-sans own:text-ui-xs own:text-fg-subtle">{labels.diffNoNewline}</span>
           )}

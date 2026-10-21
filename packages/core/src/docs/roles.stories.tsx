@@ -13,7 +13,7 @@ import { themeProps } from '../lib/youj/theme'
  * names. When the roles land (token-audit/ARCHITECTURE.md 6.1) add a row per
  * role to these tables. */
 
-type Fill = { label: string; value: string }
+type Fill = { label: string; value: string; texts?: Fill[] }
 type Group = { title: string; fills: Fill[]; texts: Fill[] }
 
 const v = (label: string, value: string): Fill => ({ label, value })
@@ -116,7 +116,8 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   )
 }
 
-function FillCard({ fill, texts }: { fill: Fill; texts: Fill[] }) {
+function FillCard({ fill, texts: groupTexts }: { fill: Fill; texts: Fill[] }) {
+  const texts = fill.texts ?? groupTexts
   return (
     <div style={{ display: 'grid', gap: 4 }}>
       <div style={{ ...swatch, background: fill.value, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 2, padding: '0 10px' }}>
@@ -174,7 +175,7 @@ function RolesSampler() {
 
 /* The roles (youj.css section 3c), written as the role itself: `var(--color-<role>)`. A separate story, so the sampler above stays comparable
  * with the baseline taken before they existed. Each fill is shown with the text roles its matrix row holds to 4.5:1 (check.ts checkRoles). */
-const role = (name: string): Fill => ({ label: name, value: `var(--color-${name})` })
+const role = (name: string, texts?: Fill[]): Fill => ({ label: name, value: `var(--color-${name})`, texts })
 
 const ROLE_TEXT = [v('fg', 'var(--color-fg)'), v('fg-muted', 'var(--color-fg-muted)'), v('fg-subtle', 'var(--color-fg-subtle)')]
 const KEY_TEXT = [v('fg', 'var(--color-fg)')]
@@ -191,7 +192,7 @@ const ROLE_GROUPS: Group[] = [
   { title: 'Control', fills: [role('control')], texts: CONTROL_TEXT },
   {
     title: 'Tints over the card',
-    fills: ['hover', 'selected', 'band', 'scrim', 'line-subtle'].map((n) => role(n)),
+    fills: [role('hover'), role('selected', CONTROL_TEXT), role('band'), role('scrim', KEY_TEXT), role('line-subtle')],
     texts: ROLE_TEXT,
   },
   {
@@ -201,7 +202,7 @@ const ROLE_GROUPS: Group[] = [
   },
   ...INKS.map((ink) => ({
     title: `${ink}: tint, line and text`,
-    fills: [role(`${ink}-subtle`), role(`${ink}-line`)],
+    fills: [role(`${ink}-subtle`), role(`${ink}-line`, [])],
     texts: [v(`${ink}-text`, `var(--color-${ink}-text)`)],
   })),
   {

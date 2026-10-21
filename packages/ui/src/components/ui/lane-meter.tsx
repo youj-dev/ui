@@ -60,7 +60,7 @@ interface LaneMeterProps extends Omit<ComponentProps<'div'>, 'children'> {
   lanes: readonly Lane[]
   /** The scale shared by lanes without their own `max`. Default: the largest of their values. */
   max?: number
-  /** Cells per lane. Default 32. */
+  /** Cells per lane. Default 32. With `onItemAction` the cells are buttons: keep each at least 24px wide (WCAG 2.5.8), so fewer cells on a narrow meter. */
   segments?: number
   /** Makes each item cell a button that calls this. */
   onItemAction?: (item: LaneItem, lane: Lane) => void
