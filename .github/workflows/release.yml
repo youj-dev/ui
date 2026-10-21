@@ -42,7 +42,7 @@ jobs:
     # the price of one job; it publishes nothing.
     environment: release
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120 # verify, both smoke tests and a docs build run in one job on a hosted runner
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
@@ -52,6 +52,8 @@ jobs:
         with:
           node-version-file: .nvmrc
       - run: pnpm install --frozen-lockfile
+      # npm publishes through trusted publishing (OIDC), which needs npm 11.5.1 or later; Node 22 ships npm 10.
+      - run: npm install --global npm@11
       - run: pnpm verify
       # A release is dated in the changelog; the packed packages install and render in fresh apps.
       - run: pnpm check:changelog
@@ -71,5 +73,6 @@ jobs:
         run: pnpm release --to ${{ inputs.registry }}
         env:
           YOUJ_NPM_TAG: ${{ inputs.channel == 'next' && 'next' || '' }}
-          # GitHub Packages takes the workflow's token; npm needs one of its own.
-          NODE_AUTH_TOKEN: ${{ inputs.registry == 'npm' && secrets.NPM_TOKEN || secrets.GITHUB_TOKEN }}
+          # npm takes no token: each package trusts this workflow in the release environment (trusted
+          # publishing, which also signs provenance). GitHub Packages takes the workflow's token.
+          NODE_AUTH_TOKEN: ${{ inputs.registry == 'github' && secrets.GITHUB_TOKEN || '' }}
