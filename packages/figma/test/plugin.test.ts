@@ -31,6 +31,12 @@ const census = (env: FakeEnv, except?: FakeNode) =>
     .filter((n) => !within(n, except))
     .reduce<Record<string, number>>((m, n) => ((m[n.type] = (m[n.type] ?? 0) + 1), m), {})
 const byKey = (env: FakeEnv, key: string) => allNodes(env).find((n) => n.getPluginData(KEY) === key)
+/** byKey for many keys at once: each key's first node, from one walk of the file. */
+const keyed = (env: FakeEnv) => {
+  const map = new Map<string, FakeNode>()
+  for (const n of allNodes(env)) if (!map.has(n.getPluginData(KEY))) map.set(n.getPluginData(KEY), n)
+  return map
+}
 
 describe('a file with modes (Professional)', () => {
   let env: FakeEnv
@@ -93,7 +99,8 @@ describe('a file with modes (Professional)', () => {
     expect(topLeft.name).toBe('Variant=default, Size=default, State=rest')
     const props = Object.keys(button.componentPropertyDefinitions).map((k) => k.split('#')[0])
     expect(props).toEqual(expect.arrayContaining(['Label', 'Leading icon', 'Icon', 'Variant', 'Size', 'State']))
-    for (const key of COMPONENT_KEYS) expect(byKey(env, `component:${key}`)?.type, key).toBe('COMPONENT_SET')
+    const nodes = keyed(env)
+    for (const key of COMPONENT_KEYS) expect(nodes.get(`component:${key}`)?.type, key).toBe('COMPONENT_SET')
   })
 
   test('labels every variant column on one line, without labels running into each other', () => {
@@ -257,13 +264,15 @@ describe('the Look', () => {
   test('Style → Bezel redraws the same sets in Bezel, in place, and Style → Classic brings Classic back', async () => {
     const { env } = installFakeFigma({ modeLimit: 10 })
     await run(kit, 'build')
-    const ids = new Map(COMPONENT_KEYS.map((k) => [k, byKey(env, `component:${k}`)!.id]))
+    const before = keyed(env)
+    const ids = new Map(COMPONENT_KEYS.map((k) => [k, before.get(`component:${k}`)!.id]))
     const buttonId = button(env).id
     const badge = () => Object.keys(byKey(env, 'component:badge')!.componentPropertyDefinitions).map((k) => k.split('#')[0])
     expect(badge()).not.toContain('Dot')
 
     expect(await run(kit, 'look:bezel')).toMatch(/is ready/)
-    for (const [k, id] of ids) expect(byKey(env, `component:${k}`)!.id, k).toBe(id)
+    const after = keyed(env)
+    for (const [k, id] of ids) expect(after.get(`component:${k}`)!.id, k).toBe(id)
     expect(button(env).id).toBe(buttonId)
     expect(button(env).boundVariables.topLeftRadius).toEqual({ type: 'VARIABLE_ALIAS', id: themeVar(env, 'bezel/pill').id })
     expect(button(env).fills[0]!.boundVariables).toEqual({ color: { type: 'VARIABLE_ALIAS', id: colorVar(env, 'role/fg').id } })

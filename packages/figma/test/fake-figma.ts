@@ -43,6 +43,20 @@ function fail(message: string): never {
   throw new Error(message)
 }
 
+/** structuredClone for the plain data the fake copies (paints, effects, fields): same result, a fraction of the cost. Anything else still goes through structuredClone, so a function still throws. */
+function copy<T>(v: T): T {
+  if (v === null || (typeof v !== 'object' && typeof v !== 'function' && typeof v !== 'symbol')) return v
+  if (Array.isArray(v)) return v.map(copy) as T
+  if (Object.getPrototypeOf(v) !== Object.prototype) return structuredClone(v)
+  const out: Json = {}
+  for (const k of Object.keys(v)) out[k] = copy((v as Json)[k])
+  return out as T
+}
+
+/** One pattern per SVG attribute name, compiled once: icons import thousands of paths. */
+const svgAttrs = new Map<string, RegExp>()
+const svgAttr = (name: string) => svgAttrs.get(name) ?? svgAttrs.set(name, new RegExp(`(?:^|\\s)${name}="([^"]*)"`)).get(name)!
+
 const isNum = (v: unknown) => typeof v === 'number' && Number.isFinite(v)
 const within01 = (v: unknown) => isNum(v) && (v as number) >= 0 && (v as number) <= 1
 
@@ -193,7 +207,7 @@ export class FakeVariable {
     if (!c.modes.some((m) => m.modeId === modeId)) fail(`in setValueForMode: mode ${modeId} is not in ${c.name}`)
     const v = value as Json
     if (v && typeof v === 'object' && v.type === 'VARIABLE_ALIAS') {
-      const target = this.env.variables.find((x) => x.id === v.id) ?? fail('alias to a missing variable')
+      const target = this.env.variable(v.id as string) ?? fail('alias to a missing variable')
       if (target.resolvedType !== this.resolvedType) fail(`alias type mismatch: ${this.resolvedType} → ${target.resolvedType}`)
       if (target === this) fail('a variable cannot alias itself')
       this.valuesByMode[modeId] = { type: 'VARIABLE_ALIAS', id: v.id }
@@ -292,7 +306,7 @@ export class FakeEffectStyle extends FakeStyle {
   }
   set effects(list: Json[]) {
     list.forEach(checkEffect)
-    this._effects = list.map((e) => structuredClone(e))
+    this._effects = list.map((e) => copy(e))
   }
 }
 
@@ -402,7 +416,9 @@ export class FakeNode {
   constructor(
     public env: FakeEnv,
     public type: string,
-  ) {}
+  ) {
+    env.nodes.set(this.id, this)
+  }
 
   private live() {
     if (this.removed) fail(`The node (${this.type} "${this.name}") has been removed`)
@@ -606,7 +622,7 @@ export class FakeNode {
   set fills(list: Json[]) {
     this.live()
     list.forEach(checkPaint)
-    this._fills = list.map((p) => structuredClone(p))
+    this._fills = list.map((p) => copy(p))
   }
   get strokes(): Json[] {
     return this._strokes
@@ -614,14 +630,14 @@ export class FakeNode {
   set strokes(list: Json[]) {
     this.live()
     list.forEach(checkPaint)
-    this._strokes = list.map((p) => structuredClone(p))
+    this._strokes = list.map((p) => copy(p))
   }
   get effects(): Json[] {
     return this._effects
   }
   set effects(list: Json[]) {
     list.forEach(checkEffect)
-    this._effects = list.map((e) => structuredClone(e))
+    this._effects = list.map((e) => copy(e))
   }
   get effectStyleId() {
     return this.effectStyleIdValue
@@ -637,7 +653,7 @@ export class FakeNode {
     }
     const s = this.env.styles.find((x) => x.id === id && x.type === 'EFFECT') as FakeEffectStyle | undefined
     if (!s) fail(`No effect style ${id}`)
-    this._effects = s.effects.map((e) => structuredClone(e))
+    this._effects = s.effects.map((e) => copy(e))
     this.effectStyleIdValue = id
   }
 
@@ -845,7 +861,7 @@ export class FakeNode {
   get componentPropertyDefinitions() {
     if (this.type !== 'COMPONENT' && this.type !== 'COMPONENT_SET') fail(`${this.type} has no componentPropertyDefinitions`)
     if (this.type === 'COMPONENT' && this.parent?.type === 'COMPONENT_SET') fail('Can only get component property definitions of a component set or non-variant component')
-    const defs: Record<string, unknown> = structuredClone(this.properties)
+    const defs: Record<string, unknown> = copy(this.properties)
     if (this.type === 'COMPONENT_SET') {
       const options = new Map<string, string[]>()
       for (const c of this._children) {
@@ -991,6 +1007,10 @@ export class FakeEnv {
   closed: string | undefined
   ui: { html: string; options: Json; messages: Json[]; onmessage?: (msg: unknown) => void } | undefined
   console: string[] = []
+  /** Every node ever made, by id; byId only answers for those still in the document. */
+  nodes = new Map<string, FakeNode>()
+  /** Every variable ever made, by id; variable() only answers for those not removed. */
+  variablesById = new Map<string, FakeVariable>()
 
   constructor(opts: FakeOptions = {}) {
     this.opts = { modeLimit: 10, pageLimit: Infinity, command: '', fonts: DEFAULT_FONTS, unloadable: [], failures: {}, ...opts }
@@ -1012,14 +1032,18 @@ export class FakeEnv {
     if (!this.loadedFonts.has(`${f.family}/${f.style}`)) fail(`Cannot write to node with unloaded font "${f.family} ${f.style}" (${what}). Please call figma.loadFontAsync first.`)
   }
 
+  variable(id: string): FakeVariable | undefined {
+    const v = this.variablesById.get(id)
+    return v && !v.removed ? v : undefined
+  }
+
   byId(id: string): FakeNode | null {
-    let hit: FakeNode | null = null
-    const walk = (n: FakeNode) => {
-      if (n.id === id) hit = n
-      n.rawChildren().forEach(walk)
+    const hit = this.nodes.get(id) ?? null
+    for (let n = hit; n; n = n.parent) {
+      if (n === this.root) return hit
+      if (!n.parent?.rawChildren().includes(n)) return null
     }
-    walk(this.root)
-    return hit
+    return null
   }
 
   checkCycles(start: FakeVariable) {
@@ -1030,7 +1054,7 @@ export class FakeEnv {
       for (const value of Object.values(v.valuesByMode)) {
         const a = value as Json
         if (a && a.type === 'VARIABLE_ALIAS') {
-          const t = this.variables.find((x) => x.id === a.id)
+          const t = this.variable(a.id as string)
           if (t) visit(t)
         }
       }
@@ -1043,7 +1067,7 @@ export class FakeEnv {
     const n = new FakeNode(this, type)
     for (const [k, v] of Object.entries(src)) {
       if (['id', 'parent', 'env', 'type', '_children', 'data', 'removed', 'properties', '_refs', 'key'].includes(k)) continue
-      ;(n as unknown as Json)[k] = structuredClone(v)
+      ;(n as unknown as Json)[k] = copy(v)
     }
     ;(n as unknown as Json)._refs = (src as unknown as Json)._refs
     for (const c of src.rawChildren()) {
@@ -1069,7 +1093,7 @@ export class FakeEnv {
     frame.resize(w, h)
     this.currentPage.appendChild(frame)
     for (const [, attrs] of svg.matchAll(/<path\s([^>]*?)\/?>/g)) {
-      const attr = (name: string) => new RegExp(`(?:^|\\s)${name}="([^"]*)"`).exec(attrs!)?.[1]
+      const attr = (name: string) => svgAttr(name).exec(attrs!)?.[1]
       const d = attr('d') ?? fail('svg path without d')
       const v = this.node('VECTOR', 'Vector')
       const b = bounds(parsePath(d))
@@ -1239,7 +1263,7 @@ export function createFakeFigma(opts: FakeOptions = {}) {
         return env.variables.filter((v) => !type || v.resolvedType === type)
       },
       async getVariableByIdAsync(id: string) {
-        return env.variables.find((v) => v.id === id) ?? null
+        return env.variable(id) ?? null
       },
       async getVariableCollectionByIdAsync(id: string) {
         return env.collections.find((c) => c.id === id) ?? null
@@ -1256,6 +1280,7 @@ export function createFakeFigma(opts: FakeOptions = {}) {
         const v = new FakeVariable(env, name, collection.id, type)
         for (const m of collection.modes) v.valuesByMode[m.modeId] = type === 'COLOR' ? { r: 0, g: 0, b: 0, a: 1 } : type === 'FLOAT' ? 0 : type === 'STRING' ? '' : false
         env.variables.push(v)
+        env.variablesById.set(v.id, v)
         return v
       },
       createVariableAlias(v: FakeVariable) {
@@ -1267,7 +1292,7 @@ export function createFakeFigma(opts: FakeOptions = {}) {
         if (field !== 'color') fail(`paint field ${field} is not bindable`)
         if (v && v.resolvedType !== 'COLOR') fail('paint colour needs a COLOR variable')
         checkPaint(paint)
-        const out = structuredClone(paint)
+        const out = copy(paint)
         out.boundVariables = v ? { color: { type: 'VARIABLE_ALIAS', id: v.id } } : {}
         return out
       },
@@ -1275,7 +1300,7 @@ export function createFakeFigma(opts: FakeOptions = {}) {
         checkEffect(effect)
         if (!['color', 'radius', 'spread', 'offsetX', 'offsetY'].includes(field)) fail(`effect field ${field} is not bindable`)
         if (v && v.resolvedType !== (field === 'color' ? 'COLOR' : 'FLOAT')) fail(`effect ${field} needs another variable type`)
-        const out = structuredClone(effect)
+        const out = copy(effect)
         out.boundVariables = { ...((out.boundVariables as Json) ?? {}), ...(v ? { [field]: { type: 'VARIABLE_ALIAS', id: v.id } } : {}) }
         return out
       },
@@ -1306,7 +1331,7 @@ export function allNodes(env: FakeEnv): FakeNode[] {
 /** Resolves a variable to a value in the given modes (collection id → mode id), following aliases. */
 export function resolveVariable(env: FakeEnv, id: string, modes: Record<string, string> = {}): unknown {
   for (let guard = 0; guard < 20; guard++) {
-    const v = env.variables.find((x) => x.id === id)
+    const v = env.variable(id)
     if (!v) return undefined
     const c = env.collections.find((x) => x.id === v.variableCollectionId)!
     const value = v.valuesByMode[modes[c.id] ?? c.defaultModeId] as Json
