@@ -4,9 +4,15 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Nightly on main: everything, plus the accessibility pass (every story in light, dark and RTL), which is too
+  # long for a pull request. Run it on demand from the Actions tab.
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  # The event is in the group so a push to main doesn't cancel the nightly run, or the other way round.
+  group: ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -310,10 +316,10 @@ jobs:
   a11y:
     name: Accessibility (axe, every story, light, dark and RTL; target size)
     needs: storybook
-    # Report-only on pull requests until the existing findings are fixed (tracked); blocking on main.
-    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    # Nightly and on demand only: it runs every story in four modes, far too long for a pull request.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
