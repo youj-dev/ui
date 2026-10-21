@@ -1,3 +1,7 @@
+<!-- Title: "Type: Summary", e.g. "Fix: Keep full screen working after a page switch".
+Types: Feat, Fix, Docs, Design, Refactor, Perf, Test, Build, CI, Chore, Security, Deps, Release, Revert.
+An area may follow the type: "Fix(cli): …". The "PR conventions" check assigns you and adds the type label. -->
+
 ## What and why
 
 <!-- One logical change. Say why, not only what. -->
