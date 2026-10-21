@@ -115,6 +115,7 @@ function VersionHistory({
   const [picked, setPicked] = useControllableState(versionProp, defaultVersion)
   const level = headingLevel ?? (embedded ? 2 : 1)
   const Title = (['h1', 'h2', 'h3'] as const)[level - 1]!
+  const DocTitle = (['h2', 'h3', 'h4'] as const)[level - 1]!
 
   const all = history.versions
   const listed = namedOnly ? all.filter((v, i) => v.name || i === 0) : all
@@ -208,9 +209,9 @@ function VersionHistory({
           aria-labelledby={`${id}-doc`}
         >
           <div className="flex flex-col gap-1">
-            <h3 id={`${id}-doc`} className="text-ui-lg font-semibold tracking-tight text-fg">
+            <DocTitle id={`${id}-doc`} className="text-ui-lg font-semibold tracking-tight text-fg">
               {selected.doc.title}
-            </h3>
+            </DocTitle>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui-sm text-fg-muted">
               <VersionName
                 version={selected}

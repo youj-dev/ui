@@ -226,7 +226,7 @@ function PreviewList({
         ) : (
           <ul className="flex flex-col divide-y divide-line">
             {shown.map((project) => (
-              <PreviewRow key={project.id} project={project} copy={copy} statuses={statuses} looks={looks} locationIcon={locationIcon} latestIcon={latestIcon} ago={ago} onOpen={open} />
+              <PreviewRow key={project.id} Heading={embedded ? 'h3' : 'h2'} project={project} copy={copy} statuses={statuses} looks={looks} locationIcon={locationIcon} latestIcon={latestIcon} ago={ago} onOpen={open} />
             ))}
           </ul>
         )}

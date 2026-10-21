@@ -65,7 +65,7 @@ export function FrameFilterField({ query, onQuery, onSubmit, onEnterList, label,
     }
   }
   return (
-    <div role="search" data-slot="frame-filter" className="group-data-[collapsible=icon]:hidden">
+    <div role="search" aria-label={label ?? labels.filterPages} data-slot="frame-filter" className="group-data-[collapsible=icon]:hidden">
       <InputGroup>
         <InputGroupAddon>
           <SearchIcon />

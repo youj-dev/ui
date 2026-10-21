@@ -20,6 +20,7 @@ export function TextAnswer({ question, answer, onAnswer, labelledBy, describedBy
   const shared = {
     'data-yj-autofocus': '',
     value: text,
+    'aria-label': question.title,
     'aria-labelledby': labelledBy,
     'aria-describedby': describedBy,
     'aria-invalid': invalid || undefined,

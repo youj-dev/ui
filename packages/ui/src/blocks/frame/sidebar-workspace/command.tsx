@@ -170,7 +170,7 @@ export function useCommand({ actions, copy }: { actions: FrameCommandAction[]; c
   const status = armed ? copy.goStatus : searching ? (options.length ? labels.pagesFound(options.length) : labels.pagesNoMatch(query.trim())) : ''
 
   const fieldNode = (
-    <div role="search" data-slot="frame-command" className="group-data-[collapsible=icon]:hidden">
+    <div role="search" aria-label={copy.search} data-slot="frame-command" className="group-data-[collapsible=icon]:hidden">
       <InputGroup>
         <InputGroupAddon>
           <SearchIcon />

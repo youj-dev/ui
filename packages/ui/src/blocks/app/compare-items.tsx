@@ -90,6 +90,7 @@ function CompareItems({
   const copy = { ...DEFAULT_COPY, ...copyProp, locale: useLocale(locale ?? copyProp?.locale) }
   const titleId = useId()
   const Title = embedded ? 'h2' : 'h1'
+  const Sub = embedded ? 'h3' : 'h2'
   const [ids, setIds] = useControllableState(valueProp, defaultValue ?? START.filter((id) => items.some((item) => item.id === id)))
   const [highlight, setHighlight] = useControllableState(highlightProp, defaultHighlight)
 
@@ -189,7 +190,7 @@ function CompareItems({
       </div>
 
       <div className="flex flex-col gap-1 px-(--ui--panel-x) pb-(--ui--panel-y)">
-        <h3 className="text-ui font-medium">{copy.overview}</h3>
+        <Sub className="text-ui font-medium">{copy.overview}</Sub>
         <SpecsTable picks={picks} specs={specs} tones={new Map([...tones].map(([id, tone]) => [id, `var(--color-${tone})`]))} highlight={highlight} copy={copy} formatNumber={numbers} />
       </div>
     </Card>

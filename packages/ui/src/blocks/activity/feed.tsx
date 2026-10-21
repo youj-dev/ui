@@ -192,6 +192,7 @@ function ActivityFeed({
       copy={copy}
       now={now}
       titleId={titleId}
+      DayHeading={(['h2', 'h3', 'h4'] as const)[level - 1]!}
       linkComponent={linkComponent}
       held={feed.held}
       onReveal={feed.reveal}

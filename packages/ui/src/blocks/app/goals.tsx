@@ -90,7 +90,9 @@ function Goals({
 }: GoalsProps) {
   const copy = { ...DEFAULT_COPY, ...copyProp, locale: useLocale(locale ?? copyProp?.locale) }
   const titleId = useId()
-  const Title = `h${headingLevel ?? (embedded ? 2 : 1)}` as 'h1' | 'h2' | 'h3'
+  const level = headingLevel ?? (embedded ? 2 : 1)
+  const Title = `h${level}` as 'h1' | 'h2' | 'h3'
+  const Sub = `h${level + 1}` as 'h2' | 'h3' | 'h4'
   const [picked, setPicked] = useControllableState(goalProp, defaultGoal ?? goals[0]?.id ?? '')
   const from = timeOf(start)
   const total = Math.max(1, Math.round((timeOf(end) - from) / DAY) + 1)
@@ -156,7 +158,7 @@ function Goals({
       <Rows goals={goals} forecasts={forecasts} selected={goal.id} onSelect={pick} figure={figure} copy={copy} />
       <div data-slot="goals-detail" className="flex flex-col gap-4 border-t border-line pt-5">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h3 className="text-ui font-semibold text-fg">{goal.label}</h3>
+          <Sub className="text-ui font-semibold text-fg">{goal.label}</Sub>
           <p className={cn('text-ui-sm', f.status === 'behind' ? 'text-danger-text' : f.status === 'at-risk' ? 'text-warning-text' : 'text-fg-muted')}>{status(f.status, goal, f)}</p>
         </div>
         <dl className="grid grid-cols-2 gap-x-4 gap-y-3 @md/goals:grid-cols-4">

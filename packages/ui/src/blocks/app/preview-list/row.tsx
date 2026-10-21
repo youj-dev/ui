@@ -25,6 +25,8 @@ const DOT: Record<PreviewListStatus['tone'], string> = {
 }
 
 interface RowProps {
+  /** The project's name heading, one level under the block's title. */
+  Heading: 'h2' | 'h3'
   project: PreviewListItem
   copy: PreviewListCopy
   statuses: PreviewListStatus[]
@@ -45,7 +47,7 @@ function IconAction({ label, children, ...rest }: { label: string; children: Rea
   )
 }
 
-function PreviewRow({ project, copy, statuses, looks, locationIcon, latestIcon, ago, onOpen }: RowProps) {
+function PreviewRow({ Heading, project, copy, statuses, looks, locationIcon, latestIcon, ago, onOpen }: RowProps) {
   const { name, status, locations, createdBy, latest } = project
   const state = statuses.find((s) => s.id === status)
   const link = project.href === undefined ? (locations[0] ? `https://${locations[0]}` : null) : project.href
@@ -61,7 +63,7 @@ function PreviewRow({ project, copy, statuses, looks, locationIcon, latestIcon, 
 
       <div className="flex min-w-0 flex-col gap-1.5">
         <div className="flex min-w-0 items-center gap-3">
-          <h3 className="truncate text-ui-lg leading-6 font-medium tracking-tight text-fg">{name}</h3>
+          <Heading className="truncate text-ui-lg leading-6 font-medium tracking-tight text-fg">{name}</Heading>
           <span className="inline-flex shrink-0 items-center gap-1.5 text-ui text-fg-muted">
             <span aria-hidden className={cn('size-2 rounded-full', DOT[state?.tone ?? 'neutral'])} />
             {state?.label ?? status}

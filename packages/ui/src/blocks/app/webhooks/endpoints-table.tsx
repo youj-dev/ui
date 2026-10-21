@@ -93,8 +93,9 @@ export function EndpointsTable({
                   <Badge dir="ltr" variant="outline" className="block min-w-0 shrink truncate font-mono">
                     {endpoint.events[0]}
                   </Badge>
+                  {/* On the selected row the chip sits on the accent tint, where the muted label falls under 4.5:1 in dark. */}
                   {endpoint.events.length > 1 && (
-                    <Badge variant="secondary" className="shrink-0 tabular-nums">
+                    <Badge variant="secondary" className={cn('shrink-0 tabular-nums', on && 'text-fg')}>
                       +{endpoint.events.length - 1}
                     </Badge>
                   )}

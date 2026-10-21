@@ -129,6 +129,7 @@ function Panels({ value, copy, change, remove }: PanelsProps) {
             <SegmentedControl
               variant="pill"
               aria-label={copy.blurType}
+              disabled={!blur.enabled}
               value={blur.type}
               onValueChange={(type) => change('blur', { type: type as BlurType })}
             >

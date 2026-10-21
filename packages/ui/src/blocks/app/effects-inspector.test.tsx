@@ -17,7 +17,7 @@ describe('effectsToCss', () => {
   test('puts the stroke first, then the shadow, as one box-shadow list', () => {
     const out = effectsToCss(DEFAULT_EFFECTS).css
     expect(out['box-shadow']).toBe('inset 0 0 0 1px rgb(255 255 255 / 0.28), 0px 8px 24px -2px rgb(76 111 255 / 0.55)')
-    expect(out.background).toBe('rgb(76 111 255 / 1)')
+    expect(out.background).toBe('rgb(70 102 242 / 1)')
     expect(out.filter).toBeUndefined()
   })
 

@@ -344,7 +344,7 @@ function Live({ shell, stages, items, defaultItem, onNotify }: { shell: Shell; s
                   <StepSummary item={item} stages={stages} view={view} copy={copy} format={format} />
                   <div className="flex flex-col gap-2">
                     <Rail item={item} stages={stages} view={view} selected={selected} onSelect={setPicked} copy={copy} time={time} figure={figure} controls={detailId} />
-                    <StepDetail id={detailId} item={item} stages={stages} index={selected} state={view.states[selected] ?? 'pending'} copy={copy} when={format.when} rows={rows} />
+                    <StepDetail id={detailId} item={item} stages={stages} index={selected} state={view.states[selected] ?? 'pending'} copy={copy} when={format.when} rows={rows} Heading={shell.embedded ? 'h3' : 'h2'} />
                   </div>
                 </>
               )}

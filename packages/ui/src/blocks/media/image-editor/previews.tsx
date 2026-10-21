@@ -14,6 +14,8 @@ import { livePlacement, type Live } from './use-live'
  * circles at the sizes it's shown. */
 
 interface PreviewsProps {
+  /** The group's heading, one level under the block's title. */
+  Heading: 'h2' | 'h3'
   live: Live
   natural: Size
   /** The image, once it's ready; until then each preview keeps its place, empty. */
@@ -23,11 +25,11 @@ interface PreviewsProps {
   copy: ImageEditorCopy
 }
 
-export function Previews({ live, natural, src, previews, round, copy }: PreviewsProps) {
+export function Previews({ Heading, live, natural, src, previews, round, copy }: PreviewsProps) {
   return (
     <MotionFeatures>
       <section className="flex flex-col gap-2">
-        <h3 className="text-ui-sm font-medium text-fg-muted">{copy.previews}</h3>
+        <Heading className="text-ui-sm font-medium text-fg-muted">{copy.previews}</Heading>
         <ul className="flex flex-wrap items-end gap-x-3 gap-y-3">
           {previews.map((preview) => (
             <Preview key={preview.id} live={live} natural={natural} src={src} preview={preview} round={round} />
@@ -38,7 +40,7 @@ export function Previews({ live, natural, src, previews, round, copy }: Previews
   )
 }
 
-function Preview({ live, natural, src, preview, round }: Omit<PreviewsProps, 'previews' | 'copy'> & { preview: ImageEditorPreview }) {
+function Preview({ live, natural, src, preview, round }: Omit<PreviewsProps, 'previews' | 'copy' | 'Heading'> & { preview: ImageEditorPreview }) {
   const height = preview.size ?? 64
   const width = Math.round(height * preview.ratio)
   const transform = useTransform(() => {
