@@ -7,9 +7,9 @@ description: "Choose a preset or set your own colors, type and motion for light 
 
 Choose your colors, corners, spacing, typefaces and motion. You can also set line weight, shadows, surface shading, title and label styles, and chart colors. Youj uses these choices to calculate the tokens for light and dark modes.
 
-Pick your own preset and style: Youj has no brand look you're meant to keep. Without a theme, components draw the Youj palette in the **Clean style** (Inter and JetBrains Mono, rounded rectangles, sentence-case labels), in dark, so a bare page looks right; `npx @youj/cli init` and Create ask you to choose. This site wears **Graphite in light and Basalt in dark**, both the Youj palette in Clean: that pairing is only the docs' own choice. Every preset is tuned for both schemes: its light colors are chosen for light surfaces, not darkened copies of its dark ones.
+Pick your own preset and style: Youj has no brand look you're meant to keep. Without a theme, components draw the Youj palette in the **Clean style** (Inter and JetBrains Mono, rounded rectangles, soft fields, sentence-case labels), in dark, so a bare page looks right; `npx @youj/cli init` and Create ask you to choose. This site wears **Graphite in light and Basalt in dark**, both the Youj palette in Clean: that pairing is only the docs' own choice. Every preset is tuned for both schemes: its light colors are chosen for light surfaces, not darkened copies of its dark ones.
 
-A theme sets colors, type and shared sizing. A [look](/docs/looks) sets how components are built. Classic, the default, gives you bordered panels, rounded-rectangle buttons and outlined fields. Bezel gives you sectioned cards, pill buttons and filled fields. Pair either look with any theme.
+A theme sets colors, type and shared sizing. A [look](/docs/looks) sets how components are built. Classic, the default, gives you bordered panels, rounded-rectangle buttons and underline tabs. Bezel gives you sectioned cards, pill buttons and filled field wells. Pair either look with any theme; how fields are drawn, soft or outlined, is the theme's [`fields`](#character).
 
 <ThemeLayers />
 
@@ -122,7 +122,7 @@ These are the settings you pass to `defineTheme`, and the CSS variables they pro
 | Shadow | `--yj-shadow-soft`, `--yj-shadow-hard` | `soft` `hard` `none` | `soft` |
 | Actions | `--yj-action-ink` | `accent` `ink` | `accent` |
 | Controls | `--yj-pill` | `pill` `rounded`: the [shape](#shapes) of every control | `rounded` |
-| Fields | `--yj-field-soft` | `outlined` `soft`: how every [field](#shapes) is drawn | `outlined` |
+| Fields | `--yj-field-soft` | `soft` `outlined`: how every [field](#shapes) is drawn | `soft` |
 | Surfaces | `--yj-surface-gradient` | `0` to `1`: cards shade toward their foot (lighter in dark), ink buttons carry a sheen | `0`, flat |
 | Headings | `--yj-heading-weight`, `--yj-heading-tracking` | a weight, a tracking in em | `600`, `-0.025em` |
 | Tone | `--yj-tone-chrome-fixed`, `--yj-tone-chrome-dark`, `--yj-tone-bars-chrome`, `--yj-tone-header-chrome`, `--yj-tone-overlay-chrome`, `--yj-tone-overlay-ink` | `chrome`: `match` `dark` `light`; `bars`: `chrome` `content` `top`; `overlays`: `content` `chrome` `ink` ([two-tone](#tone-two-tone-themes)) | `match`, `chrome`, `content` |
@@ -198,7 +198,7 @@ export const theme = composeTheme(harbor, cleanStyle)
 
 | Style | Look | Radius | Type | Character |
 | --- | --- | --- | --- | --- |
-| Clean (default) | Classic | `xl` | Inter, JetBrains Mono | hairline, soft, accent actions, rounded controls, semibold tight titles |
+| Clean (default) | Classic | `xl` | Inter, JetBrains Mono | hairline, soft, accent actions, rounded controls, soft fields, semibold tight titles |
 | Bezel | Bezel | `lg` | Geist, Geist Mono | hairline, soft, accent pills, a surface gradient, medium titles, tracked mono capitals |
 | Classic | Classic | `sm` | IBM Plex Sans, Plex Mono | hairline, soft, accent actions, a light surface gradient |
 | Brutal | Classic | `none` | Inter, JetBrains Mono | 2px ink, hard shadows, heavy titles, mono capitals |
@@ -520,7 +520,7 @@ Use these settings to change borders, shadows, button fills, surface shading and
 | `shadow` | Elevation. `hard` draws one solid block in ink, offset down and to the right by 1.5 to 4 strokes, and buttons that cast one press into it | `soft` `hard` `none` |
 | `actions` | What fills a primary action (the default Button). `ink` fills it with the text color, lettered in the page color, and leaves the accent to checkboxes, switches, sliders, selection and data | `accent` `ink` |
 | `controls` | The [shape](#shapes) of every control, in both looks: buttons and toggles, fields, tab and toggle tracks, badges and chips. `rounded` gives them the control radius instead of pills, in proportion to each one's height (8px on a 32px control in `lg`, 9px on 36px), with keys and rows at the concentric radius inside; switches, radios and avatars stay round | `pill` `rounded` |
-| `fields` | How every field is drawn: inputs, select triggers, textareas and the pickers. `outlined` is the field fill on a 3:1 edge; `soft` is a filled band with no edge (focus and an invalid value still draw one), which leaves the field's boundary under WCAG 1.4.11's 3:1, so use it where fields are identifiable otherwise | `outlined` `soft` |
+| `fields` | How every field is drawn: inputs, select triggers, textareas and the pickers. `soft`, the default and the Clean style's, is a filled band with no edge (focus and an invalid value still draw one): its boundary is under WCAG 1.4.11's 3:1, so a visible label and the fill identify the field. `outlined`, the other styles', is the field fill on a 3:1 edge; choose it where a field must stand out on its own | `soft` `outlined` |
 | `surfaces.gradient` | Cards shade toward the next neutral step at their foot, lighter in dark and a touch deeper in light, and an ink-filled action gets a sheen: a lit top and a deeper foot. The foot never passes that step, so every text pair keeps its contrast; accent and danger fills stay flat for the same reason | `0` (flat) to `1` |
 | `headings` | Titles set in `font-semibold`: cards, dialogs, sheets, popovers and page headings | `weight`, `tracking` in em |
 | `labels` | Badges and chips, column heads, the label over a field, menu and sidebar group headings, tabs and keys ([the full list](#what-labels-reaches)). A label beside a checkbox stays a sentence | `case: 'upper'`, `font: 'mono'`, `tracking` |
@@ -694,7 +694,7 @@ export const acceptedTheme = defineTheme({ ...brand, allowLowContrast: true })
 The checks cover these pairs in both schemes. Keep `neutral.chroma` within `0` to `0.04`, and wash and lift within `0` to `1`:
 
 - `fg`, `fg-muted` and `fg-subtle` read at 4.5:1 on every surface role (`canvas`, `surface`, `overlay`, `well`, `field`, `key`, `control`, `chrome`, `chrome-float`, `inverse`), each in the tone it's drawn in, under every tone a theme can set, so every text color is real text.
-- Field borders (`--color-line-control`) reach 3:1 on every surface, the minimum WCAG 1.4.11 sets for control boundaries.
+- Control borders (`--color-line-control`: checkboxes, radios, outlined fields) reach 3:1 on every surface, the minimum WCAG 1.4.11 sets for control boundaries. Soft fields draw no border at rest; their label and fill identify them, and focus draws the ring.
 - Accent and status colors read at 4.5:1 as text, and so does text on the accent. Each ink's `-text` reads at 4.5:1 on its own `-subtle`, `on-accent` on every ink and `on-action` on `action`. Colors given per mode are checked as given, each in its own scheme.
 - The focus ring reaches 3:1 on every surface, and the fills that must read apart do: `hover` from a card, `selected` from `hover`, `well` from a card, `chrome-float` from the page.
 - A theme's chart colors read at 3:1 on every surface, the minimum for marks.

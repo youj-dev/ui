@@ -12,7 +12,7 @@ You still need to check your app’s copy, heading order, alt text, icon-only bu
 
 ## Contrast
 
-The theme derivation keeps every text color at 4.5:1 and every field border at 3:1 on every surface, in light and dark, for any theme you define. `checkTheme` reports a pair that misses AA as an error, and the provider, [Create](/create), the CLI and the MCP server refuse a theme that misses it unless you opt out. See [Theming › Guardrails](/docs/theming#guardrails).
+The theme derivation keeps every text color at 4.5:1 and every control border (checkboxes, radios, outlined fields) at 3:1 on every surface, in light and dark, for any theme you define. Fields are soft by default: a filled band with no border at rest, under 3:1, so give each one a visible label (Field does); focus and an invalid value draw an edge. Set `fields: 'outlined'` on your theme for fields that must stand out on their own. `checkTheme` reports a pair that misses AA as an error, and the provider, [Create](/create), the CLI and the MCP server refuse a theme that misses it unless you opt out. See [Theming › Guardrails](/docs/theming#guardrails).
 
 ## Target size
 

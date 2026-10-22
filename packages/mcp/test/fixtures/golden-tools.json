@@ -12,7 +12,7 @@
   "suggest_icon_morph {\"from\":\"play\",\"to\":\"pause\"}": "861:79af44158f6d498529a8c90f21d3825c2f47388c5c0a7512b2ac16935f1d0360",
   "list_blocks {}": "44994:9429ccf338f6530ad9f04b9d3adca0fdc712a346f8ff379b568d2b1d12c540d0",
   "list_illustrations {}": "2790:66ea0b8d27dad0d138d6277da8b23931135295532b051be4f6ecee5ae3e54778",
-  "get_tokens {}": "7715:8871c0a62fb1dfa9327a612d6cce1dc40cb2715b11d4fea161ef3854260fc5c7",
+  "get_tokens {}": "7789:a0c4224dbca731ac8e21a5152ed77aa489e4de00bec3a6af3aca984aabed64af",
   "motion_guidance {\"interaction\":\"button press\"}": "2271:318947ab9782f56c8bdbd0412ba1dd662e828c6af615f6baab4655041d2859fa",
   "setup {\"framework\":\"vite\"}": "2565:290151be6c69d3255e4f346198a435d2e361ace0176c56d16ba5ff8a4600a3c4",
   "get_block {\"name\":\"auth-device-authorization\"}": "1613:817c8fcc0bdafa76313884d8b267b79696029070247b8c91b26cc431a8c5a872",

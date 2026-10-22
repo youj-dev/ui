@@ -28,7 +28,7 @@ export const looks: readonly LookInfo[] = [
   {
     id: 'classic',
     name: 'Classic',
-    description: 'Hairline-bordered panels, rounded-rectangle controls, outlined fields and underline tabs.',
+    description: 'Hairline-bordered panels, rounded-rectangle controls and underline tabs.',
   },
   {
     id: 'bezel',

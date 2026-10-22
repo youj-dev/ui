@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { chromium, type Page } from 'playwright'
 import { compile } from 'tailwindcss'
 import { ThemeScope } from '@youj/core/lib/youj/provider'
-import { graphite } from '@youj/core/lib/youj/theme'
+import { bezelStyle, graphite } from '@youj/core/lib/youj/theme'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
@@ -20,7 +20,8 @@ import { Input } from '../components/ui/input'
  * - No text in a scaling scope goes under 11px.
  * - A single --yj-accent on :root re-brands the page over the default pairs.
  * - A className beats a Bezel recipe; the recipes follow the theme's actions
- *   and labels; dark Bezel fields draw their edge. */
+ *   and labels; dark Bezel fields draw their edge where the theme's fields are
+ *   outlined, and none where they're soft (the default). */
 
 const here = dirname(fileURLToPath(import.meta.url))
 const twDir = dirname(createRequire(import.meta.url).resolve('tailwindcss/package.json'))
@@ -52,6 +53,9 @@ function page(): string {
         <Badge id="badge">Ready</Badge>
         <Input id="field" aria-label="Field" />
       </div>
+      <ThemeScope style={bezelStyle}>
+        <Input id="outlined-field" aria-label="Outlined field" />
+      </ThemeScope>
       <div id="own-default" className="own:pt-1" />
       <div id="own-overridden" className="own:pt-1 pt-4" />
       <ThemeScope theme={graphite}>
@@ -183,12 +187,16 @@ test("Bezel follows the theme's actions and labels: Graphite's primary is its ac
   }
 })
 
-test('a dark Bezel field draws its edge', async () => {
+test("a dark Bezel field draws its edge where the theme's fields are outlined, and none where they're soft", async () => {
   const { tab, close } = await open('dark')
   try {
-    const edge = await read(tab, 'field', 'border-top-color')
+    // The Bezel style outlines its fields.
+    const edge = await read(tab, 'outlined-field', 'border-top-color')
     expect(edge.rgba[3]).toBe(255)
-    expect(edge.rgba).not.toEqual((await read(tab, 'field', 'background-color')).rgba)
+    expect(edge.rgba).not.toEqual((await read(tab, 'outlined-field', 'background-color')).rgba)
+    // Basalt's are soft: a filled band with no edge at rest.
+    expect((await read(tab, 'field', 'border-top-color')).rgba[3]).toBe(0)
+    expect((await read(tab, 'field', 'background-color')).rgba[3]).toBeGreaterThan(0)
   } finally {
     await close()
   }

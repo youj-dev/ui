@@ -9,8 +9,8 @@ import { youjPalette, cleanStyle, composeTheme, DEFAULTS, palettes, pickPalette,
 export const STATUS = ['success', 'warning', 'danger'] as const
 export type Status = (typeof STATUS)[number]
 
-/** A theme's character: how its lines, depth, actions, surfaces, titles and labels look, and which mode its chrome and overlays are drawn in. Unset fields are the defaults. */
-export type Character = Pick<ThemeInput, 'stroke' | 'shadow' | 'actions' | 'controls' | 'surfaces' | 'headings' | 'labels' | 'tone'>
+/** A theme's character: how its lines, depth, actions, controls, fields, surfaces, titles and labels look, and which mode its chrome and overlays are drawn in. Unset fields are the defaults. */
+export type Character = Pick<ThemeInput, 'stroke' | 'shadow' | 'actions' | 'controls' | 'fields' | 'surfaces' | 'headings' | 'labels' | 'tone'>
 
 export interface Draft {
   name: string
@@ -36,7 +36,7 @@ export interface Draft {
 
 export function draftFrom(input: ThemeInput, name = 'My theme'): Draft {
   const theme = input
-  const { stroke, shadow, actions, controls, surfaces, headings, labels, tone } = theme
+  const { stroke, shadow, actions, controls, fields, surfaces, headings, labels, tone } = theme
   return {
     name,
     hue: theme.neutral?.hue ?? DEFAULTS.neutral.hue,
@@ -55,7 +55,7 @@ export function draftFrom(input: ThemeInput, name = 'My theme'): Draft {
       ...(theme.fonts?.display ? { display: theme.fonts.display } : {}),
     },
     motionPersonality: theme.motionPersonality ?? DEFAULTS.motionPersonality,
-    character: { stroke, shadow, actions, controls, surfaces, headings, labels, tone },
+    character: { stroke, shadow, actions, controls, fields, surfaces, headings, labels, tone },
   }
 }
 
@@ -90,6 +90,7 @@ const withDefaults = (c: Character) => ({
   shadow: c.shadow ?? DEFAULTS.shadow,
   actions: c.actions ?? DEFAULTS.actions,
   controls: c.controls ?? DEFAULTS.controls,
+  fields: c.fields ?? DEFAULTS.fields,
   surfaces: { ...DEFAULTS.surfaces, ...c.surfaces },
   headings: { ...DEFAULTS.headings, ...c.headings },
   labels: { ...DEFAULTS.labels, ...c.labels },
@@ -97,7 +98,7 @@ const withDefaults = (c: Character) => ({
 })
 
 const PALETTE_KEYS = ['hue', 'chroma', 'wash', 'lift', 'accent', 'success', 'warning', 'danger', 'info', 'chart']
-const STYLE_KEYS = ['radius', 'controlSize', 'fonts', 'motionPersonality', 'stroke', 'shadow', 'actions', 'controls', 'surfaces', 'headings', 'labels']
+const STYLE_KEYS = ['radius', 'controlSize', 'fonts', 'motionPersonality', 'stroke', 'shadow', 'actions', 'controls', 'fields', 'surfaces', 'headings', 'labels']
 
 function fieldsOf(d: Draft): Record<string, unknown> {
   const { name: _, character, status, ...rest } = d

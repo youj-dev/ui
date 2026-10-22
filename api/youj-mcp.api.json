@@ -169,7 +169,7 @@
             ]
           },
           "fields": {
-            "description": "How every field is drawn: outlined (default, the fill on a 3:1 edge) or soft (a filled band with no edge)",
+            "description": "How every field is drawn: soft (default, a filled band with no edge, identified by its label) or outlined (the fill on a 3:1 edge)",
             "type": "string",
             "enum": [
               "outlined",
@@ -242,7 +242,7 @@
             "type": "boolean"
           },
           "look": {
-            "description": "The look to apply it with: how components are built, independent of the theme (classic, the default: hairline panels, rounded controls, outlined fields, underline tabs; bezel: instrument panels, pill actions, filled fields, segmented tabs, mono figures)",
+            "description": "The look to apply it with: how components are built, independent of the theme (classic, the default: hairline panels, rounded controls, underline tabs; bezel: instrument panels, pill actions, filled field wells, segmented tabs, mono figures)",
             "type": "string",
             "enum": [
               "classic",

@@ -27,8 +27,8 @@
    * scope. */
   --color-canvas: oklch(0.965 0.0015 270);
   --color-surface: oklch(1 0 0);
-  --color-line: oklch(0.885 0.004 270);
-  --color-line-strong: oklch(0.72 0.007 270);
+  --color-line: oklch(0.895 0.004 270);
+  --color-line-strong: oklch(0.74 0.007 270);
   --color-fg: oklch(0.2 0.012 270);
   --color-fg-muted: oklch(0.44 0.012 270);
   --color-fg-subtle: oklch(0.5 0.01 270);
@@ -47,8 +47,8 @@
   --color-chrome-float: oklch(1 0 0);
   --color-inverse: oklch(1 0 0);
   --color-scrim: oklch(0.2 0.02 270 / 0.24);
-  --color-line-subtle: oklch(0.885 0.004 270 / 0.55);
-  --color-line-control: oklch(0.566 0.0091 270);
+  --color-line-subtle: oklch(0.895 0.004 270 / 0.55);
+  --color-line-control: oklch(0.572 0.0091 270);
   --color-on-accent: oklch(0.995 0 0);
   --color-on-action: oklch(0.995 0 0);
   --color-action: oklch(0.54 0.25 268);
@@ -194,7 +194,7 @@
     --yj-pill: 0;
     /* How fields are drawn: 0 outlined (the fill on a control edge), 1 soft (a
      * filled band, no edge). ui.css draws it. */
-    --yj-field-soft: 0;
+    --yj-field-soft: 1;
     /* How far cards shade toward the raised step at their foot, with a sheen on ink buttons, 0–1. ui.css draws it. */
     --yj-surface-gradient: 0;
     /* Titles set in font-semibold / tracking-tight take these. */
@@ -248,12 +248,12 @@
     --yj-raised-l-dark: 0.225;
     --yj-raised-c-light: calc(1 / 4);
     --yj-raised-c-dark: calc(7 / 12);
-    --yj-line-l-light: 0.885;
-    --yj-line-l-dark: 0.275;
+    --yj-line-l-light: 0.895;
+    --yj-line-l-dark: 0.25;
     --yj-line-c-light: calc(1 / 3);
     --yj-line-c-dark: calc(2 / 3);
-    --yj-line-strong-l-light: 0.72;
-    --yj-line-strong-l-dark: 0.37;
+    --yj-line-strong-l-light: 0.74;
+    --yj-line-strong-l-dark: 0.31;
     --yj-line-strong-c-light: calc(7 / 12);
     --yj-line-strong-c-dark: calc(5 / 6);
     --yj-fg-l-light: 0.2;

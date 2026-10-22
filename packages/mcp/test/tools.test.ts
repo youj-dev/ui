@@ -350,7 +350,10 @@ describe('tokens and themes', () => {
     const out = createTheme({ accent: '#ff5a1f', name: 'Ember', radius: 'lg' })
     expect(out).toContain('export const ember = defineTheme({')
     expect(out).toContain("accent: '#ff5a1f',")
-    expect(out).toMatch(/light: fg-subtle \d\.\d\d:1 \(needs 4\.5\) pass; field border \d\.\d\d:1 \(needs 3\) pass/)
+    expect(out).toMatch(/light: fg-subtle \d\.\d\d:1 \(needs 4\.5\) pass; control border \d\.\d\d:1 \(needs 3\) pass/)
+    // Over Basalt the fields are soft: the report says what identifies them instead of an edge.
+    expect(out).toMatch(/- fields: soft, a filled band with no border \(under 3:1\)/)
+    expect(createTheme({ accent: '#ff5a1f', name: 'Ember', fields: 'outlined' })).not.toMatch(/- fields: soft/)
     expect(out).toContain('themeProps(ember)')
     expect(out).toContain('--yj-accent: #ff5a1f;')
   })

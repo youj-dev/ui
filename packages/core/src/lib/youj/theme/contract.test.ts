@@ -77,7 +77,7 @@ describe('themeVars', () => {
       '--yj-shadow-hard': '0',
       '--yj-action-ink': '0',
       '--yj-pill': '0',
-      '--yj-field-soft': '0',
+      '--yj-field-soft': '1',
       '--yj-surface-gradient': '0',
       '--yj-tone-chrome-fixed': '0',
       '--yj-tone-chrome-dark': '0',
@@ -151,12 +151,13 @@ describe('themeVars', () => {
     for (const preset of [presetById('terminal'), presetById('brutal')]) expect([preset.id, themeVars(preset)['--yj-pill']]).toEqual([preset.id, '1'])
   })
 
-  test('fields: soft draws every field as a band with no edge; outlined is the default, and a complete theme resets it', () => {
-    expect(themeVars({ fields: 'soft' })).toEqual({ '--yj-field-soft': '1' })
+  test('fields: soft draws every field as a band with no edge and is the default; outlined draws the edge; a complete theme resets it', () => {
+    expect(themeVars({ fields: 'outlined' })).toEqual({ '--yj-field-soft': '0' })
     expect(themeVars({ accent: '#ff5a1f' })).not.toHaveProperty('--yj-field-soft')
-    expect(themeVars({ id: 'nested' })['--yj-field-soft']).toBe('0')
-    expect(resolveTheme({}).fields).toBe('outlined')
-    for (const preset of [graphite, basalt]) expect([preset.id, themeVars(preset)['--yj-field-soft']]).toEqual([preset.id, '0'])
+    expect(themeVars({ id: 'nested' })['--yj-field-soft']).toBe('1')
+    expect(resolveTheme({}).fields).toBe('soft')
+    for (const preset of [graphite, basalt]) expect([preset.id, themeVars(preset)['--yj-field-soft']]).toEqual([preset.id, '1'])
+    for (const preset of [presetById('terminal'), presetById('brutal')]) expect([preset.id, themeVars(preset)['--yj-field-soft']]).toEqual([preset.id, '0'])
   })
 
   test('chart: a palette writes one colour per series; a complete theme without one resets them, so its charts draw from its accent', () => {
