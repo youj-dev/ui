@@ -63,6 +63,7 @@ function toSource(t: Theme): string {
   if (t.shadow && t.shadow !== 'soft') lines.push(`  shadow: ${quote(t.shadow)},`)
   if (t.actions && t.actions !== DEFAULTS.actions) lines.push(`  actions: ${quote(t.actions)},`)
   if (t.controls && t.controls !== DEFAULTS.controls) lines.push(`  controls: ${quote(t.controls)},`)
+  if (t.fields && t.fields !== DEFAULTS.fields) lines.push(`  fields: ${quote(t.fields)},`)
   const name = camel(t.id!)
   const load = fontsImport(t)
   return [
@@ -92,7 +93,8 @@ const PAIRS = [
   { label: 'Body text', fg: 'fg', min: 4.5 },
   { label: 'Metadata (fg-subtle)', fg: 'fg-subtle', min: 4.5 },
   { label: 'Accent as text', fg: 'accent', min: 4.5 },
-  { label: 'Field border', fg: 'input', min: 3 },
+  // line-control: the edge of checkboxes, radios, outlined fields and the like. A soft field draws none (the note below).
+  { label: 'Control border', fg: 'input', min: 3 },
   { label: 'Text on accent', fg: 'accent-contrast', bg: 'accent', min: 4.5 },
 ] as const
 
@@ -170,6 +172,12 @@ function Checks({ theme }: { theme: Theme }) {
           )}
         </tbody>
       </table>
+      {(theme.fields ?? DEFAULTS.fields) === 'soft' && (
+        <p className="border-t border-line px-4 py-3 text-ui-sm text-fg-muted">
+          Fields are soft: a filled band with no border, under 3:1 against the page, so their label and fill identify them. Focus and an invalid value draw an edge. For fields that must stand out on
+          their own, set <code className="font-mono">fields: 'outlined'</code>.
+        </p>
+      )}
       {issues.length > 0 && (
         <ul className="flex flex-col gap-1 border-t border-line px-4 py-3">
           {issues.map((i, n) => (

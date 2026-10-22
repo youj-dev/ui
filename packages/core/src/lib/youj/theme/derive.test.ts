@@ -91,18 +91,19 @@ const apart = (a: Oklch, b: Oklch, m: (typeof SIMULATE)[keyof typeof SIMULATE]) 
 }
 
 describe('Graphite', () => {
-  // The pre-theme palette, value for value, with two deliberate changes:
-  // fg-subtle (0.6 / 0.56 before), lifted to 4.5:1 for text (Option A), and
-  // the light app ladder: white cards on a soft gray page, raised wells a
-  // step below the page, hairline lines. The accent reads at 4.5:1 on raised
-  // as given.
+  // The pre-theme palette, value for value, with three deliberate changes:
+  // fg-subtle (0.6 / 0.56 before), lifted to 4.5:1 for text (Option A); the
+  // light app ladder: white cards on a soft gray page, raised wells a step
+  // below the page, hairline lines; and quieter lines, line and line-strong
+  // a step fainter (0.885 / 0.72 light, 0.275 / 0.37 dark before). The accent
+  // reads at 4.5:1 on raised as given.
   const expected = {
     light: {
       canvas: 'oklch(0.965 0.0015 270)',
       surface: 'oklch(1 0 0)',
       raised: 'oklch(0.95 0.003 270)',
-      line: 'oklch(0.885 0.004 270)',
-      'line-strong': 'oklch(0.72 0.007 270)',
+      line: 'oklch(0.895 0.004 270)',
+      'line-strong': 'oklch(0.74 0.007 270)',
       fg: 'oklch(0.2 0.012 270)',
       'fg-muted': 'oklch(0.44 0.012 270)',
       'fg-subtle': 'oklch(0.5 0.01 270)',
@@ -111,14 +112,14 @@ describe('Graphite', () => {
       success: 'oklch(0.504 0.114 158)',
       warning: 'oklch(0.527 0.124 58)',
       danger: 'oklch(0.542 0.197 25)',
-      input: 'oklch(0.566 0.0091 270)',
+      input: 'oklch(0.572 0.0091 270)',
     },
     dark: {
       canvas: 'oklch(0.155 0.005 270)',
       surface: 'oklch(0.185 0.006 270)',
       raised: 'oklch(0.225 0.007 270)',
-      line: 'oklch(0.275 0.008 270)',
-      'line-strong': 'oklch(0.37 0.01 270)',
+      line: 'oklch(0.25 0.008 270)',
+      'line-strong': 'oklch(0.31 0.01 270)',
       fg: 'oklch(0.965 0.003 270)',
       'fg-muted': 'oklch(0.73 0.01 270)',
       'fg-subtle': 'oklch(0.625 0.01 270)',
@@ -127,7 +128,7 @@ describe('Graphite', () => {
       success: 'oklch(0.72 0.15 158)',
       warning: 'oklch(0.79 0.14 72)',
       danger: 'oklch(0.68 0.18 24)',
-      input: 'oklch(0.5485 0.01 270)',
+      input: 'oklch(0.5305 0.01 270)',
     },
   }
 

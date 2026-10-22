@@ -118,7 +118,7 @@ function SelectTrigger({
   ...props
 }: SelectPrimitive.Trigger.Props & {
   size?: 'sm' | 'default'
-  /** `ghost`: no field fill or edge, a hover step instead, at the button corner: a select that sits in a toolbar or composer as a quiet button (a model or sort picker). `soft`: no edge, filled with the theme's quiet band (a hover step under the pointer) at the field's own corner and height: a picker inside a card, which already frames it. The fill is a little under 3:1 against the card, so the chevron and the value identify the control, not an edge; keep the default where the select must read on its own. Default `default`, the theme's field. */
+  /** `ghost`: no field fill or edge, a hover step instead, at the button corner: a select that sits in a toolbar or composer as a quiet button (a model or sort picker). `soft`: no edge, filled with the theme's quiet band (a hover step under the pointer) at the field's own corner and height: a picker inside a card, which already frames it. The fill is a little under 3:1 against the card, so the chevron and the value identify the control, not an edge; in a theme with soft fields (the default) it matches the default, and in an outlined one keep the default where the select must read on its own. Default `default`, the theme's field. */
   variant?: 'default' | 'ghost' | 'soft'
   /** Leaves out the chevron, for a dense row of selects (a table cell, a property list) where the value alone shows it opens. The trigger keeps its role, name and `aria-expanded`. */
   hideIcon?: boolean

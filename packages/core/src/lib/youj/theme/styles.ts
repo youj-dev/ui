@@ -22,7 +22,7 @@ export const cleanStyle = defineStyle({
   shadow: 'soft',
   actions: 'accent',
   controls: 'rounded',
-  fields: 'outlined',
+  fields: 'soft',
   surfaces: { gradient: 0 },
   headings: { weight: 600, tracking: -0.025 },
   labels: { case: 'none', font: 'sans' },

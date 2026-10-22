@@ -5,7 +5,7 @@ description: "Choose how your components look with Classic or Bezel, paired with
 
 <LookComparison />
 
-A [theme](/docs/theming) sets colors, type, spacing, corners and motion. A **look** sets the shape and structure of each component: sectioned or padded cards, pill or rectangular buttons, filled or outlined fields, and segmented or underlined tabs. Each [style](/docs/theming#palette-and-style) names the look it's built in (Bezel and Terminal in Bezel; Clean, Classic and Brutal in Classic), and a `look` prop overrides it. Classic and Bezel are names on both axes: the Bezel style is built in the Bezel look, and Clean, Classic and Brutal are built in the Classic look. A style picks its look; `look` overrides it.
+A [theme](/docs/theming) sets colors, type, spacing, corners and motion. A **look** sets the shape and structure of each component: sectioned or padded cards, pill or rectangular buttons, field wells or plain fields, and segmented or underlined tabs. Whether a field has an edge is the theme's [`fields`](/docs/theming#character), soft or outlined, in either look. Each [style](/docs/theming#palette-and-style) names the look it's built in (Bezel and Terminal in Bezel; Clean, Classic and Brutal in Classic), and a `look` prop overrides it. Classic and Bezel are names on both axes: the Bezel style is built in the Bezel look, and Clean, Classic and Brutal are built in the Classic look. A style picks its look; `look` overrides it.
 
 |  | Theme | Look |
 | --- | --- | --- |
@@ -14,7 +14,7 @@ A [theme](/docs/theming) sets colors, type, spacing, corners and motion. A **loo
 | Lives in | `@youj/core` (the tokens and the presets) | `@youj/react` (component looks) |
 | Default | Basalt, in dark | Classic |
 
-Classic is the default look: thin-bordered panels, rounded-rectangle controls, outlined fields and underline tabs, with no CSS rules of its own. Bezel builds components as instrument panels. It was designed alongside the Bezel style, but uses the colors, type and corners of your chosen theme. Selecting Bezel brings in its CSS rules, described below.
+Classic is the default look: thin-bordered panels, rounded-rectangle controls and underline tabs, with no CSS rules of its own. Bezel builds components as instrument panels. It was designed alongside the Bezel style, but uses the colors, type and corners of your chosen theme. Selecting Bezel brings in its CSS rules, described below.
 
 ## The anatomy
 
@@ -25,7 +25,7 @@ These shared rules keep Bezel components consistent across a screen. Two of them
 - **Labels are eyebrows, values sit right in mono.** The short name over a figure, a group or a column is small and set in the theme's label voice (the Bezel style's: tracked mono capitals). Its value sits at the end of the same row in mono. Built with: `Eyebrow` (or `data-slot="eyebrow"`), a field's label over its control, `ProgressLabel` and `ProgressValue`.
 - **Numbers are mono, units are muted.** Figures are set in mono with tabular digits. A unit, a percent sign and a currency's cents are set small and muted beside them. Built with: `Counter`, `StatCard`, the meters' values.
 - **Meters are segmented or ruled.** A quantity reads against a scale: cells that fill, a rule with ticks, or a thin recessed rail. Never a fat bar. Built with: `SegmentedMeter`, `LimitMeter`, `Gauge`, `HistogramRange`, `Progress`.
-- **Fields are filled wells.** A recessed fill with about 12px corners on the field border, which holds 3:1 against the page in both modes; in light mode the field is white, as cards and menus are. Focus brings the accent ring and halo; an invalid field keeps its danger edge. Built with: `Input`, `Textarea`, `Select`, `Combobox`, `NumberInput`, `InputGroup`.
+- **Fields are filled wells.** A recessed fill with about 12px corners on the field border (in a theme with outlined fields, as the Bezel style's are), which holds 3:1 against the page in both modes; in light mode the field is white, as cards and menus are. A theme with soft fields keeps the well and drops the edge. Focus brings the accent ring and halo; an invalid field keeps its danger edge. Built with: `Input`, `Textarea`, `Select`, `Combobox`, `NumberInput`, `InputGroup`.
 - **Actions are pills.** The primary action takes the theme's action fill (the palette's accent in every shipped style; `actions: 'ink'` leaves the accent to state and selection); a secondary one is a raised filled pill; an icon button is a disc. Built with: `Button`: `default`, `secondary`, and the `icon` sizes.
 - **Tables are dense, with mono capital heads.** Rows on hairlines with no zebra, column heads in small mono capitals, figures in mono at the end of their column. Built with: `Table` and the data tables (a numeric column marks its cells `data-numeric`).
 - **Status is a soft tinted pill with a dot.** A state is its color at low strength behind its own ink, led by a dot, never a saturated block. Built with: `Badge` in `success`, `warning` or `danger`, with `BadgeDot` first.
@@ -116,7 +116,7 @@ npx @youj/cli add youj-look-bezel
 | Card | The head is one line: a larger title, its description as a muted "/ subtitle" (under the title on a narrow card), and a disc at the end. The head, each content block and the footer are sections split by full-bleed hairlines, each a step lighter than the one above, so the footer is the lightest. Text in the head's action, and at the footer's start, reads as a mono capital status line. `variant="inset"` puts everything under the head in a well at the concentric radius. |
 | Eyebrow, field labels | The short labels over figures, groups and sections (`Eyebrow`, or any element with `data-slot="eyebrow"`) and a field's label over its control are mono capitals, small and tracked. In Classic an `Eyebrow` keeps whatever classes you give it. |
 | Button | Pills. The primary takes the theme's action fill (the accent in every shipped style; `actions: 'ink'` leaves the accent to state); secondary is a raised filled pill; icon buttons are discs. |
-| Input, Textarea, Select, Combobox, NumberInput | Filled wells with about 12px corners on the field border (3:1 in both modes), a white field in light mode. Focus keeps the accent ring, and an invalid field keeps its danger edge. |
+| Input, Textarea, Select, Combobox, NumberInput | Filled wells with about 12px corners on the field border (3:1 in both modes) where the theme's fields are outlined, and with no edge where they're soft; a white field in light mode. Focus keeps the accent ring, and an invalid field keeps its danger edge. |
 | Tabs, ToggleGroup, SegmentedControl, with `variant="pill"` | A recessed track with the choice as a key that glides: white on a ring at the field border's strength in light (3:1 against the track), a clearly lighter step in dark. The default underline look is not restyled. |
 | Badge | Soft tinted pills, a raised neutral chip for `secondary`, and a status dot (`BadgeDot`, first inside the badge). |
 | Switch | Flatter and wider: a gray knob in a recessed track when off, a light knob on the accent when on. |

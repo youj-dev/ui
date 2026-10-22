@@ -123,7 +123,7 @@ Restart the editor, or reload its MCP servers, after changing its config.
 | `get_illustration_guide` | How to compose a new isometric illustration: the builder's parts, presets, shades and grid, rules that read at small sizes, and worked examples |
 | `draw_illustration` | "an empty inbox", drawn as a scene: checked (every problem comes back with its fix), then the component, where to put it, the install command and a link that opens it in the [illustration builder](/illustrations/build) |
 | `get_tokens` | Color, type, radius, control size, motion and character (stroke, shadow, title and label voice, icon weight) tokens for any preset |
-| `create_theme` | A theme from a brand color, with `defineTheme`, checked so muted text and field borders keep their contrast |
+| `create_theme` | A theme from a brand color, with `defineTheme`, checked so muted text and control borders keep their contrast |
 | `motion_guidance` | "toast enters", "list reorders", "button success": the piece that already does it, with its tokens and reduced motion |
 | `get_project_info` | Local server only: read the framework, package manager, install route, Youj/React/Tailwind versions and setup warnings; optional `cwd` (defaults to the server's working directory) |
 | `get_add_command` | Exact install command and imports for component, block or illustration scene names, using the project's route and package manager, including optional peers |
@@ -286,7 +286,7 @@ Blocks are the copy-in [levels](/docs/choosing-a-level) card, section and screen
 | `groups` | `color`, `type`, `radius`, `spacing`, `motion`, `character` (list) | all | Only these groups. |
 | `mode` | `light`, `dark`, `both` | `both` | Which color mode. |
 
-**`create_theme`**: a theme from a brand color, built with `defineTheme` over a preset and checked with `checkTheme`: every text pair at least 4.5:1 and field borders at least 3:1 on every surface, in both modes. A theme that fails WCAG AA is refused unless `allowLowContrast` is set. Returns the code, how to apply it, the derived colors and any issues.
+**`create_theme`**: a theme from a brand color, built with `defineTheme` over a preset and checked with `checkTheme`: every text pair at least 4.5:1 and control borders at least 3:1 on every surface, in both modes. A theme that fails WCAG AA is refused unless `allowLowContrast` is set. Returns the code, how to apply it, the derived colors and any issues.
 
 | Input | Description |
 | --- | --- |

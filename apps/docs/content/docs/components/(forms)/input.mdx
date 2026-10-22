@@ -18,7 +18,7 @@ An invite-by-email field with a Send invite button that shows an error for an in
 
 Inputs in their hover, focus, invalid, disabled and read-only states.
 
-Hover strengthens the border. Focus turns the border accent inside a soft 3px halo, so the field reads as lit rather than outlined. Invalid swaps both to the destructive color. Disabled and read-only are native, and read-only gets a muted fill so it doesn't look editable.
+At rest the field is the theme's: a soft filled band with no border by default, or its fill on a 3:1 border where the theme's `fields` are `outlined`. Hover deepens the band (or strengthens the border). Focus turns the edge accent inside a soft 3px halo, so the field reads as lit rather than outlined. Invalid swaps both to the destructive color. Disabled and read-only are native, and read-only gets a muted fill so it doesn't look editable.
 
 Set `aria-invalid` yourself on a standalone input. Inside a Field, `invalid` sets it for you.
 

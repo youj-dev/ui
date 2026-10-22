@@ -272,7 +272,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
     'create_theme',
     {
       title: 'Create a theme',
-      description: 'Builds a Youj theme from a brand colour (over a preset, Basalt unless another is named; neutrals, status and info inks, radius, control size, motion personality, fonts, its character: stroke, shadow, headings, labels, and its tone: a two-tone chrome) with defineTheme, runs checkTheme (every text pair ≥ 4.5:1 and field borders ≥ 3:1 on every surface, in both modes; a WCAG AA failure refuses the theme unless allowLowContrast is set) and returns the code, how to apply it (with `style`, in that component style), the derived colours and any issues.',
+      description: 'Builds a Youj theme from a brand colour (over a preset, Basalt unless another is named; neutrals, status and info inks, radius, control size, motion personality, fonts, its character: stroke, shadow, headings, labels, and its tone: a two-tone chrome) with defineTheme, runs checkTheme (every text pair ≥ 4.5:1 and control borders ≥ 3:1 on every surface, in both modes; a WCAG AA failure refuses the theme unless allowLowContrast is set) and returns the code, how to apply it (with `style`, in that component style), the derived colours and any issues.',
       inputSchema: {
         accent: z.string().min(3).max(60).describe('Brand colour: hex, rgb(), hsl() or oklch()'),
         name: z.string().max(40).optional(),
@@ -306,7 +306,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
         shadow: z.enum(['soft', 'hard', 'none']).optional().describe('soft: blurred elevation; hard: solid offset shadows in ink; none: flat'),
         actions: z.enum(['accent', 'ink']).optional().describe('What fills primary buttons: accent (default), or ink, the text colour, leaving the accent to "on" states'),
         controls: z.enum(['pill', 'rounded']).optional().describe('The shape of every control (buttons, fields, tab and toggle tracks, badges): pill (default), or rounded at the control radius in proportion to each height'),
-        fields: z.enum(['outlined', 'soft']).optional().describe('How every field is drawn: outlined (default, the fill on a 3:1 edge) or soft (a filled band with no edge)'),
+        fields: z.enum(['outlined', 'soft']).optional().describe('How every field is drawn: soft (default, a filled band with no edge, identified by its label) or outlined (the fill on a 3:1 edge)'),
         tone: z
           .object({ chrome: z.enum(['match', 'dark', 'light']).optional(), overlays: z.enum(['content', 'chrome']).optional() })
           .optional()
@@ -320,7 +320,7 @@ export function createServer(catalog: Catalog, options: { cwd?: string; remote?:
         look: z
           .enum(LOOKS)
           .optional()
-          .describe('The look to apply it with: how components are built, independent of the theme (classic, the default: hairline panels, rounded controls, outlined fields, underline tabs; bezel: instrument panels, pill actions, filled fields, segmented tabs, mono figures)'),
+          .describe('The look to apply it with: how components are built, independent of the theme (classic, the default: hairline panels, rounded controls, underline tabs; bezel: instrument panels, pill actions, filled field wells, segmented tabs, mono figures)'),
       },
       annotations: readOnly,
     },

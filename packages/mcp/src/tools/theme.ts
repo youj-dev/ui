@@ -138,7 +138,7 @@ export function getTokens(catalog: Catalog, options: { preset?: string; groups?:
       `- shadow: ${shadow}${shadow === 'hard' ? ' (solid offset blocks in ink; buttons that cast one press into it)' : shadow === 'none' ? ' (flat: borders carry the layers)' : ' (blurred, tinted with the neutral hue)'}`,
       `- actions: ${actions === 'ink' ? 'primary buttons in ink (the text colour, lettered in the page colour); the accent marks "on" states, selection and data' : 'primary buttons in the accent'}`,
       `- controls: ${controls === 'rounded' ? 'rounded, not pills: every control takes the control radius in proportion to its height, keys and rows the concentric radius' : 'pills: every control has round ends'}, in both looks. Each family has one token: \`rounded-button\`, \`rounded-field\` (\`rounded-field-area\` for a multi-line field), \`rounded-choice\` and \`rounded-choice-key\`, \`rounded-chip\` (each with \`-xs\`, \`-sm\`, \`-lg\`), \`rounded-surface\` and \`rounded-overlay\`. Never set a corner, height, edge or field fill on a kit control: use its props (\`size\`, SelectTrigger \`variant="ghost"\`, Badge \`size\`)`,
-      `- fields: ${fields === 'soft' ? 'soft: every field is a filled band with no edge' : 'outlined: every field is its fill on a 3:1 edge'}; never make one field soft or outlined by hand`,
+      `- fields: ${fields === 'soft' ? 'soft: every field is a filled band with no edge (focus and an invalid value draw one), so give each field a visible label' : 'outlined: every field is its fill on a 3:1 edge'}; never make one field soft or outlined by hand`,
       `- titles: weight ${headings.weight}, tracking ${headings.tracking}em${t.fonts.display ? `, in ${t.fonts.display}` : ''}`,
       `- labels (badges, column heads, field labels, group headings, tabs, keys): ${labelVoice}`,
       '',
@@ -291,9 +291,11 @@ export function createTheme(request: ThemeRequest): string {
   )
   for (const mode of ['light', 'dark'] as const) {
     const subtle = worst(mode, input, 'fg-subtle')
-    const field = worst(mode, input, 'input')
-    out.push(`- ${mode}: fg-subtle ${subtle.toFixed(2)}:1 (needs 4.5) ${subtle >= 4.5 ? 'pass' : 'FAIL'}; field border ${field.toFixed(2)}:1 (needs 3) ${field >= 3 ? 'pass' : 'FAIL'}`)
+    const control = worst(mode, input, 'input')
+    out.push(`- ${mode}: fg-subtle ${subtle.toFixed(2)}:1 (needs 4.5) ${subtle >= 4.5 ? 'pass' : 'FAIL'}; control border ${control.toFixed(2)}:1 (needs 3) ${control >= 3 ? 'pass' : 'FAIL'}`)
   }
+  if (resolveTheme(input).fields === 'soft')
+    out.push("- fields: soft, a filled band with no border (under 3:1), so a label and the fill identify each field; focus and an invalid value draw an edge. Pass fields: 'outlined' for fields that must stand out on their own.")
   const warnings = issues.filter((i) => i.level === 'warning')
   const accepted = warnings.filter((w) => w.code === 'contrast').length
   if (accepted) out.push('', `WARNING: allowLowContrast accepts ${accepted} pair${accepted === 1 ? '' : 's'} that miss WCAG AA. Text or controls drawn in them fail WCAG 2 AA (1.4.3, 1.4.11) for your users.`)

@@ -168,7 +168,7 @@ export interface ThemeInput {
   actions?: ActionFill
   /** The shape of every control, in both looks (buttons and toggles, fields, tab and toggle tracks, badges and chips): pills, or `rounded` at the theme's control radius, scaled with each control's height. One family can be split off in CSS with `--yj-shape-button`, `-field`, `-choice` or `-chip` (1 pills, 0 rounded). Default 'rounded'. */
   controls?: ControlShape
-  /** How every field is drawn: outlined (the fill on a 3:1 edge) or soft (a filled band with no edge, which leaves the field's boundary below WCAG 1.4.11's 3:1, so use it where the field is otherwise identifiable). Default 'outlined'. */
+  /** How every field is drawn: soft (a filled band with no edge: a label and the fill identify the field, and its boundary stays below WCAG 1.4.11's 3:1 until focus or an invalid value draws an edge) or outlined (the fill on a 3:1 edge, for fields that must stand out on their own). Default 'soft'. */
   fields?: FieldStyle
   /** How surfaces are shaded. Default: flat. */
   surfaces?: SurfacesInput
@@ -297,7 +297,7 @@ export const DEFAULTS = {
   shadow: 'soft',
   actions: 'accent',
   controls: 'rounded',
-  fields: 'outlined',
+  fields: 'soft',
   surfaces: { gradient: 0 },
   headings: { weight: 600, tracking: -0.025 },
   labels: { case: 'none', font: 'sans' },
