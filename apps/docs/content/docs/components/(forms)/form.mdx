@@ -56,7 +56,7 @@ Passing `ref` matters: it's how the form finds the control to focus when it's in
 
 <InstallTabs name="form" noImport />
 
-Requires `react-hook-form`, an [optional dependency](/docs/installation#optional-dependencies), and the examples below also use `zod` and `@hookform/resolvers` (`pnpm add react-hook-form zod @hookform/resolvers`). Import it from `@youj/react/form`.
+Requires `react-hook-form`, an [optional dependency](/docs/installation#optional-dependencies), and the examples below also use `zod` and `@hookform/resolvers@^5` (`pnpm add react-hook-form zod @hookform/resolvers@^5`; v5, because v6 doesn't install on npm yet). Import it from `@youj/react/form`.
 
 `Form` builds on [react-hook-form](https://react-hook-form.com). Validate with any resolver: `zodResolver(schema)` from `@hookform/resolvers` is the usual one.
 
@@ -64,7 +64,7 @@ Use `Form` when you need validation, such as in settings, sign-in or a create fl
 
 Install what it needs first, or the build fails on a missing export:
 
-<PackageInstall command="pnpm add react-hook-form @hookform/resolvers zod" />
+<PackageInstall command="pnpm add react-hook-form @hookform/resolvers@^5 zod" />
 
 In the Next.js App Router, render this from a Client Component, a file that starts with `'use client'`: it takes functions (`onSubmit` and a `resolver`), and a Server Component can't pass those. [Server rendering](/docs/guides/ssr) has the rest.
 

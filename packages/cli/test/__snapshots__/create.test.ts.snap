@@ -85,6 +85,8 @@ import "./globals.css";
 import { YoujProvider, themeProps } from "@youj/core";
 import { ThemeScript } from "@youj/react";
 import { theme } from "@/lib/theme";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -91,7 +91,7 @@ export function Revenue({ data }: { data: { month: string; revenue: number }[] }
   return (
     <ChartContainer config={config} className="h-56 w-full" title="Revenue by month" summary="Revenue doubled since April.">
       <AreaChart data={data}>
-        <XAxis dataKey="month" tickLine={false} axisLine={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} interval="preserveStartEnd" />
         <ChartTooltip content={<ChartTooltipContent />} />
         <Area dataKey="revenue" stroke="var(--color-revenue)" fill="var(--color-revenue)" fillOpacity={0.2} {...motion.draw(0)} />
       </AreaChart>

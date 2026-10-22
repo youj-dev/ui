@@ -87,8 +87,9 @@ export function loadFonts(project: Project, framework: Framework | null, entry: 
   const source = layout && project.read(layout)
   const from = layout ? importSpecifier(project, layout, fontsFile).replace(/\.ts$/, '') : ''
   const edited = source ? addHtmlClass(source, 'fontVariables') : null
-  // The Inter and JetBrains Mono imports an earlier `init --theme graphite` added: the theme's own fonts replace them.
-  if (layout && source && edited !== null) project.write(layout, removeSideEffectImports(edited === source ? source : addNamedImports(edited, from, ['fontVariables']), Object.values(FONTSOURCE)))
+  // The Inter and JetBrains Mono imports an earlier `init --theme graphite` added: the theme's own fonts replace those it no longer names.
+  const kept = fontsourcePackages(theme)
+  if (layout && source && edited !== null) project.write(layout, removeSideEffectImports(edited === source ? source : addNamedImports(edited, from, ['fontVariables']), Object.values(FONTSOURCE).filter((name) => !kept.includes(name))))
   else manual.push(`Put the theme's typefaces on <html> in ${layout ?? 'app/layout.tsx'}: import { fontVariables } from '${from || '@/lib/fonts'}', then className={fontVariables}.`)
   const sheet = entry && detectStylesheet(project, framework, entry)
   const css = sheet && project.read(sheet.path)

@@ -53,6 +53,9 @@ export function expandItemAliases(items: string[]): string[] {
 
 const ENTRIES: Record<string, { items: string[]; peerDependencies: Record<string, string> }> = entries
 
+/** What Form's schema setup installs, each as the spec to install: `@hookform/resolvers` v6 fails `npm install` (its peer range wants effect 4), so the hint stays on v5. */
+const FORM_EXTRAS: Record<string, string> = { '@hookform/resolvers': '@hookform/resolvers@^5', zod: 'zod' }
+
 /** The package entry that exports an item, and the optional peers to install with it. */
 export function packageEntry(item: string): { entry: string; peerDependencies: Record<string, string> } | undefined {
   const found = Object.entries(ENTRIES).find(([, e]) => e.items.includes(item))
@@ -230,8 +233,11 @@ export async function add(cwd: string, items: string[], flags: string[], runner:
   if (soundInstall && !preview) await ui.task(`Installing ${SOUND.package} (${format(soundInstall)})`, `Installed ${SOUND.package}`, () => runner(soundInstall, root))
   if (plan.fromPackage.length) ui.note('From the package', plan.fromPackage.map(({ item, entry }) => `${item}: import it from '${entry}'`).join('\n'))
   // Form validates with a schema in its usual setup, and those two packages aren't peers: say so rather than fail the first build.
-  const formExtras = plan.fromPackage.some(({ item }) => item.replace(new RegExp(`^${REGISTRY_NAMESPACE}/`), '') === 'form') ? ['@hookform/resolvers', 'zod'].filter((name) => !allDeps(new Project(root).json<PackageJson>('package.json'))[name]) : []
-  if (formExtras.length) ui.note('To validate with a schema', `form: also install ${formExtras.join(' ')}: ${format(installCommand(detectPackageManager(root, env), formExtras))}`)
+  const formExtras = plan.fromPackage.some(({ item }) => item.replace(new RegExp(`^${REGISTRY_NAMESPACE}/`), '') === 'form') ? Object.keys(FORM_EXTRAS).filter((name) => !allDeps(new Project(root).json<PackageJson>('package.json'))[name]) : []
+  if (formExtras.length) {
+    const command = format(installCommand(detectPackageManager(root, env), formExtras.map((name) => FORM_EXTRAS[name]!)))
+    ui.note('To validate with a schema', `form: also install ${formExtras.join(' ')}: ${command}${formExtras.includes('@hookform/resolvers') ? "\n@hookform/resolvers stays on v5: v6 doesn't install on npm yet." : ''}`)
+  }
   if (plan.styles.length)
     ui.note(
       'From the package',

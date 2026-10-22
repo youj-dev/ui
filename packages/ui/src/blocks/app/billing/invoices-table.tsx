@@ -30,8 +30,10 @@ export function InvoicesTable({
   onDownload: (invoice: BillingInvoice) => void
 }) {
   const cell = 'border-b border-line py-2.5 [tr:last-child>&]:border-b-0'
+  // Date and Period share what the fixed columns leave, and table-fixed keeps every column still as a filter swaps the rows.
+  // The table is never narrower than its visible columns need (the fixed ones, plus 6rem for each of those two), so a narrow card scrolls it sideways instead of letting the text run together.
   return (
-    <Table className="table-fixed border-separate border-spacing-0" aria-label={copy.invoicesLabel}>
+    <Table className="table-fixed border-separate border-spacing-0 sm:min-w-140 md:min-w-164" aria-label={copy.invoicesLabel}>
       <TableHeader>
         <TableRow>
           <TableHead className="w-32 ps-4">{copy.invoiceColumn}</TableHead>

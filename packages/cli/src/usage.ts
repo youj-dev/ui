@@ -45,6 +45,19 @@ export async function previewFiles(project: Project, items: string[], env: NodeJ
 }
 
 const EXPORT = /^export\s+(?:default\s+)?(?:async\s+)?(?:function|const|class)\s+([A-Z]\w*)/gm
+/** An `export { A, type B, C as D }` list, how the kit's blocks and components export (`export type { … }` is no match). */
+const EXPORT_LIST = /^export\s*\{([^}]*)\}/gm
+
+/** The capitalized names a module exports, as an importer says them: its declarations, then its export lists (types left out). */
+function exportedNames(source: string): string[] {
+  const listed = [...source.matchAll(EXPORT_LIST)]
+    .flatMap((m) => m[1]!.split(','))
+    .map((part) => part.trim())
+    .filter((part) => part && !part.startsWith('type '))
+    .map((part) => part.split(/\s+as\s+/).at(-1)!)
+    .filter((name) => /^[A-Z]/.test(name))
+  return [...new Set([...[...source.matchAll(EXPORT)].map((m) => m[1]!), ...listed])]
+}
 
 /**
  * `import { MarketingNavbar } from '@/blocks/marketing/navbar'` for each item
@@ -63,7 +76,7 @@ export async function importLines(project: Project, items: string[], env: NodeJS
     const path = appPath(fileTarget(file), base)
     const source = project.read(path)
     if (source === null) continue
-    const names = [...new Set([...source.matchAll(EXPORT)].map((m) => m[1]!))]
+    const names = exportedNames(source)
     if (names.length) lines.push(`import { ${names.slice(0, 4).join(', ')} } from '${importSpecifier(project, from, path.replace(/\.[jt]sx?$/, ''))}'`)
   }
   return lines
