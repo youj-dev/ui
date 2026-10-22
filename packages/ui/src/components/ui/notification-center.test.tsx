@@ -19,6 +19,8 @@ function Harness({ initial = items }: { initial?: NotificationItem[] }) {
   return (
     <YoujProvider reducedMotion="always">
       <NotificationCenter
+        // Today counts from the fixtures' own clock, so a run that crosses midnight still has a Today.
+        now={now}
         notifications={list}
         onMarkRead={(id) => setList((l) => l.map((item) => (item.id === id ? { ...item, read: true } : item)))}
         onMarkAllRead={() => setList((l) => l.map((item) => ({ ...item, read: true })))}
