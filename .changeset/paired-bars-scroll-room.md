@@ -2,4 +2,4 @@
 '@youj/react': patch
 ---
 
-Paired bars block: when the room is narrower than its rows and scrolls sideways, it is now a named, focusable region, so keyboard users can scroll it. Before, that only happened once it was expanded.
+Paired bars block: the room is now always a named, focusable region, so keyboard users can scroll it sideways where its rows are wider than it. Before, it was only reachable once expanded.
