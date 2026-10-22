@@ -79,7 +79,7 @@ import './globals.css'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 
-// create-next-app's font lines can stay: Youj's stylesheet sets the theme's faces over them.
+// create-next-app's font lines can stay, but nothing draws them: see the note below.
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
@@ -101,6 +101,8 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   )
 }
 ```
+
+Youj's stylesheet sets the theme's faces over create-next-app's Geist, so the starter's font lines can stay, but the two Geist files still download on every page and nothing draws them. To skip that, delete the `Geist` and `Geist_Mono` import and the two lines under the comment, and the two variables from `<html>`'s `className`. `npx @youj/cli init` leaves them in place.
 
 </FrameworkTab>
 <FrameworkTab label="Vite">
@@ -161,7 +163,7 @@ To switch light and dark, add a [ThemeToggle](/docs/components/theme-toggle): it
 </FrameworkTab>
 </FrameworkTabs>
 
-The stylesheet brings the tokens, the motion presets and the theme presets, and points Tailwind at the components and the icons, so it generates the classes they use. Built, that's about 540 KB of CSS, 70 KB gzipped, the same whether the app uses one component or all of them: Tailwind scans the whole kit, since it can't see which components your code imports. The sheet blocks first paint, so on a page where that matters, add components with `npx @youj/cli add <name>` instead: the source lands in your app, and Tailwind generates only the classes of what you added.
+The stylesheet brings the tokens, the motion presets and the theme presets, and points Tailwind at the components and the icons, so it generates the classes they use. Built, that's about 620 KB of CSS, 80 KB gzipped, the same whether the app uses one component or all of them: Tailwind scans the whole kit, since it can't see which components your code imports. The sheet blocks first paint, so on a page where that matters, add components with `npx @youj/cli add <name>` instead: the source lands in your app, and Tailwind generates only the classes of what you added.
 
 Using the [illustrations](/docs/illustrations) too? Installing `@youj/illustrations` is not enough: add its stylesheet on the next line, after the tokens, or Tailwind never generates the classes the scenes use:
 
@@ -186,7 +188,7 @@ The packages ship ESM with types and mark their client components with `"use cli
 
 ### Fonts
 
-A theme names its typefaces, and your app loads them. `npx @youj/cli init` does it for the preset you choose. By hand:
+A theme names its typefaces, and your app loads them. `npx @youj/cli init` does it for the preset you choose, and `create` for its theme. By hand:
 
 | Preset | Typefaces | Load them with |
 |---|---|---|
@@ -219,14 +221,14 @@ Some components need optional peer dependencies. Install only those you use, wit
 | Import from | Components | Install |
 |---|---|---|
 | `@youj/react/chart` | [Chart](/docs/components/chart) | `recharts` |
-| `@youj/react/form` | [Form](/docs/components/form) | `react-hook-form`, `zod` and `@hookform/resolvers` |
+| `@youj/react/form` | [Form](/docs/components/form) | `react-hook-form`, `zod` and `@hookform/resolvers@^5` |
 | `@youj/react/date` | [Calendar](/docs/components/calendar), [Date Picker](/docs/components/date-picker), [Date Range Picker](/docs/components/date-range-picker) | `date-fns react-day-picker` |
 | `@youj/react/carousel` | [Carousel](/docs/components/carousel) | `embla-carousel-react` |
 | `@youj/react/command` | [Command](/docs/components/command), [Command Palette](/docs/components/command-palette), [Combobox](/docs/components/combobox), [Multi Select](/docs/components/multi-select) | `cmdk` |
 | `@youj/react/data-table` | The [data table kit](/docs/components/data-table) (its filter menus are Command) | `cmdk` |
 | `@youj/react/workspace-switcher` | [Workspace Switcher](/docs/components/workspace-switcher) (built on Command) | `cmdk` |
 
-`npx @youj/cli add chart` installs them for you. Form's examples validate with a schema, so install `react-hook-form`, `zod` and `@hookform/resolvers` together. Copying an item in installs its dependencies with it.
+`npx @youj/cli add chart` installs them for you. Form's examples validate with a schema, so install `react-hook-form`, `zod` and `@hookform/resolvers@^5` together (v5: v6 doesn't install on npm yet). Copying an item in installs its dependencies with it.
 
 ### The provider is optional
 
@@ -236,7 +238,7 @@ Without a choice of yours, components draw the **Classic [look](/docs/looks) and
 | --- | --- | --- | --- |
 | No provider | Classic; `data-yj-look="bezel"` on `<html>` for Bezel | Basalt; another with `data-yj-theme` on `<html>`, such as `data-yj-theme="graphite"` | Dark; `data-theme="light"` on `<html>` for light |
 | `<YoujProvider>` | Classic; `look="bezel"` for Bezel | Basalt; another with `theme`, such as `theme={graphite}` | Dark, or from `data-theme` on `<html>` if your tooling sets it; `mode="light"` or `mode="system"` on the provider sets it ([Color mode](/docs/theming#color-mode)) |
-| `npx @youj/cli init` | Classic, or the look you choose | Basalt, or the preset you choose | Dark |
+| `npx @youj/cli init` | Classic, or the look you choose | Basalt, or the preset you choose | The visitor's system until they choose: `init` adds `ThemeScript` (an inline script in Vite and Astro), and a registry app on Next.js or React Router gets `data-theme="dark"` instead |
 
 Add a provider to set a theme in JavaScript, turn on [sound](/docs/sound) (`pnpm add @youj/sound`, then `sound={beacon}`: in the Next.js App Router that prop goes on a provider in a `'use client'` file, since a sound pack is an object of functions and a server layout can't pass it), turn motion off, change speed, choose quality or size the UI for an app ([density and scaling](/docs/theming#density-and-scaling)). Switching the theme at runtime for the whole page is in [A theme picker for the whole app](/docs/theming#a-theme-picker-for-the-whole-app):
 

@@ -307,6 +307,18 @@ describe('add sound', () => {
     expect(read(root, 'app/providers.tsx')).toBe(providers)
   })
 
+  it('is left alone by a later init, which finds the provider in providers.tsx and wraps no second one', async () => {
+    const root = fixture('next-app')
+    await init({ cwd: root, yes: true }, fakeRunner(root), silentUi(), {})
+    await add(root, ['sound'], [], fakeRunner(root), silentUi(), {})
+    expect(read(root, 'app/providers.tsx')).toContain('<YoujProvider sound={beacon} {...props} />')
+    const layout = read(root, 'app/layout.tsx')
+    expect(layout).not.toContain('<YoujProvider')
+    const again = await init({ cwd: root, yes: true }, fakeRunner(root), silentUi(), {})
+    expect(again.changes).toEqual([])
+    expect(read(root, 'app/layout.tsx')).toBe(layout)
+  })
+
   it('says what to do by hand when there is no provider to find', async () => {
     const root = fixture('vite')
     const pkg = JSON.parse(read(root, 'package.json'))

@@ -70,6 +70,22 @@ describe('add form, in an app on the package', () => {
     await add(root, ['form'], [], fakeRunner(root), again)
     expect(again.log.join('\n')).not.toContain('also install')
   })
+
+  it('pins @hookform/resolvers to v5 in the install it prints, since v6 fails npm install', async () => {
+    const root = onPackage()
+    const ui = silentUi()
+    await add(root, ['form'], [], fakeRunner(root), ui)
+    const log = ui.log.join('\n')
+    expect(log).toContain('bun add @hookform/resolvers@^5 zod')
+    expect(log).toContain("v6 doesn't install on npm yet")
+    // With the resolvers in place, only zod is named, and nothing about the pin.
+    const pkg = JSON.parse(read(root, 'package.json'))
+    write(root, 'package.json', JSON.stringify({ ...pkg, dependencies: { ...pkg.dependencies, '@hookform/resolvers': '^5.0.0' } }))
+    const rest = silentUi()
+    await add(root, ['form'], [], fakeRunner(root), rest)
+    expect(rest.log.join('\n')).toContain('bun add zod')
+    expect(rest.log.join('\n')).not.toContain('v6')
+  })
 })
 
 describe('add a block, in an app on the package', () => {
@@ -80,6 +96,25 @@ describe('add a block, in an app on the package', () => {
     write(root, NOTICE_PATH, 'mine\n')
     await add(root, ['frame-demo'], ['--overwrite'], fakeRunner(root), noPrompts(), stubRegistry(REGISTRY))
     expect(read(root, NOTICE_PATH)).toBe('mine\n')
+  })
+
+  it('ends with the import that uses the block, however its file exports it', async () => {
+    const root = onPackage()
+    const navbar = {
+      name: 'marketing-navbar',
+      type: 'registry:block',
+      files: [
+        {
+          path: 'src/blocks/marketing/navbar.tsx',
+          target: 'blocks/marketing/navbar.tsx',
+          type: 'registry:component',
+          content: 'function MarketingNavbar() {}\nfunction Part() {}\nexport { MarketingNavbar, Part as NavbarPart, type MarketingNavbarProps, slug }\nexport type { Hidden }\n',
+        },
+      ],
+    }
+    const ui = noPrompts()
+    await add(root, ['marketing-navbar'], [], fakeRunner(root), ui, stubRegistry([navbar]))
+    expect(ui.log.at(-1)).toBe("Use it: import { MarketingNavbar, NavbarPart } from '@/blocks/marketing/navbar'")
   })
 
   it("copies only the block's own files, imports the rest from the packages and asks nothing", async () => {

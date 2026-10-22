@@ -20,6 +20,8 @@ const theme = readTheme(params)
 const GEIST = "@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap');"
 /** A Create link's faces that load from Google: Geist and Geist Mono (Basalt's Inter and JetBrains Mono come from @fontsource). */
 const GEIST_QUERY = 'sans=geist&mono=geist-mono'
+/** What a theme in Basalt's own faces installs, as init does. */
+const FONTS = '@fontsource-variable/inter@^5 @fontsource-variable/jetbrains-mono@^5'
 
 async function run(root: string, options: Partial<CreateOptions> = {}) {
   const runner = fakeRunner(root)
@@ -51,8 +53,11 @@ describe('create', () => {
     const root = fixture('next-app')
     const { runner, result, files } = await run(root)
     expect(result.mode).toBe('package')
-    // The blocks are copied by the CLI itself, on top of the packages: no shadcn, no components.json.
-    expect(runner.commands).toEqual(['pnpm add @youj/react@^0.1.0 @youj/core@^0.1.0 @youj/motion@^0.1.0 @youj/icons@^0.1.0 motion@^14 @base-ui/react@~1.9.0'])
+    // The blocks are copied by the CLI itself, on top of the packages: no shadcn, no components.json. The theme's faces (Inter, JetBrains Mono) are installed too.
+    expect(runner.commands).toEqual([
+      'pnpm add @youj/react@^0.1.0 @youj/core@^0.1.0 @youj/motion@^0.1.0 @youj/icons@^0.1.0 motion@^14 @base-ui/react@~1.9.0',
+      `pnpm add ${FONTS}`,
+    ])
     for (const item of frameItems(frame)) expect(existsSync(join(root, `blocks/${item.replace('-', '/')}.tsx`)), item).toBe(true)
     expect(existsSync(join(root, 'components.json'))).toBe(false)
     expect(result.manual).toEqual([])
@@ -86,7 +91,7 @@ describe('create', () => {
 
   it('declares no theme of its own in the layout when the link changes the preset’s motion', async () => {
     const { files } = await run(fixture('next-app'), { link: 'https://www.youj.dev/create?preset=brutal&motion=lively' })
-    expect(files['app/layout.tsx']).toContain('import { YoujProvider, themeProps } from "@youj/core";\nimport { ThemeScript } from "@youj/react";\nimport { theme } from "@/lib/theme";\n\nconst geistSans')
+    expect(files['app/layout.tsx']).toContain('import { YoujProvider, themeProps } from "@youj/core";\nimport { ThemeScript } from "@youj/react";\nimport { theme } from "@/lib/theme";\nimport "@fontsource-variable/inter";\nimport "@fontsource-variable/jetbrains-mono";\n\nconst geistSans')
     expect(files['app/layout.tsx']).not.toContain('defineTheme')
   })
 
@@ -119,6 +124,7 @@ describe('create', () => {
     expect(result.commands.map(format)).toEqual([
       'bun add -d tailwindcss @tailwindcss/vite',
       'bun add @youj/react@^0.1.0 @youj/core@^0.1.0 @youj/motion@^0.1.0 @youj/icons@^0.1.0 motion@^14 @base-ui/react@~1.9.0',
+      `bun add ${FONTS}`,
       `npx @youj/cli add ${frameItems(frame).join(' ')}`,
     ])
     expect(Object.keys(files).sort()).toEqual(['index.html', 'src/components/app-shell.tsx', 'src/index.css', 'src/lib/nav.ts', 'src/lib/theme.ts', 'src/main.tsx', 'tsconfig.app.json', 'tsconfig.json', 'vite.config.ts'])
@@ -133,6 +139,7 @@ describe('create', () => {
     expect(runner.commands).toEqual([])
     expect(result.commands.map(format)).toEqual([
       'pnpm dlx shadcn@4.21.0 add @youj/youj-core @youj/youj-ui-core --yes --overwrite',
+      `pnpm add ${FONTS}`,
       `pnpm dlx shadcn@4.21.0 add ${[...frameItems(frame), ...navIconItems(frame)].map((item) => `@youj/${item}`).join(' ')}`,
     ])
   })
@@ -144,6 +151,26 @@ describe('create', () => {
     expect(again.result.changes).toEqual([])
     expect(again.runner.commands).toEqual([])
     expect(again.result.manual).toEqual([])
+  })
+
+  it('loads the Inter and JetBrains Mono the theme names, the way init does, so init after create changes nothing', async () => {
+    const root = fixture('next-app')
+    const { runner, files } = await run(root)
+    expect(runner.commands).toContain(`pnpm add ${FONTS}`)
+    expect(JSON.parse(read(root, 'package.json')).dependencies).toMatchObject({ '@fontsource-variable/inter': '^5', '@fontsource-variable/jetbrains-mono': '^5' })
+    expect(files['app/layout.tsx']).toContain('import "@fontsource-variable/inter";\nimport "@fontsource-variable/jetbrains-mono";')
+    const setup = await init({ cwd: root, yes: true }, fakeRunner(root), silentUi(), {})
+    expect(setup.changes).toEqual([])
+    expect(setup.commands).toEqual([])
+  })
+
+  it('loads only the kit’s faces a link’s theme still names, whatever else loads from Google', async () => {
+    const root = fixture('vite')
+    const { runner, files } = await run(root, { link: 'https://www.youj.dev/create?sans=geist&page=board' })
+    expect(runner.commands).toContain('bun add @fontsource-variable/jetbrains-mono@^5')
+    expect(files['src/main.tsx']).toContain("import '@fontsource-variable/jetbrains-mono'")
+    expect(files['src/main.tsx']).not.toContain('@fontsource-variable/inter')
+    expect(files['src/index.css']).toContain('fonts.googleapis.com')
   })
 
   it('keeps the theme when adding the blocks fails, and a re-run finishes the job', async () => {

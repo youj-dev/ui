@@ -47,7 +47,8 @@ It asks five questions, in this order, unless a flag answers them: how to instal
 - in registry mode, writes `components.json` with the `@youj` namespace, sets up the `@/` alias on Vite, and copies the core (tokens, provider, theme and the UI token bridge) into the app,
 - imports the Youj stylesheet right after Tailwind in your global CSS,
 - wraps the app in `YoujProvider` with your preset at the provider's own size, roomy at 100% ([density and scaling](/docs/theming#density-and-scaling) for a dense tool's compact size), and spreads the theme on a server-rendered `<html>`,
-- puts `data-theme="dark"` and `data-yj-look` on `<html>`, and `suppressHydrationWarning` where React hydrates it (Next.js App Router, React Router), since the theme script sets the scheme on it first,
+- sets the color scheme before the first paint: `ThemeScript` in the `<head>` of a React document (Next.js, React Router), or the same script inline in `index.html` or an Astro layout. The page follows the visitor's system until they choose, and their choice is restored on the next visit. A registry app on Next.js or React Router gets `data-theme="dark"` on `<html>` instead, which stays dark until you remove it or add a [ThemeToggle](/docs/components/theme-toggle),
+- puts `data-yj-look` on `<html>`, and `suppressHydrationWarning` where React hydrates it (Next.js App Router, React Router), since the theme script sets the scheme on it first,
 - loads the preset's fonts. Basalt and every other preset but Terminal use Inter and JetBrains Mono, and Terminal JetBrains Mono: `init` installs `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` and imports them where the app imports its stylesheet, since the presets ask for the names those packages register (`'Inter Variable'`),
 - removes create-next-app's starter colors from `:root` and its `font-family: Arial` from `body`, which would override the theme,
 - clears create-vite's starter styles (`src/index.css` and `src/App.css`: a centered, bordered `#root` and 56px headings), when they're unchanged,
@@ -145,7 +146,7 @@ Builds an app frame from a [Create](/create) link. Copy the command (or the link
 In an app without Youj, `create` runs `init --yes` first, with the link's preset, motion and look. Then it:
 
 - writes the theme to `lib/theme.ts` and points `YoujProvider` (and `themeProps` on `<html>`) at it,
-- loads the theme's typefaces: with `next/font` in `lib/fonts.ts` on the Next.js App Router, or a Google Fonts import at the top of the global stylesheet elsewhere,
+- loads the theme's typefaces: Inter and JetBrains Mono, which most themes use, from `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` (installed and imported as `init` does it); any other web face with `next/font` in `lib/fonts.ts` on the Next.js App Router, or a Google Fonts import at the top of the global stylesheet elsewhere,
 - adds the frame's blocks and its screens, writes the shell that composes them to `components/app-shell.tsx` and its nav, an item per screen, to `lib/nav.ts`,
 - on the App Router, makes each screen a route, `app/(app)/<screen>/page.tsx` (`screens=customers,billing` makes `customers/page.tsx` and `billing/page.tsx`), whose group layout wraps it in the shell, and points `/` at the first with a redirect in `app/page.tsx` (create-next-app's own home page makes way for it; any other `app/page.tsx` stays, and is listed). Elsewhere the screens are blocks to render at their `lib/nav.ts` hrefs with your own router. A frame with no screens (`screens=`) is the shell and an empty nav.
 

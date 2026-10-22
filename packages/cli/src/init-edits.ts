@@ -1,4 +1,5 @@
 import { importSpecifier } from './alias'
+import { findProvider } from './doctor'
 import {
   addAfterImports,
   addAstroTailwind,
@@ -28,10 +29,10 @@ export interface Choices {
   look: YoujLook
 }
 
-/** The kit's fonts a preset names (fonts.ts, fontsourcePackages), imported once where the app imports its global stylesheet. */
-export function importFontsource(project: Project, entry: Entry, packages: string[], manual: string[]) {
+/** The kit's fonts a preset (or, in `create`, a theme) names (fonts.ts, fontsourcePackages), imported once where the app imports its global stylesheet. */
+export function importFontsource(project: Project, entry: Entry | null, packages: string[], manual: string[]) {
   if (!packages.length) return
-  const file = entry.styles
+  const file = entry?.styles
   const source = file && project.read(file)
   if (!file || !source) return void manual.push(`Import the preset's fonts in your app's root: ${packages.map((p) => `import '${p}'`).join('; ')}.`)
   project.write(file, packages.reduce((out, spec) => addSideEffectImport(out, spec, file.endsWith('.astro')), source))
@@ -181,7 +182,8 @@ export function addProvider(project: Project, framework: Framework, entry: Entry
   const wrap = (file: string | null, edit: (source: string) => string | null, what: string) => {
     const source = file && project.read(file)
     if (!file || !source) return void manual.push(`Wrap your app in ${open}…${close} (couldn’t find ${what}).`)
-    if (source.includes('YoujProvider')) return
+    // One the app renders already stays, here or in a file the root imports (`add sound` writes app/providers.tsx).
+    if (source.includes('YoujProvider') || findProvider(project, entry)) return
     const edited = edit(source)
     if (edited === null) return void manual.push(`Wrap your app in ${open}…${close} in ${file} (couldn’t find ${what} in it).`)
     project.write(file, withImports(file, edited, ['YoujProvider', ...themeNames]))

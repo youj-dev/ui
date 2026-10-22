@@ -14,11 +14,12 @@ import { DEFAULT_PRESET, themes } from '../../core/src/lib/youj/theme/themes'
 import { add, addPlan, planCommands } from './add'
 import { addTagAttributes, pointAtTheme } from './codemods'
 import { MODES, PACKAGES, REGISTRY_NAMESPACE, THEMES, type Mode } from './constants'
-import { allDeps, detectEntry, detectFramework, type Entry, type Framework, type PackageJson } from './detect'
-import { loadFonts, } from './fonts'
+import { allDeps, detectEntry, detectFramework, detectPackageManager, type Entry, type Framework, type PackageJson } from './detect'
+import { FONTSOURCE_RANGE, fontsourcePackages, loadFonts } from './fonts'
 import { init, mergeChanges } from './init'
+import { importFontsource } from './init-edits'
 import { Project, type Change } from './project'
-import type { Command, Runner } from './run'
+import { format, installCommand, type Command, type Runner } from './run'
 import { applyLook, registryLookItem, lookStylesheetPath, lookToApply } from './look'
 import { CliError, type Ui } from './ui'
 
@@ -209,8 +210,10 @@ export async function create(options: CreateOptions, runner: Runner, ui: Ui, env
     }
   }
 
-  // 3. The theme's typefaces: next/font on the App Router, the Google Fonts stylesheet anywhere else.
+  // 3. The theme's typefaces: next/font on the App Router, the Google Fonts stylesheet anywhere else, and @fontsource for the kit's own (Inter, JetBrains Mono), as init loads a preset's.
   loadFonts(project, framework, entry, themeFile, theme, place, manual)
+  const fontPackages = fontsourcePackages(theme)
+  importFontsource(project, entry, fontPackages, manual)
 
   // The component look, on the provider and <html>; on the registry, its stylesheet after ui.css.
   // A default (classic) link leaves a look the app names as it is.
@@ -222,6 +225,12 @@ export async function create(options: CreateOptions, runner: Runner, ui: Ui, env
   if (framework === 'vite') setupViteAlias(project, manual)
   // Edits go to disk first: shadcn may edit the layout too (fonts).
   if (!options.dryRun) project.commit()
+  const fonts = fontPackages.filter((name) => !allDeps(project.json<PackageJson>('package.json'))[name])
+  if (fonts.length) {
+    const install = installCommand(detectPackageManager(root, env), fonts.map((name) => `${name}@${FONTSOURCE_RANGE}`))
+    commands.push(install)
+    if (!options.dryRun) await ui.task(`Installing the theme's fonts (${format(install)})`, `Installed ${fonts.join(', ')}`, () => runner(install, root))
+  }
   // The look's stylesheet, copied from the registry (init copied it for a fresh setup).
   const lookItem = applied && registryLookItem(applied, mode)
   if (applied && lookItem && !fresh && !project.exists(lookStylesheetPath(project, applied)!)) {
