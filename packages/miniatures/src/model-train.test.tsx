@@ -45,7 +45,7 @@ describe('ModelTrain', () => {
     expect(said(inside)).toBe('Departing Tarnlow for Braemoss.')
   })
 
-  it('Space while running stops it at the next station and holds it there until Space again', async () => {
+  it('Space while running stops it at the next station and holds it there; Space again waits for the crossing and departs', async () => {
     const run = useFrames()
     const { handle } = mount(MiniatureModelTrain)
     await run(4000)
@@ -55,7 +55,9 @@ describe('ModelTrain', () => {
     await run(9000)
     expect(handle().getSnapshot()).toMatchObject({ readout: '0 KM/H · NEXT: TARNLOW', state: 'HELD AT BRAEMOSS · SPACE TO DEPART' })
     act(() => handle().press(' '))
-    await run(1500)
+    await run(500)
+    expect(handle().getSnapshot().state).toBe('WAITING FOR THE CROSSING')
+    await run(2500)
     expect(speed(handle().getSnapshot().readout)).toBeGreaterThan(5)
   })
 
@@ -75,13 +77,13 @@ describe('ModelTrain', () => {
     expect(seen.every((v, i) => i === 0 || v >= seen[i - 1]!)).toBe(true)
     expect(seen[0]).toBeLessThan(30)
     expect(seen[seen.length - 1]).toBeGreaterThan(50)
-    expect(knob.getAttribute('transform')).toBe('rotate(120.00 190 4.5)')
+    expect(knob.getAttribute('transform')).toBe('rotate(120.00 136 4.5)')
     for (let i = 0; i < 5; i++) act(() => handle().press('ArrowDown'))
     await run(300)
     expect(handle().getSnapshot().state).toBe('THROTTLE CLOSED · BRAKING')
     await run(3000)
     expect(handle().getSnapshot()).toMatchObject({ readout: '0 KM/H · NEXT: BRAEMOSS', state: 'STANDING · THROTTLE CLOSED' })
-    expect(knob.getAttribute('transform')).toBe('rotate(-120.00 190 4.5)')
+    expect(knob.getAttribute('transform')).toBe('rotate(-120.00 136 4.5)')
     act(() => handle().press('ArrowUp'))
     await run(1500)
     expect(speed(handle().getSnapshot().readout)).toBeGreaterThan(0)
@@ -215,9 +217,9 @@ describe('ModelTrain', () => {
 
   it('keeps the same number of nodes frame after frame, through travel, every key, progress and reduced motion', async () => {
     const run = useFrames()
-    const { handle, inside, rerender, ref } = mount(MiniatureModelTrain, { reducedMotion: 'never' })
+    const { handle, svg, rerender, ref } = mount(MiniatureModelTrain, { reducedMotion: 'never' })
     await run(100)
-    const nodes = () => inside.querySelectorAll('*').length
+    const nodes = () => svg().querySelectorAll('*').length
     const start = nodes()
     const counts = new Set([start])
     const at: Record<number, () => void> = {
@@ -231,14 +233,17 @@ describe('ModelTrain', () => {
       110: () => handle().press(' '),
     }
     let crossed = false
+    let reopened = false
     for (let i = 0; i < 260; i++) {
       if (at[i]) act(() => at[i]!())
       if (handle().getSnapshot().state.startsWith('HELD AT BRAEMOSS')) act(() => handle().press(' '))
       await run(100)
       counts.add(nodes())
       if (handle().getSnapshot().state.startsWith('CROSSING CLOSED')) crossed = true
+      else if (crossed && handle().getSnapshot().state.startsWith('RUNNING')) reopened = true
     }
     expect(crossed).toBe(true)
+    expect(reopened).toBe(true)
     for (const props of [{ progress: 0.4 }, { progress: 0.4, done: true, reducedMotion: 'always' as const }, {}]) {
       rerender(<MiniatureModelTrain ref={ref} reducedMotion="never" {...props} />)
       for (let i = 0; i < 25; i++) {

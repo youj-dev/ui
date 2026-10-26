@@ -30,20 +30,20 @@ const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* ESKER L–87 model railway. World: x lower-right; y lower-left (the front straight faces +y); z up from the baseboard's
 top. 1 unit ≈ 2 mm at H0, so a unit a second reads as about a scale km/h.
 Part                          x      y      z      w      d      h
-baseboard (frame, grass)      0      0     −9    207    124      9   fascia: brand plate, throttle knob, run lamp
-track: a stadium, centers (54, 64) and (150, 64), R 40; the front straight (y 104) runs east (+x), the back straight
-       (y 24) west; ballast ±12.5 → ±10 × 1.6, sleepers 14.8 × 2.2 every 5.2, rails ±3.8, rail top z 3.2
-road                         32    124      0     16      –      –   in over the left curve's exit to the forecourt 30–58 × 52–78
-TARNLOW platform             56     80      0     90   15.6    7.4   coping, lamps, bench
-station building             58     68      0     32     12   17.4   stone plinth, cream walls and sign, slate roof to 22.4
-BRAEMOSS halt platform       80    0.6      0     56     15    7.4   shelter, nameboard, lamp
-home signal                 140      7      0      2      2     38   arm pivot z 34 on its +x face, 8.4 long toward −y
-crossing: barrier pedestals 27.5 115.5 (outer) and 48.5 80 (inner), 2 × 2 × 11; booms 16.4 long pivoting at z 9.5
+baseboard (frame, grass)      0      0     −9    153    108      9   fascia: brand plate, throttle knob, run lamp
+track: a stadium, centers (48, 54) and (104, 54), R 34; the front straight (y 88) runs east (+x), the back straight
+       (y 20) west; ballast ±12.5 → ±10 × 1.6, sleepers 14.8 × 2.2 every 5.2, rails ±3.8, rail top z 3.2
+road                         28    108      0     16      –      –   in over the left curve's exit to the forecourt 28–48 × 46–60
+TARNLOW platform             50     69      0     42     10    7.4   coping, lamps, bench
+station building             52     59      0     26     10   17.4   stone plinth, cream walls and sign, slate roof to 22
+BRAEMOSS halt platform       66    0.6      0     34   10.4    7.4   shelter, nameboard, lamp
+home signal                 101      6      0      2      2     38   arm pivot z 34 on its +x face, 7 long toward −y
+crossing: barrier pedestals 25 101 (outer) and 44.5 58 (inner), 2 × 2 × 11; booms 16.4 long pivoting at z 9.5
 loco (0-6-0 tank)  u ±17 v ±7.5: drivers r 4.4 at u −10/0/10; footplate z 12–13.2; tanks u −4.4–9 to z 21.4; boiler r 5
                    at z 18.8; smokebox r 5.3 u 11–16.6; chimney to z 30.6; dome; cab u −17 to −4.4 to z 27.6, roof 29.8
-coaches            u ±15 v ±7.2: bogies at u ±10, wheels r 2.6; underframe z 8.6–10.6; body to z 23.4; roof to 25.8
-The rolling stock is drawn a little stouter than this table (v ×1.07, and ×1.12 up from the rail top) so it reads at
-small sizes. A vehicle sits on the track by the chord between its outer axles or bogies, is built facing its heading and
+coach              u ±15 v ±7.2: bogies at u ±10, wheels r 2.6; underframe z 8.6–10.6; body to z 23.4; roof to 25.8
+The rolling stock is drawn stouter than this table (v ×1.15, and ×1.25 up from the rail top) so it reads at small
+sizes. A vehicle sits on the track by the chord between its outer axles or bogies, is built facing its heading and
 drawn in the order that heading shows its parts; the vehicles and the inner barrier are sorted by footprint every frame. */
 const draw=document.getElementById('drawing');let root=draw;
 const{P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,box,cylinder,frame}=kit(()=>root);
@@ -55,57 +55,57 @@ function ctl(g,label){for(const[k,v]of Object.entries({class:'control',role:'but
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 let seed=7;const rand=()=>(seed=(seed*9301+49297)%233280)/233280;
 // The track: a point s along its centerline (east on the front straight, round the right curve, west on the back) and its heading.
-const XL=54,XR=150,YC=64,R=40,LS=XR-XL,ARC=PI*R,LOOP=2*(LS+ARC),W=207,D=124,BH=9;
+const XL=48,XR=104,YC=54,R=34,LS=XR-XL,ARC=PI*R,LOOP=2*(LS+ARC),W=153,D=108,BH=9;
 function at(s){s=((s%LOOP)+LOOP)%LOOP;if(s<LS)return[XL+s,YC+R,0];s-=LS;if(s<ARC){const a=s/R;return[XR+R*sin(a),YC+R*cos(a),-a];}s-=ARC;if(s<LS)return[XR-s,YC-R,-PI];s-=LS;const a=s/R;return[XL-R*sin(a),YC-R*cos(a),-PI-a];}
 const beside=(s,o,z)=>{const[x,y,h]=at(s);return[x-o*sin(h),y+o*cos(h),z];};
 const SS=[];for(let s=0;s<LOOP;s+=2)SS.push(s);
 const ring=(o,z,a=0,b=LOOP,close=true)=>'M'+SS.filter(s=>s>=a&&s<=b).concat(close?[]:[b]).map(s=>P(...beside(s,o,z)).map(f2).join(',')).join('L')+(close?'Z':'');
-const XS0=2*LS+ARC+R*(PI-Math.asin(22/R)),XS1=2*LS+ARC+R*(PI-Math.asin(6/R));
+const XS0=2*LS+ARC+R*(PI-Math.asin(20/R)),XS1=2*LS+ARC+R*(PI-Math.asin(4/R));
 // The floor shadow and the baseboard: its wooden frame, the grass and tufts scattered clear of the track and buildings.
-const fl=wp([[-3,-3,-BH],[W+3,-3,-BH],[W+3,D+3,-BH],[-3,D+3,-BH]]),fc=P(W/2,D/2,-BH);el('path',{d:fl,class:'shadow board-shadow',transform:'translate(0 3)'});el('ellipse',{cx:f2(fc[0]),cy:f2(fc[1]),rx:150,ry:76,class:'stage-pool'});el('path',{d:fl,class:'board-contact',transform:'translate(0 2)'});
+const fl=wp([[-3,-3,-BH],[W+3,-3,-BH],[W+3,D+3,-BH],[-3,D+3,-BH]]),fc=P(W/2,D/2,-BH);el('path',{d:fl,class:'shadow board-shadow',transform:'translate(0 3)'});el('ellipse',{cx:f2(fc[0]),cy:f2(fc[1]),rx:96,ry:44,class:'stage-pool'});el('path',{d:fl,class:'board-contact',transform:'translate(0 2)'});
 const FF=group(FRONT(0,D,0));rect(FF,0,0,W,BH,1.5,'face wood');line(FF,2,1.4,W-2,1.4);
 rect(group(SIDE(W,D,0)),0,0,D,BH,1.5,'face side wood');
 const TG=group(TOP(0,0,0));rect(TG,0,0,W,D,1.5,'face grass');
 const trackD=(x,y)=>x<XL?abs(Math.hypot(x-XL,y-YC)-R):x>XR?abs(Math.hypot(x-XR,y-YC)-R):Math.min(abs(y-YC-R),abs(y-YC+R));
-const busy=(x,y)=>trackD(x,y)<16||x>26&&x<94&&y>48&&y<84||x>24&&x<54&&y>84||x>52&&x<150&&y>76&&y<100||x>76&&x<146&&y<20||x<36&&y<22||x>182&&y<28||x<18&&y>102||x>190&&y>104||x>152&&x<176&&y>50&&y<78;
+const busy=(x,y)=>trackD(x,y)<16||x>24&&x<82&&y>42&&y<72||x>22&&x<48&&y>72||x>46&&x<94&&y>66&&y<82||x>62&&x<106&&y<16||x>128&&y<26||x>88&&x<122&&y>40&&y<66;
 for(let i=0;i<64;i++){const x=4+rand()*(W-8),y=4+rand()*(D-8),a=1+rand()*1.4,b=.5+rand()*.5;if(!busy(x,y))el('ellipse',{cx:f2(x),cy:f2(y),rx:f2(a),ry:f2(b),class:'tuft'},TG);}
 // The road and forecourt, the ballast, the crossing deck over it, the sleepers (none on the deck); rails come later.
-el('path',{d:`M32,${D}V78H33Q30,78 30,75V55Q30,52 33,52H55Q58,52 58,55V75Q58,78 55,78H48V${D}Z`,class:'face road'},group(TOP(0,0,.05)));
+el('path',{d:`M28,${D}V49Q28,46 31,46H45Q48,46 48,49V57Q48,60 45,60H44V${D}Z`,class:'face road'},group(TOP(0,0,.05)));
 el('path',{d:ring(12.5,0)+ring(-12.5,0),'fill-rule':'evenodd',class:'ballast-s'});el('path',{d:ring(10,1.6)+ring(-10,1.6),'fill-rule':'evenodd',class:'ballast'});
-const yr=(x,r)=>YC+sqrt(r*r-(x-XL)**2),XD=[32,35,38,41,44,48];
-el('path',{d:`M${XD.map(x=>`${x},${f2(yr(x,52.5))}`).join('L')}L${[...XD].reverse().map(x=>`${x},${f2(yr(x,27.5))}`).join('L')}Z`,class:'face road'},group(TOP(0,0,1.62)));
-el('path',{d:wp(XD.map(x=>[x,yr(x,52.5),1.62]).concat([...XD].reverse().map(x=>[x,yr(x,52.5),0]))),class:'face road-f'});
+const yr=(x,r)=>YC+sqrt(r*r-(x-XL)**2),XD=[28,31,34,37,40,44];
+el('path',{d:`M${XD.map(x=>`${x},${f2(yr(x,46.5))}`).join('L')}L${[...XD].reverse().map(x=>`${x},${f2(yr(x,21.5))}`).join('L')}Z`,class:'face road'},group(TOP(0,0,1.62)));
+el('path',{d:wp(XD.map(x=>[x,yr(x,46.5),1.62]).concat([...XD].reverse().map(x=>[x,yr(x,46.5),0]))),class:'face road-f'});
 const SLP=[];for(let s=1.3;s<LOOP;s+=5.2){if(s>XS0-1.6&&s<XS1+1.6)continue;SLP.push(wp([beside(s-1.1,-7.4,1.66),beside(s+1.1,-7.4,1.66),beside(s+1.1,7.4,1.66),beside(s-1.1,7.4,1.66)]));}
 el('path',{d:SLP.join(''),class:'sleepers'});
 // Props: lamp posts, nameboards, trees and bushes.
 function lampPost(x,y,z,h){box(x-.5,y-.5,z,1,1,h,.3,'black');box(x-1.3,y-1.3,z+h,2.6,2.6,2.8,.6,'black');const l=circle(group(FRONT(x-1.3,y+1.32,z+h+2.8)),1.3,1.4,.95,'lamp');cylinder(x,y,z+h+2.8,1.7,.5,'z','black');return l;}
 function tree(x,y,r,h){cylinder(x,y,0,1.1,h*.45,'z','trunk');const c=P(x,y,h);circle(root,c[0],c[1],r,'tree');circle(root,c[0]-r*.3,c[1]-r*.32,r*.55,'tree-hi');circle(root,c[0]+r*.42,c[1]+r*.34,r*.36,'tree-d');}
 function bush(x,y,r){const c=P(x,y,r*.7);circle(root,c[0],c[1],r,'tree');circle(root,c[0]-r*.28,c[1]-r*.3,r*.5,'tree-hi');}
-tree(12,14,7.2,21);tree(27,5,5.6,16);tree(190,6,6,17);tree(200,18,7.4,22);
+tree(141,13,7.4,22);
 // The back: the halt's platform, shelter, nameboard and lamp, and the home signal (its arm and spectacle turn on the pivot).
-box(80,.6,0,56,15,7.4,.6,'stone');{const g=group(TOP(80,.6,7.42));rect(g,0,13.2,56,1.8,0,'coping');for(let u=6;u<56;u+=6)line(g,u,0,u,13.2,'joint');}
-box(96,2,7.4,14,6,9.2,.5,'shelter');{const g=group(FRONT(96,8.02,16.6));rect(g,1.6,1.8,10.8,7.4,.6,'face recess');rect(g,2.4,5.8,9.2,1.2,.3,'face top wood');}
-el('path',{d:wp([[110,2,16.6],[110,8,16.6],[110,2,17.4]]),class:'face side shelter'});el('path',{d:wp([[95,1.2,17.6],[111,1.2,17.6],[111,9.4,16.6],[95,9.4,16.6]]),class:'face top slate'});el('path',{d:wp([[95,9.4,16.6],[111,9.4,16.6],[111,9.4,16],[95,9.4,16]]),class:'face slate'});
-for(const u of[115.6,130.4])box(u-.4,6.6,7.4,.8,.8,6.4,.2,'black');{const g=group(FRONT(114,7.42,17.2));rect(g,0,0,18,3.8,.5,'face top cream');rect(g,.5,.5,17,2.8,.3,'detail');text(g,9,2.7,'BRAEMOSS','sign');}
-const L1=lampPost(85,5,7.4,12);
-box(140,7,0,2,2,38,.4,'metal');{const g=group(SIDE(142,9,38));for(let v=6;v<36;v+=3)line(g,.3,v,1.7,v,'detail');}box(139.4,6.4,0,3.2,3.2,3,.6,'black');cylinder(141,8,38,1.3,.8,'z','black');cylinder(141,8,38.8,.5,1.6,'z','black');
-const sigG=ctl(el('g',{}),'Signal: set it to danger or clear it (S)'),SP=group(SIDE(142.1,8,34),sigG),sigArm=el('g',{},SP);
-rect(sigArm,-1,-1,9.4,2,.3,'face arm');rect(sigArm,6,-1,1.2,2,0,'arm-w');rect(sigArm,-3.2,-.7,2.6,3.6,.5,'face black');circle(sigArm,-1.9,.3,.75,'lens-r');circle(sigArm,-1.9,2.1,.75,'lens-g');
-circle(SP,0,0,.6,'face metal');const sigLamp=circle(SP,-1.9,1.2,.7,'sl');rect(SP,-4.6,-4,15,9,1,'hit');rect(SP,-4.6,-4,15,9,1,'focus-ring');
+box(66,.6,0,34,10.4,7.4,.6,'stone');{const g=group(TOP(66,.6,7.42));rect(g,0,8.6,34,1.8,0,'coping');for(let u=6;u<34;u+=6)line(g,u,0,u,8.6,'joint');}
+box(89,1.4,7.4,10.5,5,9.2,.5,'shelter');{const g=group(FRONT(89,6.42,16.6));rect(g,1.3,1.8,7.9,7.4,.6,'face recess');rect(g,1.9,5.8,6.7,1.2,.3,'face top wood');}
+el('path',{d:wp([[99.5,1.4,16.6],[99.5,6.4,16.6],[99.5,1.4,17.4]]),class:'face side shelter'});el('path',{d:wp([[88.4,.8,17.6],[100.1,.8,17.6],[100.1,7.4,16.6],[88.4,7.4,16.6]]),class:'face top slate'});el('path',{d:wp([[88.4,7.4,16.6],[100.1,7.4,16.6],[100.1,7.4,16],[88.4,7.4,16]]),class:'face slate'});
+for(const u of[72.6,86.4])box(u-.4,5.6,7.4,.8,.8,6.4,.2,'black');{const g=group(FRONT(71,6.42,17.2));rect(g,0,0,17,3.8,.5,'face top cream');rect(g,.5,.5,16,2.8,.3,'detail');text(g,8.5,2.7,'BRAEMOSS','sign');}
+const L1=lampPost(68.5,4,7.4,12);
+box(101,6,0,2,2,38,.4,'metal');{const g=group(SIDE(103,8,38));for(let v=6;v<36;v+=3)line(g,.3,v,1.7,v,'detail');}box(100.4,5.4,0,3.2,3.2,3,.6,'black');cylinder(102,7,38,1.3,.8,'z','black');cylinder(102,7,38.8,.5,1.6,'z','black');
+const sigG=ctl(el('g',{}),'Signal: set it to danger or clear it (S)'),SP=group(SIDE(103.1,7,34),sigG),sigArm=el('g',{},SP);
+rect(sigArm,-1,-1,8,2,.3,'face arm');rect(sigArm,4.8,-1,1.2,2,0,'arm-w');rect(sigArm,-3.2,-.7,2.6,3.6,.5,'face black');circle(sigArm,-1.9,.3,.75,'lens-r');circle(sigArm,-1.9,2.1,.75,'lens-g');
+circle(SP,0,0,.6,'face metal');const sigLamp=circle(SP,-1.9,1.2,.7,'sl');rect(SP,-4.6,-4,13.6,9,1,'hit');rect(SP,-4.6,-4,13.6,9,1,'focus-ring');
 // The station: platform with its coping, bench and lamps; the building on its plinth, sign, door, windows, roof and stack.
-box(56,80,0,90,15.6,7.4,.5,'stone');{const g=group(TOP(56,80,7.42));rect(g,0,13.8,90,1.8,0,'coping');for(let u=8;u<90;u+=8)line(g,u,0,u,13.8,'joint');}
-box(114,81.2,7.4,8,2.2,2.6,.4,'wood');
-box(58,68,0,32,12,7.4,.4,'stone');box(58,68,7.4,32,12,10,.4,'cream');
-{const g=group(FRONT(58,80.02,17.4));rect(g,6,.8,20,3,.4,'face top cream');rect(g,6.5,1.3,19,2,.3,'detail');text(g,16,2.95,'TARNLOW','sign');for(const u of[3,8.6,20.2,25.8])rect(g,u,4.6,3.2,4.2,.4,'face win');rect(g,13.7,4.2,4.6,5.8,.5,'face wood');
-const s=group(SIDE(90.02,80,17.4));rect(s,3.6,4.2,4.8,4.2,.4,'face win');}
-el('path',{d:wp([[56.6,66.6,17],[91.4,66.6,17],[91.4,74,22.4],[56.6,74,22.4]]),class:'face top slate'});
-el('path',{d:wp([[90.02,68,17.4],[90.02,80,17.4],[90.02,74,21.9]]),class:'face side cream'});
-el('path',{d:wp([[56.6,74,22.4],[91.4,74,22.4],[91.4,81.4,17],[56.6,81.4,17]]),class:'face slate'});
-box(76,71.4,21.8,3.4,3,3.6,.3,'stone');
-const L2=[lampPost(100,88,7.4,13),lampPost(138,88,7.4,13)];
-bush(163,56,3.2);bush(170,68,2.5);bush(159,72,2.8);
+box(50,69,0,42,10,7.4,.5,'stone');{const g=group(TOP(50,69,7.42));rect(g,0,8.2,42,1.8,0,'coping');for(let u=7;u<42;u+=7)line(g,u,0,u,8.2,'joint');}
+box(68,70,7.4,7,2,2.6,.4,'wood');
+box(52,59,0,26,10,7.4,.4,'stone');box(52,59,7.4,26,10,10,.4,'cream');
+{const g=group(FRONT(52,69.02,17.4));rect(g,4,.8,18,3,.4,'face top cream');rect(g,4.5,1.3,17,2,.3,'detail');text(g,13,2.95,'TARNLOW','sign');for(const u of[1.8,6.2,17.4,21.8])rect(g,u,4.6,3,4.2,.4,'face win');rect(g,11.2,4.2,3.6,5.8,.5,'face wood');
+const s=group(SIDE(78.02,69,17.4));rect(s,3,4.2,4,4.2,.4,'face win');}
+el('path',{d:wp([[50.8,57.8,17],[79.2,57.8,17],[79.2,64,22],[50.8,64,22]]),class:'face top slate'});
+el('path',{d:wp([[78.02,59,17.4],[78.02,69,17.4],[78.02,64,21.6]]),class:'face side cream'});
+el('path',{d:wp([[50.8,64,22],[79.2,64,22],[79.2,70.2,17],[50.8,70.2,17]]),class:'face slate'});
+box(66,61.6,21.4,3,2.8,3.4,.3,'stone');
+const L2=[lampPost(56,72,7.4,13),lampPost(88,72,7.4,13)];
+bush(110,48,3.2);bush(116,60,2.6);bush(96,46,2.8);
 function person(x,y,m){cylinder(x,y,7.4,1.15,3.4,'z',m);const h=P(x,y,12.1);circle(root,h[0],h[1],1.05,'face skin');}
-person(97,84.5,'coat-a');person(99.6,85.8,'coat-b');person(126,84,'coat-c');person(104,9.5,'coat-b');
+person(60,71.5,'coat-a');person(62.6,72.6,'coat-b');person(81,71,'coat-c');person(80,8.6,'coat-b');
 // The crossing's barriers: a pedestal and mast, the boom on its pivot (striped, with a counterweight), the crossbuck and lights.
 function barrier(x,y,out){const g0=el('g',{});into(g0);box(x,y,0,2,2,11,.4,'metal');box(x-.4,y-.4,5.4,2.8,2.8,4.6,.6,'black');box(x+.6,y+.6,11,.8,.8,12,.2,'metal');
 const g=group(FRONT(x+1,y+2.6,24));for(const a of[32,-32])rect(g,-4.6,-.8,9.2,1.6,.4,out?'cross':'face metal').setAttribute('transform',`rotate(${a})`);
@@ -113,21 +113,20 @@ rect(g,-4.4,5.2,8.8,1.2,.4,'face black');const L=[-2.8,2.8].map(u=>{circle(g,u,7
 const pv=group(FRONT(x+(out?1.8:.2),y+2.1,9.5)),arm=el('g',{},pv);for(let i=0;i<5;i++)rect(arm,-.8,-1.2-(i+1)*3.2,1.6,3.2,0,i%2?'boom':'boom-r');rect(arm,-.8,-17.2,1.6,16,.6,'detail');rect(arm,-1.1,0,2.2,2.6,.5,'face black');circle(pv,0,0,.5,'face metal');
 into(draw);return{g:g0,arm,L,H,s:out?1:-1};}
 // The fascia: the brand plate, the throttle knob with its notches and the run lamp.
-{const g=group(FRONT(0,D+.02,0));rect(g,10,1.8,42,5.4,1,'face brass');rect(g,10.7,2.5,40.6,4,.6,'detail');text(g,13.4,5.7,'ESKER','plate');text(g,35,5.5,'L–87 · H0','etch micro');}
-const knobG=ctl(el('g',{}),'Throttle: open it a notch (Up arrow)'),KF=group(FRONT(0,D+.02,0),knobG);rect(KF,158,1.1,44,6.8,1.2,'face panel');
-for(let i=0;i<6;i++){const a=(-120+i*48)*RAD;line(KF,190+2.7*sin(a),4.5-2.7*cos(a),190+3.3*sin(a),4.5-3.3*cos(a),'tick');}
-circle(KF,190,4.5,2.2,'face knob');const knobP=line(KF,190,4.5,190,2.6,'ptr');circle(KF,190,4.5,4,'focus-ring');text(KF,173.5,5.2,'THROTTLE','etch micro').style.fontSize='1.8px';
-const runL=circle(KF,162.4,4.5,1,'run');text(KF,164.4,5.2,'RUN','etch micro').style.fontSize='1.8px';
+{const g=group(FRONT(0,D+.02,0));rect(g,8,1.8,42,5.4,1,'face brass');rect(g,8.7,2.5,40.6,4,.6,'detail');text(g,11.4,5.7,'ESKER','plate');text(g,33,5.5,'L–87 · H0','etch micro');}
+const knobG=ctl(el('g',{}),'Throttle: open it a notch (Up arrow)'),KF=group(FRONT(0,D+.02,0),knobG);rect(KF,104,1.1,44,6.8,1.2,'face panel');
+for(let i=0;i<6;i++){const a=(-120+i*48)*RAD;line(KF,136+2.7*sin(a),4.5-2.7*cos(a),136+3.3*sin(a),4.5-3.3*cos(a),'tick');}
+circle(KF,136,4.5,2.2,'face knob');const knobP=line(KF,136,4.5,136,2.6,'ptr');circle(KF,136,4.5,4,'focus-ring');text(KF,119.5,5.2,'THROTTLE','etch micro').style.fontSize='1.8px';
+const runL=circle(KF,108.4,4.5,1,'run');text(KF,110.4,5.2,'RUN','etch micro').style.fontSize='1.8px';
 // Rails over everything on the ground, flangeways across the deck; then the train's layer (sorted), the front, the steam.
 for(const o of[-3.8,3.8])el('path',{d:ring(o,2.5),class:'rail'});for(const o of[-3.8,3.8])el('path',{d:ring(o,3.2),class:'railtop'});
 for(const o of[-2.6,2.6])el('path',{d:ring(o,1.64,XS0,XS1,false),class:'flange'});
 const trainG=ctl(el('g',{}),'Train: depart, or stop at the next station (Space)');
-const XB=[barrier(48.5,80,false),barrier(27.5,115.5,true)];trainG.appendChild(XB[0].g);set(XB[0].g,'class','ghost');
-tree(9,112,6.4,19);tree(198,114,5.6,16);
+const XB=[barrier(44.5,58,false),barrier(25,101,true)];trainG.appendChild(XB[0].g);set(XB[0].g,'class','ghost');
 const puffL=el('g',{});
-frame([[0,0,-BH,W,D,BH],[5,6,0,14,14,28],[194,12,0,12,12,30],[139,6,0,4,4,40]],10);
+frame([[0,0,-BH,W,D,BH],[134,6,0,14,14,29],[100,5,0,4,4,40],[20,20,0,.1,.1,30]],10);
 // The vehicles, built facing their heading at the origin and moved into place: axes, the faces the viewer sees, parts.
-let U=[1,0,0],V=[0,1,0],sU=1,sV=1;const KV=1.07,KW=1.12,RT=3.2;
+let U=[1,0,0],V=[0,1,0],sU=1,sV=1;const KV=1.15,KW=1.25,RT=3.2;
 const LL=(u,v,w)=>[u*U[0]+v*KV*V[0],u*U[1]+v*KV*V[1],RT+(w-RT)*KW],LP=(u,v,w)=>P(...LL(u,v,w)),DN=[0,0,-1],DW=[0,0,-KW],VS=()=>[V[0]*KV,V[1]*KV,0],neg=a=>[-a[0],-a[1],0];
 const kOf=n=>clamp((n[0]-n[1]+1)/2),shade=(d,k)=>{el('path',{d,class:'sh',opacity:f2(k>.03?k:0)});};
 // A box in the vehicle's frame: the end and side it shows (each decorated, then shaded by how it faces) and its top.
@@ -181,8 +180,8 @@ roof(-15.4,15.4,7.6,23.4,2.4,'roofc');el('path',{d:[-8,0,8].map(u=>{const c=LP(u
 buffers(-15*hid,-hid,c.buf[hid>0?1:0]);
 el('path',{d:pd(hull([LP(-17.4,-7.2,3),LP(17.4,-7.2,3),LP(17.4,7.2,3),LP(-17.4,7.2,3),LP(-15.4,-7.6,25.8),LP(15.4,-7.6,25.8),LP(-15.4,7.6,25.8),LP(15.4,7.6,25.8)])),class:'focus-ring'});}
 // The consist: each vehicle's offset from the train's head (the loco's front buffers), its half-length, its pivots' half-spacing.
-const CARS=[{k:'loco',off:-19.4,half:17,b:10},{k:'coach',off:-57.4,half:15,b:10},{k:'coach',off:-93.4,half:15,b:10,tail:true}].map(c=>({...c,g:el('g',{},trainG),key:'',buf:[[2.4,2.4],[2.4,2.4]]}));
-const TAIL=110.8,QH=1.5*RAD;
+const CARS=[{k:'loco',off:-19.4,half:17,b:10},{k:'coach',off:-59.4,half:15,b:10,tail:true}].map(c=>({...c,g:el('g',{},trainG),key:'',buf:[[2.4,2.4],[2.4,2.4]]}));
+const TAIL=76.8,QH=1.5*RAD;
 function poseCar(c,head){const a=at(head+c.off+c.b),b=at(head+c.off-c.b),h=Math.atan2(a[1]-b[1],a[0]-b[0]);return{x:(a[0]+b[0])/2,y:(a[1]+b[1])/2,h};}
 // Buffers compress where two vehicles' ends close up on a curve.
 function squeeze(poses){for(let i=0;i<CARS.length-1;i++){const A=poses[i],B=poses[i+1],ha=CARS[i].half,hb=CARS[i+1].half;
@@ -192,15 +191,15 @@ function build(c,pose){U=[cos(pose.h),sin(pose.h),0];V=[-sin(pose.h),cos(pose.h)
 function behind(A,B){for(const Q of[A,B])for(let i=0;i<Q.length;i++){const a=Q[i],b=Q[(i+1)%Q.length],n=[b[1]-a[1],a[0]-b[0]],pa=A.map(p=>p[0]*n[0]+p[1]*n[1]),pb=B.map(p=>p[0]*n[0]+p[1]*n[1]);
 if(Math.max(...pa)<=Math.min(...pb)+1e-6)return n[0]+n[1]>0;if(Math.max(...pb)<=Math.min(...pa)+1e-6)return n[0]+n[1]<0;}const c=Q=>Q.reduce((s,p)=>s+p[0]+p[1],0)/Q.length;return c(A)<c(B);}
 function sortLayer(items){const out=[],left=[...items];while(left.length){const i=left.findIndex(a=>!left.some(b=>b!==a&&behind(b.fp,a.fp)));out.push(...left.splice(i<0?0:i,1));}let prev=null;for(const it of out){if(it.g.previousSibling!==prev||it.g.parentNode!==trainG)trainG.insertBefore(it.g,prev?prev.nextSibling:trainG.firstChild);prev=it.g;}}
-const foot=(p,half)=>{const u=[cos(p.h),sin(p.h)],v=[-u[1],u[0]];return[[1,1],[1,-1],[-1,-1],[-1,1]].map(([a,b])=>[p.x+u[0]*half*a+v[0]*8.2*b,p.y+u[1]*half*a+v[1]*8.2*b]);};
-const XBI={g:XB[0].g,fp:[[31,79.5],[51,79.5],[51,82.5],[31,82.5]]};
+const foot=(p,half)=>{const u=[cos(p.h),sin(p.h)],v=[-u[1],u[0]];return[[1,1],[1,-1],[-1,-1],[-1,1]].map(([a,b])=>[p.x+u[0]*half*a+v[0]*8.8*b,p.y+u[1]*half*a+v[1]*8.8*b]);};
+const XBI={g:XB[0].g,fp:[[27,57.5],[47,57.5],[47,60.5],[27,60.5]]};
 // Steam: puffs from the chimney with each beat, drifting up and spreading; the whistle's plume; the cylinder cocks.
 const PUFFS=[...Array(26)].map(()=>({n:el('circle',{r:0,class:'puff',opacity:0},puffL),t0:-1}));
 function puff(p,vel,r0,r1,life,a,now){const q=PUFFS.find(q=>q.t0<0)||PUFFS.reduce((x,y)=>x.t0<y.t0?x:y);Object.assign(q,{p,vel,r0,r1,life,a,t0:now});}
 function stepPuffs(now){for(const q of PUFFS){if(q.t0<0)continue;const k=(now-q.t0)/q.life;if(k>=1){q.t0=-1;set(q.n,'opacity',0);continue;}const e=1-(1-k)**2,s=P(q.p[0]+q.vel[0]*e,q.p[1]+q.vel[1]*e,q.p[2]+q.vel[2]*e);set(q.n,'cx',f2(s[0]));set(q.n,'cy',f2(s[1]));set(q.n,'r',f2(q.r0+(q.r1-q.r0)*e));set(q.n,'opacity',f2(q.a*(1-k)**1.4));}}
 // State: the stations, the timetable, the throttle, the signal and the crossing; progress; audio after a gesture.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
-const NAME=['TARNLOW','BRAEMOSS'],SAY=['Tarnlow','Braemoss'],STOP=[LS+18,LS+ARC+(XR-60)],DWELL=[3200,2400],LAMPS=[L2,[L1]],SIG=LS+ARC,SIGX=LS+ARC+(XR-141),SPEED=[0,18,30,42,54,66],A=22,B=24;
+const NAME=['TARNLOW','BRAEMOSS'],SAY=['Tarnlow','Braemoss'],STOP=[LS+22,2*LS+ARC+R*Math.asin(19.4/R)],DWELL=[3200,2400],LAMPS=[L2,[L1]],SIG=LS+ARC-3,SIGX=LS+ARC+(XR-102),SPEED=[0,18,30,42,54,66],A=22,B=24;
 let s=STOP[0],v=0,notch=3,hold=false,phase='dwell',stn=0,next=1,dwellEnd=0,danger=false,sigSkip=false,mode='ind',target=0,done=0,trip=null,xing='open',xT=0,boom=0,flashOn=false,lastFlash=-1,dist=0,beat=0,clack=0,lastPuff=0,cocks=-1e9,whistleT=-1e9,knobA=-999,armA=null,armV=0,lit='',last=0,lastUI=0,note='',noteT=0,ac=null,nb=null;
 const ahead=p=>((p-s)%LOOP+LOOP)%LOOP,say=m=>{announcement.textContent=m;},notice=m=>{note=m;noteT=performance.now()+1600;lastUI=0;};
 function audio(){try{if(!ac){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ac=new AC();}if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}}
@@ -233,7 +232,7 @@ const ro=mode==='ind'?`${sp} KM/H · NEXT: ${NAME[phase==='dwell'?(stn+1)%2:next
 let st;if(now<noteT)st=note;else if(done===2)st=`COMPLETE · ARRIVED AT ${NAME[stn]}`;else if(sig&&toSig<.6&&v<.5)st='AT THE SIGNAL · S CLEARS IT';else if(sig&&toSig<v*v/(2*B)+8&&v>.5)st='SIGNAL AT DANGER · BRAKING';
 else if(phase==='dwell')st=mode!=='ind'?(done?`FINISHING · AT ${NAME[stn]}`:stn===trip.to?`AT ${NAME[stn]} · ${pct}%`:`AT ${NAME[stn]} · WAITING TO START`):dwellEnd===Infinity?`HELD AT ${NAME[stn]} · SPACE TO DEPART`:`AT ${NAME[stn]} · DEPARTS IN ${Math.max(1,Math.ceil((dwellEnd-now)/1000))} S`;
 else if(mode!=='ind')st=done?`FINISHING · TO ${NAME[trip.to]}`:v>.5?`RUNNING TO ${pct}% · ${sp} KM/H`:`WAITING AT ${pct}%`;
-else if(notch===0)st=v>.5?'THROTTLE CLOSED · BRAKING':'STANDING · THROTTLE CLOSED';
+else if(notch===0)st=v>.5?'THROTTLE CLOSED · BRAKING':'STANDING · THROTTLE CLOSED';else if(v<.5&&xing!=='closed'&&ahead(XS0)<70)st='WAITING FOR THE CROSSING';
 else if(stopAbs(next)-s<v*v/(2*B)+6&&v>.5)st=`STOPPING AT ${NAME[next]}${hold?' · TO HOLD':''}`;else st=`${xing!=='open'?'CROSSING CLOSED':'RUNNING'} · THROTTLE ${notch}/5${hold?' · HOLD AT '+NAME[next]:''}`;
 return[ro,st];}
 function tick(now){const dt=Math.min(.05,(now-(last||now))/1000),red=reduced.matches;last=now;
@@ -242,9 +241,9 @@ if(phase==='dwell'&&mode==='ind'&&now>=dwellEnd)depart();
 // Authority, how far the head may go: its next stop, the signal at danger, a progress mark, the crossing until it's down.
 let goal=phase==='dwell'?s:stopAbs(next);if(mode!=='ind'&&trip)goal=Math.min(goal,done?trip.s1:trip.s0+(trip.s1-trip.s0)*target);
 if(danger&&!sigSkip&&ahead(SIG)<LOOP/2)goal=Math.min(goal,s+ahead(SIG));
-const toX=ahead(XS0),onX=toX>LOOP-(TAIL+XS1-XS0+3),want=goal-s>toX+.5&&toX<LOOP/2&&toX<v*v/(2*B)+v*3.2+30;
+const toX=ahead(XS0),onX=toX>LOOP-(TAIL+XS1-XS0+3),want=goal-s>toX+.5&&toX<LOOP/2&&toX<v*v/(2*B)+v*3.2+72||phase==='dwell'&&mode==='ind'&&dwellEnd-now<2200&&toX<90;
 if(!red&&(want||onX)){if(xing==='open'||xing==='raising'){xing='warn';xT=now;}}else if(xing!=='open'&&xing!=='raising'){xing='raising';xT=now;}
-if(!red&&xing!=='closed'&&toX<LOOP/2)goal=Math.min(goal,v<.5&&toX<30?s:s+toX-2.5);
+if(!red&&xing!=='closed'&&toX<LOOP/2)goal=Math.min(goal,v<.5&&toX<70?s:s+toX-2.5);
 // Motion: up to the throttle's speed, easing in; braking so it comes to rest right at the goal.
 const vmax=mode==='ind'?SPEED[notch]:Math.max(SPEED[notch],done?42:30);
 if(red){if(phase==='run'&&vmax>0&&goal>s+.5)s=goal;v=0;}else{const vb=sqrt(2*B*Math.max(0,goal-s)+6.25)-2.5,lim=Math.min(vmax,vb);
@@ -270,7 +269,7 @@ if(now-whistleT<650&&now-lastPuff>55){lastPuff=now;puff([lp.x-5.2*hU[0],lp.y-5.2
 const j=Math.floor(dist/18);if(j!==clack){clack=j;if(ac&&v>6){noise(.025,.012*clamp(v/40),2400,3);noise(.025,.01*clamp(v/40),2000,3,Math.min(.2,9/v));}}}
 stepPuffs(now);
 // The fascia's knob turns to its notch and the run lamp lights while the train moves; the signal's arm drops and lifts.
-const ka=-120+notch*48;knobA=red||knobA<-200||abs(ka-knobA)<.05?ka:knobA+(ka-knobA)*clamp(dt*10);set(knobP,'transform',`rotate(${f2(knobA)} 190 4.5)`);set(runL,'class',v>.3?'run on':'run');
+const ka=-120+notch*48;knobA=red||knobA<-200||abs(ka-knobA)<.05?ka:knobA+(ka-knobA)*clamp(dt*10);set(knobP,'transform',`rotate(${f2(knobA)} 136 4.5)`);set(runL,'class',v>.3?'run on':'run');
 const ta=danger?0:-40;if(armA==null||red){armA=ta;armV=0;}else{armV+=((ta-armA)*190-armV*15)*dt;armA+=armV*dt;if(abs(ta-armA)<.05&&abs(armV)<.5){armA=ta;armV=0;}}set(sigArm,'transform',`rotate(${f2(armA)})`);set(sigLamp,'class',danger?'sl r':'sl g');
 // On completion the destination's lamps turn green.
 const lk=done===2?'g'+stn:'';if(lk!==lit){lit=lk;LAMPS.forEach((ls,i)=>ls.forEach(l=>set(l,'class',done===2&&i===stn?'lamp g':'lamp')));}

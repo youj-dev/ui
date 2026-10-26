@@ -12,7 +12,7 @@ export interface MiniatureModelTrainProps extends MiniatureProgressProps {
 }
 
 /**
- * ESKER L–87, model train. A model railway on a wooden baseboard: a crimson tank engine and its crimson-and-cream coaches loop a ballasted oval past a country station, a halt with its home signal and a level crossing whose barriers lower and lights flash as the train comes. It runs to a timetable, calling at each station in turn. Space departs it or stops it at the next station, the arrows open and close the throttle with smooth acceleration and braking, S sets the signal to danger so the train brakes and waits at it, and W blows the whistle. As a progress indicator the trip from one station to the next follows the progress, and on completion the train pulls in and the platform lamps turn green.
+ * ESKER L–87, model train. A model railway on a wooden baseboard: a crimson tank engine and its crimson-and-cream coach loop a ballasted oval past a country station, a halt with its home signal and a level crossing whose barriers lower and lights flash as the train comes. It runs to a timetable, calling at each station in turn. Space departs it or stops it at the next station, the arrows open and close the throttle with smooth acceleration and braking, S sets the signal to danger so the train brakes and waits at it, and W blows the whistle. As a progress indicator the trip from one station to the next follows the progress, and on completion the train pulls in and the platform lamps turn green.
  *
  * Keys: Space depart / stop · ↑ ↓ throttle · S signal · W whistle.
  */
