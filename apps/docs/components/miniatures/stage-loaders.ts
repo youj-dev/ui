@@ -50,6 +50,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'repair-bench': () => import('@youj/miniatures/repair-bench'),
   'retro-fridge': () => import('@youj/miniatures/retro-fridge'),
   'robot-arm': () => import('@youj/miniatures/robot-arm'),
+  'rocket-launch-pad': () => import('@youj/miniatures/rocket-launch-pad'),
   'rotary-phone': () => import('@youj/miniatures/rotary-phone'),
   'sbc-cluster': () => import('@youj/miniatures/sbc-cluster'),
   'server-cabinet': () => import('@youj/miniatures/server-cabinet'),
