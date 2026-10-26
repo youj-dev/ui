@@ -147,7 +147,7 @@ const bulbP=P(11,35,54.4);el('ellipse',{cx:f2(bulbP[0]),cy:f2(bulbP[1]+4),rx:13,
 for(const[x,y,z]of[[48,32,58.4],[37,32,58]]){stadium(el('path',{class:'face chrome'}),[x,y,70],[x,y,z],.75);const q=P(x,y,z);circle(draw,q[0],q[1],.9,'face top chrome');}
 const butterS=el('path',{class:'stream'}),pourS=el('path',{class:'pour'});
 // Inside the glass: the scoop at rest, the pieces in flight and the little bursts of the pops, from fixed pools. Out of it
-// (spilling, or on the scoop's way to the box) a piece or the scoop moves to the layer in front of the door.
+// (spilling, or on the scoop's way to the box) a piece or the scoop moves to the layer over the counter, behind the door.
 const inner=el('g',{}),outer=el('g',{});
 // The glass in front: the right pane, the fixed front pane, the rails, the mullion, the front posts.
 const glassStreaks=(g,w,h)=>{el('path',{d:`M${f2(w*.18)},${f2(h*.92)}L${f2(w*.55)},${f2(h*.1)}`,class:'shine','stroke-width':1.3},g);el('path',{d:`M${f2(w*.32)},${f2(h*.96)}L${f2(w*.66)},${f2(h*.2)}`,class:'shine dim','stroke-width':.7},g);line(g,1.2,1.4,w-1.2,1.4,'shine dim');};
@@ -159,14 +159,14 @@ box(29,40.3,21.4,1.8,1.8,47.2,.3,'paint');box(57.6,39.6,20,2.4,2.4,50,.4,'paint'
 const spillN=el('path',{class:'corn spill'});
 const BX=el('g',{});into(BX);
 {const f=group(FRONT(3,54,14));rect(f,0,0,9,14,.4,'face card');rect(f,0,0,9,14,0,'stripes');const s=group(SIDE(12,54,14));rect(s,0,0,7,14,.4,'face side card');rect(s,0,0,7,14,0,'stripes');rect(group(TOP(3,47,14)),0,0,9,7,.3,'face kin');}
-const boxHeap=el('path',{class:'corn'});into(draw);
+const boxHeap=el('path',{class:'corn'});into(draw);draw.appendChild(outer);
 // The door: the front's left pane in its frame, hinged on the mullion; it swings out to the left. A click on it scoops a box.
 const doorG=ctl(el('g',{}),'Cabinet door: scoop a box of popcorn (S)');
 el('path',{d:'M0,0H27.4V47H0ZM2.2,2.2V44.8H25.2V2.2Z','fill-rule':'evenodd',class:'face paint'},doorG);rect(doorG,2.2,2.2,23,42.6,0,'film');
 el('path',{d:'M5,42L15,4',class:'shine','stroke-width':1.3},doorG);el('path',{d:'M9.5,43L19,9',class:'shine dim','stroke-width':.7},doorG);
 rect(doorG,23.4,19.5,2.4,8,1.2,'face top chrome');for(const v of[6,41])rect(doorG,-.6,v-2.5,1.6,5,.6,'face chrome');
 rect(doorG,-1,-1,29.4,49,0,'hit');rect(doorG,-.8,-.8,29,48.6,1.2,'focus-ring');
-draw.appendChild(outer);into(inner);
+into(inner);
 const SC=el('g',{});for(const c of['grip-u','grip'])el('path',{d:'M-3.2,-.4L-9.6,-3.4',class:c},SC);
 el('path',{d:'M-3.6,-3.4L6.4,-5.4Q8.6,-1.6 7.8,2.4L-3.6,3.2Z',class:'face chrome'},SC);el('path',{d:'M-2.5,-2.2L5.6,-3.9Q7.1,-1.2 6.5,1.5L-2.5,2Z',class:'face top chrome'},SC);const scoopLoad=el('path',{d:puff(2.2,-1.6,3.9,8,2),class:'pc'},SC);
 const PCS=[0,1,2].map(s=>puff(0,0,1.9,5,s*1.7+.4)),pcs=Array.from({length:30},(_,i)=>({n:el('path',{d:PCS[i%3],class:'pc',display:'none'}),on:0}));
