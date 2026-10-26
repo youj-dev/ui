@@ -45,7 +45,7 @@ async function measure(name, code) {
 }
 
 const entry = (id) => path.join(dist, `${id}.js`)
-const name = (id) => id.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase())
+const name = (id) => `Miniature${id.replace(/^3d/, 'three-d').replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase())}`
 const use = (names) => `console.log(${names.join(', ')})\n`
 
 rmSync(work, { recursive: true, force: true })

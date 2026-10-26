@@ -131,6 +131,10 @@
     "light": "/thumbs/miniatures/parcel-locker.webp?v=e3ed8201d3",
     "dark": "/thumbs/miniatures/parcel-locker.dark.webp?v=e397d8204c"
   },
+  "payment-terminal": {
+    "light": "/thumbs/miniatures/payment-terminal.webp?v=b728758260",
+    "dark": "/thumbs/miniatures/payment-terminal.dark.webp?v=7a44a1499e"
+  },
   "pinball": {
     "light": "/thumbs/miniatures/pinball.webp?v=36cb3d8f5b",
     "dark": "/thumbs/miniatures/pinball.dark.webp?v=613a6332b8"
@@ -178,6 +182,10 @@
   "smart-trainer": {
     "light": "/thumbs/miniatures/smart-trainer.webp?v=4ede3df188",
     "dark": "/thumbs/miniatures/smart-trainer.dark.webp?v=b8baa28d0b"
+  },
+  "split-flap-board": {
+    "light": "/thumbs/miniatures/split-flap-board.webp?v=d69f9b3b14",
+    "dark": "/thumbs/miniatures/split-flap-board.dark.webp?v=7ff8695d22"
   },
   "stage-synth": {
     "light": "/thumbs/miniatures/stage-synth.webp?v=504e34a370",
