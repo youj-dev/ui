@@ -24,23 +24,25 @@ export const Dark: Story = { ...Default, args: { mode: 'dark' } }
 export const Still: Story = { args: { interactive: false, size: 360, stage: true } }
 
 /** As a progress indicator: a queue of jobs drives `progress`, the diner takes plates off the belt until the stack holds it, and `done` brings the check. A still picture, so it takes no focus from the page. */
-function Queue() {
+function Queue({ onAgain }: { onAgain: () => void }) {
   const [progress, setProgress] = useState(0)
-  const [run, setRun] = useState(0)
   useEffect(() => {
-    setProgress(0)
     const timer = setInterval(() => setProgress((p) => Math.min(1, p + 0.05 + Math.random() * 0.06)), 900)
     return () => clearInterval(timer)
-  }, [run])
+  }, [])
   const done = progress >= 1
   return (
     <div style={{ display: 'grid', placeItems: 'center', gap: 16, padding: 32, font: '12px ui-monospace, monospace' }}>
       <MiniatureSushiConveyor interactive={false} size={280} progress={progress} done={done} aria-label={`Processing the queue, ${Math.round(progress * 100)} percent`} />
       <span aria-live="polite">{done ? 'Queue processed' : `Processing ${Math.round(progress * 100)}%`}</span>
-      <button type="button" onClick={() => setRun((r) => r + 1)} style={{ font: 'inherit', padding: '6px 12px', borderRadius: 6, border: '1px solid currentColor', background: 'none', color: 'inherit', cursor: 'pointer' }}>
+      <button type="button" onClick={onAgain} style={{ font: 'inherit', padding: '6px 12px', borderRadius: 6, border: '1px solid currentColor', background: 'none', color: 'inherit', cursor: 'pointer' }}>
         Run again
       </button>
     </div>
   )
 }
-export const Progress: Story = { render: () => <Queue /> }
+function QueueRuns() {
+  const [run, setRun] = useState(0)
+  return <Queue key={run} onAgain={() => setRun((r) => r + 1)} />
+}
+export const Progress: Story = { render: () => <QueueRuns /> }

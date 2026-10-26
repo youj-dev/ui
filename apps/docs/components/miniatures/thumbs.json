@@ -219,6 +219,10 @@
     "light": "/thumbs/miniatures/stand-mixer.webp?v=7b83836cf8",
     "dark": "/thumbs/miniatures/stand-mixer.dark.webp?v=6284117ac6"
   },
+  "sushi-conveyor": {
+    "light": "/thumbs/miniatures/sushi-conveyor.webp?v=afa5c7d0d9",
+    "dark": "/thumbs/miniatures/sushi-conveyor.dark.webp?v=36a248dae5"
+  },
   "tape-library": {
     "light": "/thumbs/miniatures/tape-library.webp?v=36ca4bdf90",
     "dark": "/thumbs/miniatures/tape-library.dark.webp?v=754e20a8e9"
