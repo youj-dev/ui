@@ -187,6 +187,10 @@
     "light": "/thumbs/miniatures/rotary-phone.webp?v=e96d1c4465",
     "dark": "/thumbs/miniatures/rotary-phone.dark.webp?v=a99e71e9ee"
   },
+  "satellite": {
+    "light": "/thumbs/miniatures/satellite.webp?v=f897ea00e2",
+    "dark": "/thumbs/miniatures/satellite.dark.webp?v=ff64e9785a"
+  },
   "sbc-cluster": {
     "light": "/thumbs/miniatures/sbc-cluster.webp?v=abd6c4d6d9",
     "dark": "/thumbs/miniatures/sbc-cluster.dark.webp?v=1ed592976a"

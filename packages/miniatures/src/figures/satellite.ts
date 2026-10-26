@@ -135,7 +135,7 @@ order.push({n:p.g,t:s.t,c:[(s.A[0]+s.B[0])/2,(s.A[1]+s.B[1])/2,0]});}
 // Parallel neighbours (a folded stack) by which side of the other they lie on, the rest by depth.
 order.sort((p,q)=>{if(Math.abs(Math.sin(p.t-q.t))<.5){const n=[Math.cos(p.t),-sg*Math.sin(p.t),0],o=dot(sub(q.c,p.c),n)*(dot(n,VIEW)<0?-1:1);if(Math.abs(o)>.05)return o>0?-1:1;}return p.c[0]+p.c[1]-q.c[0]-q.c[1];});for(const o of order)w.L.appendChild(o.n);}}
 // Controls on top: the wings deploy or stow, the bus fires the thrusters.
-const wBtn=button(el('g',{}),{'aria-label':'Deploy or stow the solar wings (Space)','aria-pressed':'true'});for(const sg of[-1,1]){const c=[[0,sg*16,ZP+2],[0,sg*77,ZP+2],[0,sg*77,ZP-HP-2],[0,sg*16,ZP-HP-2]].map(p=>pt(P(...p))).join('L');el('path',{d:'M'+c+'Z',class:'hit'},wBtn);el('path',{d:'M'+c+'Z',class:'focus-ring'},wBtn);}
+const wBtn=button(el('g',{}),{'aria-label':'Deploy or stow the solar wings (Space)','aria-pressed':'true'});for(const sg of[-1,1]){const c=[[0,sg*16,ZP+1],[0,sg*75.4,ZP+1],[0,sg*75.4,ZP-HP-1],[0,sg*16,ZP-HP-1]].map(p=>pt(P(...p))).join('L');el('path',{d:'M'+c+'Z',class:'hit'},wBtn);el('path',{d:'M'+c+'Z',class:'focus-ring'},wBtn);}
 const tBtn=button(el('g',{}),{'aria-label':'Fire the thrusters (T)'}),tq=P(0,0,60);el('circle',{cx:f2(tq[0]),cy:f2(tq[1]),r:17,class:'hit'},tBtn);el('circle',{cx:f2(tq[0]),cy:f2(tq[1]),r:18.5,class:'focus-ring'},tBtn);
 frame([[0,-76,37,0,152,26],[-13,-13,34,26,26,45],[24,-10,0,30,34,0],[-20,-20,0,40,40,4]],8);
 // State: the wings, the dish's aim, the link and its packets, the sync progress, the thrusters; sound after a gesture.
