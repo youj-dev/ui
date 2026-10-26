@@ -144,14 +144,15 @@ const fq=P(FX,FY,9),fireBtn=button(el('g',{}),'Campfire: add a log (Space)');el(
 const stickBtn=button(el('g',{}),'Roasting stick: drag it to the fire, or press T to toast',{class:'control grab','aria-pressed':'false'}),stickHit=el('path',{class:'hit-line'},stickBtn),mallHit=el('circle',{r:6,class:'hit'},stickBtn),stickRing=el('circle',{r:7.4,class:'focus-ring'},stickBtn);
 // The frame: the turf, the tent and the smoke's reach above the fire; the stars in the sky it leaves.
 const xs=turf.map(q=>q[0]),VX=min(...xs)-6,VY=-72,VW=max(...xs)-min(...xs)+12,VH=max(...turf.map(q=>q[1]))+10-VY;set(svg,'viewBox',[VX,VY,VW,VH].map(v=>+f2(v)).join(' '));
-for(let i=0;i<22;i++){let x=0,y=0;for(let k=0;k<24;k++){x=VX+6+rnd()*(VW-12);y=VY+3+rnd()*28;if(!(x<20&&y>-63))break;}el('circle',{cx:f2(x),cy:f2(y),r:f2(rnd()<.22?.8:.32+rnd()*.32),class:'star',style:`animation-delay:${f2(-rnd()*4.2)}s`},SKY);}
+const spot=()=>{for(let k=0;;k++){const x=VX+6+rnd()*(VW-12),y=VY+3+rnd()*28;if(k>23||!(x<20&&y>-63))return[x,y];}};
+for(let i=0;i<22;i++){const[x,y]=spot();el('circle',{cx:f2(x),cy:f2(y),r:f2(rnd()<.22?.8:.32+rnd()*.32),class:'star',style:`animation-delay:${f2(-rnd()*4.2)}s`},SKY);}
 {const g=svg.querySelector('#fabricG');set(g,'cx',f2(LQ[0]));set(g,'cy',f2(LQ[1]));set(g,'r',46);}
 // State: the fuel burns down (a log adds to it and makes it flare), the lantern, the stick and its marshmallow.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),dark=matchMedia('(prefers-color-scheme: dark)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 const RATE=160,LOG=.34,FIRES=['EMBERS','LOW','STEADY','ROARING'],STILL={EMBERS:.12,LOW:.38,STEADY:.68,ROARING:.95,FLARING:1.25},TOASTS=['RAW','GOLDEN','TOASTED','BURNT'],SHADE=[[0,[251,248,241]],[.3,[243,205,122]],[.55,[201,138,69]],[.8,[122,74,42]],[1,[46,34,28]]];
 const base=f=>.1+.9*f**.9,toastOf=t=>t<.15?0:t<.45?1:t<.75?2:3;
-let fuel=.62,flare=0,flareT=-1e9,level=base(fuel),lan=1,lanOn=true,psi=PR,psiV=0,want=PR,drag=null,skipClick=false,toast=0,onFire=false,cool=0,note='',noteT=0,last=0,lastUI=-1,fireName='',drawnFlames='',drawnStick='',drawnLan='',shade='',near=false,spawn=0,burst=0,dropI=-1,dropT=-1e9;
-const fireOf=()=>flare>.3?'FLARING':fuel>=.8?'ROARING':fuel>=.42?'STEADY':fuel>=.14?'LOW':'EMBERS';fireName=fireOf();
+let fuel=.62,flare=0,flareT=-1e9,level=base(fuel),lan=1,lanOn=true,psi=PR,psiV=0,want=PR,drag=null,skipClick=false,toast=0,onFire=false,cool=0,note='',noteT=0,last=0,lastUI=-1,drawnFlames='',drawnStick='',drawnLan='',shade='',near=false,spawn=0,burst=0,dropI=-1,dropT=-1e9;
+const fireOf=()=>flare>.3?'FLARING':fuel>=.8?'ROARING':fuel>=.42?'STEADY':fuel>=.14?'LOW':'EMBERS';let fireName=fireOf();
 const say=m=>{announcement.textContent=m;},flash=(m,ms=1800)=>{note=m;noteT=performance.now()+ms;lastUI=-1;};
 let ac=null,nb=null;
 function audio(){try{if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A();}if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}return ac;}
