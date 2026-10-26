@@ -131,6 +131,10 @@
     "light": "/thumbs/miniatures/parcel-locker.webp?v=e3ed8201d3",
     "dark": "/thumbs/miniatures/parcel-locker.dark.webp?v=e397d8204c"
   },
+  "payment-terminal": {
+    "light": "/thumbs/miniatures/payment-terminal.webp?v=b728758260",
+    "dark": "/thumbs/miniatures/payment-terminal.dark.webp?v=7a44a1499e"
+  },
   "pinball": {
     "light": "/thumbs/miniatures/pinball.webp?v=36cb3d8f5b",
     "dark": "/thumbs/miniatures/pinball.dark.webp?v=613a6332b8"

@@ -130,7 +130,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [61 items]
+const miniatures: readonly [62 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -149,6 +149,8 @@ const packagingLine: { description; id; initial; keys; label; maker; model; name
 const palette: { accent; base; base-side; base-top; body; brass; brass-side; brass-top; chrome; chrome-side; chrome-top; glass; line; metal; metal-side; metal-top; off; paper; recess; rubber; rubber-side; rubber-top; screen; shadow; side; top; wood; wood-side; wood-top }
 
 const parcelLocker: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const paymentTerminal: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const pinball: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -772,6 +774,23 @@ interface MiniatureParcelLockerProps extends MiniatureProps {
 }
 
 const parcelLocker: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/payment-terminal
+
+```ts
+function MiniaturePaymentTerminal(props: MiniaturePaymentTerminalProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniaturePaymentTerminalHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniaturePaymentTerminalHandle = MiniatureHandle<MiniaturePaymentTerminalKey>;
+
+type MiniaturePaymentTerminalKey = MiniatureKeyOf<typeof paymentTerminal>;
+
+interface MiniaturePaymentTerminalProps extends MiniatureProps {
+    ref?: Ref<MiniaturePaymentTerminalHandle>;
+}
+
+const paymentTerminal: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/pinball

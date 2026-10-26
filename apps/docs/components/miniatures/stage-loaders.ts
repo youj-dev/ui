@@ -38,6 +38,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   oscilloscope: () => import('@youj/miniatures/oscilloscope'),
   'packaging-line': () => import('@youj/miniatures/packaging-line'),
   'parcel-locker': () => import('@youj/miniatures/parcel-locker'),
+  'payment-terminal': () => import('@youj/miniatures/payment-terminal'),
   pinball: () => import('@youj/miniatures/pinball'),
   'pipe-organ': () => import('@youj/miniatures/pipe-organ'),
   'quantum-fridge': () => import('@youj/miniatures/quantum-fridge'),
