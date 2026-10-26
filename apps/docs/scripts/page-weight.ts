@@ -8,7 +8,7 @@
 // only the pages whose sidebar draws it, and a part that repeats (a props row, a heading's anchor) wears one named
 // utility, not its utilities spelled out each time (styles/site.css). A page over budget has usually started shipping
 // something like that again.
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { gzipSync } from 'node:zlib'
@@ -41,13 +41,24 @@ export const BUDGETS: Budget[] = (JSON.parse(readFileSync(new URL('./budgets.jso
   ({ match, ...rest }) => ({ ...rest, match: new RegExp(match) }),
 )
 
+/** A file's size in bytes, or undefined when it doesn't exist. */
+function sizeOf(path: string): number | undefined {
+  try {
+    return statSync(path).size
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return undefined
+    throw error
+  }
+}
+
 /** Every page under a build's app folder: each `.html` with its `.rsc` (next build) or `.txt` (export) beside it. */
 export function measure(dir: string): PageWeight[] {
   const out: PageWeight[] = []
   const walk = (at: string) => {
-    for (const name of readdirSync(at)) {
+    for (const entry of readdirSync(at, { withFileTypes: true })) {
+      const name = entry.name
       const path = join(at, name)
-      if (statSync(path).isDirectory()) {
+      if (entry.isDirectory()) {
         // Next's own pages (_not-found, _global-error) and export's chunk folder aren't the site's.
         if (!name.startsWith('_')) walk(path)
         continue
@@ -55,8 +66,8 @@ export function measure(dir: string): PageWeight[] {
       if (!name.endsWith('.html') || name.startsWith('_')) continue
       const base = path.slice(0, -'.html'.length)
       const html = readFileSync(path)
-      const payload = [`${base}.rsc`, `${base}.txt`].find((p) => existsSync(p))
-      out.push({ page: relative(dir, base).replace(/\\/g, '/'), html: html.length, gzip: gzipSync(html).length, rsc: payload ? statSync(payload).size : 0 })
+      const rsc = [`${base}.rsc`, `${base}.txt`].map(sizeOf).find((size) => size !== undefined) ?? 0
+      out.push({ page: relative(dir, base).replace(/\\/g, '/'), html: html.length, gzip: gzipSync(html).length, rsc })
     }
   }
   walk(dir)
@@ -101,11 +112,14 @@ export function report(pages: PageWeight[], budgets: Budget[] = BUDGETS): string
 
 function main() {
   const dir = process.argv[2] ?? fileURLToPath(new URL('../.next/server/app', import.meta.url))
-  if (!existsSync(dir)) {
+  let pages: PageWeight[]
+  try {
+    pages = measure(dir)
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
     console.error(`page weight: no build at ${dir}; run next build first`)
     process.exit(1)
   }
-  const pages = measure(dir)
   console.log(`page weight: ${pages.length} pages (html / gzip / rsc)\n${report(pages)}`)
   const over = overBudget(pages)
   if (over.length) {

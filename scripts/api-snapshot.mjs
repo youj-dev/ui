@@ -15,6 +15,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import ts from 'typescript'
+import { readTextIfExists } from './read-text.mjs'
 
 const TYPE_FLAGS =
   ts.TypeFormatFlags.NoTruncation |
@@ -51,7 +52,7 @@ export function packageEntries(dir) {
     const folder = join(dir, prefix)
     for (const f of readdirSync(folder).sort()) {
       if (!f.endsWith(suffix) || /\.(test|stories)\./.test(f)) continue
-      entries.push({ entry: name.replace('*', f.slice(0, -suffix.length)), file: join(folder, f) })
+      entries.push({ entry: name.replaceAll('*', () => f.slice(0, -suffix.length)), file: join(folder, f) })
     }
   }
   return entries
@@ -210,7 +211,7 @@ export function apiPackages(root) {
 
 export const snapshotFile = (root, dir) => {
   const { name } = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'))
-  return join(root, 'api', `${name.replace(/^@/, '').replace('/', '-')}.api.md`)
+  return join(root, 'api', `${name.replace(/^@/, '').replaceAll('/', '-')}.api.md`)
 }
 
 /** Writes (or, with `check`, compares) every snapshot. Returns the files that were or would be out of date. */
@@ -219,7 +220,7 @@ export function run({ root, check = false, packages = apiPackages(root) }) {
   for (const dir of packages) {
     const file = snapshotFile(root, dir)
     const text = snapshotPackage(dir)
-    const current = existsSync(file) ? readFileSync(file, 'utf8') : null
+    const current = readTextIfExists(file)
     if (current === text) continue
     stale.push({ file, before: current ?? '', after: text })
     if (!check) {

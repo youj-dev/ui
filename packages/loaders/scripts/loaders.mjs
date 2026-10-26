@@ -12,9 +12,10 @@
 //
 //   node scripts/loaders.mjs          write them
 //   node scripts/loaders.mjs --check  fail when one is missing or stale (part of verify)
-import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import ts from 'typescript'
+import { readTextIfExists } from '../../../scripts/read-text.mjs'
 
 const root = new URL('..', import.meta.url).pathname
 const DIR = 'src/components/youj/loaders'
@@ -93,12 +94,12 @@ const entries = []
 const titles = new Set()
 const write = (path, content) => {
   const full = join(root, path)
-  if (existsSync(full) && readFileSync(full, 'utf8') === content) return
+  if (readTextIfExists(full) === content) return
   if (check) stale.push(path)
   else writeFileSync(full, content)
 }
 
-const folders = readdirSync(join(root, DIR)).filter((f) => statSync(join(root, DIR, f)).isDirectory())
+const folders = readdirSync(join(root, DIR), { withFileTypes: true }).filter((f) => f.isDirectory()).map((f) => f.name)
 for (const folder of folders) if (!CATEGORIES.includes(folder)) problems.push(`${DIR}/${folder}: not a category (${CATEGORIES.join(', ')})`)
 
 for (const category of CATEGORIES) {

@@ -21,6 +21,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { parseArgs } from 'node:util'
+import { readTextIfExists } from './read-text.mjs'
 
 const root = join(import.meta.dirname, '..')
 // Strict: a mistyped option stops the release instead of publishing somewhere else.
@@ -119,7 +120,8 @@ for (const dir of PACKAGES) {
   manifest.publishConfig = { registry, ...(target.access && { access: target.access }) }
   writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n')
   const readme = join(pkg, 'README.md')
-  if (existsSync(readme)) writeFileSync(readme, retarget(readFileSync(readme, 'utf8')))
+  const readmeText = readTextIfExists(readme)
+  if (readmeText !== null) writeFileSync(readme, retarget(readmeText))
   // A published bin that points at a file the tarball lacks installs a command that can't run.
   const bins = typeof manifest.bin === 'string' ? [manifest.bin] : Object.values(manifest.bin ?? {})
   const missing = bins.filter((file) => !existsSync(join(pkg, file)))

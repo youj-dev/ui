@@ -7,7 +7,7 @@
 //
 // STEALTH_TOKEN and STEALTH_SECRET are generated (32 random bytes) and kept on later runs, so a new password
 // doesn't sign testers out; --rotate replaces them.
-import { chmodSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { buildSecrets, ENVIRONMENTS, missingSecrets, secretsFile, type Environment, type Secrets } from './cf-env-secrets-core.ts'
 
 const args = process.argv.slice(2)
@@ -19,7 +19,16 @@ if (!environment) {
   process.exit(2)
 }
 const path = new URL(`../${secretsFile(environment)}`, import.meta.url)
-const existing: Secrets = existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : {}
+/** The file's secrets, or none when it doesn't exist yet (read, then handle ENOENT: no check can go stale in between). */
+function readSecrets(): Secrets {
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'))
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return {}
+    throw error
+  }
+}
+const existing = readSecrets()
 
 if (check) {
   const missing = missingSecrets(existing)
@@ -72,6 +81,8 @@ if (!password) {
   process.exit(1)
 }
 const secrets = buildSecrets(existing, password, rotate)
-writeFileSync(path, JSON.stringify(secrets), { mode: 0o600 })
-chmodSync(path, 0o600) // the mode above only applies to a new file
+// A new 0600 file renamed over the old one: the secrets never sit in a file with looser permissions, and a reader never sees half of them.
+const temp = new URL(`${path.href}.${process.pid}.tmp`)
+writeFileSync(temp, JSON.stringify(secrets), { mode: 0o600, flag: 'wx' })
+renameSync(temp, path)
 console.log(`cf-env-secrets: wrote ${secretsFile(environment)} (${Object.keys(secrets).join(', ')}; values not shown)`)
