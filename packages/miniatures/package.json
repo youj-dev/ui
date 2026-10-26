@@ -62,6 +62,7 @@
     "./metronome": "./src/metronome.tsx",
     "./microscope": "./src/microscope.tsx",
     "./mixing-desk": "./src/mixing-desk.tsx",
+    "./model-train": "./src/model-train.tsx",
     "./nas": "./src/nas.tsx",
     "./network-switch": "./src/network-switch.tsx",
     "./nixie-clock": "./src/nixie-clock.tsx",
@@ -232,6 +233,10 @@
       "./mixing-desk": {
         "types": "./dist/mixing-desk.d.ts",
         "default": "./dist/mixing-desk.js"
+      },
+      "./model-train": {
+        "types": "./dist/model-train.d.ts",
+        "default": "./dist/model-train.js"
       },
       "./nas": {
         "types": "./dist/nas.d.ts",

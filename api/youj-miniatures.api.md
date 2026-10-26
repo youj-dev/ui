@@ -138,9 +138,11 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [69 items]
+const miniatures: readonly [70 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const modelTrain: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const nas: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -737,6 +739,23 @@ interface MiniatureMixingDeskProps extends MiniatureProps {
 }
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/model-train
+
+```ts
+function MiniatureModelTrain(props: MiniatureModelTrainProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureModelTrainHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureModelTrainHandle = MiniatureProgressHandle<MiniatureModelTrainKey>;
+
+type MiniatureModelTrainKey = MiniatureKeyOf<typeof modelTrain>;
+
+interface MiniatureModelTrainProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureModelTrainHandle>;
+}
+
+const modelTrain: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/nas
