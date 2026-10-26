@@ -130,13 +130,15 @@ const lighthouse: { description; id; initial; keys; label; maker; model; name; p
 
 const mainframe: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const marsRover: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const mechanicalKeyboard: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const metronome: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -650,6 +652,23 @@ interface MiniatureMainframeProps extends MiniatureProps {
 }
 
 const mainframe: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/mars-rover
+
+```ts
+function MiniatureMarsRover(props: MiniatureMarsRoverProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureMarsRoverHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureMarsRoverHandle = MiniatureHandle<MiniatureMarsRoverKey>;
+
+type MiniatureMarsRoverKey = MiniatureKeyOf<typeof marsRover>;
+
+interface MiniatureMarsRoverProps extends MiniatureProps {
+    ref?: Ref<MiniatureMarsRoverHandle>;
+}
+
+const marsRover: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/mechanical-keyboard

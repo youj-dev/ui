@@ -57,6 +57,7 @@
     "./letterpress": "./src/letterpress.tsx",
     "./lighthouse": "./src/lighthouse.tsx",
     "./mainframe": "./src/mainframe.tsx",
+    "./mars-rover": "./src/mars-rover.tsx",
     "./mechanical-keyboard": "./src/mechanical-keyboard.tsx",
     "./metronome": "./src/metronome.tsx",
     "./microscope": "./src/microscope.tsx",
@@ -211,6 +212,10 @@
       "./mainframe": {
         "types": "./dist/mainframe.d.ts",
         "default": "./dist/mainframe.js"
+      },
+      "./mars-rover": {
+        "types": "./dist/mars-rover.d.ts",
+        "default": "./dist/mars-rover.js"
       },
       "./mechanical-keyboard": {
         "types": "./dist/mechanical-keyboard.d.ts",

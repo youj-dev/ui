@@ -30,6 +30,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   letterpress: () => import('@youj/miniatures/letterpress'),
   lighthouse: () => import('@youj/miniatures/lighthouse'),
   mainframe: () => import('@youj/miniatures/mainframe'),
+  'mars-rover': () => import('@youj/miniatures/mars-rover'),
   'mechanical-keyboard': () => import('@youj/miniatures/mechanical-keyboard'),
   metronome: () => import('@youj/miniatures/metronome'),
   microscope: () => import('@youj/miniatures/microscope'),
