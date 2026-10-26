@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -179,6 +179,8 @@ const robotArm: { description; id; initial; keys; label; maker; model; name; pro
 const rocketLaunchPad: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const rotaryPhone: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const satellite: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const sbcCluster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1024,6 +1026,23 @@ interface MiniatureRotaryPhoneProps extends MiniatureProps {
 }
 
 const rotaryPhone: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/satellite
+
+```ts
+function MiniatureSatellite(props: MiniatureSatelliteProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureSatelliteHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureSatelliteHandle = MiniatureProgressHandle<MiniatureSatelliteKey>;
+
+type MiniatureSatelliteKey = MiniatureKeyOf<typeof satellite>;
+
+interface MiniatureSatelliteProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureSatelliteHandle>;
+}
+
+const satellite: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/sbc-cluster

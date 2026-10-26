@@ -79,6 +79,7 @@
     "./robot-arm": "./src/robot-arm.tsx",
     "./rocket-launch-pad": "./src/rocket-launch-pad.tsx",
     "./rotary-phone": "./src/rotary-phone.tsx",
+    "./satellite": "./src/satellite.tsx",
     "./sbc-cluster": "./src/sbc-cluster.tsx",
     "./security-camera": "./src/security-camera.tsx",
     "./server-cabinet": "./src/server-cabinet.tsx",
@@ -299,6 +300,10 @@
       "./rotary-phone": {
         "types": "./dist/rotary-phone.d.ts",
         "default": "./dist/rotary-phone.js"
+      },
+      "./satellite": {
+        "types": "./dist/satellite.d.ts",
+        "default": "./dist/satellite.js"
       },
       "./sbc-cluster": {
         "types": "./dist/sbc-cluster.d.ts",
