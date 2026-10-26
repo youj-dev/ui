@@ -162,10 +162,12 @@ describe('ClawMachine', () => {
 
   it('keeps a fixed number of drawing nodes through every interaction, in full and in reduced motion', async () => {
     for (const motion of ['never', 'always'] as const) {
-      const { inside, press, run, unmount } = await play([], 300, motion)
-      const count = () => inside.querySelectorAll('*').length
+      const { inside, svg, press, run, unmount } = await play([], 300, motion)
+      // The svg only: the live region beside it gains a text node with its first announcement.
+      const count = () => svg().querySelectorAll('*').length
       const click = (selector: string) => act(() => void inside.querySelector(selector)!.dispatchEvent(new MouseEvent('click', { bubbles: true })))
       const nodes = count()
+      await run(2000)
       press(['c', 'c'])
       await run(600)
       press(OVER_PANDA)
