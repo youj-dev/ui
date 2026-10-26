@@ -227,6 +227,10 @@
     "light": "/thumbs/miniatures/telescope.webp?v=3a08d6c9a2",
     "dark": "/thumbs/miniatures/telescope.dark.webp?v=c8f82b5560"
   },
+  "theremin": {
+    "light": "/thumbs/miniatures/theremin.webp?v=b4c65d6699",
+    "dark": "/thumbs/miniatures/theremin.dark.webp?v=3361633a63"
+  },
   "thermostat-boiler": {
     "light": "/thumbs/miniatures/thermostat-boiler.webp?v=4965a13f74",
     "dark": "/thumbs/miniatures/thermostat-boiler.dark.webp?v=91d4af5217"
