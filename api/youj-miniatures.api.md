@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [67 items]
+const miniatures: readonly [68 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -205,6 +205,8 @@ const thermostatBoiler: { description; id; initial; keys; label; maker; model; n
 const threeDPrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const toaster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const trafficLight: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const tubeRadio: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1209,6 +1211,23 @@ interface MiniatureToasterProps extends MiniatureProps {
 }
 
 const toaster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/traffic-light
+
+```ts
+function MiniatureTrafficLight(props: MiniatureTrafficLightProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureTrafficLightHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureTrafficLightHandle = MiniatureHandle<MiniatureTrafficLightKey>;
+
+type MiniatureTrafficLightKey = MiniatureKeyOf<typeof trafficLight>;
+
+interface MiniatureTrafficLightProps extends MiniatureProps {
+    ref?: Ref<MiniatureTrafficLightHandle>;
+}
+
+const trafficLight: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/tube-radio

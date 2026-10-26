@@ -231,6 +231,10 @@
     "light": "/thumbs/miniatures/toaster.webp?v=5aac8693fc",
     "dark": "/thumbs/miniatures/toaster.dark.webp?v=5691d3fcf8"
   },
+  "traffic-light": {
+    "light": "/thumbs/miniatures/traffic-light.webp?v=efb1ace732",
+    "dark": "/thumbs/miniatures/traffic-light.dark.webp?v=fbe55788c7"
+  },
   "tube-radio": {
     "light": "/thumbs/miniatures/tube-radio.webp?v=9ac8b148cf",
     "dark": "/thumbs/miniatures/tube-radio.dark.webp?v=2227e4f1a3"

@@ -63,6 +63,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   telescope: () => import('@youj/miniatures/telescope'),
   'thermostat-boiler': () => import('@youj/miniatures/thermostat-boiler'),
   toaster: () => import('@youj/miniatures/toaster'),
+  'traffic-light': () => import('@youj/miniatures/traffic-light'),
   'tube-radio': () => import('@youj/miniatures/tube-radio'),
   turntable: async () => turntableModule,
   typewriter: () => import('@youj/miniatures/typewriter'),
