@@ -62,6 +62,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'stand-mixer': () => import('@youj/miniatures/stand-mixer'),
   'tape-library': () => import('@youj/miniatures/tape-library'),
   telescope: () => import('@youj/miniatures/telescope'),
+  theremin: () => import('@youj/miniatures/theremin'),
   'thermostat-boiler': () => import('@youj/miniatures/thermostat-boiler'),
   toaster: () => import('@youj/miniatures/toaster'),
   'tube-radio': () => import('@youj/miniatures/tube-radio'),

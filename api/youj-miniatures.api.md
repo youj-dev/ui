@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -201,6 +201,8 @@ const standMixer: { description; id; initial; keys; label; maker; model; name; p
 const tapeLibrary: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const telescope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const theremin: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const thermostatBoiler: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1194,6 +1196,23 @@ interface MiniatureTelescopeProps extends MiniatureProps {
 }
 
 const telescope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/theremin
+
+```ts
+function MiniatureTheremin(props: MiniatureThereminProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureThereminHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureThereminHandle = MiniatureHandle<MiniatureThereminKey>;
+
+type MiniatureThereminKey = MiniatureKeyOf<typeof theremin>;
+
+interface MiniatureThereminProps extends MiniatureProps {
+    ref?: Ref<MiniatureThereminHandle>;
+}
+
+const theremin: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/thermostat-boiler

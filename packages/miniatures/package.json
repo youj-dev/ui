@@ -89,6 +89,7 @@
     "./stand-mixer": "./src/stand-mixer.tsx",
     "./tape-library": "./src/tape-library.tsx",
     "./telescope": "./src/telescope.tsx",
+    "./theremin": "./src/theremin.tsx",
     "./thermostat-boiler": "./src/thermostat-boiler.tsx",
     "./toaster": "./src/toaster.tsx",
     "./tube-radio": "./src/tube-radio.tsx",
@@ -339,6 +340,10 @@
       "./telescope": {
         "types": "./dist/telescope.d.ts",
         "default": "./dist/telescope.js"
+      },
+      "./theremin": {
+        "types": "./dist/theremin.d.ts",
+        "default": "./dist/theremin.js"
       },
       "./thermostat-boiler": {
         "types": "./dist/thermostat-boiler.d.ts",
