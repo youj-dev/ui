@@ -29,7 +29,8 @@ jobs:
   # every workspace. `root-checks` always runs. Skipped jobs report "skipped", which is not a failure.
   changes:
     name: Changed areas
-    runs-on: ubuntu-latest
+    # ubuntu-24.04, not latest: Playwright can't install its browsers on ubuntu-latest (26.04) yet (2026-10-26). Move back when it can.
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       packages: ${{ steps.areas.outputs.packages }}
@@ -59,7 +60,7 @@ jobs:
   # few minutes, nothing here builds a package.
   root-checks:
     name: Root checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -96,7 +97,7 @@ jobs:
     name: Verify ${{ matrix.workspace }}
     needs: changes
     if: needs.changes.outputs.workspaces != '[]'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ matrix.workspace == '@youj/figma' && 30 || 20 }} # figma's tests take ~10 minutes here
     strategy:
       fail-fast: false
@@ -119,7 +120,8 @@ jobs:
       # lockfile without a second Playwright dependency). The figma tests render in Chromium too.
       - name: Browsers for the layout tests
         if: matrix.workspace == '@youj/react' || matrix.workspace == '@youj/figma'
-        run: pnpm exec playwright install --with-deps chromium
+        # No --with-deps: the ubuntu-24.04 image already carries Chrome's libraries, and that apt step took 10-20 minutes (2026-10-26).
+        run: pnpm exec playwright install chromium
       - name: Browser build for the density test
         if: matrix.workspace == '@youj/react'
         run: pnpm dlx playwright@1.56.1 install chromium-headless-shell
@@ -138,7 +140,7 @@ jobs:
     name: Coverage floor
     needs: changes
     if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -149,7 +151,7 @@ jobs:
         with:
           node-version-file: .nvmrc
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium && pnpm dlx playwright@1.56.1 install chromium-headless-shell
+      - run: pnpm exec playwright install chromium && pnpm dlx playwright@1.56.1 install chromium-headless-shell
       - name: Tests and coverage floor (packages)
         run: pnpm test:coverage
       - name: Coverage summary
@@ -162,7 +164,7 @@ jobs:
     name: Packed packages
     needs: changes
     if: needs.changes.outputs.packages == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -181,7 +183,7 @@ jobs:
     name: Release dry run and bundle size
     needs: changes
     if: needs.changes.outputs.packages == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -204,7 +206,7 @@ jobs:
     name: Consumer smoke test (${{ matrix.name }})
     needs: changes
     if: needs.changes.outputs.packages == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -223,14 +225,14 @@ jobs:
         with:
           node-version-file: .nvmrc
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install chromium
       - run: pnpm smoke ${{ matrix.args }}
 
   storybook:
     name: Storybook build
     needs: changes
     if: needs.changes.outputs.storybook == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -243,7 +245,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build-storybook
       # The stories with a play() function, run in Chromium through the same Storybook config.
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install chromium
       - run: pnpm test:stories
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
@@ -255,7 +257,7 @@ jobs:
     name: Docs build
     needs: changes
     if: needs.changes.outputs.docs == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -282,7 +284,7 @@ jobs:
     # Main only: deliberate design changes would fail a pull request's screenshots every time. A pull request
     # labelled `visual` runs it too (add the label, then push or re-run the workflow).
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'visual')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -318,7 +320,7 @@ jobs:
     needs: storybook
     # Nightly and on demand only: it runs every story in four modes, far too long for a pull request.
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -357,7 +359,7 @@ jobs:
     name: Performance budget (report-only)
     needs: storybook
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     continue-on-error: true
     container:
@@ -394,7 +396,7 @@ jobs:
     name: CI result
     needs: [changes, root-checks, verify, coverage, pack-check, release-dry, smoke, storybook, docs, visual, a11y, perf]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: Fail if a job failed or was cancelled (skipped is fine)
