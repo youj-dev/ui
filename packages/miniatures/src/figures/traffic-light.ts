@@ -90,7 +90,7 @@ for(const v of[.9,23.1])pin(BF,1.2,v,.5);
 // with its reflective border, then each lamp: bezel, lens, its light, the Fresnel rings and glint, and the visor.
 cylinder(0,0,92.6,4.4,7.6,'z','hs');
 const HX=-14,HY=-8,HZ=100,HW=28,HD=15,HH=81,FY=HY+HD;
-box(HX,HY,HZ,HW,HD,HH,3,'hs');{const g=group(SIDE(HX+HW,FY,HZ+HH));for(const v of[27,54])line(g,1,v,HD-1,v);rect(g,1.6,72.6,8.8,4.4,.6,'face plate');text(g,6,75.7,'CORVEL','brand');}
+box(HX,HY,HZ,HW,HD,HH,3,'hs');{const g=group(SIDE(HX+HW,FY,HZ+HH));for(const v of[27,54])line(g,1,v,HD-1,v);rect(g,7.8,60.1,5.4,17,.6,'face plate');set(text(g,11.45,68.6,'CORVEL','brand'),'transform','rotate(-90 11.45 68.6)');}
 rect(group(TOP(-20,5.6,HZ+HH+5)),0,0,40,1.4,0,'face top plate');rect(group(SIDE(20,7,HZ+HH+5)),0,0,1.4,91,0,'face side plate');
 const PL=group(FRONT(-20,7,HZ+HH+5));el('path',{d:rr(0,0,40,91,2.4)+rr(6,5,28,81,3),'fill-rule':'evenodd',class:'face plate'},PL);el('path',{d:rr(1.4,1.4,37.2,88.2,1.6),class:'reflect'},PL);for(const[u,v]of[[3,3],[37,3],[3,88],[37,88]])pin(PL,u,v,.6);
 const HF=group(FRONT(HX,FY+.02,HZ+HH));for(const v of[27,54])line(HF,.6,v,27.4,v);
