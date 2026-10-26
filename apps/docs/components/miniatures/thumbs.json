@@ -51,6 +51,10 @@
     "light": "/thumbs/miniatures/espresso.webp?v=ecd98e1bc9",
     "dark": "/thumbs/miniatures/espresso.dark.webp?v=0e98c0b0ed"
   },
+  "ferris-wheel": {
+    "light": "/thumbs/miniatures/ferris-wheel.webp?v=cbd401bb72",
+    "dark": "/thumbs/miniatures/ferris-wheel.dark.webp?v=ade09b914a"
+  },
   "film-projector": {
     "light": "/thumbs/miniatures/film-projector.webp?v=f06f2c988d",
     "dark": "/thumbs/miniatures/film-projector.dark.webp?v=daa47c0b87"

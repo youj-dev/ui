@@ -106,6 +106,8 @@ const drumMachine: { description; id; initial; keys; label; maker; model; name; 
 
 const espresso: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const ferrisWheel: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const filmProjector: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const firewallAppliance: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -446,6 +448,23 @@ interface MiniatureEspressoProps extends MiniatureProps {
 }
 
 const espresso: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/ferris-wheel
+
+```ts
+function MiniatureFerrisWheel(props: MiniatureFerrisWheelProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureFerrisWheelHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureFerrisWheelHandle = MiniatureProgressHandle<MiniatureFerrisWheelKey>;
+
+type MiniatureFerrisWheelKey = MiniatureKeyOf<typeof ferrisWheel>;
+
+interface MiniatureFerrisWheelProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureFerrisWheelHandle>;
+}
+
+const ferrisWheel: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/film-projector
