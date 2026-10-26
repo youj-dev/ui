@@ -86,6 +86,8 @@ const aquarium: { description; id; initial; keys; label; maker; model; name; pro
 
 const bankVault: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const campfire: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const cardCatalog: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -276,6 +278,23 @@ interface MiniatureBankVaultProps extends MiniatureProps {
 }
 
 const bankVault: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/campfire
+
+```ts
+function MiniatureCampfire(props: MiniatureCampfireProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureCampfireHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureCampfireHandle = MiniatureHandle<MiniatureCampfireKey>;
+
+type MiniatureCampfireKey = MiniatureKeyOf<typeof campfire>;
+
+interface MiniatureCampfireProps extends MiniatureProps {
+    ref?: Ref<MiniatureCampfireHandle>;
+}
+
+const campfire: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/card-catalog
