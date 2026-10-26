@@ -8,18 +8,18 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 @media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--recess:#6e6e6c;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--dk:#2f2f2f;--dk-top:#454543;--dk-side:#1d1d1c;--brass:#ae8e4d;--foil:#b88b32;--foil-top:#e0b859;--foil-side:#825d1b;--crease:#734f11;--rad:#c7c8c8;--rad-line:#a5a8a9;--cell:#1e2850;--cell-line:#475685;--cell-hi:#7a8ccc;--frame:#c3c3c1;--pback:#b9b9b6;--pback-line:#989895;--dishin:#d4d4d2;--dish-edge:#bebebc;--dback:#b4b4b2;--link:#7f95ff;--puff:#f2f3f5;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.dk{fill:var(--dk)}.top.dk{fill:var(--dk-top)}.side.dk{fill:var(--dk-side)}.brass{fill:var(--brass)}
-.maker{fill:var(--brass-ink);font:italic 600 1.75px Georgia,'Times New Roman',serif;letter-spacing:.32px;text-anchor:middle;stroke:none}
+.maker{fill:var(--brass-ink);font:600 1.5px Georgia,'Times New Roman',serif;letter-spacing:.34px;text-anchor:middle;stroke:none}
 .foil{fill:var(--foil)}.top.foil{fill:var(--foil-top)}.side.foil{fill:var(--foil-side)}.facet{fill:var(--glint);stroke:none;opacity:.26}.facet.dk2{fill:var(--crease);opacity:.17}.glint{fill:none;stroke:var(--glint);stroke-width:.26;stroke-linecap:round;opacity:.42}.foilsheen{fill:url(#foilG);stroke:none}
 .tape{fill:none;stroke:var(--crease);stroke-width:.55;vector-effect:non-scaling-stroke;opacity:.4}.rad{fill:var(--rad)}.osr{fill:url(#osrP);stroke:none}
 .pframe{fill:var(--frame)}.pback{fill:var(--pback)}.cells{fill:url(#cellP);stroke:none}.ribs{fill:url(#ribP);stroke:none}.psheen{fill:url(#cellG);stroke:none}.psheen.off{display:none}
 .su,.sm{fill:none;stroke-linecap:round;stroke-linejoin:round}.su{stroke:var(--line)}.sm{stroke:var(--metal)}
 .dishin{fill:url(#dishG)}.dback{fill:var(--dback)}.seam{fill:none;stroke:var(--line);stroke-width:.45;vector-effect:non-scaling-stroke;opacity:.6}
 .beam{fill:none;stroke:var(--link);stroke-width:.8;stroke-dasharray:2.2 2.8;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.6}
-.pkt{fill:var(--link);stroke:none;filter:url(#glow)}.pkt.up{fill:var(--bg);stroke:var(--link);stroke-width:.6;filter:none}.fin .pkt{opacity:0}.fin .beam{opacity:.25}
+.pkt{fill:var(--link);stroke:none;filter:url(#dot)}.pkt.up{fill:var(--bg);stroke:var(--link);stroke-width:.6;filter:none}.fin .pkt{opacity:0}.fin .beam{opacity:.25}
 .spot{fill:url(#spotG);stroke:none}.spotedge{fill:none;stroke:var(--link);stroke-width:.6;stroke-dasharray:1.4 2.2;vector-effect:non-scaling-stroke;opacity:.45}.aim{fill:none;stroke:var(--link);stroke-width:.7;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.65}
 .ripple{fill:none;stroke:var(--link);stroke-width:.7;vector-effect:non-scaling-stroke;opacity:0}.track{fill:none;stroke:var(--link);stroke-width:.6;vector-effect:non-scaling-stroke;opacity:0}.arc{fill:none;stroke:var(--link);stroke-width:1.7;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0}
 .prog .track{opacity:.25}.prog .arc{opacity:.95}.fin .arc,.fin .track{stroke:var(--ok)}.fin .spot{opacity:.45}
-.lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.b{fill:var(--accent)}.lamp.g,.lamp.a,.lamp.b{filter:url(#glow)}
+.lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.b{fill:var(--accent)}.lamp.g,.lamp.a,.lamp.b{filter:url(#dot)}
 .puff{fill:url(#puffG);stroke:none;opacity:0}
 .stars{display:none}.star{fill:var(--star);opacity:.8;stroke:none}.tw{animation:tw 5.2s ease-in-out infinite}.tw2{animation:tw 6.8s ease-in-out -2.4s infinite}@keyframes tw{0%,100%{opacity:.8}50%{opacity:.2}}
 @media(prefers-color-scheme:dark){.stars{display:inline}}
@@ -33,6 +33,7 @@ const defs = `<pattern id="cellP" patternUnits="userSpaceOnUse" width="3.9" heig
 <linearGradient id="cellG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--cell-hi);stop-opacity:.42"/><stop offset=".42" style="stop-color:var(--cell-hi);stop-opacity:0"/><stop offset=".78" style="stop-color:#fff;stop-opacity:0"/><stop offset="1" style="stop-color:#fff;stop-opacity:.1"/></linearGradient>
 <radialGradient id="dishG" cx=".5" cy=".5" r=".5"><stop offset=".2" style="stop-color:var(--dishin)"/><stop offset="1" style="stop-color:var(--dish-edge)"/></radialGradient>
 <radialGradient id="spotG"><stop offset="0" style="stop-color:var(--link);stop-opacity:.34"/><stop offset=".55" style="stop-color:var(--link);stop-opacity:.14"/><stop offset="1" style="stop-color:var(--link);stop-opacity:0"/></radialGradient>
+<filter id="dot" x="-250%" y="-250%" width="600%" height="600%"><feGaussianBlur stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <radialGradient id="puffG"><stop offset="0" style="stop-color:var(--puff);stop-opacity:.9"/><stop offset=".55" style="stop-color:var(--puff);stop-opacity:.45"/><stop offset="1" style="stop-color:var(--puff);stop-opacity:0"/></radialGradient>`
 
 function draw(env: FigureEnv): void {
@@ -45,7 +46,7 @@ bus                       -13    -13     34     26     26     32   foil on +x an
 solar drives            r 2.4    0, ±13 → ±16 at z 50
 wings                   a yoke 9 long, then panels 16 × 26 (z 37–63) on vertical hinges, stowed in a Z against the bus
 dish                    a boom from 13 2 44 out to 19 2 44; reflector r 14, focus 10.5, the feed on three struts
-top deck                thruster pods on the corners, the omni mast, a whip and the beacon
+top deck                thruster pods on the corners, the omni mast at -6 5, a whip at 7 -8, the beacon at 5 4
 floor                   the house shadow under the stand; the ground point where the beam lands, with its ripples and sync ring
 Painter order: stars, shadow, ground point, foot, stand, far wing, bus, top deck, dish, beam, near wing, puffs, controls. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
@@ -85,7 +86,7 @@ const KX=Math.SQRT2*Math.sqrt(3)/2,KY=Math.SQRT2/2,gnd=el('g',{}),fl=(r,cls,pare
 fl(10,'spot');fl(10,'spotedge');const rips=[0,1].map(()=>fl(3,'ripple'));fl(13,'track');const arc=el('path',{class:'arc',d:'M0,0'},gnd);
 const aimG=el('g',{},gnd);fl(1.9,'aim',aimG);for(const[a,b,c,d]of[[3,0,4.4,0],[-3,0,-4.4,0],[0,3,0,4.4],[0,-3,0,-4.4]]){const p=P(a,b,0),q=P(c,d,0);line(aimG,f2(p[0]),f2(p[1]),f2(q[0]),f2(q[1]),'aim');}
 // Display stand: the foot with its maker plate, a collar and the rod up into the bus.
-box(-10,-10,0,20,20,3.6,1.3,'dk');const pf=group(FRONT(-10,10,3.6));rect(pf,4.9,.7,10.2,2.2,.5,'face brass');text(pf,10,2.38,'Talmira','maker');
+box(-10,-10,0,20,20,3.6,.6,'dk');const pf=group(FRONT(-10,10,3.6));rect(pf,4.4,.7,11.2,2.2,.5,'face brass');text(pf,10.17,2.33,'TALMIRA','maker');
 cylinder(0,0,3.6,2.5,1.4,'z','metal');put(tube(root,'metal',false),[0,0,5],[0,0,34],1.1);
 // Far wing first, then the bus: foil with taped seams on +x and the top deck, the OSR radiator between foil bands on +y, the solar drives.
 const farL=el('g',{});put(tube(root,'metal'),[0,-13,50],[0,-16,50],2.4);
@@ -96,7 +97,7 @@ rect(ff,0,0,26,32,1.2,'face rad');rect(ff,.5,3.3,25,25.4,.4,'osr');rect(ff,0,0,2
 circle(group(FRONT(0,13,50)),0,0,4.4,'face metal');put(tube(root,'metal'),[0,13,50],[0,16,50],2.4);
 // Top deck: the thruster pods on its corners (their nozzles point out along the diagonals), the omni mast, a whip and the beacon.
 const NZ=[];for(const[sx,sy]of[[-1,-1],[1,-1],[-1,1],[1,1]]){box(sx*10.6-1.7,sy*10.6-1.7,66,3.4,3.4,1.8,.5,'metal');const o=[sx*10.6+sx*1.2,sy*10.6+sy*1.2,66.9],d=unit([sx,sy,.25]);put(tube(root,'dk'),o,add(o,mul(d,2.2)),.75);NZ.push({o:add(o,mul(d,2.6)),d});}
-put(tube(root,'metal'),[-5,-6,66],[-5,-6,76],.5);const oq=P(-5,-6,76);el('ellipse',{cx:f2(oq[0]),cy:f2(oq[1]),rx:2.94,ry:1.7,class:'face top metal'});circle(root,...P(-5,-6,77.4),.95,'face metal');
+put(tube(root,'metal'),[-6,5,66],[-6,5,76],.5);const oq=P(-6,5,76);el('ellipse',{cx:f2(oq[0]),cy:f2(oq[1]),rx:2.94,ry:1.7,class:'face top metal'});circle(root,...P(-6,5,77.4),.95,'face metal');
 put(tube(root,'metal'),[7,-8,66],[7,-8,72.5],.4);circle(root,...P(7,-8,72.9),.6,'face dk');
 const bq=P(5,4,66.4);circle(root,bq[0],bq[1],1.5,'face metal');const beacon=lamp(root,bq[0],bq[1]-.35,.85);
 // Dish: a boom from the +x face to the hub, the reflector as rings at their depth with gores, the feed horn on three struts.
