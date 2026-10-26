@@ -7,6 +7,10 @@
     "light": "/thumbs/miniatures/aquarium.webp?v=89e85a4a46",
     "dark": "/thumbs/miniatures/aquarium.dark.webp?v=fe9c45af37"
   },
+  "bank-vault": {
+    "light": "/thumbs/miniatures/bank-vault.webp?v=2ec9c00010",
+    "dark": "/thumbs/miniatures/bank-vault.dark.webp?v=fde6afc2a0"
+  },
   "cell-tower": {
     "light": "/thumbs/miniatures/cell-tower.webp?v=853db58e99",
     "dark": "/thumbs/miniatures/cell-tower.dark.webp?v=956180850e"
