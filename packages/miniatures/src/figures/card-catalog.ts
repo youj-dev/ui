@@ -18,7 +18,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 const defs = `<linearGradient id="cast" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".26"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>`
 
 function draw(env: FigureEnv): void {
-const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
+const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* PELL & ASHBY No. 15 card catalog. World: x lower-right; y lower-left (the drawers face +y); z up. 1 unit ≈ 5 mm.
 Part                              x        y        z        w      d      h
 legs (4, tapered 7 → 4.4)     −0.5/111.5 −0.5/69.5  2.6       7      7   19.4   brass shoes below, 2.6 high
@@ -33,7 +33,7 @@ follower block                xo+3.6    21.4     zb+2.2   24.8      3      9
 a found card rises 9 and tips back 9°; taken out, it rises 28 more on the top layer, tipped back to read
 Inside the case a drawer is clipped to its opening and dimmed; outside it paints over the rows below it. */
 const svg=document.getElementById('machine'),draw=document.getElementById('drawing');let root=draw;
-const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
+const{C,S,P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,box,cylinder,frame}=kit(()=>root);
 // Figure helpers.
 const defsEl=svg.querySelector('defs'),f2=v=>(+v).toFixed(2),clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),RAD=Math.PI/180,into=g=>root=g;
 const shift=(x,y,z)=>{const p=P(x,y,z);return`translate(${f2(p[0])} ${f2(p[1])})`;},smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};
