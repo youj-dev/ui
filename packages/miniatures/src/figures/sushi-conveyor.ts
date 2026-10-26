@@ -95,14 +95,15 @@ const L={floor:draw,hutch:draw,body:draw},layer=k=>L[k]=el('g',{},draw);
 // Floor: the house ground shadow, a flat ellipse traced in floor points (so the dark stage's pool, at 1.5×, fades
 // out above the caption), and its contact copy.
 into(L.floor);{const fl=(X,Y)=>{const u=X/C30;return[(u+2*Y)/2,(2*Y-u)/2,0];},o=Array.from({length:48},(_,i)=>fl(78*cos(i*PI/24),8+34*sin(i*PI/24)));el('path',{d:pd(o),class:'shadow stage-floor'});el('path',{d:pd(o),class:'stage-contact'});}
-// The kitchen hutch behind the counter: its walls, the lit window under a noren, the sign board, the roof, a lantern.
-into(L.hutch);
+// The kitchen hutch behind the counter: its walls, the lit window under a noren (its middle panel sways as a plate
+// comes out under it), the sign board, the roof, a lantern.
+into(L.hutch);let sway;
 {const X0=-24,Y1=-RM-.5;const E=ZT+24,K=ZT+31;const sd=group(SIDE(24,Y1,E));rect(sd,0,0,20,E,1.4,'face side wood');for(let v=6;v<E;v+=6.2)line(sd,0,v,20,v,'slat');
 const fr=group(FRONT(X0,Y1,E));rect(fr,0,0,48,E,1.4,'face wood');for(let u=4;u<48;u+=4)line(fr,u,24,u,E,'slat');
 rect(fr,5,10,38,13.4,1,'face room');rect(fr,6,11,36,3.2,.6,'room-lit');rect(fr,6,17.8,36,.9,.3,'room-lit');
 rect(fr,4,22.8,40,1.2,.4,'face hinoki');
 rect(fr,15,3.6,18,4.8,.9,'face hinoki');rect(fr,15.7,4.3,16.6,3.4,.6,'detail');text(fr,24,7.05,'MAKIRO','brand');
-const nr=group(FRONT(X0,Y1+.06,E));for(let i=0;i<3;i++){rect(nr,5.6+i*12.4,10,11.8,5.6,.4,'noren');}circle(nr,24,12.9,1.5,'mark');el('path',{d:'M10.5,12.8c1,-1 2,1 3,0M35,12.8c1,-1 2,1 3,0',class:'detail',style:'stroke:var(--mark);stroke-width:.5'},nr);
+const nr=group(FRONT(X0,Y1+.06,E));sway=group('',nr);for(let i=0;i<3;i++){rect(i===1?sway:nr,5.6+i*12.4,10,11.8,5.6,.4,'noren');}circle(sway,24,12.9,1.5,'mark');el('path',{d:'M10.5,12.8c1,-1 2,1 3,0M35,12.8c1,-1 2,1 3,0',class:'detail',style:'stroke:var(--mark);stroke-width:.5'},nr);
 const RF=[-27,27],ry=Y1-10,OV=2.5;el('path',{d:pd([[RF[0],ry-10-OV,E],[RF[1],ry-10-OV,E],[RF[1],ry,K],[RF[0],ry,K]]),class:'face roof'});
 el('path',{d:pd([[24,Y1-20,E],[24,Y1,E],[24,ry,K-1.6]]),class:'face side wood'});
 el('path',{d:pd([[RF[1],Y1+OV,E],[RF[1],ry,K],[RF[1],ry-10-OV,E],[RF[1],ry-10-OV,E-1.6],[RF[1],ry,K-1.6],[RF[1],Y1+OV,E-1.6]]),class:'face side roof'});
@@ -159,7 +160,7 @@ set(svg,'viewBox','-88 -108.5 176.7 160.5');
 // State: belt offset and speed; plates on the belt, being served or in the air; your stack, tally and bill; the progress.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 const SPEEDS=[0,.5,1,1.5,2],T_SERVE=1.3,T_FLY=.62;
-let sp=2,speed=1,belt=0,last=0,now=0,tally=0,bill=0,stackN=0,msg='',msgT=0,shown='',zkey='',lastScr='',ac=null,orders=0,nextServe=0,paid=0,paidT=-1e9,clearT=-1,mode='free',target=0,done=0,boost=1,orderedT=-1e9;
+let sp=2,speed=1,belt=0,last=0,now=0,tally=0,bill=0,stackN=0,msg='',msgT=0,shown='',zkey='',lastScr='',swayed='',ac=null,orders=0,nextServe=0,paid=0,paidT=-1e9,clearT=-1,mode='free',target=0,done=0,boost=1,orderedT=-1e9;
 const say=m=>{announcement.textContent=m;},note=(m,a)=>{msg=m;msgT=now+1800;if(a)say(a);};
 function audio(){try{const W=window.AudioContext||window.webkitAudioContext;if(!W)return;if(!ac)ac=new W();if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}}
 function tone(f,v,d,at=0,type='sine'){if(!ac)return;try{const t=ac.currentTime+at,o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.05);}catch(_){}}
@@ -207,13 +208,14 @@ if(red&&orders>0)serveNow();
 for(const p of POOL){if(p.st==='serve'){p.t+=dt;const u=clamp(p.t/T_SERVE),e=ease(u);p.x=0;p.y=-RM-3+(RM+3-RB)*e;p.z=ZT+1.2-(ZT+1.2-ZB)*clamp((p.y+RO+1.5)/5);p.g.style.opacity=f2(clamp(u/.22));
 if(u>=1){p.st='belt';p.s=DROP-belt;p.g.style.opacity='';tick();note(`FRESH · ${KIND[p.k].n}`);}}
 if(p.st==='fly'){p.t+=dt;const u=clamp(p.t/T_FLY),e=ease(u);for(let i=0;i<3;i++)p[['x','y','z'][i]]=p.from[i]+(p.to[i]-p.from[i])*e;p.z+=14*sin(PI*u);p.f.style.opacity=f2(1-clamp(u/.45));if(u>=1)land(p);}}
+{const sv=POOL.find(p=>p.st==='serve'),k=sv&&!red?.45*sin(PI*clamp(sv.t/T_SERVE/.6)):0,m=k?`matrix(1 0 ${f2(-k)} ${f2(1+k)} ${f2(k*10)} ${f2(-k*10)})`:'';if(m!==swayed){swayed=m;set(sway,'transform',m);}}
 if(clearT>=0){const k=(now-clearT)/450;STACK.forEach(s=>{s.style.opacity=f2(1-clamp(k));});if(k>=1)clearStack();}
 // The auto diner (progress): takes the plate passing the seat while the stack is short of the order.
 if(mode==='det'&&!red){if(behind>0&&clearT<0){const p=front();if(p&&cdist(p.s+belt,SEAT)<(done?9:4.5))take(p,true);}if(done===1&&stackN>=12&&!POOL.some(p=>p.st==='fly'))complete();}
 if(mode==='det'&&red&&(stackN<goal()||done===1))settle();
 pose();
 ui();requestAnimationFrame(frameTick);}
-function pose(){const segs=[];for(let i=0;i<NS;i++){const s=i*LOOP/NS+belt,a=loop(s,RI+.8),b=loop(s,RO-.8);segs.push(`M${xy([a[0],a[1],ZB])}L${xy([b[0],b[1],ZB])}`);}set(seams,'d',segs.join(''));
+function pose(){const segs=[];for(let i=0;i<NS;i++){const s=i*LOOP/NS+belt,a=loop(s,RI+.8),b=loop(s,RO-.8),m=loop(s+1.5),c=[2*m[0]-(a[0]+b[0])/2,2*m[1]-(a[1]+b[1])/2];segs.push(`M${xy([a[0],a[1],ZB])}Q${xy([c[0],c[1],ZB])} ${xy([b[0],b[1],ZB])}`);}set(seams,'d',segs.join(''));
 for(const p of POOL){if(p.st==='belt'){const q=loop(p.s+belt);p.x=q[0];p.y=q[1];p.z=ZB;}if(p.st!=='kitchen')set(p.g,'transform',tr(p.x,p.y,p.z));}
 const vis=POOL.filter(p=>p.st==='belt'||p.st==='serve').sort((a,b)=>a.x+a.y-b.x-b.y),key=vis.map(p=>p.id).join();if(key!==zkey){zkey=key;for(const p of vis)L.plates.appendChild(p.g);}}
 function ui(){const det=mode==='det',n=goal(),pc=String(stackN).padStart(2,'0'),spd=sp?`${SPEEDS[sp].toFixed(1)}×`:'STOPPED';
