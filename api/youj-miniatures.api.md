@@ -124,6 +124,8 @@ const homeBattery: { description; id; initial; keys; label; maker; model; name; 
 
 const homeRouter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const hotAirBalloon: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const hourglass: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const instantCamera: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -140,7 +142,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [72 items]
+const miniatures: readonly [73 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -607,6 +609,23 @@ interface MiniatureHomeRouterProps extends MiniatureProps {
 }
 
 const homeRouter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/hot-air-balloon
+
+```ts
+function MiniatureHotAirBalloon(props: MiniatureHotAirBalloonProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureHotAirBalloonHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureHotAirBalloonHandle = MiniatureProgressHandle<MiniatureHotAirBalloonKey>;
+
+type MiniatureHotAirBalloonKey = MiniatureKeyOf<typeof hotAirBalloon>;
+
+interface MiniatureHotAirBalloonProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureHotAirBalloonHandle>;
+}
+
+const hotAirBalloon: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/hourglass

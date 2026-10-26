@@ -27,6 +27,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'gumball-machine': () => import('@youj/miniatures/gumball-machine'),
   'home-battery': () => import('@youj/miniatures/home-battery'),
   'home-router': () => import('@youj/miniatures/home-router'),
+  'hot-air-balloon': () => import('@youj/miniatures/hot-air-balloon'),
   hourglass: () => import('@youj/miniatures/hourglass'),
   'instant-camera': () => import('@youj/miniatures/instant-camera'),
   letterpress: () => import('@youj/miniatures/letterpress'),
