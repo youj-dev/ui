@@ -14,6 +14,25 @@ test('only removed or changed snapshot lines count as taking API away', () => {
   assert.equal(removesApi('--- a/api/x.md\n+++ b/api/x.md\n-export const a'), true)
 })
 
+test('a tuple that only gained items adds to the API, so a catalogue growing ships as a patch', () => {
+  const header = '--- a/api/x.md\n+++ b/api/x.md\n'
+  const catalogue = (before, after) => `${header}-const miniatures: readonly [${before} items]\n+const miniatures: readonly [${after} items]`
+  assert.equal(removesApi(catalogue(60, 62)), false)
+  assert.deepEqual(apiProblems({ apiChanged: true, removes: removesApi(catalogue(60, 62)), added: [changeset('patch')] }), [])
+  // Losing an item, or any removal beside the growth, is still a removal.
+  assert.equal(removesApi(catalogue(62, 60)), true)
+  assert.equal(removesApi(`${catalogue(60, 62)}\n-export const a`), true)
+})
+
+test('a grown tuple is an addition only when the rest of its line is the same, once per removed line', () => {
+  const changed = (before, after) => `-${before}\n+${after}`
+  assert.equal(removesApi(changed('const a: readonly [3 items]', 'const b: readonly [4 items]')), true)
+  assert.equal(removesApi(changed('const a: readonly [3 items]', 'const a: readonly [4 items] | null')), true)
+  assert.equal(removesApi(changed('const a: readonly [3 items]', 'const a: string')), true)
+  assert.equal(removesApi(changed('const a: string', 'const a: readonly [4 items]')), true)
+  assert.equal(removesApi('-const a: readonly [3 items]\n-const a: readonly [3 items]\n+const a: readonly [4 items]'), true)
+})
+
 test('an API change without a changeset fails', () => {
   assert.equal(apiProblems({ apiChanged: true, removes: false, added: [] }).length, 1)
 })

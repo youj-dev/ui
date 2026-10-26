@@ -4,7 +4,8 @@
 //    Going to 1.0 is a deliberate step: its changeset says major, and its checks run with
 //    YOUJ_ALLOW_MAJOR=1.
 // 2. A change to the public API snapshot (api/) needs a changeset added since the base branch,
-//    and one that removes or changes something needs at least a `minor`, never a `patch`.
+//    and one that removes or changes something needs at least a `minor`, never a `patch`. A catalogue that
+//    only gained entries (`readonly [60 items]` to `readonly [62 items]`) is an addition.
 //    The base is YOUJ_CHANGESET_BASE, else origin/main in CI and the local main branch elsewhere; where it can't be resolved (a
 //    shallow clone, no remote) rule 2 is skipped with a note. CI fetches full history.
 // Until 0.1.0 is released (no dated "## 0.1.0" heading in CHANGELOG.md) the root CHANGELOG describes everything, and
@@ -23,9 +24,30 @@ export function bumps(text) {
   return [...front.matchAll(/:\s*(major|minor|patch)\s*$/gm)].map((m) => m[1])
 }
 
-/** Whether a diff of api/ snapshots takes anything away: a removed or changed line, not only added ones. */
+const TUPLE = /readonly \[(\d+) items\]/
+
+/** A line's tuple as the line with its count blanked and the count, or null: `const a: readonly [60 items]` is `const a: readonly [# items]` and 60. */
+const tupleOf = (line) => {
+  const match = line.match(TUPLE)
+  return match && { shape: line.replace(TUPLE, 'readonly [# items]'), items: Number(match[1]) }
+}
+
+/**
+ * Whether a diff of api/ snapshots takes anything away: a removed or changed line, not only added ones. A tuple
+ * that only gained items (the miniatures catalogue gaining two) takes nothing away: the same line, more items.
+ */
 export function removesApi(diff) {
-  return diff.split('\n').some((line) => line.startsWith('-') && !line.startsWith('---'))
+  const lines = diff.split('\n')
+  const added = lines.filter((line) => line.startsWith('+')).map((line) => tupleOf(line.slice(1)))
+  return lines
+    .filter((line) => line.startsWith('-') && !line.startsWith('---'))
+    .some((line) => {
+      const before = tupleOf(line.slice(1))
+      const at = before ? added.findIndex((after) => after?.shape === before.shape && after.items > before.items) : -1
+      if (at === -1) return true
+      added.splice(at, 1) // each added tuple answers for one removed line
+      return false
+    })
 }
 
 /** Problems with the API change and the changesets added alongside it; empty when fine. */
