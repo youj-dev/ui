@@ -23,6 +23,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   greenhouse: () => import('@youj/miniatures/greenhouse'),
   'ground-station': () => import('@youj/miniatures/ground-station'),
   'guitar-amp': () => import('@youj/miniatures/guitar-amp'),
+  'gumball-machine': () => import('@youj/miniatures/gumball-machine'),
   'home-battery': () => import('@youj/miniatures/home-battery'),
   'home-router': () => import('@youj/miniatures/home-router'),
   hourglass: () => import('@youj/miniatures/hourglass'),

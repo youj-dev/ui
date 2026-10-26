@@ -50,6 +50,7 @@
     "./greenhouse": "./src/greenhouse.tsx",
     "./ground-station": "./src/ground-station.tsx",
     "./guitar-amp": "./src/guitar-amp.tsx",
+    "./gumball-machine": "./src/gumball-machine.tsx",
     "./home-battery": "./src/home-battery.tsx",
     "./home-router": "./src/home-router.tsx",
     "./hourglass": "./src/hourglass.tsx",
@@ -182,6 +183,10 @@
       "./guitar-amp": {
         "types": "./dist/guitar-amp.d.ts",
         "default": "./dist/guitar-amp.js"
+      },
+      "./gumball-machine": {
+        "types": "./dist/gumball-machine.d.ts",
+        "default": "./dist/gumball-machine.js"
       },
       "./home-battery": {
         "types": "./dist/home-battery.d.ts",

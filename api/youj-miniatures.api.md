@@ -116,6 +116,8 @@ const groundStation: { description; id; initial; keys; label; maker; model; name
 
 const guitarAmp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const gumballMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const homeBattery: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const homeRouter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [67 items]
+const miniatures: readonly [68 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -529,6 +531,23 @@ interface MiniatureGuitarAmpProps extends MiniatureProps {
 }
 
 const guitarAmp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/gumball-machine
+
+```ts
+function MiniatureGumballMachine(props: MiniatureGumballMachineProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureGumballMachineHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureGumballMachineHandle = MiniatureHandle<MiniatureGumballMachineKey>;
+
+type MiniatureGumballMachineKey = MiniatureKeyOf<typeof gumballMachine>;
+
+interface MiniatureGumballMachineProps extends MiniatureProps {
+    ref?: Ref<MiniatureGumballMachineHandle>;
+}
+
+const gumballMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/home-battery
