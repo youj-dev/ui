@@ -99,6 +99,10 @@
     "light": "/thumbs/miniatures/mainframe.webp?v=a9dad35ab4",
     "dark": "/thumbs/miniatures/mainframe.dark.webp?v=3a13d1d1e3"
   },
+  "mechanical-keyboard": {
+    "light": "/thumbs/miniatures/mechanical-keyboard.webp?v=13d394c226",
+    "dark": "/thumbs/miniatures/mechanical-keyboard.dark.webp?v=d9089a8d4b"
+  },
   "metronome": {
     "light": "/thumbs/miniatures/metronome.webp?v=357c44da69",
     "dark": "/thumbs/miniatures/metronome.dark.webp?v=68538ff939"

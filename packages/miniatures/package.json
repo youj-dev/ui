@@ -57,6 +57,7 @@
     "./letterpress": "./src/letterpress.tsx",
     "./lighthouse": "./src/lighthouse.tsx",
     "./mainframe": "./src/mainframe.tsx",
+    "./mechanical-keyboard": "./src/mechanical-keyboard.tsx",
     "./metronome": "./src/metronome.tsx",
     "./microscope": "./src/microscope.tsx",
     "./mixing-desk": "./src/mixing-desk.tsx",
@@ -208,6 +209,10 @@
       "./mainframe": {
         "types": "./dist/mainframe.d.ts",
         "default": "./dist/mainframe.js"
+      },
+      "./mechanical-keyboard": {
+        "types": "./dist/mechanical-keyboard.d.ts",
+        "default": "./dist/mechanical-keyboard.js"
       },
       "./metronome": {
         "types": "./dist/metronome.d.ts",
