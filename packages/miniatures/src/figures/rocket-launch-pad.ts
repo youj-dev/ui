@@ -66,7 +66,7 @@ function lit(n,c,base='lamp'){if(n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 function button(g,attrs){for(const[k,v]of Object.entries({class:'control',role:'button',tabindex:'0',...attrs}))set(g,k,v);return g;}
 // Floor; the crawlerway, fading out where the platform goes for a fresh rocket.
-const s0=P(10,-4,0);for(const c of['shadow stage-floor','stage-contact'])el('ellipse',{cx:f2(s0[0]),cy:f2(s0[1]+5),rx:128,ry:72,class:c});
+const s0=P(4,-5,0);for(const c of['shadow stage-floor','stage-contact'])el('ellipse',{cx:f2(s0[0]),cy:f2(s0[1]+2.5),rx:114,ry:64,class:c});
 {const a=P(0,-84,9),b=P(0,-128,9),g=el('linearGradient',{id:'cwG',gradientUnits:'userSpaceOnUse',x1:f2(a[0]),y1:f2(a[1]),x2:f2(b[0]),y2:f2(b[1])},dfs);el('stop',{offset:0,'stop-color':'#fff'},g);el('stop',{offset:1,'stop-color':'#000'},g);const m=el('mask',{id:'cwFade',maskUnits:'userSpaceOnUse',x:-300,y:-400,width:700,height:700},dfs);el('rect',{x:-300,y:-400,width:700,height:700,fill:'url(#cwG)'},m);}
 into(el('g',{mask:'url(#cwFade)'}));box(-22,-132,0,44,72,9,2,'pad');{const t=group(TOP(-22,-132,9.02));for(let v=3;v<72;v+=5)line(t,6,v,38,v,'tie');}for(const x of[-13,13])box(x-.8,-132,9,1.6,72,1.2,.3,'metal');into(draw);
 // Pad: concrete with joints and its painted number; the trench's mouth and open slot with the far wall and the deflector.
