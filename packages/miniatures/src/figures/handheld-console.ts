@@ -16,7 +16,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .l0{fill:var(--lcd0)}.l1{fill:var(--lcd1)}.l2{fill:var(--lcd2)}.l3{fill:var(--lcd3)}.lgrid{fill:url(#px);pointer-events:none}.gap{fill:var(--gap)}
 .halo{fill:var(--glow);opacity:var(--halo);filter:url(#bloom);pointer-events:none}.led{fill:var(--led);filter:url(#glow)}.ledh{fill:var(--led);opacity:.4;filter:url(#bloom)}
 .unlit{--lcd0:#c3b48f;--lcd1:#a59467;--lcd2:#6e5f3f;--lcd3:#2c2414;--gap:#b2a37d}.unlit .halo{opacity:0}
-.glare{fill:#fff;opacity:.07;pointer-events:none}.hi{fill:none;stroke:#fff;stroke-width:.6;stroke-linecap:round;opacity:.5;pointer-events:none}.ring{fill:none;stroke:var(--line);stroke-width:.4;opacity:.45}.grille{fill:var(--hole);stroke:none}
+.glare{fill:#fff;opacity:.07;pointer-events:none}.hi{fill:none;stroke:#fff;stroke-width:.6;stroke-linecap:round;opacity:.5;pointer-events:none}.ring{fill:none;stroke:var(--line);stroke-width:.4;opacity:.45}.knurl{fill:none;stroke:var(--mark);stroke-width:.45;stroke-linecap:round}.grille{fill:var(--hole);stroke:none}
 .control{cursor:pointer;outline:none}.hit{fill:transparent;stroke:none;pointer-events:all}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.control:focus-visible .focus-ring{opacity:1}
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
 
@@ -37,6 +37,7 @@ d-pad                    c 21 · 40, span 26.8, arms 9.4, 3.1 proud; it rocks 1.
 B, A                     c 120 · 42.5 and 137.5 · 32.5, r 6.1, 2.6 proud (0.7 pressed)
 select, start            c 63 · 73.8 and 87 · 73.8: pills 12.4 × 4.4, 1.5 proud
 speaker grille           c 130 · 68.5: rings of holes to r 7.2
+volume wheel, jack       on the right side (x 150): the wheel at v 16–31, 1.5 proud; the phones jack at v 64
 cartridge                52.5–97.5   −12–32      −13.5–−5       45    44   out of the slot in the top edge; ejects 18 further
 Print, lamps and labels share their parent face. */
 const svg=document.getElementById('machine'),root=document.getElementById('drawing');
@@ -73,6 +74,10 @@ const BODY=rrp(0,0,W,H,R,12);
 for(const r of runs(BODY,n=>n[1]<-.6?'top':'side'))el('path',{d:dp(band(r.ch,at(-T),at(0)),Q),class:`face ${r.c} shell`});
 el('path',{d:dp(BODY,Q),class:'face shell'});el('path',{d:dp(rrp(2.6,2.6,W-5.2,H-5.2,R-2.6,12),Q),class:'face plate'});
 el('path',{d:dp([[47,0,-3.4],[103,0,-3.4],[103,0,-15],[47,0,-15]].map(([u,v,w])=>lift([u,v],w)),Q),class:'face slot'});
+// The right side, in (depth back from the face, v): a knurled volume wheel standing 1.5 proud of its slot, the phones jack.
+{const side=x=>`${FACE} matrix(${f4(-EU)} ${f4(-EV)} 0 1 ${x} 0)`,SD=group(side(W)),SW=group(side(W+1.5));
+rect(SD,5.4,15,7.2,17,2.6,'face hole');rect(SW,6.4,16,5.2,15,2,'face side pad');for(let v=17.5;v<30;v+=1.5)line(SW,6.6,v,11.4,v,'knurl');
+circle(SD,9,64,2.3,'face hole');circle(SD,9,64,1.1,'slot');}
 // The face: bezel with the LCD window, the LED and wordmark; seats for the buttons; the speaker grille; print.
 const FG=group(FACE);
 rect(FG,42,6,66,58,5,'face bezel');
