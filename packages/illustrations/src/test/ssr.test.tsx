@@ -9,6 +9,13 @@ import { cases } from './ssr-cases'
  * DOM, see scripts/ssr-render.mjs), then hydrates here. A reduced-motion OS
  * must not change the hydration render: it applies straight after. */
 
+/** The markup without its first <style> element (the kit's stylesheet). Test-only, not a sanitizer: it just keeps the stylesheet's class names out of what the assertions read. */
+function withoutFirstStyle(html: string) {
+  const start = html.indexOf('<style')
+  const end = html.indexOf('</style>', start)
+  return start < 0 || end < 0 ? html : html.slice(0, start) + html.slice(end + '</style>'.length)
+}
+
 const script = join(import.meta.dirname, '../../../../scripts/ssr-render.mjs')
 const casesFile = join(import.meta.dirname, 'ssr-cases.tsx')
 let serverHtml: Record<string, string>
@@ -62,7 +69,7 @@ test('the server draws a resting scene as static SVG: no motion groups, no inlin
   for (const page of Object.values(serverHtml)) {
     // The kit's one sheet, then the drawing.
     expect(page).toMatch(/^<style data-precedence="default" data-href="youj-iso-kit">/)
-    const html = page.replace(/<style[\s\S]*?<\/style>/, '')
+    const html = withoutFirstStyle(page)
     expect(html).toContain('data-slot="iso-scene"')
     // Motion writes a fill-box origin on every group it renders.
     expect(html).not.toContain('transform-box:fill-box;')
