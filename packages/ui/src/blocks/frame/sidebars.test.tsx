@@ -438,6 +438,28 @@ describe('FrameSidebarRailPanel', () => {
   })
 })
 
+describe('the tree’s keys with ids that are not plain words', () => {
+  // The rows are found by their id: quotes, backslashes, brackets and line breaks must neither throw nor focus another row.
+  const ids = ['say "hi"', 'back\\slash\\', 'close]', 'new\nline', 'a\\"] , [data-yj-tree-item']
+  const nav = [{ id: 'odd', label: 'Odd', items: ids.map((id) => ({ id, label: `Page ${ids.indexOf(id) + 1}` })) }]
+
+  test('↓ and ↑ move focus through every row', async () => {
+    const user = userEvent.setup()
+    render(<Frame kind="rail-panel" frame={{ nav, defaultActive: ids[0] }} />)
+    const rows = ids.map((_, i) => link(`Page ${i + 1}`))
+    expect(rows).toHaveLength(ids.length)
+    rows[0]!.focus()
+    for (const row of rows.slice(1)) {
+      await user.keyboard('{ArrowDown}')
+      expect(row).toHaveFocus()
+    }
+    for (const row of rows.slice(0, -1).reverse()) {
+      await user.keyboard('{ArrowUp}')
+      expect(row).toHaveFocus()
+    }
+  })
+})
+
 describe('FrameSidebarIconRail', () => {
   test('one key per top-level page, named in a tooltip; a page with nested pages opens a menu to its side', async () => {
     const user = userEvent.setup()
