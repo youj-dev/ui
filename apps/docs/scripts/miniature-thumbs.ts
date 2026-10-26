@@ -51,7 +51,7 @@ async function encode({ png, width }: { png: string; width: number }) {
 function framing(id: string) {
   const host = document.querySelector(`.yjm-${id}`)
   const svg = host?.shadowRoot?.querySelector('svg')
-  const plate = host?.closest('[class*="group/plate"]')?.getBoundingClientRect()
+  const plate = host?.closest('[data-plate]')?.getBoundingClientRect()
   const ctm = svg?.getScreenCTM()
   if (!svg || !ctm || !plate) return null
   const b = svg.getBBox()
@@ -82,6 +82,8 @@ const worker = async () => {
   for (let next = queue.shift(); next; next = queue.shift()) {
     const { id, scheme } = next
     const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 2, colorScheme: scheme, reducedMotion: 'reduce' })
+    // The site starts dark unless a theme is stored (next-themes' `theme`), whatever the browser's scheme.
+    await context.addInitScript((theme) => localStorage.setItem('theme', theme), scheme)
     const page = await context.newPage()
     try {
       await page.goto(`${base}/miniatures?item=${id}`, { waitUntil: 'load' })
