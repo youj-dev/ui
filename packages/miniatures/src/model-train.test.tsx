@@ -213,6 +213,42 @@ describe('ModelTrain', () => {
     expect(handle().getSnapshot().readout).toBe('PROGRESS 50% · NEXT: BRAEMOSS')
   })
 
+  it('keeps the same number of nodes frame after frame, through travel, every key, progress and reduced motion', async () => {
+    const run = useFrames()
+    const { handle, inside, rerender, ref } = mount(MiniatureModelTrain, { reducedMotion: 'never' })
+    await run(100)
+    const nodes = () => inside.querySelectorAll('*').length
+    const start = nodes()
+    const counts = new Set([start])
+    const at: Record<number, () => void> = {
+      2: () => handle().press('w'),
+      4: () => handle().press(' '),
+      10: () => [1, 2].forEach(() => handle().press('ArrowUp')),
+      25: () => handle().press('s'),
+      70: () => handle().press('s'),
+      80: () => [1, 2, 3, 4, 5].forEach(() => handle().press('ArrowDown')),
+      100: () => [1, 2, 3].forEach(() => handle().press('ArrowUp')),
+      110: () => handle().press(' '),
+    }
+    let crossed = false
+    for (let i = 0; i < 260; i++) {
+      if (at[i]) act(() => at[i]!())
+      if (handle().getSnapshot().state.startsWith('HELD AT BRAEMOSS')) act(() => handle().press(' '))
+      await run(100)
+      counts.add(nodes())
+      if (handle().getSnapshot().state.startsWith('CROSSING CLOSED')) crossed = true
+    }
+    expect(crossed).toBe(true)
+    for (const props of [{ progress: 0.4 }, { progress: 0.4, done: true, reducedMotion: 'always' as const }, {}]) {
+      rerender(<MiniatureModelTrain ref={ref} reducedMotion="never" {...props} />)
+      for (let i = 0; i < 25; i++) {
+        await run(100)
+        counts.add(nodes())
+      }
+    }
+    expect([...counts]).toEqual([start])
+  })
+
   it('its parts are buttons: the train departs, the signal turns, the knob opens the throttle', async () => {
     const run = useFrames()
     const { handle, inside } = mount(MiniatureModelTrain)

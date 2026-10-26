@@ -129,7 +129,7 @@ frame([[0,0,-BH,W,D,BH],[5,6,0,14,14,28],[194,12,0,12,12,30],[139,6,0,4,4,40]],1
 // The vehicles, built facing their heading at the origin and moved into place: axes, the faces the viewer sees, parts.
 let U=[1,0,0],V=[0,1,0],sU=1,sV=1;const KV=1.07,KW=1.12,RT=3.2;
 const LL=(u,v,w)=>[u*U[0]+v*KV*V[0],u*U[1]+v*KV*V[1],RT+(w-RT)*KW],LP=(u,v,w)=>P(...LL(u,v,w)),DN=[0,0,-1],DW=[0,0,-KW],VS=()=>[V[0]*KV,V[1]*KV,0],neg=a=>[-a[0],-a[1],0];
-const kOf=n=>clamp((n[0]-n[1]+1)/2),shade=(d,k)=>{if(k>.03)el('path',{d,class:'sh',opacity:f2(k)});};
+const kOf=n=>clamp((n[0]-n[1]+1)/2),shade=(d,k)=>{el('path',{d,class:'sh',opacity:f2(k>.03?k:0)});};
 // A box in the vehicle's frame: the end and side it shows (each decorated, then shaded by how it faces) and its top.
 function vbox(u0,u1,v0,v1,w0,w1,m,deco,endDeco){const ue=sU>0?u1:u0,ve=sV>0?v1:v0;
 let d=pd([LP(ue,v0,w0),LP(ue,v1,w0),LP(ue,v1,w1),LP(ue,v0,w1)]);el('path',{d,class:'face '+m});if(endDeco)endDeco(group(plane(LL(ue,v0,w1),VS(),DW)),v1-v0,w1-w0);shade(d,kOf(sU>0?U:neg(U)));
@@ -149,8 +149,9 @@ function vcyl(u,z,r,h,m){const p=LL(u,0,z);cylinder(p[0],p[1],p[2],r*KV,h*KW,'z'
 function wheel(u,v,w,r0,near,m){const r=r0*KW,g=group(plane(LL(u,v,w),U,DN));circle(g,0,0,r,'face tyre');if(!near)return null;circle(g,0,0,r*.8,'face '+m);if(r<4){circle(g,0,0,r*.3,'face metal');return null;}const sg=el('g',{},g);
 el('path',{d:Array.from({length:10},(_,k)=>{const a=k*PI/5;return`M${f2(r*.24*cos(a))},${f2(r*.24*sin(a))}L${f2(r*.78*cos(a))},${f2(r*.78*sin(a))}`;}).join(''),class:'spoke'},sg);{el('path',{d:`M${f2(-r*.62)},${f2(r*.2)}A${f2(r*.66)},${f2(r*.66)} 0 0 0 ${f2(r*.62)},${f2(r*.2)}Z`,class:'hub'},sg);circle(sg,r*.46,0,.62,'face metal');}
 circle(g,0,0,r*.24,'face hub');return sg;}
-// Buffers on an end (ue, facing dir), each as long as the coupling's play on a curve allows.
-function buffers(ue,dir,len){for(const[i,v]of[[0,-5],[1,5]]){const l=len[i];if(l>=.3)tube(Math.min(ue,ue+dir*l),Math.max(ue,ue+dir*l),v,10.8,1.3,'metal',false);}}
+// Buffers on an end (ue, facing dir), each as long as the coupling's play on a curve allows (pushed right in, hidden).
+// Parts out of sight are hidden, never left out, so a vehicle is the same nodes whichever way it faces.
+function buffers(ue,dir,len){for(const[i,v]of[[0,-5],[1,5]]){const l=Math.max(len[i],.3),g=el('g',{});into(g);tube(Math.min(ue,ue+dir*l),Math.max(ue,ue+dir*l),v,10.8,1.3,'metal',false);into(g.parentNode);if(len[i]<.3)set(g,'display','none');}}
 // The tank engine: far wheels, frames, near wheels and rods, footplate and beams, then the body in the order it's seen.
 function buildLoco(c){const hid=sU>0?-1:1;
 for(const u of[-10,0,10])wheel(u,-4.7*sV,7.6,4.4,false);vbox(-16,16,-3,3,4.6,12,'black');
@@ -161,11 +162,11 @@ sU>0?(g,w)=>{for(const v of[3.8,w-3.8])circle(g,v,3.8,1.45,'face win');}:(g,w)=>
 roof(-17.6,-3.8,8.2,27.6,2.2,'black');},
 tank=s=>vbox(-4.4,9,s>0?3.2:-7.5,s>0?7.5:-3.2,13.2,21.4,'crimson',s===sV?(g,w)=>{rect(g,.8,.8,w-1.6,6.6,.5,'lining');text(group(P(...U)[0]>=0?'':`matrix(-1 0 0 1 ${f2(w)} 0)`,g),w/2,5.1,'ESKER','livery');}:null),
 boiler=()=>tube(-4.4,11,0,18.8,5,'crimson'),
-smoke=()=>{vbox(11,16.6,-4.2,4.2,13.2,16,'black');tube(11,16.6,0,18.8,5.3,'black');if(sU>0){const g=group(plane(LL(16.62,0,18.8),VS(),DW));circle(g,0,0,4.5,'face black');circle(g,0,0,3.7,'detail');line(g,-1.4,0,1.4,0,'detail');line(g,0,-1.4,0,1.4,'detail');}},
+smoke=()=>{vbox(11,16.6,-4.2,4.2,13.2,16,'black');tube(11,16.6,0,18.8,5.3,'black');const g=group(plane(LL(16.62,0,18.8),VS(),DW));circle(g,0,0,4.5,'face black');circle(g,0,0,3.7,'detail');line(g,-1.4,0,1.4,0,'detail');line(g,0,-1.4,0,1.4,'detail');if(sU<=0)set(g,'display','none');},
 tops=()=>{vcyl(2.5,22.4,2.6,2.4,'brass');const c2=LP(2.5,0,24.8),rx=2.6*KV*1.2247,ry=2.6*KV*.7071;el('path',{d:`M${f2(c2[0]-rx)},${f2(c2[1])}A${f2(rx)},${f2(2.6*KW)} 0 0 1 ${f2(c2[0]+rx)},${f2(c2[1])}A${f2(rx)},${f2(ry)} 0 0 1 ${f2(c2[0]-rx)},${f2(c2[1])}Z`,class:'face top brass'});
 vcyl(-2.2,23.2,1.1,1.8,'brass');vcyl(-5.2,27.6,.45,2.2,'brass');},
 chim=()=>{vcyl(14,23.4,1.9,6,'black');vcyl(14,29.2,2.5,1.4,'black');const t=LP(14,0,30.6);el('ellipse',{cx:f2(t[0]),cy:f2(t[1]),rx:f2(1.7*KV*1.2247),ry:f2(1.7*KV*.7071),class:'face recess'});},
-lamp=()=>{vbox(15.4,16.8,-1.1,1.1,13.2,15.8,'black',null,sU>0?g=>circle(g,1.1,1.3,.85,'head'):null);};
+lamp=()=>{vbox(15.4,16.8,-1.1,1.1,13.2,15.8,'black',null,g=>{circle(g,1.1,1.3,.85,'head');if(sU<=0)set(g,'display','none');});};
 if(sU>0){cab();tank(-sV);boiler();tank(sV);tops();smoke();chim();lamp();}else{lamp();smoke();chim();tank(-sV);boiler();tank(sV);tops();cab();}
 el('path',{d:pd(hull([LP(-19.4,-7.5,3),LP(19.4,-7.5,3),LP(19.4,7.5,3),LP(-19.4,7.5,3),LP(-17,-7.5,30),LP(17,-7.5,30),LP(-17,7.5,30),LP(17,7.5,30)])),class:'focus-ring'});}
 // A coach: far wheels, bogies and underframe, near wheels, then the body (crimson and cream, windows), roof and vents.
@@ -175,7 +176,7 @@ for(const b of[-10,10])vbox(b-5,b+5,-5.2,5.2,4.6,8.6,'black');for(const b of[-10
 vbox(-15,15,-6,6,8.6,10.6,'black');buffers(15*hid,hid,c.buf[hid>0?0:1]);
 vbox(-15,15,-7.2,7.2,10.6,23.4,'crimson',(g,w)=>{rect(g,0,0,w,6.4,0,'fill-cream');el('path',{d:`M0,6.4H${w}M.9,1V12.4M${w-.9},1V12.4`,class:'detail'},g);el('path',{d:[0,1,2,3,4,5].map(i=>`M${f2(1.7+i*4.55)},1.3h3.1v3.9h-3.1Z`).join(''),class:'win'},g);rect(g,.6,7.4,w-1.2,4.6,.4,'lining');},
 (g,w)=>{rect(g,0,0,w,6.4,0,'fill-cream');line(g,0,6.4,w,6.4,'detail');rect(g,w/2-1.8,1.3,3.6,3.9,.5,'win');});
-if(c.tail&&sU<0){vbox(-15.9,-15,-1,1,10.6,13,'black',null,g=>circle(g,1,1.2,.8,'tail'));}
+if(c.tail){const g=el('g',{});into(g);vbox(-15.9,-15,-1,1,10.6,13,'black',null,e=>circle(e,1,1.2,.8,'tail'));into(c.g);if(sU>=0)set(g,'display','none');}
 roof(-15.4,15.4,7.6,23.4,2.4,'roofc');el('path',{d:[-8,0,8].map(u=>{const c=LP(u,0,25.9),rx=.8*KV*1.2247,ry=.8*KV*.7071;return`M${f2(c[0]-rx)},${f2(c[1])}a${f2(rx)},${f2(ry)} 0 1 0 ${f2(2*rx)},0a${f2(rx)},${f2(ry)} 0 1 0 ${f2(-2*rx)},0Z`;}).join(''),class:'face black'});
 buffers(-15*hid,-hid,c.buf[hid>0?1:0]);
 el('path',{d:pd(hull([LP(-17.4,-7.2,3),LP(17.4,-7.2,3),LP(17.4,7.2,3),LP(-17.4,7.2,3),LP(-15.4,-7.6,25.8),LP(15.4,-7.6,25.8),LP(-15.4,7.6,25.8),LP(15.4,7.6,25.8)])),class:'focus-ring'});}
