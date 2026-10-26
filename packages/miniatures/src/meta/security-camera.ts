@@ -9,7 +9,7 @@ export const securityCamera = {
   study: '059',
   spec: 'PT–4 / PAN-TILT · 4× ZOOM · IR 850 NM · 30 M',
   label: 'Security camera, KEVRA PT–4',
-  description: 'A pan-tilt camera on a wall bracket, watching a paved yard: a long housing under a sun shield, a dark glass front with the lens, a ring of infrared LEDs and a REC light, a yoke on a pan unit with a status ring, and a drip loop down to a junction box with a privacy key switch. It follows your pointer across the yard with a little lag, its field of view marked on the paving, and patrols left and right when the pointer leaves. A fast movement counts as motion: the lens snaps to focus, the event is logged and the floodlight comes on. The arrow keys pan and tilt it by hand, Z zooms, N switches to infrared night vision, P slides the privacy shutter over the lens and parks it, and Space takes a snapshot.',
+  description: 'A pan-tilt camera on a wall bracket: a long housing under a sun shield, a dark glass front with the lens, a ring of infrared LEDs and a REC light, a yoke on a pan unit with a status ring, and a drip loop down to a junction box with a privacy key switch. It follows your pointer across the floor with a little lag, throwing a soft pool of light where it looks, and patrols left and right when the pointer leaves. A fast movement counts as motion: the lens snaps to focus, the event is logged and the floodlight comes on. The arrow keys pan and tilt it by hand, Z zooms, N switches to infrared night vision, P slides the privacy shutter over the lens and parks it, and Space takes a snapshot.',
   keys: [
     {
       keys: ['ArrowLeft', 'ArrowUp', 'ArrowDown', 'ArrowRight'],
@@ -22,10 +22,10 @@ export const securityCamera = {
     { keys: [' '], caps: ['Space'], label: 'snapshot' },
   ],
   initial: {
-    readout: 'PAN −45.0° · TILT −14.0° · 1.0×',
+    readout: 'PAN −45.0° · TILT −20.0° · 1.0×',
     state: 'PATROL · REC · DAY',
     pressed: {},
   },
-  viewBox: '-89.67433714816835 -80.5 179.3486742963367 185.5',
+  viewBox: '-66.88972745734182 -78.5 151.96598839415685 176.5',
   progress: false,
 } as const satisfies MiniatureMeta

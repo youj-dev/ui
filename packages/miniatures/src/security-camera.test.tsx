@@ -54,10 +54,10 @@ describe('Security camera', () => {
   })
 
   it.each([
-    ['ArrowLeft', 'PAN −55.0° · TILT −14.0° · 1.0×'],
-    ['ArrowRight', 'PAN −35.0° · TILT −14.0° · 1.0×'],
-    ['ArrowUp', 'PAN −45.0° · TILT −9.0° · 1.0×'],
-    ['ArrowDown', 'PAN −45.0° · TILT −19.0° · 1.0×'],
+    ['ArrowLeft', 'PAN −55.0° · TILT −20.0° · 1.0×'],
+    ['ArrowRight', 'PAN −35.0° · TILT −20.0° · 1.0×'],
+    ['ArrowUp', 'PAN −45.0° · TILT −15.0° · 1.0×'],
+    ['ArrowDown', 'PAN −45.0° · TILT −25.0° · 1.0×'],
   ] as const)('%s jogs the head by hand', async (key, readout) => {
     const { snap } = await play([key])
     expect(snap().readout).toBe(readout)
@@ -66,17 +66,17 @@ describe('Security camera', () => {
 
   it('jogs add up, then it goes home again on its own', async () => {
     const { handle, run, snap } = await play(['ArrowRight', 'ArrowRight', 'ArrowUp'])
-    expect(snap().readout).toBe('PAN −25.0° · TILT −9.0° · 1.0×')
+    expect(snap().readout).toBe('PAN −25.0° · TILT −15.0° · 1.0×')
     await run(5200)
     expect(snap().state).toBe('HOME · REC · DAY')
     act(() => handle().press('ArrowLeft'))
     await run(100)
-    expect(snap().readout).toBe('PAN −55.0° · TILT −14.0° · 1.0×')
+    expect(snap().readout).toBe('PAN −55.0° · TILT −20.0° · 1.0×')
   })
 
   it('Z steps the zoom through 2× and 4× and back to 1×', async () => {
     const { handle, run, snap } = await play(['z'])
-    expect(snap().readout).toBe('PAN −45.0° · TILT −14.0° · 2.0×')
+    expect(snap().readout).toBe('PAN −45.0° · TILT −20.0° · 2.0×')
     expect(snap().state).toBe('ZOOM 2× · 26° VIEW')
     act(() => handle().press('z'))
     await run(100)
@@ -135,7 +135,7 @@ describe('Security camera', () => {
     expect(snap().state).toBe('SNAPSHOT · EVENT 02')
   })
 
-  it('follows the pointer over the yard, holds a moment when it leaves, then goes home', async () => {
+  it('follows the pointer over the floor, holds a moment when it leaves, then goes home', async () => {
     const { run, snap, svg } = await play()
     pointer(svg(), 'pointermove', -40, 105)
     await run(100)

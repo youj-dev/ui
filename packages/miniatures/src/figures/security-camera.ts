@@ -4,17 +4,17 @@
  * (FigureModule). */
 import type { FigureEnv, FigureModule } from '../engine/types'
 
-const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--ok:#15a65e;--warn:#e88a00;--fault:#e3372d;--metal:#d6d6d2;--metal-top:#efefec;--metal-side:#b4b4b1;--rubber:#2e2e2d;--dk:#3a3a39;--dk-top:#4a4a48;--dk-side:#2d2d2c;--conc:#c9c8c3;--conc-top:#dfdeda;--conc-side:#b3b2ad;--plinth:#a9a8a4;--roof:#a3a29e;--pave:#d3d3cf;--pave-top:#e6e6e2;--pave-side:#c0c0bc;--front:#20252b;--lens:#14171b;--lens-in:#22303a;--lens-rim:#30363d;--coat:#4f9fc4;--ir:#d02a5a;--ir-off:#6b5a5e;--warm:#ffb347;--white:#f4f6ff}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--fault:#ff4c41;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--rubber:#252524;--dk:#2f2f2f;--dk-top:#454543;--dk-side:#1d1d1c;--conc:#a9a8a5;--conc-top:#d1d0cc;--conc-side:#7d7d7b;--plinth:#8e8d8a;--roof:#8d8c89;--pave:#b2b2af;--pave-top:#d7d7d3;--pave-side:#878786;--front:#1a1d21;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--ir:#ff4d76;--ir-off:#5a4c50;--warm:#ffb04a;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
-.night{--lens-in:#2c1a33;--coat:#c45bd8}
+const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--ok:#15a65e;--warn:#e88a00;--fault:#e3372d;--metal:#d6d6d2;--metal-top:#efefec;--metal-side:#b4b4b1;--rubber:#2e2e2d;--dk:#3a3a39;--dk-top:#4a4a48;--dk-side:#2d2d2c;--conc:#c9c8c3;--conc-top:#dfdeda;--conc-side:#b3b2ad;--plinth:#a9a8a4;--roof:#a3a29e;--pave:#d3d3cf;--pave-top:#e6e6e2;--pave-side:#c0c0bc;--front:#20252b;--lens:#14171b;--lens-in:#22303a;--lens-rim:#30363d;--coat:#4f9fc4;--ir:#d02a5a;--ir-off:#6b5a5e;--warm:#ffb347;--white:#f4f6ff;--pool:#5f8dff}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--fault:#ff4c41;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--rubber:#252524;--dk:#2f2f2f;--dk-top:#454543;--dk-side:#1d1d1c;--conc:#a9a8a5;--conc-top:#d1d0cc;--conc-side:#7d7d7b;--plinth:#8e8d8a;--roof:#8d8c89;--pave:#b2b2af;--pave-top:#d7d7d3;--pave-side:#878786;--front:#1a1d21;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--ir:#ff4d76;--ir-off:#5a4c50;--warm:#ffb04a;--pool:#8aa8ff;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
+.night{--lens-in:#2c1a33;--coat:#c45bd8;--pool:var(--ir)}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.base{fill:var(--base)}.recess{fill:var(--recess)}.glass{fill:var(--glass)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:3.2px ui-monospace,monospace;letter-spacing:.45px;stroke:none}.label{fill:var(--ink);font:4px ui-monospace,monospace;letter-spacing:.6px;stroke:none}.brand{font-size:6px;letter-spacing:1.7px;font-weight:600}.brand.tiny{font-size:3px;letter-spacing:.9px}.micro{font-size:2.6px;letter-spacing:.2px}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.dk{fill:var(--dk)}.top.dk{fill:var(--dk-top)}.side.dk{fill:var(--dk-side)}.rubber{fill:var(--rubber)}.conc{fill:var(--conc)}.top.conc{fill:var(--conc-top)}.side.conc{fill:var(--conc-side)}.pave{fill:var(--pave)}.top.pave{fill:var(--pave-top)}.side.pave{fill:var(--pave-side)}.plinth{fill:var(--plinth)}
-.crease{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.45}.joint{fill:none;stroke:var(--line);stroke-width:.5;opacity:.3}.seam{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}.tie{fill:var(--recess);stroke:none;opacity:.6}
+.crease{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.45}.seam{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}.tie{fill:var(--recess);stroke:none;opacity:.6}
 .su,.sr,.sm{fill:none;stroke-linecap:round;stroke-linejoin:round}.su{stroke:var(--line)}.sr{stroke:var(--rubber)}.sm{stroke:var(--metal)}
 .irled{fill:var(--ir-off);stroke:none}.night .irled{fill:var(--ir);filter:url(#glow)}.priv .irled{fill:var(--ir-off);filter:none}.irhalo{fill:var(--ir);opacity:0;filter:url(#bloom)}.night .irhalo{opacity:.55}.priv .irhalo{opacity:0}
 .lensg{fill:url(#glassG);stroke:none;opacity:var(--cut,1)}.coat{fill:none;stroke:var(--coat);stroke-width:.9;stroke-linecap:round;opacity:.75}.spec{fill:#fff;opacity:.75;stroke:none}.iris{fill:#050607;stroke:none}.shutter{fill:var(--top);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.grip{fill:none;stroke:var(--recess);stroke-width:.7;stroke-linecap:round}
-.fov{fill:var(--accent);fill-opacity:.07;stroke:var(--accent);stroke-width:1;stroke-dasharray:2.6 2.2;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.9}@media(prefers-color-scheme:dark){.fov{fill-opacity:.12;stroke-width:1.5;opacity:1}.aim{stroke-width:1.2}}.night .fov{fill:var(--ir);fill-opacity:.05;stroke:var(--ir)}.priv .fov,.priv .aim{opacity:0}.irpool{fill:var(--ir);opacity:0;filter:url(#bloom)}.night .irpool{opacity:.22}.priv .irpool{opacity:0}
-.aim{fill:none;stroke:var(--accent);stroke-width:.8;stroke-linecap:round;vector-effect:non-scaling-stroke}.night .aim{stroke:var(--ir)}.det{fill:none;stroke:var(--warn);stroke-width:1.2;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0}
+.beam{fill:url(#fovG);stroke:none}.beamedge{fill:none;stroke:var(--pool);stroke-width:.6;stroke-dasharray:2 2.6;vector-effect:non-scaling-stroke;opacity:.3}.priv .beam,.priv .beamedge,.priv .aim{opacity:0}
+.aim{fill:none;stroke:var(--pool);stroke-width:.7;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.55}.det{fill:none;stroke:var(--warn);stroke-width:1.2;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0}
 .lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.r{fill:var(--fault)}.lamp.b{fill:var(--accent)}.lamp.w{fill:var(--warm)}.lamp.i{fill:var(--ir)}.lamp.g,.lamp.a,.lamp.r,.lamp.b,.lamp.w,.lamp.i{filter:url(#glow)}.halo{opacity:0;filter:url(#bloom)}.halo.w{fill:var(--warm);opacity:.6}.halo.r{fill:var(--fault);opacity:.45}
 .sring{fill:var(--off);stroke:none}.sring.g{fill:var(--ok)}.sring.b{fill:var(--accent)}.sring.a{fill:var(--warn)}.sring.w{fill:var(--white)}.sring.g,.sring.b,.sring.a,.sring.w{filter:url(#glow)}
 .pool{opacity:0}.flood{fill:var(--glass);stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke}.flood.w{fill:var(--warm);filter:url(#glow)}.glassfront{fill:var(--front);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.glint{fill:#fff;opacity:.12;stroke:none}
@@ -22,6 +22,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
 
 const defs = `<radialGradient id="glassG" cx=".4" cy=".36" r=".72"><stop offset="0" style="stop-color:var(--lens-in)"/><stop offset=".7" style="stop-color:var(--lens)"/><stop offset="1" style="stop-color:var(--lens-rim)"/></radialGradient>
+<radialGradient id="fovG"><stop offset="0" style="stop-color:var(--pool);stop-opacity:.4"/><stop offset=".5" style="stop-color:var(--pool);stop-opacity:.2"/><stop offset="1" style="stop-color:var(--pool);stop-opacity:0"/></radialGradient>
 <radialGradient id="warmG"><stop offset="0" style="stop-color:var(--warm);stop-opacity:.6"/><stop offset="1" style="stop-color:var(--warm);stop-opacity:0"/></radialGradient>
 <clipPath id="frontClip"><rect x="1.2" y="1.2" width="16.6" height="18.6" rx="2.6"/></clipPath>`
 
@@ -29,14 +30,14 @@ function draw(env: FigureEnv): void {
 const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
 /* KEVRA PT–4 on a wall section. World: x lower-right, y lower-left, z up; pan from the diagonal (+x+y), tilt from the horizon.
 Part                        x      y      z      w      d      h
-yard slab                   0      0     −3     92     92      3   paving joints; the field of view lands on it
+floor light            a soft pool where the camera points, scaled to the frame; the house shadow under the wall
 wall section                0      0      0     14     44     30   panel seam, tie holes, plinth, coping; floodlight at y 30
 wall plate                 14      4     10    1.6     14     16   four screws; drip loop to the junction box at y 26
 arm + brace            r 3.4  15.6 → 44 at y 11, z 18             day/night sensor on top at x 23
 pan unit               r 10    44     11   23.6      –      –     10   on a mounting disc; status ring
 yoke                    crossbar 27.6 × 10 × 2.8 above the pan unit, arms up to the tilt axis at 44 11 52, flush pivot caps
 housing                 50 × 19 × 21 along the look axis; dark glass front with lens, IR ring and shutter; sun shield 55 × 23 on standoffs
-Painter order: yard, field of view, wall, floodlight, plate, junction box, arm, pan unit; crossbar, far arm, housing, sun shield, near arm; controls. */
+Painter order: shadow, floor light, wall, floodlight, plate, junction box, arm, pan unit; crossbar, far arm, housing, sun shield, near arm; controls. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
 const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
 // Family helpers: vectors, oriented planes, round parts on any axis, oriented boxes, outlined strokes, lamps and controls.
@@ -56,12 +57,11 @@ function lamp(g,x,y,r=1){const n=circle(g,x,y,r,'lamp');n._c='';return n;}
 function lit(n,c,base='lamp'){if(n&&n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''));}}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 function button(g,attrs){for(const[k,v]of Object.entries({class:'control',role:'button',tabindex:'0',...attrs}))set(g,k,v);return g;}
-// Ground: the yard's paving and the layer the field of view, the IR flood and the floodlight's pool draw on, clipped to it.
-const sh=P(46,46,-3);el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+6),rx:92,ry:30,class:'shadow stage-floor'});el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+6),rx:92,ry:30,class:'stage-contact'});
-box(0,0,-3,92,92,3,3,'pave');const yt=group(TOP(0,0,.02));for(let k=11.5;k<92;k+=11.5){line(yt,k,1.5,k,90.5,'joint');line(yt,1.5,k,90.5,k,'joint');}
-el('path',{d:poly([[0,0,0],[92,0,0],[92,92,0],[0,92,0]],true)},el('clipPath',{id:'yard'},svg.querySelector('defs')));
-const fovG=el('g',{'clip-path':'url(#yard)'}),pool=el('ellipse',{cx:30,cy:34,rx:15,ry:10,fill:'url(#warmG)',class:'pool'},group(TOP(0,0,.04),fovG)),irPool=el('path',{class:'irpool'},fovG),fov=el('path',{class:'fov'},fovG);
-const aimG=el('g',{},fovG);circle(aimG,0,0,2.8,'aim');for(const[a,b,c,d]of[[-5.4,0,-3.6,0],[3.6,0,5.4,0],[0,-5.4,0,-3.6],[0,3.6,0,5.4]])line(aimG,a,b,c,d,'aim');
+// Floor: the house ground shadow under the wall and the camera, then the light the camera throws where it points (a soft
+// pool along its look, cool by day and magenta in infrared), the aim mark at its center, and the floodlight's warm pool.
+const sh=P(26,24,0);el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+3),rx:46,ry:15,class:'shadow stage-floor'});el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+3),rx:46,ry:15,class:'stage-contact'});
+const fovG=el('g',{}),pool=el('ellipse',{cx:30,cy:34,rx:15,ry:10,fill:'url(#warmG)',class:'pool'},group(TOP(0,0,.04),fovG)),lightG=el('g',{},fovG),beam=el('ellipse',{class:'beam'},lightG),edge=el('ellipse',{class:'beamedge'},lightG);
+const aimG=el('g',{},lightG);circle(aimG,0,0,2.2,'aim');for(const[a,b,c,d]of[[-4.8,0,-3.2,0],[3.2,0,4.8,0],[0,-4.8,0,-3.2],[0,3.2,0,4.8]])line(aimG,a,b,c,d,'aim');
 const detG=el('g',{class:'det'},aimG);for(const[sx,sy]of[[-1,-1],[1,-1],[1,1],[-1,1]])el('path',{d:`M${sx*9},${sy*5.5}L${sx*9},${sy*9}L${sx*5.5},${sy*9}`},detG);
 // Wall: one low concrete section with tie holes, plinth and coping; a floodlight near its end.
 box(0,0,0,14,44,30,1.2,'conc');const rw=group(SIDE(14,44,30)),ew=group(FRONT(0,44,30));for(const[g,w]of[[rw,44],[ew,14]])rect(g,0,25,w,5,.8,'face plinth');
@@ -75,7 +75,7 @@ tube(root,[15.6,11,11.6],[26,11,16.6],1.1,'metal');tube(root,[15.6,11,18],[44,11
 // Pan unit with its status ring on a mounting disc; above it the yoke, the housing and its sun shield, rebuilt in painter order as it moves.
 cylinder(44,11,21.4,8.4,2.2,'z','metal');const pu=cylinder(44,11,23.6,10,10,'z','');const ring=band(root,[44,11,29.8],[44,11,31.6],10.1,'sring');set(ring,'class','sring');ring._c='';cylinder(44,11,33.6,8.4,1.2,'z','dk');
 const L={yoke:el('g',{}),far:el('g',{}),head:el('g',{}),hood:el('g',{}),near:el('g',{})};
-const PIV=[44,11],TZ=52,HOME=45,Z=[1,2,4],LB=[0,1,2.6],REST=[45,-14],P0=5.27,TILT=[-38,20];
+const PIV=[44,11],TZ=52,HOME=45,Z=[1,2,4],LB=[0,1,2.6],REST=[45,-20],P0=5.27,TILT=[-38,20],HV=26;
 let[pan,tilt]=REST,vp=0,vt=0,[tp,tt]=REST,zi=0,lb=LB[0],zNow=1,shut=0,iris=1.4,night=false,privacy=false,events=0;
 let ptr=null,lostUntil=0,manual=null,manualAt=-1e9,lastMove=null,speed=0,patrolT=P0,twitchT=-1e9,motionT=-1e9,snapT=-1e9,cutT=-1e9,lampT=-1e9,flash='',flashT=0,last=0,lastUI=-1,drawn='',mode='PATROL',rec=null,cutV='1';
 function pose(){const p=(HOME+pan)*RAD,t=tilt*RAD,g=[Math.cos(p),Math.sin(p),0],s=[-Math.sin(p),Math.cos(p),0],f=[Math.cos(t)*g[0],Math.cos(t)*g[1],Math.sin(t)],u=[-Math.sin(t)*g[0],-Math.sin(t)*g[1],Math.cos(t)];return{g,s,f,u,T:[PIV[0],PIV[1],TZ]};}
@@ -93,15 +93,12 @@ else if(fc.i===1){const pl=upright(add(add(T,mul(fc.n,9.56)),mul(f,-16)),f,mul(u
 for(const k of[-12,12])obox(L.hood,add(add(T,mul(f,k)),mul(u,11.35)),f,s,u,5,11,1.7,'dk',.6);
 const top=obox(L.hood,add(add(T,mul(f,2)),mul(u,12.9)),f,s,u,55,23,1.4,'metal',2).find(h=>h.i===2&&h.s>0);rec=null;if(top){line(top.f,4,11.5,51,11.5,'crease');rec=lamp(top.f,49.5,4,1.05);}
 const hc=P(...add(T,mul(f,2)));for(const n of[hHit,hRing]){set(n,'cx',f2(hc[0]));set(n,'cy',f2(hc[1]));}
-// Field of view: the four frustum rays on the yard (capped far out), the aim point at the center.
-const Lp=add(T,mul(f,23)),hh=Math.tan(23/zNow*RAD),vh=Math.tan(15/zNow*RAD),pts=[];for(const[a,b]of[[-1,1],[1,1],[1,-1],[-1,-1]]){const r=add(f,add(mul(s,a*hh),mul(u,b*vh))),k=r[2]<-1e-3?Math.min(-Lp[2]/r[2],170):170,q=add(Lp,mul(r,k));q[2]=0;pts.push(q);}
-const ka=f[2]<-1e-3?-Lp[2]/f[2]:1e9,on=ka<170,d=on?poly(pts,true):'';set(fov,'d',d);set(irPool,'d',d);fov.style.opacity=on?'':'0';
-if(on){const A=add(Lp,mul(f,ka));set(aimG,'transform',TOP(A[0],A[1],.05));aimG.style.opacity='';}else aimG.style.opacity='0';}
+}
 // Controls on top: the head takes a snapshot, the sensor switches night vision, the junction box closes the shutter.
 const hBtn=button(el('g',{}),{'aria-label':'Take a snapshot (Space)'}),hHit=el('circle',{r:20,class:'hit'},hBtn),hRing=el('circle',{r:21.5,class:'focus-ring'},hBtn);
 const pq=P(23,11,22.4),nBtn=button(el('g',{}),{'aria-label':'Night vision (N)','aria-pressed':'false'});el('circle',{cx:f2(pq[0]),cy:f2(pq[1]),r:6.5,class:'hit'},nBtn);el('circle',{cx:f2(pq[0]),cy:f2(pq[1]),r:7.5,class:'focus-ring'},nBtn);
 const bBtn=button(el('g',{}),{'aria-label':'Privacy shutter (P)','aria-pressed':'false'}),bq=group(SIDE(17.6,36,11),bBtn);rect(bq,-1.5,-1.5,13,12,2,'hit');rect(bq,-1,-1,12,11,2,'focus-ring');
-frame([[0,0,-3,92,92,3],[0,0,0,14,44,32],[16,-17,30,56,56,40]],10);
+frame([[0,0,0,14,44,32],[16,-17,30,56,56,40],[10,38,0,92,40,0]],8);const vb=svg.getAttribute('viewBox').split(/[\s,]+/).map(Number),YMAX=vb[1]+vb[3]-14;
 // State: pointer tracking, patrol, manual jogs, zoom, night, privacy and snapshots; audio after a gesture.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 const say=m=>{announcement.textContent=m;},pad=n=>String(n).padStart(2,'0'),sg=v=>{const r=Math.round(v*10)/10;return(r<0?'−':'+')+Math.abs(r).toFixed(1);},hush=v=>Math.abs(Math.round(v));
@@ -109,12 +106,12 @@ const note=(m,ms=1500)=>{flash=m;flashT=performance.now()+ms;lastUI=-1;};
 let ac=null,whir=null;
 function audio(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;if(!ac){ac=new A();const o=ac.createOscillator(),fl=ac.createBiquadFilter();o.type='sawtooth';o.frequency.value=96;fl.type='lowpass';fl.frequency.value=380;whir=ac.createGain();whir.gain.value=0;o.connect(fl);fl.connect(whir);whir.connect(ac.destination);o.start();}if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){}}
 function tone(f,d=.07,v=.012,w=0,type='sine'){if(!ac)return;try{const t=ac.currentTime+w,o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.03);}catch(_){}}
-/* Where to look for a point on the drawing: the spot on the yard under it. A spot behind the line across the pivot
+/* Where to look for a point on the drawing: the spot on the floor under it, at the floor scale the light pool uses (HV). A spot behind the line across the pivot
  * (the wall's side) is pushed out onto that line and the head tilts up with it, so it turns toward the pointer
  * and never into its own wall; right below the pivot the pan eases home. */
 function aimAt(x,y){const gx=(x/C+y/S)/2,gy=(y/S-x/C)/2,push=Math.max(0,PIV[0]+PIV[1]-gx-gy),dx=gx+push/2-PIV[0],dy=gy+push/2-PIV[1],rh=Math.hypot(dx,dy);
-let a=((Math.atan2(dy,dx)/RAD-HOME+540)%360)-180;a*=ramp(0,24,rh);return[clamp(a,-92,92),clamp(Math.atan2(-TZ,rh)/RAD+push*.5,...TILT)];}
-function patrolAt(t){const k=((t%17)+17)%17,e=x=>(1-Math.cos(Math.PI*x))/2,a=k<7?-1+2*e(k/7):k<8.5?1:k<15.5?1-2*e((k-8.5)/7):-1;return[20+a*35,-22+8*Math.cos((t-P0)*.55)];}
+let a=((Math.atan2(dy,dx)/RAD-HOME+540)%360)-180;a*=ramp(0,24,rh);return[clamp(a,-92,92),clamp(Math.atan2(-HV,rh)/RAD+push*.5,...TILT)];}
+function patrolAt(t){const k=((t%17)+17)%17,e=x=>(1-Math.cos(Math.PI*x))/2,a=k<7?-1+2*e(k/7):k<8.5?1:k<15.5?1-2*e((k-8.5)/7):-1;return[20+a*35,-26+6*Math.cos((t-P0)*.55)];}
 function local(e){const m=svg.getScreenCTM?.();if(!m)return null;const det=m.a*m.d-m.b*m.c;if(!det)return null;const x=e.clientX-m.e,y=e.clientY-m.f;return[(m.d*x-m.c*y)/det,(-m.b*x+m.a*y)/det];}
 function onPointer(e){const q=local(e);if(!q)return;const now=performance.now();
 if(lastMove){const dt=(now-lastMove.t)/1000;if(dt>.004)speed=speed*.45+Math.hypot(q[0]-lastMove.x,q[1]-lastMove.y)/dt*.55;}lastMove={x:q[0],y:q[1],t:now};
@@ -131,6 +128,10 @@ bind(hBtn,shot);bind(nBtn,nightToggle);bind(bBtn,privacyToggle);
 const act={' ':shot,z:zoomStep,n:nightToggle,p:privacyToggle,ArrowLeft:()=>jog(10,0),ArrowRight:()=>jog(-10,0),ArrowUp:()=>jog(0,5),ArrowDown:()=>jog(0,-5)};
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(k===' '&&e.target.closest&&e.target.closest('button,[role=button]'))return;const fn=act[k];if(fn){e.preventDefault();if(!e.repeat||k.startsWith('Arrow'))fn();}});
 function ui(){readout.textContent=`PAN ${sg(-pan)}° · TILT ${sg(tilt)}° · ${zNow.toFixed(1)}×`;stateLabel.textContent=performance.now()<flashT?flash:privacy?'PRIVACY · SHUTTER CLOSED':`${mode} · REC · ${night?'IR NIGHT':'DAY'}`;}
+/* The light pool on the floor where the camera points: along its pan, as far out as its tilt reaches at the floor scale
+ * HV (kept inside the frame), narrower as it zooms. */
+function light(){const p=(HOME+pan)*RAD,cp=Math.cos(p),sp=Math.sin(p),k=Math.pow(zNow,-.6);let D=tilt<-3?clamp(HV/Math.tan(-tilt*RAD),30,96):96;if(cp+sp>0)D=Math.min(D,(YMAX-(PIV[0]+PIV[1])/2)*2/(cp+sp));
+set(lightG,'transform',`${TOP(PIV[0]+cp*D,PIV[1]+sp*D,.05)} rotate(${f2(HOME+pan)})`);for(const[n,m]of[[beam,1],[edge,.78]]){set(n,'rx',f2(25*k*m));set(n,'ry',f2(16*k*m));}}
 function tick(now){const dt=last?Math.min((now-last)/1000,.05):0,red=reduced.matches;last=now;
 if(privacy){mode='PRIVACY';tp=REST[0];tt=-10;}else if(ptr){mode='TRACKING';[tp,tt]=ptr;}else if(now-manualAt<5000){mode='MANUAL';[tp,tt]=manual;}else if(now<lostUntil)mode='TARGET LOST';else if(red){mode='HOME';[tp,tt]=REST;}else{mode='PATROL';patrolT+=dt;[tp,tt]=patrolAt(patrolT);}
 if(red){pan=tp;tilt=tt;vp=vt=0;}else{const W=8,ap=W*W*(tp-pan)-2*W*vp,at=W*W*(tt-tilt)-2*W*vt;vp=clamp(vp+ap*dt,-240,240);vt=clamp(vt+at*dt,-180,180);pan+=vp*dt;tilt+=vt*dt;}
@@ -141,10 +142,10 @@ const blink=red||now%1200<760;if(rec)lit(rec,!privacy&&blink?'r':'');lit(boxLamp
 lit(ring,privacy?'':now-motionT<1300?'a':now-snapT<260?'w':mode==='TRACKING'||mode==='MANUAL'?'b':'g','sring');
 const lampOn=now-lampT<4000;lit(flood,lampOn?'w':'','flood');set(floodHalo,'class','halo'+(lampOn?' w':''));pool.style.opacity=lampOn?'.85':'0';
 const da=(now-motionT)/1000;detG.style.opacity=da<1.1?f2(red?1:Math.min(1,da*8)*(1-da/1.1)):'0';if(!red)set(detG,'transform',`scale(${f2(1.25-.25*Math.min(1,da*5))})`);
-const cut=(now-cutT)/1000,cv=cut<.14&&!red?'.35':'1';if(cv!==cutV){cutV=cv;svg.style.setProperty('--cut',cv);}
+light();const cut=(now-cutT)/1000,cv=cut<.14&&!red?'.35':'1';if(cv!==cutV){cutV=cv;svg.style.setProperty('--cut',cv);}
 if(whir)whir.gain.setTargetAtTime(Math.min(1,(Math.abs(vp)+Math.abs(vt))/160)*.006,ac.currentTime,.06);
 if(lastUI<0||now-lastUI>120){lastUI=now;ui();}requestAnimationFrame(tick);}
-assemble();ui();requestAnimationFrame(tick);
+assemble();light();ui();requestAnimationFrame(tick);
 }
 
 export const figure: FigureModule = { css, defs, hints: [], draw }
