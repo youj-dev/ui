@@ -102,6 +102,8 @@ const deskFan: { description; id; initial; keys; label; maker; model; name; prog
 
 const droneDock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const drumKit: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const drumMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const espresso: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -412,6 +414,23 @@ interface MiniatureDroneDockProps extends MiniatureProps {
 }
 
 const droneDock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/drum-kit
+
+```ts
+function MiniatureDrumKit(props: MiniatureDrumKitProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureDrumKitHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureDrumKitHandle = MiniatureHandle<MiniatureDrumKitKey>;
+
+type MiniatureDrumKitKey = MiniatureKeyOf<typeof drumKit>;
+
+interface MiniatureDrumKitProps extends MiniatureProps {
+    ref?: Ref<MiniatureDrumKitHandle>;
+}
+
+const drumKit: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/drum-machine

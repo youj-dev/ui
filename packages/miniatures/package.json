@@ -43,6 +43,7 @@
     "./cuckoo-clock": "./src/cuckoo-clock.tsx",
     "./desk-fan": "./src/desk-fan.tsx",
     "./drone-dock": "./src/drone-dock.tsx",
+    "./drum-kit": "./src/drum-kit.tsx",
     "./drum-machine": "./src/drum-machine.tsx",
     "./espresso": "./src/espresso.tsx",
     "./film-projector": "./src/film-projector.tsx",
@@ -155,6 +156,10 @@
       "./drone-dock": {
         "types": "./dist/drone-dock.d.ts",
         "default": "./dist/drone-dock.js"
+      },
+      "./drum-kit": {
+        "types": "./dist/drum-kit.d.ts",
+        "default": "./dist/drum-kit.js"
       },
       "./drum-machine": {
         "types": "./dist/drum-machine.d.ts",
