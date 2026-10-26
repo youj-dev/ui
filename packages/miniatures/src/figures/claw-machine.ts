@@ -20,7 +20,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .btn{fill:var(--accent)}.top.btn{fill:color-mix(in srgb,var(--accent) 76%,#fff)}.side.btn{fill:color-mix(in srgb,var(--accent) 68%,#000)}.btn-ring{fill:none;stroke:var(--accent);stroke-width:1.1;opacity:.3}.armed .btn-ring{opacity:1;filter:url(#glow)}.chev{fill:none;stroke:#fff;stroke-width:.9;stroke-linecap:round;stroke-linejoin:round;opacity:.92}
 .ball{fill:url(#ball);stroke:var(--line);stroke-width:.8;vector-effect:non-scaling-stroke}.ball-hi{fill:#fff;opacity:.7}.stick{fill:var(--rubber);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}
 .slot-lit{fill:#e5392b;opacity:.3}.slot-lit.on{opacity:1;filter:url(#glow)}.coin{fill:#e0b44c;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke}.coin-in{fill:none;stroke:#f2d27d;stroke-width:.6}
-.flap{fill:#1d1d1c;fill-opacity:.42;stroke:var(--line);stroke-width:.7;vector-effect:non-scaling-stroke}.flap-t{fill:#fff;opacity:.78;font-size:3.2px;font-weight:700;letter-spacing:1px;text-anchor:middle}
+.flap{fill:#1d1d1c;fill-opacity:.42;stroke:var(--line);stroke-width:.7;vector-effect:non-scaling-stroke}.flap-t{fill:#fff;opacity:.78;font-size:2.5px;font-weight:700;letter-spacing:1px;text-anchor:middle}
 .cable{fill:none;stroke:var(--line);stroke-width:.75;vector-effect:non-scaling-stroke}.fo{fill:none;stroke:var(--line);stroke-width:3.1;stroke-linecap:round;stroke-linejoin:round}.fi{fill:none;stroke:var(--chrome-top);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.tip{fill:var(--rubber)}.claw-shadow{fill:var(--shadow);opacity:.2;filter:url(#soft)}
 .pf{fill:var(--c);stroke:var(--line);stroke-width:.75;vector-effect:non-scaling-stroke;stroke-linejoin:round}.pd{fill:var(--patch)}.pb{fill:var(--l)}.pl{fill:var(--l)}.pe{fill:var(--eye)}.ph{fill:#fff}.pn{fill:var(--nose)}.pk{fill:var(--cheek);opacity:.5}.pm{fill:none;stroke:var(--eye);stroke-width:.55;stroke-linecap:round;stroke-linejoin:round}
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
@@ -35,21 +35,21 @@ const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* LARKWELL CR–3 claw machine. World: x lower-right, y lower-left (front faces look along +y), z up; 1 unit ≈ 1 cm.
 Part                          x        y        z       w      d      h
 plinth                        3        3        0      74     66      5
-cabinet                       0        0        5      80     72     65   stripes and brand down the side, vents
-prize door (bay)            7–31    63–72    14–37     24      9     23   smoked flap hinged at its top
-coin door                  50–72      72     14–40     22      –     26   lit slot, return button
+cabinet                       0        0        5      80     72     65   stripes, brand and vents down the side
+prize door (bay)            6–32    63–72     8–34     26      9     26   smoked flap hinged at its top
+coin door                  50–72      72     10–36     22      –     26   lit slot, return button
 control desk                6–74    72–86    50–69     68     14     19   sloped top: joystick, display, drop button
 glass case rail + bed         0        0       70      80     72      3   prize bed at z 73
-backdrop (back, left)         2        2       73      76     68     75   printed stars, lamp glow
-chute (hole, acrylic)       3–27    47–69    73–84     24     22     11   drops to the prize door
-plushes                     8–72     8–66   73–108      –      –      –   bear, bunny, frog, chick, cat, panda, pig
-gantry rails            1.5/75.5      2      132       3     68      3
-bridge                        2    gy±2.5    135      76      5    3.5   rides the rails in y
-trolley                    gx±5    gy±4.5   138.5     10      9    5.5   rides the bridge in x
-claw: head r 4.4 × 7.5 on a cable from the trolley; three fingers 13 long, hinged on r 3.6
-glass, posts, top rail     front y 71, right x 79; posts 3 × 3; rail z 148–151
-header (marquee)             −1       −1      151      82     74     24   lit signs, chase bulbs, vents
-crest                      20–60    68–71   175–191    40      3     16   arched topper with a star
+backdrop (back, left)         2        2       73      76     68     87   printed stars, a lamp glow at night
+chute (hole, acrylic)       3–27    47–69    73–84     24     22     11   down to the prize door
+plushes                    11–65    11–58    73–109      –      –      –   a hex-packed floor, a top layer in its hollows
+gantry rails            1.5/75.5      2      147       3     68      3
+bridge                        2    gy±2.5    150      76      5    3.5   rides the rails in y
+trolley                    gx±5    gy±4.5   153.5     10      9    5.5   rides the bridge in x
+claw: head r 5.6 × 9 on a cable from the bridge; three fingers 17 long, hinged on r 4.6
+glass, posts, top rail     front y 71, right x 79; posts 3 × 3, the near one 1.6; rail z 160–163
+header (marquee)             −1       −1      163      82     74     24   lit signs, chase bulbs, vents
+crest                      12–68    69–72   187–211     56      3     24   arched topper: sunburst, star, bulbs
 The gantry follows the keys or the pointer and the claw hangs from it as a damped pendulum: lowered on its cable, it
 closes, lifts and carries home to the chute, where it opens. How far off the plush's centre it closed decides the grab:
 close holds, further out it slips partway home, further still it misses. Everything inside the glass is re-sorted by
@@ -79,7 +79,7 @@ const CS=group(SIDE(W+.05,D,ZC));rect(CS,3,6,66,3.6,1.8,'stripe');rect(CS,3,11.4
 const CF=group(FRONT(0,D+.05,ZC));rect(CF,2,58.4,76,4.6,1,'face base');
 const bayG=el('g',{'clip-path':'url(#bayClip)'});rect(group(FRONT(6,63,34),bayG),0,0,26,26,0,'face void');rect(group(TOP(6,63,8.02),bayG),0,0,26,9,0,'face top recess');rect(group(SIDE(6.02,D,34),bayG),0,0,9,26,0,'face side recess');
 const DR=group(FRONT(6,D+.06,34));el('path',{d:'M-2.4,-2.4H28.4V28.4H-2.4ZM0,0V26H26V0Z','fill-rule':'evenodd',class:'face chrome'},DR);
-const door=ctl(el('g',{}),'Prize door: take the prize (P)'),flap=el('g',{},door);rect(flap,0,0,26,26,1.2,'flap');rect(flap,8,19.6,10,2,1,'face chrome');text(flap,13,5,'PUSH','flap-t');
+const door=ctl(el('g',{}),'Prize door: take the prize (P)'),flap=el('g',{},door);rect(flap,0,0,26,26,1.2,'flap');rect(flap,8,19.6,10,2,1,'face chrome');text(flap,20.6,3.6,'PUSH','flap-t');
 {const g=group(FRONT(6,D+.07,34),door);rect(g,-3.4,-3.4,32.8,32.8,2,'focus-ring');rect(g,-2.4,-2.4,30.8,30.8,0,'hit');}
 const outG=el('g',{});
 const CD=group(FRONT(50,D+.05,36));rect(CD,0,0,22,26,1.6,'face metal');rect(CD,1.4,1.4,19.2,23.2,1.1,'detail');const slotLit=rect(CD,7.6,3.4,6.8,9.2,1.4,'slot-lit');rect(CD,10.2,4.6,1.6,6.8,.6,'face void');text(CD,11,16.8,'1 PLAY','etch center');rect(CD,8,19.4,6,2.8,1,'face top metal');for(const[u,v]of[[3,3],[19,3],[3,23],[19,23]])pin(CD,u,v,.6);
@@ -151,7 +151,7 @@ shape([[74,72,69],[74,86,64],[74,86,55],[74,72,50]],'side gr',1.2);shape([[6,86,
 {const g=group(FRONT(6,86.05,64));text(g,16,3.7,'MOVE','ge');text(g,56,3.7,'DROP','ge');rect(g,1.5,4.9,65,1.9,.95,'stripe');rect(g,1.5,7.4,65,.6,.3,'stripe2');}
 const D0=[6,72,69],DV=unit([0,14,-5]),DN=cross([1,0,0],DV),dk=(u,v,h=0)=>add(add(D0,[u,v*DV[1],v*DV[2]]),DN,h),DP=(u,v,h=0)=>plane(dk(u,v,h),[1,0,0],DV),DF=group(DP(0,0));
 rect(DF,26.4,1.6,21.2,11.2,1.6,'face gr');rect(DF,27.6,2.8,18.8,8.8,1,'disp');
-const LED=[el('g',{class:'led-glow'},DF),DF].map(g=>({b:text(g,37,10,'','led'),s:text(g,45.4,4.8,'','led s')}));
+const LG=el('g',{class:'led-glow'},DF),LED=[LG,DF].map(g=>({b:text(g,37,10,'','led'),s:text(g,45.4,4.8,'','led s')}));
 const JB=dk(16,7.2,.4);circle(group(DP(16,7.2)),0,0,4.6,'face rubber');circle(group(DP(16,7.2,.25)),0,0,2.4,'face top rubber');
 const joy=el('g',{}),stickN=el('path',{class:'stick'},joy),ballN=circle(joy,0,0,4.04,'ball'),ballH=el('ellipse',{rx:1.3,ry:.85,class:'ball-hi'},joy);
 const btn=ctl(el('g',{}),'Drop button: drop the claw (Space)');circle(group(DP(56,7.2),btn),0,0,7.4,'face rubber');circle(group(DP(56,7.2,.3),btn),0,0,6.5,'btn-ring');
@@ -166,7 +166,7 @@ el('rect',{x:-400,y:-400,width:f2(400+P(61,D,0)[0]),height:800},el('clipPath',{i
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement'),say=m=>{announcement.textContent=m;};
 let credits=3,won=0,timer=TIMER,phase='idle',pt0=performance.now(),last=pt0,gx=HOME[0],gy=HOME[1],vx=0,vy=0,tx=gx,ty=gy,ox=0,oy=0,wox=0,woy=0,cx=gx,cy=gy,zh=ZH0,z0=ZH0,th=REST,tht=REST,phi=.5;
-let held=null,weak=false,slipAt=9,prog=0,grab=null,dist0=1,dropHere=false,demoPlay=false,lastIn=pt0-IDLE+2600,holdT=0,beep=99,note='',noteUntil=0,winT=-1e9,bay=null,btnDown=0,btnH=-1,coinT=0,slotT=-1e9,flapKick=-1e9,flapOpen=-1e9,flapA=-1,jx=0,jy=0,jKey='',roam=0,outKey='',lit='',ledKey='',headK=0,shK=0;
+let held=null,weak=false,slipAt=9,prog=0,grab=null,dist0=1,dropHere=false,demoPlay=false,lastIn=pt0-IDLE+2600,holdT=0,beep=99,note='',noteUntil=0,winT=-1e9,bay=null,btnDown=0,btnH=-1,coinT=0,slotT=-1e9,flapKick=-1e9,flapOpen=-1e9,flapA=-1,jx=0,jy=0,jKey='',clawKey='',roam=0,outKey='',lit='',ledKey='',headK=0,shK=0;
 const keys={ArrowLeft:0,ArrowRight:0,ArrowUp:0,ArrowDown:0},DIR={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]},demo={on:false,step:0,t:0,aim:null};
 let ac=null,nb=null;
 function audio(){try{if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A();}if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}return ac;}
@@ -239,7 +239,7 @@ else{const sp=phase==='carry'?20:24,A=150*dt,wx=go2?clamp((tx-gx)*6,-sp,sp):0,wy
 if(gx<BX[0]||gx>BX[1]){gx=clamp(gx,...BX);vx=0;}if(gy<BY[0]||gy>BY[1]){gy=clamp(gy,...BY);vy=0;}}
 if(red){ox=oy=wox=woy=0;}else if(dt>0){const ax=(vx-pvx)/dt,ay=(vy-pvy)/dt,w2=700/(max(2,CZ-zh-9)+8),c=2*sqrt(w2)*(phase==='grip'||(phase==='drop'&&zh<stopZ()+3)?1.2:.12),h=dt/4;
 for(let i=0;i<4;i++){wox+=(-w2*ox-ax-c*wox)*h;woy+=(-w2*oy-ay-c*woy)*h;ox+=wox*h;oy+=woy*h;}ox=clamp(ox,-7,7);oy=clamp(oy,-7,7);}
-cx=gx+ox;cy=gy+oy;if(!red)phi+=dt*(.12+hypot(vx,vy)*.02);
+cx=gx+ox;cy=gy+oy;if(!red)phi+=dt*hypot(vx,vy)*.02;
 th=red?tht:th+clamp(tht-th,-3.2*dt,3.2*dt);}
 // The drop sequence: settle, drop, grip, lift, carry home, release over the chute; reduced motion steps through it.
 function sequence(now,dt,red){const e=now-pt0;
@@ -249,7 +249,7 @@ else if(phase==='drop'){tht=OPEN;const s=stopZ();if(red){if(e>280){zh=s;arrive()
 else if(phase==='grip'){if(e>(red?300:520)){if(grab)attach();else{tone(392,.14,.02,'triangle');tone(311,.22,.02,'triangle',.14);notice('MISSED · RETURNING',2600);say('Missed.');}go('lift');tone(150,1,.012,'sawtooth',0,280);}}
 else if(phase==='lift'){if(red){if(e>300){zh=ZH0;slipCheck(.35);toCarry(red);}}else{zh=min(ZH0,zh+18*dt);slipCheck(.35*clamp((zh-z0)/(ZH0-z0||1)));if(zh>=ZH0)toCarry(red);}}
 else if(phase==='carry'){if(red){if(e>300){slipCheck(1);gx=tx=HOME[0];gy=ty=HOME[1];go('release');}}else{const d=hypot(HOME[0]-gx,HOME[1]-gy);slipCheck(.35+.65*clamp(1-d/dist0));if(d<.4&&hypot(vx,vy)<1.2)go('release');}}
-else if(phase==='release'){tht=OPEN;if(held&&e>(red?0:160)){const q=held;held=null;q.x=cx+q.hx;q.y=cy+q.hy;q.z=zh-q.hz;q.st='fall';q.vx=red?0:wox;q.vy=red?0:woy;q.vz=0;}if(e>(red?300:700)){tht=REST;go('idle');timer=TIMER;demoPlay=false;tx=gx;ty=gy;}}}
+else if(phase==='release'){tht=OPEN;if(held&&e>(red?0:160)){const q=held;held=null;q.x=cx+q.hx;q.y=cy+q.hy;q.z=zh-q.hz;q.st='fall';q.vx=red?0:wox;q.vy=red?0:woy;q.vz=0;q.spin=red?0:(q.hx>0?160:-160);}if(e>(red?300:700)){tht=REST;go('idle');timer=TIMER;demoPlay=false;tx=gx;ty=gy;}}}
 // Left alone, it plays itself (silently): picks a plush, steers over it along y then x, drops; any input takes over.
 function demoStep(now,red){
 if(!demo.on){if(red||phase!=='idle'||bay||now-lastIn<IDLE)return;demo.on=true;demo.step=0;demo.t=now+500;}
@@ -265,11 +265,11 @@ else if(demo.step===4){if(phase==='idle'&&!pile.some(q=>q.st==='fall'||q.st==='c
 else if(demo.step===5){if(bay)eject(bay);demo.step=0;demo.t=now+2600;}}
 // Drawing the moving parts: the claw (head, cable, fingers, shadow), gantry, joystick, button, coin, flap, lights.
 function render(now,red){
-move(headG,cx,cy,zh);const a=P(gx,gy,CZ),b=P(cx,cy,zh+9);set(cableN,'d',`M${f2(a[0])},${f2(a[1])}L${f2(b[0])},${f2(b[1])}`);headK=cx+cy+zh+4;
+const ck=[gx,gy,cx,cy,zh,th,phi].map(f2).join();if(ck!==clawKey){clawKey=ck;move(headG,cx,cy,zh);const a=P(gx,gy,CZ),b=P(cx,cy,zh+9);set(cableN,'d',`M${f2(a[0])},${f2(a[1])}L${f2(b[0])},${f2(b[1])}`);headK=cx+cy+zh+4;
 const ct=cos(th),st=sin(th);for(const F of FING){const ph=phi+F.i*2*PI/3,ca=cos(ph),sa=sin(ph),pts=FP.map(([r,z])=>{const rr=4.6+r*ct-z*st;return P(cx+rr*ca,cy+rr*sa,zh+r*st+z*ct);}),d='M'+pts.map(p=>f2(p[0])+','+f2(p[1])).join('L'),tp=pts[pts.length-1];
 set(F.o,'d',d);set(F.n,'d',d);set(F.t,'cx',f2(tp[0]));set(F.t,'cy',f2(tp[1]));F.k=cx+cy+7.6*(ca+sa)+zh-8.5;}
 const sz=surface(cx,cy),sp=P(cx,cy,sz+.3);set(shadowN,'cx',f2(sp[0]));set(shadowN,'cy',f2(sp[1]));shK=cx+cy+sz+.5;
-move(bridgeG,0,gy,0);move(trolleyG,gx,gy,0);
+move(bridgeG,0,gy,0);move(trolleyG,gx,gy,0);}
 for(const q of pile)if(q.st!=='gone'&&q.st!=='slide'){const p=P(q.x,q.y,q.z),t=`translate(${f2(p[0])} ${f2(p[1])}) rotate(${f2(q.tilt)}) scale(${f2(q.k*(1+q.sq*.1))} ${f2(q.k*(1-q.sq*.14))})`;if(t!==q.tf){q.tf=t;set(q.g,'transform',t);}}
 const L=[{n:CW,k:163.5},{n:headI,k:headK},{n:shadowI,k:shK},...FING.map(F=>({n:F.g,k:F.k})),...pile.filter(q=>q.o.parentNode===IN).map(q=>({n:q.o,k:q.x+q.y+q.z}))].sort((p,q)=>p.k-q.k);
 L.forEach((it,i)=>{if(IN.children[i]!==it.n)IN.insertBefore(it.n,IN.children[i]||null);});
@@ -287,7 +287,7 @@ const w=now-winT<3400;
 const att=(phase==='idle'&&!bay)||demo.on;const s=red?(w?'w':att?'a':'p'):w?'w'+floor(now/90)%2:att?'a'+floor(now/120)%BULBS.length:'p';
 if(s!==lit){lit=s;const k=+s.slice(1)||0;BULBS.forEach((bb,i)=>bb.classList.toggle('on',s==='p'||s==='w'||(s==='a'?i%2===0:s[0]==='w'?(i+k)%2===0:(i-k+BULBS.length*9)%5<2)));}
 crestHalo.style.opacity=f2(w?(red?1:.6+.4*sin(now/70)):.55);
-let big;if(w)big=red||floor(now/250)%2?'WIN!':'';else if(phase!=='idle')big=pad(secs());else if(demo.on)big='DEMO';else if(credits<1)big=red||floor(now/500)%2?'COIN':'';else big='PLAY';
+LG.style.opacity=w&&!red?f2(.25+.6*(floor(now/250)%2)):'';let big;if(w)big='WIN!';else if(phase!=='idle')big=pad(secs());else if(demo.on)big='DEMO';else if(credits<1)big=red||floor(now/500)%2?'COIN':'';else big='PLAY';
 const lk=big+credits;if(lk!==ledKey){ledKey=lk;for(const l of LED){l.b.textContent=big;l.s.textContent=`CR ${credits}`;}}}
 // The caption: credits, timer and wins; the state line names what the machine is doing.
 function ui(now){const r=`CREDITS ${credits} · TIMER ${pad(secs())} · WON ${won}`;let s;
