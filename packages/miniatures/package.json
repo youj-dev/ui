@@ -44,6 +44,7 @@
     "./desk-fan": "./src/desk-fan.tsx",
     "./drone-dock": "./src/drone-dock.tsx",
     "./drum-machine": "./src/drum-machine.tsx",
+    "./elevator": "./src/elevator.tsx",
     "./espresso": "./src/espresso.tsx",
     "./film-projector": "./src/film-projector.tsx",
     "./firewall-appliance": "./src/firewall-appliance.tsx",
@@ -159,6 +160,10 @@
       "./drum-machine": {
         "types": "./dist/drum-machine.d.ts",
         "default": "./dist/drum-machine.js"
+      },
+      "./elevator": {
+        "types": "./dist/elevator.d.ts",
+        "default": "./dist/elevator.js"
       },
       "./espresso": {
         "types": "./dist/espresso.d.ts",

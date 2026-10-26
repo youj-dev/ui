@@ -104,6 +104,8 @@ const droneDock: { description; id; initial; keys; label; maker; model; name; pr
 
 const drumMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const elevator: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const espresso: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const filmProjector: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -429,6 +431,23 @@ interface MiniatureDrumMachineProps extends MiniatureProps {
 }
 
 const drumMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/elevator
+
+```ts
+function MiniatureElevator(props: MiniatureElevatorProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureElevatorHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureElevatorHandle = MiniatureProgressHandle<MiniatureElevatorKey>;
+
+type MiniatureElevatorKey = MiniatureKeyOf<typeof elevator>;
+
+interface MiniatureElevatorProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureElevatorHandle>;
+}
+
+const elevator: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/espresso

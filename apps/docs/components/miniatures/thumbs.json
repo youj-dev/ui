@@ -47,6 +47,10 @@
     "light": "/thumbs/miniatures/drum-machine.webp?v=ce99db290b",
     "dark": "/thumbs/miniatures/drum-machine.dark.webp?v=4a78835757"
   },
+  "elevator": {
+    "light": "/thumbs/miniatures/elevator.webp?v=4fda9bf7ce",
+    "dark": "/thumbs/miniatures/elevator.dark.webp?v=0ab897560f"
+  },
   "espresso": {
     "light": "/thumbs/miniatures/espresso.webp?v=ecd98e1bc9",
     "dark": "/thumbs/miniatures/espresso.dark.webp?v=0e98c0b0ed"
