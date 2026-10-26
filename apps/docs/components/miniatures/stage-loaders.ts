@@ -34,6 +34,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   metronome: () => import('@youj/miniatures/metronome'),
   microscope: () => import('@youj/miniatures/microscope'),
   'mixing-desk': () => import('@youj/miniatures/mixing-desk'),
+  'modular-synth': () => import('@youj/miniatures/modular-synth'),
   nas: () => import('@youj/miniatures/nas'),
   'network-switch': () => import('@youj/miniatures/network-switch'),
   'nixie-clock': () => import('@youj/miniatures/nixie-clock'),

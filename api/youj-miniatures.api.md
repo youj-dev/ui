@@ -136,9 +136,11 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const modularSynth: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const nas: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -718,6 +720,23 @@ interface MiniatureMixingDeskProps extends MiniatureProps {
 }
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/modular-synth
+
+```ts
+function MiniatureModularSynth(props: MiniatureModularSynthProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureModularSynthHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureModularSynthHandle = MiniatureHandle<MiniatureModularSynthKey>;
+
+type MiniatureModularSynthKey = MiniatureKeyOf<typeof modularSynth>;
+
+interface MiniatureModularSynthProps extends MiniatureProps {
+    ref?: Ref<MiniatureModularSynthHandle>;
+}
+
+const modularSynth: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/nas
