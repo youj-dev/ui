@@ -75,6 +75,10 @@
     "light": "/thumbs/miniatures/guitar-amp.webp?v=c3de6f21b9",
     "dark": "/thumbs/miniatures/guitar-amp.dark.webp?v=4f81430530"
   },
+  "gumball-machine": {
+    "light": "/thumbs/miniatures/gumball-machine.webp?v=c86c63ea68",
+    "dark": "/thumbs/miniatures/gumball-machine.dark.webp?v=74c8f31d17"
+  },
   "home-battery": {
     "light": "/thumbs/miniatures/home-battery.webp?v=c0143c90f8",
     "dark": "/thumbs/miniatures/home-battery.dark.webp?v=f733e7609b"
