@@ -114,21 +114,21 @@ set(svg,'viewBox','-54 -153 108 183');
 const ROCK=[...svg.querySelectorAll('.rock')];
 // The wax field, on a grid over the globe's inside (x across, h up from the glass's foot at z 48): the walls fade it
 // out, so every contour closes inside the glass.
-const g=1.2,X0=-24,H0=-10,NX=41,NY=73,TH=.42,F=new Float32Array(NX*NY),WALL=new Float32Array(NX*NY),HT=72;
+const GS=1.2,X0=-24,H0=-10,NX=41,NY=73,TH=.42,F=new Float32Array(NX*NY),WALL=new Float32Array(NX*NY),HT=72;
 // The inside of the glass as drawn: its half-width at each height of the drawing, from the outline's envelope (where
 // the glass flares, that's well below the widest point of each circle). The floor runs behind the collar's lip.
 const SIL=[];for(let z=48;z<=124.01;z+=.25){const a=turn(rIn,z,48,124),r=rIn(z);SIL.push([K*r*Math.cos(a),z-48-Q*r*Math.sin(a)]);}
 const Wi=h=>{let i=1;while(i<SIL.length-1&&SIL[i][1]<h)i++;const[a,b]=SIL[i-1],[c,e]=SIL[i];return a+(c-a)*clamp((h-b)/(e-b))-.9;};
-for(let j=0;j<NY;j++){const h=H0+j*g,wi=Wi(h);for(let i=0;i<NX;i++){const x=X0+i*g,hb=.6-Q*13.6*Math.sqrt(Math.max(0,1-(x/(K*13.6))**2));
+for(let j=0;j<NY;j++){const h=H0+j*GS,wi=Wi(h);for(let i=0;i<NX;i++){const x=X0+i*GS,hb=.6-Q*13.6*Math.sqrt(Math.max(0,1-(x/(K*13.6))**2));
 WALL[j*NX+i]=sm((wi-Math.abs(x))/2.2)*sm((h-hb)/1.6)*sm((73-h)/3);}}
-function blob(cx,ch,ax,ay,w){const RX=2*ax,RY=2*ay,i0=Math.max(0,Math.ceil((cx-RX-X0)/g)),i1=Math.min(NX-1,Math.floor((cx+RX-X0)/g)),j0=Math.max(0,Math.ceil((ch-RY-H0)/g)),j1=Math.min(NY-1,Math.floor((ch+RY-H0)/g));
-for(let j=j0;j<=j1;j++){const dy=(H0+j*g-ch)/RY,d2=dy*dy;if(d2>=1)continue;for(let i=i0;i<=i1;i++){const dx=(X0+i*g-cx)/RX,q=dx*dx+d2;if(q<1){const u=1-q;F[j*NX+i]+=w*u*u*u;}}}}
+function blob(cx,ch,ax,ay,w){const RX=2*ax,RY=2*ay,i0=Math.max(0,Math.ceil((cx-RX-X0)/GS)),i1=Math.min(NX-1,Math.floor((cx+RX-X0)/GS)),j0=Math.max(0,Math.ceil((ch-RY-H0)/GS)),j1=Math.min(NY-1,Math.floor((ch+RY-H0)/GS));
+for(let j=j0;j<=j1;j++){const dy=(H0+j*GS-ch)/RY,d2=dy*dy;if(d2>=1)continue;for(let i=i0;i<=i1;i++){const dx=(X0+i*GS-cx)/RX,q=dx*dx+d2;if(q<1){const u=1-q;F[j*NX+i]+=w*u*u*u;}}}}
 // Marching squares: edges are numbered (across, then up); each crossing links to its neighbours, and the loops are
 // walked and drawn as closed Catmull-Rom curves.
 const EH=NY*(NX-1),NE=EH+(NY-1)*NX,ex=new Float32Array(NE),ey=new Float32Array(NE),n1=new Int32Array(NE),n2=new Int32Array(NE),stamp=new Int32Array(NE),used=new Int32Array(NE),done=new Int32Array(NE);let frameNo=0,nUsed=0;
 function cross(e){if(stamp[e]===frameNo)return;stamp[e]=frameNo;n1[e]=n2[e]=-1;used[nUsed++]=e;
-if(e<EH){const j=Math.floor(e/(NX-1)),i=e-j*(NX-1),a=F[j*NX+i],b=F[j*NX+i+1];ex[e]=X0+(i+(TH-a)/(b-a))*g;ey[e]=H0+j*g;}
-else{const k=e-EH,j=Math.floor(k/NX),i=k-j*NX,a=F[j*NX+i],b=F[(j+1)*NX+i];ex[e]=X0+i*g;ey[e]=H0+(j+(TH-a)/(b-a))*g;}}
+if(e<EH){const j=Math.floor(e/(NX-1)),i=e-j*(NX-1),a=F[j*NX+i],b=F[j*NX+i+1];ex[e]=X0+(i+(TH-a)/(b-a))*GS;ey[e]=H0+j*GS;}
+else{const k=e-EH,j=Math.floor(k/NX),i=k-j*NX,a=F[j*NX+i],b=F[(j+1)*NX+i];ex[e]=X0+i*GS;ey[e]=H0+(j+(TH-a)/(b-a))*GS;}}
 function link(a,b){cross(a);cross(b);if(n1[a]<0)n1[a]=b;else n2[a]=b;if(n1[b]<0)n1[b]=a;else n2[b]=a;}
 function contour(){frameNo++;nUsed=0;
 for(let j=0;j<NY-1;j++)for(let i=0;i<NX-1;i++){const va=F[j*NX+i],vb=F[j*NX+i+1],vc=F[(j+1)*NX+i+1],vd=F[(j+1)*NX+i],c=(va>TH?1:0)|(vb>TH?2:0)|(vc>TH?4:0)|(vd>TH?8:0);if(c===0||c===15)continue;
@@ -141,7 +141,7 @@ if(p.length>3&&!hole(p))d+='M'+pt(p[0])+cr(p,true)+'Z';}return d;}
 // A loop with no wax inside is a gap between blobs: wax has no holes seen through it, so it's filled.
 function hole(p){let A=0;for(let k=0;k<p.length;k++){const a=p[k],b=p[(k+1)%p.length];A+=a[0]*b[1]-b[0]*a[1];}
 const tx=p[1][0]-p[0][0],ty=p[1][1]-p[0][1],l=Math.hypot(tx,ty)||1,s=A>0?1:-1,x=(p[0][0]+p[1][0])/2-ty/l*.6*s,y=(p[0][1]+p[1][1])/2+tx/l*.6*s;
-const u=clamp((x-X0)/g,0,NX-1.001),v=clamp((-48-y-H0)/g,0,NY-1.001),i=Math.floor(u),j=Math.floor(v),fu=u-i,fv=v-j,o=j*NX+i;
+const u=clamp((x-X0)/GS,0,NX-1.001),v=clamp((-48-y-H0)/GS,0,NY-1.001),i=Math.floor(u),j=Math.floor(v),fu=u-i,fv=v-j,o=j*NX+i;
 return F[o]*(1-fu)*(1-fv)+F[o+1]*fu*(1-fv)+F[o+NX]*(1-fu)*fv+F[o+NX+1]*fu*fv<TH;}
 // The wax's moves. Each blob carries its own warmth: by the bulb it warms, under the cap it cools, between them it
 // keeps what it has, so it rises all the way up and sinks all the way down. Warm wax runs freely; cold wax is set.
