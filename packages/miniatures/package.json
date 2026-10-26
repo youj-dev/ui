@@ -37,6 +37,7 @@
     "./bank-vault": "./src/bank-vault.tsx",
     "./card-catalog": "./src/card-catalog.tsx",
     "./cell-tower": "./src/cell-tower.tsx",
+    "./claw-machine": "./src/claw-machine.tsx",
     "./coffee-grinder": "./src/coffee-grinder.tsx",
     "./cooling-unit": "./src/cooling-unit.tsx",
     "./crt-television": "./src/crt-television.tsx",
@@ -50,8 +51,10 @@
     "./greenhouse": "./src/greenhouse.tsx",
     "./ground-station": "./src/ground-station.tsx",
     "./guitar-amp": "./src/guitar-amp.tsx",
+    "./gumball-machine": "./src/gumball-machine.tsx",
     "./home-battery": "./src/home-battery.tsx",
     "./home-router": "./src/home-router.tsx",
+    "./hot-air-balloon": "./src/hot-air-balloon.tsx",
     "./hourglass": "./src/hourglass.tsx",
     "./instant-camera": "./src/instant-camera.tsx",
     "./letterpress": "./src/letterpress.tsx",
@@ -61,6 +64,7 @@
     "./metronome": "./src/metronome.tsx",
     "./microscope": "./src/microscope.tsx",
     "./mixing-desk": "./src/mixing-desk.tsx",
+    "./model-train": "./src/model-train.tsx",
     "./nas": "./src/nas.tsx",
     "./network-switch": "./src/network-switch.tsx",
     "./nixie-clock": "./src/nixie-clock.tsx",
@@ -91,6 +95,7 @@
     "./telescope": "./src/telescope.tsx",
     "./thermostat-boiler": "./src/thermostat-boiler.tsx",
     "./toaster": "./src/toaster.tsx",
+    "./traffic-light": "./src/traffic-light.tsx",
     "./tube-radio": "./src/tube-radio.tsx",
     "./turntable": "./src/turntable.tsx",
     "./typewriter": "./src/typewriter.tsx",
@@ -131,6 +136,10 @@
       "./cell-tower": {
         "types": "./dist/cell-tower.d.ts",
         "default": "./dist/cell-tower.js"
+      },
+      "./claw-machine": {
+        "types": "./dist/claw-machine.d.ts",
+        "default": "./dist/claw-machine.js"
       },
       "./coffee-grinder": {
         "types": "./dist/coffee-grinder.d.ts",
@@ -184,6 +193,10 @@
         "types": "./dist/guitar-amp.d.ts",
         "default": "./dist/guitar-amp.js"
       },
+      "./gumball-machine": {
+        "types": "./dist/gumball-machine.d.ts",
+        "default": "./dist/gumball-machine.js"
+      },
       "./home-battery": {
         "types": "./dist/home-battery.d.ts",
         "default": "./dist/home-battery.js"
@@ -191,6 +204,10 @@
       "./home-router": {
         "types": "./dist/home-router.d.ts",
         "default": "./dist/home-router.js"
+      },
+      "./hot-air-balloon": {
+        "types": "./dist/hot-air-balloon.d.ts",
+        "default": "./dist/hot-air-balloon.js"
       },
       "./hourglass": {
         "types": "./dist/hourglass.d.ts",
@@ -227,6 +244,10 @@
       "./mixing-desk": {
         "types": "./dist/mixing-desk.d.ts",
         "default": "./dist/mixing-desk.js"
+      },
+      "./model-train": {
+        "types": "./dist/model-train.d.ts",
+        "default": "./dist/model-train.js"
       },
       "./nas": {
         "types": "./dist/nas.d.ts",
@@ -347,6 +368,10 @@
       "./toaster": {
         "types": "./dist/toaster.d.ts",
         "default": "./dist/toaster.js"
+      },
+      "./traffic-light": {
+        "types": "./dist/traffic-light.d.ts",
+        "default": "./dist/traffic-light.js"
       },
       "./tube-radio": {
         "types": "./dist/tube-radio.d.ts",

@@ -19,6 +19,10 @@
     "light": "/thumbs/miniatures/cell-tower.webp?v=853db58e99",
     "dark": "/thumbs/miniatures/cell-tower.dark.webp?v=956180850e"
   },
+  "claw-machine": {
+    "light": "/thumbs/miniatures/claw-machine.webp?v=a28c16db90",
+    "dark": "/thumbs/miniatures/claw-machine.dark.webp?v=247d9bbde0"
+  },
   "coffee-grinder": {
     "light": "/thumbs/miniatures/coffee-grinder.webp?v=e7e52c1f24",
     "dark": "/thumbs/miniatures/coffee-grinder.dark.webp?v=2a21c97998"
@@ -71,6 +75,10 @@
     "light": "/thumbs/miniatures/guitar-amp.webp?v=c3de6f21b9",
     "dark": "/thumbs/miniatures/guitar-amp.dark.webp?v=4f81430530"
   },
+  "gumball-machine": {
+    "light": "/thumbs/miniatures/gumball-machine.webp?v=c86c63ea68",
+    "dark": "/thumbs/miniatures/gumball-machine.dark.webp?v=74c8f31d17"
+  },
   "home-battery": {
     "light": "/thumbs/miniatures/home-battery.webp?v=c0143c90f8",
     "dark": "/thumbs/miniatures/home-battery.dark.webp?v=f733e7609b"
@@ -78,6 +86,10 @@
   "home-router": {
     "light": "/thumbs/miniatures/home-router.webp?v=1073d950bf",
     "dark": "/thumbs/miniatures/home-router.dark.webp?v=2f849440cb"
+  },
+  "hot-air-balloon": {
+    "light": "/thumbs/miniatures/hot-air-balloon.webp?v=ef640ddca8",
+    "dark": "/thumbs/miniatures/hot-air-balloon.dark.webp?v=22e63e8765"
   },
   "hourglass": {
     "light": "/thumbs/miniatures/hourglass.webp?v=f2922c1f6e",
@@ -114,6 +126,10 @@
   "mixing-desk": {
     "light": "/thumbs/miniatures/mixing-desk.webp?v=3a8c985914",
     "dark": "/thumbs/miniatures/mixing-desk.dark.webp?v=ac40aafcd9"
+  },
+  "model-train": {
+    "light": "/thumbs/miniatures/model-train.webp?v=1b5c66fcc6",
+    "dark": "/thumbs/miniatures/model-train.dark.webp?v=f731b3b06a"
   },
   "nas": {
     "light": "/thumbs/miniatures/nas.webp?v=5cdecd9811",
@@ -234,6 +250,10 @@
   "toaster": {
     "light": "/thumbs/miniatures/toaster.webp?v=5aac8693fc",
     "dark": "/thumbs/miniatures/toaster.dark.webp?v=5691d3fcf8"
+  },
+  "traffic-light": {
+    "light": "/thumbs/miniatures/traffic-light.webp?v=f34db65c66",
+    "dark": "/thumbs/miniatures/traffic-light.dark.webp?v=53eeceffb9"
   },
   "tube-radio": {
     "light": "/thumbs/miniatures/tube-radio.webp?v=9ac8b148cf",

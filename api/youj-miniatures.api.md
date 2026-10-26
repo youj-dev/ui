@@ -90,6 +90,8 @@ const cardCatalog: { description; id; initial; keys; label; maker; model; name; 
 
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const clawMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const coffeeGrinder: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const coolingUnit: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -116,9 +118,13 @@ const groundStation: { description; id; initial; keys; label; maker; model; name
 
 const guitarAmp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const gumballMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const homeBattery: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const homeRouter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const hotAirBalloon: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const hourglass: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -136,9 +142,11 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [73 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const modelTrain: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const nas: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -207,6 +215,8 @@ const thermostatBoiler: { description; id; initial; keys; label; maker; model; n
 const threeDPrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const toaster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const trafficLight: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const tubeRadio: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -310,6 +320,23 @@ interface MiniatureCellTowerProps extends MiniatureProps {
 }
 
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/claw-machine
+
+```ts
+function MiniatureClawMachine(props: MiniatureClawMachineProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureClawMachineHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureClawMachineHandle = MiniatureHandle<MiniatureClawMachineKey>;
+
+type MiniatureClawMachineKey = MiniatureKeyOf<typeof clawMachine>;
+
+interface MiniatureClawMachineProps extends MiniatureProps {
+    ref?: Ref<MiniatureClawMachineHandle>;
+}
+
+const clawMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/coffee-grinder
@@ -533,6 +560,23 @@ interface MiniatureGuitarAmpProps extends MiniatureProps {
 const guitarAmp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
+## @youj/miniatures/gumball-machine
+
+```ts
+function MiniatureGumballMachine(props: MiniatureGumballMachineProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureGumballMachineHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureGumballMachineHandle = MiniatureHandle<MiniatureGumballMachineKey>;
+
+type MiniatureGumballMachineKey = MiniatureKeyOf<typeof gumballMachine>;
+
+interface MiniatureGumballMachineProps extends MiniatureProps {
+    ref?: Ref<MiniatureGumballMachineHandle>;
+}
+
+const gumballMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
 ## @youj/miniatures/home-battery
 
 ```ts
@@ -565,6 +609,23 @@ interface MiniatureHomeRouterProps extends MiniatureProps {
 }
 
 const homeRouter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/hot-air-balloon
+
+```ts
+function MiniatureHotAirBalloon(props: MiniatureHotAirBalloonProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureHotAirBalloonHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureHotAirBalloonHandle = MiniatureProgressHandle<MiniatureHotAirBalloonKey>;
+
+type MiniatureHotAirBalloonKey = MiniatureKeyOf<typeof hotAirBalloon>;
+
+interface MiniatureHotAirBalloonProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureHotAirBalloonHandle>;
+}
+
+const hotAirBalloon: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/hourglass
@@ -718,6 +779,23 @@ interface MiniatureMixingDeskProps extends MiniatureProps {
 }
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/model-train
+
+```ts
+function MiniatureModelTrain(props: MiniatureModelTrainProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureModelTrainHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureModelTrainHandle = MiniatureProgressHandle<MiniatureModelTrainKey>;
+
+type MiniatureModelTrainKey = MiniatureKeyOf<typeof modelTrain>;
+
+interface MiniatureModelTrainProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureModelTrainHandle>;
+}
+
+const modelTrain: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/nas
@@ -1228,6 +1306,23 @@ interface MiniatureToasterProps extends MiniatureProps {
 }
 
 const toaster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/traffic-light
+
+```ts
+function MiniatureTrafficLight(props: MiniatureTrafficLightProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureTrafficLightHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureTrafficLightHandle = MiniatureHandle<MiniatureTrafficLightKey>;
+
+type MiniatureTrafficLightKey = MiniatureKeyOf<typeof trafficLight>;
+
+interface MiniatureTrafficLightProps extends MiniatureProps {
+    ref?: Ref<MiniatureTrafficLightHandle>;
+}
+
+const trafficLight: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/tube-radio
