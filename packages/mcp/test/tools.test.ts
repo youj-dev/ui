@@ -242,7 +242,7 @@ describe('blocks', () => {
   })
 
   it('indexes the miniatures as their own kind, npm only', () => {
-    expect(catalog.index.miniatures).toHaveLength(67)
+    expect(catalog.index.miniatures).toHaveLength(68)
     const turntable = catalog.index.miniatures.find((m) => m.id === 'turntable')!
     expect(turntable).toMatchObject({ title: 'Record turntable', component: 'MiniatureTurntable', registry: 'miniature-turntable' })
     expect(catalog.index.miniatures.find((m) => m.id === '3d-printer')!.component).toBe('MiniatureThreeDPrinter')

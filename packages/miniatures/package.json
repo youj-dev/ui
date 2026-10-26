@@ -80,6 +80,7 @@
     "./rocket-launch-pad": "./src/rocket-launch-pad.tsx",
     "./rotary-phone": "./src/rotary-phone.tsx",
     "./sbc-cluster": "./src/sbc-cluster.tsx",
+    "./security-camera": "./src/security-camera.tsx",
     "./server-cabinet": "./src/server-cabinet.tsx",
     "./sewing-machine": "./src/sewing-machine.tsx",
     "./smart-trainer": "./src/smart-trainer.tsx",
@@ -302,6 +303,10 @@
       "./sbc-cluster": {
         "types": "./dist/sbc-cluster.d.ts",
         "default": "./dist/sbc-cluster.js"
+      },
+      "./security-camera": {
+        "types": "./dist/security-camera.d.ts",
+        "default": "./dist/security-camera.js"
       },
       "./server-cabinet": {
         "types": "./dist/server-cabinet.d.ts",

@@ -53,6 +53,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'rocket-launch-pad': () => import('@youj/miniatures/rocket-launch-pad'),
   'rotary-phone': () => import('@youj/miniatures/rotary-phone'),
   'sbc-cluster': () => import('@youj/miniatures/sbc-cluster'),
+  'security-camera': () => import('@youj/miniatures/security-camera'),
   'server-cabinet': () => import('@youj/miniatures/server-cabinet'),
   'sewing-machine': () => import('@youj/miniatures/sewing-machine'),
   'smart-trainer': () => import('@youj/miniatures/smart-trainer'),

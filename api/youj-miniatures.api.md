@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [67 items]
+const miniatures: readonly [68 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -181,6 +181,8 @@ const rocketLaunchPad: { description; id; initial; keys; label; maker; model; na
 const rotaryPhone: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const sbcCluster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const securityCamera: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const serverCabinet: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1039,6 +1041,23 @@ interface MiniatureSbcClusterProps extends MiniatureProps {
 }
 
 const sbcCluster: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/security-camera
+
+```ts
+function MiniatureSecurityCamera(props: MiniatureSecurityCameraProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureSecurityCameraHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureSecurityCameraHandle = MiniatureHandle<MiniatureSecurityCameraKey>;
+
+type MiniatureSecurityCameraKey = MiniatureKeyOf<typeof securityCamera>;
+
+interface MiniatureSecurityCameraProps extends MiniatureProps {
+    ref?: Ref<MiniatureSecurityCameraHandle>;
+}
+
+const securityCamera: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/server-cabinet
