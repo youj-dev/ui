@@ -27,6 +27,7 @@
   "packages/miniatures/src/engine/types.ts": 2,
   "packages/miniatures/src/figures/3d-printer.ts": 1,
   "packages/miniatures/src/figures/aquarium.ts": 2,
+  "packages/miniatures/src/figures/bank-vault.ts": 1,
   "packages/miniatures/src/figures/cell-tower.ts": 1,
   "packages/miniatures/src/figures/cooling-unit.ts": 1,
   "packages/miniatures/src/figures/crt-television.ts": 1,
