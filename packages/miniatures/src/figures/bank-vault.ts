@@ -21,7 +21,7 @@ const defs = `<radialGradient id="ball" cx=".5" cy=".5" r=".6" fx=".36" fy=".3">
 <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0,0V4" class="hl"/></pattern>`
 
 function draw(env: FigureEnv): void {
-const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
+const{document,window,matchMedia,requestAnimationFrame,addEventListener,kit}=env;
 /* HALVARD V–40 vault door. World: x lower-right; y lower-left (front faces +y); z up. 1 unit ≈ 1.5 cm.
 Part                          x      y      z      w      d      h
 wall section (cut, hatched) −10      0      0    220     24    212   stone face, skirting, plaque 70–130 × 192–204 with a lamp
@@ -38,7 +38,7 @@ Motion: the wheel turns once (bolts drawn), the door is drawn straight out 40 on
 column; closing runs it back. Depth: the door re-stacks its steps when it turns past 45°; while it's in the frame only
 what's out of it is drawn. */
 const svg=document.getElementById('machine'),draw=document.getElementById('drawing');let root=draw;
-const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
+const{C,S,P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,box,cylinder,frame}=kit(()=>root);
 // Figure helpers: vectors, oriented planes, tubes and boxes (the turntable's arm helpers), pins.
 const{cos,sin,PI}=Math,RAD=PI/180,f2=v=>(+v).toFixed(2),VW=[1,1,1],into=g=>root=g,clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
 const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mul=(a,s)=>a.map(v=>v*s),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],unit=a=>mul(a,1/(Math.hypot(...a)||1));
@@ -92,7 +92,7 @@ const shade=el('rect',{x:-2,y:-114,width:177,height:122,class:'shade'});
 into(draw);
 const RF=group(FRONT(100,32,104));el('path',{d:ring(67,84),'fill-rule':'evenodd',class:'face steel'},RF);circle(RF,0,0,80.5,'ring');circle(RF,0,0,70.5,'ring');
 for(let k=0;k<16;k++){const a=(k+.5)*22.5*RAD;circle(RF,f2(75.5*cos(a)),f2(75.5*sin(a)),2,'face top steel');circle(RF,f2(75.5*cos(a)),f2(75.5*sin(a)),.9,'detail');}
-const seam=circle(RF,0,0,66.6,'seam');
+circle(RF,0,0,66.6,'seam');
 // The threshold step, and the crane's rails on the frame's left.
 box(62,24,0,76,16,12,1.6,'base');{const g=group(TOP(62,24,12.02));for(const u of[19,38,57])line(g,u,1,u,15);}
 const slides=[50,152].map(z=>{box(-1,24,z-4,18,5,14,1.2,'base');return{z,s:obox(el('g',{}),'steel'),t:obox(el('g',{}),'chrome')};});
@@ -138,7 +138,7 @@ document.querySelectorAll('.hint [data-k]').forEach(b=>HK[b.dataset.k]=b);
 const T_TURN=1150,T_DRAW=950,T_SWING=2600,T_ALL=T_TURN+T_DRAW+T_SWING,A=T_TURN/T_ALL,B=(T_TURN+T_DRAW)/T_ALL,OPEN=102,OUT=40,COMMIT=270;
 const WHAT=['GOLD','CASH','KEY'],HOLDS=['gold bars','bundles of cash','a single key'];
 const eio=t=>t<.5?4*t*t*t:1-(-2*t+2)**3/2,smooth=t=>t*t*(3-2*t);
-let want=false,p=0,dir=-1,wheel=0,wheelV=0,bolt=0,d=0,theta=0,thetaV=0,dial=0,dialFrom=0,dialTo=0,dialT0=-1e9,drag=null,light=0,litT=0,sparkT=-1e9,inside=0,note='',noteT=0,last=0,outKey='',drawn='',shownFront=null,lastLight=-1,lastQ=0,lastNotch=0,settled=true;
+let want=false,p=0,dir=-1,wheel=0,wheelV=0,bolt=0,d=0,theta=0,thetaV=0,dial=0,dialFrom=0,dialTo=0,dialT0=-1e9,drag=null,light=0,litT=0,sparkT=-1e9,inside=0,note='',noteT=0,last=0,outKey='',drawn='',shownFront=null,lastLight=-1,lastNotch=0,settled=true;
 const say=m=>{announcement.textContent=m;},notice=(m,a)=>{note=m;noteT=performance.now()+1600;if(a)say(a);};
 let ac=null,nb=null;
 function audio(){try{if(!ac){const W=window.AudioContext||window.webkitAudioContext;if(!W)return null;ac=new W();}if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}return ac;}

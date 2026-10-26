@@ -19,7 +19,7 @@ const defs = `<clipPath id="ht"><rect x="-6.4" y="-10.4" width="12.8" height="10
 <clipPath id="hb"><rect x="-6.4" y=".3" width="12.8" height="10.1"/></clipPath>`
 
 function draw(env: FigureEnv): void {
-const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
+const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* PERRON F–11 split-flap board. World: x lower-right; y lower-left (the flaps face +y); z up. 1 unit ≈ 2 mm.
 Part x y z w d h
 rubber feet (2) 12 / 150 4 0 22 33 6
@@ -37,7 +37,7 @@ A module shows one character split at its hinge: the top half on the flap above,
 that fell before it. Its drum turns one way only; a falling flap carries the old top half on its face and the new
 bottom half on its back. Glyphs are single strokes in an 8 × 15 box. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
-const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
+const{P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,box,cylinder,slits,screw,frame}=kit(()=>root);
 // Figure helpers: oriented planes, controls.
 const draw=root,defs=svg.querySelector('defs'),into=g=>root=g,f2=v=>(+v).toFixed(2),D=Math.PI/180;
 const plane=(o,U,V)=>`matrix(${P(...U).map(f2).join(' ')} ${P(...V).map(f2).join(' ')} ${P(...o).map(f2).join(' ')})`;

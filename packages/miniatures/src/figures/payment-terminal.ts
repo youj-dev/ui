@@ -89,14 +89,14 @@ el('path',{d:'M40,202.6h11v6.6h-11zM42.2,204.6h2.8v2.2h-2.8zM55,203v5.4M53.2,206
 const waveG=el('g',{},fc),waves=[0,1,2].map(()=>el('path',{class:'wave'},waveG));
 el('path',{d:'M10,48.6L84,48.6L84,57L10,92Z',class:'glare'},fc);
 // Display: a status row (the four read lights, the battery), then one screen per state, cross-faded.
-const dots=[0,1,2,3].map(i=>circle(ds,28+i*6,5.4,1.35,'dot'));const saleT=text(ds,4,6.4,'SALE','si s d l');rect(ds,62,3.6,7,3.6,.8,'sl d');rect(ds,69.4,4.7,.8,1.4,.3,'sf d');const batt=rect(ds,63,4.6,4.6,1.6,.3,'sf d');
+const dots=[0,1,2,3].map(i=>circle(ds,28+i*6,5.4,1.35,'dot'));const saleT=text(ds,4,6.4,'SALE','si s d l');rect(ds,62,3.6,7,3.6,.8,'sl d');rect(ds,69.4,4.7,.8,1.4,.3,'sf d');rect(ds,63,4.6,4.6,1.6,.3,'sf d');
 const SCR={};const scr=n=>(SCR[n]=el('g',{class:'scrn','data-yj-screen':n,opacity:0},ds));
 const sR=scr('ready');text(sR,37,17,'TOTAL','si t d');const amtR=text(sR,37,31.5,'$24.80','si big');text(sR,37,40,'TAP OR INSERT CARD','si s d');
 const tapIcon=el('path',{d:'M19.6,49.2a2.4,2.4 0 0 1 0,3.6M21.6,47.6a4.6,4.6 0 0 1 0,6.8M23.6,46a6.8,6.8 0 0 1 0,10',class:'sl a'},sR);text(sR,21.6,61,'TAP ▲','si s');
 rect(sR,46.6,47,10.8,7.2,1.2,'sl');rect(sR,48.2,49.2,2.6,2,.4,'sf');el('path',{d:'M52,58.4v-1.6',class:'sl'},sR);text(sR,52,61,'INSERT ▼','si s');
 const sA=scr('amount');text(sA,37,17,'ENTER AMOUNT','si t d');const amtA=text(sA,37,32,'$0.00','si big');const caret=rect(sA,21,35.2,32,.8,.4,'sf');text(sA,37,47,'OK TO CONFIRM','si s d');text(sA,37,54,'✕ CANCEL · ‹ CORRECT','si s d');
 const sG=scr('reading');const holdT=text(sG,37,17,'HOLD CARD','si t');const readIcon=[0,1,2].map(i=>el('path',{d:`M${33+i*3.6},${30.6-i*3.4}a${4+i*3.4},${4+i*3.4} 0 0 1 0,${6.8+i*6.8}`,class:'sl a'},sG));circle(sG,30,34,1.6,'sf');const amtG=text(sG,37,55,'$24.80','si mid');
-const sU=scr('auth');circle(sU,37,27,8,'sl d');const spin=el('path',{d:'M37,19a8,8 0 0 1 8,8',class:'sl a','stroke-width':1.3},sU);const authT=text(sU,37,46,'PROCESSING','si t');const amtU=text(sU,37,54,'$24.80','si s d');
+const sU=scr('auth');circle(sU,37,27,8,'sl d');const spin=el('path',{d:'M37,19a8,8 0 0 1 8,8',class:'sl a','stroke-width':1.3},sU);text(sU,37,46,'PROCESSING','si t');const amtU=text(sU,37,54,'$24.80','si s d');
 const sP=scr('pin');text(sP,37,15,'ENTER PIN','si t');const amtP=text(sP,37,26,'$24.80','si mid');const pinDots=[0,1,2,3].map(i=>{rect(sP,13+i*13,31,10,11,1.6,'sl d');return circle(sP,18+i*13,36.5,1.7,'sf');});text(sP,37,53,'OK TO CONFIRM','si s d');
 const sV=scr('approved');circle(sV,37,24,11,'okd');const okMark=el('path',{d:'M31.4,24.6l3.9,3.9l7.6,-8.2',class:'mark','stroke-dasharray':'18','stroke-dashoffset':'18'},sV);text(sV,37,45,'APPROVED','si mid ok');const amtV=text(sV,37,52.5,'$24.80','si s');const authV=text(sV,37,59,'AUTH 4F2A91','si s d');
 const sX=scr('declined');circle(sX,37,24,11,'nod');el('path',{d:'M33,20l8,8M41,20l-8,8',class:'mark'},sX);text(sX,37,45,'DECLINED','si mid no');text(sX,37,52.5,'NOT AUTHORIZED','si s');text(sX,37,59,'NO CHARGE MADE','si s d');
