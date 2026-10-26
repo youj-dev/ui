@@ -50,7 +50,7 @@ top deck                thruster pods on the corners, the omni mast at -6 5, a w
 floor                   the house shadow under the stand; the ground point where the beam lands, with its ripples and sync ring
 Painter order: stars, shadow, ground point, foot, stand, far wing, bus, top deck, dish, beam, near wing, puffs, controls. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
-const{P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,box,cylinder,frame}=kit(()=>root);
+const{C,S,P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,box,cylinder,frame}=kit(()=>root);
 // Family helpers: vectors, oriented planes, movable round parts and struts, lamps and controls.
 const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mul=(a,s)=>a.map(v=>v*s),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 const unit=a=>mul(a,1/(Math.hypot(...a)||1)),lerp=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t),VIEW=[1,1,1],RAD=Math.PI/180,clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),f2=v=>v.toFixed(2),f3=v=>+v.toFixed(3);
@@ -163,10 +163,14 @@ window.figure={setProgress,done};
 function aim(){const a=azN*RAD,e=elN*RAD,B=[Math.cos(e)*Math.cos(a),Math.cos(e)*Math.sin(a),-Math.sin(e)];dish(unit(add(B,[0,0,KN])));G=add(H,mul(B,H[2]/Math.sin(e)));G[2]=0;const g=P(...G);set(gnd,'transform',`translate(${f2(g[0])} ${f2(g[1])})`);
 const d=`M${pt(P(...E))}L${pt(g)}`;set(beam,'d',d);}
 function wingsKey(){audio();dep=dep?0:1;set(wBtn,'aria-pressed',String(!!dep));lastUI=-1;tone(dep?520:390,.09,.01,0,'triangle');say(dep?'Deploying the solar wings, panel by panel.':'Stowing the solar wings. The satellite runs on its battery.');}
-function slew(da,de){audio();const a=clamp(az+da,...AZ),e=clamp(elv+de,...EL);if(a===az&&e===elv){note('SLEW · AT LIMIT');tone(180,.06,.008,0,'triangle');return;}az=a;elv=e;note(`SLEW · AZ ${az<0?'−':''}${Math.abs(az)}° · EL −${elv}°`);tone(330+elv*3,.05,.008,0,'triangle');say(`Dish slewed to azimuth ${az} degrees, ${elv} degrees down.`);}
+function slew(da,de){aimAt(az+da,elv+de);}
+function aimAt(a0,e0){audio();const a=clamp(a0,...AZ),e=clamp(e0,...EL);if(a===az&&e===elv){note('SLEW · AT LIMIT');tone(180,.06,.008,0,'triangle');return;}az=a;elv=e;note(`SLEW · AZ ${az<0?'−':''}${Math.abs(az)}° · EL −${elv}°`);tone(330+elv*3,.05,.008,0,'triangle');say(`Dish slewed to azimuth ${az} degrees, ${elv} degrees down.`);}
 function thrust(){audio();burns++;burnT=performance.now();note(`THRUSTERS · BURN ${pad(burns)}`,1400);for(const w of[0,.32])hiss(w);say(`Thrusters fired, burn ${burns}. The satellite holds its station.`);}
 function stepSync(){audio();setProgress(mode==='det'&&!complete?(target>=1?0:Math.min(1,Math.floor(target*4+1e-6)/4+.25)):.25);tone(660+target*440,.08,.009);say(`Sync ${Math.round(target*100)} percent.`);}
 bind(wBtn,wingsKey);bind(tBtn,thrust);
+/* A click on the floor (or anywhere but the parts) aims the beam at the floor under it, as far as the dish reaches. */
+function local(e){const m=svg.getScreenCTM?.();if(!m)return null;const det=m.a*m.d-m.b*m.c;if(!det)return null;const x=e.clientX-m.e,y=e.clientY-m.f;return[(m.d*x-m.c*y)/det,(-m.b*x+m.a*y)/det];}
+svg.addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('.control'))return;const q=local(e);if(!q)return;const dx=(q[0]/C+q[1]/S)/2-H[0],dy=(q[1]/S-q[0]/C)/2-H[1];aimAt(Math.round(Math.atan2(dy,dx)/RAD),Math.round(Math.atan2(H[2],Math.hypot(dx,dy))/RAD));});
 const act={' ':wingsKey,t:thrust,p:stepSync,ArrowLeft:()=>slew(10,0),ArrowRight:()=>slew(-10,0),ArrowUp:()=>slew(0,5),ArrowDown:()=>slew(0,-5)};
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(k===' '&&e.target.closest&&e.target.closest('button,[role=button]'))return;const fn=act[k];if(fn){e.preventDefault();if(!e.repeat||k.startsWith('Arrow'))fn();}});
 function tick(now){const dt=last?Math.min((now-last)/1000,.05):0,red=reduced.matches;last=now;

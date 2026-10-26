@@ -98,6 +98,32 @@ describe('Satellite', () => {
     expect(snap().readout).toBe('LINK 95% · 12.0 MB/S')
   })
 
+  /** The drawing reads pointer positions through the svg's screen matrix; here screen and drawing coincide. */
+  const pointer = (svg: SVGSVGElement, x: number, y: number, target: Element = svg) => {
+    svg.getScreenCTM = () => ({ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }) as DOMMatrix
+    act(() => void target.dispatchEvent(new MouseEvent('pointerdown', { clientX: x, clientY: y, bubbles: true })))
+  }
+
+  it('a click on the floor aims the beam there', async () => {
+    const { snap, svg, inside, run } = await play()
+    const before = ground(inside)
+    pointer(svg(), 22.8, 27.9)
+    await run(100)
+    expect(snap().state).toBe('SLEW · AZ 30° · EL −60°')
+    expect(snap().readout).toBe('LINK 97% · 12.3 MB/S')
+    expect(ground(inside)).not.toBe(before)
+  })
+
+  it('beyond the dish\'s reach, a click aims it as far as it goes; a click on a part is the part\'s', async () => {
+    const { snap, svg, inside, run } = await play()
+    pointer(svg(), 0, -60, inside.querySelector('[aria-label="Fire the thrusters (T)"] .hit')!)
+    await run(100)
+    expect(snap().state).toBe(satellite.initial.state)
+    pointer(svg(), -40, 30)
+    await run(100)
+    expect(snap().state).toBe('SLEW · AZ 52° · EL −57°')
+  })
+
   it('T fires the thrusters: a puff from every pod, and the burn is logged', async () => {
     const { snap, handle, run, inside } = await play(['t'], 100)
     expect(snap().state).toBe('THRUSTERS · BURN 01')
