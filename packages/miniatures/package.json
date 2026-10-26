@@ -84,6 +84,7 @@
     "./server-cabinet": "./src/server-cabinet.tsx",
     "./sewing-machine": "./src/sewing-machine.tsx",
     "./smart-trainer": "./src/smart-trainer.tsx",
+    "./snow-globe": "./src/snow-globe.tsx",
     "./split-flap-board": "./src/split-flap-board.tsx",
     "./stage-synth": "./src/stage-synth.tsx",
     "./stand-mixer": "./src/stand-mixer.tsx",
@@ -319,6 +320,10 @@
       "./smart-trainer": {
         "types": "./dist/smart-trainer.d.ts",
         "default": "./dist/smart-trainer.js"
+      },
+      "./snow-globe": {
+        "types": "./dist/snow-globe.d.ts",
+        "default": "./dist/snow-globe.js"
       },
       "./split-flap-board": {
         "types": "./dist/split-flap-board.d.ts",

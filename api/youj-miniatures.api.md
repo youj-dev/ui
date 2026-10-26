@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -189,6 +189,8 @@ const serverCabinet: { description; id; initial; keys; label; maker; model; name
 const sewingMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const smartTrainer: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const snowGlobe: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const splitFlapBoard: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1109,6 +1111,23 @@ interface MiniatureSmartTrainerProps extends MiniatureProps {
 }
 
 const smartTrainer: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/snow-globe
+
+```ts
+function MiniatureSnowGlobe(props: MiniatureSnowGlobeProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureSnowGlobeHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureSnowGlobeHandle = MiniatureHandle<MiniatureSnowGlobeKey>;
+
+type MiniatureSnowGlobeKey = MiniatureKeyOf<typeof snowGlobe>;
+
+interface MiniatureSnowGlobeProps extends MiniatureProps {
+    ref?: Ref<MiniatureSnowGlobeHandle>;
+}
+
+const snowGlobe: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/split-flap-board

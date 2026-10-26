@@ -6,7 +6,7 @@
   "get_component {\"name\":\"DataGrid\"}": "112:6162795ca9885f184895c3d68c4e699f8fee9110f8cd89649a2468cdbd3ee19f",
   "list_components {}": "33072:99ca15a9588b59c2850d48325ee5f87b48c002c8ae30d4a4edb05e05c5f8760f",
   "list_loaders {}": "31416:ce31990787eb5059919d50f16329ca4ee0a71cfa750c8b021474a5fa720f463d",
-  "list_miniatures {}": "11724:24d7be601bc31c5da741b64490d44185f93b3676f5665dca3991d40b7b587293",
+  "list_miniatures {}": "11898:c58e7bf668fe74ee76fa8c610df362cdd8679d15c9e0c43d266e42502dc64c17",
   "search_icons {\"query\":\"arrow\"}": "1278:e09c159bbd65fd67a66c5cdf73dc7d0329a09ecd8c9c532336c87c751b6e04ba",
   "get_icon {\"name\":\"bell\"}": "1985:390619667e03d000963c39cf647a355584dd7c995bc88edf3d1cd38de9901eee",
   "suggest_icon_morph {\"from\":\"play\",\"to\":\"pause\"}": "861:79af44158f6d498529a8c90f21d3825c2f47388c5c0a7512b2ac16935f1d0360",
