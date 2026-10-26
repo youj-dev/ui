@@ -35,7 +35,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .butter{fill:url(#butterG);stroke:none;opacity:0;pointer-events:none}.pool{fill:url(#lampG);opacity:var(--glow-a);pointer-events:none}
 .pc{fill:url(#puffG);stroke:var(--corn-line);stroke-width:.45;vector-effect:non-scaling-stroke;pointer-events:none}.burst{fill:none;stroke:var(--lamp);stroke-width:.8;stroke-linecap:round;vector-effect:non-scaling-stroke;pointer-events:none}
 .kernels{fill:url(#kernP)}.heat{fill:var(--heat);opacity:0;filter:url(#bloom);pointer-events:none}.skin{fill:var(--heat);stroke:none;opacity:0;pointer-events:none}
-.bulb{fill:var(--lamp);filter:url(#glow)}.bloom{fill:var(--lamp);opacity:calc(var(--glow-a)*1.15);filter:url(#bloom);pointer-events:none}
+.bulb{fill:var(--lamp);filter:url(#glow)}.bulb-b{fill:var(--off);stroke:var(--line);stroke-width:.4;vector-effect:non-scaling-stroke}.bulb-b.on{fill:var(--lamp);filter:url(#glow)}.bloom{fill:var(--lamp);opacity:calc(var(--glow-a)*1.15);filter:url(#bloom);pointer-events:none}
 .lamp{fill:var(--off)}.lamp.on{fill:var(--heat);filter:url(#glow)}.lamp.lit{fill:var(--lamp);filter:url(#glow)}
 .dial{fill:var(--card)}.zone{fill:none;stroke:var(--heat);stroke-width:1.2;opacity:.8}.needle{stroke:var(--paint-side);stroke-width:.7;stroke-linecap:round}
 .stripes{fill:url(#stripes);stroke:none}.grip-u{fill:none;stroke:var(--line);stroke-width:2.6;stroke-linecap:round}.grip{fill:none;stroke:var(--rubber-top);stroke-width:1.5;stroke-linecap:round}.stream{fill:none;stroke:var(--butter);stroke-width:1.1;stroke-linecap:round;stroke-dasharray:2.2 1.2;opacity:0;pointer-events:none}.pour{fill:none;stroke:var(--kernel);stroke-width:1.3;stroke-linecap:round;stroke-dasharray:.8 1.6;opacity:0;pointer-events:none}
@@ -170,9 +170,9 @@ el('path',{d:'M-3.6,-3.4L6.4,-5.4Q8.6,-1.6 7.8,2.4L-3.6,3.2Z',class:'face chrome
 const PCS=[0,1,2].map(s=>puff(0,0,1.9,5,s*1.7+.4)),pcs=Array.from({length:30},(_,i)=>({n:el('path',{d:PCS[i%3],class:'pc',display:'none'}),on:0}));
 const bursts=Array.from({length:8},()=>({n:el('path',{d:'M0,-1.6V-3.1M1.5,-.8L2.7,-1.5M1.5,.8L2.7,1.5M0,1.6V3.1M-1.5,.8L-2.7,1.5M-1.5,-.8L-2.7,-1.5',class:'burst',display:'none'}),t:-1}));
 into(draw);
-// The roof: painted, its header with the brand plate; the stirrer motor, the kernel jar (N) and the butter pump (B) on top.
+// The roof: painted, a chrome band round its header; the stirrer motor, the kernel jar (N) and the butter pump (B) on top.
 box(-.8,-.8,70,61.6,43.6,6.5,1.4,'paint');
-const RF=group(FRONT(-.8,42.85,76.5));rect(RF,0,5.1,61.6,1.4,0,'face chrome');rect(RF,21.8,1,18,4.1,1,'face enamel');rect(RF,22.5,1.6,16.6,2.9,.7,'detail');text(RF,30.8,4.15,'Tovane','maker');
+rect(group(FRONT(-.8,42.85,76.5)),0,5.1,61.6,1.4,0,'face chrome');
 const RS=group(SIDE(60.85,42.8,76.5));rect(RS,0,5.1,43.6,1.4,0,'face side chrome');text(RS,21.8,3.6,'KETTLE K–8','etch micro center');
 {const g=group(TOP(-.8,-.8,76.52));rect(g,1.2,1.2,59.2,41.2,1.4,'face top chrome');rect(g,3.4,3.4,54.8,36.8,1.2,'detail');for(const u of[22,26,30,34,38])rect(g,u,6,1.6,9,.8,'face recess');for(const[u,v]of[[5.6,5.6],[56,5.6],[5.6,38.2],[56,38.2]])circle(g,u,v,.9,'face top chrome');}
 const motor=cylinder(30,27,76.5,4.8,3.6,'z','chrome');circle(motor.face,0,0,3.4,'detail');circle(motor.face,0,0,1.3,'face rubber');
@@ -185,6 +185,11 @@ const pumpG=ctl(el('g',{}),'Butter pump: drizzle butter over the popcorn (B)');i
 cylinder(49,12,76.5,2.8,5.4,'z','chrome');const plunger=el('g',{});into(plunger);cylinder(49,12,81.9,.7,2.6,'z','chrome');const knobCap=cylinder(49,12,84.4,2,1.3,'z','paint');circle(knobCap.face,0,0,.8,'detail');into(pumpG);
 {const c=P(49,12,81);circle(pumpG,c[0],c[1],6.2,'hit');circle(pumpG,c[0],c[1]-.5,6.8,'focus-ring');}
 into(draw);
+// The marquee: a light box along the roof's front edge, bulbs round its face (they chase while it pops), the brand small
+// in the middle.
+box(7,38.6,76.5,46,4.2,7.4,1,'paint');
+const MQ=group(FRONT(7,42.85,83.9));rect(MQ,2.4,1.9,41.2,3.6,.9,'face enamel');text(MQ,23,4.85,'Tovane','maker');
+const BULBS=Array.from({length:24},(_,i)=>{const c=i>>1,row=i&1;return{n:circle(MQ,1.5+c*3.9,row?6.4:1,.85,'bulb-b'),k:row?23-c:c};});let chased=null;
 frame([[-.8,-.8,0,61.6,43.6,86],[20.5,42,21,8.5,26,47.6],[3,43,0,25,11.5,15]],10);
 
 // State. The kettle heats (Space) and pops its charge of kernels: slow first pops, a crackling middle, a tail; the corn
@@ -202,7 +207,7 @@ function hiss(dur,v,f,q=1,when=0){const a=ac;if(!a)return;try{if(!nb){nb=a.creat
 const popSound=()=>{hiss(.035,.05,rnd(1400,3200),2.2);tone(rnd(380,700),.03,.012,'triangle');};
 // How much the heap may hold now: the target as a progress indicator, else the brim and a little over (the spill).
 const cap=()=>mode==='det'&&!finish?target:1.06;
-function popAll(){const n=min(charge,Math.ceil(max(0,cap()-fill)/PER));if(n<=0)return;charge-=n;pops+=n;fill=min(cap(),fill+n*PER);kv=.42;lidA=.45;}
+function popAll(){const n=min(charge,Math.ceil(max(0,cap()-fill)/PER));if(n<=0)return;charge-=n;pops+=n;butter=max(0,butter-n*PER*4);fill=min(cap(),fill+n*PER);kv=.42;lidA=.45;}
 function heatKey(){audio();heat=!heat;started=true;tone(heat?90:70,.25,.02,'sine',0,heat?140:50);if(heat&&!charge){charge=BATCH;bp=0;}notice(heat?'HEAT ON · KETTLE WARMING':'HEAT OFF · KETTLE COOLING',heat?'Kettle heat on. The kernels will start to pop.':'Kettle heat off.');sync();}
 function batchKey(){audio();if(!charge)bp=0;charge=min(2*BATCH,charge+BATCH);pourT=performance.now();kick=1;hiss(.7,.015,5200,1.2);notice('NEW BATCH · KERNELS IN','A new batch of kernels drops into the kettle.');}
 function butterKey(){audio();butterT=performance.now();if(reduced.matches)butter=1;tone(230,.35,.02,'sine',0,150);notice('BUTTER · DRIZZLING','Warm butter drizzles over the popcorn.');}
@@ -217,7 +222,7 @@ function sync(){set(heatSw,'aria-pressed',heat);set(HR.k,'transform',heat?'':'tr
 // Pieces in flight: from the rim, out of the door, from the scoop into the box. They land, bounce once, and go.
 function spawn(kind,p,v){const s=pcs.find(q=>!q.on)||pcs.reduce((a,b)=>a.t<b.t?a:b);Object.assign(s,{on:1,kind,p:[...p],v:[...v],a:rnd(0,360),va:rnd(-400,400),t:performance.now(),hit:0});(kind==='in'?inner:outer).appendChild(s.n);set(s.n,'display','inline');}
 function fromRim(K,lift){const a=random()<.8?rnd(.05,.95)*PI:rnd(0,2)*PI,r=KR*rnd(.6,1),d=add(mul(K.U,cos(a)),mul(K.V,sin(a)));spawn('in',K.at(r*cos(a),r*sin(a),lift),add(mul(d,rnd(7,17)),[0,0,rnd(14,30)]));}
-function popOne(now,K){charge--;pops++;bp++;temp-=.12;kv=min(1,kv+.022);kick=min(1,kick+.35);fill=min(cap(),fill+PER);rate+=1;
+function popOne(now,K){charge--;pops++;bp++;butter=max(0,butter-PER*4);temp-=.12;kv=min(1,kv+.022);kick=min(1,kick+.35);fill=min(cap(),fill+PER);rate+=1;
 if(random()<.42)fromRim(K,1+kv*5);const b=bursts.find(q=>q.t<0);if(b){const a=rnd(.1,.9)*PI,r=KR*rnd(.15,.85),q=P(...K.at(r*cos(a),r*sin(a),1.5+kv*6*random()));b.t=now;b.x=q[0];b.y=q[1];b.r=rnd(0,60);set(b.n,'display','inline');}
 if(ac&&random()<(rate>20?.45:1))popSound();}
 function fly(dt,now){for(const s of pcs){if(!s.on)continue;const p=s.p,v=s.v;v[2]-=150*dt;for(let i=0;i<3;i++)p[i]+=v[i]*dt;s.a+=s.va*dt;
@@ -285,6 +290,7 @@ const pt2=red?1:(now-pourT)/900;set(pourS,'style',`opacity:${pt2>.02&&pt2<1?.95:
 // Heat: the kettle's glow and skin, the thermometer.
 const hk=clamp((temp-60)/170);kGlow.style.opacity=f2(hk*.7);kSkin.style.opacity=f2(hk*.3);set(needle,'transform',`rotate(${f2(ang(temp))})`);
 if(!red)fly(dt,now);for(const b of bursts){if(b.t<0)continue;const k=(now-b.t)/220;if(k>=1||red){b.t=-1;set(b.n,'display','none');continue;}set(b.n,'transform',`translate(${f2(b.x)} ${f2(b.y)}) rotate(${f2(b.r)}) scale(${f2(.6+.9*k)})`);b.n.style.opacity=f2(1-k);}
+const ch=heat&&!red?Math.floor(now/150)%3:-1;if(ch!==chased){chased=ch;for(const b of BULBS)set(b.n,'class',ch<0||(b.k+ch)%3?'bulb-b on':'bulb-b');}
 redraw();if(lastUI<0||now-lastUI>120)ui(now);requestAnimationFrame(tick);}
 // Input: Space heats, N a new batch, B butter, S (or the door) scoops; Enter and Space on a focused part are its own.
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.repeat||e.defaultPrevented)return;const k=e.key.toLowerCase();if((k===' '||k==='enter')&&e.target&&e.target.closest&&e.target.closest('[role=button]'))return;
