@@ -37,6 +37,7 @@
     "./bank-vault": "./src/bank-vault.tsx",
     "./card-catalog": "./src/card-catalog.tsx",
     "./cell-tower": "./src/cell-tower.tsx",
+    "./chemistry-bench": "./src/chemistry-bench.tsx",
     "./coffee-grinder": "./src/coffee-grinder.tsx",
     "./cooling-unit": "./src/cooling-unit.tsx",
     "./crt-television": "./src/crt-television.tsx",
@@ -131,6 +132,10 @@
       "./cell-tower": {
         "types": "./dist/cell-tower.d.ts",
         "default": "./dist/cell-tower.js"
+      },
+      "./chemistry-bench": {
+        "types": "./dist/chemistry-bench.d.ts",
+        "default": "./dist/chemistry-bench.js"
       },
       "./coffee-grinder": {
         "types": "./dist/coffee-grinder.d.ts",
