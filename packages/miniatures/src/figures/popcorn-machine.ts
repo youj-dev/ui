@@ -22,8 +22,8 @@ const tile = (W, H, pieces = PIECES) => pieces.flatMap(([x, y, r, n, s]) => [-W,
   .filter(([x, y, r]) => x + r > 0 && x - r < W && y + r > 0 && y - r < H)
   .map(([x, y, r, n, s]) => `<path d="${puff(x, y, r, n, s)}" class="pp"/><ellipse cx="${f1(x + r * 0.32)}" cy="${f1(y + r * 0.34)}" rx=".55" ry=".4" class="hull"/>`).join('')
 
-const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--chrome:#d9dad8;--chrome-top:#f4f4f2;--chrome-side:#bdbebc;--rubber:#2e2e2d;--rubber-top:#474745;--paint:#c8402f;--paint-top:#dc5a46;--paint-side:#a3321f;--enamel:#f4ecd6;--maker:#8a2a1e;--corn:#fbf1d6;--corn-shade:#e8d3a0;--corn-deep:#c9a865;--corn-line:#b0904f;--hull:#c4862a;--kernel:#e2a634;--butter:#f2c443;--card:#fbf8ef;--stripe:#d4402f;--kin:#4a4844;--lamp:#ffcf70;--heat:#ff7a2e;--pane:#dce5e8;--env-a:.42;--film:.12;--shine:.85;--glow-a:.32;--warm:.05}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--off:#9b9b99;--chrome:#b7b7b6;--chrome-top:#e4e4e2;--chrome-side:#858585;--rubber:#252524;--rubber-top:#424240;--paint:#a83426;--paint-top:#ce5441;--paint-side:#722013;--enamel:#cec7b4;--maker:#6e2016;--corn:#ebe1c8;--corn-shade:#c3b286;--corn-deep:#8e7645;--corn-line:#947941;--hull:#a57022;--kernel:#c98f27;--butter:#e2b73e;--card:#d3d1cb;--stripe:#b23426;--kin:#3d3b39;--lamp:#ffd88a;--heat:#ff8a3d;--pane:#8d989c;--env-a:.3;--film:.06;--shine:.5;--glow-a:.62;--warm:.2;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
+const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--chrome:#d9dad8;--chrome-top:#f4f4f2;--chrome-side:#bdbebc;--rubber:#2e2e2d;--rubber-top:#474745;--paint:#c8402f;--paint-top:#dc5a46;--paint-side:#a3321f;--enamel:#f4ecd6;--maker:#8a2a1e;--corn:#fbf1d6;--corn-shade:#e8d3a0;--corn-deep:#c9a865;--corn-line:#b0904f;--hull:#c4862a;--kernel:#e2a634;--butter:#f2c443;--card:#fbf8ef;--stripe:#d4402f;--kin:#4a4844;--lamp:#ffcf70;--heat:#ff7a2e;--burst:#ee8a2a;--pane:#dce5e8;--env-a:.42;--film:.12;--shine:.85;--glow-a:.32;--warm:.05}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--off:#9b9b99;--chrome:#b7b7b6;--chrome-top:#e4e4e2;--chrome-side:#858585;--rubber:#252524;--rubber-top:#424240;--paint:#a83426;--paint-top:#ce5441;--paint-side:#722013;--enamel:#cec7b4;--maker:#6e2016;--corn:#ebe1c8;--corn-shade:#c3b286;--corn-deep:#8e7645;--corn-line:#947941;--hull:#a57022;--kernel:#c98f27;--butter:#e2b73e;--card:#d3d1cb;--stripe:#b23426;--kin:#3d3b39;--lamp:#ffd88a;--heat:#ff8a3d;--burst:#ffd27a;--pane:#8d989c;--env-a:.3;--film:.06;--shine:.5;--glow-a:.62;--warm:.2;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:3.2px ui-monospace,monospace;letter-spacing:.45px;stroke:none}.micro{font-size:2.1px;letter-spacing:.2px}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .chrome{fill:var(--chrome)}.top.chrome{fill:var(--chrome-top)}.side.chrome{fill:var(--chrome-side)}.rubber{fill:var(--rubber)}.top.rubber{fill:var(--rubber-top)}.paint{fill:var(--paint)}.top.paint{fill:var(--paint-top)}.side.paint{fill:var(--paint-side)}.enamel{fill:var(--enamel)}.kin{fill:var(--kin)}.card{fill:var(--card)}.side.card{fill:var(--corn)}
 .maker{fill:var(--maker);font:italic 700 3.9px Georgia,'Times New Roman',serif;letter-spacing:.2px;text-anchor:middle;stroke:none}
@@ -33,7 +33,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .lumps{fill:url(#cornQ);stroke:none;pointer-events:none}.corn{fill:url(#cornP);stroke:var(--corn-line);stroke-width:.7;vector-effect:non-scaling-stroke;stroke-linejoin:round}.pp{fill:url(#puffG);stroke:var(--corn-line);stroke-width:.3}.hull{fill:var(--hull);opacity:.85}
 .shade{fill:var(--corn-deep);stroke:none;pointer-events:none}.shade.f{opacity:.16}.shade.s{opacity:.36}.crest{fill:none;stroke:var(--corn-line);stroke-width:.55;vector-effect:non-scaling-stroke;opacity:.75;pointer-events:none}
 .butter{fill:url(#butterG);stroke:none;opacity:0;pointer-events:none}.pool{fill:url(#lampG);opacity:var(--glow-a);pointer-events:none}
-.pc{fill:url(#puffG);stroke:var(--corn-line);stroke-width:.45;vector-effect:non-scaling-stroke;pointer-events:none}.burst{fill:none;stroke:var(--lamp);stroke-width:.8;stroke-linecap:round;vector-effect:non-scaling-stroke;pointer-events:none}
+.pc{fill:url(#puffG);stroke:var(--corn-line);stroke-width:.45;vector-effect:non-scaling-stroke;pointer-events:none}.burst{fill:none;stroke:var(--burst);stroke-width:.95;stroke-linecap:round;vector-effect:non-scaling-stroke;pointer-events:none}
 .kernels{fill:url(#kernP)}.heat{fill:var(--heat);opacity:0;filter:url(#bloom);pointer-events:none}.skin{fill:var(--heat);stroke:none;opacity:0;pointer-events:none}
 .bulb{fill:var(--lamp);filter:url(#glow)}.bulb-b{fill:var(--off);stroke:var(--line);stroke-width:.4;vector-effect:non-scaling-stroke}.bulb-b.on{fill:var(--lamp);filter:url(#glow)}.bloom{fill:var(--lamp);opacity:calc(var(--glow-a)*1.15);filter:url(#bloom);pointer-events:none}
 .lamp{fill:var(--off)}.lamp.on{fill:var(--heat);filter:url(#glow)}.lamp.lit{fill:var(--lamp);filter:url(#glow)}
@@ -170,7 +170,7 @@ draw.appendChild(outer);into(inner);
 const SC=el('g',{});for(const c of['grip-u','grip'])el('path',{d:'M-3.2,-.4L-9.6,-3.4',class:c},SC);
 el('path',{d:'M-3.6,-3.4L6.4,-5.4Q8.6,-1.6 7.8,2.4L-3.6,3.2Z',class:'face chrome'},SC);el('path',{d:'M-2.5,-2.2L5.6,-3.9Q7.1,-1.2 6.5,1.5L-2.5,2Z',class:'face top chrome'},SC);const scoopLoad=el('path',{d:puff(2.2,-1.6,3.9,8,2),class:'pc'},SC);
 const PCS=[0,1,2].map(s=>puff(0,0,1.9,5,s*1.7+.4)),pcs=Array.from({length:30},(_,i)=>({n:el('path',{d:PCS[i%3],class:'pc',display:'none'}),on:0}));
-const bursts=Array.from({length:8},()=>({n:el('path',{d:'M0,-1.6V-3.1M1.5,-.8L2.7,-1.5M1.5,.8L2.7,1.5M0,1.6V3.1M-1.5,.8L-2.7,1.5M-1.5,-.8L-2.7,-1.5',class:'burst',display:'none'}),t:-1}));
+const bursts=Array.from({length:10},()=>({n:el('path',{d:'M0,-1.5V-3.2M1.4,-.8L2.8,-1.6M1.4,.8L2.8,1.6M0,1.5V3.2M-1.4,.8L-2.8,1.6M-1.4,-.8L-2.8,-1.6M-.5,0A.5,.5 0 1 0 .5,0A.5,.5 0 1 0 -.5,0',class:'burst',display:'none'}),t:-1}));
 into(draw);
 // The roof: painted, a chrome band round its header; the stirrer motor, the kernel jar (N) and the butter pump (B) on top.
 box(-.8,-.8,70,61.6,43.6,6.5,1.4,'paint');
@@ -218,7 +218,7 @@ if(reduced.matches){fill=max(0,fill-.12);boxFill=1;spill=0;notice('SCOOPED · A 
 scoopT=performance.now();scoopTook=false;tone(180,.05,.02,'square');notice('SCOOPING A BOX','The door opens and the scoop fills a box.');}
 // Progress: a share fills the heap to it; null runs on its own again; done pops it to the brim and over.
 function setProgress(p){finish=0;if(p==null||!isFinite(p)){mode='auto';target=null;}else{mode='det';target=clamp(+p);if(reduced.matches)fill=target;}lastUI=-1;}
-function finishKey(){if(finish)return;finish=1;mode='det';target=1;if(reduced.matches){fill=1;spill=1;finish=2;say('Complete: the cabinet is full to the brim and over.');}lastUI=-1;}
+function finishKey(){if(finish)return;finish=1;mode='det';target=1;serving=false;if(reduced.matches){fill=1;spill=1;finish=2;say('Complete: the cabinet is full to the brim and over.');}lastUI=-1;}
 window.figure={setProgress,done:finishKey};
 function sync(){set(heatSw,'aria-pressed',heat);set(HR.k,'transform',heat?'':'translate(0 3.4)');set(HR.lamp,'class',heat?'lamp on':'lamp');}
 // Pieces in flight: from the rim, out of the door, from the scoop into the box. They land, bounce once, and go.
@@ -259,7 +259,7 @@ function tick(now){const dt=min(.05,(now-(last||now))/1000),red=reduced.matches;
 if(mode!=='auto'||finish)started=true;else if(!started&&!red){started=true;heat=true;sync();}
 if((mode==='det'&&fill<target-1e-3||finish===1)&&!heat){heat=true;sync();}
 if(mode==='det'&&!finish&&fill>target+.01)serving=true;
-if(serving){if(mode==='det'){fill=red?target:max(target,fill-dt*.9);spill=max(0,spill-dt*1.5);if(fill<=target+1e-4)serving=false;}else if(fill<=.45||red)serving=false;else if(scoopT<0){scoopT=now;scoopTook=false;}}
+if(serving){if(mode==='det'){if(fill>target){fill=red?target:max(target,fill-dt*.9);spill=max(0,spill-dt*1.5);}if(fill<=target+1e-4)serving=false;}else if(fill<=.45||red)serving=false;else if(scoopT<0){scoopT=now;scoopTook=false;}}
 temp=red?(heat?205:22):temp+((heat?232:22)-temp)*(1-Math.exp(-dt*(heat?.9:.32)));
 const K=frameOf();rate=max(0,rate-rate*dt*2.5);
 if(heat&&temp>172&&charge>0&&dumpT<0&&spillT<0&&fill<cap()-1e-4){if(red)popAll();else{const k=.62*clamp((temp-172)/58)**2;acc+=charge*k*dt;let n=0;while(acc>=gap&&n<12){acc-=gap;gap=-Math.log(1-random()*.999);popOne(now,K);n++;}}}
@@ -291,7 +291,7 @@ set(plunger,'transform',`translate(0 ${f2(red?0:2.2*sin(PI*clamp((now-butterT)/7
 const pt2=red?1:(now-pourT)/900;set(pourS,'style',`opacity:${pt2>.02&&pt2<1?.95:0};stroke-dashoffset:${f2(-now/30)}`);
 // Heat: the kettle's glow and skin, the thermometer.
 const hk=clamp((temp-60)/170);kGlow.style.opacity=f2(hk*.7);kSkin.style.opacity=f2(hk*.3);set(needle,'transform',`rotate(${f2(ang(temp))})`);
-if(!red)fly(dt,now);for(const b of bursts){if(b.t<0)continue;const k=(now-b.t)/220;if(k>=1||red){b.t=-1;set(b.n,'display','none');continue;}set(b.n,'transform',`translate(${f2(b.x)} ${f2(b.y)}) rotate(${f2(b.r)}) scale(${f2(.6+.9*k)})`);b.n.style.opacity=f2(1-k);}
+if(!red)fly(dt,now);for(const b of bursts){if(b.t<0)continue;const k=(now-b.t)/260;if(k>=1||red){b.t=-1;set(b.n,'display','none');continue;}set(b.n,'transform',`translate(${f2(b.x)} ${f2(b.y)}) rotate(${f2(b.r)}) scale(${f2(.7+1.1*k)})`);b.n.style.opacity=f2(1-k*k);}
 const ch=heat&&!red?Math.floor(now/150)%3:-1;if(ch!==chased){chased=ch;for(const b of BULBS)set(b.n,'class',ch<0||(b.k+ch)%3?'bulb-b on':'bulb-b');}
 redraw();if(lastUI<0||now-lastUI>120)ui(now);requestAnimationFrame(tick);}
 // Input: Space heats, N a new batch, B butter, S (or the door) scoops; Enter and Space on a focused part are its own.

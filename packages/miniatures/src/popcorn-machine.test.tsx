@@ -2,7 +2,7 @@ import { act, cleanup } from '@testing-library/react'
 import { createRef } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { MiniaturePopcornMachine, type MiniaturePopcornMachineHandle, type MiniaturePopcornMachineKey, popcornMachine } from './popcorn-machine'
-import { useFrames } from './test/browser'
+import { seedRandom, useFrames } from './test/browser'
 import { describeMiniature, mount } from './test/miniature-suite'
 
 describeMiniature(MiniaturePopcornMachine, popcornMachine)
@@ -11,6 +11,7 @@ describe('Popcorn machine', () => {
   afterEach(() => {
     cleanup()
     vi.useRealTimers()
+    vi.restoreAllMocks()
   })
 
   /** Mounts it (reduced motion unless asked otherwise), presses the keys in order and lets it settle past the notes. */
@@ -163,6 +164,20 @@ describe('Popcorn machine', () => {
     await run(30000)
     expect(handle().getSnapshot().readout).toMatch(/· 100% FULL$/)
     expect(handle().getSnapshot().state).toBe('COMPLETE · FRESH POPCORN')
+  })
+
+  it('done while it serves itself down after a spill pops it back up instead of jumping to full', async () => {
+    seedRandom(7)
+    const { snap, run, handle } = await play([], 15000, 'never')
+    for (let i = 0; i < 80 && !(/^(SERVING|SCOOP)/.test(snap().state) && read(snap().readout).full < 95); i++) await run(500)
+    expect(snap().state).toMatch(/^(SERVING|SCOOP)/)
+    const before = read(snap().readout).full
+    act(() => handle().done())
+    await run(100)
+    expect(read(snap().readout).full).toBeLessThanOrEqual(before + 3)
+    await run(40000)
+    expect(snap().state).toBe('COMPLETE · FRESH POPCORN')
+    expect(read(snap().readout).full).toBe(100)
   })
 
   it('the handle drives it too: setProgress, null to run on its own again, done', async () => {
