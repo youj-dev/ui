@@ -6,7 +6,7 @@ import type { FigureEnv, FigureModule } from '../engine/types'
 
 const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--ok:#15a65e;--warn:#e88a00;--shell:#e6e5e0;--shell-top:#fbfaf7;--shell-side:#c9c8c2;--coral:#ee7a4b;--coral-top:#f59c72;--coral-side:#cf5f33;--joint:#8d8e91;--joint-top:#a7a8ab;--rubber:#2e2e2d;--rubber-top:#474745;--visor:#15171a;--visor-hi:#2a3038;--visor-rim:#3a3d42;--eye:#74d8ff;--blush:#ff8a9e;--sheen:.5}
 @media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--shell:#c2c1be;--shell-top:#ebeae7;--shell-side:#8d8d8b;--coral:#c9663e;--coral-top:#e5926a;--coral-side:#924121;--joint:#6c6d70;--joint-top:#8c8d90;--rubber:#252524;--rubber-top:#424240;--visor:#111214;--visor-hi:#252a31;--visor-rim:#2c2f33;--eye:#80deff;--blush:#ff8a9e;--sheen:.3;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
-.face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
+.face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:600 2.6px ui-monospace,monospace;letter-spacing:.5px;stroke:none}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .shell{fill:var(--shell)}.top.shell{fill:var(--shell-top)}.side.shell{fill:var(--shell-side)}.coral{fill:var(--coral)}.top.coral{fill:var(--coral-top)}.side.coral{fill:var(--coral-side)}.joint{fill:var(--joint)}.top.joint{fill:var(--joint-top)}.rubber{fill:var(--rubber)}.top.rubber{fill:var(--rubber-top)}
 .panel{stroke-opacity:.3}.seam{fill:none;stroke:var(--line);stroke-width:.55;vector-effect:non-scaling-stroke;opacity:.5}
 .visor{fill:url(#visorG);stroke:var(--visor-rim);stroke-width:1.1;vector-effect:non-scaling-stroke}.bezel{fill:var(--line);stroke:none;opacity:.55}.glint{fill:none;stroke:#fff;stroke-width:.9;stroke-linecap:round;opacity:.3}
@@ -75,22 +75,21 @@ function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',
 function lit(n,c,base){if(n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''));}}
 // The body's frame and the parts' sizes.
 const BODY=30*RAD,TF=orient(BODY),TC=[0,0,31],TA=10.5,TB=5.5,TH=8.5,TR=10.5,HA=19,HB=6,HH=8,HR=17,HZ=88,VZ=HB+HR*.88;
-// Floor: the house ground shadow, then the base: a rubber foot, the puck with its light ring, the waist.
+// Floor: the house ground shadow, then the base: a rubber foot, the puck with its light ring and model mark, the waist.
 const s0=P(0,0,0),floor=['shadow stage-floor','stage-contact'].map(c=>el('ellipse',{cx:f2(s0[0]),cy:f2(s0[1]+2),rx:40,ry:15,class:c}));
 const layers=[],layer=()=>{const g=el('g',{});layers.push(g);return g;};
 const baseG=layer();upright(baseG,0,23,3,'rubber');upright(baseG,3,21,7,'shell');
 const rc=P(0,0,10),ringD=`M${f2(rc[0])},${f2(rc[1]+16.5*K)}A${f2(16.5*RS)},${f2(16.5*K)} 0 1 0 ${f2(rc[0])},${f2(rc[1]-16.5*K)}A${f2(16.5*RS)},${f2(16.5*K)} 0 1 0 ${f2(rc[0])},${f2(rc[1]+16.5*K)}`;
 el('path',{d:ringD,class:'ring'},baseG);const ring=el('path',{d:ringD,class:'lit',pathLength:100},baseG);ring._c='';
-upright(baseG,9,8,5,'joint');
+text(group(plane(lp([0,0,6.6],TF,-6,21.1,0),TF.U,mul(TF.Z,-1)),baseG),0,0,'Q–3','etch');upright(baseG,9,8,5,'joint');
 // Arms: a capsule and a mitten each; the far one goes behind the torso, the near one in front of everything.
 const arm=g=>({c:el('path',{class:'face shell'},g),h:el('circle',{r:f2(5.2*RS),class:'face coral'},g),s:el('circle',{r:1.2,class:'spec'},g)});
 const farArm=arm(layer());
-// Torso: the shell, the chest screen (two lines of type, a progress track) and the brand plate, then the near shoulder.
+// Torso: the shell, the chest screen (two lines of type, a progress track) and the brand plate.
 const torsoG=layer(),torso=boxNodes(torsoG);shape(torso,TC,TF,TA,TB,TH,TR);
 const chest=group(plane(lp(TC,TF,0,TB+TR*.9,0),TF.U,mul(TF.Z,-1)),torsoG);rect(chest,-13.6,-10.6,27.2,13.6,3.6,'bezel');rect(chest,-12.8,-9.8,25.6,12,3,'visor');
 const L1=text(chest,-11.2,-5.4,'','scr'),L2=text(chest,-11.2,-1.2,'','scr'),track=rect(chest,-11.2,-3.1,22.4,1.6,.8,'track'),bar=rect(chest,-11.2,-3.1,0,1.6,.8,'fill');
 rect(chest,-6.6,4.4,13.2,4,1.4,'plate');text(chest,0,7.25,'Ollen','brand');
-el('path',{class:'face coral',d:disc(lp(TC,TF,TA+TR+.1,0,10),mul(TF.F,-1),mul(TF.Z,-1),4.6)},torsoG);
 // Neck, the far ear, the head and its face, the near ear: rebuilt in place as the head moves.
 const neckG=layer();upright(neckG,49.6,8.6,1.8,'coral');upright(neckG,51.4,5.6,15,'joint');const earL=layer(),head=boxNodes(layer());
 const faceG=el('g',{},layer());rect(faceG,-28.9,-17.4,57.8,34.8,12.4,'bezel');rect(faceG,-28,-16.5,56,33,11.6,'visor');el('path',{d:'M-25.6,-4Q-25.8,-14.2 -15.8,-14.6',class:'glint'},faceG);
@@ -165,7 +164,7 @@ if(!tip.p||reduced.matches)tip.p=rest.slice();
 const tx=tip.p[0],ty=tip.p[1],mid=P(...lp(C,fh,0,0,HH+HR+11.6)),d=`M${pt(rb)}Q${pt(mid)} ${f2(tx)},${f2(ty)}`;set(rodU,'d',d);set(rodM,'d',d);
 for(const n of[halo,lamp]){set(n,'cx',f2(tx));set(n,'cy',f2(ty));}set(spec,'cx',f2(tx-1.4));set(spec,'cy',f2(ty-1.5));
 return rest;}
-function arms(T){for(const[a,s,al,be]of[[farArm,-1,T.fa,T.fb],[nearArm,1,T.na,T.nb]]){const S=lp(TC,TF,s*25,0,10),d=unit(add(mul(TF.Z,-cos(al*RAD)),mul(TF.U,s*sin(al*RAD)))),d2=unit(add(mul(d,cos(be*RAD)),mul(TF.F,sin(be*RAD)))),H=add(S,mul(d2,15.5)),p=P(...S),q=P(...H);
+function arms(T){for(const[a,s,al,be]of[[farArm,-1,T.fa,T.fb],[nearArm,1,T.na,T.nb]]){const S=lp(TC,TF,s*23.6,0,10),d=unit(add(mul(TF.Z,-cos(al*RAD)),mul(TF.U,s*sin(al*RAD)))),d2=unit(add(mul(d,cos(be*RAD)),mul(TF.F,sin(be*RAD)))),H=add(S,mul(d2,15.5)),p=P(...S),q=P(...H);
 capsule(a.c,p,q,4*RS);set(a.h,'cx',f2(q[0]));set(a.h,'cy',f2(q[1]));set(a.s,'cx',f2(q[0]-2.4));set(a.s,'cy',f2(q[1]-2.6));}}
 // The face: eyes, mouth and cheeks from the current expression, the gaze and a blink.
 function eyeD(x,y,a,t,m,b){const k=BZ,u=(v,w)=>`${f2(x+v)},${f2(y+w)}`;return`M${u(-a,m)}C${u(-a,m+(t-m)*k)} ${u(-a*k,t)} ${u(0,t)}C${u(a*k,t)} ${u(a,m+(t-m)*k)} ${u(a,m)}C${u(a,m+(b-m)*k)} ${u(a*k,b)} ${u(0,b)}C${u(-a*k,b)} ${u(-a,m+(b-m)*k)} ${u(-a,m)}Z`;}
@@ -178,7 +177,7 @@ function screen(now,red){let a='',b='',p=-1;
 if(st==='listen'){const s=typed.slice(max(0,((typed.length/11)|0)-1)*11),c=red||now%900<520?'_':'';a=s.slice(0,11);b=s.slice(11);if(s.length<11)a+=c;else b+=c;}
 else if(st==='think'){a='THINKING'+(red?'…':'.'.repeat(1+((now/380)|0)%3));if(pmode==='det'){p=pv;b='';}else p=-2;}
 else if(st==='idle'){a='ASK ME';b='ANYTHING';}
-else{let n=shown;[a,b]=[lines[0]||'',lines[1]||''];if(n<a.length+b.length+1){const c1=min(n,a.length),c2=max(0,n-a.length-1);a=a.slice(0,c1);b=b.slice(0,c2);}}
+else{const n=shown;[a,b]=[lines[0]||'',lines[1]||''];if(n<a.length+b.length+1){const c1=min(n,a.length),c2=max(0,n-a.length-1);a=a.slice(0,c1);b=b.slice(0,c2);}}
 if(L1.textContent!==a)L1.textContent=a;if(L2.textContent!==b)L2.textContent=b;
 const show=p!==-1;track.style.opacity=show?'':'0';bar.style.opacity=show?'':'0';
 if(p>=0){set(bar,'x',-11.2);set(bar,'width',f2(22.4*p));}else if(p===-2){const k=red?.5:.5-.5*cos((now/1100)%1*2*PI);set(bar,'x',f2(-11.2+16.4*k));set(bar,'width',6);}
