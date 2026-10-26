@@ -19,6 +19,10 @@
     "light": "/thumbs/miniatures/cell-tower.webp?v=853db58e99",
     "dark": "/thumbs/miniatures/cell-tower.dark.webp?v=956180850e"
   },
+  "chemistry-bench": {
+    "light": "/thumbs/miniatures/chemistry-bench.webp?v=f6893f08ae",
+    "dark": "/thumbs/miniatures/chemistry-bench.dark.webp?v=6fc39e32a9"
+  },
   "coffee-grinder": {
     "light": "/thumbs/miniatures/coffee-grinder.webp?v=e7e52c1f24",
     "dark": "/thumbs/miniatures/coffee-grinder.dark.webp?v=2a21c97998"

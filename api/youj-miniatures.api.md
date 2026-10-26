@@ -90,6 +90,8 @@ const cardCatalog: { description; id; initial; keys; label; maker; model; name; 
 
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const chemistryBench: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const coffeeGrinder: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const coolingUnit: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -310,6 +312,23 @@ interface MiniatureCellTowerProps extends MiniatureProps {
 }
 
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/chemistry-bench
+
+```ts
+function MiniatureChemistryBench(props: MiniatureChemistryBenchProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureChemistryBenchHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureChemistryBenchHandle = MiniatureProgressHandle<MiniatureChemistryBenchKey>;
+
+type MiniatureChemistryBenchKey = MiniatureKeyOf<typeof chemistryBench>;
+
+interface MiniatureChemistryBenchProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureChemistryBenchHandle>;
+}
+
+const chemistryBench: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/coffee-grinder
