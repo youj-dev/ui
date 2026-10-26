@@ -13,7 +13,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .shade{fill:#000;opacity:.07;stroke:none;pointer-events:none}.shine{fill:none;stroke:#fff;stroke-linecap:round;opacity:.75}.decal{fill:var(--decal);font:700 4.4px ui-monospace,monospace;letter-spacing:1.5px;stroke:none}
 .screen{fill:var(--screen)}.card{fill:var(--card);stroke:none}.digit{fill:var(--digit);font:700 8.4px ui-monospace,monospace;text-anchor:middle;stroke:none}.split{stroke:#000;stroke-width:.45;opacity:.55}.seg{fill:var(--unlit)}.seg.a{fill:var(--warn)}.seg.g{fill:var(--ok)}.seg.b{fill:var(--accent)}.seg.a,.seg.g,.seg.b{filter:url(#glow)}
 .lamp{fill:var(--off);stroke:var(--line);stroke-width:.35;vector-effect:non-scaling-stroke}.lamp.r{fill:var(--fault)}.lamp.a{fill:var(--warn)}.lamp.r,.lamp.a{filter:url(#glow);stroke:none}.halo{opacity:0;filter:url(#bloom);pointer-events:none}.halo.r{fill:var(--fault);opacity:.45}.halo.a{fill:var(--warn);opacity:.5}
-.puff{fill:url(#puffG);stroke:none;pointer-events:none}.fe{fill:url(#flameO);opacity:.35;filter:url(#bloom)}.fo{fill:url(#flameO);filter:url(#glow)}.fi{fill:url(#flameI)}.fc{fill:url(#flameC)}.dia{fill:#fff}.fhalo{fill:var(--fire);filter:url(#bloom)}.fire{fill:url(#fireG)}.hot{fill:var(--fire);filter:url(#glow)}.jet{fill:url(#jetG);filter:url(#glow)}.fe,.fo,.fi,.fc,.dia,.fhalo,.fire,.hot,.jet{stroke:none;pointer-events:none}
+.puff{fill:url(#puffG);stroke:none;pointer-events:none}.smoke{filter:url(#vapor)}.fe{fill:url(#flameO);opacity:.35;filter:url(#bloom)}.fo{fill:url(#flameO);filter:url(#glow)}.fi{fill:url(#flameI)}.fc{fill:url(#flameC)}.dia{fill:#fff}.fhalo{fill:var(--fire);filter:url(#bloom)}.fire{fill:url(#fireG)}.hot{fill:var(--fire);filter:url(#glow)}.jet{fill:url(#jetG);filter:url(#glow)}.fe,.fo,.fi,.fc,.dia,.fhalo,.fire,.hot,.jet{stroke:none;pointer-events:none}
 .water{fill:none;stroke:var(--water);stroke-width:.75;stroke-linecap:round;stroke-dasharray:.3 1.5}.fuel{fill:none;stroke:var(--accent);stroke-width:.7;stroke-linecap:round;stroke-dasharray:1.4 2.2}
 .control{cursor:pointer;outline:none}.hit{fill:transparent;stroke:none}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.control:focus-visible .focus-ring{opacity:1}
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
@@ -26,6 +26,7 @@ const defs = `<radialGradient id="puffG" cx=".5" cy=".5" r=".5" fx=".4" fy=".34"
 <linearGradient id="jetG"><stop offset="0" style="stop-color:var(--fl0)"/><stop offset=".35" style="stop-color:var(--fl1)"/><stop offset="1" style="stop-color:var(--fl3);stop-opacity:0"/></linearGradient>
 <radialGradient id="tankG" cx=".5" cy=".5" r=".5" fx=".34" fy=".28"><stop offset="0" style="stop-color:var(--hull-top)"/><stop offset=".72" style="stop-color:var(--tank)"/><stop offset="1" style="stop-color:var(--hull-side)"/></radialGradient>
 <pattern id="hzP" width="2.6" height="2.6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.3" height="2.6" style="fill:var(--hz)"/><rect x="1.3" width="1.3" height="2.6" style="fill:var(--dk)"/></pattern>
+<filter id="vapor" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.5"/></filter>
 <clipPath id="holeClip"><path d="M-400,-500H400V-21H12.25A12.25,7.07 0 0 1 -12.25,-21H-400Z"/></clipPath>
 <clipPath id="cardT"><rect x="-.3" y="-.3" width="7.2" height="5.8"/></clipPath><clipPath id="cardB"><rect x="-.3" y="5.5" width="7.2" height="5.8"/></clipPath>`
 
@@ -59,6 +60,7 @@ function hull(pts){pts=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cr=(o
 const rim=(r,z,n=24,cx=0,cy=0)=>Array.from({length:n},(_,i)=>P(...at(r,i*360/n,z,cx,cy)));
 const solid=(rings,cls)=>el('path',{d:pd(hull(rings.flat())),class:'face '+cls});
 function sk(d,w,cls){el('path',{d,class:'su'+(cls.includes('dim')?' dim':''),'stroke-width':f2(w+.7)});return el('path',{d,class:cls,'stroke-width':w});}
+const put=(n,k,v)=>{const c=n._a||(n._a={});if(c[k]!==v){c[k]=v;if(v==null)n.removeAttribute(k);else set(n,k,v);}},op=(n,v)=>{if(n._o!==v){n._o=v;n.style.opacity=v;}},vis=(n,on)=>{const v=on?'':'none';if(n._d!==v){n._d=v;n.style.display=v;}};
 function lamp(g,x,y,r=1){const n=circle(g,x,y,r,'lamp');n._c='';return n;}
 function lit(n,c,base='lamp'){if(n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''));}}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
@@ -88,7 +90,7 @@ legBox(-42,-6);sk(brace('back')+brace('left'),.75,'bar dim');for(const z of[65,1
 legBox(-42,6);legBox(-30,-6);sk(brace('front')+brace('side'),.85,'bar');legBox(-30,6);
 box(-45,-9,163,18,18,3,1,'tw');cylinder(-36,0,166,1.3,26,'z','hull');for(const z of[171,180])band(1.3,z,z+3.5,'face tw',-45,135,-36,0);
 cylinder(-36,0,192,1.8,1.4,'z','dk');const bcn=cylinder(-36,0,193.4,1.3,1.6,'z','glass'),bLamp=lamp(bcn.face,0,0,1),bp=P(-36,0,194.4),bHalo=el('circle',{cx:f2(bp[0]),cy:f2(bp[1]),r:8,class:'halo'});wire([[-36,0,195],[-36,0,201]],'detail');
-const smB=el('g',{});
+const smB=el('g',{class:'smoke'});
 // Swing arms, rebuilt as they turn: a beam with its truss and umbilical line, a pin at the tower, a clamp round the rocket.
 const armsG=el('g',{}),ARMZ=[107,65],fuels=[];let armKey='';
 function drawArms(){const key=arm.map(a=>a.toFixed(3)).join();if(key===armKey)return;armKey=key;armsG.replaceChildren();fuels.length=0;const was=root;into(armsG);drawArm(ARMZ[1],90*ease(arm[1]));drawArm(ARMZ[0],90*ease(arm[0]));into(was);}
@@ -122,7 +124,7 @@ into(draw);
 // In front of the rocket: the near clamps, nozzles and sprays; the jet from the trench mouth.
 const mlpF=into(el('g',{}));clampAt(11.8,0);clampAt(0,11.8);nozzle(16.5,-16.5);nozzle(-16.5,16.5);nozzle(16.5,16.5);into(draw);
 const jetG=group(FRONT(60,0,4.4)),jet=el('path',{class:'jet'},jetG),jetHalo=el('ellipse',{cx:14,cy:0,rx:18,ry:9,class:'fhalo',style:'opacity:0'},jetG);
-const smF=el('g',{}),glowF=el('ellipse',{class:'fire',style:'opacity:0'});{const c=P(14,4,20);set(glowF,'cx',f2(c[0]));set(glowF,'cy',f2(c[1]));set(glowF,'rx',78);set(glowF,'ry',46);}
+const smF=el('g',{class:'smoke'}),glowF=el('ellipse',{class:'fire',style:'opacity:0'});{const c=P(14,4,20);set(glowF,'cx',f2(c[0]));set(glowF,'cy',f2(c[1]));set(glowF,'rx',78);set(glowF,'ry',46);}
 // Countdown board: posts, cabinet, four flip cards (T, sign, two digits), ten lamps, a range beacon.
 for(const x of[-52,-27])box(x,49,9,2,2,13,.5,'dk');box(-58,48,22,38,3,21,1.6,'dk');const bd=group(FRONT(-58,51,43));rect(bd,1.4,1.4,35.2,18.2,1.2,'face screen');
 function half(g,clip){const h=el('g',{'clip-path':`url(#${clip})`},g);rect(h,0,0,6.6,11,.9,'card');return{h,t:text(h,3.3,8.6,'','digit')};}
@@ -140,19 +142,19 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)'),dark=matchMedia('(p
 let trailZ=null,mode='own',fin=0,target=0,ph='pad',pt=0,cT0=null,igT0=0,liftT=0,thrust=0,veh=1,dist=0,clampOpen=0,arm=[0,0],armT=[0,0],del=0,delA=0,bv=10,bt=10,fast=0,H=0,VS=0,PHI=0,FX=0,note='',noteT=0,lastUI=-1,lt=0,now=0,nextVent=0,ac=null,roar=null,wasRed=null;
 const fmt=v=>`T${v<0?'+':'–'}${String(Math.abs(v)).padStart(2,'0')}`;
 // Smoke: a pool of puffs living in world space, each a lit soft sphere that grows, drifts on the wind and fades.
-const WIND=[5,-5,0],POOL=Array.from({length:96},()=>({n:el('circle',{class:'puff',r:0,style:'display:none'},smF),age:1,life:0}));let pf=0;const acc={};
+const WIND=[5,-5,0],POOL=Array.from({length:150},()=>({n:el('circle',{class:'puff',r:0,style:'display:none'},smF),age:1,life:0}));let pf=0;const acc={};
 function spawn(x,y,z,vx,vy,vz,r0,gr,life,a,drag=1.6,lift=5){let p=null;for(let k=0;k<POOL.length&&!p;k++){const q=POOL[(pf+k)%POOL.length];if(q.age>=q.life){p=q;pf=(pf+k+1)%POOL.length;}}if(!p)return;Object.assign(p,{x,y,z,vx,vy,vz,r0,gr,life,a,drag,lift,age:0});(x+y>0?smF:smB).appendChild(p.n);p.n.style.display='';}
 function emit(key,rate,dt,fn){acc[key]=(acc[key]||0)+rate*dt;while(acc[key]>=1){acc[key]--;fn();}}
 const jetPuff=k=>spawn(61,(R()-.5)*10,2+R()*6,(45+R()*35)*k,(R()-.5)*30,R()*12,3.4+R()*2.5,10+R()*5,3.6+R()*2,.95);
 const basePuff=()=>{const a=R()*360,p=at(21+R()*3,a,21+R()*3),v=at(22+R()*26,a,0);spawn(p[0],p[1],p[2],v[0],v[1],5+R()*10,5+R()*3,9+R()*4,4.2+R()*2.4,.95,1.3);};
-const trailPuff=(x,y,z)=>spawn(x+(R()-.5)*4,y+(R()-.5)*4,z,(R()-.5)*7,(R()-.5)*7,-3-R()*6,3.8+R()*1.8,5+R()*2.5,4.2+R()*2.4,.62+R()*.18,1.2,1.5);
+const trailPuff=(x,y,z)=>spawn(x+(R()-.5)*4,y+(R()-.5)*4,z,(R()-.5)*7,(R()-.5)*7,-3-R()*6,4.6+R()*1.8,5.5+R()*2.5,4.2+R()*2.4,.62+R()*.18,1.2,1.5);
 const ventPuff=()=>spawn(7.6+R(),2.8+R(),110+R()*2,7+R()*4,(R()-.5)*3,-1.5-R()*2,1.1,2.4+R(),2+R(),.75,1.4,-1);
 const linger=k=>spawn(58+R()*8,(R()-.5)*8,3+R()*4,6+R()*8,(R()-.5)*5,3+R()*4,3,4.5,3.5+R()*1.5,.38*k,1.2,2.5);
 function stepPuffs(dt){for(const p of POOL){if(p.age>=p.life)continue;p.age+=dt;if(p.age>=p.life){p.n.style.display='none';continue;}const k=Math.exp(-p.drag*dt);p.vx=p.vx*k+WIND[0]*(1-k);p.vy=p.vy*k+WIND[1]*(1-k);p.vz=p.vz*k+p.lift*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.z=Math.max(6,p.z+p.vz*dt);}}
 function drawPuffs(){for(const p of POOL){if(p.age>=p.life)continue;const s=P(p.x,p.y,p.z),r=(p.r0+p.gr*Math.pow(p.age,.65))*1.2247,o=p.a*Math.min(1,p.age/.18)*Math.pow(1-p.age/p.life,1.4)*clamp((s[1]-VB[1]-4)/46);set(p.n,'cx',f2(s[0]));set(p.n,'cy',f2(s[1]));set(p.n,'r',f2(r));p.n.style.opacity=f2(o);}}
 const clearPuffs=()=>{for(const p of POOL){p.age=p.life=1;p.n.style.display='none';}};
 // Reduced motion: the cloud of a moment, simulated once and held still.
-function still(kind){clearPuffs();for(let i=0;i<48;i++){const dt=1/30;if(kind==='ign')emit('j',20,dt,()=>jetPuff(1));else{emit('j',12,dt,()=>jetPuff(1));emit('b',14,dt,basePuff);}stepPuffs(dt);}if(kind==='flight')for(let z=30;z<84;z+=5)trailPuff(2.3,-2.3,z);drawPuffs();}
+function still(kind){clearPuffs();for(let i=0;i<48;i++){const dt=1/30;if(kind==='ign')emit('j',20,dt,()=>jetPuff(1));else{emit('j',12,dt,()=>jetPuff(1));emit('b',14,dt,basePuff);}stepPuffs(dt);}drawPuffs();}
 const flying=()=>ph==='flight'||ph==='clear';
 function go(p){ph=p;pt=now;lastUI=-1;set(boardBtn,'aria-label',p==='ign'||p==='pad'&&(cT0!=null||fin===1)?'Abort the countdown (Esc)':'Launch (Space)');if(reduced.matches&&(p==='ign'||p==='flight'))still(p);}
 function audio(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;if(!ac)ac=new A();if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}}
@@ -204,27 +206,28 @@ delA=red?del:delA+clamp(del-delA,-dt*1.5,dt*3);if(ph==='flight')clampOpen=red?1:
 if(!CARDS.some(k=>k.k<1)&&bv!==bt){const step=!red&&bt<bv&&bv-bt<=12;bv=step?bv-1:bt;show(bv,red);if(cT0!=null&&ph!=='flight')tone(bv?660:990,.01,.07);}
 for(const k of CARDS)if(k.k<1){k.k=Math.min(1,k.k+dt/(fast?.11:.24));if(k.k>=1){k.cur=k.to;if(k.q!=null){k.to=k.q;k.q=null;k.k=0;}}paint(k);}
 // The vehicle: on the pad, rolling out and back, or climbing out of the frame on its flame.
-let vt='';if(ph==='flight'){const h=red?96:H,phi=red?2:PHI,x=red?4:FX;vt=`translate(${f2(x)} ${f2(-h)}) rotate(${f2(phi)} 0 -24)`;}else if(dist>0){const o=P(0,-dist,0);vt=`translate(${f2(o[0])} ${f2(o[1])})`;}
-set(vehG,'transform',vt);set(flameG,'transform',vt);vehG.style.display=veh?'':'none';if(ph==='flight')set(flight,'mask','url(#sky)');else flight.removeAttribute('mask');
-const mt=dist>0?`translate(${f2(P(0,-dist,0)[0])} ${f2(P(0,-dist,0)[1])})`:'',fade=f2(1-clamp((dist-40)/50));for(const g of[mlpG,mlpF]){set(g,'transform',mt);g.style.opacity=fade;}flight.style.opacity=fade;
-for(const k of CL)set(k.g,'transform',`translate(${f2(P(k.x*.16*clampOpen,k.y*.16*clampOpen,-.6*clampOpen)[0])} ${f2(P(k.x*.16*clampOpen,k.y*.16*clampOpen,-.6*clampOpen)[1])})`);
+let vt='';if(ph==='flight'){const h=red?56:H,phi=red?1.5:PHI,x=red?2:FX;vt=`translate(${f2(x)} ${f2(-h)}) rotate(${f2(phi)} 0 -24)`;}else if(dist>0){const o=P(0,-dist,0);vt=`translate(${f2(o[0])} ${f2(o[1])})`;}
+if(ph==='ign'&&!red&&thrust>.05){const j=.4*thrust;vt=`translate(${f2((R()-.5)*j)} ${f2((R()-.5)*j)})`;}
+put(vehG,'transform',vt);put(flameG,'transform',vt);vis(vehG,veh);put(flight,'mask',ph==='flight'&&!red?'url(#sky)':null);
+const mt=dist>0?`translate(${f2(P(0,-dist,0)[0])} ${f2(P(0,-dist,0)[1])})`:'',fade=f2(1-clamp((dist-40)/50));for(const g of[mlpG,mlpF]){put(g,'transform',mt);op(g,fade);}op(flight,fade);
+for(const k of CL)put(k.g,'transform',`translate(${f2(P(k.x*.16*clampOpen,k.y*.16*clampOpen,-.6*clampOpen)[0])} ${f2(P(k.x*.16*clampOpen,k.y*.16*clampOpen,-.6*clampOpen)[1])})`);
 // Flame: a plume under the bells with its core and shock diamonds, long in flight, short and buried in the hole on the pad.
-const lo=ph==='flight'?clamp(1-(red?96:H)/90):1;if(thrust>.01){const fl=red?0:Math.sin(t/23)*.05+Math.sin(t/7.3+1)*.035+(R()-.5)*.05,L=(ph==='flight'?34+Math.min(36,(red?96:H)*.3):8+22*thrust)*(1+fl),W=7.4*(.82+.18*thrust)*(1+fl*.4);
+const lo=ph==='flight'?clamp(1-(red?56:H)/90):1;if(thrust>.01){const fl=red?0:Math.sin(t/23)*.05+Math.sin(t/7.3+1)*.035+(R()-.5)*.05,L=(ph==='flight'?34+Math.min(36,(red?56:H)*.3):8+22*thrust)*(1+fl),W=7.4*(.82+.18*thrust)*(1+fl*.4);
 set(fE,'d',plume(W*1.3,-20.5,L*1.12));set(fO,'d',plume(W,-19.5,L));set(fI,'d',plume(W*.66,-19.5,L*.72));set(fC,'d',plume(W*.42,-19.5,L*.46));DIA.forEach((d,i)=>{const y=-19.5+L*(.13+.11*i),s=1.7-.35*i;set(d,'d',`M0,${f2(y-s*1.5)}L${f2(s)},${f2(y)}L0,${f2(y+s*1.5)}L${f2(-s)},${f2(y)}Z`);d.style.opacity=f2((ph==='flight'?.85:.4)*(red?1:.75+.25*Math.sin(t/31+i*2)));});
-set(fHalo,'cy',f2(-19.5+L*.4));fHalo.style.opacity=f2(.55*thrust*glowK);flameG.style.display='';}else flameG.style.display='none';
-const burn=thrust*lo;poolL.style.opacity=f2(burn*.85*glowK);slotGlow.style.opacity=f2(burn*.7);holeGlow.style.opacity=f2(thrust*(ph==='flight'?lo:1)*.9);glowF.style.opacity=f2(thrust*clamp(1-(ph==='flight'?(red?96:H):0)/130)*.5*glowK);
-const jk=thrust*(ph==='flight'?clamp(1-(red?96:H)/70):1),jl=(10+26*jk)*(red?1:1+Math.sin(t/19)*.08);set(jet,'d',jk>.01?`M0,-3.3C7,-4.8 ${f2(jl*.6)},-3.4 ${f2(jl)},0C${f2(jl*.6)},3.4 7,4.8 0,3.3Z`:'');jetHalo.style.opacity=f2(jk*.6*glowK);
+set(fHalo,'cy',f2(-19.5+L*.4));op(fHalo,f2(.55*thrust*glowK));vis(flameG,1);}else vis(flameG,0);
+const burn=thrust*lo;op(poolL,f2(burn*.85*glowK));op(slotGlow,f2(burn*.7));op(holeGlow,f2(thrust*(ph==='flight'?lo:1)*.9));op(glowF,f2(thrust*clamp(1-(ph==='flight'?(red?56:H):0)/130)*.5*glowK));
+const jk=thrust*(ph==='flight'?clamp(1-(red?56:H)/70):1),jl=(10+26*jk)*(red?1:1+Math.sin(t/19)*.08);put(jet,'d',jk>.01?`M0,-3.3C7,-4.8 ${f2(jl*.6)},-3.4 ${f2(jl)},0C${f2(jl*.6)},3.4 7,4.8 0,3.3Z`:'');op(jetHalo,f2(jk*.6*glowK));
 // Smoke: the trench jet, the cloud rolling off the deck, the trail, vents on the pad, steam lingering after.
-if(!red){if(thrust>.05&&ph!=='rest')emit('j',26*jk,dt,()=>jetPuff(Math.max(.35,jk)));
-if(ph==='flight'){const h=H,z=h+19.5-.72*(34+Math.min(36,h*.3));if(h>2&&h<75)emit('b',26*(1-h/75),dt,basePuff);if(h>6&&-z>VB[1]-20){if(trailZ==null)trailZ=z;while(trailZ<z){trailPuff(FX/1.732,-FX/1.732,trailZ);trailZ+=3.2;}}}
+if(!red){if(thrust>.05&&ph!=='rest')emit('j',17*jk,dt,()=>jetPuff(Math.max(.35,jk)));
+if(ph==='flight'){const h=H,z=h+19.5-.72*(34+Math.min(36,h*.3));if(h>2&&h<75)emit('b',20*(1-h/75),dt,basePuff);if(h>6&&-z>VB[1]-20){if(trailZ==null)trailZ=z;while(trailZ<z){trailPuff(FX/1.732,-FX/1.732,trailZ);trailZ+=4.2;}}}
 {const a=ph==='clear'?age():ph==='out'?3+age():ph==='rest'?age():9;if(a<6)emit('l',5*Math.exp(-a/2.2),dt,()=>linger(Math.exp(-a/3)));}
 if(ph==='pad'&&veh&&thrust<.05&&now>=nextVent){nextVent=now+(mode==='ind'?850:1700+R()*1100);const n=mode==='ind'?4:3;for(let i=0;i<n;i++)ventPuff();}
 stepPuffs(dt);drawPuffs();}
 else if(ph==='pad'&&thrust<=0&&POOL.some(p=>p.age<p.life))clearPuffs();
 // Sprays, fuel flow, lamps and the board's lamps.
-for(const g of SP){g.style.opacity=f2(delA);if(!red&&delA>0)for(const p of g.children)set(p,'stroke-dashoffset',f2(-t/60%18));}
-if(fuels.length){const on=ph==='pad'&&mode==='ind'&&!fin;for(const f of fuels){f.style.opacity=on?'1':'0';if(on&&!red)set(f,'stroke-dashoffset',f2(-t/45%36));}}
-const blink=red||t%1600<520;lit(bLamp,blink?'r':'');set(bHalo,'class','halo'+(blink?' r':''));const hotRange=counting()||ph==='flight',rb=hotRange&&(red||t%700<350);lit(rLamp,rb?'a':'');set(rHalo,'class','halo'+(rb?' a':''));
+for(const g of SP){op(g,f2(delA));if(!red&&delA>0)for(const p of g.children)set(p,'stroke-dashoffset',f2(-t/60%18));}
+if(fuels.length){const on=ph==='pad'&&mode==='ind'&&!fin;for(const f of fuels){op(f,on?'1':'0');if(on&&!red)set(f,'stroke-dashoffset',f2(-t/45%36));}}
+const blink=red||t%1600<520;lit(bLamp,blink?'r':'');put(bHalo,'class','halo'+(blink?' r':''));const hotRange=counting()||ph==='flight',rb=hotRange&&(red||t%700<350);lit(rLamp,rb?'a':'');put(rHalo,'class','halo'+(rb?' a':''));
 const on=ph==='rest'||flying()?10:ph!=='pad'&&ph!=='ign'?0:mode==='det'&&!fin?Math.round(target*10):cT0!=null||fin||ph==='ign'?10-clamp(bv,0,10):0,col=ph==='rest'||flying()?'g':'a',ch=red?0:(t/110)%18,cp=ch<9?ch:18-ch;
 SEG.forEach((s,i)=>lit(s,ph==='pad'&&mode==='ind'&&!fin?(red?(i%2?'':'b'):Math.abs(i-cp)<1.3?'b':''):i<on?(mode==='det'&&!fin&&target>=1&&i===9&&!red&&t%1000<400?'':col):'','seg'));
 // Arms: rebuilt only when they turn.

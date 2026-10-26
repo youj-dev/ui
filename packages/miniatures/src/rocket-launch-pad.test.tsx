@@ -85,7 +85,7 @@ describe('RocketLaunchPad', () => {
     const { snap, press, run, inside } = await pad()
     press('space')
     await run(11000)
-    expect(rocket(inside).getAttribute('transform')).toBe('translate(4.00 -96.00) rotate(2.00 0 -24)')
+    expect(rocket(inside).getAttribute('transform')).toBe('translate(2.00 -56.00) rotate(1.50 0 -24)')
     const flame = inside.querySelector('.fo')!.getAttribute('d')
     await run(500)
     expect(inside.querySelector('.fo')!.getAttribute('d')).toBe(flame)
@@ -167,14 +167,18 @@ describe('RocketLaunchPad', () => {
 
   it('the handle drives it too: setProgress, null for fueling, done; a new progress rolls out a fresh rocket', async () => {
     const ref = createRef<MiniatureRocketLaunchPadHandle>()
-    const { run, rerender } = await pad()
+    const { run, rerender, inside } = await pad()
     rerender(<MiniatureRocketLaunchPad ref={ref} reducedMotion="always" />)
     act(() => ref.current!.setProgress(0.25))
     await run(300)
     expect(ref.current!.getSnapshot().readout).toBe('PROGRESS 25% · T–08')
+    expect(inside.querySelectorAll('.seg.a')).toHaveLength(3)
     act(() => ref.current!.setProgress(null))
     await run(300)
     expect(ref.current!.getSnapshot()).toEqual({ readout: 'T–10 · HOLD · FUELING', state: 'FUELING · HOLD AT T–10', pressed: {} })
+    // Fueling: propellant runs along both arms and the board's lamps chase.
+    expect([...inside.querySelectorAll<SVGElement>('.fuel')].map((f) => f.style.opacity)).toEqual(['1', '1'])
+    expect(inside.querySelectorAll('.seg.b').length).toBeGreaterThan(0)
     act(() => ref.current!.done())
     await run(8000)
     expect(ref.current!.getSnapshot().readout).toBe('PROGRESS 100% · IN ORBIT')
