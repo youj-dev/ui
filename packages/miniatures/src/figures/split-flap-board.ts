@@ -9,7 +9,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.base{fill:var(--base)}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:3.2px ui-monospace,monospace;letter-spacing:.45px;stroke:none}.label{fill:var(--ink);font:4px ui-monospace,monospace;letter-spacing:.6px;stroke:none}.brand{font-size:5.4px;letter-spacing:1.8px;font-weight:600}.micro{font-size:2.6px;letter-spacing:.2px}.center{text-anchor:middle}.end{text-anchor:end}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .en{fill:var(--en)}.top.en{fill:var(--en-top)}.side.en{fill:var(--en-side)}.metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.rubber{fill:var(--rubber)}.top.rubber{fill:var(--rubber-top)}.side.rubber{fill:var(--rubber-side)}.pit{fill:var(--pit)}.pitw{fill:var(--pitw)}.top.pitw{fill:var(--pitf)}
 .flap{fill:var(--flap);stroke:none}.flap.ft{fill:var(--flap-top)}.flap.cg{fill:var(--cg)}.flap.ca{fill:var(--ca)}.flap.cr{fill:var(--cr)}.flap.cb{fill:var(--cb)}
-.gl{fill:none;stroke:var(--glyph);stroke-width:1.8;stroke-linejoin:miter;stroke-miterlimit:2.6}.dim{fill:#000;stroke:none;opacity:0}.lift{fill:#fff;stroke:none;opacity:0}.pin{fill:var(--pitf);stroke:none}.flaps{pointer-events:none}
+.gl{fill:none;stroke:var(--glyph);stroke-width:1.8;stroke-linejoin:miter;stroke-miterlimit:2.6}.sheen{fill:#fff;stroke:none;opacity:.1}.dim{fill:#000;stroke:none;opacity:0}.lift{fill:#fff;stroke:none;opacity:0}.pin{fill:var(--pitf);stroke:none}.flaps{pointer-events:none}
 .lamp{fill:var(--off);stroke:var(--line);stroke-width:.35;vector-effect:non-scaling-stroke}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.g,.lamp.a{filter:url(#glow);stroke:none}
 .arm-u{fill:none;stroke:var(--line);stroke-width:2.6;stroke-linecap:round}.arm{fill:none;stroke:var(--metal-top);stroke-width:1.5;stroke-linecap:round}
 .control{cursor:pointer;outline:none}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0}.control:focus-visible .focus-ring{opacity:1}.control:hover .top.rubber{fill:var(--rubber)}.control:hover .top.en{fill:var(--en)}
@@ -64,6 +64,24 @@ for(const[u,v]of[[6.5,5.5],[33.5,5.5],[6.5,72.5],[33.5,72.5]])screw(sd,u,v);
 const kn=cylinder(184,20,46,7.4,3.4,'x','metal'),knR=group('',kn.face);
 for(let k=0;k<24;k++){const a=k*15*D;line(knR,6.1*Math.cos(a),6.1*Math.sin(a),7.3*Math.cos(a),7.3*Math.sin(a));}
 circle(kn.face,0,0,3.6,'face top metal');circle(knR,0,-4.8,.8,'face recess');
+// Front: maker's line and run lamp in the header, the aluminum bezel around the display field.
+const fr=group(FRONT(0,40,84));text(fr,10.5,9,'PERRON','label brand');text(fr,46,8.8,'FLAP WORKS · F–11','etch micro');
+const led=circle(fr,172,7,1.25,'lamp');text(fr,169,7.9,'RUN','etch micro end');
+el('path',{d:'M9,12H175Q177,12 177,14V70Q177,72 175,72H9Q7,72 7,70V14Q7,12 9,12ZM9,14V70H175V14Z','fill-rule':'evenodd',class:'face metal',transform:FRONT(0,40,84)});
+// Display field: recessed behind the bezel (clipped to its opening), the flap modules at rest, the rail between the rows.
+el('path',{d:poly([[9,40,70],[175,40,70],[175,40,14],[9,40,14]],true)},el('clipPath',{id:'field'},defs));
+const fieldG=button(el('g',{}),'Split-flap board: flip to the next message (Space)');into(el('g',{'clip-path':'url(#field)'},fieldG));
+rect(group(FRONT(9,37,70)),0,0,166,56,0,'face pit');
+el('path',{d:poly([[9,37,70],[9,40,70],[9,40,14],[9,37,14]],true),class:'face pitw'});el('path',{d:poly([[9,37,14],[175,37,14],[175,40,14],[9,40,14]],true),class:'face top pitw'});
+function face(g,top,color){const r=rect(g,-MW/2,top?-HH:.3,MW,HH-.3,.7,top?'flap ft':'flap');if(top)rect(g,-MW/2+.7,-HH+.3,MW-1.4,.4,.2,'sheen');return{r,top,i:-1,p:color?null:el('path',{class:'gl',transform:'translate(-4 -7.5)'},el('g',{'clip-path':`url(#${top?'ht':'hb'})`},g))};}
+function paint(f,i){if(f.i===i)return;f.i=i;if(f.p)set(f.p,'d',GL[DRUM[i]]);else set(f.r,'class',`flap${f.top?' ft':''}${COLS[i]?' '+COLS[i]:''}`);}
+const mods=[];
+for(let r=0;r<2;r++)for(let c=0;c<NC;c++){const cx=X0+c*PITCH,zh=ZH[r],g=group(FRONT(cx,YH,zh)),col=c===0;
+const T=face(g,1,col),Bt=face(g,0,col);rect(g,-MW/2,.3,MW,1,0,'dim').style.opacity=.3;const sh=rect(g,-MW/2,.3,MW,HH-.3,.7,'dim');
+for(const s of[-1,1])rect(g,s<0?-MW/2-.75:MW/2,-.55,.75,1.1,.2,'pin');
+mods.push({r,c,cx,zh,T,Bt,sh,n:col?COLS.length:DRUM.length,cur:0,goal:0,left:0,start:0,run:0,fall:null,bnc:0,th:-1});}
+box(10,37,41.2,164,1.2,1.6,.3,'rubber');
+into(fieldG);el('path',{d:poly([[7.4,40,71.6],[176.6,40,71.6],[176.6,40,12.4],[7.4,40,12.4]],true),class:'focus-ring'});into(draw);
 // Top controls: the auto switch with its lamp, the home button and the big next button, each engraved.
 const autoG=button(el('g',{}),'Auto switch: advance on its own (A)');set(autoG,'aria-pressed','true');into(autoG);
 box(110,15,84,18,13,1,1,'metal');const ap=group(TOP(110,15,85));circle(ap,9,6.5,2.3,'face recess');circle(ap,9,6.5,1.2,'face side metal');const lampA=circle(ap,15,10.2,1.15,'lamp');
@@ -76,24 +94,6 @@ cylinder(161,22,84,8,1.2,'z','metal');const nextCap=el('g',{},nextG);into(nextCa
 circle(nc.face,0,0,4.8,'detail');el('path',{d:'M-2.9,-2.4L.2,0L-2.9,2.4ZM.3,-2.4L3.4,0L.3,2.4Z',class:'face recess'},nc.face);
 into(nextG);circle(group(TOP(161,22,85.2)),0,0,10.2,'focus-ring');into(draw);
 for(const[s,u]of[['AUTO',119],['HOME',140],['NEXT',161]])text(lid,u,35,s,'etch micro center');
-// Front: maker's line and run lamp in the header, the aluminum bezel around the display field.
-const fr=group(FRONT(0,40,84));text(fr,10.5,9,'PERRON','label brand');text(fr,46,8.8,'FLAP WORKS · F–11','etch micro');
-const led=circle(fr,172,7,1.25,'lamp');text(fr,169,7.9,'RUN','etch micro end');
-el('path',{d:'M9,12H175Q177,12 177,14V70Q177,72 175,72H9Q7,72 7,70V14Q7,12 9,12ZM9,14V70H175V14Z','fill-rule':'evenodd',class:'face metal',transform:FRONT(0,40,84)});
-// Display field: recessed behind the bezel (clipped to its opening), the flap modules at rest, the rail between the rows.
-el('path',{d:poly([[9,40,70],[175,40,70],[175,40,14],[9,40,14]],true)},el('clipPath',{id:'field'},defs));
-const fieldG=button(el('g',{}),'Split-flap board: flip to the next message (Space)');into(el('g',{'clip-path':'url(#field)'},fieldG));
-rect(group(FRONT(9,37,70)),0,0,166,56,0,'face pit');
-el('path',{d:poly([[9,37,70],[9,40,70],[9,40,14],[9,37,14]],true),class:'face pitw'});el('path',{d:poly([[9,37,14],[175,37,14],[175,40,14],[9,40,14]],true),class:'face top pitw'});
-function face(g,top,color){const r=rect(g,-MW/2,top?-HH:.3,MW,HH-.3,.7,top?'flap ft':'flap');return{r,top,i:-1,p:color?null:el('path',{class:'gl',transform:'translate(-4 -7.5)'},el('g',{'clip-path':`url(#${top?'ht':'hb'})`},g))};}
-function paint(f,i){if(f.i===i)return;f.i=i;if(f.p)set(f.p,'d',GL[DRUM[i]]);else set(f.r,'class',`flap${f.top?' ft':''}${COLS[i]?' '+COLS[i]:''}`);}
-const mods=[];
-for(let r=0;r<2;r++)for(let c=0;c<NC;c++){const cx=X0+c*PITCH,zh=ZH[r],g=group(FRONT(cx,YH,zh)),col=c===0;
-const T=face(g,1,col),Bt=face(g,0,col);rect(g,-MW/2,.3,MW,1,0,'dim').style.opacity=.3;const sh=rect(g,-MW/2,.3,MW,HH-.3,.7,'dim');
-for(const s of[-1,1])rect(g,s<0?-MW/2-.75:MW/2,-.55,.75,1.1,.2,'pin');
-mods.push({r,c,cx,zh,T,Bt,sh,n:col?COLS.length:DRUM.length,cur:0,goal:0,left:0,start:0,run:0,fall:null,bnc:0,th:-1});}
-box(10,37,41.2,164,1.2,1.6,.3,'rubber');
-into(fieldG);el('path',{d:poly([[7.4,40,71.6],[176.6,40,71.6],[176.6,40,12.4],[7.4,40,12.4]],true),class:'focus-ring'});into(draw);
 // Falling flaps, over everything: each module's face (old top half) and back (new bottom half), lower row first.
 const flapsG=el('g',{class:'flaps'});
 for(const m of[...mods.filter(m=>m.r===1),...mods.filter(m=>m.r===0)]){const fl=el('g',{},flapsG),col=m.c===0;
