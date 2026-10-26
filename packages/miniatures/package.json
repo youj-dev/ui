@@ -54,6 +54,7 @@
     "./home-router": "./src/home-router.tsx",
     "./hourglass": "./src/hourglass.tsx",
     "./instant-camera": "./src/instant-camera.tsx",
+    "./lava-lamp": "./src/lava-lamp.tsx",
     "./letterpress": "./src/letterpress.tsx",
     "./lighthouse": "./src/lighthouse.tsx",
     "./mainframe": "./src/mainframe.tsx",
@@ -199,6 +200,10 @@
       "./instant-camera": {
         "types": "./dist/instant-camera.d.ts",
         "default": "./dist/instant-camera.js"
+      },
+      "./lava-lamp": {
+        "types": "./dist/lava-lamp.d.ts",
+        "default": "./dist/lava-lamp.js"
       },
       "./letterpress": {
         "types": "./dist/letterpress.d.ts",
