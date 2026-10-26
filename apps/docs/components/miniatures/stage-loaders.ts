@@ -7,6 +7,7 @@ import * as turntableModule from '@youj/miniatures/turntable'
 export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>> = {
   '3d-printer': () => import('@youj/miniatures/3d-printer'),
   aquarium: () => import('@youj/miniatures/aquarium'),
+  'card-catalog': () => import('@youj/miniatures/card-catalog'),
   'cell-tower': () => import('@youj/miniatures/cell-tower'),
   'coffee-grinder': () => import('@youj/miniatures/coffee-grinder'),
   'cooling-unit': () => import('@youj/miniatures/cooling-unit'),

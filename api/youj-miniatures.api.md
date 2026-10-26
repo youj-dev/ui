@@ -84,6 +84,8 @@ interface MiniatureSnapshot {
 
 const aquarium: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const cardCatalog: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const coffeeGrinder: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -130,7 +132,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [60 items]
+const miniatures: readonly [61 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -243,6 +245,23 @@ interface MiniatureAquariumProps extends MiniatureProps {
 }
 
 const aquarium: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/card-catalog
+
+```ts
+function MiniatureCardCatalog(props: MiniatureCardCatalogProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureCardCatalogHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureCardCatalogHandle = MiniatureHandle<MiniatureCardCatalogKey>;
+
+type MiniatureCardCatalogKey = MiniatureKeyOf<typeof cardCatalog>;
+
+interface MiniatureCardCatalogProps extends MiniatureProps {
+    ref?: Ref<MiniatureCardCatalogHandle>;
+}
+
+const cardCatalog: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/cell-tower
