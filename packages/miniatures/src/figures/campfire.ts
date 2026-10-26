@@ -6,7 +6,7 @@ import type { FigureEnv, FigureModule } from '../engine/types'
 
 const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--grass:#c2cb9c;--grass-hi:#d3daaf;--blade:#86955f;--rim:#a08863;--dirt:#dacdab;--ash:#aba49b;--stone:#b1aba0;--stone-top:#d1ccc3;--stone-side:#8a857c;--wood:#8d6947;--wood-end:#d8b783;--ring:#b18a59;--bark:#5f452e;--char:#4b3b31;--char-end:#5e4639;--canvas:#e5d6b6;--canvas-top:#f3ead4;--canvas-side:#d1bb93;--under:#b39c74;--inside:#4a3f37;--lining:#eadbb9;--rust:#b65a3a;--rope:#988770;--bag:#a54d3d;--enamel:#4e6957;--enamel-top:#62816d;--globe:#ece7da;--stick:#d9c39e;--grip:#7a5a3c;--smoke:#a29f99;--star:#fff;--tag:#f7f0e0;--tag-ink:#6b3f2a}
 @media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--line:#444443;--grass:#353c2e;--grass-hi:#434b38;--blade:#58644a;--rim:#27231e;--dirt:#463d33;--ash:#3c3834;--stone:#766d63;--stone-top:#ab937c;--stone-side:#4a4642;--wood:#5a432f;--wood-end:#a3825a;--ring:#7a6142;--bark:#33261a;--char:#2e2520;--char-end:#3b2e27;--canvas:#776d59;--canvas-top:#887e69;--canvas-side:#645b49;--under:#3d372e;--inside:#1d1915;--lining:#776b56;--rust:#7c3b28;--rope:#5e5546;--bag:#6a3128;--enamel:#384b3f;--enamel-top:#48604f;--globe:#7d796f;--stick:#a8916f;--grip:#4a3624;--smoke:#6b6863;--tag:#9d917b;--tag-ink:#2f2219}svg{--ink:#282828;--muted:#6b6b6b}}
-.face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
+.face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}.contact{fill:var(--shadow);opacity:.13;filter:url(#soft);stroke:none}
 .grass{fill:url(#turfG)}.rim{fill:var(--rim)}.dirt{fill:var(--dirt);stroke:none}.ash{fill:var(--ash)}.blade{fill:none;stroke:var(--blade);stroke-width:.6;stroke-linecap:round}.stone{fill:url(#stoneG)}
 .wood{fill:var(--wood)}.top.wood{fill:var(--wood-end)}.char{fill:var(--char)}.top.char{fill:var(--char-end)}.ring{fill:none;stroke:var(--ring);stroke-width:.45;vector-effect:non-scaling-stroke}.bark{fill:none;stroke:var(--bark);stroke-width:.55;stroke-linecap:round;opacity:.55}
 .gable{fill:var(--canvas-side)}.slope{fill:url(#slopeG)}.under{fill:var(--under)}.inside{fill:var(--inside)}.rust{fill:var(--rust)}.bag{fill:var(--bag)}.tag{fill:var(--tag);stroke-width:.5}.serif{font:italic 700 1.75px Georgia,'Times New Roman',serif;letter-spacing:.2px;fill:var(--tag-ink);stroke:none}
@@ -82,8 +82,10 @@ const SKY=el('g',{});
 el('path',{d:curve(turf.map(q=>[q[0],q[1]+1.8]),true),class:'face rim'});el('path',{d:curve(turf,true),class:'face grass'});
 el('path',{d:curve([...Array(22)].map((_,i)=>{const a=i/22*2*PI,r=19+1.6*sin(3*a+1)+.9*sin(7*a+.4);return P(FX+r*cos(a),FY+r*sin(a),0);}),true),class:'dirt'});
 for(const[x,y,s]of[[-44,4,1],[-34,16,1.1],[-18,22,.9],[2,20,1],[8,-28,.9],[40,-26,.9],[52,0,.8],[34,22,1.1],[18,24,.9],[-6,24,.8]]){const[X,Y]=P(x,y,0);el('path',{d:`M${f2(X-1.5*s)},${f2(Y)}Q${f2(X-1.4*s)},${f2(Y-2.2*s)} ${f2(X-2.4*s)},${f2(Y-3.4*s)}M${f2(X)},${f2(Y)}Q${f2(X+.3*s)},${f2(Y-2.8*s)} ${f2(X-.2*s)},${f2(Y-4.4*s)}M${f2(X+1.5*s)},${f2(Y)}Q${f2(X+1.6*s)},${f2(Y-2*s)} ${f2(X+2.7*s)},${f2(Y-3*s)}`,class:'blade'});}
-// Light on the ground: the fire's pool (it carries the night) and the lantern's spill from the door.
+// The tent's and the seat's contact shadows on the turf; the light on the ground: the fire's pool (it carries the
+// night) and the lantern's spill from the door.
 const X0=-40,X1=0,YF=11,YB=-25,YC=-7,H=31,W=YF-YB;
+for(const[x0,y0,x1,y1]of[[X0-1,YB,X1+2.4,YF+2.4],[41.4,-10,53.6,13.2]])el('path',{d:poly([[x0,y0,0],[x1,y0,0],[x1,y1,0],[x0,y1,0]],true),class:'contact'});
 const pool=el('ellipse',{...iso(FX,FY,0,30),class:'pool'}),spill=el('ellipse',{...iso(X1+9,YC+2,0,12),class:'spill'});
 // The tent. Its door gable, drawn in its plane (u back along −y from the front corner, v down): the dark inside, the
 // lantern's warmth in it, a bedroll; the lantern hung from the ridge; the flaps rolled back and tied; the fly over it all.
@@ -168,10 +170,10 @@ const m=P(...add(T,mul(u,-2.7))),e=P(...E),tp=P(...T);set(stickHit,'d',`M${pt(e)
 function mallowShade(red,dk){const v=red?[0,.3,.6,.9][toastOf(toast)]:toast;let i=1;while(i<SHADE.length-1&&SHADE[i][0]<v)i++;const[a,ca]=SHADE[i-1],[b,cb]=SHADE[i],k=clamp((v-a)/(b-a)),c=ca.map((x,j)=>x+(cb[j]-x)*k).map(x=>x*(dk?.84:1));
 const hex=c=>'#'+c.map(x=>round(clamp(x,0,255)).toString(16).padStart(2,'0')).join('');return[hex(c),hex(c.map(x=>x+(255-x)*.14))];}
 const op=(n,v)=>{const s=f2(v);if(n._o!==s){n._o=s;n.style.opacity=s;}};
-function paint(now,dt,red,dk){const t=red?1.3:now/1000,name=fireName,q=red?STILL[name]:min(1.25,level*(1+.06*sin(t*7.7)+.04*sin(t*13.3))),Hf=5+35*q,key=red?name+dk:'';
+function paint(now,dt,red,dk){const t=red?1.3:now/1000,name=fireName,q=red?STILL[name]:min(1.25,level*(1+.06*sin(t*7.7)+.04*sin(t*13.3))),Hf=2+38*q,key=red?name+dk:'';
 if(!red||key!==drawnFlames){drawnFlames=key;const wide=.55+.45*min(1,q/.7);for(const g of TONGUES){const lay=g.k==='o'?1:g.k==='m'?.78:.6,ph=g.ph,h=Hf*g.rel*lay*(1+.13*sin(t*6.3+ph*2)+.08*sin(t*11.7+ph*3.3)+.05*sin(t*19.1+ph));
-set(g.n,'d',tongue(FB[0]+g.dx*wide,FB[1],g.hw*wide,h,1.4+2.2*sin(t*1.9+ph),1.2+.8*sin(t*2.3+ph*1.7),ph+t*2.4));op(g.n,g.k==='o'?.85+.15*min(1,q/.3):g.k==='m'?clamp((q-.08)/.2):clamp((q-.2)/.25));}
-const hr=9+Hf*.95;set(halo,'cx',f2(FB[0]));set(halo,'cy',f2(FB[1]-Hf*.42));set(halo,'r',f2(hr));op(halo,min(1,q)*(dk?.95:.55));
+set(g.n,'d',tongue(FB[0]+g.dx*wide,FB[1],g.hw*wide,h,1.4+2.2*sin(t*1.9+ph),1.2+.8*sin(t*2.3+ph*1.7),ph+t*2.4));op(g.n,g.k==='o'?.6+.4*min(1,q/.3):g.k==='m'?clamp((q-.08)/.2):clamp((q-.2)/.25));}
+const hr=9+Hf*.95;set(halo,'cx',f2(FB[0]));set(halo,'cy',f2(FB[1]-Hf*.42));set(halo,'r',f2(hr));op(halo,min(1,q)*(dk?.95:.36));
 const rg=20+14*min(1,q);set(pool,'rx',f2(rg*1.2247));set(pool,'ry',f2(rg*.7071));op(pool,min(1,q*1.1)*(dk?1:.22));
 const ar=30+10*min(1,q);set(air,'cx',f2(FB[0]-8));set(air,'cy',f2(FB[1]-8));set(air,'rx',f2(ar));set(air,'ry',f2(ar*.8));op(air,min(1,q*1.1));
 op(bedGlow,.55+.45*min(1,q));op(cracks,(.55+.45*(1-min(1,q)))*(.8+.2*sin(t*3.1)));op(seatLit,dk?min(1,q)*.75:0);
@@ -181,7 +183,7 @@ const k=(now-dropT)/350,tr=!red&&i===dropI&&k<1?`translate(0 ${f2(-7*(1-k)**2)})
 if(red)for(const s of sparks){if(s.life>0||s.n._o!=='0'){s.life=0;op(s.n,0);}}
 else{spawn=min(4,spawn+dt*max(0,(q-.12)*10))+burst;burst=0;for(const s of sparks){if(s.life<=0&&spawn>=1){spawn-=1;s.max=s.life=1+rnd()*1.4;s.x=FB[0]+(rnd()-.5)*9;s.y=FB[1]-rnd()*Hf*.35;s.vx=(rnd()-.5)*8+3;s.vy=-(16+rnd()*20)*(.7+.4*min(1,q));}
 if(s.life>0){s.life-=dt;s.vy*=exp(-dt*.5);s.x+=(s.vx+4*sin(t*2.6+s.ph))*dt;s.y+=s.vy*dt;const k=clamp(s.life/s.max);set(s.n,'cx',f2(s.x));set(s.n,'cy',f2(s.y));set(s.n,'r',f2(.45+.75*k));op(s.n,s.life>0?k**.6*(.65+.35*sin(t*31+s.ph)):0);}}spawn=min(spawn,4);}
-const smk=.45+.55*(1-min(1,q));if(!red||key!==paint.smoke){paint.smoke=key;puffs.forEach((p,i)=>{if(!red)p.p=(p.p+dt/6.5)%1;const k=red?(i+1)/6:p.p;set(p.n,'cx',f2(FB[0]+2+k*20+sin(k*5+i)*1.6));set(p.n,'cy',f2(FB[1]-Hf*.8-k*38));set(p.n,'r',f2(1.6+k*5));op(p.n,sin(k*PI)*.3*smk);});}
+const smk=.45+.55*(1-min(1,q));if(!red||key!==paint.smoke){paint.smoke=key;puffs.forEach((p,i)=>{if(!red)p.p=(p.p+dt/6.5)%1;const k=red?(i+1)/6:p.p;set(p.n,'cx',f2(FB[0]+2+k*20+sin(k*5+i)*1.6));set(p.n,'cy',f2(FB[1]-Hf*.8-k*38));set(p.n,'r',f2(1.6+k*5));op(p.n,sin(k*PI)*(dk?.3:.24)*smk);});}
 lan=red?+lanOn:lan+(+lanOn-lan)*(1-exp(-dt/.16));if(abs(lan-+lanOn)<.002)lan=+lanOn;const lf=lan*(red?1:1+.035*sin(t*8.3)+.025*sin(t*21.7)),lk=red?`${lan}${dk}`:'';if(!red||lk!==drawnLan){drawnLan=lk;op(glowIn,lf);op(lanHalo,lf*(dk?.9:.55));op(wick,lf);set(globe,'class',lan>.5?'globe lit':'globe');op(fabG,lf*(dk?.78:.18));op(fabS,lf*(dk?.66:.14));op(spill,lf*(dk?.85:.3));}
 const sk=f2(psi);if(sk!==drawnStick){drawnStick=sk;drawStick();}
 const[fill,cap]=mallowShade(red,dk),sh=fill+cap;if(sh!==shade){shade=sh;mallB.style.fill=fill;mallCap.style.fill=cap;}
