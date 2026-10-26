@@ -28,7 +28,7 @@ const{document,window,matchMedia,requestAnimationFrame}=env;
 turned 30° from the front plane toward the viewer, and its head turns, nods and tilts about the neck. 1 unit ≈ 2 mm.
 Part                        size                                        on it
 ground shadow           the house ellipse under the base
-base foot + puck        r 23 × 3 / r 21 × 7, z 0–10                  light ring r 16.5 on the puck; the waist r 8 above
+base foot + puck        r 23 × 3 / r 21 × 7, z 0–10                  light ring r 16.5 on the puck; the waist r 8, z 9–17
 torso                   42 × 32 × 38, round-edged r 10.5, z 12–50   chest screen 25.6 × 12, brand plate under it
 arms                    r 4, 15.5 long from the shoulders at ±25, z 41; mitten hands r 5.2
 neck                    bearing ring r 8.6 on the torso, neck r 5.6 up into the head
@@ -76,12 +76,12 @@ function lit(n,c,base){if(n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''));}}
 // The body's frame and the parts' sizes.
 const BODY=30*RAD,TF=orient(BODY),TC=[0,0,31],TA=10.5,TB=5.5,TH=8.5,TR=10.5,HA=19,HB=6,HH=8,HR=17,HZ=88,VZ=HB+HR*.88;
 // Floor: the house ground shadow, then the base: a rubber foot, the puck with its light ring and model mark, the waist.
-const s0=P(0,0,0),floor=['shadow stage-floor','stage-contact'].map(c=>el('ellipse',{cx:f2(s0[0]),cy:f2(s0[1]+2),rx:40,ry:15,class:c}));
+const s0=P(0,0,0);for(const c of['shadow stage-floor','stage-contact'])el('ellipse',{cx:f2(s0[0]),cy:f2(s0[1]+2),rx:40,ry:15,class:c});
 const layers=[],layer=()=>{const g=el('g',{});layers.push(g);return g;};
 const baseG=layer();upright(baseG,0,23,3,'rubber');upright(baseG,3,21,7,'shell');
 const rc=P(0,0,10),ringD=`M${f2(rc[0])},${f2(rc[1]+16.5*K)}A${f2(16.5*RS)},${f2(16.5*K)} 0 1 0 ${f2(rc[0])},${f2(rc[1]-16.5*K)}A${f2(16.5*RS)},${f2(16.5*K)} 0 1 0 ${f2(rc[0])},${f2(rc[1]+16.5*K)}`;
 el('path',{d:ringD,class:'ring'},baseG);const ring=el('path',{d:ringD,class:'lit',pathLength:100},baseG);ring._c='';
-text(group(plane(lp([0,0,6.6],TF,-6,21.1,0),TF.U,mul(TF.Z,-1)),baseG),0,0,'Q–3','etch');upright(baseG,9,8,5,'joint');
+text(group(plane(lp([0,0,6.6],TF,-6,21.1,0),TF.U,mul(TF.Z,-1)),baseG),0,0,'Q–3','etch');upright(baseG,9,8,8,'joint');
 // Arms: a capsule and a mitten each; the far one goes behind the torso, the near one in front of everything.
 const arm=g=>({c:el('path',{class:'face shell'},g),h:el('circle',{r:f2(5.2*RS),class:'face coral'},g),s:el('circle',{r:1.2,class:'spec'},g)});
 const farArm=arm(layer());
@@ -127,7 +127,9 @@ function typeKey(ch){audio();const g=keyGaze(ch.toLowerCase());if(st!=='listen')
 function erase(){if(st!=='listen')return;typed=typed.slice(0,-1);keyAt=now0();kick(-12,-8);lastUI=-1;tone(300,.04,.006,0,'triangle');}
 function ask(){audio();if(st==='think')return;said=typed.trim();typed='';go('think');kick(0,-40);tone(392,.12,.008,0,'sine',523);say(said?`Thinking about “${said.toLowerCase()}”.`:'Thinking.');}
 function answer(s){const p=s.toLowerCase();if(!p)return'TYPE, THEN ENTER';for(const[re,a]of REPLIES)if(re.test(p))return a;return ANSWERS[turns++%ANSWERS.length];}
-function speak(a,state='reply'){reply=a;lines=wrap(a);shown=0;go(state);say(a.charAt(0)+a.slice(1).toLowerCase());}
+/* A reply as it should be read out: the screen's capitals in sentence case. */
+const spoken=s=>s.toLowerCase().replace(/(^|[.!?…]\s+)(\p{L})/gu,(_,a,b)=>a+b.toUpperCase()).replace(/\bi\b/g,'I').replace(/\bollen\b/g,'Ollen');
+function speak(a,state='reply'){reply=a;lines=wrap(a);shown=0;go(state);say(spoken(a));}
 function hi(){audio();typed='';kick(-30,-30);speak('HI THERE!','wave');tone(880,.08,.012);tone(1318.5,.12,.012,.09);}
 function mood(k){audio();const m=MOODS[k];typed='';go(m[0]);lines=wrap(m[2]);shown=m[2].length;kick(m[0]==='wow'?0:20,-50);say(m[3]);
 if(m[0]==='happy'){tone(659,.07,.01);tone(784,.07,.01,.08);tone(1047,.1,.01,.16);}else if(m[0]==='wow')tone(440,.18,.01,0,'sine',1200);else if(m[0]==='huh'){tone(392,.09,.009);tone(330,.08,.009,.1,'sine',440);}else{tone(392,.25,.008,0,'sine',262);tone(294,.3,.006,.3,'sine',196);}}
@@ -145,8 +147,8 @@ switch(st){
 case'listen':return{f:'listen',yaw:gz[0]*1.6,nod:-7,tilt:5,na:22,nb:34,fa:22,fb:34,gx:gz[0],gy:gz[1],lamp:'c',ring:'c'};
 case'think':{const s=red?0:t*3.2;return{f:'think',yaw:6,nod:6,tilt:-5,na:32+(red?0:6*sin(t*5)),nb:14,fa:28-(red?0:6*sin(t*5)),fb:10,gx:red?2.6:3*cos(s),gy:red?-3:-2.6+1.2*sin(s),lamp:'a',ring:'a'};}
 case'reply':case'done':return{f:'smile',yaw:0,nod:2,tilt:3,na:46+(red||shown>=reply.length?0:8*w),nb:26,fa:16,fb:10,gx:0,gy:0,lamp:'g',ring:'g'};
-case'wave':return{f:'smile',yaw:-4,nod:3,tilt:red?4:4*w,na:118+(red?0:22*w),nb:22,fa:14,fb:8,gx:0,gy:-.5,lamp:'g',ring:'g'};
-case'happy':return{f:'smile',yaw:0,nod:4,tilt:0,na:126+(red?0:8*w),nb:18,fa:126+(red?0:8*w),fb:18,gx:0,gy:-1,lamp:'p',ring:'c',hop:red||t>1.4?0:abs(sin(t*PI*2.2))*5};
+case'wave':return{f:'smile',yaw:-4,nod:3,tilt:red?4:4*w,na:126+(red?0:18*w),nb:22,fa:14,fb:8,gx:0,gy:-.5,lamp:'g',ring:'g'};
+case'happy':return{f:'smile',yaw:0,nod:4,tilt:0,na:126+(red?0:8*w),nb:18,fa:126+(red?0:8*w),fb:18,gx:0,gy:-1,lamp:'p',ring:'c',hop:red||t>1.4?0:abs(sin(t*PI*2.2))*4};
 case'wow':return{f:'wow',yaw:0,nod:8,tilt:0,na:72,nb:30,fa:72,fb:30,gx:0,gy:-1.2,lamp:'a',ring:'c',hop:red||t>.5?0:sin(t/.5*PI)*3};
 case'huh':return{f:'huh',yaw:-5,nod:0,tilt:-11,na:56,nb:28,fa:52,fb:20,gx:-2,gy:-2,lamp:'c',ring:''};
 case'sleepy':return{f:'sleepy',yaw:0,nod:-13+(red?0:2*sin(t*1.6)),tilt:6,na:4,nb:0,fa:4,fb:0,gx:0,gy:1.5,lamp:'',ring:''};
@@ -203,7 +205,7 @@ const key=[pose.yaw,pose.nod,pose.tilt,breath].map(f2).join();let rest;if(key!==
 // The antenna's lamp on its spring: it lags behind the head and bobs back.
 if(rest){if(red){tip.p=rest.slice();tip.v=[0,0];}else{const ax=180*(rest[0]-tip.p[0])-9*tip.v[0],ay=180*(rest[1]-tip.p[1])-9*tip.v[1];tip.v=[tip.v[0]+ax*dt,tip.v[1]+ay*dt];tip.p=[tip.p[0]+tip.v[0]*dt,tip.p[1]+tip.v[1]*dt];const ox=tip.p[0]-rest[0],oy=tip.p[1]-rest[1],l=hypot(ox,oy);if(l>6)tip.p=[rest[0]+ox/l*6,rest[1]+oy/l*6];}}
 const talk=!red&&(st==='reply'||st==='done'||st==='wave')&&shown<reply.length?abs(sin(now/1000*15)):0;arms(pose);face(pose.gx,pose.gy,bl,talk);
-const hop=pose.hop?`translate(0 ${f2(-pose.hop)})`:'';for(const g of layers)set(g,'transform',hop);for(const n of floor){set(n,'rx',f2(40*(1-pose.hop*.025)));set(n,'ry',f2(15*(1-pose.hop*.025)));}
+const hop=pose.hop?`translate(0 ${f2(-pose.hop)})`:'';for(const g of layers)if(g!==baseG)set(g,'transform',hop);
 // Lights: the antenna lamp (it pulses while thinking), the ear lamps and the base ring (progress, or a chasing arc).
 const lc=T.lamp,pulse=lc==='a'&&!red?.5+.5*sin(now/1000*PI*2*1.4):lc?(st==='idle'?.35:.6):0;lit(lamp,lc,'lamp');lit(halo,lc,'halo');halo.style.opacity=f2(lc?pulse*.7:0);
 for(const e of ears)lit(e.l,lc==='a'&&!red?(sin(now/1000*PI*2*1.4)>0?'a':''):lc,'lamp');

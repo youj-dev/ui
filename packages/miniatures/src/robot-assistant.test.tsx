@@ -47,12 +47,14 @@ describe('Robot assistant', () => {
   })
 
   it('Enter: it thinks about what you typed, then replies on its chest screen and smiles', async () => {
-    const { run, snap } = await play(['h', 'e', 'l', 'l', 'o', 'Enter'])
+    const { run, snap, inside } = await play(['h', 'e', 'l', 'l', 'o', 'Enter'])
     expect(snap().state).toBe('THINKING · ANTENNA PULSING')
     expect(snap().readout).toBe('YOU · HELLO')
+    expect(inside.querySelector('[role=status]')).toHaveTextContent('Thinking about “hello”.')
     await run(1600)
     expect(snap().state).toBe('REPLIED · SMILING')
     expect(snap().readout).toBe('OLLEN · HI! HOW CAN I HELP?')
+    expect(inside.querySelector('[role=status]')).toHaveTextContent('Hi! How can I help?')
     await run(4000)
     expect(snap().state).toBe('READY · TYPE TO TALK')
     expect(snap().readout).toBe('OLLEN · HI! HOW CAN I HELP?')
