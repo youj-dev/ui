@@ -10,7 +10,7 @@ export const drumKit = {
   spec: 'S–5 / 22" KICK · 14" SNARE · 14" HATS · 18" CRASH · 20" RIDE',
   label: 'Acoustic drum kit, KARVELL S–5',
   description:
-    'A lacquered drum kit on a round rug: a kick drum with the maker’s plate on its front head, a chrome snare, rack toms on the kick, a floor tom, a hi-hat on its pedal stand, crash and ride cymbals on their stands, and the stool. Press a key or click a drum to hit it: heads dip and ring, the kick pedal thumps, cymbals wobble on their felts and the hi-hat opens and closes. Space plays an original groove, the arrows set its tempo, and the readout shows the tempo and the last hit.',
+    'A lacquered drum kit on a round rug: a kick drum with the maker’s plate on its front head, a snare, rack toms on the kick, a floor tom, a hi-hat on its pedal stand, crash and ride cymbals on their stands, and the stool. Press a key or click a drum to hit it: heads dip and ring, the kick pedal thumps, cymbals wobble on their felts and the hi-hat opens and closes. Space plays an original groove, the arrows set its tempo, and the readout shows the tempo and the last hit.',
   keys: [
     { keys: ['k'], caps: ['K'], label: 'kick' },
     { keys: ['s'], caps: ['S'], label: 'snare' },

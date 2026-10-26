@@ -4,11 +4,11 @@
  * (FigureModule). */
 import type { FigureEnv, FigureModule } from '../engine/types'
 
-const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--recess:#9d9d99;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--chrome:#d9dad8;--chrome-top:#f4f4f2;--chrome-side:#bdbebc;--shell:#a8232c;--shell-top:#c63a42;--shell-side:#7a1820;--inlay:#f1e6cf;--head:#f1ede2;--head-top:#fbf9f2;--reso:#2a2a29;--port:#0e0e0e;--plate:#efe4c8;--plate-ink:#5b1a1f;--bronze:#cf9d48;--bronze-top:#e9c272;--bronze-side:#a2742c;--stand:#2e2e2d;--pedal:#a5a5a2;--seat:#2b2b2a;--seat-top:#46453f;--rug:#e6dfd0;--rug-side:#cfc6b4;--rug-band:#d7b9a1;--rug-line:#d6ccb9;--felt:#b33a3a;--gloss:.65;--shade:.26}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--recess:#6e6e6c;--line:#444443;--chrome:#b7b7b6;--chrome-top:#e4e4e2;--chrome-side:#858585;--shell:#8d1c23;--shell-top:#b9363d;--shell-side:#540d13;--inlay:#cbc2ae;--head:#cac8c1;--head-top:#ebe9e2;--reso:#222221;--port:#080808;--plate:#c9c0a8;--plate-ink:#4a1418;--bronze:#ae843b;--bronze-top:#dab56a;--bronze-side:#71501c;--stand:#252524;--pedal:#7c7c7a;--seat:#383733;--seat-top:#5c5a54;--rug:#3d3a35;--rug-side:#2a2825;--rug-band:#4e3f35;--rug-line:#4a463f;--felt:#962f2f;--gloss:.5;--shade:.34}svg{--ink:#282828;--muted:#6b6b6b}}
+const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--recess:#9d9d99;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--chrome:#d9dad8;--chrome-top:#f4f4f2;--chrome-side:#bdbebc;--shell:#a8232c;--shell-top:#c63a42;--shell-side:#7a1820;--inlay:#f1e6cf;--head:#f1ede2;--head-top:#fbf9f2;--reso:#2a2a29;--port:#0e0e0e;--plate:#efe4c8;--plate-ink:#5b1a1f;--bronze:#cf9d48;--bronze-top:#e9c272;--bronze-side:#a2742c;--stand:#2e2e2d;--pedal:#a5a5a2;--seat:#2b2b2a;--seat-top:#46453f;--rug:#e6dfd0;--rug-side:#cfc6b4;--rug-band:#d7b9a1;--rug-line:#d6ccb9;--felt:#b33a3a;--wood:#dcb47c;--gloss:.65;--shade:.26}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--recess:#6e6e6c;--line:#444443;--chrome:#b7b7b6;--chrome-top:#e4e4e2;--chrome-side:#858585;--shell:#8d1c23;--shell-top:#b9363d;--shell-side:#540d13;--inlay:#cbc2ae;--head:#cac8c1;--head-top:#ebe9e2;--reso:#222221;--port:#080808;--plate:#c9c0a8;--plate-ink:#4a1418;--bronze:#ae843b;--bronze-top:#dab56a;--bronze-side:#71501c;--stand:#252524;--pedal:#7c7c7a;--seat:#383733;--seat-top:#5c5a54;--rug:#3d3a35;--rug-side:#2a2825;--rug-band:#4e3f35;--rug-line:#4a463f;--felt:#962f2f;--wood:#b99768;--gloss:.5;--shade:.34}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .chrome{fill:var(--chrome)}.top.chrome{fill:var(--chrome-top)}.side.chrome{fill:var(--chrome-side)}.shell{fill:var(--shell)}.top.shell{fill:var(--shell-top)}.side.shell{fill:var(--shell-side)}.head{fill:var(--head-top)}.inside{fill:var(--shell-side)}.reso{fill:url(#resoG)}.port{fill:var(--port)}.plate{fill:var(--plate)}
-.bronze{fill:var(--bronze)}.top.bronze{fill:var(--bronze-top)}.side.bronze{fill:var(--bronze-side)}.disk{fill:url(#bronzeG)}.stand{fill:var(--stand)}.pedal{fill:var(--pedal)}.seat{fill:var(--seat)}.cushion{fill:url(#seatG)}.felt{fill:var(--felt)}
+.bronze{fill:var(--bronze)}.top.bronze{fill:var(--bronze-top)}.side.bronze{fill:var(--bronze-side)}.disk{fill:url(#bronzeG)}.stand{fill:var(--stand)}.pedal{fill:var(--pedal)}.seat{fill:var(--seat)}.cushion{fill:url(#seatG)}.felt{fill:var(--felt)}.wood{fill:var(--wood)}
 .rug{fill:var(--rug)}.side.rug{fill:var(--rug-side)}.band{fill:var(--rug-band);stroke:none}.weave{fill:none;stroke:var(--rug-line);stroke-width:.8;vector-effect:non-scaling-stroke}.inlay{fill:none;stroke:var(--inlay);stroke-width:1.1;vector-effect:non-scaling-stroke;stroke-linecap:round}
 .gloss{fill:#fff;opacity:calc(var(--gloss)*.32);pointer-events:none}.glint{fill:#fff;opacity:var(--gloss);pointer-events:none}.dark{fill:#000;opacity:var(--shade);pointer-events:none}.hi{fill:none;stroke:#fff;stroke-width:.7;stroke-linecap:round;opacity:.8;vector-effect:non-scaling-stroke;pointer-events:none}.sheen{fill:#fff;pointer-events:none}.lathe{fill:none;stroke:var(--bronze-side);stroke-width:.4;vector-effect:non-scaling-stroke;opacity:.75;pointer-events:none}
 .ring{fill:none;stroke:var(--line);stroke-width:.45;vector-effect:non-scaling-stroke;opacity:.4}.dimple{fill:#000;opacity:0;pointer-events:none}.ripple{fill:none;stroke:var(--line);stroke-width:.7;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.ripple.lt{stroke:#fff}
@@ -25,16 +25,16 @@ const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* KARVELL S–5 acoustic drum kit, seen from the audience's side. World: x lower-right (the drummer's right); y lower-left
 (toward the audience: the kick's logo head faces +y); z up. 1 unit ≈ 1 cm.
 Part                        x      y      z      size
-rug (round, woven)        −14    −38      0     r 100 × .8, border band r 89–100
-hi-hat                    −66    −44     84     r 17.6 pair on a pedal stand; the top one rides the pull rod (+4.6 open)
-stool                      10   −102     45     seat r 15.5 × 8 on a column and tripod
-snare (chrome shell)      −26    −56     46     r 17.6 × 13, tilted to the drummer, on a basket stand
-crash                     −74    −10    117     r 22.5 on a straight stand, tilted to the drummer
+rug (round, woven)        −16    −36      0     r 88 × .8, border band r 79–86.6
+hi-hat                    −62    −46     84     r 17.6 pair on a pedal stand; the top one rides the pull rod (+4.6 open)
+stool                       8    −96     45     seat r 15.5 × 8 on a column and tripod
+snare                     −28    −52     46     r 17.6 × 13, tilted to the drummer, on a basket stand
+crash                     −66      0    117     r 22.5 on a straight stand, tilted to the drummer
 kick pedal                  0    −58…−20   0     footboard, posts, beater (r 2.4 felt) on its axle at z 16
-floor tom                  50    −50     14     r 20 × 34 on three legs
-kick                        0    −19…19  28.2   r 26.5 × 38, wood hoops r 28.2; front head with the plate and a port
+floor tom                  50    −50     14     r 20 × 34 on three legs, a pair of sticks across its hoop
+kick                        0    −19…19  28.2   r 26.5 × 38, wood hoops r 28.2, lugs by each hoop with rods and claws; front head with the plate and a port
 rack toms             −14/16     −6    61/60    r 12.2 × 16 / r 14.4 × 18 on the kick's holder, tilted to the drummer
-ride                       42    −24     99     r 25 on a boom stand from (58, −6)
+ride                       42    −24     99     r 25 on a boom stand from (54, −4)
 Heads dip and ring; cymbals wobble on their felts; the hi-hat opens and closes; the beater swings. */
 const draw=document.getElementById('drawing');let root=draw;
 const{P,set,el,group,circle,text,frame}=kit(()=>root);
@@ -70,8 +70,12 @@ const fv=atan2(dot(VW,V),dot(VW,U))/RAD,fh=atan2(dot(HV,V),dot(HV,U))/RAD,off=a=
 const HOOPS=[[add(c,mul(n,-.5)),add(c,mul(n,hw-.5))],[add(c1,mul(n,-hw)),add(c1,mul(n,.4))]];for(const[a,b]of HOOPS)tube(a,b,hr,hoop);
 tube(c,c1,r,o.fin||'shell');
 band(c,c1,U,V,r,fe,fe+(fe>fv?-42:42),'dark');band(c,c1,U,V,r,fh-28,fh+28,'gloss');band(c,c1,U,V,r,fh-5,fh+5,'glint');
-for(let k=0;k<(o.lugs||0);k++){const a=(k+.5)/o.lugs*2*PI,w=add(mul(U,cos(a)),mul(V,sin(a)));if(dot(w,VW)<.45)continue;const s=add(c,mul(w,r+.55)),l=Math.min(h*.13,3.4);tube(add(s,mul(n,h/2-l)),add(s,mul(n,h/2+l)),.95,'chrome');}
+const claws=[];for(let k=0;k<(o.lugs||0);k++){const a=(k+.5)/o.lugs*2*PI,w=add(mul(U,cos(a)),mul(V,sin(a)));if(dot(w,VW)<.45)continue;const s=add(c,mul(w,r+.55)),l=Math.min(h*.13,3.4),on=(d,e=r+.55)=>add(c,add(mul(n,d),mul(w,e)));
+if(!o.rods){tube(add(s,mul(n,h/2-l)),add(s,mul(n,h/2+l)),.95,'chrome');continue;}
+// A bass drum's lugs sit by each hoop, their tension rods running out to claws over the hoops.
+for(const[m,e,f]of[[h*.24,hw-.5,hw+1.2],[h*.76,h-hw,h-hw-1.7]]){tube(on(m-2.2),on(m+2.2),1,'chrome');tube(on(m+(e>m?-2.2:2.2)),on(e),.42,'chrome');claws.push([on(e,hr+.2),on(f,hr+.2)]);}}
 for(const[a,b]of HOOPS){band(a,b,U,V,hr,fv-90,fv+90,'face '+hoop);if(o.inlay)el('path',{d:path(ring(add(a,mul(n,hw/2)),U,V,hr,fv-84,fv+84,24),false),class:'inlay'});}
+for(const[a,b]of claws)tube(a,b,.8,'chrome');
 const tp=add(c1,mul(n,.4)),pl=plane(tp,U,V);el('path',{d:path(ring(add(c1,mul(n,-1.4)),U,V,r)),class:'face inside'});
 const dip=el('g',{},sh),hd=group(pl,dip);circle(hd,0,0,r-.1,'face '+(o.head||'head'));if(!o.g)circle(hd,0,0,r*.9,'ring');
 const dim=circle(hd,0,0,r*.5,'dimple'),rips=[0,1].map(()=>circle(hd,0,0,1,'ripple'+(o.head?' lt':'')));
@@ -106,7 +110,7 @@ for(const[x,y,a,b]of[[2,0,24,34],[52,-48,23,23],[10,-94,15,15],[-26,-50,14,14],[
 
 // The hi-hat: its pedal and stand, the pull rod, the bottom cymbal and the top one on the clutch.
 const hatG=ctl(el('g',{}),'Hi-hat (H, or O to open it)');into(hatG);
-const HX=-62,HY=-46;el('path',{d:path([[HX-4,HY-6,1.6],[HX+4,HY-6,1.6],[HX+4,HY-30,4.6],[HX-4,HY-30,4.6]]),class:'face pedal'});el('path',{d:path([[HX-3,HY-11,2.4],[HX+3,HY-11,2.4],[HX+3,HY-26,4.3],[HX-3,HY-26,4.3]]),class:'face stand'});
+const HX=-62,HY=-46,hatBoard=el('path',{class:'face pedal'}),hatTread=el('path',{class:'face stand'});
 stand(HX,HY,20,16,-20,80);
 const HB=cymbal({g:el('g',{}),c:[HX,HY,84],n0:[.03,.06,1],R:17.6,k:1}),hatRod=el('path',{class:'face chrome'}),HT=cymbal({g:el('g',{}),c:[HX,HY,86.8],n0:[0,0,1],R:17.6,k:-1.8,bell:1,ring:1}),HAT=[HB,HT];
 const rodTop=el('path',{class:'face chrome'}),clutch=el('g',{});into(clutch);tube([HX,HY,89.4],[HX,HY,92.4],1.5,'chrome',true);into(draw);
@@ -127,7 +131,7 @@ const board=el('path',{class:'face pedal'}),tread=el('path',{class:'face stand'}
 for(const x of[-6,6])tube([x,-25,0],[x,-25,19],.9,'chrome',true);tube([-6,-25,16],[6,-25,16],.6,'chrome');
 const shaft=el('path',{class:'face chrome'}),ball=el('ellipse',{rx:2.6,ry:2.6,class:'face felt'});
 into(kickG);tube([-25,8,13],[-37,15,1.2],.8,'chrome');foot(-37,15);
-const KK=drum({g:kickG,c:[0,-19,28.2],n:[0,1,0],h:38,r:26.5,hd:1.7,hw:3.6,hoop:'shell',inlay:1,lugs:10,head:'reso'});
+const KK=drum({g:kickG,c:[0,-19,28.2],n:[0,1,0],h:38,r:26.5,hd:1.7,hw:3.6,hoop:'shell',inlay:1,lugs:10,rods:1,head:'reso'});
 // The front head's plane runs right to left and upward; the plate and port are drawn the right way round in it.
 const LG=el('g',{},KK.hd);set(LG,'transform','matrix(-1 0 0 -1 0 0)');circle(LG,9.5,9,5.1,'face chrome');circle(LG,9.5,9,4.2,'face port');
 el('ellipse',{cx:0,cy:-5,rx:9.6,ry:4.4,class:'face plate'},LG);el('ellipse',{cx:0,cy:-5,rx:8.6,ry:3.5,class:'ring'},LG);text(LG,0,-3.4,'Karvell','logo');
@@ -136,7 +140,9 @@ into(kickG);tube([25,8,13],[37,15,1.2],.8,'chrome');foot(37,15);into(draw);
 const FT_LEGS=[40,160,280].map(a=>[cos(a*RAD),sin(a*RAD)]),ftLeg=([u,v])=>{tube([50+u*21.4,-50+v*21.4,40],[50+u*27,-50+v*27,1.2],.75,'chrome');foot(50+u*27,-50+v*27);};
 FT_LEGS.filter(([u,v])=>u+v<0).forEach(ftLeg);
 const FT=drum({c:[50,-50,14],n:[0,0,1],h:34,r:20,lugs:8,label:'Floor tom (F)'});
-into(FT.g);FT_LEGS.filter(([u,v])=>u+v>=0).forEach(ftLeg);into(draw);
+into(FT.g);FT_LEGS.filter(([u,v])=>u+v>=0).forEach(ftLeg);
+// A pair of sticks laid across its hoop: they shake with it.
+into(FT.sh);for(const[a,b]of[[[31,-41.5,49.2],[70,-53.5,49.2]],[[30.5,-45.5,49.2],[68.5,-58.5,49.2]]]){const t=add(a,mul(sub(b,a),.84));tube(a,t,.8,'wood');tube(t,b,.5,'wood');}into(draw);
 // The rack toms on the kick's holder.
 tube([0,-3,56],[0,-3,65],1.2,'chrome',true);
 const T1=drum({c:[-14,-6,61.5],n:unit([.12,-.3,.95]),h:16,r:12.2,lugs:6,label:'High tom (T)'});
@@ -196,6 +202,9 @@ function head(d,red,t,sign=1){const x=red?0:d.x,px=-d.pn[0]*x*sign,py=-d.pn[1]*x
 function beater(t,red){const p=red?1:clamp((t-kickT)/40),q=red?1:clamp((t-kickT-40)/190),a=red?-38:p<1?-38+50*p:12-50*(1-(1-q)**3),b=[0,-25+17*sin(a*RAD),16+17*cos(a*RAD)],key=f2(a);if(key===beater.k)return;beater.k=key;
 rod(shaft,[0,-25,16],b,.5);const q2=P(...b);set(ball,'cx',f2(q2[0]));set(ball,'cy',f2(q2[1]));
 const toe=7-2.6*(a+38)/50;set(board,'d',path([[-4.5,-58,1.4],[4.5,-58,1.4],[4.5,-30,toe],[-4.5,-30,toe]]));set(tread,'d',path([[-3.5,-52,2.4+(toe-1.4)*.21],[3.5,-52,2.4+(toe-1.4)*.21],[3.5,-34,toe-.6],[-3.5,-34,toe-.6]]));}
+// The hi-hat's pull rod and clutch ride with the top cymbal; its pedal's toe rises as it opens.
+function hatParts(){const L=HT.lift,k=f2(L);if(k===hatParts.k)return;hatParts.k=k;const toe=2.6+L*.74,z=(y,dz=0)=>1.6+(toe-1.6)*(y-HY+30)/24+dz,quad=(w,y0,y1,dz)=>path([[HX-w,y0,z(y0,dz)],[HX+w,y0,z(y0,dz)],[HX+w,y1,z(y1,dz)],[HX-w,y1,z(y1,dz)]]);
+rod(hatRod,[HX,HY,84],[HX,HY,88+L],.5);rod(rodTop,[HX,HY,88+L],[HX,HY,93+L],.5);set(clutch,'transform',`translate(0 ${f2(-L)})`);set(hatBoard,'d',quad(4,HY-30,HY-6,0));set(hatTread,'d',quad(3,HY-26,HY-11,.35));}
 function ui(t){const r=`${bpm} BPM · LAST HIT ${lastHit<0?'—':NAME[lastHit]}`,s=t<noteT?note:playing?`GROOVE · BAR ${step<0?1:(step>>4)+1} · BEAT ${step<0?1:((step&15)>>2)+1}`:hatOpen?'HI-HAT OPEN / H CLOSES IT':'READY / SPACE PLAYS THE GROOVE';
 if(r+s!==outKey){outKey=r+s;readout.textContent=r;stateLabel.textContent=s;}}
 function tick(t){const dt=Math.min(.05,(t-(last||t))/1000),red=reduced.matches;last=t;
@@ -205,7 +214,7 @@ for(const d of DR){if(red){d.x=d.v=0;}else spring(d,63,.14,dt);head(d,red,t);}
 if(red){KK.x=KK.v=0;}else spring(KK,50,.2,dt);head(KK,red,t,-1);beater(t,red);
 const lt=hatOpen?4.6:0;if(red){HAT[1].lift=lt;hatV=0;}else{for(let s=dt;s>1e-6;s-=H){const h=Math.min(H,s);hatV+=(-38*38*(HAT[1].lift-lt)-2*.5*38*hatV)*h;HAT[1].lift+=hatV*h;if(HAT[1].lift<0){HAT[1].lift=0;hatV=Math.abs(hatV)*.18;}}}
 for(const[cy,w,z]of[[CR,13.2,.07],[RI,16.3,.08],[HAT[0],24,.2],[HAT[1],hatOpen?20:24,hatOpen?.1:.2]]){if(red){cy.a=[0,0];cy.v=[0,0];}else wobble(cy,w,z,dt);pose(cy);}
-const top=f2(HT.lift);if(top!==tick.top){tick.top=top;rod(hatRod,[HX,HY,84],[HX,HY,88+HT.lift],.5);rod(rodTop,[HX,HY,88+HT.lift],[HX,HY,93+HT.lift],.5);set(clutch,'transform',`translate(0 ${f2(-HT.lift)})`);}
+hatParts();
 ui(performance.now());requestAnimationFrame(tick);}
 // Input: the letters hit, Space plays or stops the groove, the arrows set its tempo; every part is a button too.
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key.length===1?e.key.toLowerCase():e.key;
@@ -213,7 +222,7 @@ if(k==='ArrowUp'||k==='ArrowDown'||k==='ArrowLeft'||k==='ArrowRight'){e.preventD
 if(e.repeat)return;if(k===' '){if(e.target.closest&&e.target.closest('[role=button]'))return;e.preventDefault();groove();return;}
 const i=KEYS.indexOf(k);if(i>=0&&k.length===1){e.preventDefault();hit(i);}});
 bind(kickG,()=>hit(0));DR.forEach((d,i)=>bind(d.g,()=>hit(i+1)));bind(hatG,()=>hit(hatOpen?6:5));bind(crashG,()=>hit(7));bind(rideG,()=>hit(8));bind(stool,groove);
-ui(performance.now());requestAnimationFrame(tick);
+hatParts();beater(0,true);ui(performance.now());requestAnimationFrame(tick);
 }
 
 export const figure: FigureModule = { css, defs, hints: [], draw }
