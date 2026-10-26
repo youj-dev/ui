@@ -84,6 +84,10 @@ interface MiniatureSnapshot {
 
 const aquarium: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const bankVault: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const cardCatalog: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const cellTower: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const coffeeGrinder: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -130,7 +134,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [62 items]
+const miniatures: readonly [65 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -139,6 +143,8 @@ const nas: { description; id; initial; keys; label; maker; model; name; progress
 const networkSwitch: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const nixieClock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const officePrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const orrery: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -247,6 +253,40 @@ interface MiniatureAquariumProps extends MiniatureProps {
 }
 
 const aquarium: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/bank-vault
+
+```ts
+function MiniatureBankVault(props: MiniatureBankVaultProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureBankVaultHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureBankVaultHandle = MiniatureHandle<MiniatureBankVaultKey>;
+
+type MiniatureBankVaultKey = MiniatureKeyOf<typeof bankVault>;
+
+interface MiniatureBankVaultProps extends MiniatureProps {
+    ref?: Ref<MiniatureBankVaultHandle>;
+}
+
+const bankVault: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/card-catalog
+
+```ts
+function MiniatureCardCatalog(props: MiniatureCardCatalogProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureCardCatalogHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureCardCatalogHandle = MiniatureHandle<MiniatureCardCatalogKey>;
+
+type MiniatureCardCatalogKey = MiniatureKeyOf<typeof cardCatalog>;
+
+interface MiniatureCardCatalogProps extends MiniatureProps {
+    ref?: Ref<MiniatureCardCatalogHandle>;
+}
+
+const cardCatalog: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/cell-tower
@@ -706,6 +746,23 @@ interface MiniatureNixieClockProps extends MiniatureProps {
 }
 
 const nixieClock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/office-printer
+
+```ts
+function MiniatureOfficePrinter(props: MiniatureOfficePrinterProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureOfficePrinterHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureOfficePrinterHandle = MiniatureProgressHandle<MiniatureOfficePrinterKey>;
+
+type MiniatureOfficePrinterKey = MiniatureKeyOf<typeof officePrinter>;
+
+interface MiniatureOfficePrinterProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureOfficePrinterHandle>;
+}
+
+const officePrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/orrery

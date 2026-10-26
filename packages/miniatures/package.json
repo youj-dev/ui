@@ -34,6 +34,8 @@
     ".": "./src/index.ts",
     "./3d-printer": "./src/3d-printer.tsx",
     "./aquarium": "./src/aquarium.tsx",
+    "./bank-vault": "./src/bank-vault.tsx",
+    "./card-catalog": "./src/card-catalog.tsx",
     "./cell-tower": "./src/cell-tower.tsx",
     "./coffee-grinder": "./src/coffee-grinder.tsx",
     "./cooling-unit": "./src/cooling-unit.tsx",
@@ -61,6 +63,7 @@
     "./nas": "./src/nas.tsx",
     "./network-switch": "./src/network-switch.tsx",
     "./nixie-clock": "./src/nixie-clock.tsx",
+    "./office-printer": "./src/office-printer.tsx",
     "./orrery": "./src/orrery.tsx",
     "./oscilloscope": "./src/oscilloscope.tsx",
     "./packaging-line": "./src/packaging-line.tsx",
@@ -113,6 +116,14 @@
       "./aquarium": {
         "types": "./dist/aquarium.d.ts",
         "default": "./dist/aquarium.js"
+      },
+      "./bank-vault": {
+        "types": "./dist/bank-vault.d.ts",
+        "default": "./dist/bank-vault.js"
+      },
+      "./card-catalog": {
+        "types": "./dist/card-catalog.d.ts",
+        "default": "./dist/card-catalog.js"
       },
       "./cell-tower": {
         "types": "./dist/cell-tower.d.ts",
@@ -221,6 +232,10 @@
       "./nixie-clock": {
         "types": "./dist/nixie-clock.d.ts",
         "default": "./dist/nixie-clock.js"
+      },
+      "./office-printer": {
+        "types": "./dist/office-printer.d.ts",
+        "default": "./dist/office-printer.js"
       },
       "./orrery": {
         "types": "./dist/orrery.d.ts",

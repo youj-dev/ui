@@ -7,6 +7,14 @@
     "light": "/thumbs/miniatures/aquarium.webp?v=89e85a4a46",
     "dark": "/thumbs/miniatures/aquarium.dark.webp?v=fe9c45af37"
   },
+  "bank-vault": {
+    "light": "/thumbs/miniatures/bank-vault.webp?v=48cb728f99",
+    "dark": "/thumbs/miniatures/bank-vault.dark.webp?v=00c50b52fb"
+  },
+  "card-catalog": {
+    "light": "/thumbs/miniatures/card-catalog.webp?v=94d308f97b",
+    "dark": "/thumbs/miniatures/card-catalog.dark.webp?v=03c0125497"
+  },
   "cell-tower": {
     "light": "/thumbs/miniatures/cell-tower.webp?v=853db58e99",
     "dark": "/thumbs/miniatures/cell-tower.dark.webp?v=956180850e"
@@ -114,6 +122,10 @@
   "nixie-clock": {
     "light": "/thumbs/miniatures/nixie-clock.webp?v=d5de826e7a",
     "dark": "/thumbs/miniatures/nixie-clock.dark.webp?v=f422a394aa"
+  },
+  "office-printer": {
+    "light": "/thumbs/miniatures/office-printer.webp?v=fcdb09ed3b",
+    "dark": "/thumbs/miniatures/office-printer.dark.webp?v=6a305538cb"
   },
   "orrery": {
     "light": "/thumbs/miniatures/orrery.webp?v=207a07ec04",

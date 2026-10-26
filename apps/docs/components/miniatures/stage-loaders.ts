@@ -7,6 +7,8 @@ import * as turntableModule from '@youj/miniatures/turntable'
 export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>> = {
   '3d-printer': () => import('@youj/miniatures/3d-printer'),
   aquarium: () => import('@youj/miniatures/aquarium'),
+  'bank-vault': () => import('@youj/miniatures/bank-vault'),
+  'card-catalog': () => import('@youj/miniatures/card-catalog'),
   'cell-tower': () => import('@youj/miniatures/cell-tower'),
   'coffee-grinder': () => import('@youj/miniatures/coffee-grinder'),
   'cooling-unit': () => import('@youj/miniatures/cooling-unit'),
@@ -34,6 +36,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   nas: () => import('@youj/miniatures/nas'),
   'network-switch': () => import('@youj/miniatures/network-switch'),
   'nixie-clock': () => import('@youj/miniatures/nixie-clock'),
+  'office-printer': () => import('@youj/miniatures/office-printer'),
   orrery: () => import('@youj/miniatures/orrery'),
   oscilloscope: () => import('@youj/miniatures/oscilloscope'),
   'packaging-line': () => import('@youj/miniatures/packaging-line'),
