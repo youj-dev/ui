@@ -138,7 +138,7 @@ const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),x0=Math.min(...xs)-6,y0=Math.min(.
 // Pip Hop, on a 40 × 36 LCD: a score and hearts on top, then five rows of five-pixel cells over the ground. Coins fall a row
 // a step; blocks roll in along the ground. Walk Pip under the coins, hop (2 steps up a row) over the blocks, dash two cells.
 const FONT={0:'111101101101111',1:'010110010010111',2:'111001111100111',3:'111001011001111',4:'101101111001001',5:'111100111001111',6:'111100111101111',7:'111001001010010',8:'111101111101111',9:'111101111001111',
-A:'010101111101101',D:'110101101101110',E:'111100110100111',G:'011100101101011',H:'101101111101101',I:'111010010010111',L:'100100100100111',M:'101111111101101',O:'010101101101010',P:'110101110100100',R:'110101110101101',S:'011100010001110',T:'111010010010010',U:'101101101101111',V:'101101101101010',Y:'101101010010010'};
+A:'010101111101101',D:'110101101101110',E:'111100110100111',G:'011100101101011',H:'101101111101101',I:'111010010010111',L:'100100100100111',M:'101111111101101',N:'110101101101101',O:'010101101101010',P:'110101110100100',R:'110101110101101',S:'011100010001110',T:'111010010010010',U:'101101101101111',V:'101101101101010',W:'101101101111101',Y:'101101010010010'};
 const PIP={idle:['..2..','.333.','33303','33333','.3.3.'],step:['..2..','.333.','33303','33333','3...3'],air:['.2...','.333.','33303','33333','3...3']};
 const COIN=[['.333.','33233','32333','33333','.333.'],['..3..','.333.','.323.','.333.','..3..'],['..3..','..2..','..2..','..2..','..3..'],['..3..','.333.','.323.','.333.','..3..']];
 const BLOCK=[['33333','32113','31213','31123','33333'],['33333','31123','31213','32113','33333']];
@@ -169,14 +169,14 @@ hopped:()=>tone(698,.05,.016,'triangle'),hurt:()=>tone(196,.24,.035,'square',0,7
 pause:()=>{tone(1175,.05,.018);tone(880,.07,.018,'square',.07);},light:()=>tone(1480,.03,.012),click:()=>noise(.035,.05,2600),chime:()=>[659,988,1319].forEach((f,i)=>tone(f,i===2?.45:.11,.024,'triangle',i*.09))};
 const sfx=(g,k)=>{if(!g||!g.demo)SFX[k]();};
 // The rules, step by step: Pip comes down from a hop, coins fall, blocks roll; then whatever meets Pip.
-function gain(g,kind){g.score=Math.min(9999,g.score+1);const lv=1+Math.floor(g.score/10);if(g.demo)return;if(g.score>hi)hi=g.score;
-if(lv>g.lvl){g.lvl=lv;SFX.level();notice(`LEVEL ${lv} · FASTER`,`Level ${lv}.`);}else{SFX[kind]();notice(kind==='coin'?'COIN +1':'HOP +1');}}
+function gain(g,kind,now){g.score=Math.min(9999,g.score+1);const lv=1+Math.floor(g.score/10);if(g.demo)return;if(g.score>hi)hi=g.score;
+if(lv>g.lvl){g.lvl=lv;g.flash={s:`LEVEL ${lv}`,t:now,k:g.steps};SFX.level();notice(`LEVEL ${lv} · FASTER`,`Level ${lv}.`);}else{SFX[kind]();notice(kind==='coin'?'COIN +1':'HOP +1');}}
 function hurt(g){g.hearts--;g.pip.inv=3;if(g.demo){if(g.hearts<=0)DEMO=game(true);return;}SFX.hurt();
 if(g.hearts<=0){mode='over';SFX.end();notice(g.score>g.best?'NEW HI SCORE':'GAME OVER',`Game over. Score ${g.score}.`);}else notice('OUCH · ♥ LOST','Ouch: a heart lost.');}
 function resolve(g,now){const p=g.pip,row=p.air?3:4;
-for(const k of g.coins)if(k.c===p.c&&k.r===row){k.got=1;g.fx.push({k:'spark',x:k.c*5,y:2+row*5,t:now,s:g.steps});gain(g,'coin');}
+for(const k of g.coins)if(k.c===p.c&&k.r===row){k.got=1;g.fx.push({k:'spark',x:k.c*5,y:2+row*5,t:now,s:g.steps});gain(g,'coin',now);}
 g.coins=g.coins.filter(k=>!k.got);
-for(const b of g.blocks)if(b.c===p.c){if(p.air){if(!b.hop){b.hop=1;gain(g,'hopped');}}else if(!p.inv&&!b.hit){b.hit=1;hurt(g);if(g.hearts<=0)return;}}}
+for(const b of g.blocks)if(b.c===p.c){if(p.air){if(!b.hop){b.hop=1;gain(g,'hopped',now);}}else if(!p.inv&&!b.hit){b.hit=1;hurt(g);if(g.hearts<=0)return;}}}
 function step(g,now){g.steps++;const p=g.pip;if(p.air)p.air--;if(p.inv)p.inv--;
 for(const k of g.coins)k.r++;for(const b of g.blocks){b.c--;b.f^=1;}
 resolve(g,now);
@@ -245,7 +245,8 @@ for(const k of g.coins)spr(k.c*5,7+k.r*5,red?COIN[0]:COIN[((now/110|0)+k.c)%4]);
 g.fx=g.fx.filter(f=>now-f.t<360||(red&&f.s===g.steps));
 for(const f of g.fx)spr(f.x,f.y,f.k==='plink'?PLINK:SPARK[!red&&now-f.t>180?1:0]);
 if(!(p.inv&&!red&&(now/90|0)%2))spr(p.c*5,p.air?22:27,p.air?PIP.air:p.stp?PIP.step:PIP.idle,p.face<0);
-if(mode==='title'&&(red||(now/520|0)%2===0))banner('START',false);else if(mode==='ready')banner('READY',true);else if(mode==='pause')banner('PAUSE',true);else if(mode==='over')banner('GAME OVER',true);}
+if(mode==='title'&&(red||(now/520|0)%2===0))banner('START',false);else if(mode==='ready')banner('READY',true);else if(mode==='pause')banner('PAUSE',true);
+else if(mode==='over'){banner('GAME OVER',true);if(g.score>g.best){fill(7,18,26,7,0);txt(9,19,'NEW HI',3);}}else if(g.flash&&(now-g.flash.t<900||(red&&g.flash.k===g.steps)))banner(g.flash.s,true);}
 function paths(){const d=['','','',''];for(let y=0;y<LH;y++){let x=0;while(x<LW){const t=fb[y*LW+x];if(!t){x++;continue;}let e=x+1;while(e<LW&&fb[y*LW+e]===t)e++;d[t]+=`M${x},${y}h${e-x}v1h${x-e}z`;x=e;}}return d;}
 function screen(now,red){compose(now,red);const d=paths(),key=d.join('|');
 if(key!==shown){const old=shown.split('|');shown=key;PIX.forEach((n,i)=>set(n,'d',d[i+1]));if(!red&&old.length===4){GHOST.forEach((n,i)=>set(n,'d',old[i+1]));ghostT=now;}}

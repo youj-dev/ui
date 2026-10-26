@@ -95,8 +95,10 @@ describe('Handheld game console', () => {
     expect(snap().readout).toBe('SCORE 0001 · HI 0001 · ♥♥♡')
   })
 
-  it('the last heart ends the game; Start plays again and keeps the high score', async () => {
-    const { snap, press, run } = await play(['Enter', ...DOWN, ...DOWN, ...DOWN, ...DOWN, ...DOWN, ...DOWN])
+  it('the last heart ends the game, with a new high score; Start plays again and keeps it', async () => {
+    const { snap, press, run } = await play(['Enter', ...DOWN, ...DOWN, ...DOWN, ...DOWN, ...DOWN])
+    for (let i = 0; i < 12 && !/^(NEW HI|GAME OVER)/.test(snap().state); i++) await press(['ArrowDown'])
+    expect(snap().state).toBe('NEW HI SCORE')
     await run(1500)
     expect(snap().state).toBe('GAME OVER · START PLAYS AGAIN')
     expect(snap().readout).toMatch(/^SCORE (\d{4}) · HI \1 · ♡♡♡$/)
