@@ -1188,7 +1188,8 @@ export function createFakeFigma(opts: FakeOptions = {}) {
       if (!nodes.length) fail('combineAsVariants needs components')
       for (const n of nodes) {
         if (n.type !== 'COMPONENT') fail('combineAsVariants: every node must be a component')
-        if (!/^[^=,]+=[^=,]+(,\s*[^=,]+=[^=,]+)*$/.test(n.name)) fail(`variant name "${n.name}" is not Property=Value`)
+        // Property=Value pairs split on commas ("[^=,]+" already takes the space after a comma).
+        if (!n.name.split(',').every((pair) => /^[^=,]+=[^=,]+$/.test(pair))) fail(`variant name "${n.name}" is not Property=Value`)
       }
       const set = env.node('COMPONENT_SET', 'Component set')
       parent.insertChild(index ?? parent.rawChildren().length, set)

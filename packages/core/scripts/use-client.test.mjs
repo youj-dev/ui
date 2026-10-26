@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { isClientModule, withUseClient } from '../../../scripts/use-client.mjs'
+import { hasUseClientDirective, isClientModule, withUseClient } from '../../../scripts/use-client.mjs'
 
 /* The rule both package builds and both registries use to mark client modules. */
 
@@ -32,4 +32,17 @@ test('withUseClient adds the directive once, after nothing but comments', () => 
   const marked = `/* header */\n'use client'\nexport const A = 1\n`
   expect(withUseClient('a.tsx', marked)).toBe(marked)
   expect(withUseClient('tokens.ts', `export const t = 1\n`)).toBe(`export const t = 1\n`)
+})
+
+test('the directive is found after whitespace and comments, and a file of many comments is scanned in linear time', () => {
+  expect(hasUseClientDirective(`'use client'`)).toBe(true)
+  expect(hasUseClientDirective(`\n  // a\n/* b */ /** c */\n"use client"\n`)).toBe(true)
+  expect(hasUseClientDirective(`export const a = 1\n'use client'`)).toBe(false)
+  expect(hasUseClientDirective(`// 'use client'`)).toBe(false)
+  expect(hasUseClientDirective(`/* never closed 'use client'`)).toBe(false)
+  const comments = '/**/ '.repeat(50_000)
+  const start = performance.now()
+  expect(hasUseClientDirective(`${comments}export {}`)).toBe(false)
+  expect(hasUseClientDirective(`${comments}'use client'`)).toBe(true)
+  expect(performance.now() - start).toBeLessThan(1000)
 })
