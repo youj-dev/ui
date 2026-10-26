@@ -65,6 +65,7 @@
     "./oscilloscope": "./src/oscilloscope.tsx",
     "./packaging-line": "./src/packaging-line.tsx",
     "./parcel-locker": "./src/parcel-locker.tsx",
+    "./payment-terminal": "./src/payment-terminal.tsx",
     "./pinball": "./src/pinball.tsx",
     "./pipe-organ": "./src/pipe-organ.tsx",
     "./quantum-fridge": "./src/quantum-fridge.tsx",
@@ -235,6 +236,10 @@
       "./parcel-locker": {
         "types": "./dist/parcel-locker.d.ts",
         "default": "./dist/parcel-locker.js"
+      },
+      "./payment-terminal": {
+        "types": "./dist/payment-terminal.d.ts",
+        "default": "./dist/payment-terminal.js"
       },
       "./pinball": {
         "types": "./dist/pinball.d.ts",
