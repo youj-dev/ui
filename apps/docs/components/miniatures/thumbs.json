@@ -123,6 +123,10 @@
     "light": "/thumbs/miniatures/nixie-clock.webp?v=d5de826e7a",
     "dark": "/thumbs/miniatures/nixie-clock.dark.webp?v=f422a394aa"
   },
+  "office-printer": {
+    "light": "/thumbs/miniatures/office-printer.webp?v=fcdb09ed3b",
+    "dark": "/thumbs/miniatures/office-printer.dark.webp?v=6a305538cb"
+  },
   "orrery": {
     "light": "/thumbs/miniatures/orrery.webp?v=207a07ec04",
     "dark": "/thumbs/miniatures/orrery.dark.webp?v=66eef94411"

@@ -36,6 +36,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   nas: () => import('@youj/miniatures/nas'),
   'network-switch': () => import('@youj/miniatures/network-switch'),
   'nixie-clock': () => import('@youj/miniatures/nixie-clock'),
+  'office-printer': () => import('@youj/miniatures/office-printer'),
   orrery: () => import('@youj/miniatures/orrery'),
   oscilloscope: () => import('@youj/miniatures/oscilloscope'),
   'packaging-line': () => import('@youj/miniatures/packaging-line'),
