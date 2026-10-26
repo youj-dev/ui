@@ -90,7 +90,7 @@ A miniature never takes the page's keys by default. With `keyboard="scoped"` its
 
 ## As a progress indicator
 
-The hourglass, the packaging line and the repair bench are also progress indicators (`meta.progress`). They take `progress`, a share from 0 to 1 (or `null` for indeterminate), and `done`:
+The hourglass, the packaging line, the repair bench and the popcorn machine are also progress indicators (`meta.progress`). They take `progress`, a share from 0 to 1 (or `null` for indeterminate), and `done`:
 
 ```tsx
 import { MiniatureHourglass } from '@youj/miniatures/hourglass'
@@ -98,7 +98,7 @@ import { MiniatureHourglass } from '@youj/miniatures/hourglass'
 <MiniatureHourglass interactive={false} size={160} progress={uploaded / total} done={finished} aria-label="Uploading" />
 ```
 
-Without `progress` it runs on its own. With it, it follows the share: the sand settles, the pallet fills, the checklist lights up. `done` finishes the job: the glass makes a last turn and glows, the pallet is wrapped, the case closes and its beacon turns green. Their handle adds `setProgress(p | null)` and `done()`.
+Without `progress` it runs on its own. With it, it follows the share: the sand settles, the pallet fills, the checklist lights up, the heap of popcorn rises. `done` finishes the job: the glass makes a last turn and glows, the pallet is wrapped, the case closes and its beacon turns green, the popcorn pops over the brim onto the counter. Their handle adds `setProgress(p | null)` and `done()`.
 
 ## Theming
 
