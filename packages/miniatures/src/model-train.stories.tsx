@@ -33,7 +33,7 @@ function Deploy({ again }: { again: () => void }) {
   const done = progress >= 1
   return (
     <div style={{ display: 'grid', placeItems: 'center', gap: 16, padding: 32, font: '12px ui-monospace, monospace' }}>
-      <MiniatureModelTrain interactive={false} size={320} progress={progress} done={done} aria-label={`Deploying, ${Math.round(progress * 100)} percent`} />
+      <MiniatureModelTrain interactive={false} size={320} progress={progress} done={done} aria-label={done ? 'Deployed' : `Deploying, ${Math.round(progress * 100)} percent`} />
       <span aria-live="polite">{done ? 'Deployed' : `Deploying ${Math.round(progress * 100)}%`}</span>
       <button type="button" onClick={again} style={{ font: 'inherit', padding: '6px 12px', borderRadius: 6, border: '1px solid currentColor', background: 'none', color: 'inherit', cursor: 'pointer' }}>
         Deploy again
