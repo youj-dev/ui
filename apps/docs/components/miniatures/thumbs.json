@@ -115,6 +115,10 @@
     "light": "/thumbs/miniatures/mixing-desk.webp?v=3a8c985914",
     "dark": "/thumbs/miniatures/mixing-desk.dark.webp?v=ac40aafcd9"
   },
+  "modular-synth": {
+    "light": "/thumbs/miniatures/modular-synth.webp?v=04b130489f",
+    "dark": "/thumbs/miniatures/modular-synth.dark.webp?v=873033ab1b"
+  },
   "nas": {
     "light": "/thumbs/miniatures/nas.webp?v=5cdecd9811",
     "dark": "/thumbs/miniatures/nas.dark.webp?v=224be31c36"

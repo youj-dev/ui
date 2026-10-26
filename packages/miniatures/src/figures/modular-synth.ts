@@ -8,9 +8,9 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 @media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--pan:#c3c3c1;--pan-top:#e7e7e4;--pan-side:#8f8f8d;--print:#232322;--hd:#a8301d;--pad:#2b2b2a;--pad-ink:#d6d5d0;--gr:#2f2e2d;--gr-top:#464542;--gr-side:#1c1c1b;--slot:#1a1a19;--wal:#68452d;--wal-mid:#7a5235;--wal-top:#8d623f;--wal-side:#412a1b;--grain:#2f1d0f;--knob:#1c1c1b;--knob-top:#2e2e2d;--knob-side:#101010;--ind:#d9d8d3;--chrome:#b7b7b6;--chrome-top:#e4e4e2;--chrome-side:#858585;--rubber:#252524;--rubber-top:#424240;--rubber-side:#191919;--hole:#0a0a0a;--cap:#b6b5b1;--cap-top:#dddcd7;--brass:#ae8e4d;--brass-top:#d9bc7c;--brass-ink:#2d210c;--off:#8d8d89;--g:#36d886;--a:#ffb53d;--r:#ff4c41;--seg:#ff5440;--glow:.85;--c0:#3d3d3c;--c0t:#636360;--c0s:#232323;--c1:#caa123;--c1t:#e7cb6f;--c1s:#8a680f;--c2:#bd3b32;--c2t:#df7369;--c2s:#7e221c;--c3:#325dbb;--c3t:#7295df;--c3s:#1b3a7b;--c4:#734eb4;--c4t:#a283d7;--c4s:#492e79;--c5:#188a71;--c5t:#56b9a0;--c5s:#0c5947;--c6:#c97123;--c6t:#e5a162;--c6s:#88490d;--c7:#c15281;--c7t:#e189ad;--c7s:#853255;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .pan{fill:var(--pan)}.top.pan{fill:var(--pan-top)}.side.pan{fill:var(--pan-side)}.gr{fill:var(--gr)}.top.gr{fill:var(--gr-top)}.side.gr{fill:var(--gr-side)}.wal{fill:var(--wal)}.mid.wal{fill:var(--wal-mid)}.top.wal{fill:var(--wal-top)}.side.wal{fill:var(--wal-side)}.knob{fill:var(--knob)}.top.knob{fill:var(--knob-top)}.side.knob{fill:var(--knob-side)}.chrome{fill:var(--chrome)}.top.chrome{fill:var(--chrome-top)}.side.chrome{fill:var(--chrome-side)}.rubber{fill:var(--rubber)}.top.rubber{fill:var(--rubber-top)}.side.rubber{fill:var(--rubber-side)}.brass{fill:var(--brass)}.top.brass{fill:var(--brass-top)}.cap{fill:var(--cap)}.top.cap{fill:var(--cap-top)}
-.brush{fill:url(#brush);stroke:none;pointer-events:none}.grain{fill:none;stroke:var(--grain);stroke-width:.45;vector-effect:non-scaling-stroke;opacity:.38}.groove{fill:none;stroke:var(--slot);stroke-width:1.1;opacity:.85}
+.brush{fill:url(#brush);stroke:none;pointer-events:none}.grain{fill:none;stroke:var(--grain);stroke-width:.6;vector-effect:non-scaling-stroke;opacity:.5}.groove{fill:none;stroke:var(--slot);stroke-width:1.1;opacity:.85}
 .ink{fill:none;stroke:var(--print);stroke-width:.32;stroke-linecap:round;stroke-linejoin:round}.pr{fill:var(--print);font:600 2.3px ui-monospace,monospace;letter-spacing:.15px;stroke:none}.pr.pad-ink{fill:var(--pad-ink)}.hd{fill:var(--hd);font:800 4.4px system-ui,sans-serif;letter-spacing:.8px;stroke:none}.padf{fill:var(--pad);stroke:none}.logo{fill:var(--brass-ink);font:italic 600 4.4px Georgia,'Times New Roman',serif;letter-spacing:.25px;stroke:none}.model{fill:var(--brass-ink);font:600 1.9px ui-monospace,monospace;letter-spacing:.3px;stroke:none}
-.hole{fill:var(--hole);stroke:none}.ind{fill:none;stroke:var(--ind);stroke-width:.8;stroke-linecap:round}.bezel{fill:var(--slot);stroke:none}
+.hole{fill:var(--hole);stroke:none}.sheen{fill:none;stroke:#fff;stroke-width:.7;stroke-linecap:round;opacity:.22}.ind{fill:none;stroke:var(--ind);stroke-width:.8;stroke-linecap:round}.bezel{fill:var(--slot);stroke:none}
 .lc{fill:var(--off);stroke:none}.lc.on{filter:url(#lg)}.lc.g{fill:var(--g)}.lc.a{fill:var(--a)}.lc.r{fill:var(--r)}.halo{opacity:0;filter:url(#bloom);pointer-events:none}.halo.g{fill:var(--g);opacity:var(--glow)}.halo.a{fill:var(--a);opacity:var(--glow)}.halo.r{fill:var(--r);opacity:var(--glow)}
 .lv{stroke:none;filter:url(#lg)}.lv.g,.hv.g{fill:var(--g)}.lv.a,.hv.a{fill:var(--a)}.hv{filter:url(#bloom);pointer-events:none}
 .key{fill:var(--hd)}.glyph{fill:#fff;opacity:.88;stroke:none}.cap.lit{fill:var(--a)}.top.cap.lit{fill:#ffd27e}
@@ -18,7 +18,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .k0{--cc:var(--c0);--cct:var(--c0t);--ccs:var(--c0s)}.k1{--cc:var(--c1);--cct:var(--c1t);--ccs:var(--c1s)}.k2{--cc:var(--c2);--cct:var(--c2t);--ccs:var(--c2s)}.k3{--cc:var(--c3);--cct:var(--c3t);--ccs:var(--c3s)}.k4{--cc:var(--c4);--cct:var(--c4t);--ccs:var(--c4s)}.k5{--cc:var(--c5);--cct:var(--c5t);--ccs:var(--c5s)}.k6{--cc:var(--c6);--cct:var(--c6t);--ccs:var(--c6s)}.k7{--cc:var(--c7);--cct:var(--c7t);--ccs:var(--c7s)}
 .cab{pointer-events:none}.cu{fill:none;stroke:var(--line);stroke-width:4;stroke-linecap:round}.cc{fill:none;stroke:var(--cc);stroke-width:2.9;stroke-linecap:round}.cs{fill:none;stroke:#fff;stroke-width:.55;stroke-linecap:round;opacity:.4;transform:translate(-.35px,-.45px)}.cp{fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:butt;stroke-dasharray:11 400;opacity:0;filter:url(#lg)}
 .plug{fill:var(--cc)}.top.plug{fill:var(--cct)}.side.plug{fill:var(--ccs)}
-.sel{fill:none;stroke:var(--accent);stroke-width:1.2;vector-effect:non-scaling-stroke;pointer-events:none}.selh{fill:var(--accent);opacity:.18;filter:url(#bloom);pointer-events:none}
+.sel{fill:none;stroke:var(--accent);stroke-width:1.2;vector-effect:non-scaling-stroke;pointer-events:none}.selh{fill:var(--accent);opacity:.12;filter:url(#bloom);pointer-events:none}
 .control{cursor:pointer;outline:none}.hit{fill:transparent;stroke:none}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.control:focus-visible .focus-ring{opacity:1}
 .jack{cursor:grab;touch-action:none}.turn{cursor:ns-resize;touch-action:none}.dragging,.dragging .jack{cursor:grabbing}.btn{transition:transform 60ms}.down .btn{transform:translate(.85px,-.47px)}
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
@@ -31,9 +31,9 @@ const{document,window,matchMedia,requestAnimationFrame,addEventListener,kit}=env
 /* CALDERN M–66, a desktop Eurorack case. World: x lower-right along the row; y lower-left (the row faces +y, reclined
 22° from upright); z up. 1 unit = 1 mm; 1 HP = 5.
 Part                          x        y        z      w      d      h
-feet ×4                  14/310   44/106        0      6     10      3
-cheeks ×2 (walnut)        0/320       40        3     10   82.6  146.5   a wedge: 82.6 deep at the foot, 29.5 at the top
-deck (walnut)                10       40    147.7    310   24.8      –   behind the top rail
+feet ×4                  14/310   50/106        0      6     10      3
+cheeks ×2 (walnut)        0/320       46        3     10   76.6  146.5   a wedge: 76.6 deep at the foot, 23.5 at the top
+deck (walnut)                10       46    147.7    310   18.8      –   behind the top rail
 row (reclined 22°)           10  64.8–118  147.7–16  310      –      –   rails 7 above and below the 128 of modules
 lip (walnut)                 10      118        3    310      –     13   brass plate 44 × 9 at x 143
 modules (u along the row, v down it): SEQ 0–120 · VCO 120–180 · VCF 180–230 · ENV 230–270 · OUT 270–310
@@ -44,7 +44,7 @@ const svg=document.getElementById('machine');let root=document.getElementById('d
 const{P,set,FRONT,SIDE,el,group,rect,circle,line,text,poly,box,screw,frame}=kit(()=>root);
 const{sin,cos,hypot,min,max,round,abs,exp,PI}=Math,RAD=PI/180,f2=v=>(+v).toFixed(2),clamp=(v,a,b)=>max(a,min(b,v));
 // The row's plane: u along it, v down it, n out of it. L gives a point raised n off the plate face in the plate's own 2D frame.
-const TH=22*RAD,sn=sin(TH),cs=cos(TH),U=[1,0,0],V=[0,sn,-cs],N=[0,cs,sn],YB=118,ZB=16,YK=40,O=[10,YB-135*sn,ZB+135*cs];
+const TH=22*RAD,sn=sin(TH),cs=cos(TH),U=[1,0,0],V=[0,sn,-cs],N=[0,cs,sn],YB=118,ZB=16,YK=46,O=[10,YB-135*sn,ZB+135*cs];
 const W=(u,v,n=0)=>[O[0]+u,O[1]+v*sn+n*cs,O[2]-v*cs+n*sn],WP=(u,v,n=0)=>W(u,v,1.6+n);
 const pu=P(...U),pv=P(...V),pn=P(...N),DET=pu[0]*pv[1]-pu[1]*pv[0],NU=(pn[0]*pv[1]-pn[1]*pv[0])/DET,NV=(pu[0]*pn[1]-pu[1]*pn[0])/DET;
 const frameAt=o=>`matrix(${[...pu,...pv,...P(...o)].map(v=>+v.toFixed(4)).join(' ')})`,ROW=frameAt(W(0,0)),PLATE=frameAt(WP(0,0));
@@ -58,14 +58,14 @@ function lit(n,c){if(n._c!==c){n._c=c;set(n,'class','lc'+(c?' on '+c:''));if(n.h
 const fade=(n,v)=>{const s=v<.02?'0':f2(v);if(n._o!==s){n._o=s;n.style.opacity=s;}};
 
 // Floor: the house ground shadow, a soft ellipse round the case's foot, projected from the floor so it frames true.
-const sh=[...Array(48)].map((_,i)=>{const t=i/48*2*PI;return P(165+176*cos(t),80+56*sin(t),0).map(f2).join(',');}),shD=`M${sh.join('L')}Z`;
+const sh=[...Array(48)].map((_,i)=>{const t=i/48*2*PI;return P(165+176*cos(t),84+52*sin(t),0).map(f2).join(',');}),shD=`M${sh.join('L')}Z`;
 el('path',{d:shD,class:'shadow stage-floor'});el('path',{d:shD,class:'stage-contact'});
-for(const[x,y]of[[14,44],[310,44],[14,106],[310,106]])box(x,y,0,6,10,3,1,'rubber');
+for(const[x,y]of[[14,50],[310,50],[14,106],[310,106]])box(x,y,0,6,10,3,1,'rubber');
 // The case: walnut cheeks cut to the row's slope, a walnut deck behind the top rail and a walnut lip under the bottom one.
 const yt=W(0,-7)[1],zt=W(0,-7)[2],PROF=[[YK,3],[YB+5*cs,3],[YB+5*cs,ZB+5*sn],[yt+5*cs,zt+5*sn],[YK,zt+5*sn]];
 function cheek(x0,grain){const x1=x0+10,y0=PROF[1][0],z0=PROF[3][1],run=y0-PROF[3][0],rise=z0-PROF[2][1];el('path',{d:poly(PROF.map(([y,z])=>[x1,y,z]),true),class:'face side wal'});
 // Grain along the outer face (u runs back from its front edge, v down from its top), clear of the sloped front.
-if(grain){const sf=group(SIDE(x1,y0,z0)),u1=y0-PROF[0][0]-4;for(let i=0;i<6;i++){const v=10+i*23,w=i%2?.9:-.7,u0=(v<rise?run*(1-v/rise):0)+4;
+if(grain){const sf=group(SIDE(x1,y0,z0)),u1=y0-PROF[0][0]-4;for(let i=0;i<9;i++){const v=8+i*16.5,w=i%2?.9:-.7,u0=(v<rise?run*(1-v/rise):0)+4;
 el('path',{d:`M${f2(u0)},${f2(v)}C${f2(u0+(u1-u0)*.35)},${f2(v-1.2+w)} ${f2(u0+(u1-u0)*.7)},${f2(v+1+w)} ${f2(u1)},${f2(v-.6)}`,class:'grain'},sf);}}
 for(let i=1;i<4;i++){const[a,za]=PROF[i],[b,zb]=PROF[i+1];el('path',{d:poly([[x0,a,za],[x1,a,za],[x1,b,zb],[x0,b,zb]],true),class:'face wal '+(i===1?'':i===2?'mid':'top')});}}
 cheek(0,false);
@@ -94,7 +94,7 @@ const pct=k=>v=>`${round((v-k.min)/(k.max-k.min)*100)}%`,ms=s=>s<1?`${round(s*10
 const SCALE=[0,3,5,7,10],NAMES=['A','A♯','B','C','C♯','D','D♯','E','F','F♯','G','G♯'],semi=d=>SCALE[d%5]+12*Math.floor(d/5),noteOf=d=>{const s=semi(d);return NAMES[s%12]+(2+Math.floor((s+9)/12));};
 const att=()=>.002+(K.ATTACK.val/20)**2*.9,dec=()=>.05+(K.DECAY.val/20)**2*1.6;
 const PAT=[0,0,3,5,2,4,3,1],GATES=[1,0,1,1,1,0,1,1],SU=i=>38+i*10.4;
-const KN=[['TEMPO',17,46,7,8,60,200,4,120,v=>`${v} BPM`],...PAT.map((d,i)=>[`STEP ${i+1}`,SU(i),41,4,6,0,10,1,d,noteOf]),
+const KN=[['TEMPO',17,46,7,8,60,200,4,120,v=>`${v} BPM`],...PAT.map((d,i)=>[`STEP ${i+1}`,SU(i),41,3.7,5,0,10,1,d,noteOf]),
 ['TUNE',150,36,9.5,9,-12,12,1,0,v=>`${v>0?'+':v<0?'−':''}${abs(v)} ST`],['FM',150,66,5,6.5,0,10,1,3,null],['CUTOFF',205,36,9.5,9,0,20,1,11,null],['RES',205,66,5.5,6.5,0,20,1,8,null],
 ['ATTACK',250,33,5.5,6.5,0,20,1,1,()=>ms(att())],['DECAY',250,60,5.5,6.5,0,20,1,8,()=>ms(dec())],['LEVEL',290,33,6.5,7.5,0,20,1,16,null]]
 .map(([name,u,v,r,h,a,b,step,val,fmt])=>{const k={name,u,v,r,h,min:a,max:b,step,val,s:-1,d:-2};k.fmt=fmt||pct(k);return k;});
@@ -111,7 +111,7 @@ const PP=group(PLATE),parts=[];
 const part=(u,v,fn)=>parts.push({u,v,fn});
 for(const j of JACKS)part(j.u,j.v,()=>{post(PP,j.u,j.v,0,1.6,3.4,'chrome');const[a,b]=L(j.u,j.v,1.6);circle(PP,f2(a),f2(b),2.35,'detail');circle(PP,f2(a),f2(b),1.5,'hole');});
 part(290,107,()=>{post(PP,290,107,0,2,4.6,'chrome');const[a,b]=L(290,107,2);circle(PP,f2(a),f2(b),3.4,'detail');circle(PP,f2(a),f2(b),2.3,'hole');});
-for(const k of KN)part(k.u,k.v,()=>{const rs=k.r*1.18;post(PP,k.u,k.v,0,1.4,rs,'knob');post(PP,k.u,k.v,1.4,k.h,k.r,'knob');const[a,b]=L(k.u,k.v,k.h),g=group(`translate(${f2(a)} ${f2(b)})`,PP);k.ind=group('',g);line(k.ind,0,-k.r*.22,0,-k.r*.88,'ind');});
+for(const k of KN)part(k.u,k.v,()=>{const rs=k.r*1.18;post(PP,k.u,k.v,0,1.4,rs,'knob');post(PP,k.u,k.v,1.4,k.h,k.r,'knob');const[a,b]=L(k.u,k.v,k.h),g=group(`translate(${f2(a)} ${f2(b)})`,PP);el('path',{d:`M${f2(-k.r*.72)},${f2(-k.r*.3)}A${k.r*.78},${k.r*.78} 0 0 1 ${f2(-k.r*.18)},${f2(-k.r*.74)}`,class:'sheen'},g);k.ind=group('',g);line(k.ind,0,-k.r*.22,0,-k.r*.88,'ind');});
 function sbtn(u,v,w,l,h,label,fn,m='cap'){const g=button(el('g',{},PP),{'aria-label':label}),[a,b]=L(u,v,h);
 el('path',{d:`M${u},${v}H${u+w}L${f2(a+w)},${f2(b)}H${f2(a)}Z`,class:'face top gr'},g);el('path',{d:`M${u+w},${v}V${v+l}L${f2(a+w)},${f2(b+l)}V${f2(b)}Z`,class:'face side gr'},g);
 const cap=group('',g,{class:'btn'}),top=rect(cap,f2(a),f2(b),w,l,.8,'face '+m);rect(g,f2(a-1.1),f2(b-1.1),w+2.2,l+2.2,1.2,'focus-ring');bind(g,fn);return{g,cap,top,a,b};}
@@ -142,7 +142,7 @@ for(const j of JACKS){const q=P(...WP(j.u,j.v,1.6));j.q=q;j.ctl=button(el('g',{}
 el('circle',{cx:f2(q[0]),cy:f2(q[1]),r:6,class:'hit'},j.ctl);el('circle',{cx:f2(q[0]),cy:f2(q[1]),r:5.2,class:'focus-ring'},j.ctl);
 j.ctl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)jackKey(j);}});j.ctl.addEventListener('focus',()=>{if(hold&&hold.kb){hold.u=j.u;hold.v=j.v;}});}
 for(const k of KN){const q=P(...WP(k.u,k.v,k.h/2));k.q=q;el('circle',{cx:f2(q[0]),cy:f2(q[1]),r:f2(k.r*1.18+1.2),class:'hit turn'},JB);}
-frame([[0,40,0,330,82.7,149.6],[90,122,6,230,20,8]],10);
+frame([[0,46,0,330,76.7,149.6],[90,122,6,230,20,8]],10);
 
 // State: the sequencer, knobs, patch and its signal graph; Web Audio after a gesture, wired like the cables.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');

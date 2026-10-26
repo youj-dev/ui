@@ -24,6 +24,6 @@ export const modularSynth = {
     state: 'RUNNING · VCO → VCF → OUT',
     pressed: {},
   },
-  viewBox: '-116.26131704435062 -139.6 377.40868414183785 375.95',
+  viewBox: '-116.26131704435062 -136.6 372.2125317191312 372.95',
   progress: false,
 } as const satisfies MiniatureMeta
