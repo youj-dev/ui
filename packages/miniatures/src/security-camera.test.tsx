@@ -44,6 +44,15 @@ describe('Security camera', () => {
     expect(handle().getSnapshot().readout).not.toBe(securityCamera.initial.readout)
   })
 
+  it('redraws its moving head in place: the drawing does not grow while it patrols', async () => {
+    const run = useFrames()
+    const { svg } = mount(MiniatureSecurityCamera)
+    await run(500)
+    const nodes = svg().querySelectorAll('*').length
+    await run(3000)
+    expect(svg().querySelectorAll('*').length).toBe(nodes)
+  })
+
   it.each([
     ['ArrowLeft', 'PAN −55.0° · TILT −14.0° · 1.0×'],
     ['ArrowRight', 'PAN −35.0° · TILT −14.0° · 1.0×'],
