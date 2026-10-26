@@ -208,6 +208,18 @@ describe('Modular synth', () => {
     expect(snap().readout).toBe('120 BPM · STEP 1/8 · PATCH BASS')
   })
 
+  it('Enter on a plugged jack lifts its cable, Escape puts it back', async () => {
+    const { handle, run, snap, inside } = await play()
+    enter(jack(inside, 'Filter in'))
+    await run(20)
+    expect(snap().state).toBe('CABLE FROM VCO SAW · PICK AN INPUT')
+    expect(snap().readout).toMatch(/ · PATCH USER$/)
+    act(() => handle().press('escape'))
+    await run(20)
+    expect(snap().readout).toMatch(/ · PATCH BASS$/)
+    expect(jack(inside, 'Filter in')).toHaveAttribute('aria-label', 'Filter in, patched to oscillator saw out')
+  })
+
   it('its parts are controls: a step button, the run key, a knob turned by a drag', async () => {
     const { run, snap, svg, inside } = await play()
     click(inside.querySelector('[aria-label="Step 2 (2)"]')!)

@@ -151,7 +151,7 @@ const PRESETS=[['BASS',[['seq.cv','vco.voct'],['seq.gate','env.gate'],['vco.saw'
 ['WAH',[['seq.cv','vcf.cv'],['seq.gate','env.gate'],['vco.saw','vcf.in'],['vcf.out','out.in'],['env.a','out.cv']]],
 ['ZAP',[['seq.cv','vco.voct'],['seq.gate','env.gate'],['env.a','vco.fm'],['vco.sqr','out.in'],['env.b','out.cv']]]];
 const HOP=110,cables=[];
-let sel=null,run=true,step=0,nextS=0,nextT=0,clk='',kf=K.CUTOFF?KN.indexOf(K.CUTOFF):0,pi=0,pname='BASS',chainS='',hold=null,drag=null,last=0,note='',noteT=0,sayMsg='',sayT=0,outKey='',lvl=0,order='';
+let sel=null,run=true,step=0,nextS=0,nextT=0,clk='',kf=KN.indexOf(K.CUTOFF),pi=0,pname='BASS',chainS='',hold=null,drag=null,last=0,note='',noteT=0,sayMsg='',sayT=0,outKey='',lvl=0,order='';
 const Q=[];
 const say=m=>{announcement.textContent=m;},notice=(m,a)=>{note=m;noteT=performance.now()+1600;if(a){sayMsg=a;sayT=performance.now()+350;}};
 const nm=j=>`${j.m.label} ${j.lab}`;
@@ -179,7 +179,7 @@ while(Q.length&&Q[0][0]<=t){step=Q.shift()[1];arrive(step,now);}}
 // A note's wave down the patch: from the sequencer's outputs along each cable to the module it feeds, and on out of it.
 function arrive(s,now){if(!ST[s].on)return;const seen=new Set(),q=M.seq.outs.map(o=>[o,now]);
 while(q.length){const[o,t]=q.shift();if(seen.has(o))continue;seen.add(o);const c=o.cab;if(!c||!c.b||c.a!==o)continue;const m=c.b.m;if(m.id==='env'&&o.id!=='seq.gate')continue;
-c.ps.push(t);const ta=t+HOP;m.fl.push(ta);for(const x of m.outs)q.push([x,ta+40]);}}
+c.ps.push(t);const ta=t+HOP;m.fl.push(ta);if(m.fl.length>8)m.fl.shift();if(c.ps.length>8)c.ps.shift();for(const x of m.outs)q.push([x,ta+40]);}}
 function reach(){for(const m of MODS)m.reach=false;M.seq.reach=true;const seen=new Set(),q=[...M.seq.outs];
 while(q.length){const o=q.shift();if(seen.has(o))continue;seen.add(o);const c=o.cab;if(!c||!c.b||c.a!==o)continue;const m=c.b.m;if(m.id==='env'&&o.id!=='seq.gate')continue;m.reach=true;q.push(...m.outs);}}
 // What reaches the output: traced back from its input through the filter to whatever feeds it.
@@ -204,7 +204,7 @@ function focusBy(d){audio();kf=(kf+d+KN.length)%KN.length;showKnob();}
 function setKnob(i,v){const k=KN[i],w=clamp(v,k.min,k.max);if(w===k.val)return false;k.val=w;if(k.name==='TEMPO')seg.textContent=String(w);tone();return true;}
 function turn(d){audio();const k=KN[kf];if(!setKnob(kf,k.val+d*k.step)){notice(`${k.name} · ${k.fmt(k.val)} · ${d>0?'TOP':'BOTTOM'}`);return;}showKnob();}
 function preset(){audio();pi=(pi+1)%PRESETS.length;load(pi);notice(`PATCH ${pi+1}/${PRESETS.length} · ${PRESETS[pi][0]}`,`Patch ${pi+1}, ${PRESETS[pi][0].toLowerCase()}: ${chainS.toLowerCase().replace(/ → /g,' to ')}.`);}
-function unplugAll(){audio();if(hold)drop(null,true);if(!cables.length){notice('NO CABLES TO PULL');return;}for(const c of[...cables])pull(c);changed();notice('ALL CABLES OUT','Every cable is out. Drag from one jack to another to patch.');}
+function unplugAll(){audio();cancel();if(!cables.length){notice('NO CABLES TO PULL');return;}for(const c of[...cables])pull(c);changed();notice('ALL CABLES OUT','Every cable is out. Drag from one jack to another to patch.');}
 // Patching: lift the cable at a jack (or start one there), carry its free end, plug it into a free jack of the other kind.
 function grab(j){let c=j.cab;if(c){const end=c.a===j?'a':'b';c[end]=null;j.cab=null;hold={c,end,from:j};}else{c={a:null,b:null,k:j.kind==='out'?j.k:'k0',slot:take(),t0:-1,ps:[]};const end=j.kind==='out'?'b':'a';c[end==='a'?'b':'a']=j;j.cab=c;cables.push(c);hold={c,end,from:null};}
 hold.u=j.u;hold.v=j.v;set(c.slot.g,'class','cab '+c.k);changed();}
@@ -217,9 +217,10 @@ else if(j&&j.cab)notice(`${nm(j)} IS IN USE · CABLE OUT`,`The ${j.name} is in u
 else notice(`UNPLUGGED · ${nm(fixed)}`,`Cable unplugged from the ${fixed.name}.`);}
 function restore(j){const h=hold;if(!h)return;if(h.from===j){hold=null;h.c[h.end]=j;j.cab=h.c;changed();}else drop(null,true);
 const c=j.cab,o=c&&(c.a===j?c.b:c.a);notice(`${nm(j)}${o?` ${j.kind==='in'?'←':'→'} ${nm(o)}`:' · FREE'}`);}
+function cancel(){const h=hold;if(!h)return;if(h.from){hold=null;h.c[h.end]=h.from;h.from.cab=h.c;changed();}else drop(null,true);}
 function jackKey(j){audio();if(!hold){grab(j);hold.kb=true;const want=hold.end==='a'?'output':'input';notice(`CABLE FROM ${nm(hold.c[hold.end==='a'?'b':'a'])} · PICK AN ${want.toUpperCase()}`,`Holding a cable from the ${j.name}. Move to an ${want} and press Enter.`);return;}
 if(hold.from===j){restore(j);return;}drop(j);}
-const act={' ':runStop,ArrowLeft:()=>focusBy(-1),ArrowRight:()=>focusBy(1),ArrowUp:()=>turn(1),ArrowDown:()=>turn(-1),p:preset,Backspace:unplugAll,Escape:()=>{if(hold)hold.from?restore(hold.from):drop(null);}};
+const act={' ':runStop,ArrowLeft:()=>focusBy(-1),ArrowRight:()=>focusBy(1),ArrowUp:()=>turn(1),ArrowDown:()=>turn(-1),p:preset,Backspace:unplugAll,Escape:cancel};
 for(let i=1;i<=8;i++)act[String(i)]=()=>toggleStep(i-1);
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(k===' '&&e.target.closest&&e.target.closest('[role=button]'))return;
 const fn=act[k];if(fn){e.preventDefault();if(!e.repeat||k.startsWith('Arrow'))fn();}});
@@ -229,7 +230,7 @@ function toUV(x,y,n){const o=P(...WP(0,0)),dx=x-o[0],dy=y-o[1];return[(dx*pv[1]-
 function jackAt(x,y){let best=null,bd=6.5;for(const j of JACKS){let d=hypot(x-j.q[0],y-j.q[1]);if(j.cab&&!(hold&&hold.c===j.cab)){const t=P(...WP(j.u,j.v,15)),vx=t[0]-j.q[0],vy=t[1]-j.q[1],s=clamp(((x-j.q[0])*vx+(y-j.q[1])*vy)/(vx*vx+vy*vy),0,1);d=min(d,hypot(x-j.q[0]-vx*s,y-j.q[1]-vy*s)+1);}if(d<bd){bd=d;best=j;}}return best;}
 function knobAt(x,y){return KN.findIndex(k=>hypot(x-k.q[0],y-k.q[1])<k.r*1.18+1.5);}
 svg.addEventListener('pointerdown',e=>{if(e.button>0||drag)return;const q=local(e);if(!q)return;const j=jackAt(...q);
-if(j){e.preventDefault();audio();if(hold)drop(null,true);drag={j,x:q[0],y:q[1],moved:false};grab(j);hover(q);svg.setPointerCapture?.(e.pointerId);svg.classList.add('dragging');return;}
+if(j){e.preventDefault();audio();cancel();drag={j,x:q[0],y:q[1],moved:false};grab(j);hover(q);svg.setPointerCapture?.(e.pointerId);svg.classList.add('dragging');return;}
 const k=knobAt(...q);if(k>=0){e.preventDefault();audio();kf=k;drag={k,y:q[1],v0:KN[k].val};svg.setPointerCapture?.(e.pointerId);showKnob();}});
 function hover(q){if(!hold)return;const[u,v]=toUV(q[0],q[1],NH);hold.u=clamp(u,-40,350);hold.v=clamp(v,-30,170);}
 svg.addEventListener('pointermove',e=>{if(!drag)return;const q=local(e);if(!q)return;if(drag.j){if(hypot(q[0]-drag.x,q[1]-drag.y)>3)drag.moved=true;hover(q);}
