@@ -161,5 +161,33 @@ describe('ChatMarkdown', () => {
       expect(revealedUnderReducedMotion('One. Two')).toBe('One.')
       expect(revealedUnderReducedMotion('- a\n- b')).toBe('- a\n')
     })
+
+    test('a crafted long message is revealed in linear time (no ReDoS)', () => {
+      // The old pattern, /[\s\S]*(?:\n|[.!?;:](?=\s))/, took seconds on 50k characters with no boundary.
+      for (const text of ['a'.repeat(50_000), '.'.repeat(50_000), ' '.repeat(50_000), `${'a.'.repeat(25_000)}`, `${'a'.repeat(50_000)}\n`]) {
+        const start = performance.now()
+        revealedUnderReducedMotion(text)
+        expect(performance.now() - start).toBeLessThan(50)
+      }
+    })
+
+    test('matches the earlier pattern on any text', () => {
+      const old = (text: string) => {
+        const boundary = /[\s\S]*(?:\n|[.!?;:](?=\s))/.exec(text)
+        let end = boundary ? boundary[0].length : 0
+        if (text.length - end > 240) end = Math.max(end, text.lastIndexOf(' ') + 1)
+        return text.slice(0, end)
+      }
+      const alphabet = ['a', 'b', ' ', '\n', '\t', '.', '!', '?', ';', ':', ',', '3', '\u00a0', '😀']
+      let seed = 7
+      const next = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff)
+      for (let n = 0; n < 3000; n++) {
+        let text = ''
+        for (let i = next() % 40; i > 0; i--) text += alphabet[next() % alphabet.length]
+        expect(revealedUnderReducedMotion(text)).toBe(old(text))
+      }
+      const long = `${'word '.repeat(80)}tail.`
+      expect(revealedUnderReducedMotion(long)).toBe(old(long))
+    })
   })
 })

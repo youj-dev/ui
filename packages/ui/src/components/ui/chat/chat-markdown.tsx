@@ -72,8 +72,15 @@ function Cite({ index }: { index: number }) {
 
 /** How far a reduced-motion reader sees a stream: up to the last finished sentence or line. */
 export function revealedUnderReducedMotion(text: string): string {
-  const boundary = /[\s\S]*(?:\n|[.!?;:](?=\s))/.exec(text)
-  let end = boundary ? boundary[0].length : 0
+  // Scans back for the last boundary: a regex with a leading `[\s\S]*` retries from every start, which is quadratic on a long unpunctuated message.
+  let end = 0
+  for (let i = text.length - 1; i >= 0; i--) {
+    const c = text[i]!
+    if (c === '\n' || ('.!?;:'.includes(c) && i + 1 < text.length && /\s/.test(text[i + 1]!))) {
+      end = i + 1
+      break
+    }
+  }
   // A long run without punctuation still arrives, a phrase at a time.
   if (text.length - end > 240) end = Math.max(end, text.lastIndexOf(' ') + 1)
   return text.slice(0, end)
