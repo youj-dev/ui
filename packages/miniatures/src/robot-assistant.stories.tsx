@@ -24,23 +24,25 @@ export const Dark: Story = { ...Default, args: { mode: 'dark' } }
 export const Still: Story = { args: { interactive: false, size: 360, stage: true } }
 
 /** As a progress indicator: a streamed answer drives `progress` while it thinks, and `done` ends it with a smile. A still picture, so it takes no focus from the page. */
-function Answer() {
+function Answer({ onAgain }: { onAgain: () => void }) {
   const [progress, setProgress] = useState(0)
-  const [run, setRun] = useState(0)
   useEffect(() => {
-    setProgress(0)
     const timer = setInterval(() => setProgress((p) => Math.min(1, p + 0.06 + Math.random() * 0.06)), 500)
     return () => clearInterval(timer)
-  }, [run])
+  }, [])
   const done = progress >= 1
   return (
     <div style={{ display: 'grid', placeItems: 'center', gap: 16, padding: 32, font: '12px ui-monospace, monospace' }}>
       <MiniatureRobotAssistant interactive={false} size={220} progress={progress} done={done} aria-label={done ? 'Answer ready' : `Writing the answer, ${Math.round(progress * 100)} percent`} />
       <span aria-live="polite">{done ? 'Answer ready' : `Writing the answer ${Math.round(progress * 100)}%`}</span>
-      <button type="button" onClick={() => setRun((r) => r + 1)} style={{ font: 'inherit', padding: '6px 12px', borderRadius: 6, border: '1px solid currentColor', background: 'none', color: 'inherit', cursor: 'pointer' }}>
+      <button type="button" onClick={onAgain} style={{ font: 'inherit', padding: '6px 12px', borderRadius: 6, border: '1px solid currentColor', background: 'none', color: 'inherit', cursor: 'pointer' }}>
         Ask again
       </button>
     </div>
   )
 }
-export const Progress: Story = { render: () => <Answer /> }
+function Streaming() {
+  const [run, setRun] = useState(0)
+  return <Answer key={run} onAgain={() => setRun((r) => r + 1)} />
+}
+export const Progress: Story = { render: () => <Streaming /> }

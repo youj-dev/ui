@@ -179,6 +179,10 @@
     "light": "/thumbs/miniatures/robot-arm.webp?v=eeb8137b5c",
     "dark": "/thumbs/miniatures/robot-arm.dark.webp?v=61b45d2a5f"
   },
+  "robot-assistant": {
+    "light": "/thumbs/miniatures/robot-assistant.webp?v=1fbedc801f",
+    "dark": "/thumbs/miniatures/robot-assistant.dark.webp?v=38244f2cf9"
+  },
   "rocket-launch-pad": {
     "light": "/thumbs/miniatures/rocket-launch-pad.webp?v=52a9409fcc",
     "dark": "/thumbs/miniatures/rocket-launch-pad.dark.webp?v=fbba8600e6"

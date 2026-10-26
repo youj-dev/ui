@@ -26,16 +26,15 @@ function draw(env: FigureEnv): void {
 const{document,window,matchMedia,requestAnimationFrame}=env;
 /* OLLEN Q–3 desk robot. World: x lower-right, y lower-left (front faces +y), z up; it stands at the origin with its body
 turned 30° from the front plane toward the viewer, and its head turns, nods and tilts about the neck. 1 unit ≈ 2 mm.
-Part                        x      y      z      w      d      h
+Part                        size                                        on it
 ground shadow           the house ellipse under the base
-base foot + puck        r 23 / 21 at 0 0, z 0–3 / 3–10              light ring r 16.5 on the puck
-waist                   r 8, z 9–14
-torso                   42 × 32 × 38, round-edged r 8, z 12–50       chest screen 25.6 × 12, brand plate under it
-arms                    r 3.4, 17 long from the shoulders at u ±24.4, z 41; hands r 4.8
-neck                    r 6 from the torso to the head
-head                    75 × 53 × 52, round-edged r 12, z 54–106    visor 59 × 35 on its front: eyes, mouth, cheeks
-ears                    r 7.5 discs, 3.5 proud of the head's sides
-antenna                 collar r 3, rod 14 on a spring, lamp r 4
+base foot + puck        r 23 × 3 / r 21 × 7, z 0–10                  light ring r 16.5 on the puck; the waist r 8 above
+torso                   42 × 32 × 38, round-edged r 10.5, z 12–50   chest screen 25.6 × 12, brand plate under it
+arms                    r 4, 15.5 long from the shoulders at ±25, z 41; mitten hands r 5.2
+neck                    bearing ring r 8.6 on the torso, neck r 5.6 up into the head
+head                    72 × 46 × 50, round-edged r 17, z 63–113    visor 56 × 33 on its front: eyes, mouth, cheeks
+ears                    r 8 discs, 3.6 proud of the head's sides     a lamp in each
+antenna                 collar r 3.2, rod 19 on a spring, lamp r 3.5
 Every outline is a projected path (hulls of the corner spheres, ellipses, capsules), so the drawing's box is its own.
 Painter order: shadow; base, far arm, torso, neck, far ear, head and face, near ear, antenna, near arm; the control. */
 const svg=document.getElementById('machine'),root=document.getElementById('drawing');
@@ -109,7 +108,7 @@ set(svg,'viewBox','-66 -156 132 188');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 const say=m=>{announcement.textContent=m;};
 const ROWS=['1234567890','qwertyuiop','asdfghjkl','zxcvbnm'],THINK=1600,CPS=24,HOLD=2800,QUIET=7000;
-const REPLIES=[[/\b(hi|hello|hey|hiya|howdy)\b/,'HI! HOW CAN I HELP?'],[/how are you/,'ALL SYSTEMS GO!'],[/\b(name|who)\b/,'I’M OLLEN!'],[/\bthank/,'ANYTIME!'],[/\bhelp\b/,'HAPPY TO HELP!'],[/\b(bye|night)\b/,'SEE YOU SOON!'],[/\blove\b/,'BEEP BOOP ♥'],[/\b(joke|fun)\b/,'I’M ALL EARS!'],[/\b(time|late|tired)\b/,'TIME FOR A BREAK?']];
+const REPLIES=[[/\b(hi|hello|hey|hiya|howdy)\b/,'HI! HOW CAN I HELP?'],[/how are you/,'ALL SYSTEMS GO!'],[/\b(name|who)\b/,'I’M OLLEN!'],[/\bthank/,'ANYTIME!'],[/\bhelp\b/,'HAPPY TO HELP!'],[/\b(bye|night)\b/,'SEE YOU SOON!'],[/\blove\b/,'BEEP BOOP ♥'],[/\b(joke|funny)\b/,'KNOCK KNOCK!'],[/\b(time|late|tired)\b/,'TIME FOR A BREAK?']];
 const ANSWERS=['GOOD QUESTION!','ON IT!','SOUNDS GREAT!','LET ME CHECK…','GREAT IDEA!'];
 const MOODS={1:['happy','HAPPY · ARMS UP','YAY!','Happy: it cheers with its arms up.',2600],2:['wow','SURPRISED · EYES WIDE','WHOA!','Surprised: its eyes go wide.',2400],3:['huh','PUZZLED · HEAD TILTED','HMM… ?','Puzzled: it tilts its head.',2800],4:['sleepy','SLEEPY · DOZING OFF','Z z z','Sleepy: it dozes off for a moment.',4200]};
 // Faces: each eye's half-width, top, middle and bottom (an oval at rest, a crescent when it smiles, a slit when it squints),
@@ -159,12 +158,12 @@ shape(head,C,fh,HA,HB,HH,HR);
 set(faceG,'transform',plane(lp(C,fh,0,VZ,0),fh.U,mul(fh.Z,-1)));
 const near=dot(fh.U,VIEW)>=0?1:-1;
 for(const e of ears){const o=lp(C,fh,e.s*(HA+HR-1.2),0,1),b=lp(C,fh,e.s*(HA+HR+3.6),0,1),{E1,E2}=cyl(e.n,o,b,8),f=dot(mul(fh.U,e.s),VIEW)>0;set(e.r,'d',disc(f?b:o,E1,E2,5));const q=P(...(f?b:o));set(e.l,'cx',f2(q[0]));set(e.l,'cy',f2(q[1]));
-const layer=e.s===near?earR:earL;for(const n of[e.n.b,e.n.e,e.r,e.l])layer.appendChild(n);}
+const into=e.s===near?earR:earL;for(const n of[e.n.b,e.n.e,e.r,e.l])into.appendChild(n);}
 const top=lp(C,fh,0,0,HH+HR-.4),cTop=lp(C,fh,0,0,HH+HR+2.2);cyl(collar,top,cTop,3.2);
 const rb=P(...cTop),rest=P(...lp(C,fh,0,0,HH+HR+21));
 if(!tip.p||reduced.matches)tip.p=rest.slice();
 const tx=tip.p[0],ty=tip.p[1],mid=P(...lp(C,fh,0,0,HH+HR+11.6)),d=`M${pt(rb)}Q${pt(mid)} ${f2(tx)},${f2(ty)}`;set(rodU,'d',d);set(rodM,'d',d);
-for(const n of[halo,lamp])set(n,'cx',f2(tx)),set(n,'cy',f2(ty));set(spec,'cx',f2(tx-1.4));set(spec,'cy',f2(ty-1.5));
+for(const n of[halo,lamp]){set(n,'cx',f2(tx));set(n,'cy',f2(ty));}set(spec,'cx',f2(tx-1.4));set(spec,'cy',f2(ty-1.5));
 return rest;}
 function arms(T){for(const[a,s,al,be]of[[farArm,-1,T.fa,T.fb],[nearArm,1,T.na,T.nb]]){const S=lp(TC,TF,s*25,0,10),d=unit(add(mul(TF.Z,-cos(al*RAD)),mul(TF.U,s*sin(al*RAD)))),d2=unit(add(mul(d,cos(be*RAD)),mul(TF.F,sin(be*RAD)))),H=add(S,mul(d2,15.5)),p=P(...S),q=P(...H);
 capsule(a.c,p,q,4*RS);set(a.h,'cx',f2(q[0]));set(a.h,'cy',f2(q[1]));set(a.s,'cx',f2(q[0]-2.4));set(a.s,'cy',f2(q[1]-2.6));}}
