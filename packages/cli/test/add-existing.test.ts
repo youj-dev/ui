@@ -231,6 +231,36 @@ describe('add, over files that are already there', () => {
   })
 })
 
+describe("add, in an app whose own stylesheet is in a styles/ folder (the Pages Router's)", () => {
+  /** A Pages Router app on the registry: src/styles/globals.css is the stylesheet components.json names, where shadcn merges an item's css. */
+  function pagesApp() {
+    const root = fixture('next-pages')
+    write(root, 'tsconfig.json', JSON.stringify({ compilerOptions: { paths: { '@/*': ['./src/*'] } } }))
+    write(root, 'components.json', JSON.stringify({ aliases: { components: '@/components' }, tailwind: { css: 'src/styles/globals.css' }, registries: { '@youj': 'https://www.youj.dev/r/{name}.json' } }))
+    return root
+  }
+
+  it('keeps the css shadcn merged into it (the motion presets an item brings) and calls it no conflict', async () => {
+    const root = pagesApp()
+    const merged = `${read(root, 'src/styles/globals.css')}\n@utility yj-pop {\n  opacity: 1;\n}\n`
+    const { runner } = shadcn(root, { 'src/styles/globals.css': merged, 'src/components/ui/button.tsx': BUTTON })
+    const ui = silentUi()
+    await add(root, ['button'], [], runner, ui, {})
+    expect(read(root, 'src/styles/globals.css')).toBe(merged)
+    expect(ui.log.join('\n')).not.toContain('Kept your version')
+  })
+
+  it('still keeps a stylesheet of yours that Youj copies, when it differs', async () => {
+    const root = pagesApp()
+    write(root, 'src/styles/ui.css', '.mine {}\n')
+    const { runner } = shadcn(root, { 'src/styles/ui.css': '.theirs {}\n', 'src/components/ui/button.tsx': BUTTON })
+    const ui = silentUi()
+    await add(root, ['button'], [], runner, ui, {})
+    expect(read(root, 'src/styles/ui.css')).toBe('.mine {}\n')
+    expect(ui.log.join('\n')).toMatch(/Kept your version of 1 file that differs[\s\S]*src\/styles\/ui\.css/)
+  })
+})
+
 describe('add, on a Vite app whose alias is only in tsconfig.app.json', () => {
   it('stops before shadcn writes into a literal ./@/ folder, and says how to fix it', async () => {
     const root = fixture('vite')

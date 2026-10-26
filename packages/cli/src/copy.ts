@@ -7,6 +7,7 @@
  * and reported. `--overwrite` on our command replaces those too. */
 
 import { rmSync, statSync } from 'node:fs'
+import { posix } from 'node:path'
 import { isUtilsPath, mergeUtils } from './collisions'
 import type { Project } from './project'
 
@@ -16,10 +17,16 @@ const SOURCE = /\.(tsx?|jsx?|mjs|css|astro)$/
 
 export type Snapshot = Map<string, { content: string; mtime: number }>
 
-/** The files under the app's copy-in folders, by path: their content, and when they were last written (to tell the ones shadcn rewrote). */
+/**
+ * The files under the app's copy-in folders, by path: their content, and when they were last written (to tell the ones shadcn rewrote).
+ * Not the app's own stylesheet, the one components.json names, though an app can keep it in one of those folders (the Pages Router's
+ * styles/globals.css): shadcn merges an item's css into it (the motion presets), which is no copy to settle.
+ */
 export function snapshot(project: Project): Snapshot {
   const files: Snapshot = new Map()
-  for (const path of project.walk('.', (name) => SOURCE.test(name)).filter((f) => COPY_DIRS.test(f)))
+  const stylesheet = project.json<{ tailwind?: { css?: string } }>('components.json')?.tailwind?.css
+  const own = stylesheet ? posix.normalize(stylesheet) : undefined
+  for (const path of project.walk('.', (name) => SOURCE.test(name)).filter((f) => COPY_DIRS.test(f) && f !== own))
     files.set(path, { content: project.read(path) ?? '', mtime: statSync(project.abs(path)).mtimeMs })
   return files
 }
