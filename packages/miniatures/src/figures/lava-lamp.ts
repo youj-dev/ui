@@ -196,7 +196,7 @@ glassG.addEventListener('click',e=>nudge(...local(e)));
 glassG.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)nudge();}});
 bind(rocker,power);
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key;
-if(k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();if(!e.repeat)colors(k==='ArrowRight'?1:-1);return;}
+if(k.startsWith('Arrow')){e.preventDefault();if(!e.repeat)colors(k==='ArrowRight'||k==='ArrowUp'?1:-1);return;}
 if(e.repeat)return;if(k===' '){e.preventDefault();power();}else if(k==='Enter'){e.preventDefault();nudge();}});
 function ui(now){const stirred=now-stirT<2600&&heat>=.2,mood=stirred?'STIRRED':!on?(heat>.1?'SETTLING':'ASLEEP'):heat<.45?'WAKING':heat<.8?'SLUGGISH':'DREAMY';
 const r=`${Math.round(21+39*heat)} °C · ${mood}`,st=now<noteT?note:!on?(heat>.1?`COOLING · ${PAIRS[pi][0]}`:'OFF · SPACE TURNS IT ON'):heat<.8?`WARMING UP · ${PAIRS[pi][0]}`:`FLOWING · ${PAIRS[pi][0]}`;

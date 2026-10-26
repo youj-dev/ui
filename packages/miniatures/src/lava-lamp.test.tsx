@@ -123,6 +123,15 @@ describe('Lava lamp', () => {
     expect(view.wax()).toBe(settled)
   })
 
+  it('↑ and ↓ step through the color pairs too', async () => {
+    const view = await play(['ArrowUp'])
+    expect(view.svg()).toHaveClass('p1')
+    await press(view, 'ArrowDown')
+    await press(view, 'ArrowDown')
+    expect(view.svg()).toHaveClass('p3')
+    expect(view.snap().state).toBe('COLORS · ORANGE IN CLEAR')
+  })
+
   it('→ and ← step through the color pairs and wrap around', async () => {
     const view = await play(['ArrowRight'])
     expect(view.svg()).toHaveClass('p1')
