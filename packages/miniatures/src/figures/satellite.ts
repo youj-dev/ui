@@ -106,7 +106,7 @@ const NR=5,R=14,FOC=10.5,M=[13,2,44],H=[19,2,44],KN=.78,dishL=el('g',{}),arm=tub
 for(let k=1;k<=NR;k++){const g=el('g',{},dishL);fills.push({g,c:circle(g,0,0,R*k/NR,'face dback')});}
 for(let k=1;k<NR;k++){const g=el('g',{},dishL);seams.push({g,c:circle(g,0,0,R*k/NR,'seam')});}
 const gores=el('path',{class:'seam'},dishL),hubG=el('g',{},dishL);circle(hubG,0,0,2.3,'face metal');circle(hubG,0,0,.9,'face dk');
-const legs=[0,1,2].map(()=>strut(dishL,.42)),feed=tube(dishL,'dk');let E=[30,8,40],G=[40,10,0];
+const legs=[0,1,2].map(()=>strut(dishL,.42)),feed=tube(dishL,'dk');let E,G;
 function dish(N){const[U,V]=axes(N),Vx=add(H,mul(N,1.2)),at=r=>add(Vx,mul(N,r*r/(4*FOC))),F=add(Vx,mul(N,FOC)),toward=dot(N,VIEW)>0,ring=(r,t)=>add(add(at(r),mul(U,r*Math.cos(t))),mul(V,r*Math.sin(t)));
 put(arm,M,Vx,1.5);for(let k=1;k<=NR;k++){const f=fills[k-1];set(f.g,'transform',plane(at(R*k/NR),U,V));set(f.c,'class','face '+(toward&&k===NR?'dishin':'dback'));}
 for(let k=1;k<NR;k++)set(seams[k-1].g,'transform',plane(at(R*k/NR),U,V));
@@ -133,7 +133,7 @@ const order=[{n:w.yg,t:y.t,c:[(a[0]+b[0])/2,(a[1]+b[1])/2,0]}];
 for(let k=1;k<4;k++){const s=segs[k],p=w.p[k-1],n=[Math.cos(s.t),-sg*Math.sin(s.t),0],cells=dot(n,VIEW)>0;set(p.g,'transform',plane([s.A[0],s.A[1],ZP],[s.dk[0],s.dk[1],0],[0,0,-1]));
 if(p.cells!==cells){p.cells=cells;set(p.b,'class','face '+(cells?'pframe':'pback'));set(p.o,'class',cells?'cells':'ribs');set(p.s,'class',cells?'psheen':'psheen off');}
 order.push({n:p.g,t:s.t,c:[(s.A[0]+s.B[0])/2,(s.A[1]+s.B[1])/2,0]});}
-// Parallel neighbours (a folded stack) by which side of the other they lie on, the rest by depth.
+// Parallel neighbors (a folded stack) by which side of the other they lie on, the rest by depth.
 order.sort((p,q)=>{if(Math.abs(Math.sin(p.t-q.t))<.5){const n=[Math.cos(p.t),-sg*Math.sin(p.t),0],o=dot(sub(q.c,p.c),n)*(dot(n,VIEW)<0?-1:1);if(Math.abs(o)>.05)return o>0?-1:1;}return p.c[0]+p.c[1]-q.c[0]-q.c[1];});for(const o of order)w.L.appendChild(o.n);}}
 // Controls on top: the wings deploy or stow, the bus fires the thrusters.
 const wBtn=button(el('g',{}),{'aria-label':'Deploy or stow the solar wings (Space)','aria-pressed':'true'});for(const sg of[-1,1]){const c=[[0,sg*16,ZP+1],[0,sg*75.4,ZP+1],[0,sg*75.4,ZP-HP-1],[0,sg*16,ZP-HP-1]].map(p=>pt(P(...p))).join('L');el('path',{d:'M'+c+'Z',class:'hit'},wBtn);el('path',{d:'M'+c+'Z',class:'focus-ring'},wBtn);}
