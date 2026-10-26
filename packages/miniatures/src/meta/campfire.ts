@@ -22,6 +22,6 @@ export const campfire = {
     state: 'MARSHMALLOW RAW · LANTERN ON',
     pressed: {},
   },
-  viewBox: '-65.29 -72 136.3 116.77',
+  viewBox: '-57 -72 127.11 115.14',
   progress: false,
 } as const satisfies MiniatureMeta

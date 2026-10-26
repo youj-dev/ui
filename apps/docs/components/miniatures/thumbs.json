@@ -11,6 +11,10 @@
     "light": "/thumbs/miniatures/bank-vault.webp?v=48cb728f99",
     "dark": "/thumbs/miniatures/bank-vault.dark.webp?v=00c50b52fb"
   },
+  "campfire": {
+    "light": "/thumbs/miniatures/campfire.webp?v=79e7306134",
+    "dark": "/thumbs/miniatures/campfire.dark.webp?v=6019ad40dd"
+  },
   "card-catalog": {
     "light": "/thumbs/miniatures/card-catalog.webp?v=94d308f97b",
     "dark": "/thumbs/miniatures/card-catalog.dark.webp?v=03c0125497"

@@ -45,7 +45,7 @@ function draw(env: FigureEnv): void {
 const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* ASKELD T–2 campsite. World: x lower-right, y lower-left (front faces +y), z up. 1 unit ≈ 4 cm.
 Part                          x      y      z      w      d      h
-turf                   a rounded patch 58 × 35 round (2, −4), 1.8 thick; a cleared ring of earth r 19 round the fire
+turf                   a rounded patch 54 × 32 round (5, −5), 1.8 thick; a cleared ring of earth r 19 round the fire
 tent (ridge along x)        −40    −25      0     40     36     31   fly 4 proud of the door gable at the ridge, 1 at the ground
 door + lantern              gable u 8–28, to z 25.6; the storm lantern hangs in it from the ridge, a bedroll inside
 guys + pegs                 door and back ends of the ridge, two off the front slope; pegs where the eave scallops dip
@@ -74,14 +74,14 @@ function tube(g,a,b,r,cls){const t=tubeAt(a,b,r);el('path',{d:t.d,transform:t.t,
 function tongue(bx,by,hw,h,sway,wob,ph){const L=[],R=[];for(let i=0;i<=6;i++){const s=i/6,x=bx+sway*s**1.6+wob*sin(ph+s*3.6)*s,y=by-h*s,w=hw*(1-s)**.85*(1+.25*sin(PI*s));L.push([x-w,y]);R.unshift([x+w,y]);}const k=hw*.8;
 return`M${pt(L[0])}${bend(L)}${bend(R)}C${pt([R[6][0],by+k])} ${pt([L[0][0],by+k])} ${pt(L[0])}Z`;}
 // Floor: the house ground shadow, then the sky (its stars are placed once the frame is known).
-const GX=2,GY=-4,FX=26,FY=-8;
-const turf=[...Array(44)].map((_,i)=>{const a=i/44*2*PI,k=1+.035*sin(3*a+.7)+.02*sin(5*a+2.1),c=cos(a),s=sin(a);return P(GX+58*k*Math.sign(c)*Math.abs(c)**.83,GY+35*k*Math.sign(s)*Math.abs(s)**.83,0);});
+const GX=5,GY=-5,FX=26,FY=-8;
+const turf=[...Array(44)].map((_,i)=>{const a=i/44*2*PI,k=1+.035*sin(3*a+.7)+.02*sin(5*a+2.1),c=cos(a),s=sin(a);return P(GX+54*k*Math.sign(c)*Math.abs(c)**.83,GY+32*k*Math.sign(s)*Math.abs(s)**.83,0);});
 for(const cls of['shadow stage-floor','stage-contact'])el('path',{d:curve(turf.map(q=>[q[0]+1.5,q[1]+3.6]),true),class:cls});
 const SKY=el('g',{});
 // Turf: its earth rim, the grass, a cleared ring of earth round the fire, tufts.
 el('path',{d:curve(turf.map(q=>[q[0],q[1]+1.8]),true),class:'face rim'});el('path',{d:curve(turf,true),class:'face grass'});
 el('path',{d:curve([...Array(22)].map((_,i)=>{const a=i/22*2*PI,r=19+1.6*sin(3*a+1)+.9*sin(7*a+.4);return P(FX+r*cos(a),FY+r*sin(a),0);}),true),class:'dirt'});
-for(const[x,y,s]of[[-50,6,1],[-38,22,1.1],[-20,24,.9],[2,20,1],[8,-30,.9],[48,-30,1],[56,2,.8],[36,22,1.1],[18,26,.9],[42,-34,.85],[-6,26,.8]]){const[X,Y]=P(x,y,0);el('path',{d:`M${f2(X-1.5*s)},${f2(Y)}Q${f2(X-1.4*s)},${f2(Y-2.2*s)} ${f2(X-2.4*s)},${f2(Y-3.4*s)}M${f2(X)},${f2(Y)}Q${f2(X+.3*s)},${f2(Y-2.8*s)} ${f2(X-.2*s)},${f2(Y-4.4*s)}M${f2(X+1.5*s)},${f2(Y)}Q${f2(X+1.6*s)},${f2(Y-2*s)} ${f2(X+2.7*s)},${f2(Y-3*s)}`,class:'blade'});}
+for(const[x,y,s]of[[-44,4,1],[-34,16,1.1],[-18,22,.9],[2,20,1],[8,-28,.9],[40,-26,.9],[52,0,.8],[34,22,1.1],[18,24,.9],[-6,24,.8]]){const[X,Y]=P(x,y,0);el('path',{d:`M${f2(X-1.5*s)},${f2(Y)}Q${f2(X-1.4*s)},${f2(Y-2.2*s)} ${f2(X-2.4*s)},${f2(Y-3.4*s)}M${f2(X)},${f2(Y)}Q${f2(X+.3*s)},${f2(Y-2.8*s)} ${f2(X-.2*s)},${f2(Y-4.4*s)}M${f2(X+1.5*s)},${f2(Y)}Q${f2(X+1.6*s)},${f2(Y-2*s)} ${f2(X+2.7*s)},${f2(Y-3*s)}`,class:'blade'});}
 // Light on the ground: the fire's pool (it carries the night) and the lantern's spill from the door.
 const X0=-40,X1=0,YF=11,YB=-25,YC=-7,H=31,W=YF-YB;
 const pool=el('ellipse',{...iso(FX,FY,0,30),class:'pool'}),spill=el('ellipse',{...iso(X1+9,YC+2,0,12),class:'spill'});
@@ -107,7 +107,7 @@ for(const x of[X0+10,X0+20,X0+30])el('path',{d:`M${pt(P(x,YC,ridgeZ(x)))}L${pt(P
 {const o=[0,1.3,-2.25];el('path',{d:`M${pt(P(...R0))}Q${pt(P(...RC))} ${pt(P(...R1))}L${pt(P(...add(R1,o)))}Q${pt(P(...add(RC,o)))} ${pt(P(...add(R0,o)))}Z`,class:'face rust'});}
 {const g=group(plane([X1-9,YF-.28*18,.28*H],[1,0,0],[0,.502,-.865]));rect(g,-5.2,-1.5,10.4,3,.7,'face tag');text(g,0,.65,'ASKELD','serif center');}
 const guy=(a,b)=>{el('path',{d:`M${pt(P(...a))}L${pt(P(...b))}`,class:'rope'});const q=P(...b);el('path',{d:`M${f2(q[0])},${f2(q[1]+.6)}V${f2(q[1]-2.2)}`,class:'peg'});};
-guy(R0,[X1+9,YC-9,0]);guy(R1,[X0-11,YC,0]);for(const x of[X0+9,X0+31])guy([x,YF-.46*18,.46*H],[x+2,YF+10,0]);
+guy(R0,[X1+9,YC-9,0]);guy(R1,[X0-7,YC,0]);for(const x of[X0+9,X0+31])guy([x,YF-.46*18,.46*H],[x+2,YF+10,0]);
 for(const x of PEGS){const q=P(x,YF+.4,0);el('path',{d:`M${f2(q[0])},${f2(q[1]+.5)}V${f2(q[1]-1.8)}`,class:'peg'});}
 for(const p of[R0,R1]){const q=P(...p);el('path',{d:`M${pt(q)}V${f2(q[1]-3)}`,class:'pole'});circle(root,q[0],q[1]-3.3,.8,'face top');}
 // Firelight over the tent and the ground in front of it (the night's; nothing by day).
@@ -168,7 +168,7 @@ const m=P(...add(T,mul(u,-2.7))),e=P(...E),tp=P(...T);set(stickHit,'d',`M${pt(e)
 function mallowShade(red,dk){const v=red?[0,.3,.6,.9][toastOf(toast)]:toast;let i=1;while(i<SHADE.length-1&&SHADE[i][0]<v)i++;const[a,ca]=SHADE[i-1],[b,cb]=SHADE[i],k=clamp((v-a)/(b-a)),c=ca.map((x,j)=>x+(cb[j]-x)*k).map(x=>x*(dk?.84:1));
 const hex=c=>'#'+c.map(x=>round(clamp(x,0,255)).toString(16).padStart(2,'0')).join('');return[hex(c),hex(c.map(x=>x+(255-x)*.14))];}
 const op=(n,v)=>{const s=f2(v);if(n._o!==s){n._o=s;n.style.opacity=s;}};
-function paint(now,dt,red,dk){const t=red?1.3:now/1000,name=fireName,q=red?STILL[name]:min(1.25,level*(1+.06*sin(t*7.7)+.04*sin(t*13.3))),Hf=4+32*q,key=red?name+dk:'';
+function paint(now,dt,red,dk){const t=red?1.3:now/1000,name=fireName,q=red?STILL[name]:min(1.25,level*(1+.06*sin(t*7.7)+.04*sin(t*13.3))),Hf=5+35*q,key=red?name+dk:'';
 if(!red||key!==drawnFlames){drawnFlames=key;const wide=.55+.45*min(1,q/.7);for(const g of TONGUES){const lay=g.k==='o'?1:g.k==='m'?.78:.6,ph=g.ph,h=Hf*g.rel*lay*(1+.13*sin(t*6.3+ph*2)+.08*sin(t*11.7+ph*3.3)+.05*sin(t*19.1+ph));
 set(g.n,'d',tongue(FB[0]+g.dx*wide,FB[1],g.hw*wide,h,1.4+2.2*sin(t*1.9+ph),1.2+.8*sin(t*2.3+ph*1.7),ph+t*2.4));op(g.n,g.k==='o'?.85+.15*min(1,q/.3):g.k==='m'?clamp((q-.08)/.2):clamp((q-.2)/.25));}
 const hr=9+Hf*.95;set(halo,'cx',f2(FB[0]));set(halo,'cy',f2(FB[1]-Hf*.42));set(halo,'r',f2(hr));op(halo,min(1,q)*(dk?.95:.55));
