@@ -41,7 +41,7 @@ service tower               −43     −7      9     14     14    154   lattice
 swing arms (2)          hinge −29 0, at z 65 and 107: 19 long, 4.4 wide, 3.6 deep; a clamp r 8.3–10.5 round the rocket
 mobile platform             −20    −20     14     40     40      7   four bogies on the rails, exhaust hole r 10, four clamps
 rocket            axis 0 0, base at 24, r 8: first stage to 90, interstage to 96, second stage to 118, fairing to the tip at 152
- fins (4)           at 45° + 90°·k: root 26–49, tip 17.5 out at 22.5–33.5; three engine bells under the base, to 18.5
+ fins (4)           at 45° + 90°·k: root 25–48, tip 17 out at 25.5–34; three engine bells under the base, to 18.5
 water tower         axis 86 −30: four legs to 39, a sphere r 10 at 48, a deluge main to the pad
 countdown board             −58     48     22     38      3     21   on two posts: T, sign and two flip digits, ten lamps
 Painter: floor, crawlerway, pad and trench, water tower, tower, back smoke, arms, platform, flame and rocket, front clamps
