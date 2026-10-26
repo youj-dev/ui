@@ -23,7 +23,8 @@ const fontCss = () => {
 @font-face{font-family:'Geist Mono';src:url('${mono}') format('woff2');font-weight:100 800}`
 }
 
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+// For text and for double- or single-quoted attribute values alike.
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 
 export class Preview {
   private ids = 0
@@ -162,7 +163,7 @@ export class Preview {
       const s = node.scale
       inner = `<div style="position:absolute;left:0;top:0;width:${node.width / s}px;height:${node.height / s}px;transform:scale(${s});transform-origin:0 0">${inner}</div>`
     }
-    return `<div data-name="${esc(node.name)}" style="${css}">${inner}</div>`
+    return `<div data-name="${esc(node.name)}" style="${esc(css)}">${inner}</div>`
   }
 
   private text(node: FakeNode, parent: FakeNode | null, modes: Modes): string {
@@ -182,7 +183,7 @@ export class Preview {
     if (node.textAutoResize === 'WIDTH_AND_HEIGHT') css += 'white-space:pre;'
     if (node.textTruncation === 'ENDING' && node.maxLines === 1) css += 'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'
     if (node.opacity !== 1) css += `opacity:${node.opacity};`
-    return `<div data-name="${esc(node.name)}" style="${css}">${esc(node.characters)}</div>`
+    return `<div data-name="${esc(node.name)}" style="${esc(css)}">${esc(node.characters)}</div>`
   }
 
   /** Whether a subtree is only vectors and groups (an icon, a plot): drawn as one SVG. */
@@ -201,7 +202,7 @@ export class Preview {
     if (!own) css += `width:${w}px;height:${h}px;`
     const body = own ? node.rawChildren().map((k) => this.draw(k, modes)).join('') : this.draw(node, modes)
     const content = s !== 1 ? `<g transform="scale(${s})">${body}</g>` : body
-    return `<svg data-name="${esc(node.name)}" style="${css}overflow:visible" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${content}</svg>`
+    return `<svg data-name="${esc(node.name)}" style="${esc(css)}overflow:visible" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${content}</svg>`
   }
 
   private draw(node: FakeNode, modes: Modes): string {

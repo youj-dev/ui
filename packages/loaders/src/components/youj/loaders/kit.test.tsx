@@ -9,6 +9,13 @@ import { LoaderJot } from './glyph/jot'
 import { LoaderPrompt } from './interface/prompt'
 import { LoaderGantry } from './interface/gantry'
 
+/** The markup without its first <style> element (the kit's stylesheet). Test-only, not a sanitizer: it just keeps the stylesheet's class names out of what the assertions read. */
+function withoutFirstStyle(html: string) {
+  const start = html.indexOf('<style')
+  const end = html.indexOf('</style>', start)
+  return start < 0 || end < 0 ? html : html.slice(0, start) + html.slice(end + '</style>'.length)
+}
+
 /* The live frame, drawn into a stand-in 2D context (jsdom has no canvas):
  * every color it's painted with is recorded, so the first frame can be held
  * to the page's colors. */
@@ -346,7 +353,7 @@ describe('the shown label', () => {
     )
     const html = renderToString(tree)
     // The markup, without the kit's stylesheet (which names every class).
-    const markup = html.replace(/<style[\s\S]*?<\/style>/, '')
+    const markup = withoutFirstStyle(html)
     expect(markup).toContain('<span aria-hidden="true" class="yj-anim__label"><span class="yj-anim__text">Loading</span></span>')
     expect(markup).not.toContain('yj-anim__caret')
     expect(markup).not.toContain('data-effect')
@@ -527,7 +534,7 @@ describe('several labels', () => {
       </YoujProvider>
     )
     const html = renderToString(tree)
-    const markup = html.replace(/<style[\s\S]*?<\/style>/, '')
+    const markup = withoutFirstStyle(html)
     // The status names the first; the drawn label holds all three, the first showing (the kit's CSS hides the rest, in place).
     expect(markup).toMatch(/class="yj-anim__sr">Loading<\/span>/)
     expect(markup).toContain(

@@ -59,7 +59,7 @@ describe('the family', () => {
     await renderFamily()
     expect(screen.getByRole('heading', { level: 2, name: 'Multiple parts. One system.' })).toBeInTheDocument()
     for (const p of PILLARS) {
-      const element = screen.getByRole('link', { name: new RegExp(p.label.replace('&', '\\&')) }).querySelector(`[data-element=${p.id}]`)
+      const element = screen.getByRole('link', { name: (name) => name.includes(p.label) }).querySelector(`[data-element=${p.id}]`)
       expect(element, p.id).not.toBeNull()
       expect(element!.closest('[aria-hidden]')).not.toBeNull()
     }
