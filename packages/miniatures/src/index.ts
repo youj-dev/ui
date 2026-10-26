@@ -34,6 +34,7 @@ import { mixingDesk } from './meta/mixing-desk'
 import { nas } from './meta/nas'
 import { networkSwitch } from './meta/network-switch'
 import { nixieClock } from './meta/nixie-clock'
+import { officePrinter } from './meta/office-printer'
 import { orrery } from './meta/orrery'
 import { oscilloscope } from './meta/oscilloscope'
 import { packagingLine } from './meta/packaging-line'
@@ -67,10 +68,10 @@ import { weatherStation } from './meta/weather-station'
 import { workstation } from './meta/workstation'
 /* MINIATURES */
 
-export { threeDPrinter, aquarium, cellTower, coffeeGrinder, coolingUnit, crtTelevision, cuckooClock, deskFan, droneDock, drumMachine, espresso, filmProjector, firewallAppliance, greenhouse, groundStation, guitarAmp, homeBattery, homeRouter, hourglass, instantCamera, letterpress, lighthouse, mainframe, metronome, microscope, mixingDesk, nas, networkSwitch, nixieClock, orrery, oscilloscope, packagingLine, parcelLocker, pinball, pipeOrgan, quantumFridge, receiptPrinter, repairBench, retroFridge, robotArm, rotaryPhone, sbcCluster, serverCabinet, sewingMachine, smartTrainer, stageSynth, standMixer, tapeLibrary, telescope, thermostatBoiler, toaster, tubeRadio, turntable, typewriter, upsCabinet, vintageCamera, vinylJukebox, washingMachine, weatherStation, workstation }
+export { threeDPrinter, aquarium, cellTower, coffeeGrinder, coolingUnit, crtTelevision, cuckooClock, deskFan, droneDock, drumMachine, espresso, filmProjector, firewallAppliance, greenhouse, groundStation, guitarAmp, homeBattery, homeRouter, hourglass, instantCamera, letterpress, lighthouse, mainframe, metronome, microscope, mixingDesk, nas, networkSwitch, nixieClock, officePrinter, orrery, oscilloscope, packagingLine, parcelLocker, pinball, pipeOrgan, quantumFridge, receiptPrinter, repairBench, retroFridge, robotArm, rotaryPhone, sbcCluster, serverCabinet, sewingMachine, smartTrainer, stageSynth, standMixer, tapeLibrary, telescope, thermostatBoiler, toaster, tubeRadio, turntable, typewriter, upsCabinet, vintageCamera, vinylJukebox, washingMachine, weatherStation, workstation }
 
 /** Every miniature's metadata, in id order. */
-export const miniatures = [threeDPrinter, aquarium, cellTower, coffeeGrinder, coolingUnit, crtTelevision, cuckooClock, deskFan, droneDock, drumMachine, espresso, filmProjector, firewallAppliance, greenhouse, groundStation, guitarAmp, homeBattery, homeRouter, hourglass, instantCamera, letterpress, lighthouse, mainframe, metronome, microscope, mixingDesk, nas, networkSwitch, nixieClock, orrery, oscilloscope, packagingLine, parcelLocker, pinball, pipeOrgan, quantumFridge, receiptPrinter, repairBench, retroFridge, robotArm, rotaryPhone, sbcCluster, serverCabinet, sewingMachine, smartTrainer, stageSynth, standMixer, tapeLibrary, telescope, thermostatBoiler, toaster, tubeRadio, turntable, typewriter, upsCabinet, vintageCamera, vinylJukebox, washingMachine, weatherStation, workstation] as const
+export const miniatures = [threeDPrinter, aquarium, cellTower, coffeeGrinder, coolingUnit, crtTelevision, cuckooClock, deskFan, droneDock, drumMachine, espresso, filmProjector, firewallAppliance, greenhouse, groundStation, guitarAmp, homeBattery, homeRouter, hourglass, instantCamera, letterpress, lighthouse, mainframe, metronome, microscope, mixingDesk, nas, networkSwitch, nixieClock, officePrinter, orrery, oscilloscope, packagingLine, parcelLocker, pinball, pipeOrgan, quantumFridge, receiptPrinter, repairBench, retroFridge, robotArm, rotaryPhone, sbcCluster, serverCabinet, sewingMachine, smartTrainer, stageSynth, standMixer, tapeLibrary, telescope, thermostatBoiler, toaster, tubeRadio, turntable, typewriter, upsCabinet, vintageCamera, vinylJukebox, washingMachine, weatherStation, workstation] as const
 
 /** The import path segment of each miniature: `@youj/miniatures/<id>`. */
 export type MiniatureId = (typeof miniatures)[number]['id']

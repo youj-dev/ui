@@ -130,7 +130,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [60 items]
+const miniatures: readonly [61 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -139,6 +139,8 @@ const nas: { description; id; initial; keys; label; maker; model; name; progress
 const networkSwitch: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const nixieClock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const officePrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const orrery: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -702,6 +704,23 @@ interface MiniatureNixieClockProps extends MiniatureProps {
 }
 
 const nixieClock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/office-printer
+
+```ts
+function MiniatureOfficePrinter(props: MiniatureOfficePrinterProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureOfficePrinterHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureOfficePrinterHandle = MiniatureProgressHandle<MiniatureOfficePrinterKey>;
+
+type MiniatureOfficePrinterKey = MiniatureKeyOf<typeof officePrinter>;
+
+interface MiniatureOfficePrinterProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureOfficePrinterHandle>;
+}
+
+const officePrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/orrery

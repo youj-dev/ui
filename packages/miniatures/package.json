@@ -61,6 +61,7 @@
     "./nas": "./src/nas.tsx",
     "./network-switch": "./src/network-switch.tsx",
     "./nixie-clock": "./src/nixie-clock.tsx",
+    "./office-printer": "./src/office-printer.tsx",
     "./orrery": "./src/orrery.tsx",
     "./oscilloscope": "./src/oscilloscope.tsx",
     "./packaging-line": "./src/packaging-line.tsx",
@@ -219,6 +220,10 @@
       "./nixie-clock": {
         "types": "./dist/nixie-clock.d.ts",
         "default": "./dist/nixie-clock.js"
+      },
+      "./office-printer": {
+        "types": "./dist/office-printer.d.ts",
+        "default": "./dist/office-printer.js"
       },
       "./orrery": {
         "types": "./dist/orrery.d.ts",
