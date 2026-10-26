@@ -191,6 +191,10 @@
     "light": "/thumbs/miniatures/sbc-cluster.webp?v=abd6c4d6d9",
     "dark": "/thumbs/miniatures/sbc-cluster.dark.webp?v=1ed592976a"
   },
+  "security-camera": {
+    "light": "/thumbs/miniatures/security-camera.webp?v=318b2667b1",
+    "dark": "/thumbs/miniatures/security-camera.dark.webp?v=599c0a14fa"
+  },
   "server-cabinet": {
     "light": "/thumbs/miniatures/server-cabinet.webp?v=f2fb78a26a",
     "dark": "/thumbs/miniatures/server-cabinet.dark.webp?v=b1e35c4c7a"
