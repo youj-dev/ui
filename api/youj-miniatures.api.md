@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -175,6 +175,8 @@ const repairBench: { description; id; initial; keys; label; maker; model; name; 
 const retroFridge: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const robotArm: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const robotAssistant: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const rocketLaunchPad: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -990,6 +992,23 @@ interface MiniatureRobotArmProps extends MiniatureProps {
 }
 
 const robotArm: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/robot-assistant
+
+```ts
+function MiniatureRobotAssistant(props: MiniatureRobotAssistantProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureRobotAssistantHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureRobotAssistantHandle = MiniatureProgressHandle<MiniatureRobotAssistantKey>;
+
+type MiniatureRobotAssistantKey = MiniatureKeyOf<typeof robotAssistant>;
+
+interface MiniatureRobotAssistantProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureRobotAssistantHandle>;
+}
+
+const robotAssistant: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/rocket-launch-pad
