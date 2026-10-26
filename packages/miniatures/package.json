@@ -99,6 +99,7 @@
     "./vinyl-jukebox": "./src/vinyl-jukebox.tsx",
     "./washing-machine": "./src/washing-machine.tsx",
     "./weather-station": "./src/weather-station.tsx",
+    "./wind-turbine": "./src/wind-turbine.tsx",
     "./workstation": "./src/workstation.tsx"
   },
   "files": [
@@ -379,6 +380,10 @@
       "./weather-station": {
         "types": "./dist/weather-station.d.ts",
         "default": "./dist/weather-station.js"
+      },
+      "./wind-turbine": {
+        "types": "./dist/wind-turbine.d.ts",
+        "default": "./dist/wind-turbine.js"
       },
       "./workstation": {
         "types": "./dist/workstation.d.ts",

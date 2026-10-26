@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -223,6 +223,8 @@ const vinylJukebox: { description; id; initial; keys; label; maker; model; name;
 const washingMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const weatherStation: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const windTurbine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const workstation: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
@@ -1365,6 +1367,23 @@ interface MiniatureWeatherStationProps extends MiniatureProps {
 }
 
 const weatherStation: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/wind-turbine
+
+```ts
+function MiniatureWindTurbine(props: MiniatureWindTurbineProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureWindTurbineHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureWindTurbineHandle = MiniatureProgressHandle<MiniatureWindTurbineKey>;
+
+type MiniatureWindTurbineKey = MiniatureKeyOf<typeof windTurbine>;
+
+interface MiniatureWindTurbineProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureWindTurbineHandle>;
+}
+
+const windTurbine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/workstation
