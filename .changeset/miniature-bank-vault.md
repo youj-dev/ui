@@ -2,4 +2,4 @@
 '@youj/miniatures': patch
 ---
 
-New miniature: the bank vault (`MiniatureBankVault`, `@youj/miniatures/bank-vault`), for security, secrets and password screens. Dial the combination and each number clicks in with a lamp over the door; then the bolts slide back, the handle turns and the round door swings open on its hinge onto gold, cash or a single key. Close it and it relocks. A wrong number gives a gentle shake, and three in a row ring the alarm. Turn the dial with the arrow keys or by dragging it, or type a number.
+New miniature: the bank vault (`MiniatureBankVault`, `@youj/miniatures/bank-vault`), for security, secrets and password screens. A walk-in vault's round door, set in its wall, with a big spoked wheel. One action opens it: press Space or Enter, or click the wheel. The wheel turns once and the bolts draw back, then the thick door is drawn out of its frame and swings open on its crane hinge onto gold, cash or a single key. Press again to swing it shut and throw the bolts. Drag the wheel to turn it by hand.
