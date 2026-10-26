@@ -43,6 +43,7 @@
     "./crt-television": "./src/crt-television.tsx",
     "./cuckoo-clock": "./src/cuckoo-clock.tsx",
     "./desk-fan": "./src/desk-fan.tsx",
+    "./drawbridge": "./src/drawbridge.tsx",
     "./drone-dock": "./src/drone-dock.tsx",
     "./drum-machine": "./src/drum-machine.tsx",
     "./espresso": "./src/espresso.tsx",
@@ -160,6 +161,10 @@
       "./desk-fan": {
         "types": "./dist/desk-fan.d.ts",
         "default": "./dist/desk-fan.js"
+      },
+      "./drawbridge": {
+        "types": "./dist/drawbridge.d.ts",
+        "default": "./dist/drawbridge.js"
       },
       "./drone-dock": {
         "types": "./dist/drone-dock.d.ts",

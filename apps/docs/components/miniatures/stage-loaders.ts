@@ -16,6 +16,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'crt-television': () => import('@youj/miniatures/crt-television'),
   'cuckoo-clock': () => import('@youj/miniatures/cuckoo-clock'),
   'desk-fan': () => import('@youj/miniatures/desk-fan'),
+  drawbridge: () => import('@youj/miniatures/drawbridge'),
   'drone-dock': () => import('@youj/miniatures/drone-dock'),
   'drum-machine': () => import('@youj/miniatures/drum-machine'),
   espresso: () => import('@youj/miniatures/espresso'),

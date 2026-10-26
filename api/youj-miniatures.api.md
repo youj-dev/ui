@@ -102,6 +102,8 @@ const cuckooClock: { description; id; initial; keys; label; maker; model; name; 
 
 const deskFan: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const drawbridge: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const droneDock: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const drumMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -142,7 +144,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [73 items]
+const miniatures: readonly [74 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -422,6 +424,23 @@ interface MiniatureDeskFanProps extends MiniatureProps {
 }
 
 const deskFan: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/drawbridge
+
+```ts
+function MiniatureDrawbridge(props: MiniatureDrawbridgeProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureDrawbridgeHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureDrawbridgeHandle = MiniatureProgressHandle<MiniatureDrawbridgeKey>;
+
+type MiniatureDrawbridgeKey = MiniatureKeyOf<typeof drawbridge>;
+
+interface MiniatureDrawbridgeProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureDrawbridgeHandle>;
+}
+
+const drawbridge: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/drone-dock

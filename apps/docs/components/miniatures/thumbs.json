@@ -43,6 +43,10 @@
     "light": "/thumbs/miniatures/desk-fan.webp?v=43c8dee123",
     "dark": "/thumbs/miniatures/desk-fan.dark.webp?v=5fa9f12c88"
   },
+  "drawbridge": {
+    "light": "/thumbs/miniatures/drawbridge.webp?v=785da92e1f",
+    "dark": "/thumbs/miniatures/drawbridge.dark.webp?v=a82865f373"
+  },
   "drone-dock": {
     "light": "/thumbs/miniatures/drone-dock.webp?v=bc01fd1124",
     "dark": "/thumbs/miniatures/drone-dock.dark.webp?v=18d164bb9e"
