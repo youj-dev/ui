@@ -94,6 +94,7 @@
     "./telescope": "./src/telescope.tsx",
     "./thermostat-boiler": "./src/thermostat-boiler.tsx",
     "./toaster": "./src/toaster.tsx",
+    "./traffic-light": "./src/traffic-light.tsx",
     "./tube-radio": "./src/tube-radio.tsx",
     "./turntable": "./src/turntable.tsx",
     "./typewriter": "./src/typewriter.tsx",
@@ -362,6 +363,10 @@
       "./toaster": {
         "types": "./dist/toaster.d.ts",
         "default": "./dist/toaster.js"
+      },
+      "./traffic-light": {
+        "types": "./dist/traffic-light.d.ts",
+        "default": "./dist/traffic-light.js"
       },
       "./tube-radio": {
         "types": "./dist/tube-radio.d.ts",
