@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -197,6 +197,8 @@ const stage: { dark; light }
 const stageSynth: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const standMixer: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const sushiConveyor: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const tapeLibrary: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1160,6 +1162,23 @@ interface MiniatureStandMixerProps extends MiniatureProps {
 }
 
 const standMixer: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/sushi-conveyor
+
+```ts
+function MiniatureSushiConveyor(props: MiniatureSushiConveyorProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureSushiConveyorHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureSushiConveyorHandle = MiniatureProgressHandle<MiniatureSushiConveyorKey>;
+
+type MiniatureSushiConveyorKey = MiniatureKeyOf<typeof sushiConveyor>;
+
+interface MiniatureSushiConveyorProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureSushiConveyorHandle>;
+}
+
+const sushiConveyor: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/tape-library

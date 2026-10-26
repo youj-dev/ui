@@ -87,6 +87,7 @@
     "./split-flap-board": "./src/split-flap-board.tsx",
     "./stage-synth": "./src/stage-synth.tsx",
     "./stand-mixer": "./src/stand-mixer.tsx",
+    "./sushi-conveyor": "./src/sushi-conveyor.tsx",
     "./tape-library": "./src/tape-library.tsx",
     "./telescope": "./src/telescope.tsx",
     "./thermostat-boiler": "./src/thermostat-boiler.tsx",
@@ -331,6 +332,10 @@
       "./stand-mixer": {
         "types": "./dist/stand-mixer.d.ts",
         "default": "./dist/stand-mixer.js"
+      },
+      "./sushi-conveyor": {
+        "types": "./dist/sushi-conveyor.d.ts",
+        "default": "./dist/sushi-conveyor.js"
       },
       "./tape-library": {
         "types": "./dist/tape-library.d.ts",

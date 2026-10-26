@@ -60,6 +60,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'split-flap-board': () => import('@youj/miniatures/split-flap-board'),
   'stage-synth': () => import('@youj/miniatures/stage-synth'),
   'stand-mixer': () => import('@youj/miniatures/stand-mixer'),
+  'sushi-conveyor': () => import('@youj/miniatures/sushi-conveyor'),
   'tape-library': () => import('@youj/miniatures/tape-library'),
   telescope: () => import('@youj/miniatures/telescope'),
   'thermostat-boiler': () => import('@youj/miniatures/thermostat-boiler'),
