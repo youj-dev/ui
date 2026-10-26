@@ -191,12 +191,17 @@ function worst(mode: Mode, theme: ThemeInput, token: PaletteToken): number {
   return Math.min(...(['canvas', 'surface', 'raised'] as const).map((s) => contrast(oklchToLinear(p[token]), oklchToLinear(p[s]))))
 }
 
+const ESCAPED: Record<string, string> = { '\\': '\\\\', "'": "\\'", '\n': '\\n', '\r': '\\r', '\u2028': '\\u2028', '\u2029': '\\u2029' }
+
+/** A single-quoted string literal that reads back as exactly `value`: backslashes, quotes and line breaks escaped. */
+const quote = (value: string) => `'${value.replace(/[\\'\n\r\u2028\u2029]/g, (c) => ESCAPED[c]!)}'`
+
 function literal(value: unknown, indent = '  '): string {
-  if (typeof value === 'string') return `'${value.replace(/'/g, "\\'")}'`
+  if (typeof value === 'string') return quote(value)
   if (typeof value === 'number') return String(value)
   if (value && typeof value === 'object') {
     const entries = Object.entries(value).filter(([, v]) => v !== undefined)
-    return `{ ${entries.map(([k, v]) => `${/^[a-z]\w*$/i.test(k) ? k : `'${k}'`}: ${literal(v, indent)}`).join(', ')} }`
+    return `{ ${entries.map(([k, v]) => `${/^[a-z]\w*$/i.test(k) ? k : quote(k)}: ${literal(v, indent)}`).join(', ')} }`
   }
   return String(value)
 }

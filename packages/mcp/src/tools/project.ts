@@ -1,4 +1,4 @@
-import { readFileSync, realpathSync, readdirSync, statSync } from 'node:fs'
+import { closeSync, constants, fstatSync, openSync, readFileSync, realpathSync, readdirSync, statSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -25,7 +25,17 @@ export class LocalProject implements ProjectFiles {
   read(file: string): string | undefined {
     const path = this.path(file)
     if (!path) return undefined
-    try { return statSync(path).isFile() && statSync(path).size <= 1_000_000 ? readFileSync(path, 'utf8') : undefined } catch { return undefined }
+    // Open once and read that handle: a link swapped in after the check above can't redirect the read. The path is then resolved again, and must still lead to this file.
+    let handle: number | undefined
+    try {
+      handle = openSync(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0))
+      const opened = fstatSync(handle)
+      if (!opened.isFile() || opened.size > 1_000_000) return undefined
+      const again = this.path(file)
+      const now = again && statSync(again)
+      if (!now || now.dev !== opened.dev || now.ino !== opened.ino) return undefined
+      return readFileSync(handle, 'utf8')
+    } catch { return undefined } finally { if (handle !== undefined) closeSync(handle) }
   }
 
   json(file: string): Record<string, unknown> | undefined {
