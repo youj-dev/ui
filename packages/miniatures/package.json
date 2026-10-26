@@ -50,6 +50,7 @@
     "./greenhouse": "./src/greenhouse.tsx",
     "./ground-station": "./src/ground-station.tsx",
     "./guitar-amp": "./src/guitar-amp.tsx",
+    "./handheld-console": "./src/handheld-console.tsx",
     "./home-battery": "./src/home-battery.tsx",
     "./home-router": "./src/home-router.tsx",
     "./hourglass": "./src/hourglass.tsx",
@@ -183,6 +184,10 @@
       "./guitar-amp": {
         "types": "./dist/guitar-amp.d.ts",
         "default": "./dist/guitar-amp.js"
+      },
+      "./handheld-console": {
+        "types": "./dist/handheld-console.d.ts",
+        "default": "./dist/handheld-console.js"
       },
       "./home-battery": {
         "types": "./dist/home-battery.d.ts",

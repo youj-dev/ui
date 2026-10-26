@@ -71,6 +71,10 @@
     "light": "/thumbs/miniatures/guitar-amp.webp?v=c3de6f21b9",
     "dark": "/thumbs/miniatures/guitar-amp.dark.webp?v=4f81430530"
   },
+  "handheld-console": {
+    "light": "/thumbs/miniatures/handheld-console.webp?v=692ccb2ecf",
+    "dark": "/thumbs/miniatures/handheld-console.dark.webp?v=5b864d514d"
+  },
   "home-battery": {
     "light": "/thumbs/miniatures/home-battery.webp?v=c0143c90f8",
     "dark": "/thumbs/miniatures/home-battery.dark.webp?v=f733e7609b"

@@ -116,6 +116,8 @@ const groundStation: { description; id; initial; keys; label; maker; model; name
 
 const guitarAmp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const handheldConsole: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const homeBattery: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const homeRouter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -531,6 +533,23 @@ interface MiniatureGuitarAmpProps extends MiniatureProps {
 }
 
 const guitarAmp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/handheld-console
+
+```ts
+function MiniatureHandheldConsole(props: MiniatureHandheldConsoleProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureHandheldConsoleHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureHandheldConsoleHandle = MiniatureHandle<MiniatureHandheldConsoleKey>;
+
+type MiniatureHandheldConsoleKey = MiniatureKeyOf<typeof handheldConsole>;
+
+interface MiniatureHandheldConsoleProps extends MiniatureProps {
+    ref?: Ref<MiniatureHandheldConsoleHandle>;
+}
+
+const handheldConsole: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/home-battery
