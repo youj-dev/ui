@@ -97,6 +97,16 @@ describe('Mars rover', () => {
     expect(flank(inside)).not.toBe(level)
   })
 
+  it('reverses a meter in full motion, easing in and out', async () => {
+    const { snap, press, run } = await rover([], 100, {})
+    press('ArrowDown')
+    await run(400)
+    expect(snap().state).toMatch(/^DRIVING · REVERSE/)
+    await run(1600)
+    expect(snap().readout).toBe('SOL 214 · 1 M · 0 SAMPLES · 0 FRAMES')
+    expect(snap().state).toBe('READY · ARM STOWED')
+  })
+
   it('steers its corner wheels in for a point turn, then straightens them', async () => {
     const { snap, inside, press, run } = await rover([], 100, {})
     const straight = axles(inside)

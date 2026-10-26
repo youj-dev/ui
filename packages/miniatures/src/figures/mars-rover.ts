@@ -8,7 +8,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 @media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--base-top:#bebeba;--base-side:#737372;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--wheel:#b2b2af;--wheel-top:#dcdcd9;--wheel-side:#7b7b7a;--tread:#898986;--hubdk:#464642;--cell:#232b3b;--cell-line:#3d4862;--foil:#b49251;--foil-top:#dcc083;--foil-side:#7e612e;--soil:#463d37;--soil-in:#51463e;--track:#332c27;--rock:#a78b78;--rock-top:#ceb5a2;--rock-side:#765e4c;--dust:#d9c8b8;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.base{fill:var(--base)}.top.base{fill:var(--base-top)}.side.base{fill:var(--base-side)}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:3.2px ui-monospace,monospace;letter-spacing:.45px;stroke:none}.label{fill:var(--ink);font:4px ui-monospace,monospace;letter-spacing:.6px;stroke:none}.brand{font-size:6px;letter-spacing:1.7px;font-weight:600}.brand.tiny{font-size:3px;letter-spacing:.9px}.micro{font-size:2.6px;letter-spacing:.2px}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.wheel{fill:var(--wheel)}.top.wheel{fill:var(--wheel-top)}.side.wheel{fill:var(--wheel-side)}.tread{fill:var(--tread)}.hubdk{fill:var(--hubdk)}.foil{fill:var(--foil)}.top.foil{fill:var(--foil-top)}.side.foil{fill:var(--foil-side)}.rock{fill:var(--rock)}.top.rock{fill:var(--rock-top)}.side.rock{fill:var(--rock-side)}.drill{fill:var(--hubdk)}
-.soil{fill:url(#soilG);stroke:none}.trk{fill:none;stroke:var(--track);stroke-width:6.2;stroke-linecap:round;stroke-linejoin:round;opacity:.42}.grouse{fill:none;stroke:var(--track);stroke-width:.9;stroke-linecap:round;opacity:.9}.pebble{fill:var(--track);stroke:none;opacity:.75}
+.soil{fill:url(#soilG);stroke:none}.trk{fill:none;stroke:var(--track);stroke-width:6.2;stroke-linecap:round;stroke-linejoin:round;opacity:.42}.treadmark{fill:none;stroke:var(--track);stroke-width:.9;stroke-linecap:round;opacity:.9}.pebble{fill:var(--track);stroke:none;opacity:.75}
 .cells{fill:url(#cells);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.spine{fill:none;stroke:var(--metal);stroke-width:.9}.spoke{fill:none;stroke:var(--wheel);stroke-width:1;stroke-linecap:round}.grouser{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}.grouser.band{opacity:.5;stroke-width:.6}
 .lensg{fill:url(#lensG);stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke}.coat{fill:none;stroke:var(--coat);stroke-width:.6;stroke-linecap:round;opacity:.8}.spec{fill:#fff;opacity:.75;stroke:none}.crinkle{fill:none;stroke:var(--foil-side);stroke-width:.4;opacity:.8}.hole{fill:var(--lens);stroke:none;opacity:0}.hole.on{opacity:.85}
 .lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.b{fill:var(--accent)}.lamp.g,.lamp.a,.lamp.b{filter:url(#glow)}
@@ -81,7 +81,7 @@ const RR=55;
 {const pts=[...Array(40)].map((_,i)=>{const a=i/40*2*PI,k=1+.045*sin(3*a+.7)+.03*sin(7*a+2.1)+.018*sin(12*a+.4);return P(RR*k*cos(a),RR*k*sin(a),0);}),n=pts.length;let d=`M${f2(pts[0][0])},${f2(pts[0][1])}`;
 for(let i=0;i<n;i++){const a=pts[(i-1+n)%n],b=pts[i],c=pts[(i+1)%n],e=pts[(i+2)%n];d+=`C${f2(b[0]+(c[0]-a[0])/6)},${f2(b[1]+(c[1]-a[1])/6)} ${f2(c[0]-(e[0]-b[0])/6)},${f2(c[1]-(e[1]-b[1])/6)} ${f2(c[0])},${f2(c[1])}`;}el('path',{d:d+'Z',class:'soil'});}
 el('ellipse',{cx:0,cy:2,rx:48,ry:24,class:'shadow stage-floor'});el('ellipse',{cx:0,cy:2,rx:48,ry:24,class:'stage-contact'});
-const trk=[el('path',{class:'trk'}),el('path',{class:'trk'})],marks=el('path',{class:'grouse'}),peb=el('path',{class:'pebble'});
+const trk=[el('path',{class:'trk'}),el('path',{class:'trk'})],marks=el('path',{class:'treadmark'}),peb=el('path',{class:'pebble'});
 // The scene: the rover's parts in a fixed order, the rocks slotted in among them by depth.
 const scene=el('g',{}),FW=[0,1,2].map(()=>el('g',{},scene)),FL=el('g',{},scene),BODY=el('g',{},scene),NL=el('g',{},scene),NW=[0,1,2].map(()=>el('g',{},scene)),ARM=el('g',{},scene),fx=el('g',{});
 const WX=[-30,0,30],WR=8.5,WW=7,TRACK=28;
@@ -109,10 +109,10 @@ const deck=bbox(-30,-21,38,54,42,2.5,1.1,'metal');BODY.appendChild(deck.g);
 btube([14,-12,40.5],[14,-12,43.4],3.6,'base');btube([14,-12,43.4],[14,-12,73.6],2.2,'metal');btube([14,-12,73.6],[14,-12,75.6],3.1,'base');
 const HEAD=el('g',{}),headBox=fbox(HEAD,'',[9,16.6,8],1.4),headFront=headBox.F[0].f;
 for(const u of[4.1,12.5]){circle(headFront,u,4.1,2.9,'face recess');circle(headFront,u,4.1,2.1,'lensg');el('path',{d:`M${f2(u-1.5)},${f2(4.7)}A1.6,1.6 0 0 0 ${f2(u-.2)},${f2(5.8)}`,class:'coat'},headFront);circle(headFront,u-.7,3.4,.45,'spec');}
-circle(headFront,8.3,4.8,1.1,'lensg');const headLamp=lamp(headFront,8.3,1.9,.6);
+circle(headFront,8.3,4.8,1.1,'lensg');const headLamp=lamp(headFront,8.3,1.9,.6),visor=fbox(HEAD,'metal',[10.6,17.4,1.1],.7);
 btube([12,11,40.5],[12,11,45.6],1.1,'metal');
 {const nd=unit([-.35,.45,.82]),[U,V]=axes(nd);circle(bface(sub([12,11,47.4],mul(nd,.9)),U,V),0,0,6.2,'face side metal');const dg=bface([12,11,47.4],U,V);circle(dg,0,0,6.2,'face top metal');circle(dg,0,0,4.9,'face metal');circle(dg,0,0,1.2,'face base');}
-bwire([-28.6,19.4,40.5],[-28.6,19.4,64],'detail');const whipTip=circle(BODY,0,0,.9,'face base');
+const WHIP=[-28.6,19.4,64];bwire([-28.6,19.4,40.5],WHIP,'detail');const whipTip=circle(BODY,0,0,.9,'face base');
 // The arm: shoulder turret, pitch joint, upper arm, elbow, forearm, wrist and the turret with its coring drill.
 root=ARM;
 const AP={j0:tube(ARM,'base'),j1:tube(ARM,'base'),up:tube(ARM,''),j2:tube(ARM,'base'),fo:tube(ARM,''),j3:tube(ARM,'base'),tu:el('g',{},ARM),dr:tube(ARM,'drill')};
@@ -129,7 +129,7 @@ const g=el('g',{},scene),n=7,a0=rnd()*PI,base=[],tp=[];for(let i=0;i<n;i++){cons
 const faces=[];for(let i=0;i<n;i++){const b0=base[i],b1=base[(i+1)%n],t1=tp[(i+1)%n],t0=tp[i],nn=unit(cross(sub(b1,b0),sub(t0,b0)));if(dot(nn,VW)>0)faces.push({d:pth([b0,b1,t1,t0],true),z:dot(add(b0,b1),VW),c:shade(nn)});}
 faces.sort((p,q)=>p.z-q.z).forEach(f=>el('path',{d:f.d,class:'face rock '+f.c},g));el('path',{d:pth(tp,true),class:'face top rock'},g);el('path',{d:pth([tp[0],tp[3]]),class:'detail',opacity:.5},g);
 const hc=tp.reduce((s,p)=>add(s,mul(p,1/n)),[0,0,0]),hq=P(...hc),hole=el('ellipse',{cx:f2(hq[0]),cy:f2(hq[1]),rx:1.15,ry:.66,class:'hole'},g);
-return{g,gx:x,gy:y,r,h,lx:x,ly:y,hole,top:hc[2],o:-1,cored:false};});
+return{g,gx:x,gy:y,r,h,lx:x,ly:y,hole,o:-1,cored:false};});
 const PEB=[...Array(16)].map(()=>{const a=rnd()*2*PI,d=10+rnd()*41;return{gx:d*cos(a),gy:d*sin(a),r:.55+rnd()*.7};});
 frame([[-38.9,-38.9,0,77.8,77.8,0],[8,-18,0,12,12,90]],9);
 // State. The rover in the ground's frame (X, Y, heading H); a queue of drives and point turns; the arm's moves; the
@@ -197,7 +197,7 @@ set(w.w.cap,'transform',plane(e,U,V));const s=shade(n);if(s!==w.w.sh){w.w.sh=s;s
 let gd='';for(let k=0;k<16;k++){const t=sp+k*PI/8,dv=add(mul(U,cos(t)),mul(V,sin(t)));if(dot(dv,VW)<.12)continue;const o=add(hub,mul(dv,WR));gd+=`M${q2(sub(o,mul(ax,WW/2)))}L${q2(add(o,mul(ax,WW/2)))}`;}set(w.w.gr,'d',gd);}}
 function drawLinks(){for(const s of[-1,1]){const L=SUS[s],k=LK[s],R=BP([4,s*21,32]),Rb=[k.B[0],s*21,k.B[2]];tb(L.br,k.Ar,k.B,1.5);tb(L.bf,k.B,k.Am,1.5);tb(L.pin,[k.B[0],s*17.6,k.B[2]],[k.B[0],s*22.4,k.B[2]],2.2);tb(L.rr,R,Rb,1.8);tb(L.rf,R,k.Af,1.8);if(L.cap)tb(L.cap,R,add(R,[0,s*2.4,0]),2.5);
 for(const[a,b,x,z]of[['fa','fb',30,k.z2],['ra','rb',-30,k.z0]]){tb(L[b],[x,s*(x>0?21:19),z+12],[x,s*TRACK,z+12],1.2);tb(L[a],[x,s*TRACK,z+9.2],[x,s*TRACK,z+15.4],2.6);}}}
-function drawHead(){const a=hy*RAD,t=ht*RAD,f=BV([cos(a)*cos(t),sin(a)*cos(t),sin(t)]),s=BV([-sin(a),cos(a),0]),u=cross(f,s),c=BP([14,-12,79.5]);obx(headBox,c,[f,s,mul(u,-1)]);
+function drawHead(){const a=hy*RAD,t=ht*RAD,f=BV([cos(a)*cos(t),sin(a)*cos(t),sin(t)]),s=BV([-sin(a),cos(a),0]),u=cross(f,s),c=BP([14,-12,79.5]);obx(headBox,c,[f,s,mul(u,-1)]);obx(visor,add(add(c,mul(u,4.55)),mul(f,1)),[f,s,mul(u,-1)]);
 const hc=P(...c);for(const n of[hHit,hRing]){set(n,'cx',f2(hc[0]));set(n,'cy',f2(hc[1]));}const fc=P(...add(c,mul(f,5.2)));for(const n of[flash,flashCore]){set(n,'cx',f2(fc[0]));set(n,'cy',f2(fc[1]));}flashAt=fc;lastFlash=-1;}
 function drawArm(){const K=fk(q),E=BP(K.E),W=BP(K.W),Tt=BV(K.T),k=BV(K.k),s1=BP(S1),up=BV([0,0,1]),tc=add(W,mul(Tt,2.9));tb(AP.j0,add(s1,mul(up,-4.6)),add(s1,mul(up,1)),2.7);tb(AP.j1,add(s1,mul(k,-2.9)),add(s1,mul(k,2.9)),2.4);
 tb(AP.up,s1,E,1.8);tb(AP.j2,add(E,mul(k,-2.5)),add(E,mul(k,2.5)),2.2);tb(AP.fo,E,W,1.6);tb(AP.j3,add(W,mul(k,-2.1)),add(W,mul(k,2.1)),1.9);obx(turret,tc,[Tt,k,cross(Tt,k)]);tb(AP.dr,add(W,mul(Tt,5.5)),add(W,mul(Tt,L3)),.75);
@@ -220,7 +220,7 @@ const SCAN=[[36,-8],[-24,-4],[64,-14],[8,-2],[-58,-7],[30,-16]];
 function tick(now){const dt=last?min((now-last)/1000,.05):0,red=reduced.matches;last=now;T+=dt;autopilot(dt);
 // Drives and turns: wheels straight to drive, toed in around the center to turn; a speed that eases in and out.
 const cmd=queue[0];let ds=0,dh=0;const want=cmd?.k==='t'?1:0;steer=red?want:want>steer?min(want,steer+dt/STEER_T):max(want,steer-dt/STEER_T);
-if(cmd&&cmd.k==='d'&&steer===0){const vmax=min(SPD,sqrt(2*ACC*abs(cmd.v))),tv=sgn(cmd.v)*vmax;v+=clamp(tv-v,-ACC*dt,ACC*dt);ds=v*dt;if(abs(ds)>=abs(cmd.v)||sgn(ds)!==sgn(cmd.v)&&abs(v)<1){ds=abs(ds)>=abs(cmd.v)?cmd.v:0;queue.shift();v=0;}else cmd.v-=ds;}
+if(cmd&&cmd.k==='d'&&steer===0){const vmax=min(SPD,sqrt(2*ACC*abs(cmd.v))),tv=sgn(cmd.v)*vmax;v+=clamp(tv-v,-ACC*dt,ACC*dt);ds=v*dt;if(abs(ds)>=abs(cmd.v)-1e-6){ds=cmd.v;queue.shift();v=0;}else cmd.v-=ds;}
 else if(cmd&&cmd.k==='t'&&steer===1){dh=sgn(cmd.v)*min(abs(cmd.v),TURN*dt);cmd.v-=dh;if(abs(cmd.v)<1e-4)queue.shift();}else v=0;
 for(const w of WH){const p=hypot(w.x,w.y);w.st=w.i===1?0:-Math.asin(w.x/p)*sgn(w.y)*ease(steer);}
 if(ds||dh)moveGround(ds,dh);
@@ -236,10 +236,10 @@ else if(ptr)[ty,tt]=ptr;else if(T<lostT){ty=hy;tt=ht;}else if(!red&&T-userT>2){s
 if(red||pano?.red){hy=ty;ht=tt;vy=vt=0;}else{const W=pano?9:6.5,ay=W*W*(ty-hy)-2*W*vy,at=W*W*(tt-ht)-2*W*vt;vy=clamp(vy+ay*dt,-260,260);vt=clamp(vt+at*dt,-160,160);hy+=vy*dt;ht+=vt*dt;}
 // Pose and draw what changed.
 const[pi,ro,hv]=kinematics(),vib=drilling>0&&drilling<1&&!red?sin(T*90)*.25:0,key=[pi,ro,hv,hy,ht,...q,vib,X,Y,H,steer].map(f2).join();
-if(key!==drawn){drawn=key;setPose(pi,ro,hv);poseBody();for(const w of BW)if(w.b[2]===64){const tq=P(...BP(w.b));set(whipTip,'cx',f2(tq[0]));set(whipTip,'cy',f2(tq[1]));}drawLinks();drawWheels();drawHead();const{W,Tt}=drawArm();drawGround();reorder();
+if(key!==drawn){drawn=key;setPose(pi,ro,hv);poseBody();const tq=P(...BP(WHIP));set(whipTip,'cx',f2(tq[0]));set(whipTip,'cy',f2(tq[1]));drawLinks();drawWheels();drawHead();const{W,Tt}=drawArm();drawGround();reorder();
 const tip=add(W,mul(Tt,L3+vib));puffs.forEach((p,i)=>{const a=i/puffs.length*2*PI+(red?0:T*.8),k=drilling>0?(red?.55:(drilling*2.6+i*.17)%1):0,o=drilling>0?(red?.8:sin(k*PI)*.95):0,c=P(...add(tip,[cos(a)*(2.4+k*6.5),sin(a)*(2.4+k*6.5),1+k*6]));set(p,'cx',f2(c[0]));set(p,'cy',f2(c[1]));set(p,'r',f2(1.4+k*2.8));p.style.opacity=f2(o);});}
 if(flashA!==lastFlash){lastFlash=flashA;flash.style.opacity=f2(flashA);flashCore.style.opacity=f2(flashA);rays.style.opacity=f2(flashA*.9);set(rays,'transform',`translate(${f2(flashAt[0])} ${f2(flashAt[1])}) scale(${f2(.7+flashA*.6)})`);}
-lit(noseLamp,arm?'a':queue.length?'b':'g');lit(headLamp,pano&&!pano.red?'a':pano?.red?'a':'');
+lit(noseLamp,arm?'a':queue.length?'b':'g');lit(headLamp,pano?'a':'');
 if(whir)whir.gain.setTargetAtTime(min(1,abs(v)/SPD+(dh?.6:0))*.006,ac.currentTime,.06);ui();requestAnimationFrame(tick);}
 {const[pi,ro,hv]=kinematics();setPose(pi,ro,hv);}poseBody();drawLinks();drawWheels();drawHead();drawArm();drawGround();reorder();ui();requestAnimationFrame(tick);
 }
