@@ -57,9 +57,9 @@
     "@youj/core": "workspace:*",
     "@youj/icons": "workspace:*",
     "@youj/illustrations": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.31.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "zod": "^4.6.5",
     "cf": "1.0.0-beta.5",
-    "wrangler": "^4.144.0"
+    "wrangler": "^4.152.0"
   }
 }
