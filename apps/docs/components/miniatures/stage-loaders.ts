@@ -50,6 +50,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'server-cabinet': () => import('@youj/miniatures/server-cabinet'),
   'sewing-machine': () => import('@youj/miniatures/sewing-machine'),
   'smart-trainer': () => import('@youj/miniatures/smart-trainer'),
+  'split-flap-board': () => import('@youj/miniatures/split-flap-board'),
   'stage-synth': () => import('@youj/miniatures/stage-synth'),
   'stand-mixer': () => import('@youj/miniatures/stand-mixer'),
   'tape-library': () => import('@youj/miniatures/tape-library'),

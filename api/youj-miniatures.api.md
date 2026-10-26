@@ -130,7 +130,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [60 items]
+const miniatures: readonly [61 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -175,6 +175,8 @@ const serverCabinet: { description; id; initial; keys; label; maker; model; name
 const sewingMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const smartTrainer: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const splitFlapBoard: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const stage: { dark; light }
 
@@ -974,6 +976,23 @@ interface MiniatureSmartTrainerProps extends MiniatureProps {
 }
 
 const smartTrainer: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/split-flap-board
+
+```ts
+function MiniatureSplitFlapBoard(props: MiniatureSplitFlapBoardProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureSplitFlapBoardHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureSplitFlapBoardHandle = MiniatureHandle<MiniatureSplitFlapBoardKey>;
+
+type MiniatureSplitFlapBoardKey = MiniatureKeyOf<typeof splitFlapBoard>;
+
+interface MiniatureSplitFlapBoardProps extends MiniatureProps {
+    ref?: Ref<MiniatureSplitFlapBoardHandle>;
+}
+
+const splitFlapBoard: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/stage-synth

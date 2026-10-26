@@ -179,6 +179,10 @@
     "light": "/thumbs/miniatures/smart-trainer.webp?v=4ede3df188",
     "dark": "/thumbs/miniatures/smart-trainer.dark.webp?v=b8baa28d0b"
   },
+  "split-flap-board": {
+    "light": "/thumbs/miniatures/split-flap-board.webp?v=d69f9b3b14",
+    "dark": "/thumbs/miniatures/split-flap-board.dark.webp?v=7ff8695d22"
+  },
   "stage-synth": {
     "light": "/thumbs/miniatures/stage-synth.webp?v=504e34a370",
     "dark": "/thumbs/miniatures/stage-synth.dark.webp?v=20d91a4474"

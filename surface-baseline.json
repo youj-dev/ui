@@ -59,6 +59,7 @@
   "packages/miniatures/src/figures/sbc-cluster.ts": 1,
   "packages/miniatures/src/figures/server-cabinet.ts": 1,
   "packages/miniatures/src/figures/smart-trainer.ts": 1,
+  "packages/miniatures/src/figures/split-flap-board.ts": 1,
   "packages/miniatures/src/figures/stage-synth.ts": 3,
   "packages/miniatures/src/figures/telescope.ts": 1,
   "packages/miniatures/src/figures/thermostat-boiler.ts": 1,
