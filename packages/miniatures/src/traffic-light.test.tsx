@@ -28,7 +28,7 @@ describe('TrafficLight', () => {
     const [hand, man] = [...inside.querySelectorAll('.led')]
     return { hand: on(hand!), man: on(man!), digits: inside.querySelectorAll('.seg.on').length }
   }
-  const wait = (inside: ShadowRoot) => on(inside.querySelector('.wait'))
+  const waitLit = (inside: ShadowRoot) => on(inside.querySelector('.wait'))
   const control = (inside: ShadowRoot, label: RegExp) => [...inside.querySelectorAll('[role=button]')].find((b) => label.test(b.getAttribute('aria-label') ?? ''))!
 
   it('starts on red with four seconds to go, the hand steady and no call waiting', async () => {
@@ -36,7 +36,7 @@ describe('TrafficLight', () => {
     expect(snap()).toEqual(trafficLight.initial)
     expect(lamps(inside)).toBe('r')
     expect(ped(inside)).toEqual({ hand: true, man: false, digits: 0 })
-    expect(wait(inside)).toBe(false)
+    expect(waitLit(inside)).toBe(false)
   })
 
   it('cycles red → green → amber → red on its timing, counting down the seconds', async () => {
@@ -63,7 +63,7 @@ describe('TrafficLight', () => {
     press(' ')
     await run(50)
     expect(snap()).toMatchObject({ readout: 'GREEN · 5 S', state: 'READY · GO / WAIT' })
-    expect(wait(inside)).toBe(true)
+    expect(waitLit(inside)).toBe(true)
     await run(5000)
     expect(snap()).toMatchObject({ readout: 'AMBER · 3 S', state: 'PENDING · PREPARE TO STOP / WAIT' })
     await run(3000)
@@ -71,7 +71,7 @@ describe('TrafficLight', () => {
     expect(ped(inside)).toMatchObject({ hand: true, man: false })
     await run(1000)
     expect(snap()).toMatchObject({ readout: 'RED · 14 S · WALK 13', state: 'BLOCKED · STOP / WALK' })
-    expect(wait(inside)).toBe(false)
+    expect(waitLit(inside)).toBe(false)
     expect(ped(inside)).toEqual({ hand: false, man: true, digits: 5 + 2 })
     await run(5000)
     expect(snap()).toMatchObject({ readout: 'RED · 9 S · DON’T WALK 8', state: 'BLOCKED · STOP / FINISH CROSSING' })
