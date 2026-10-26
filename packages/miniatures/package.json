@@ -57,6 +57,7 @@
     "./letterpress": "./src/letterpress.tsx",
     "./lighthouse": "./src/lighthouse.tsx",
     "./mainframe": "./src/mainframe.tsx",
+    "./mechanical-keyboard": "./src/mechanical-keyboard.tsx",
     "./metronome": "./src/metronome.tsx",
     "./microscope": "./src/microscope.tsx",
     "./mixing-desk": "./src/mixing-desk.tsx",
@@ -76,6 +77,7 @@
     "./repair-bench": "./src/repair-bench.tsx",
     "./retro-fridge": "./src/retro-fridge.tsx",
     "./robot-arm": "./src/robot-arm.tsx",
+    "./rocket-launch-pad": "./src/rocket-launch-pad.tsx",
     "./rotary-phone": "./src/rotary-phone.tsx",
     "./sbc-cluster": "./src/sbc-cluster.tsx",
     "./server-cabinet": "./src/server-cabinet.tsx",
@@ -209,6 +211,10 @@
         "types": "./dist/mainframe.d.ts",
         "default": "./dist/mainframe.js"
       },
+      "./mechanical-keyboard": {
+        "types": "./dist/mechanical-keyboard.d.ts",
+        "default": "./dist/mechanical-keyboard.js"
+      },
       "./metronome": {
         "types": "./dist/metronome.d.ts",
         "default": "./dist/metronome.js"
@@ -284,6 +290,10 @@
       "./robot-arm": {
         "types": "./dist/robot-arm.d.ts",
         "default": "./dist/robot-arm.js"
+      },
+      "./rocket-launch-pad": {
+        "types": "./dist/rocket-launch-pad.d.ts",
+        "default": "./dist/rocket-launch-pad.js"
       },
       "./rotary-phone": {
         "types": "./dist/rotary-phone.d.ts",
