@@ -6,7 +6,7 @@ import type { FigureEnv, FigureModule } from '../engine/types'
 const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--metal:#d6d6d2;--metal-top:#efefec;--metal-side:#b4b4b1;--metal-hi:#fbfbf9;--metal-lo:#9fa09c;--brass:#cfa95d;--brass-top:#e8c985;--brass-side:#ab8743;--cork:#c49b70;--cork-top:#d8b48a;--cork-side:#a98258;--cork-dot:#9a7148;--rocker:#2e2e2d;--rocker-top:#474745;--vent:#3a3633;--warm:#ffb54a;--sheen:.62;--round:.2;--shade:.12;--halo:.2;--glint:.55;--pane:.28}
 @media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--line:#444443;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--metal-hi:#d4d4d2;--metal-lo:#6f706e;--brass:#ae8e4d;--brass-top:#d9bc7c;--brass-side:#785e2d;--cork:#a5825d;--cork-top:#caa881;--cork-side:#765a3c;--cork-dot:#815e3b;--rocker:#252524;--rocker-top:#424240;--vent:#2f2c2a;--sheen:.3;--round:.12;--shade:.66;--halo:.5;--glint:.42;--pane:.12}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
-.metal{fill:url(#metalG)}.top.metal{fill:var(--metal-top)}.brass{fill:var(--brass)}.cork{fill:var(--cork-side)}.top.cork{fill:var(--cork-top)}.dots{fill:url(#corkDots);stroke:none;pointer-events:none}.rocker{fill:var(--rocker)}.top.rocker{fill:var(--rocker-top)}
+.metal{fill:url(#metalG)}.top.metal{fill:var(--metal-top)}.bead{fill:none;stroke:#fff;stroke-width:.6;vector-effect:non-scaling-stroke;opacity:var(--sheen)}.brass{fill:var(--brass)}.cork{fill:var(--cork-side)}.top.cork{fill:var(--cork-top)}.dots{fill:url(#corkDots);stroke:none;pointer-events:none}.rocker{fill:var(--rocker)}.top.rocker{fill:var(--rocker-top)}
 .p0{--wax:#ea4a2e;--wax-hi:#ff8f55;--wax-lo:#b72d1b;--wax-edge:#8a2214;--liq:#f2bd44;--liq-hi:#ffeaa8;--liq-lo:#d38f25}
 .p1{--wax:#f3efe5;--wax-hi:#ffffff;--wax-lo:#d0c8b6;--wax-edge:#8a8270;--liq:#3b79d5;--liq-hi:#93bdf3;--liq-lo:#214f9e}
 .p2{--wax:#f3679f;--wax-hi:#ffa6ca;--wax-lo:#c13e78;--wax-edge:#882552;--liq:#7449c5;--liq-hi:#b294ee;--liq-lo:#4a2a8e}
@@ -73,6 +73,8 @@ function slot(a,z0,z1,w){const p=[];for(let i=0;i<=8;i++){const t=Math.PI*i/8;p.
 const q=p.map(([u,z])=>{const r=rBase(z),t=a-u/r;return[K*r*Math.cos(t),-z+Q*r*Math.sin(t)];});return'M'+pt(q[0])+cr(q,true)+'Z';}
 function streak(s0,s1,z0,z1){const A=[],B=[];for(let i=0;i<=16;i++){const t=i/16,z=z0+(z1-z0)*t,r=rIn(z),m=(s0+s1)/2,h=(s1-s0)/2*Math.sin(Math.PI*t)**.6;
 A.push([K*r*(m-h),-z+Q*r*Math.sqrt(1-(m-h)**2)]);B.push([K*r*(m+h),-z+Q*r*Math.sqrt(1-(m+h)**2)]);}return'M'+pt(A[0])+cr(A)+cr([A[16],B[16]])+cr(B.reverse())+'Z';}
+// A spun groove round a body's front at height z: a fine line and the light catching the bead under it.
+function groove(f,z){const r=f(z),arc=y=>`M${pt([-K*r,y])}A${f2(K*r)},${f2(Q*r)} 0 0 0 ${pt([K*r,y])}`;el('path',{d:arc(-z),class:'detail'});el('path',{d:arc(-z+.55),class:'bead'});}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 // The floor: the ground shadow (and the dark floor's contact), the vents' warm spill, the cork coaster.
 el('ellipse',{cx:2,cy:3,rx:47,ry:19,class:'shadow stage-floor'});el('ellipse',{cx:2,cy:3,rx:47,ry:19,class:'stage-contact'});
@@ -83,7 +85,7 @@ el('ellipse',{cx:1.5,cy:-1.2,rx:f2(K*26.6),ry:f2(Q*26.6),class:'shadow',style:'o
 el('ellipse',{cx:0,cy:-86,rx:31,ry:46,class:'halo rock'});
 into(el('g',{class:'rock'}));
 el('path',{d:band(25.6,2,5),class:'face metal'});el('path',{d:rim(25,25.6,5),class:'face top metal'});
-el('path',{d:solid(rBase,5,46,24),class:'face metal'});
+el('path',{d:solid(rBase,5,46,24),class:'face metal'});groove(rBase,29.5);groove(rBase,43.6);
 for(let k=0;k<12;k++){const a=(15+30*k)*RAD;if(Math.sin(a)>.12)el('path',{d:slot(a,34.5,41.5,1.25),class:'vent'});}
 {const g=group(tangent(rBase,16.4,90*RAD));rect(g,-7.6,0,15.2,3.8,1.1,'face brass');rect(g,-6.8,.65,13.6,2.5,.6,'detail');text(g,0,2.6,'MORVELLE','brand');}
 into(draw);
@@ -106,7 +108,7 @@ into(draw);into(el('g',{class:'rock'}));
 // The collar over the foot of the globe, then the cap.
 el('path',{d:band(14,45.5,50),class:'face metal'});el('path',{d:rim(rGlass(50)-.45,14,50),class:'face top metal'});
 el('path',{d:band(9.4,126,129.6),class:'face metal'});el('path',{d:rim(9,9.4,129.6),class:'face top metal'});
-el('path',{d:solid(rCap,129.5,143.5,12),class:'face metal'});disc(4.3,143.5,'face top metal');disc(2.2,143.5,'detail');
+el('path',{d:solid(rCap,129.5,143.5,12),class:'face metal'});groove(rCap,133.4);disc(4.3,143.5,'face top metal');disc(2.2,143.5,'detail');
 into(draw);
 set(svg,'viewBox','-54 -153 108 183');
 const ROCK=[...svg.querySelectorAll('.rock')];
