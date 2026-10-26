@@ -45,10 +45,10 @@ describe('Security camera', () => {
   })
 
   it.each([
-    ['ArrowLeft', 'PAN −28.0° · TILT −46.0° · 1.0×'],
-    ['ArrowRight', 'PAN −8.0° · TILT −46.0° · 1.0×'],
-    ['ArrowUp', 'PAN −18.0° · TILT −41.0° · 1.0×'],
-    ['ArrowDown', 'PAN −18.0° · TILT −51.0° · 1.0×'],
+    ['ArrowLeft', 'PAN −55.0° · TILT −14.0° · 1.0×'],
+    ['ArrowRight', 'PAN −35.0° · TILT −14.0° · 1.0×'],
+    ['ArrowUp', 'PAN −45.0° · TILT −9.0° · 1.0×'],
+    ['ArrowDown', 'PAN −45.0° · TILT −19.0° · 1.0×'],
   ] as const)('%s jogs the head by hand', async (key, readout) => {
     const { snap } = await play([key])
     expect(snap().readout).toBe(readout)
@@ -57,17 +57,17 @@ describe('Security camera', () => {
 
   it('jogs add up, then it goes home again on its own', async () => {
     const { handle, run, snap } = await play(['ArrowRight', 'ArrowRight', 'ArrowUp'])
-    expect(snap().readout).toBe('PAN +2.0° · TILT −41.0° · 1.0×')
+    expect(snap().readout).toBe('PAN −25.0° · TILT −9.0° · 1.0×')
     await run(5200)
     expect(snap().state).toBe('HOME · REC · DAY')
     act(() => handle().press('ArrowLeft'))
     await run(100)
-    expect(snap().readout).toBe('PAN −28.0° · TILT −46.0° · 1.0×')
+    expect(snap().readout).toBe('PAN −55.0° · TILT −14.0° · 1.0×')
   })
 
   it('Z steps the zoom through 2× and 4× and back to 1×', async () => {
     const { handle, run, snap } = await play(['z'])
-    expect(snap().readout).toBe('PAN −18.0° · TILT −46.0° · 2.0×')
+    expect(snap().readout).toBe('PAN −45.0° · TILT −14.0° · 2.0×')
     expect(snap().state).toBe('ZOOM 2× · 26° VIEW')
     act(() => handle().press('z'))
     await run(100)
@@ -93,7 +93,7 @@ describe('Security camera', () => {
   it('P closes the privacy shutter and parks the head; P again opens it', async () => {
     const { handle, run, snap, svg, inside } = await play(['z', 'p'])
     expect(snap().state).toBe('PRIVACY · SHUTTER CLOSED')
-    expect(snap().readout).toBe('PAN +0.0° · TILT −16.0° · 1.0×')
+    expect(snap().readout).toBe('PAN −45.0° · TILT −10.0° · 1.0×')
     expect(svg()).toHaveClass('priv')
     expect(inside.querySelector('[aria-label="Privacy shutter (P)"]')).toHaveAttribute('aria-pressed', 'true')
     act(() => handle().press('p'))
@@ -114,7 +114,7 @@ describe('Security camera', () => {
       act(() => handle().press(key))
       await run(100)
       expect(snap().state).toBe(state)
-      expect(snap().readout).toBe('PAN +0.0° · TILT −16.0° · 1.0×')
+      expect(snap().readout).toBe('PAN −45.0° · TILT −10.0° · 1.0×')
     }
   })
 

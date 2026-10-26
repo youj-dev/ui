@@ -4,42 +4,39 @@
  * (FigureModule). */
 import type { FigureEnv, FigureModule } from '../engine/types'
 
-const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--ok:#15a65e;--warn:#e88a00;--fault:#e3372d;--metal:#d6d6d2;--metal-top:#efefec;--metal-side:#b4b4b1;--rubber:#2e2e2d;--dk:#3a3a39;--dk-top:#4a4a48;--dk-side:#2d2d2c;--conc:#c9c8c3;--conc-top:#dfdeda;--conc-side:#b3b2ad;--plinth:#a9a8a4;--roof:#a3a29e;--pave:#d3d3cf;--pave-top:#e6e6e2;--pave-side:#c0c0bc;--door:#5b6066;--pane:#40505a;--lens:#14171b;--lens-in:#22303a;--lens-rim:#30363d;--coat:#4f9fc4;--ir:#d02a5a;--ir-off:#6b5a5e;--warm:#ffb347;--white:#f4f6ff}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--fault:#ff4c41;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--rubber:#252524;--dk:#2f2f2f;--dk-top:#454543;--dk-side:#1d1d1c;--conc:#a9a8a5;--conc-top:#d1d0cc;--conc-side:#7d7d7b;--plinth:#8e8d8a;--roof:#8d8c89;--pave:#b2b2af;--pave-top:#d7d7d3;--pave-side:#878786;--door:#4c5053;--pane:#34424b;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--ir:#ff4d76;--ir-off:#5a4c50;--warm:#ffb04a;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
+const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--ok:#15a65e;--warn:#e88a00;--fault:#e3372d;--metal:#d6d6d2;--metal-top:#efefec;--metal-side:#b4b4b1;--rubber:#2e2e2d;--dk:#3a3a39;--dk-top:#4a4a48;--dk-side:#2d2d2c;--conc:#c9c8c3;--conc-top:#dfdeda;--conc-side:#b3b2ad;--plinth:#a9a8a4;--roof:#a3a29e;--pave:#d3d3cf;--pave-top:#e6e6e2;--pave-side:#c0c0bc;--front:#20252b;--lens:#14171b;--lens-in:#22303a;--lens-rim:#30363d;--coat:#4f9fc4;--ir:#d02a5a;--ir-off:#6b5a5e;--warm:#ffb347;--white:#f4f6ff}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--fault:#ff4c41;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--rubber:#252524;--dk:#2f2f2f;--dk-top:#454543;--dk-side:#1d1d1c;--conc:#a9a8a5;--conc-top:#d1d0cc;--conc-side:#7d7d7b;--plinth:#8e8d8a;--roof:#8d8c89;--pave:#b2b2af;--pave-top:#d7d7d3;--pave-side:#878786;--front:#1a1d21;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--ir:#ff4d76;--ir-off:#5a4c50;--warm:#ffb04a;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
 .night{--lens-in:#2c1a33;--coat:#c45bd8}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.base{fill:var(--base)}.recess{fill:var(--recess)}.glass{fill:var(--glass)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:3.2px ui-monospace,monospace;letter-spacing:.45px;stroke:none}.label{fill:var(--ink);font:4px ui-monospace,monospace;letter-spacing:.6px;stroke:none}.brand{font-size:6px;letter-spacing:1.7px;font-weight:600}.brandh{font-size:3px;letter-spacing:.85px;font-weight:600}.micro{font-size:2.6px;letter-spacing:.2px}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
-.metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.dk{fill:var(--dk)}.top.dk{fill:var(--dk-top)}.side.dk{fill:var(--dk-side)}.rubber{fill:var(--rubber)}.conc{fill:var(--conc)}.top.conc{fill:var(--conc-top)}.side.conc{fill:var(--conc-side)}.pave{fill:var(--pave)}.top.pave{fill:var(--pave-top)}.side.pave{fill:var(--pave-side)}.plinth{fill:var(--plinth)}.roof{fill:var(--roof)}.door{fill:var(--door)}.pane{fill:var(--pane);fill-opacity:.5}
-.joint{fill:none;stroke:var(--line);stroke-width:.5;opacity:.3}.seam{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}.tie{fill:var(--recess);stroke:none;opacity:.6}
+.metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.dk{fill:var(--dk)}.top.dk{fill:var(--dk-top)}.side.dk{fill:var(--dk-side)}.rubber{fill:var(--rubber)}.conc{fill:var(--conc)}.top.conc{fill:var(--conc-top)}.side.conc{fill:var(--conc-side)}.pave{fill:var(--pave)}.top.pave{fill:var(--pave-top)}.side.pave{fill:var(--pave-side)}.plinth{fill:var(--plinth)}
+.crease{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.45}.joint{fill:none;stroke:var(--line);stroke-width:.5;opacity:.3}.seam{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}.tie{fill:var(--recess);stroke:none;opacity:.6}
 .su,.sr,.sm{fill:none;stroke-linecap:round;stroke-linejoin:round}.su{stroke:var(--line)}.sr{stroke:var(--rubber)}.sm{stroke:var(--metal)}
 .irled{fill:var(--ir-off);stroke:none}.night .irled{fill:var(--ir);filter:url(#glow)}.priv .irled{fill:var(--ir-off);filter:none}.irhalo{fill:var(--ir);opacity:0;filter:url(#bloom)}.night .irhalo{opacity:.55}.priv .irhalo{opacity:0}
 .lensg{fill:url(#glassG);stroke:none;opacity:var(--cut,1)}.coat{fill:none;stroke:var(--coat);stroke-width:.9;stroke-linecap:round;opacity:.75}.spec{fill:#fff;opacity:.75;stroke:none}.iris{fill:#050607;stroke:none}.shutter{fill:var(--top);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.grip{fill:none;stroke:var(--recess);stroke-width:.7;stroke-linecap:round}
-.fov{fill:var(--accent);fill-opacity:.07;stroke:var(--accent);stroke-width:.8;stroke-dasharray:2.4 2.2;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.85}.night .fov{fill:var(--ir);fill-opacity:.05;stroke:var(--ir)}.priv .fov,.priv .aim{opacity:0}.irpool{fill:var(--ir);opacity:0;filter:url(#bloom)}.night .irpool{opacity:.22}.priv .irpool{opacity:0}
+.fov{fill:var(--accent);fill-opacity:.07;stroke:var(--accent);stroke-width:1;stroke-dasharray:2.6 2.2;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.9}@media(prefers-color-scheme:dark){.fov{fill-opacity:.12;stroke-width:1.5;opacity:1}.aim{stroke-width:1.2}}.night .fov{fill:var(--ir);fill-opacity:.05;stroke:var(--ir)}.priv .fov,.priv .aim{opacity:0}.irpool{fill:var(--ir);opacity:0;filter:url(#bloom)}.night .irpool{opacity:.22}.priv .irpool{opacity:0}
 .aim{fill:none;stroke:var(--accent);stroke-width:.8;stroke-linecap:round;vector-effect:non-scaling-stroke}.night .aim{stroke:var(--ir)}.det{fill:none;stroke:var(--warn);stroke-width:1.2;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0}
 .lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.r{fill:var(--fault)}.lamp.b{fill:var(--accent)}.lamp.w{fill:var(--warm)}.lamp.i{fill:var(--ir)}.lamp.g,.lamp.a,.lamp.r,.lamp.b,.lamp.w,.lamp.i{filter:url(#glow)}.halo{opacity:0;filter:url(#bloom)}.halo.w{fill:var(--warm);opacity:.6}.halo.r{fill:var(--fault);opacity:.45}
 .sring{fill:var(--off);stroke:none}.sring.g{fill:var(--ok)}.sring.b{fill:var(--accent)}.sring.a{fill:var(--warn)}.sring.w{fill:var(--white)}.sring.g,.sring.b,.sring.a,.sring.w{filter:url(#glow)}
-.pool{opacity:0}.wash{opacity:0}
+.pool{opacity:0}.flood{fill:var(--glass);stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke}.flood.w{fill:var(--warm);filter:url(#glow)}.glassfront{fill:var(--front);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.glint{fill:#fff;opacity:.12;stroke:none}
 .control{cursor:pointer;outline:none}.hit{fill:transparent;stroke:none}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.control:focus-visible .focus-ring{opacity:1}
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
 
 const defs = `<radialGradient id="glassG" cx=".4" cy=".36" r=".72"><stop offset="0" style="stop-color:var(--lens-in)"/><stop offset=".7" style="stop-color:var(--lens)"/><stop offset="1" style="stop-color:var(--lens-rim)"/></radialGradient>
 <radialGradient id="warmG"><stop offset="0" style="stop-color:var(--warm);stop-opacity:.6"/><stop offset="1" style="stop-color:var(--warm);stop-opacity:0"/></radialGradient>
-<linearGradient id="washG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--warm);stop-opacity:.45"/><stop offset="1" style="stop-color:var(--warm);stop-opacity:0"/></linearGradient>
-<clipPath id="lensClip"><circle r="8.2"/></clipPath>`
+<clipPath id="frontClip"><rect x="1.2" y="1.2" width="16.6" height="18.6" rx="2.6"/></clipPath>`
 
 function draw(env: FigureEnv): void {
 const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
-/* KEVRA PT–4 on a building corner. World: x lower-right, y lower-left, z up; pan from the corner's diagonal (+x+y), tilt from the horizon.
+/* KEVRA PT–4 on a wall section. World: x lower-right, y lower-left, z up; pan from the diagonal (+x+y), tilt from the horizon.
 Part                        x      y      z      w      d      h
-yard slab                   0      0     −3    104    104      3   paving joints; the field of view lands on it
-walls                       0      0      0     58     58     70   an L, 12 thick: panels, tie holes, plinth, coping
-door + step                10     58      0     16      –     34   vision panel, handle; security lamp above at z 38.5
-wall plate                 58     38     48    1.6     12     18   on the right face, four screws
-arm + brace            r 2.8  59.6 → 74 at y 44, z 58             brace from the plate's foot
-conduit + junction box     58      6     43    3.6     12     12   privacy key switch, REC lamp; drip loop from the plate
-pan unit               r 7     74     44   47.4      –      –     12   status ring, day/night sensor on top
-yoke                    crossbar 25 × 7 × 2.6 under the pan unit, arms to the tilt axis at 74 44 31, knobs
-head                    r 8, −11 … +15 along the look axis; bezel, IR ring, REC light, lens barrel, privacy shutter
-Painter order: yard, field of view, walls, door, plate, conduit and box, arm; far yoke arm, head, near arm, crossbar, pan unit; controls. */
+yard slab                   0      0     −3     92     92      3   paving joints; the field of view lands on it
+wall section                0      0      0     14     44     30   panel seam, tie holes, plinth, coping; floodlight at y 30
+wall plate                 14      4     10    1.6     14     16   four screws; drip loop to the junction box at y 26
+arm + brace            r 3.4  15.6 → 44 at y 11, z 18             day/night sensor on top at x 23
+pan unit               r 10    44     11   23.6      –      –     10   on a mounting disc; status ring
+yoke                    crossbar 27.6 × 10 × 2.8 above the pan unit, arms up to the tilt axis at 44 11 52, flush pivot caps
+housing                 50 × 19 × 21 along the look axis; dark glass front with lens, IR ring and shutter; sun shield 55 × 23 on standoffs
+Painter order: yard, field of view, wall, floodlight, plate, junction box, arm, pan unit; crossbar, far arm, housing, sun shield, near arm; controls. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
 const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
 // Family helpers: vectors, oriented planes, round parts on any axis, oriented boxes, outlined strokes, lamps and controls.
@@ -59,57 +56,52 @@ function lamp(g,x,y,r=1){const n=circle(g,x,y,r,'lamp');n._c='';return n;}
 function lit(n,c,base='lamp'){if(n&&n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''));}}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 function button(g,attrs){for(const[k,v]of Object.entries({class:'control',role:'button',tabindex:'0',...attrs}))set(g,k,v);return g;}
-// Ground: the yard's paving, then the layer the field of view, the IR flood and the lamp's pool draw on, clipped to it.
-const sh=P(54,54,-3);el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+4),rx:112,ry:62,class:'shadow stage-floor'});el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+4),rx:112,ry:62,class:'stage-contact'});
-box(0,0,-3,104,104,3,3,'pave');const yt=group(TOP(0,0,.02));for(let k=13;k<104;k+=13){line(yt,k,1.5,k,102.5,'joint');line(yt,1.5,k,102.5,k,'joint');}
-el('path',{d:poly([[0,0,0],[104,0,0],[104,104,0],[0,104,0]],true)},el('clipPath',{id:'yard'},svg.querySelector('defs')));
-const fovG=el('g',{'clip-path':'url(#yard)'}),pool=el('ellipse',{cx:18.5,cy:68,rx:15,ry:9.5,fill:'url(#warmG)',class:'pool'},group(TOP(0,0,.04),fovG)),irPool=el('path',{class:'irpool'},fovG),fov=el('path',{class:'fov'},fovG);
-const aimG=el('g',{},fovG);circle(aimG,0,0,2.6,'aim');for(const[a,b,c,d]of[[-5,0,-3.4,0],[3.4,0,5,0],[0,-5,0,-3.4],[0,3.4,0,5]])line(aimG,a,b,c,d,'aim');
+// Ground: the yard's paving and the layer the field of view, the IR flood and the floodlight's pool draw on, clipped to it.
+const sh=P(46,46,-3);el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+8),rx:84,ry:36,class:'shadow stage-floor'});el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+8),rx:84,ry:36,class:'stage-contact'});
+box(0,0,-3,92,92,3,3,'pave');const yt=group(TOP(0,0,.02));for(let k=11.5;k<92;k+=11.5){line(yt,k,1.5,k,90.5,'joint');line(yt,1.5,k,90.5,k,'joint');}
+el('path',{d:poly([[0,0,0],[92,0,0],[92,92,0],[0,92,0]],true)},el('clipPath',{id:'yard'},svg.querySelector('defs')));
+const fovG=el('g',{'clip-path':'url(#yard)'}),pool=el('ellipse',{cx:30,cy:34,rx:15,ry:10,fill:'url(#warmG)',class:'pool'},group(TOP(0,0,.04),fovG)),irPool=el('path',{class:'irpool'},fovG),fov=el('path',{class:'fov'},fovG);
+const aimG=el('g',{},fovG);circle(aimG,0,0,2.8,'aim');for(const[a,b,c,d]of[[-5.4,0,-3.6,0],[3.6,0,5.4,0],[0,-5.4,0,-3.6],[0,3.6,0,5.4]])line(aimG,a,b,c,d,'aim');
 const detG=el('g',{class:'det'},aimG);for(const[sx,sy]of[[-1,-1],[1,-1],[1,1],[-1,1]])el('path',{d:`M${sx*9},${sy*5.5}L${sx*9},${sy*9}L${sx*5.5},${sy*9}`},detG);
-// Building corner: two concrete walls meeting at the corner, panels with tie holes, plinth and coping; the door, its step and the security lamp.
-const fw=group(FRONT(0,58,70)),rw=group(SIDE(58,58,70));for(const g of[rw,fw])rect(g,0,0,58,70,1.2,'face conc'+(g===rw?' side':''));
-el('path',{d:poly([[0,45,70],[45,45,70],[45,0,70],[58,0,70],[58,58,70],[0,58,70]],true),class:'face top conc'});
-el('path',{d:poly([[0,46.5,70.05],[46.5,46.5,70.05],[46.5,0,70.05]]),class:'seam'});
-for(const[g,door]of[[fw,1],[rw,0]]){rect(g,0,64,58,6,1,'face plinth');rect(g,0,0,58,2.4,.8,'face metal');line(g,0,35,58,35,'seam');line(g,29,2.4,29,64,'seam');
-for(const u of[7.5,21.5,36.5,50.5])for(const v of[9,26,43,58])if(!(door&&u>6&&u<29&&v>30))circle(g,u,v,.85,'tie');}
-rect(fw,8.5,34.5,19,35.5,.8,'face recess');rect(fw,10,36,16,34,.5,'face door');rect(fw,12.6,39,3.2,15,.6,'pane');rect(fw,22,51,1.4,5.6,.7,'face metal');line(fw,10,66.4,26,66.4,'seam');
-const wash=el('path',{d:'M16.5,34L20.5,34L27.5,69.5L9.5,69.5Z',fill:'url(#washG)',class:'wash'},fw);
-box(6,58,0,24,6,2.2,.8,'conc');const lampC=cylinder(18.5,58,38.5,2.4,1.8,'y','metal');const doorLamp=lamp(lampC.face,0,0,1.7),dq=P(18.5,59.8,38.5),doorHalo=el('circle',{cx:f2(dq[0]),cy:f2(dq[1]),r:8,class:'halo'});
-// Right face: the camera's wall plate, a drip loop into the conduit, the junction box with the privacy key switch.
-box(58,38,48,1.6,12,18,1.4,'metal');const mp=group(SIDE(59.6,50,66));for(const[u,v]of[[2.2,2.2],[9.8,2.2],[2.2,15.8],[9.8,15.8]])screw(mp,u,v);
-tube(root,[59.4,18,49],[59.4,30.5,49],1.2,'metal');tube(root,[59.4,12,0],[59.4,12,44],1.2,'metal');
-box(58,6,43,3.6,12,12,1.4,'');const jb=group(SIDE(61.6,18,55));circle(jb,6,4.8,2.4,'face metal');circle(jb,6,4.8,1.3,'face recess');line(jb,6,3.9,6,5.7);const boxLamp=lamp(jb,3.6,9.6,.65);text(jb,5,10.5,'REC','etch micro');
-sk(smooth([[59.6,39,50.5],[61.6,37,46.5],[61.8,33.4,46],[60.2,30.5,49]]),1.2,'sr');
-tube(root,[59.6,44,51.6],[66.5,44,57.4],.85,'metal');tube(root,[59.6,44,58],[74,44,58],2.8,'metal');
-// The moving head, rebuilt in painter order as it pans and tilts; the pan unit above it is static.
-const L={far:el('g',{}),cab0:el('g',{}),head:el('g',{}),cab1:el('g',{}),near:el('g',{}),yoke:el('g',{})};
-const panG=into(el('g',{}));cylinder(74,44,45.6,5.8,1.8,'z','dk');const pu=cylinder(74,44,47.4,7,12,'z','');circle(pu.face,0,0,4.2,'detail');const ring=band(panG,[74,44,49],[74,44,50.6],7.1,'sring');set(ring,'class','sring');ring._c='';
-const sens=cylinder(74,44,59.4,2.2,1,'z','glass'),photo=lamp(sens.face,0,0,1.25);into(draw);
-const PIV=[74,44],TZ=31,HOME=45,Z=[1,2,4],LB=[1.8,4,7.4],REST=[18,-46],P0=4.487;
+// Wall: one low concrete section with tie holes, plinth and coping; a floodlight near its end.
+box(0,0,0,14,44,30,1.2,'conc');const rw=group(SIDE(14,44,30)),ew=group(FRONT(0,44,30));for(const[g,w]of[[rw,44],[ew,14]])rect(g,0,25,w,5,.8,'face plinth');
+line(rw,22,0,22,25,'seam');for(const[u,v]of[[4,8],[4,18],[19,13],[42,8],[42,18]])circle(rw,u,v,.85,'tie');box(-.6,-.6,30,15.2,45.2,1.8,.6,'metal');
+box(14,30,20,3.2,8,4.4,1,'dk');const flood=el('rect',{x:.8,y:.8,width:6.4,height:2.8,rx:.8,class:'flood'},group(SIDE(17.2,38,24.4)));flood._c='';const fq=P(17.4,34,22.2),floodHalo=el('circle',{cx:f2(fq[0]),cy:f2(fq[1]),r:9,class:'halo'});
+// Bracket: the wall plate, a drip loop down to the junction box with the privacy key switch, the arm and its brace, the day/night sensor.
+box(14,4,10,1.6,14,16,1.4,'metal');const mp=group(SIDE(15.6,18,26));for(const[u,v]of[[2.2,2.2],[11.8,2.2],[2.2,13.8],[11.8,13.8]])screw(mp,u,v);
+box(14,26,2,3.6,10,9,1.3,'');const jb=group(SIDE(17.6,36,11));circle(jb,5,3.6,2,'face metal');circle(jb,5,3.6,1.1,'face recess');line(jb,5,2.9,5,4.3);const boxLamp=lamp(jb,2.6,7.1,.55);text(jb,4,7.8,'REC','etch micro');tube(root,[15.8,31,0],[15.8,31,2],1,'metal');
+sk(smooth([[15.6,17.4,11.4],[18.4,20,6.4],[18.2,24.6,6.4],[16.4,30,10.8]]),1.1,'sr');
+tube(root,[15.6,11,11.6],[26,11,16.6],1.1,'metal');tube(root,[15.6,11,18],[44,11,18],3.4,'metal');const sens=cylinder(23,11,21.3,2.1,1.1,'z','glass'),photo=lamp(sens.face,0,0,1.2);
+// Pan unit with its status ring on a mounting disc; above it the yoke, the housing and its sun shield, rebuilt in painter order as it moves.
+cylinder(44,11,21.4,8.4,2.2,'z','metal');const pu=cylinder(44,11,23.6,10,10,'z','');const ring=band(root,[44,11,29.8],[44,11,31.6],10.1,'sring');set(ring,'class','sring');ring._c='';cylinder(44,11,33.6,8.4,1.2,'z','dk');
+const L={yoke:el('g',{}),far:el('g',{}),head:el('g',{}),hood:el('g',{}),near:el('g',{})};
+const PIV=[44,11],TZ=52,HOME=45,Z=[1,2,4],LB=[0,1,2.6],REST=[45,-14],P0=5.27,TILT=[-38,20];
 let[pan,tilt]=REST,vp=0,vt=0,[tp,tt]=REST,zi=0,lb=LB[0],zNow=1,shut=0,iris=1.4,night=false,privacy=false,events=0;
 let ptr=null,lostUntil=0,manual=null,manualAt=-1e9,lastMove=null,speed=0,patrolT=P0,twitchT=-1e9,motionT=-1e9,snapT=-1e9,cutT=-1e9,lampT=-1e9,flash='',flashT=0,last=0,lastUI=-1,drawn='',mode='PATROL',rec=null,cutV='1';
 function pose(){const p=(HOME+pan)*RAD,t=tilt*RAD,g=[Math.cos(p),Math.sin(p),0],s=[-Math.sin(p),Math.cos(p),0],f=[Math.cos(t)*g[0],Math.cos(t)*g[1],Math.sin(t)],u=[-Math.sin(t)*g[0],-Math.sin(t)*g[1],Math.cos(t)];return{g,s,f,u,T:[PIV[0],PIV[1],TZ]};}
-function assemble(){const{g,s,f,u,T}=pose(),F=add(T,mul(f,15)),B=add(T,mul(f,-11)),near=dot(s,VIEW)>=0?1:-1,front=dot(f,VIEW)>0;for(const k in L)L[k].replaceChildren();
-for(const side of[-near,near]){const gp=side===near?L.near:L.far;obox(gp,add(add(T,mul(s,side*11.4)),[0,0,6.4]),g,s,[0,0,1],7,2.2,16.4,'',1.1);const k=tube(gp,add(T,mul(s,side*9.6)),add(T,mul(s,side*13.4)),3.4,'dk');circle(k,0,0,1.3,'face metal');}
-obox(L.yoke,[T[0],T[1],TZ+13.35],s,g,[0,0,1],25,7,2.6,'',1.2);
-const barrel=()=>{const c=tube(L.head,F,add(F,mul(f,lb)),4.4,'dk');if(c.front){circle(c,0,0,3.7,'lensg');el('path',{d:'M-2.5,-1.5A2.9,2.9 0 0 1 .6,-2.9',class:'coat'},c);circle(c,0,0,iris,'iris');circle(c,-1.15,-1.35,.5,'spec');circle(c,0,0,4.4,'detail');}};
-if(!front)barrel();
-const c=tube(L.head,B,F,8,'');if(c.front){circle(c,0,0,8,'face dk');circle(c,0,0,6.9,'detail');circle(c,0,0,7.6,'irhalo');for(let i=0;i<12;i++){const a=(i*30+15)*RAD;circle(c,5.75*Math.cos(a),5.75*Math.sin(a),.55,'irled');}const ru=[dot(u,c.U),dot(u,c.V)];rec=lamp(c,ru[0]*7.35-ru[1]*2.2,ru[1]*7.35+ru[0]*2.2,.5);}
-else{circle(c,0,0,5,'detail');const q=[-dot(u,c.U)*3.4,-dot(u,c.V)*3.4];circle(c,q[0],q[1],1.6,'face rubber');circle(c,q[0],q[1],.65,'face dk');}
-band(L.head,add(F,mul(f,-2.6)),F,8.25,'dk');band(L.head,add(B,mul(f,2.2)),add(B,mul(f,2.9)),8.1,'dk');
-const vs=unit(sub(VIEW,mul(f,dot(VIEW,f)))),tw=P(...f)[0]>=0?f:mul(f,-1);let w2=unit(cross(tw,vs));if(P(...w2)[1]<0)w2=mul(w2,-1);const tg=group(plane(add(add(T,mul(vs,8.05)),add(mul(f,2.8),mul(tw,-6.6))),tw,w2),L.head);text(tg,0,1,'KEVRA','label brandh');rec=null;
-if(front){barrel();const sp=group(plane(add(F,mul(f,lb+.35)),c.U,c.V),L.head),cl=el('g',{'clip-path':'url(#lensClip)'},sp),x0=-8.4-(1-shut)*16.8;rect(cl,x0,-8.4,16.8,16.8,1.4,'shutter');line(cl,x0+14.6,-5.6,x0+14.6,5.6,'grip');line(cl,x0+13,-5.6,x0+13,5.6,'grip');}
-const back=add(B,mul(u,-3)),cab=sk(smooth([back,add(back,add(mul(f,-4.5),[0,0,-1.2])),add(add(T,mul(g,-6.5)),[0,0,7]),[T[0]-g[0]*3.5,T[1]-g[1]*3.5,TZ+12]]),1.2,'sr',front?L.cab0:L.cab1);
-const hc=P(...add(T,mul(f,4)));for(const n of[hHit,hRing]){set(n,'cx',f2(hc[0]));set(n,'cy',f2(hc[1]));}
+/* The text frame on a face: reads left to right and upright on screen whichever way the head turns. */
+function upright(o,a,b){const Y=P(...b)[1]>0?b:mul(b,-1),pa=P(...a),py=P(...Y),X=pa[0]*py[1]-pa[1]*py[0]>0?a:mul(a,-1);return group(plane(o,X,Y));}
+function assemble(){const{g,s,f,u,T}=pose(),near=dot(s,VIEW)>=0?1:-1;for(const k in L)L[k].replaceChildren();
+obox(L.yoke,[T[0],T[1],36.2],s,g,[0,0,1],27.6,10,2.8,'',1.2);
+for(const side of[-near,near])for(const fc of obox(side===near?L.near:L.far,[T[0]+s[0]*side*12.4,T[1]+s[1]*side*12.4,45.4],g,s,[0,0,1],10,2.8,21.2,'',5))if(fc.i===1&&fc.s===side){circle(fc.f,17.2,5,3.3,'face '+shade(fc.n));circle(fc.f,17.2,5,1.4,'detail');}
+const gl=4.8+lb*.35;for(const fc of obox(L.head,add(T,mul(f,-2)),f,s,u,50,19,21,'',3)){
+if(fc.i===0&&fc.s>0){const e=fc.f;rect(e,1.2,1.2,16.6,18.6,2.6,'glassfront');circle(e,9.5,10.5,8.2,'irhalo');for(let i=0;i<12;i++){const a=(i*30+15)*RAD;circle(e,9.5+7.2*Math.cos(a),10.5+7.2*Math.sin(a),.6,'irled');}
+circle(e,9.5,10.5,gl+.9,'face dk');circle(e,9.5,10.5,gl,'lensg');el('path',{d:`M${f2(9.5-gl*.75)},${f2(10.5+gl*.3)}A${f2(gl*.8)},${f2(gl*.8)} 0 0 0 ${f2(9.5-gl*.1)},${f2(10.5+gl*.78)}`,class:'coat'},e);circle(e,9.5,10.5,iris,'iris');circle(e,9.5-gl*.32,10.5-gl*.35,.6,'spec');
+const cl=el('g',{'clip-path':'url(#frontClip)'},e);el('path',{d:'M2,19.8H6.4L12,1.2H7.6Z',class:'glint'},cl);const x0=1.2-(1-shut)*16.6;rect(cl,x0,1.2,16.6,18.6,2.4,'shutter');for(const k of[13.4,14.9])line(cl,x0+k,4,x0+k,17,'grip');}
+else if(fc.i===0){circle(fc.f,9.5,5.4,1.9,'face rubber');circle(fc.f,9.5,5.4,.8,'face dk');}
+else if(fc.i===1)text(upright(add(add(T,mul(fc.n,9.56)),add(mul(f,-11),mul(u,-4.6))),f,mul(u,-1)),0,1,'KEVRA','etch center');}
+for(const k of[-12,12])obox(L.hood,add(add(T,mul(f,k)),mul(u,11.35)),f,s,u,5,11,1.7,'dk',.6);
+const top=obox(L.hood,add(add(T,mul(f,2)),mul(u,12.9)),f,s,u,55,23,1.4,'metal',2).find(h=>h.i===2&&h.s>0);rec=null;if(top){line(top.f,4,11.5,51,11.5,'crease');rec=lamp(top.f,49.5,4,1.05);}
+const hc=P(...add(T,mul(f,2)));for(const n of[hHit,hRing]){set(n,'cx',f2(hc[0]));set(n,'cy',f2(hc[1]));}
 // Field of view: the four frustum rays on the yard (capped far out), the aim point at the center.
-const Lp=add(T,mul(f,15+lb)),hh=Math.tan(23/zNow*RAD),vh=Math.tan(15/zNow*RAD),pts=[];for(const[a,b]of[[-1,1],[1,1],[1,-1],[-1,-1]]){const r=add(f,add(mul(s,a*hh),mul(u,b*vh))),k=r[2]<-1e-3?Math.min(-Lp[2]/r[2],170):170,q=add(Lp,mul(r,k));q[2]=0;pts.push(q);}
+const Lp=add(T,mul(f,23)),hh=Math.tan(23/zNow*RAD),vh=Math.tan(15/zNow*RAD),pts=[];for(const[a,b]of[[-1,1],[1,1],[1,-1],[-1,-1]]){const r=add(f,add(mul(s,a*hh),mul(u,b*vh))),k=r[2]<-1e-3?Math.min(-Lp[2]/r[2],170):170,q=add(Lp,mul(r,k));q[2]=0;pts.push(q);}
 const ka=f[2]<-1e-3?-Lp[2]/f[2]:1e9,on=ka<170,d=on?poly(pts,true):'';set(fov,'d',d);set(irPool,'d',d);fov.style.opacity=on?'':'0';
 if(on){const A=add(Lp,mul(f,ka));set(aimG,'transform',TOP(A[0],A[1],.05));aimG.style.opacity='';}else aimG.style.opacity='0';}
-// Controls on top: the head takes a snapshot, the pan unit's sensor switches night vision, the junction box closes the shutter.
-const hBtn=button(el('g',{}),{'aria-label':'Take a snapshot (Space)'}),hHit=el('circle',{r:14,class:'hit'},hBtn),hRing=el('circle',{r:15.5,class:'focus-ring'},hBtn);
-const pq=P(74,44,54),nBtn=button(el('g',{}),{'aria-label':'Night vision (N)','aria-pressed':'false'});el('circle',{cx:f2(pq[0]),cy:f2(pq[1]),r:9,class:'hit'},nBtn);el('circle',{cx:f2(pq[0]),cy:f2(pq[1]),r:10,class:'focus-ring'},nBtn);
-const bBtn=button(el('g',{}),{'aria-label':'Privacy shutter (P)','aria-pressed':'false'}),bq=group(SIDE(61.6,18,55),bBtn);rect(bq,-1.5,-1.5,15,15,2,'hit');rect(bq,-1,-1,14,14,2,'focus-ring');
-frame([[0,0,-3,104,104,3],[0,0,0,58,58,70]],12);
+// Controls on top: the head takes a snapshot, the sensor switches night vision, the junction box closes the shutter.
+const hBtn=button(el('g',{}),{'aria-label':'Take a snapshot (Space)'}),hHit=el('circle',{r:20,class:'hit'},hBtn),hRing=el('circle',{r:21.5,class:'focus-ring'},hBtn);
+const pq=P(23,11,22.4),nBtn=button(el('g',{}),{'aria-label':'Night vision (N)','aria-pressed':'false'});el('circle',{cx:f2(pq[0]),cy:f2(pq[1]),r:6.5,class:'hit'},nBtn);el('circle',{cx:f2(pq[0]),cy:f2(pq[1]),r:7.5,class:'focus-ring'},nBtn);
+const bBtn=button(el('g',{}),{'aria-label':'Privacy shutter (P)','aria-pressed':'false'}),bq=group(SIDE(17.6,36,11),bBtn);rect(bq,-1.5,-1.5,13,12,2,'hit');rect(bq,-1,-1,12,11,2,'focus-ring');
+frame([[0,0,-3,92,92,3],[0,0,0,14,44,32],[16,-17,30,56,56,40]],10);
 // State: pointer tracking, patrol, manual jogs, zoom, night, privacy and snapshots; audio after a gesture.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 const say=m=>{announcement.textContent=m;},pad=n=>String(n).padStart(2,'0'),sg=v=>{const r=Math.round(v*10)/10;return(r<0?'−':'+')+Math.abs(r).toFixed(1);},hush=v=>Math.abs(Math.round(v));
@@ -121,8 +113,8 @@ function tone(f,d=.07,v=.012,w=0,type='sine'){if(!ac)return;try{const t=ac.curre
  * (the wall's side) is pushed out onto that line and the head tilts up with it, so it turns toward the pointer
  * and never into its own wall; right below the pivot the pan eases home. */
 function aimAt(x,y){const gx=(x/C+y/S)/2,gy=(y/S-x/C)/2,push=Math.max(0,PIV[0]+PIV[1]-gx-gy),dx=gx+push/2-PIV[0],dy=gy+push/2-PIV[1],rh=Math.hypot(dx,dy);
-let a=((Math.atan2(dy,dx)/RAD-HOME+540)%360)-180;a*=ramp(0,24,rh);return[clamp(a,-92,92),clamp(Math.atan2(-TZ,rh)/RAD+push*.5,-82,18)];}
-function patrolAt(t){const k=((t%17)+17)%17,e=x=>(1-Math.cos(Math.PI*x))/2,a=k<7?-1+2*e(k/7):k<8.5?1:k<15.5?1-2*e((k-8.5)/7):-1;return[a*42,REST[1]+3*Math.sin((t-P0)*.8)];}
+let a=((Math.atan2(dy,dx)/RAD-HOME+540)%360)-180;a*=ramp(0,24,rh);return[clamp(a,-92,92),clamp(Math.atan2(-TZ,rh)/RAD+push*.5,...TILT)];}
+function patrolAt(t){const k=((t%17)+17)%17,e=x=>(1-Math.cos(Math.PI*x))/2,a=k<7?-1+2*e(k/7):k<8.5?1:k<15.5?1-2*e((k-8.5)/7):-1;return[20+a*35,-22+8*Math.cos((t-P0)*.55)];}
 function local(e){const m=svg.getScreenCTM?.();if(!m)return null;const det=m.a*m.d-m.b*m.c;if(!det)return null;const x=e.clientX-m.e,y=e.clientY-m.f;return[(m.d*x-m.c*y)/det,(-m.b*x+m.a*y)/det];}
 function onPointer(e){const q=local(e);if(!q)return;const now=performance.now();
 if(lastMove){const dt=(now-lastMove.t)/1000;if(dt>.004)speed=speed*.45+Math.hypot(q[0]-lastMove.x,q[1]-lastMove.y)/dt*.55;}lastMove={x:q[0],y:q[1],t:now};
@@ -134,20 +126,20 @@ function shot(){audio();if(privacy){note('SHUTTER CLOSED · NO SNAPSHOT');say('T
 function zoomStep(){audio();if(privacy){note('SHUTTER CLOSED · ZOOM HELD');return;}zi=(zi+1)%3;note(`ZOOM ${Z[zi]}× · ${[52,26,13][zi]}° VIEW`);tone(520+zi*160,.09,.01,0,'triangle');say(`Zoom ${Z[zi]} times.`);}
 function nightToggle(){audio();night=!night;cutT=performance.now();svg.classList.toggle('night',night);set(nBtn,'aria-pressed',String(night));note(night?'IR NIGHT · CUT FILTER OUT':'DAY · CUT FILTER IN');tone(1900,.025,.012,0,'square');tone(night?640:880,.06,.008,.04);say(night?'Night vision. The infrared ring is on and the cut filter is out.':'Day mode. Infrared off, cut filter in.');}
 function privacyToggle(){audio();privacy=!privacy;svg.classList.toggle('priv',privacy);set(bBtn,'aria-pressed',String(privacy));if(privacy){zi=0;manualAt=-1e9;}note(privacy?'PRIVACY · SHUTTER CLOSED':'SHUTTER OPEN · RECORDING');tone(privacy?300:420,.12,.012,0,'triangle');say(privacy?'Privacy shutter closed. The camera is parked and not recording.':'Shutter open. Recording again.');}
-function jog(dp,dt){audio();if(privacy){note('PRIVACY · P TO OPEN');say('The privacy shutter is closed. Press P to open it.');return;}const base=performance.now()-manualAt<5000?manual:[pan,tilt];manual=[clamp(Math.round(base[0]+dp),-90,90),clamp(Math.round(base[1]+dt),-80,18)];manualAt=performance.now();ptr=null;tone(300,.05,.008,0,'triangle');say(`Pan ${hush(manual[0])} degrees ${manual[0]>0?'left':manual[0]<0?'right':'center'}, tilt ${hush(manual[1])} degrees ${manual[1]<0?'down':'up'}.`);}
+function jog(dp,dt){audio();if(privacy){note('PRIVACY · P TO OPEN');say('The privacy shutter is closed. Press P to open it.');return;}const base=performance.now()-manualAt<5000?manual:[pan,tilt];manual=[clamp(Math.round(base[0]+dp),-90,90),clamp(Math.round(base[1]+dt),...TILT)];manualAt=performance.now();ptr=null;tone(300,.05,.008,0,'triangle');say(`Pan ${hush(manual[0])} degrees ${manual[0]>0?'left':manual[0]<0?'right':'center'}, tilt ${hush(manual[1])} degrees ${manual[1]<0?'down':'up'}.`);}
 bind(hBtn,shot);bind(nBtn,nightToggle);bind(bBtn,privacyToggle);
 const act={' ':shot,z:zoomStep,n:nightToggle,p:privacyToggle,ArrowLeft:()=>jog(10,0),ArrowRight:()=>jog(-10,0),ArrowUp:()=>jog(0,5),ArrowDown:()=>jog(0,-5)};
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(k===' '&&e.target.closest&&e.target.closest('button,[role=button]'))return;const fn=act[k];if(fn){e.preventDefault();if(!e.repeat||k.startsWith('Arrow'))fn();}});
 function ui(){readout.textContent=`PAN ${sg(-pan)}° · TILT ${sg(tilt)}° · ${zNow.toFixed(1)}×`;stateLabel.textContent=performance.now()<flashT?flash:privacy?'PRIVACY · SHUTTER CLOSED':`${mode} · REC · ${night?'IR NIGHT':'DAY'}`;}
 function tick(now){const dt=last?Math.min((now-last)/1000,.05):0,red=reduced.matches;last=now;
-if(privacy){mode='PRIVACY';tp=0;tt=-16;}else if(ptr){mode='TRACKING';[tp,tt]=ptr;}else if(now-manualAt<5000){mode='MANUAL';[tp,tt]=manual;}else if(now<lostUntil)mode='TARGET LOST';else if(red){mode='HOME';[tp,tt]=REST;}else{mode='PATROL';patrolT+=dt;[tp,tt]=patrolAt(patrolT);}
+if(privacy){mode='PRIVACY';tp=REST[0];tt=-10;}else if(ptr){mode='TRACKING';[tp,tt]=ptr;}else if(now-manualAt<5000){mode='MANUAL';[tp,tt]=manual;}else if(now<lostUntil)mode='TARGET LOST';else if(red){mode='HOME';[tp,tt]=REST;}else{mode='PATROL';patrolT+=dt;[tp,tt]=patrolAt(patrolT);}
 if(red){pan=tp;tilt=tt;vp=vt=0;}else{const W=8,ap=W*W*(tp-pan)-2*W*vp,at=W*W*(tt-tilt)-2*W*vt;vp=clamp(vp+ap*dt,-240,240);vt=clamp(vt+at*dt,-180,180);pan+=vp*dt;tilt+=vt*dt;}
-const tw=(now-twitchT)/1000,kick=red||tw>1.1?0:Math.exp(-tw*4.2)*Math.sin(tw*15);lb+=(LB[zi]-lb)*(red?1:1-Math.exp(-dt*9));zNow=Z[zi]*(1+.8*Math.max(0,kick))+(lb-LB[zi])*.3;
-shut=red?+privacy:clamp(shut+(privacy?dt:-dt)*3.2);const si=(now-snapT)/1000;iris=si<.22&&!red?1.4+2.3*Math.sin(Math.PI*si/.22):1.4-.5*Math.max(0,kick);
+const tw=(now-twitchT)/1000,kick=red||tw>1.1?0:Math.exp(-tw*4.2)*Math.sin(tw*15);lb+=(LB[zi]-lb)*(red?1:1-Math.exp(-dt*9));zNow=Z[zi]*(1+.8*Math.max(0,kick))+(lb-LB[zi])*.9;
+shut=red?+privacy:clamp(shut+(privacy?dt:-dt)*3.2);const si=(now-snapT)/1000;iris=si<.22&&!red?1.6+3.4*Math.sin(Math.PI*si/.22):1.6-.5*Math.max(0,kick);
 const key=[pan,tilt,lb+kick*3.2,shut,iris].map(f2).join();if(key!==drawn){drawn=key;const keep=lb;lb+=kick*3.2;assemble();lb=keep;}
 const blink=red||now%1200<760;if(rec)lit(rec,!privacy&&blink?'r':'');lit(boxLamp,privacy?'a':'g');lit(photo,night?'i':'');
 lit(ring,privacy?'':now-motionT<1300?'a':now-snapT<260?'w':mode==='TRACKING'||mode==='MANUAL'?'b':'g','sring');
-const lampOn=now-lampT<4000;lit(doorLamp,lampOn?'w':'');set(doorHalo,'class','halo'+(lampOn?' w':''));pool.style.opacity=lampOn?'.85':'0';wash.style.opacity=lampOn?'1':'0';
+const lampOn=now-lampT<4000;lit(flood,lampOn?'w':'','flood');set(floodHalo,'class','halo'+(lampOn?' w':''));pool.style.opacity=lampOn?'.85':'0';
 const da=(now-motionT)/1000;detG.style.opacity=da<1.1?f2(red?1:Math.min(1,da*8)*(1-da/1.1)):'0';if(!red)set(detG,'transform',`scale(${f2(1.25-.25*Math.min(1,da*5))})`);
 const cut=(now-cutT)/1000,cv=cut<.14&&!red?'.35':'1';if(cv!==cutV){cutV=cv;svg.style.setProperty('--cut',cv);}
 if(whir)whir.gain.setTargetAtTime(Math.min(1,(Math.abs(vp)+Math.abs(vt))/160)*.006,ac.currentTime,.06);
