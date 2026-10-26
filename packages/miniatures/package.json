@@ -35,6 +35,7 @@
     "./3d-printer": "./src/3d-printer.tsx",
     "./aquarium": "./src/aquarium.tsx",
     "./bank-vault": "./src/bank-vault.tsx",
+    "./card-catalog": "./src/card-catalog.tsx",
     "./cell-tower": "./src/cell-tower.tsx",
     "./coffee-grinder": "./src/coffee-grinder.tsx",
     "./cooling-unit": "./src/cooling-unit.tsx",
@@ -118,6 +119,10 @@
       "./bank-vault": {
         "types": "./dist/bank-vault.d.ts",
         "default": "./dist/bank-vault.js"
+      },
+      "./card-catalog": {
+        "types": "./dist/card-catalog.d.ts",
+        "default": "./dist/card-catalog.js"
       },
       "./cell-tower": {
         "types": "./dist/cell-tower.d.ts",
