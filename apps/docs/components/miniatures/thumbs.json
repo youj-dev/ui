@@ -263,6 +263,10 @@
     "light": "/thumbs/miniatures/washing-machine.webp?v=1a7ffec9ba",
     "dark": "/thumbs/miniatures/washing-machine.dark.webp?v=b61dfb1a55"
   },
+  "water-wheel": {
+    "light": "/thumbs/miniatures/water-wheel.webp?v=96b7d0f5bb",
+    "dark": "/thumbs/miniatures/water-wheel.dark.webp?v=5b15c20cb9"
+  },
   "weather-station": {
     "light": "/thumbs/miniatures/weather-station.webp?v=720eeff40e",
     "dark": "/thumbs/miniatures/weather-station.dark.webp?v=71987b556f"

@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -221,6 +221,8 @@ const vintageCamera: { description; id; initial; keys; label; maker; model; name
 const vinylJukebox: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const washingMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const waterWheel: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const weatherStation: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -1347,6 +1349,23 @@ interface MiniatureWashingMachineProps extends MiniatureProps {
 }
 
 const washingMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/water-wheel
+
+```ts
+function MiniatureWaterWheel(props: MiniatureWaterWheelProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureWaterWheelHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureWaterWheelHandle = MiniatureProgressHandle<MiniatureWaterWheelKey>;
+
+type MiniatureWaterWheelKey = MiniatureKeyOf<typeof waterWheel>;
+
+interface MiniatureWaterWheelProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureWaterWheelHandle>;
+}
+
+const waterWheel: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/weather-station

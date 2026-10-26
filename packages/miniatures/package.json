@@ -98,6 +98,7 @@
     "./vintage-camera": "./src/vintage-camera.tsx",
     "./vinyl-jukebox": "./src/vinyl-jukebox.tsx",
     "./washing-machine": "./src/washing-machine.tsx",
+    "./water-wheel": "./src/water-wheel.tsx",
     "./weather-station": "./src/weather-station.tsx",
     "./workstation": "./src/workstation.tsx"
   },
@@ -375,6 +376,10 @@
       "./washing-machine": {
         "types": "./dist/washing-machine.d.ts",
         "default": "./dist/washing-machine.js"
+      },
+      "./water-wheel": {
+        "types": "./dist/water-wheel.d.ts",
+        "default": "./dist/water-wheel.js"
       },
       "./weather-station": {
         "types": "./dist/weather-station.d.ts",
