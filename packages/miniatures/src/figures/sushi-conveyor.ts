@@ -39,7 +39,7 @@ Motion: the belt runs at 16 units/s times its speed; the plates ride it. A plate
 slides out of the kitchen window onto the back run. Plates are drawn once and re-posed; nothing is added after the first
 frame. */
 const svg=document.getElementById('machine'),draw=document.getElementById('drawing');let root=draw;
-const{P,set,FRONT,SIDE,el,group,rect,circle,line,text}=kit(()=>root);
+const{P,set,FRONT,SIDE,el,group,rect,circle,line,text,box}=kit(()=>root);
 const{cos,sin,PI,max,min,round,hypot,atan2}=Math,C30=Math.sqrt(3)/2,f2=v=>(+v).toFixed(2),clamp=(v,a=0,b=1)=>max(a,min(b,v)),ease=t=>t*t*(3-2*t),into=g=>root=g;
 const H=30,RB=21.5,RI=10,RO=33,RM=36.5,ZT=30,ZB=28,A=PI*RB,LOOP=4*H+2*A,PR=9,PH=1.9,GAP=26,V0=16,SEAT=H,DROP=3*H+A,REACH=70,NS=40;
 // Plan shapes and their projections: a stadium round the belt's ends, a rounded rectangle, world points to paths.
@@ -104,7 +104,8 @@ rect(fr,4,22.8,40,1.2,.4,'face hinoki');
 rect(fr,15,3.6,18,4.8,.9,'face hinoki');rect(fr,15.7,4.3,16.6,3.4,.6,'detail');text(fr,24,7.05,'MAKIRO','brand');
 const nr=group(FRONT(X0,Y1+.06,E));for(let i=0;i<3;i++){rect(nr,5.6+i*12.4,10,11.8,5.6,.4,'noren');}circle(nr,24,12.9,1.5,'mark');el('path',{d:'M10.5,12.8c1,-1 2,1 3,0M35,12.8c1,-1 2,1 3,0',class:'detail',style:'stroke:var(--mark);stroke-width:.5'},nr);
 const RF=[-27,27],ry=Y1-10,OV=2.5;el('path',{d:pd([[RF[0],ry-10-OV,E],[RF[1],ry-10-OV,E],[RF[1],ry,K],[RF[0],ry,K]]),class:'face roof'});
-el('path',{d:pd([[RF[1],ry-10-OV,E],[RF[1],Y1+OV,E],[RF[1],Y1+OV,E-1.6],[RF[1],ry,K-1.6],[RF[1],ry-10-OV,E-1.6]]),class:'face side roof'});
+el('path',{d:pd([[24,Y1-20,E],[24,Y1,E],[24,ry,K-1.6]]),class:'face side wood'});
+el('path',{d:pd([[RF[1],Y1+OV,E],[RF[1],ry,K],[RF[1],ry-10-OV,E],[RF[1],ry-10-OV,E-1.6],[RF[1],ry,K-1.6],[RF[1],Y1+OV,E-1.6]]),class:'face side roof'});
 el('path',{d:pd([[RF[0],Y1+OV,E],[RF[1],Y1+OV,E],[RF[1],ry,K],[RF[0],ry,K]]),class:'face top roof'});
 el('path',{d:Array.from({length:14},(_,i)=>RF[0]+2+i*3.85).map(x=>`M${xy([x,Y1+OV-.4,E+.2])}L${xy([x,ry+.4,K-.2])}`).join(''),class:'tile'});
 el('path',{d:pd([[RF[0],Y1+OV,E],[RF[1],Y1+OV,E],[RF[1],Y1+OV,E-1.6],[RF[0],Y1+OV,E-1.6]]),class:'face roof'});
@@ -130,8 +131,7 @@ el('path',{d:pd(at(stad(RM),ZT))+pd(at(stad(RO),ZT)),'fill-rule':'evenodd',class
 el('path',{d:pd(at(stad(RO+1.6),ZT+.05)),class:'focus-ring'});
 into(L.deck);el('path',{d:pd(at(stad(RI),ZT)),class:'face top steel'});
 el('path',{d:`M${xy([-H,RO+.9,ZT])}L${xy([H,RO+.9,ZT])}`,class:'hi'});
-{const B=group(FRONT(-14,3,ZT+6.6));rect(B,0,0,22,6,1,'acrylic');const PL=['plw','plb','plg','plr'];PL.forEach((c,i)=>{const g=el('g',{class:c},B);circle(g,3.2+i*5.2,2.4,1.55,'face dish');text(B,3.2+i*5.2,5.3,'$'+(i+2),'price');});
-for(const x of[-11,4])el('path',{d:pd([[x,.6,ZT],[x+2,.6,ZT],[x+2,3,ZT+.6],[x,3,ZT+.6]]),class:'face top steel'});
+{box(-14.5,1.8,ZT,23,1.6,.9,.4,'steel');const B=group(FRONT(-14,3,ZT+6.6));rect(B,0,0,22,6,1,'acrylic');const PL=['plw','plb','plg','plr'];PL.forEach((c,i)=>{const g=el('g',{class:c},B);circle(g,3.2+i*5.2,2.4,1.55,'face dish');text(B,3.2+i*5.2,5.3,'$'+(i+2),'price');});
 const gb=el('g',{});lump(gb,rr(17,-1.5,7,5,1.2),ZT,ZT+2.6,'wood','wood-top');el('path',{d:pd(at(rr(17,-1.5,5.6,3.6,.9),ZT+2.65)),class:'face s',style:'fill:var(--gari)'},gb);
 {const c=group(tr(23,3,ZT));cup(c,1.7,1.7,0,4.4,'face s',' face s');set(c.firstChild,'style','fill:var(--soy)');set(c.lastChild,'style','fill:var(--soy-top)');const k=group('translate(0 -4.4)',c);cup(k,.9,.9,0,1.6,'face s','face s');set(k.firstChild,'style','fill:var(--lantern)');set(k.lastChild,'style','fill:var(--lantern-top)');}}
 // The plates: a fixed set, two of each kind, drawn once each; the ones in the kitchen are hidden.
