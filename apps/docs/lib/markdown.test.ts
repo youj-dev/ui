@@ -2,7 +2,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { durations, easings, springs, staggers } from '@youj/core/lib/youj/tokens'
-import { frontmatter, installMarkdown, mdxToMarkdown, stackedInstall, type MarkdownContext } from './markdown'
+import { frontmatter, installMarkdown, mdxToMarkdown, propsMarkdown, stackedInstall, type MarkdownContext } from './markdown'
 import { repo } from './repo'
 
 const app = join(import.meta.dirname, '..')
@@ -199,5 +199,41 @@ describe('BlockStories', () => {
     const ctx: MarkdownContext = { ...context(), storyInstall: () => stackedInstall(['marketing-navbar', 'marketing-hero-centered']) }
     const md = mdxToMarkdown('<BlockStories>\n<BlockStory id="a" label="Landing" block="marketing-landing" story="Default">\nA page.\n</BlockStory>\n</BlockStories>', ctx)
     expect(md).toContain('npx @youj/cli add marketing-navbar marketing-hero-centered')
+  })
+})
+
+describe('propsMarkdown cells', () => {
+  /** Cells of a row the way a Markdown table reader finds them: a pipe splits unless an odd run of backslashes escapes it. */
+  const cells = (row: string) => {
+    const out: string[] = []
+    let current = ''
+    for (const char of row) {
+      if (char === '|') {
+        let slashes = 0
+        while (slashes < current.length && current[current.length - 1 - slashes] === '\\') slashes++
+        if (slashes % 2 === 0) {
+          out.push(current)
+          current = ''
+          continue
+        }
+      }
+      current += char
+    }
+    out.push(current)
+    return out.slice(1, -1)
+  }
+  const row = (description: string, type = 'string', def?: string) =>
+    propsMarkdown({ name: 'X', props: [{ name: 'value', type, required: false, default: def, description }] }).split('\n')[2]!
+
+  it.each(['a|b', 'a\\|b', 'a\\\\|b', 'ends with a backslash \\', 'a\\ | b', 'line one\nline two'])('a description of %j is one cell', (description) => {
+    expect(cells(row(description))).toHaveLength(4)
+  })
+
+  it('does the same for the type and the default', () => {
+    expect(cells(row('d', 'a | b\\|c', "'\\|'"))).toHaveLength(4)
+  })
+
+  it('leaves text without a backslash before a pipe as it was', () => {
+    expect(row('Either a|b or C:\\temp', 'A | B')).toBe('| `value` | `A \\| B` |  | Either a\\|b or C:\\temp |')
   })
 })

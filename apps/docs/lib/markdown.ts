@@ -243,7 +243,8 @@ const str = (attr: Attr | undefined): string | undefined => {
   return typeof value === 'string' ? value : undefined
 }
 
-const escapeCell = (text: string) => text.replace(/\|/g, '\\|').replace(/\n+/g, ' ')
+/** A table cell's text: each pipe escaped, and the backslashes before it doubled so they can't escape the escape (`\|` would end the cell). */
+const escapeCell = (text: string) => text.replace(/(\\*)\|/g, '$1$1\\|').replace(/\n+/g, ' ')
 
 export function propsMarkdown(doc: ComponentDocLike): string {
   const out: string[] = []

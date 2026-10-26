@@ -222,11 +222,16 @@ function jsxName(name: string) {
   return camel(name)
 }
 
+const ESCAPED: Record<string, string> = { '\\': '\\\\', "'": "\\'", '\n': '\\n', '\r': '\\r', '\u2028': '\\u2028', '\u2029': '\\u2029' }
+
+/** A single-quoted string literal that reads back as exactly `value`: backslashes, quotes and line breaks escaped. */
+const quote = (value: string) => `'${value.replace(/[\\'\n\r\u2028\u2029]/g, (c) => ESCAPED[c]!)}'`
+
 function jsxAttrs(attrs: Record<string, string>) {
   return Object.entries(attrs)
     .map(([k, v]) => {
       if (k === 'style') {
-        const style = [...parseStyle(v)].map(([p, value]) => `${camel(p)}: '${value.replace(/'/g, "\\'")}'`).join(', ')
+        const style = [...parseStyle(v)].map(([p, value]) => `${camel(p)}: ${quote(value)}`).join(', ')
         return ` style={{ ${style} }}`
       }
       return ` ${jsxName(k)}="${escapeAttr(v)}"`
