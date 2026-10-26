@@ -130,11 +130,13 @@ const lighthouse: { description; id; initial; keys; label; maker; model; name; p
 
 const mainframe: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const mechanicalKeyboard: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const metronome: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [65 items]
+const miniatures: readonly [67 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -173,6 +175,8 @@ const repairBench: { description; id; initial; keys; label; maker; model; name; 
 const retroFridge: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const robotArm: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const rocketLaunchPad: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const rotaryPhone: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -646,6 +650,23 @@ interface MiniatureMainframeProps extends MiniatureProps {
 const mainframe: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
+## @youj/miniatures/mechanical-keyboard
+
+```ts
+function MiniatureMechanicalKeyboard(props: MiniatureMechanicalKeyboardProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureMechanicalKeyboardHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureMechanicalKeyboardHandle = MiniatureHandle<MiniatureMechanicalKeyboardKey>;
+
+type MiniatureMechanicalKeyboardKey = MiniatureKeyOf<typeof mechanicalKeyboard>;
+
+interface MiniatureMechanicalKeyboardProps extends MiniatureProps {
+    ref?: Ref<MiniatureMechanicalKeyboardHandle>;
+}
+
+const mechanicalKeyboard: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
 ## @youj/miniatures/metronome
 
 ```ts
@@ -967,6 +988,23 @@ interface MiniatureRobotArmProps extends MiniatureProps {
 }
 
 const robotArm: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/rocket-launch-pad
+
+```ts
+function MiniatureRocketLaunchPad(props: MiniatureRocketLaunchPadProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureRocketLaunchPadHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureRocketLaunchPadHandle = MiniatureProgressHandle<MiniatureRocketLaunchPadKey>;
+
+type MiniatureRocketLaunchPadKey = MiniatureKeyOf<typeof rocketLaunchPad>;
+
+interface MiniatureRocketLaunchPadProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureRocketLaunchPadHandle>;
+}
+
+const rocketLaunchPad: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/rotary-phone
