@@ -59,7 +59,8 @@ jobs:
       # A release is dated in the changelog; the packed packages install and render in fresh apps.
       - run: pnpm check:changelog
       - name: Browsers for the smoke tests
-        run: pnpm exec playwright install --with-deps chromium
+        # No --with-deps: the ubuntu-24.04 image already carries Chrome's libraries, and that apt step took 10-20 minutes (2026-10-26).
+        run: pnpm exec playwright install chromium
       - run: pnpm smoke --motion 13.4.4 --base-ui 1.8.0
       - run: pnpm smoke --motion ^14 --base-ui ~1.9.0
       - name: Docs build
