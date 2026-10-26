@@ -228,6 +228,19 @@ describe('Reel-to-reel tape recorder', () => {
     expect(handle().getSnapshot().state).toBe('PROGRESS 40% · REC PAUSE')
   })
 
+  it('with motion done winds the rest through and stops, the record lamp out', async () => {
+    const run = useFrames()
+    const { handle, rerender, ref, svg } = mount(MiniatureReelToReel, { progress: 0.6 })
+    await run(6000)
+    rerender(<MiniatureReelToReel ref={ref} progress={0.6} done />)
+    await run(500)
+    expect(handle().getSnapshot().state).toMatch(/^FINISHING · \d+%$/)
+    await run(12_000)
+    expect(handle().getSnapshot().readout).toBe('05:00 · −∞ DB · STOP')
+    expect(handle().getSnapshot().state).toBe('COMPLETE · TAPE AT THE END')
+    expect(lamp(svg())).not.toHaveClass('on')
+  })
+
   it('the handle drives it too: setProgress, null to run free again, done', async () => {
     const run = useFrames()
     const ref = createRef<MiniatureReelToReelHandle>()
