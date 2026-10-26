@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -163,6 +163,8 @@ const paymentTerminal: { description; id; initial; keys; label; maker; model; na
 const pinball: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const pipeOrgan: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const popcornMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const quantumFridge: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -905,6 +907,23 @@ interface MiniaturePipeOrganProps extends MiniatureProps {
 }
 
 const pipeOrgan: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/popcorn-machine
+
+```ts
+function MiniaturePopcornMachine(props: MiniaturePopcornMachineProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniaturePopcornMachineHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniaturePopcornMachineHandle = MiniatureProgressHandle<MiniaturePopcornMachineKey>;
+
+type MiniaturePopcornMachineKey = MiniatureKeyOf<typeof popcornMachine>;
+
+interface MiniaturePopcornMachineProps extends MiniatureProgressProps {
+    ref?: Ref<MiniaturePopcornMachineHandle>;
+}
+
+const popcornMachine: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/quantum-fridge

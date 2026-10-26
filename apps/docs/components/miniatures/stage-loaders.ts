@@ -45,6 +45,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'payment-terminal': () => import('@youj/miniatures/payment-terminal'),
   pinball: () => import('@youj/miniatures/pinball'),
   'pipe-organ': () => import('@youj/miniatures/pipe-organ'),
+  'popcorn-machine': () => import('@youj/miniatures/popcorn-machine'),
   'quantum-fridge': () => import('@youj/miniatures/quantum-fridge'),
   'receipt-printer': () => import('@youj/miniatures/receipt-printer'),
   'repair-bench': () => import('@youj/miniatures/repair-bench'),

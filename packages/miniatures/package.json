@@ -72,6 +72,7 @@
     "./payment-terminal": "./src/payment-terminal.tsx",
     "./pinball": "./src/pinball.tsx",
     "./pipe-organ": "./src/pipe-organ.tsx",
+    "./popcorn-machine": "./src/popcorn-machine.tsx",
     "./quantum-fridge": "./src/quantum-fridge.tsx",
     "./receipt-printer": "./src/receipt-printer.tsx",
     "./repair-bench": "./src/repair-bench.tsx",
@@ -271,6 +272,10 @@
       "./pipe-organ": {
         "types": "./dist/pipe-organ.d.ts",
         "default": "./dist/pipe-organ.js"
+      },
+      "./popcorn-machine": {
+        "types": "./dist/popcorn-machine.d.ts",
+        "default": "./dist/popcorn-machine.js"
       },
       "./quantum-fridge": {
         "types": "./dist/quantum-fridge.d.ts",

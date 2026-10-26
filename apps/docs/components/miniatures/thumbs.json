@@ -159,6 +159,10 @@
     "light": "/thumbs/miniatures/pipe-organ.webp?v=34e52aa43c",
     "dark": "/thumbs/miniatures/pipe-organ.dark.webp?v=0d7fe57ec8"
   },
+  "popcorn-machine": {
+    "light": "/thumbs/miniatures/popcorn-machine.webp?v=bf40b11058",
+    "dark": "/thumbs/miniatures/popcorn-machine.dark.webp?v=0b05b997b9"
+  },
   "quantum-fridge": {
     "light": "/thumbs/miniatures/quantum-fridge.webp?v=ccdff26215",
     "dark": "/thumbs/miniatures/quantum-fridge.dark.webp?v=15a7270a60"
