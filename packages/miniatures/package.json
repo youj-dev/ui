@@ -52,6 +52,7 @@
     "./guitar-amp": "./src/guitar-amp.tsx",
     "./home-battery": "./src/home-battery.tsx",
     "./home-router": "./src/home-router.tsx",
+    "./hot-air-balloon": "./src/hot-air-balloon.tsx",
     "./hourglass": "./src/hourglass.tsx",
     "./instant-camera": "./src/instant-camera.tsx",
     "./letterpress": "./src/letterpress.tsx",
@@ -190,6 +191,10 @@
       "./home-router": {
         "types": "./dist/home-router.d.ts",
         "default": "./dist/home-router.js"
+      },
+      "./hot-air-balloon": {
+        "types": "./dist/hot-air-balloon.d.ts",
+        "default": "./dist/hot-air-balloon.js"
       },
       "./hourglass": {
         "types": "./dist/hourglass.d.ts",

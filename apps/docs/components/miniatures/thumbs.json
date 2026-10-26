@@ -79,6 +79,10 @@
     "light": "/thumbs/miniatures/home-router.webp?v=1073d950bf",
     "dark": "/thumbs/miniatures/home-router.dark.webp?v=2f849440cb"
   },
+  "hot-air-balloon": {
+    "light": "/thumbs/miniatures/hot-air-balloon.webp?v=ef640ddca8",
+    "dark": "/thumbs/miniatures/hot-air-balloon.dark.webp?v=68422ba7e6"
+  },
   "hourglass": {
     "light": "/thumbs/miniatures/hourglass.webp?v=f2922c1f6e",
     "dark": "/thumbs/miniatures/hourglass.dark.webp?v=dc87fe68bc"
