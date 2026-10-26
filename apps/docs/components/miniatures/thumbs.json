@@ -119,6 +119,10 @@
     "light": "/thumbs/miniatures/mixing-desk.webp?v=3a8c985914",
     "dark": "/thumbs/miniatures/mixing-desk.dark.webp?v=ac40aafcd9"
   },
+  "model-train": {
+    "light": "/thumbs/miniatures/model-train.webp?v=feb5498e46",
+    "dark": "/thumbs/miniatures/model-train.dark.webp?v=9568738d22"
+  },
   "nas": {
     "light": "/thumbs/miniatures/nas.webp?v=5cdecd9811",
     "dark": "/thumbs/miniatures/nas.dark.webp?v=224be31c36"
