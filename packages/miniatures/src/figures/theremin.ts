@@ -101,7 +101,7 @@ const TUNE=[[64,1,52],[69,1,62],[72,.5,66],[71,.5,64],[76,2,80],[74,.5,70],[72,.
 const D0=6,D1=138,S0=48,S1=84,Z0=70,ZS=96;
 const hz=n=>440*Math.pow(2,(n-69)/12),dOf=n=>D0+(S1-n)/(S1-S0)*(D1-D0),sOf=d=>clamp(S1-(Math.abs(d)-D0)/(D1-D0)*(S1-S0),S0,S1),zOf=n=>Z0+n/100*ZS,vOf=z=>clamp((z-Z0)/ZS*100,0,100);
 const nameOf=n=>{const m=Math.round(n);return NAMES[m%12]+(Math.floor(m/12)-1);},spoken=()=>{const m=Math.round(setS);return`${SAID[m%12]} ${Math.floor(m/12)-1}, ${Math.round(hz(setS))} hertz, volume ${Math.round(setV)}`;};
-let setS=69,setV=60,s=69,v=60,side=1,vi=0,ptr=null,hold=false,holdUntil=-1e9,tapUntil=-1e9,auto=false,autoAt=0,pressT=-1e9,airDown=false,pp=.35,pv=.35,glow=.3,last=0,flash='',flashT=0,shownR='',shownS='',uiAt=-1e9,coneK='';
+let setS=69,setV=60,s=69,v=60,side=1,vi=0,ptr=null,hold=false,holdUntil=-1e9,tapUntil=-1e9,auto=false,autoAt=0,pressT=-1e9,airDown=false,pp=.35,pv=.35,glow=.3,last=0,flash='',flashT=0,shownR='',shownS='',uiAt=-1e9,coneK='',drawn='';
 const say=m=>{announcement.textContent=m;},note=(m,ms=1400)=>{flash=m;flashT=performance.now()+ms;};
 // Sound, after a gesture: one sine with a vibrato LFO on its frequency, gliding to the hand.
 let ac=null,osc=null,amp=null,depth=null,aF=-1,aG=-1,aD=-1;
@@ -133,6 +133,8 @@ if(!auto)on=hold||now<holdUntil||now<tapUntil||!!(ptr&&ptr.v>.5);
 if(red||!dt){s=ts;v=tv;}else{s+=(ts-s)*(1-Math.exp(-dt*(auto?10:16)));v+=(tv-v)*(1-Math.exp(-dt*10));}
 const want=Math.min(1,(on?.42+.58*v/100:ptr?.16:.32)*(night.matches?1.5:1));glow=red||!dt?want:glow+(want-glow)*(1-Math.exp(-dt*6));
 const k=(s-S0)/(S1-S0),tsec=now/1000;if(red){pp=.35;pv=.35;}else{pp=(pp+dt*(on?.35+1.5*k:.1))%1;pv=(pv+dt*(on?.45:.08))%1;}
+// With reduced motion nothing moves between states: draw only when the state changes.
+const sig=red?[f2(s),f2(v),f2(glow),side,on].join():'';if(!red||sig!==drawn){drawn=sig;
 const wob=on&&!red?VIB[vi].w*1.5*Math.sin(tsec*5.6*Math.PI*2):0,dh=dOf(s),xh=ROD+side*dh+wob,zh=zOf(v),H=P(xh,PY,zh),zc=clamp(zh,96,150),rc=P(ROD,PY,zc),RM=clamp(dh,12,30);
 rings.forEach((n,i)=>{const t=(i+pp)/4,r=4+(RM-4)*t;set(n,'cx',f2(rc[0]));set(n,'cy',f2(rc[1]));set(n,'rx',f2(r*RX));set(n,'ry',f2(r*RY));set(n,'opacity',f2(glow*Math.sin(Math.PI*t)));});
 cols.forEach((n,j)=>{const t=(j+pv)/4,c=P(LX,PY,LZ+(zh-LZ)*t),r=11.5-5*t;set(n,'cx',f2(c[0]));set(n,'cy',f2(c[1]));set(n,'rx',f2(r*RX));set(n,'ry',f2(r*RY));set(n,'opacity',f2(glow*.95*Math.sin(Math.PI*t)));});
@@ -141,7 +143,7 @@ set(fline,'d',`M${f2(rc[0])},${f2(rc[1])}L${f2(H[0])},${f2(H[1])}`);set(fline,'o
 for(const n of[halo,hand,handRing]){set(n,'cx',f2(H[0]));set(n,'cy',f2(H[1]));}set(halo,'opacity',f2(glow*.7));const nn=nameOf(s);if(tag._t!==nn){tag._t=nn;tag.textContent=nn;}set(tag,'x',f2(H[0]+(side<0?-11.5:4.4)));set(tag,'y',f2(H[1]-3.6));set(tag,'opacity',f2(clamp(.4+glow)));set(hand,'opacity',f2(clamp(.35+glow)));set(handRing,'opacity',f2(clamp(glow*1.4)));
 const cyc=1.2+3.4*k,a=on?.9+4.2*v/100:.75,ph=red?0:tsec*3,vw=on&&!red?VIB[vi].w*.05*Math.sin(tsec*5.6*Math.PI*2):0;let d='';
 for(let i=0;i<=40;i++){const x=-7.6+15.2*i/40;d+=(i?'L':'M')+f2(x)+','+f2(-a*Math.sin(Math.PI*2*cyc*(1+vw)*i/40+ph));}set(trace,'d',d);set(traceSoft,'d',d);set(trace,'opacity',on?'1':'.55');
-const ck=on&&!red?f2(1+.05*v/100*(.5+.5*Math.sin(tsec*5.6*Math.PI*2))):'1.00';if(ck!==coneK){coneK=ck;set(cone,'transform',`translate(33.1 17.2) scale(${ck})`);}
+const ck=on&&!red?f2(1+.05*v/100*(.5+.5*Math.sin(tsec*5.6*Math.PI*2))):'1.00';if(ck!==coneK){coneK=ck;set(cone,'transform',`translate(33.1 17.2) scale(${ck})`);}}
 lit(lamp,on?'w':'g');const down=now-pressT<170;if(down!==airDown){airDown=down;airG.classList.toggle('down',down);}
 sound(on);ui(now,on);requestAnimationFrame(tick);}
 tick(performance.now());
