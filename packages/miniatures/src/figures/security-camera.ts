@@ -27,7 +27,7 @@ const defs = `<radialGradient id="glassG" cx=".4" cy=".36" r=".72"><stop offset=
 <clipPath id="frontClip"><rect x="1.2" y="1.2" width="16.6" height="18.6" rx="2.6"/></clipPath>`
 
 function draw(env: FigureEnv): void {
-const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
+const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* KEVRA PT–4 on a wall section. World: x lower-right, y lower-left, z up; pan from the diagonal (+x+y), tilt from the horizon.
 Part                        x      y      z      w      d      h
 floor light            a soft pool where the camera points, scaled to the frame; the house shadow under the wall
@@ -39,11 +39,11 @@ yoke                    crossbar 27.6 × 10 × 2.8 above the pan unit, arms up t
 housing                 50 × 19 × 21 along the look axis; dark glass front with lens, IR ring and shutter; sun shield 55 × 23 on standoffs
 Painter order: shadow, floor light, wall, floodlight, plate, junction box, arm, pan unit; crossbar, far arm, housing, sun shield, near arm; controls. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
-const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
+const{C,S,P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,box,cylinder,screw,frame}=kit(()=>root);
 // Family helpers: vectors, oriented planes, round parts on any axis, oriented boxes, outlined strokes, lamps and controls.
 const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mul=(a,s)=>a.map(v=>v*s),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 const unit=a=>mul(a,1/(Math.hypot(...a)||1)),VIEW=[1,1,1],RAD=Math.PI/180,clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),ramp=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);},f2=v=>v.toFixed(2),f3=v=>+v.toFixed(3);
-const plane=(o,U,V)=>`matrix(${[...P(...U),...P(...V),...P(...o)].map(f3).join(' ')})`,shade=n=>n[2]>.6?'top':n[0]>n[1]?'side':'',draw=root,into=g=>root=g;
+const plane=(o,U,V)=>`matrix(${[...P(...U),...P(...V),...P(...o)].map(f3).join(' ')})`,shade=n=>n[2]>.6?'top':n[0]>n[1]?'side':'';
 function axes(n){const U=unit(Math.abs(n[2])>.9?cross(n,[1,0,0]):cross([0,0,1],n));let V=cross(n,U);const a=P(...U),b=P(...V);if(a[0]*b[1]-a[1]*b[0]<0)V=mul(V,-1);return[U,V];}
 function tube(g,a,b,r,cls='',cap=true){const ax=sub(b,a),n=unit(ax),[U,V]=axes(n),pu=P(...U),pv=P(...V),pd=P(...ax),det=pu[0]*pv[1]-pv[0]*pu[1];if(Math.abs(det)<1e-4)return tube(g,a,add(b,[.02,-.01,0]),r,cls,cap);const u=(pd[0]*pv[1]-pv[0]*pd[1])/det,v=(pu[0]*pd[1]-pd[0]*pu[1])/det,l=Math.hypot(u,v)||1,tx=-v*r/l,ty=u*r/l;
 el('path',{d:`M${f2(tx)},${f2(ty)}A${r},${r} 0 0 1 ${f2(-tx)},${f2(-ty)}L${f2(u-tx)},${f2(v-ty)}A${r},${r} 0 0 1 ${f2(u+tx)},${f2(v+ty)}Z`,transform:plane(a,U,V),class:'face '+cls},g);
@@ -73,7 +73,7 @@ box(14,26,2,3.6,10,9,1.3,'');const jb=group(SIDE(17.6,36,11));circle(jb,5,3.6,2,
 sk(smooth([[15.6,17.4,11.4],[18.4,20,6.4],[18.2,24.6,6.4],[16.4,30,10.8]]),1.1,'sr');
 tube(root,[15.6,11,11.6],[26,11,16.6],1.1,'metal');tube(root,[15.6,11,18],[44,11,18],3.4,'metal');const sens=cylinder(23,11,21.3,2.1,1.1,'z','glass'),photo=lamp(sens.face,0,0,1.2);
 // Pan unit with its status ring on a mounting disc; above it the yoke, the housing and its sun shield, rebuilt in painter order as it moves.
-cylinder(44,11,21.4,8.4,2.2,'z','metal');const pu=cylinder(44,11,23.6,10,10,'z','');const ring=band(root,[44,11,29.8],[44,11,31.6],10.1,'sring');set(ring,'class','sring');ring._c='';cylinder(44,11,33.6,8.4,1.2,'z','dk');
+cylinder(44,11,21.4,8.4,2.2,'z','metal');cylinder(44,11,23.6,10,10,'z','');const ring=band(root,[44,11,29.8],[44,11,31.6],10.1,'sring');set(ring,'class','sring');ring._c='';cylinder(44,11,33.6,8.4,1.2,'z','dk');
 const L={yoke:el('g',{}),far:el('g',{}),head:el('g',{}),hood:el('g',{}),near:el('g',{})};
 const PIV=[44,11],TZ=52,HOME=45,Z=[1,2,4],LB=[0,1,2.6],REST=[45,-20],P0=5.27,TILT=[-38,20],HV=26;
 let[pan,tilt]=REST,vp=0,vt=0,[tp,tt]=REST,zi=0,lb=LB[0],zNow=1,shut=0,iris=1.4,night=false,privacy=false,events=0;
