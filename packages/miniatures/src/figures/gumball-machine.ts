@@ -155,8 +155,8 @@ function arrive(k){take=null;if(tray.length>=3)tray.shift();tray.push(k);out++;l
 function turn(user=true){touch(user);if(crank||drag)return;const red=reduced.matches;
 if(refill){notice('REFILLING · ONE MOMENT');return;}
 if(count<1){if(!red)crank={t0:performance.now(),dur:520,kind:'lock'};lockSound();notice('GLOBE EMPTY / R REFILLS IT','The globe is empty. Press R to refill it.');return;}
-if(credit<1){if(!red)crank={t0:performance.now(),dur:520,kind:'lock'};lockSound();notice('LOCKED / C DROPS IN A COIN','The crank is locked. Drop in a coin first: press C.');return;}
-credit--;if(red){release();return;}crank={t0:performance.now(),dur:T_TURN,kind:'turn',released:false};say('The crank turns and a gumball is let out.');}
+if(user&&credit<1){if(!red)crank={t0:performance.now(),dur:520,kind:'lock'};lockSound();notice('LOCKED / C DROPS IN A COIN','The crank is locked. Drop in a coin first: press C.');return;}
+if(user)credit--;if(red){release();return;}crank={t0:performance.now(),dur:T_TURN,kind:'turn',released:false};say('The crank turns and a gumball is let out.');}
 function takeAll(user=true){touch(user);if(!tray.length){notice('THE CUP IS EMPTY','The cup is empty.');return;}
 const n=tray.length;tray.length=0;if(reduced.matches)cupDraw();else take={t0:performance.now(),n};notice('TAKEN · ENJOY',n>1?'You take the gumballs from the cup.':'You take the gumball from the cup.');}
 function refillGlobe(user=true){touch(user);if(refill)return;if(count>=CAP){notice('GLOBE FULL','The globe is already full.');return;}
@@ -207,8 +207,8 @@ const jig=crank&&crank.kind==='turn'&&!red?[sin(now/23)*.5,cos(now/31)*.4]:[0,0]
 const pose=[ang,flapA,capY,...jig].map(v=>v.toFixed(2)).join('|');
 if(pose!==lastPose){lastPose=pose;spins.forEach((g,k)=>set(g,'transform',`translate(${-k} ${k}) rotate(${f2(ang)})`));
 set(flapG,'transform',plane(FLAP_O,[1,0,0],[0,sin(flapA),-cos(flapA)]));set(capLift,'transform',`translate(0 ${f2(capY)})`);set(churn,'transform',`translate(${f2(jig[0])} ${f2(jig[1])})`);}
-// Left alone it serves itself now and then: a coin, a turn, the cup emptied, a refill.
-if(!touched&&!red&&now-demoT>DEMO&&!crank&&!trav.length&&!refill&&!take&&!coin){demoT=now;if(tray.length>=3)takeAll(false);else if(count<1)refillGlobe(false);else if(credit<1){insertCoin(false);demoT=now-DEMO+1100;}else turn(false);}
+// Left alone it serves itself now and then: a turn that costs no credit, the cup emptied, a refill.
+if(!touched&&!red&&now-demoT>DEMO&&!crank&&!trav.length&&!refill&&!take&&!coin){demoT=now;if(tray.length>=3)takeAll(false);else if(count<1)refillGlobe(false);else turn(false);}
 ui(now);requestAnimationFrame(tick);}
 function ui(now){const pct=Math.round(count/CAP*100),r=`CREDIT ${credit} · OUT ${out}${last?' · '+last:''} · GLOBE ${pct}%`;
 const st=now<noteT?note:refill?'REFILLING THE GLOBE':crank&&crank.kind==='turn'||drag&&drag.moved>.05?'TURNING THE CRANK':trav.length?'ROLLING DOWN THE SPIRAL':count<1?'GLOBE EMPTY / R REFILLS IT':credit<1?'NO CREDIT / C DROPS IN A COIN':'READY / SPACE TURNS THE CRANK';

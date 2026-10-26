@@ -161,13 +161,24 @@ describe('GumballMachine', () => {
     expect(flap()).toBe(shut)
   })
 
-  it('left alone it serves itself now and then; a key from you stops that', async () => {
+  it('left alone it serves itself now and then without spending your credit; a key from you stops that', async () => {
     const alone = await play([], 9000, 'never')
-    expect(alone.snap().readout).toMatch(/ · OUT 1 · /)
+    expect(alone.snap().readout).toMatch(/^CREDIT 1 · OUT 1 · /)
+    await alone.run(40000)
+    expect(alone.snap().readout).toMatch(/^CREDIT 1 · OUT [3-9] · /)
     cleanup()
     const { snap, run } = await play(['d'], 50, 'never')
     await run(12000)
     expect(snap().readout).toBe('CREDIT 1 · OUT 0 · GLOBE 100%')
+  })
+
+  it('arriving after the demo has served, the first turn is still yours: the credit is there', async () => {
+    const { snap, press, run } = await play([], 9000, 'never')
+    expect(snap().readout).toMatch(/^CREDIT 1 · OUT 1 · /)
+    press([' '])
+    await run(6000)
+    expect(snap().readout).toMatch(/^CREDIT 0 · OUT 2 · /)
+    expect(snap().state).toMatch(new RegExp(`^${COLOR} · IN THE CUP / D TAKES IT$`))
   })
 
   it('with reduced motion nothing moves on its own: every change is a jump', async () => {
