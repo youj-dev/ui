@@ -29,8 +29,8 @@ The console leans back 35° from upright. On it, u runs across (+x), v down its 
 from O, the face's top left corner; a lift of w moves a face point by (EU·w, EV·w), so the whole console is drawn in face
 coordinates: its silhouette as paths through Q, the parts on its face in one plane group.
 Part                     u / x        v / y        w / z        w     h
-stand base               38–112      −24–5          0–3         74    29   the console's bottom edge rests on it
-stand lip                38–112        0–5          3–15        74     5   in front of the face's bottom edge
+stand base               38–112      −24–0          0–3         74    24   the console's bottom edge rests on it
+stand lip                38–112        0–5.5        0–15        74   5.5   chamfered, in front of the face's bottom edge
 body (two-tone shell)     0–150        0–88       −18–0        150    88   r 13: a slate shell, the cream face plate inset 2.6
 screen bezel             42–108        6–64          0          66    58   the LCD, 40 × 36 px at 1.2, from (51, 9.5); LED, wordmark
 d-pad                    c 21 · 40, span 26.8, arms 9.4, 3.1 proud; it rocks 1.5 toward the arm pressed
@@ -40,7 +40,7 @@ speaker grille           c 130 · 68.5: rings of holes to r 7.2
 cartridge                52.5–97.5   −12–32      −13.5–−5       45    44   out of the slot in the top edge; ejects 18 further
 Print, lamps and labels share their parent face. */
 const svg=document.getElementById('machine'),root=document.getElementById('drawing');
-const{P,set,el,group,rect,circle,line,text,box}=kit(()=>root);
+const{P,set,el,group,rect,circle,line,text}=kit(()=>root);
 const f2=v=>(+v).toFixed(2),f4=v=>(+v).toFixed(4),clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),RAD=Math.PI/180,ease=t=>(t=clamp(t),t*t*(3-2*t));
 // The console's frame: its face plane, the lift along its normal, and face coordinates to the drawing.
 const LEAN=35*RAD,SL=Math.sin(LEAN),CL=Math.cos(LEAN),W=150,H=88,T=18,R=13,ZB=3+T*SL;
@@ -56,19 +56,21 @@ function rpts(poly,rad,n=4){const m=poly.length,out=[];for(let i=0;i<m;i++){cons
 for(let k=0;k<=n;k++){const q=k/n,o=1-q;out.push([o*o*p0[0]+2*o*q*b[0]+q*q*p2[0],o*o*p0[1]+2*o*q*b[1]+q*q*p2[1]]);}}return out;}
 // The visible runs of an outline's sides (an edge faces the viewer when its outward normal runs against the lift), split by shade.
 function runs(pts,shade){const n=pts.length,nrm=pts.map((a,i)=>{const b=pts[(i+1)%n],nu=b[1]-a[1],nv=a[0]-b[0],l=Math.hypot(nu,nv)||1;return[nu/l,nv/l];});
-const vis=nrm.map(([nu,nv])=>nu*EU+nv*EV<-1e-6),cl=nrm.map(([nu,nv])=>shade?shade(nu,nv):''),out=[];
+const vis=nrm.map(([nu,nv])=>nu*EU+nv*EV<-1e-6),cl=nrm.map(n=>shade?shade(n):''),out=[];
 for(let i=0;i<n;i++){const h=(i+n-1)%n;if(!vis[i]||(vis[h]&&cl[h]===cl[i]))continue;const ch=[pts[i]];let j=i;do{j=(j+1)%n;ch.push(pts[j]);}while(vis[j]&&cl[j]===cl[i]&&j!==i);out.push({ch,c:cl[i]});}
 return out;}
 const band=(ch,lo,hi)=>[...ch.map(p=>lift(p,lo(p))),...ch.slice().reverse().map(p=>lift(p,hi(p)))];
 const at=k=>()=>k;
+// A prism along x through a profile in (y, z), counterclockwise: the faces that face the viewer, then its end at x1.
+function prism(pr,x0,x1,cls){const n=pr.length;pr.forEach((a,i)=>{const b=pr[(i+1)%n],ny=b[1]-a[1],nz=a[0]-b[0];if(ny+nz<=0)return;el('path',{d:dp([[x0,...a],[x1,...a],[x1,...b],[x0,...b]].map(q=>P(...q))),class:`face ${nz>.4*Math.hypot(ny,nz)?'top ':''}${cls}`});});el('path',{d:dp(pr.map(([y,z])=>P(x1,y,z))),class:'face side '+cls});}
 function ctl(g,label,tab){for(const[k,v]of Object.entries({class:'control',role:'button',tabindex:tab?'0':'-1','aria-label':label}))set(g,k,v);return g;}
 
 // Floor: the soft ground shadow (and the dark stage's contact shadow), then the stand's base under the console.
 const sc=P(88,-20,0);for(const c of['shadow stage-floor','stage-contact'])el('ellipse',{cx:f2(sc[0]),cy:f2(sc[1]),rx:60,ry:21,class:c});
-box(38,-24,0,74,29,3,.5,'stand');
+prism([[-24,0],[0,0],[0,3],[-24,3]],38,112,'stand');
 // The body: its shell's visible sides (the top edge lighter), the shell's front rim and the cream face plate.
 const BODY=rrp(0,0,W,H,R,12);
-for(const r of runs(BODY,(nu,nv)=>nv<-.6?'top':'side'))el('path',{d:dp(band(r.ch,at(-T),at(0)),Q),class:`face ${r.c} shell`});
+for(const r of runs(BODY,n=>n[1]<-.6?'top':'side'))el('path',{d:dp(band(r.ch,at(-T),at(0)),Q),class:`face ${r.c} shell`});
 el('path',{d:dp(BODY,Q),class:'face shell'});el('path',{d:dp(rrp(2.6,2.6,W-5.2,H-5.2,R-2.6,12),Q),class:'face plate'});
 el('path',{d:dp([[47,0,-3.4],[103,0,-3.4],[103,0,-15],[47,0,-15]].map(([u,v,w])=>lift([u,v],w)),Q),class:'face slot'});
 // The face: bezel with the LCD window, the LED and wordmark; seats for the buttons; the speaker grille; print.
@@ -126,11 +128,11 @@ function drawCart(d){const vt=-12-d,F=list=>dp(list.map(([u,v,w])=>qp(u,v,w)));
 set(cartR,'d',F([[CU1,vt,CW1],[CU1,vt,CW0],[CU1,0,CW0],[CU1,0,CW1]]));set(cartT,'d',F([[CU0,vt,CW0],[CU1,vt,CW0],[CU1,vt,CW1],[CU0,vt,CW1]]));set(cartF,'d',F([[CU0,vt,CW1],[CU1,vt,CW1],[CU1,0,CW1],[CU0,0,CW1]]));
 set(lab,'transform',`${FACE} translate(${f4(EU*CW1)} ${f4(EV*CW1-d)})`);set(sticker,'height',f2(8.2+Math.min(d,12)));
 set(cartRing,'d',F([[CU0-1.5,vt-1.5,CW1],[CU1+1.5,vt-1.5,CW1],[CU1+1.5,vt-1.5,CW0],[CU1+1.5,1,CW0],[CU0-1.5,1,CW1]]));}
-// The stand's lip, in front of the face's bottom edge.
-box(38,0,3,74,5,12,.5,'stand');
+// The stand's lip, chamfered, in front of the face's bottom edge.
+prism([[0,0],[5.5,0],[5.5,9],[2.2,15],[0,15]],38,112,'stand');
 // Framed on the console, the cartridge at the top of its eject, the stand and the dark stage's wider floor pool.
 {const pts=[...BODY.flatMap(p=>[Q(p),Q(lift(p,-T))]),...[[CU0,-30,CW1],[CU1,-30,CW0]].map(([u,v,w])=>qp(u,v,w))];
-for(const x of[38,112])for(const y of[-24,5])for(const z of[0,15])pts.push(P(x,y,z));pts.push([sc[0]-90,sc[1]-31.5],[sc[0]+90,sc[1]+31.5]);
+for(const x of[38,112])for(const y of[-24,5.5])for(const z of[0,15])pts.push(P(x,y,z));pts.push([sc[0]-90,sc[1]-31.5],[sc[0]+90,sc[1]+31.5]);
 const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),x0=Math.min(...xs)-6,y0=Math.min(...ys)-6;set(svg,'viewBox',[x0,y0,Math.max(...xs)+6-x0,Math.max(...ys)+6-y0].map(v=>+v.toFixed(2)).join(' '));}
 
 // Pip Hop, on a 40 × 36 LCD: a score and hearts on top, then five rows of five-pixel cells over the ground. Coins fall a row
