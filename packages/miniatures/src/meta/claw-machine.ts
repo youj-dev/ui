@@ -18,6 +18,6 @@ export const clawMachine = {
     { keys: ['p'], caps: ['P'], label: 'take the prize' },
   ],
   initial: { readout: 'CREDITS 3 · TIMER 15 · WON 0', state: 'READY · STEER, THEN SPACE DROPS', pressed: {} },
-  viewBox: '-85.01408311032397 -192 170.02816622064793 283',
+  viewBox: '-85.01408311032397 -202 170.02816622064793 293',
   progress: false,
 } as const satisfies MiniatureMeta

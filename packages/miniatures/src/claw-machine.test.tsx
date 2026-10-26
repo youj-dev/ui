@@ -14,7 +14,7 @@ describe('ClawMachine', () => {
 
   type Key = MiniatureClawMachineKey
   /** From the claw's home over the chute, the steps to the panda on top of the pile: dead centre. */
-  const OVER_PANDA: Key[] = ['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowUp', 'ArrowUp', 'ArrowUp', 'ArrowUp']
+  const OVER_PANDA: Key[] = ['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowUp', 'ArrowUp', 'ArrowUp', 'ArrowUp', 'ArrowUp']
 
   /** Mounts it (reduced motion unless asked otherwise), presses the keys in order and lets it settle. */
   const play = async (keys: Key[] = [], settle = 400, reducedMotion: 'always' | 'never' = 'always') => {
@@ -24,7 +24,8 @@ describe('ClawMachine', () => {
     const press = (list: Key[]) => list.forEach((k) => act(() => view.handle().press(k)))
     press(keys)
     await run(settle)
-    const bay = () => view.inside.querySelector('[clip-path="url(#bayClip)"]')!
+    /** The plushes waiting behind the prize door's flap. */
+    const bay = () => view.inside.querySelector('[clip-path="url(#bayClip)"]')!.querySelectorAll('[style*="--c:"]')
     const at = (selector: string) => view.inside.querySelector(selector)!
     return { ...view, run, press, bay, at, snap: () => view.handle().getSnapshot() }
   }
@@ -32,7 +33,7 @@ describe('ClawMachine', () => {
   it('starts ready with three credits, the claw parked over the chute', async () => {
     const { snap, bay } = await play()
     expect(snap()).toEqual(clawMachine.initial)
-    expect(bay().childElementCount).toBe(0)
+    expect(bay().length).toBe(0)
   })
 
   it('C adds a credit', async () => {
@@ -60,7 +61,7 @@ describe('ClawMachine', () => {
     await run(2400)
     expect(snap().readout).toBe('CREDITS 2 · TIMER 15 · WON 1')
     expect(snap().state).toBe('WINNER · THE PANDA')
-    expect(bay().childElementCount).toBe(1)
+    expect(bay().length).toBe(1)
     expect([...inside.querySelectorAll('.bulb')].every((b) => b.classList.contains('on'))).toBe(true)
     await run(3000)
     expect(snap().state).toBe('PRIZE AT THE DOOR · P TAKES IT')
@@ -68,11 +69,11 @@ describe('ClawMachine', () => {
 
   it('P takes the prize, and the plush goes back on the pile', async () => {
     const { snap, bay, press, run } = await play([...OVER_PANDA, ' '], 3000)
-    expect(bay().childElementCount).toBe(1)
+    expect(bay().length).toBe(1)
     press(['p'])
     await run(200)
     expect(snap().state).toBe('ENJOY THE PANDA')
-    expect(bay().childElementCount).toBe(0)
+    expect(bay().length).toBe(0)
     await run(2400)
     expect(snap().state).toBe('READY · STEER, THEN SPACE DROPS')
   })
@@ -83,7 +84,7 @@ describe('ClawMachine', () => {
     await run(3000)
     expect(snap().readout).toBe('CREDITS 2 · TIMER 15 · WON 0')
     expect(snap().state).toBe('IT SLIPPED · SO CLOSE')
-    expect(bay().childElementCount).toBe(0)
+    expect(bay().length).toBe(0)
   })
 
   it('off target, it misses', async () => {

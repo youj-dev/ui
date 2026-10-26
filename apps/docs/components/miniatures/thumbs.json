@@ -19,6 +19,10 @@
     "light": "/thumbs/miniatures/cell-tower.webp?v=853db58e99",
     "dark": "/thumbs/miniatures/cell-tower.dark.webp?v=956180850e"
   },
+  "claw-machine": {
+    "light": "/thumbs/miniatures/claw-machine.webp?v=161846e87c",
+    "dark": "/thumbs/miniatures/claw-machine.dark.webp?v=33ad14784d"
+  },
   "coffee-grinder": {
     "light": "/thumbs/miniatures/coffee-grinder.webp?v=e7e52c1f24",
     "dark": "/thumbs/miniatures/coffee-grinder.dark.webp?v=2a21c97998"

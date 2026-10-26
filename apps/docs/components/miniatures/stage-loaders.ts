@@ -10,6 +10,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'bank-vault': () => import('@youj/miniatures/bank-vault'),
   'card-catalog': () => import('@youj/miniatures/card-catalog'),
   'cell-tower': () => import('@youj/miniatures/cell-tower'),
+  'claw-machine': () => import('@youj/miniatures/claw-machine'),
   'coffee-grinder': () => import('@youj/miniatures/coffee-grinder'),
   'cooling-unit': () => import('@youj/miniatures/cooling-unit'),
   'crt-television': () => import('@youj/miniatures/crt-television'),
