@@ -5,18 +5,18 @@
 import type { FigureEnv, FigureModule } from '../engine/types'
 
 const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#808080;--top:#fafaf8;--body:#e0e0dc;--side:#c7c7c3;--base:#b6b6b3;--base-top:#cbcbc7;--base-side:#a4a4a1;--recess:#9d9d99;--glass:#ededeb;--line:#626260;--accent:#3b5bfd;--rule:#d6d6d2;--shadow:#262626;--off:#b9b9b5;--ok:#15a65e;--warn:#e88a00;--metal:#d6d6d2;--metal-top:#efefec;--metal-side:#b4b4b1;--wheel:#d3d3cf;--wheel-top:#ebebe8;--wheel-side:#b0b0ad;--tread:#a3a39f;--hubdk:#55554f;--cell:#2c3548;--cell-line:#4b5976;--foil:#d6ae62;--foil-top:#ebcd8c;--foil-side:#b48c45;--soil:#dcc8b6;--soil-in:#d3baa4;--track:#c3a48c;--rock:#c7a68f;--rock-top:#dcc2ad;--rock-side:#a9876f;--dust:#f3e9de;--lens:#14171b;--lens-in:#22303a;--lens-rim:#30363d;--coat:#4f9fc4;--flash:#fffdf2}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--base-top:#bebeba;--base-side:#737372;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--wheel:#b2b2af;--wheel-top:#dcdcd9;--wheel-side:#7b7b7a;--tread:#898986;--hubdk:#464642;--cell:#232b3b;--cell-line:#3d4862;--foil:#b49251;--foil-top:#dcc083;--foil-side:#7e612e;--soil:#5e534b;--soil-in:#665a50;--track:#4f453e;--rock:#a78b78;--rock-top:#ceb5a2;--rock-side:#765e4c;--dust:#d9c8b8;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1917;--ink:#e8e8e8;--muted:#929292;--rule:#32312e;--accent:#617cff;--shadow:#000;--top:#eaeae8;--body:#bdbdba;--side:#8c8c8b;--base:#999997;--base-top:#bebeba;--base-side:#737372;--recess:#6e6e6c;--glass:#c8c8c6;--off:#9b9b99;--ok:#36d886;--warn:#ffad2b;--metal:#b4b4b2;--metal-top:#e0e0dd;--metal-side:#7e7e7d;--wheel:#b2b2af;--wheel-top:#dcdcd9;--wheel-side:#7b7b7a;--tread:#898986;--hubdk:#464642;--cell:#232b3b;--cell-line:#3d4862;--foil:#b49251;--foil-top:#dcc083;--foil-side:#7e612e;--soil:#463d37;--soil-in:#51463e;--track:#332c27;--rock:#a78b78;--rock-top:#ceb5a2;--rock-side:#765e4c;--dust:#d9c8b8;--lens:#101215;--lens-in:#1d2830;--lens-rim:#2a2f35;--coat:#5fb0d4;--line:#444443}svg{--ink:#282828;--muted:#6b6b6b}}
 .face{fill:var(--body);stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round}.top{fill:var(--top)}.side{fill:var(--side,var(--body))}.base{fill:var(--base)}.top.base{fill:var(--base-top)}.side.base{fill:var(--base-side)}.recess{fill:var(--recess)}.detail{fill:none;stroke:var(--line);stroke-width:.65;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}.etch{fill:var(--muted);font:3.2px ui-monospace,monospace;letter-spacing:.45px;stroke:none}.label{fill:var(--ink);font:4px ui-monospace,monospace;letter-spacing:.6px;stroke:none}.brand{font-size:6px;letter-spacing:1.7px;font-weight:600}.brand.tiny{font-size:3px;letter-spacing:.9px}.micro{font-size:2.6px;letter-spacing:.2px}.center{text-anchor:middle}.shadow{fill:var(--shadow);opacity:.075;filter:url(#soft)}
 .metal{fill:var(--metal)}.top.metal{fill:var(--metal-top)}.side.metal{fill:var(--metal-side)}.wheel{fill:var(--wheel)}.top.wheel{fill:var(--wheel-top)}.side.wheel{fill:var(--wheel-side)}.tread{fill:var(--tread)}.hubdk{fill:var(--hubdk)}.foil{fill:var(--foil)}.top.foil{fill:var(--foil-top)}.side.foil{fill:var(--foil-side)}.rock{fill:var(--rock)}.top.rock{fill:var(--rock-top)}.side.rock{fill:var(--rock-side)}.drill{fill:var(--hubdk)}
 .soil{fill:url(#soilG);stroke:none}.trk{fill:none;stroke:var(--track);stroke-width:6.2;stroke-linecap:round;stroke-linejoin:round;opacity:.42}.grouse{fill:none;stroke:var(--track);stroke-width:.9;stroke-linecap:round;opacity:.9}.pebble{fill:var(--track);stroke:none;opacity:.75}
-.cells{fill:url(#cells);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.spine{fill:none;stroke:var(--metal);stroke-width:.9}.spoke{fill:none;stroke:var(--wheel);stroke-width:1;stroke-linecap:round}.grouser{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}
+.cells{fill:url(#cells);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.spine{fill:none;stroke:var(--metal);stroke-width:.9}.spoke{fill:none;stroke:var(--wheel);stroke-width:1;stroke-linecap:round}.grouser{fill:none;stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;opacity:.55}.grouser.band{opacity:.5;stroke-width:.6}
 .lensg{fill:url(#lensG);stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke}.coat{fill:none;stroke:var(--coat);stroke-width:.6;stroke-linecap:round;opacity:.8}.spec{fill:#fff;opacity:.75;stroke:none}.crinkle{fill:none;stroke:var(--foil-side);stroke-width:.4;opacity:.8}.hole{fill:var(--lens);stroke:none;opacity:0}.hole.on{opacity:.85}
 .lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok)}.lamp.a{fill:var(--warn)}.lamp.b{fill:var(--accent)}.lamp.g,.lamp.a,.lamp.b{filter:url(#glow)}
 .puff{fill:var(--dust);stroke:var(--track);stroke-width:.4;vector-effect:non-scaling-stroke;opacity:0}.flash{fill:var(--flash);opacity:0;filter:url(#bloom);pointer-events:none}.flashcore{fill:#fff;opacity:0;pointer-events:none}.ray{fill:none;stroke:#fff;stroke-width:1.1;stroke-linecap:round;opacity:0;pointer-events:none}
 .control{cursor:pointer;outline:none}.hit{fill:transparent;stroke:none}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.control:focus-visible .focus-ring{opacity:1}
 /* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
 
-const defs = `<radialGradient id="soilG"><stop offset="0" style="stop-color:var(--soil-in)"/><stop offset=".5" style="stop-color:var(--soil)"/><stop offset=".72" style="stop-color:var(--soil);stop-opacity:.8"/><stop offset=".88" style="stop-color:var(--soil);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--soil);stop-opacity:0"/></radialGradient>
+const defs = `<radialGradient id="soilG"><stop offset="0" style="stop-color:var(--soil-in)"/><stop offset=".6" style="stop-color:var(--soil)"/><stop offset=".8" style="stop-color:var(--soil);stop-opacity:.78"/><stop offset=".93" style="stop-color:var(--soil);stop-opacity:.26"/><stop offset="1" style="stop-color:var(--soil);stop-opacity:0"/></radialGradient>
 <radialGradient id="lensG" cx=".4" cy=".36" r=".72"><stop offset="0" style="stop-color:var(--lens-in)"/><stop offset=".7" style="stop-color:var(--lens)"/><stop offset="1" style="stop-color:var(--lens-rim)"/></radialGradient>
 <pattern id="cells" width="5.4" height="5" patternUnits="userSpaceOnUse"><rect width="5.4" height="5" style="fill:var(--cell)"/><path d="M0,.2H5.4M.2,0V5" style="fill:none;stroke:var(--cell-line);stroke-width:.45"/></pattern>`
 
@@ -24,9 +24,9 @@ function draw(env: FigureEnv): void {
 const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 /* SOLRAN PX–6 on a patch of dusty ground. World: x lower-right (the rover's forward), y lower-left (its left flank faces
 the viewer), z up. The rover stays at the origin and the ground moves under it: driving rolls the rocks, pebbles and
-tracks past, a point turn swings them round it.
+tracks past, a point turn swings them around it.
 Part                          x      y      z      w      d      h
-ground patch              r 66 round the origin, fading out; tracks, pebbles and rocks ride on it
+ground patch              r 55 around the origin, fading out; tracks, pebbles and rocks ride on it
 body (warm box)             −24    −15     22     46     30     16   foil panel and brand plate on the flank, hazcams on the nose
 deck                        −30    −21     38     54     42    2.5   solar array x −28…4, equipment bay in front
 mast                     r 2.2 at 14 −12 from the deck to z 75; head 9 × 18 × 8 at z 79.5, pans and tilts
@@ -46,9 +46,12 @@ const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mul=(a,s)=
 const plane=(o,U,V)=>`matrix(${[...P(...U),...P(...V),...P(...o)].map(f2).join(' ')})`,shade=n=>n[2]>.6?'top':n[0]>n[1]?'side':'';
 const q2=p=>P(...p).map(f2).join(','),pth=(pts,close)=>pts.map((p,i)=>(i?'L':'M')+q2(p)).join('')+(close?'Z':'');
 function axes(n){n=unit(n);const U=unit(abs(n[2])>.9?cross(n,[1,0,0]):cross([0,0,1],n));let V=cross(n,U);const a=P(...U),b=P(...V);if(a[0]*b[1]-a[1]*b[0]<0)V=mul(V,-1);return[U,V];}
-/* A round part between two points: its body (the stadium the bank vault's door uses) and the end that faces the viewer. */
-function stadium(n,c0,c1,r){let A=sub(c1,c0);if(dot(A,VW)<0){[c0,c1]=[c1,c0];A=mul(A,-1);}const[U,V]=axes(A),pu=P(...U),pv=P(...V),d=P(...A),det=pu[0]*pv[1]-pv[0]*pu[1]||1e-9,u=(d[0]*pv[1]-pv[0]*d[1])/det,v=(pu[0]*d[1]-d[0]*pu[1])/det,l=hypot(u,v)||1,tx=-v*r/l,ty=u*r/l;
-set(n,'transform',plane(c0,U,V));set(n,'d',`M${f2(tx)},${f2(ty)}A${r},${r} 0 0 1 ${f2(-tx)},${f2(-ty)}L${f2(u-tx)},${f2(v-ty)}A${r},${r} 0 0 1 ${f2(u+tx)},${f2(v+ty)}Z`);return[c1,U,V,unit(A)];}
+/* A round part between two points: its outline on the drawing (the two ends' ellipses and the lines that touch both,
+drawn straight on the page, so no end-on plane ever stretches its bounds) and the end that faces the viewer. */
+function stadium(n,c0,c1,r){let A=sub(c1,c0);if(dot(A,VW)<0){[c0,c1]=[c1,c0];A=mul(A,-1);}const[U,V]=axes(A),p0=P(...c0),p1=P(...c1),d=[p1[0]-p0[0],p1[1]-p0[1]],pu=mul(P(...U),r),pv=mul(P(...V),r),cr=(a,b)=>a[0]*b[1]-a[1]*b[0];
+const E=(t,k=0)=>[pu[0]*cos(t+k)+pv[0]*sin(t+k),pu[1]*cos(t+k)+pv[1]*sin(t+k)],t0=atan2(cr(d,pv),cr(d,pu)),m=E(t0,PI/2),s=m[0]*d[0]+m[1]*d[1]>0?1:-1,K=.5523,at=(c,t)=>{const q=E(t);return[c[0]+q[0],c[1]+q[1]];},pt=q=>`${f2(q[0])},${f2(q[1])}`;
+const arc=(c,t)=>{let o='';for(let i=0;i<2;i++){const a=t+s*i*PI/2,b=a+s*PI/2,A0=at(c,a),B0=at(c,b),da=E(a,PI/2),db=E(b,PI/2);o+=`C${pt([A0[0]+s*K*da[0],A0[1]+s*K*da[1]])} ${pt([B0[0]-s*K*db[0],B0[1]-s*K*db[1]])} ${pt(B0)}`;}return o;};
+set(n,'d',`M${pt(at(p0,t0))}L${pt(at(p1,t0))}${arc(p1,t0)}L${pt(at(p0,t0+s*PI))}${arc(p0,t0+s*PI)}Z`);return[c1,U,V,unit(A)];}
 function tube(g,cls){const t={b:el('path',{class:'face '+cls},g),g:el('g',{},g),cls,sh:null};t.c=circle(t.g,0,0,1,'face '+cls);return t;}
 function tb(t,c0,c1,r){const[e,U,V,n]=stadium(t.b,c0,c1,r);set(t.g,'transform',plane(e,U,V)+` scale(${f2(r)})`);const s=shade(n);if(s!==t.sh){t.sh=s;set(t.c,'class','face '+s+' '+t.cls);}}
 /* A box on any three axes, its six faces made once: each frame shows the ones that face the viewer. */
@@ -74,16 +77,16 @@ function poseBody(){for(const b of BF)set(b.g,'transform',plane(BP(b.o),BV(b.U),
 
 // Ground: the patch of dusty soil (a projected outline, fading at its edge), the house shadow under the rover, the
 // wheel tracks with their grouser marks, and pebbles. Rocks stand among the rover's parts in the scene below.
-const RR=66;
+const RR=55;
 {const pts=[...Array(40)].map((_,i)=>{const a=i/40*2*PI,k=1+.045*sin(3*a+.7)+.03*sin(7*a+2.1)+.018*sin(12*a+.4);return P(RR*k*cos(a),RR*k*sin(a),0);}),n=pts.length;let d=`M${f2(pts[0][0])},${f2(pts[0][1])}`;
 for(let i=0;i<n;i++){const a=pts[(i-1+n)%n],b=pts[i],c=pts[(i+1)%n],e=pts[(i+2)%n];d+=`C${f2(b[0]+(c[0]-a[0])/6)},${f2(b[1]+(c[1]-a[1])/6)} ${f2(c[0]-(e[0]-b[0])/6)},${f2(c[1]-(e[1]-b[1])/6)} ${f2(c[0])},${f2(c[1])}`;}el('path',{d:d+'Z',class:'soil'});}
-el('ellipse',{cx:0,cy:2,rx:56,ry:27,class:'shadow stage-floor'});el('ellipse',{cx:0,cy:2,rx:56,ry:27,class:'stage-contact'});
+el('ellipse',{cx:0,cy:2,rx:48,ry:24,class:'shadow stage-floor'});el('ellipse',{cx:0,cy:2,rx:48,ry:24,class:'stage-contact'});
 const trk=[el('path',{class:'trk'}),el('path',{class:'trk'})],marks=el('path',{class:'grouse'}),peb=el('path',{class:'pebble'});
 // The scene: the rover's parts in a fixed order, the rocks slotted in among them by depth.
 const scene=el('g',{}),FW=[0,1,2].map(()=>el('g',{},scene)),FL=el('g',{},scene),BODY=el('g',{},scene),NL=el('g',{},scene),NW=[0,1,2].map(()=>el('g',{},scene)),ARM=el('g',{},scene),fx=el('g',{});
 const WX=[-30,0,30],WR=8.5,WW=7,TRACK=28;
 // Wheels: a grousered tread, the rim, a dark well with six flexure spokes that turn as it rolls, and the hub.
-function wheel(g){const w={band:el('path',{class:'face tread'},g),cap:el('g',{},g),sh:null};w.rim=circle(w.cap,0,0,WR,'face wheel');circle(w.cap,0,0,WR-1.8,'face hubdk');w.spin=el('g',{},w.cap);
+function wheel(g){const w={band:el('path',{class:'face tread'},g),gr:el('path',{class:'grouser band'},g),cap:el('g',{},g),sh:null};w.rim=circle(w.cap,0,0,WR,'face wheel');circle(w.cap,0,0,WR-1.8,'face hubdk');w.spin=el('g',{},w.cap);
 for(let k=0;k<6;k++){const a=k*60*RAD,b=a+34*RAD;el('path',{d:`M${f2(2*cos(a))},${f2(2*sin(a))}Q${f2(5.4*cos(a+.2))},${f2(5.4*sin(a+.2))} ${f2(6.7*cos(b))},${f2(6.7*sin(b))}`,class:'spoke'},w.spin);}
 for(let k=0;k<12;k++){const a=k*30*RAD;el('path',{d:`M${f2(7.1*cos(a))},${f2(7.1*sin(a))}L${f2(8.5*cos(a))},${f2(8.5*sin(a))}`,class:'grouser'},w.spin);}circle(w.cap,0,0,2.3,'face metal');circle(w.cap,0,0,.8,'face recess');return w;}
 const WH=[];for(const s of[-1,1])WX.forEach((x,i)=>WH.push({x,y:s*TRACK,s,i,w:wheel((s<0?FW:NW)[i]),z:WR,st:0,spin:0,key:''}));
@@ -92,12 +95,12 @@ const WH=[];for(const s of[-1,1])WX.forEach((x,i)=>WH.push({x,y:s*TRACK,s,i,w:wh
 function suspension(g,s){const L={};const mk=(...k)=>k.forEach(n=>L[n]=tube(g,['pin','cap','fa','ra'].includes(n)?'base':'metal'));
 if(s<0)mk('fa','ra','fb','rb','rr','rf','br','bf','pin');else mk('br','bf','pin','rr','rf','cap','fb','fa','rb','ra');return L;}
 const SUS={'-1':suspension(FL,-1),'1':suspension(NL,1)};
-// The body: the warm box, its flank (foil panel, brand plate, louvres) and nose (hazcams, status lamp), the arm's
+// The body: the warm box, its flank (foil panel, brand plate) and nose (hazcams, status lamp), the arm's
 // shoulder bracket, the near rocker's differential boss, then the deck: solar array, mast, head, dish and whip.
 root=BODY;
 const hull=bbox(-24,-15,22,46,30,16,2.4,'');BODY.appendChild(hull.g);let noseLamp=null;
-{const f=hull.f;rect(f,31.6,2.4,12.4,11,1,'face foil');for(const[a,b,c,d]of[[34,3.2,36.4,12.8],[38.6,2.8,40.4,13.2],[42.2,3.6,43.2,9]])el('path',{d:`M${a},${b}L${c},${d}`,class:'crinkle'},f);
-rect(f,2.6,2.6,17.4,5.2,1,'face metal');text(f,11.3,6.25,'SOLRAN','label brand tiny center');for(let k=0;k<5;k++)rect(f,3.6+k*3.3,10,1.5,3.4,.6,'face recess');
+{const f=hull.f;rect(f,31.4,5,12.8,9,1,'face foil');for(const[a,b,c,d]of[[34,5.8,36.2,13.2],[38.4,5.4,40.2,13.4],[42,6.2,43.2,10.4]])el('path',{d:`M${a},${b}L${c},${d}`,class:'crinkle'},f);
+rect(f,2.4,6.6,16.6,4.6,1,'face metal');text(f,10.7,9.95,'SOLRAN','label brand tiny center');
 const n=hull.s;rect(n,1.6,2.4,10.6,10.8,1.2,'face metal');for(const u of[13.4,20.6]){circle(n,u,4,2.1,'face recess');circle(n,u,4,1.4,'lensg');circle(n,u-.5,3.5,.4,'spec');}noseLamp=lamp(n,26.4,4,.9);}
 const shoulder=bbox(22,3.4,25.6,3.2,9.6,8.6,1,'metal');BODY.appendChild(shoulder.g);
 btube([4,15,32],[4,21.6,32],3.6,'base');
@@ -120,20 +123,20 @@ root=draw0;
 const puffs=[...Array(6)].map(()=>el('circle',{r:2,class:'puff'},fx)),flash=el('circle',{r:15,class:'flash'},fx),flashCore=el('circle',{r:3.2,class:'flashcore'},fx),rays=el('path',{d:'M-9,0H-4.5M4.5,0H9M0,-9V-4.5M0,4.5V9M-5,-5L-3,-3M5,5L3,3M5,-5L3,-3M-5,5L-3,3',class:'ray'},fx);
 const hBtn=button(el('g',{}),{'aria-label':'Take a panorama (P)'}),hHit=el('circle',{r:13,class:'hit'},hBtn),hRing=el('circle',{r:14,class:'focus-ring'},hBtn);
 const aq=P(28,0,24),aBtn=button(el('g',{}),{'aria-label':'Sample the nearest rock (Space)'});el('circle',{cx:f2(aq[0]),cy:f2(aq[1]),r:13,class:'hit'},aBtn);el('circle',{cx:f2(aq[0]),cy:f2(aq[1]),r:14,class:'focus-ring'},aBtn);
-// Rocks: low faceted stones, made once round their own centre and moved by translation; a cored one shows its hole.
-const ROCKS=[[52,7,5.6,4.6],[46,29,4.6,3.6],[-31,28,5,4.4],[-48,-26,5.4,4.2],[8,50,5.2,3.8],[-40,40,4.2,3],[34,-50,6,4.6],[-12,-52,4.4,3.4]].map(([x,y,r,h])=>{
+// Rocks: low faceted stones, made once around their own center and moved by translation; a cored one shows its hole.
+const ROCKS=[[45,4,5.4,4.4],[44,27,4.2,3.4],[-31,28,5,4.4],[-44,-22,5,4],[6,46,4.6,3.4],[-30,40,3.8,2.8],[28,-40,5.4,4.2],[-12,-46,4.2,3.2]].map(([x,y,r,h])=>{
 const g=el('g',{},scene),n=7,a0=rnd()*PI,base=[],tp=[];for(let i=0;i<n;i++){const a=a0+i/n*2*PI+(rnd()-.5)*.5,k=r*(.8+rnd()*.3);base.push([k*cos(a),k*sin(a)*.9,0]);const kt=k*(.38+rnd()*.26);tp.push([kt*cos(a)+r*.1,kt*sin(a)*.9-r*.08,h*(.8+rnd()*.32)]);}
 const faces=[];for(let i=0;i<n;i++){const b0=base[i],b1=base[(i+1)%n],t1=tp[(i+1)%n],t0=tp[i],nn=unit(cross(sub(b1,b0),sub(t0,b0)));if(dot(nn,VW)>0)faces.push({d:pth([b0,b1,t1,t0],true),z:dot(add(b0,b1),VW),c:shade(nn)});}
 faces.sort((p,q)=>p.z-q.z).forEach(f=>el('path',{d:f.d,class:'face rock '+f.c},g));el('path',{d:pth(tp,true),class:'face top rock'},g);el('path',{d:pth([tp[0],tp[3]]),class:'detail',opacity:.5},g);
 const hc=tp.reduce((s,p)=>add(s,mul(p,1/n)),[0,0,0]),hq=P(...hc),hole=el('ellipse',{cx:f2(hq[0]),cy:f2(hq[1]),rx:1.15,ry:.66,class:'hole'},g);
 return{g,gx:x,gy:y,r,h,lx:x,ly:y,hole,top:hc[2],o:-1,cored:false};});
-const PEB=[...Array(18)].map(()=>{const a=rnd()*2*PI,d=12+rnd()*50;return{gx:d*cos(a),gy:d*sin(a),r:.55+rnd()*.7};});
-frame([[-46.7,-46.7,0,93.4,93.4,0],[8,-18,0,12,12,90]],9);
+const PEB=[...Array(16)].map(()=>{const a=rnd()*2*PI,d=10+rnd()*41;return{gx:d*cos(a),gy:d*sin(a),r:.55+rnd()*.7};});
+frame([[-38.9,-38.9,0,77.8,77.8,0],[8,-18,0,12,12,90]],9);
 // State. The rover in the ground's frame (X, Y, heading H); a queue of drives and point turns; the arm's moves; the
-// mast's pan and tilt; the panorama; the autopilot that drives, samples and looks round when it is left alone.
+// mast's pan and tilt; the panorama; the autopilot that drives, samples and looks around when it is left alone.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 const say=m=>{announcement.textContent=m;},U_M=20,SPD=22,ACC=40,TURN=42*RAD,STEER_T=.32,HOME=[36,-8];
-let X=0,Y=0,H=0,odo=0,v=0,queue=[],pending=false,steer=0,lastDir=1,T=0,last=0,samples=0,frames=0,note='',noteT=-1,arm=null,pano=null,ptr=null,lostT=-1,userT=-9,autoI=0,autoWait=1.4,scanI=0,scanT=0;
+let X=0,Y=0,H=0,odo=0,v=0,queue=[],pending=false,steer=0,lastDir=1,T=0,last=0,samples=0,frames=0,note='',noteT=-1,arm=null,pano=null,ptr=null,lostT=-1,userT=-9,autoI=0,autoWait=1.4,autoTry=0,scanI=0,scanT=0;
 let hy=HOME[0],ht=HOME[1],vy=0,vt=0,q=[-90,0,-163,-90],drawn='',lastUI='',order='',trackG=[],lastFlash=-1,flashAt=[0,0];
 const QS=[-90,0,-163,-90],QU=[-38,42,-92,-90];
 for(let x=-74;x<=30;x+=2)trackG.push([[x,TRACK],[x,-TRACK]]);
@@ -148,7 +151,7 @@ function local(o){const dx=o.gx-X,dy=o.gy-Y;o.lx=dx*cos(H)+dy*sin(H);o.ly=-dx*si
 function toGround(lx,ly){return[X+lx*cos(H)-ly*sin(H),Y+lx*sin(H)+ly*cos(H)];}
 function lift(x,y){let z=0;for(const r of ROCKS){const w=r.r+4.6,d=hypot(x-r.lx,y-r.ly);if(d<w)z=max(z,r.h*.94*.5*(1+cos(PI*d/w)));}return z;}
 // A rock or pebble that leaves the patch comes back at its far edge, ahead of the rover or behind it.
-function respawn(o,dir,rock){for(let k=0;k<8;k++){const ly=rock&&rnd()<.45?(rnd()<.5?-1:1)*(TRACK+(rnd()-.5)*6):(rnd()*2-1)*(rock?54:58),lx=dir*sqrt(max(0,(RR-4)**2-ly*ly));[o.gx,o.gy]=toGround(lx,ly);local(o);if(!rock||ROCKS.every(r=>r===o||hypot(r.lx-o.lx,r.ly-o.ly)>r.r+o.r+6))break;}if(rock){o.cored=false;set(o.hole,'class','hole');}}
+function respawn(o,dir,rock){for(let k=0;k<8;k++){const ly=rock&&rnd()<.3?(rnd()<.5?-1:1)*(TRACK+(rnd()-.5)*6):(rnd()*2-1)*(rock?54:58),lx=dir*sqrt(max(0,(RR-4)**2-ly*ly));[o.gx,o.gy]=toGround(lx,ly);local(o);if(!rock||ROCKS.every(r=>r===o||hypot(r.lx-o.lx,r.ly-o.ly)>r.r+o.r+9))break;}if(rock){o.cored=false;set(o.hole,'class','hole');}}
 function moveGround(ds,dh){X+=ds*cos(H);Y+=ds*sin(H);H+=dh;odo+=abs(ds);if(ds)lastDir=sgn(ds);
 for(const w of WH){const roll=[cos(w.st),sin(w.st),0],dp=[ds-dh*w.y,dh*w.x,0];w.spin+=dot(dp,roll)/WR;}
 for(const r of ROCKS){local(r);if(hypot(r.lx,r.ly)>RR+1)respawn(r,lastDir,true);}for(const p of PEB){local(p);if(hypot(p.lx,p.ly)>RR-3)respawn(p,lastDir,false);}
@@ -187,10 +190,11 @@ document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.def
 // The autopilot: when nobody has touched it for a while, a short loop of drives, turns, a core and a panorama.
 const AUTO=[['d',2],['w',.8],['s'],['w',1.2],['t',30],['d',1],['p'],['w',.6],['t',-30],['d',2],['w',1]];
 function autopilot(dt){if(reduced.matches||T-userT<9||arm||pano||queue.length||abs(v)>.01)return;if((autoWait-=dt)>0)return;const[k,a]=AUTO[autoI];autoI=(autoI+1)%AUTO.length;autoWait=.5;
-if(k==='w')autoWait=a;else if(k==='d')queue.push({k:'d',v:a*U_M});else if(k==='t')queue.push({k:'t',v:a*RAD});else if(k==='p')pano={t:0};else if(k==='s')sample(true);}
+if(k==='w')autoWait=a;else if(k==='d')queue.push({k:'d',v:a*U_M});else if(k==='t')queue.push({k:'t',v:a*RAD});else if(k==='p')pano={t:0};else if(k==='s'){if(target().rock||autoTry>1){autoTry=0;sample(true);}else{autoTry++;autoI=(autoI+AUTO.length-1)%AUTO.length;queue.push({k:'d',v:U_M});}}}
 // Drawing it: the wheels and links from the kinematics, the body from its pose, the head, the arm, rocks and tracks.
 function drawWheels(){for(const w of WH){const key=[w.z,w.st,w.spin].map(f2).join();if(key===w.key)continue;w.key=key;const hub=[w.x,w.y,w.z],ax=[-sin(w.st),cos(w.st),0],[e,U,V,n]=stadium(w.w.band,sub(hub,mul(ax,WW/2)),add(hub,mul(ax,WW/2)),WR);
-set(w.w.cap,'transform',plane(e,U,V));const s=shade(n);if(s!==w.w.sh){w.w.sh=s;set(w.w.rim,'class','face '+s+' wheel');}set(w.w.spin,'transform',`rotate(${f2(w.spin/RAD*(dot(cross(U,V),ax)>0?1:-1))})`);}}
+set(w.w.cap,'transform',plane(e,U,V));const s=shade(n);if(s!==w.w.sh){w.w.sh=s;set(w.w.rim,'class','face '+s+' wheel');}const sp=w.spin*(dot(cross(U,V),ax)>0?1:-1);set(w.w.spin,'transform',`rotate(${f2(sp/RAD)})`);
+let gd='';for(let k=0;k<16;k++){const t=sp+k*PI/8,dv=add(mul(U,cos(t)),mul(V,sin(t)));if(dot(dv,VW)<.12)continue;const o=add(hub,mul(dv,WR));gd+=`M${q2(sub(o,mul(ax,WW/2)))}L${q2(add(o,mul(ax,WW/2)))}`;}set(w.w.gr,'d',gd);}}
 function drawLinks(){for(const s of[-1,1]){const L=SUS[s],k=LK[s],R=BP([4,s*21,32]),Rb=[k.B[0],s*21,k.B[2]];tb(L.br,k.Ar,k.B,1.5);tb(L.bf,k.B,k.Am,1.5);tb(L.pin,[k.B[0],s*17.6,k.B[2]],[k.B[0],s*22.4,k.B[2]],2.2);tb(L.rr,R,Rb,1.8);tb(L.rf,R,k.Af,1.8);if(L.cap)tb(L.cap,R,add(R,[0,s*2.4,0]),2.5);
 for(const[a,b,x,z]of[['fa','fb',30,k.z2],['ra','rb',-30,k.z0]]){tb(L[b],[x,s*(x>0?21:19),z+12],[x,s*TRACK,z+12],1.2);tb(L[a],[x,s*TRACK,z+9.2],[x,s*TRACK,z+15.4],2.6);}}}
 function drawHead(){const a=hy*RAD,t=ht*RAD,f=BV([cos(a)*cos(t),sin(a)*cos(t),sin(t)]),s=BV([-sin(a),cos(a),0]),u=cross(f,s),c=BP([14,-12,79.5]);obx(headBox,c,[f,s,mul(u,-1)]);
@@ -202,7 +206,7 @@ for(const{p}of parts){if(p.tu)ARM.appendChild(AP.tu);else{ARM.appendChild(p.b);A
 function drawGround(){const pts=j=>{const out=[];for(let i=trackG.length-1;i>=0;i--){const[gx,gy]=trackG[i][j],o=local({gx,gy});if(hypot(o.lx,o.ly)>RR-5)break;out.unshift([o.lx,o.ly]);}out.push([30,j?-TRACK:TRACK]);return out;};
 let md='';for(const j of[0,1]){const p=pts(j);set(trk[j],'d',p.length>1?pth(p.map(([x,y])=>[x,y,0])):'');for(let i=0;i<p.length;i+=1){const[x,y]=p[i],nx=p[min(i+1,p.length-1)],pv=p[max(i-1,0)],dx=nx[0]-pv[0],dy=nx[1]-pv[1],l=hypot(dx,dy)||1,ux=-dy/l*3,uy=dx/l*3;md+=`M${q2([x+ux,y+uy,0])}L${q2([x-ux,y-uy,0])}`;}}set(marks,'d',md);
 let pd='';for(const p of PEB){local(p);const c=P(p.lx,p.ly,0),r=p.r;pd+=`M${f2(c[0]-r*1.22)},${f2(c[1])}a${f2(r*1.22)},${f2(r*.7)} 0 1 0 ${f2(r*2.44)},0a${f2(r*1.22)},${f2(r*.7)} 0 1 0 ${f2(-r*2.44)},0`;}set(peb,'d',pd);
-for(const r of ROCKS){local(r);const c=P(r.lx,r.ly,0);set(r.g,'transform',`translate(${f2(c[0])} ${f2(c[1])})`);const o=+clamp((RR+1-hypot(r.lx,r.ly))/12).toFixed(2);if(o!==r.o){r.o=o;set(r.g,'opacity',o);}}}
+for(const r of ROCKS){local(r);const c=P(r.lx,r.ly,0);set(r.g,'transform',`translate(${f2(c[0])} ${f2(c[1])})`);const o=+clamp((RR+2-hypot(r.lx,r.ly))/9).toFixed(2);if(o!==r.o){r.o=o;set(r.g,'opacity',o);}}}
 /* The scene's order: rocks behind the rover first, then far wheels with the rocks in their lane, the rocks under the
 rover, far links, body, near links, the near wheels with the rocks in theirs, the rocks in front, the arm. */
 function reorder(){const slot=r=>{const d=r.lx+r.ly;if(abs(r.lx)<=42&&abs(r.ly)<=24)return['u',0];if(r.ly<-24)return['f',WX.filter(x=>x-TRACK+1<d).length];if(r.ly>24)return['n',WX.filter(x=>x+TRACK+1<d).length];return[r.lx>0?'x':'b',0];};
@@ -214,7 +218,7 @@ const cmd=queue[0],climbing=WH.some(w=>w.z>WR+1.2);let st=T<noteT?note:arm?arm.s
 if(r+st!==lastUI){lastUI=r+st;readout.textContent=r;stateLabel.textContent=st;}}
 const SCAN=[[36,-8],[-24,-4],[64,-14],[8,-2],[-58,-7],[30,-16]];
 function tick(now){const dt=last?min((now-last)/1000,.05):0,red=reduced.matches;last=now;T+=dt;autopilot(dt);
-// Drives and turns: wheels straight to drive, toed in round the centre to turn; a speed that eases in and out.
+// Drives and turns: wheels straight to drive, toed in around the center to turn; a speed that eases in and out.
 const cmd=queue[0];let ds=0,dh=0;const want=cmd?.k==='t'?1:0;steer=red?want:want>steer?min(want,steer+dt/STEER_T):max(want,steer-dt/STEER_T);
 if(cmd&&cmd.k==='d'&&steer===0){const vmax=min(SPD,sqrt(2*ACC*abs(cmd.v))),tv=sgn(cmd.v)*vmax;v+=clamp(tv-v,-ACC*dt,ACC*dt);ds=v*dt;if(abs(ds)>=abs(cmd.v)||sgn(ds)!==sgn(cmd.v)&&abs(v)<1){ds=abs(ds)>=abs(cmd.v)?cmd.v:0;queue.shift();v=0;}else cmd.v-=ds;}
 else if(cmd&&cmd.k==='t'&&steer===1){dh=sgn(cmd.v)*min(abs(cmd.v),TURN*dt);cmd.v-=dh;if(abs(cmd.v)<1e-4)queue.shift();}else v=0;
@@ -224,7 +228,7 @@ if(pending&&!queue.length&&!arm&&abs(v)<.01)sample(true);
 // The arm runs its steps, joint by joint; with reduced motion it holds the drill pose a moment and then stows.
 let drilling=0;if(arm){const s=arm.steps[arm.i];if(red){arm.t+=dt;if(arm.t>1.1){cored();q=QS.slice();arm=null;noteFor(`SAMPLE ${pad(samples)} · CACHED`);}else drilling=.5;}
 else{arm.t+=dt;const k=clamp(arm.t/s[1]),e=ease(k);q=arm.from.map((x,i)=>lerp(x,s[0][i],e));if(arm.i===3)drilling=k;if(k>=1){if(arm.i===3)cored();arm.i++;arm.t=0;arm.from=q.slice();if(arm.i===3){hiss(1.4,.02,950,2.5);tone(118,1.35,.006,0,'square');}if(arm.i>=arm.steps.length){arm=null;noteFor(`SAMPLE ${pad(samples)} · CACHED`);}}}}
-// The mast: the pointer, a panorama sweep, a slow look round when idle, or home.
+// The mast: the pointer, a panorama sweep, a slow look around when idle, or home.
 let ty=HOME[0],tt=HOME[1],flashA=0;if(pano){pano.t+=dt;if(pano.red){ty=62;tt=-6;if(pano.t>1.8)pano=null;}else{const pt=pano.t;if(pt<.6){ty=-76;tt=-4;}else if(pt<2.3){ty=lerp(-76,74,ease((pt-.6)/1.7));tt=-4;}else{ty=74;tt=-4;}
 if(pt>=2.3&&!pano.shot){pano.shot=true;frames++;noteFor(`PANORAMA · FRAME ${pad(frames)}`,1.8);tone(2600,.02,.012,0,'square');tone(1700,.03,.01,.05,'square');say(`Panorama taken, frame ${frames}.`);}
 flashA=pt>=2.3&&pt<2.6?sin((pt-2.3)/.3*PI):0;if(pt>3.1)pano=null;}}

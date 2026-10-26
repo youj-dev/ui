@@ -26,8 +26,8 @@ describe('Mars rover', () => {
   }
   /** Where each rock stands: its group's translation. */
   const rocks = (inside: ShadowRoot) => [...inside.querySelectorAll('path.top.rock')].map((p) => p.parentElement!.getAttribute('transform'))
-  /** The wheels' treads, drawn in the plane across each axle: the shape turns as a wheel steers. */
-  const treads = (inside: ShadowRoot) => [...inside.querySelectorAll('path.tread')].map((p) => p.getAttribute('d'))
+  /** Which way each wheel's axle points: the plane of its outer face (the matrix without its translation) turns as it steers. */
+  const axles = (inside: ShadowRoot) => [...inside.querySelectorAll('path.tread')].map((p) => p.parentElement!.lastElementChild!.getAttribute('transform')!.split(' ').slice(0, 4).join(' '))
   /** The flank, which carries the brand plate: its plane follows the body as the suspension tilts it. */
   const flank = (inside: ShadowRoot) => inside.querySelector('text')!.parentElement!.getAttribute('transform')
   /** The mast head's front, with the stereo eyes. */
@@ -62,7 +62,7 @@ describe('Mars rover', () => {
     expect(snap().readout).toBe('SOL 214 · 2 M · 0 SAMPLES · 0 FRAMES')
   })
 
-  it('← and → turn it on the spot: the ground swings round it and the odometer stays', async () => {
+  it('← and → turn it on the spot: the ground swings around it and the odometer stays', async () => {
     const { snap, inside, press, run } = await rover()
     const before = rocks(inside)
     press('ArrowLeft')
@@ -85,12 +85,12 @@ describe('Mars rover', () => {
 
   it('drives with the wheels straight, climbing over rocks on its rocker-bogie', async () => {
     const { snap, inside, press, run } = await rover([], 100, {})
-    const straight = treads(inside)
+    const straight = axles(inside)
     const level = flank(inside)
     press('ArrowUp')
     await run(400)
     expect(snap().state).toBe('DRIVING · FORWARD · CLIMBING')
-    expect(treads(inside)).toEqual(straight)
+    expect(axles(inside)).toEqual(straight)
     await run(1600)
     expect(snap().readout).toBe('SOL 214 · 1 M · 0 SAMPLES · 0 FRAMES')
     expect(snap().state).toBe('READY · ARM STOWED')
@@ -99,15 +99,15 @@ describe('Mars rover', () => {
 
   it('steers its corner wheels in for a point turn, then straightens them', async () => {
     const { snap, inside, press, run } = await rover([], 100, {})
-    const straight = treads(inside)
+    const straight = axles(inside)
     press('ArrowLeft')
     await run(500)
     expect(snap().state).toBe('POINT TURN · LEFT')
-    const steered = treads(inside)
+    const steered = axles(inside)
     expect(steered.filter((d, i) => d !== straight[i])).toHaveLength(4)
     await run(1500)
     expect(snap().state).toBe('READY · ARM STOWED')
-    expect(treads(inside)).toEqual(straight)
+    expect(axles(inside)).toEqual(straight)
   })
 
   it('Space unfolds the arm to the nearest rock, cores it in a puff of dust and stows it', async () => {
@@ -203,7 +203,7 @@ describe('Mars rover', () => {
     expect(eyes(inside)).toBe(home)
   })
 
-  it('left alone, it drives, samples and looks round by itself', async () => {
+  it('left alone, it drives, samples and looks around by itself', async () => {
     const run = useFrames()
     const { handle } = mount(MiniatureMarsRover)
     await run(5000)

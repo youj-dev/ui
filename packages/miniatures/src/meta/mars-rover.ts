@@ -21,6 +21,6 @@ export const marsRover = {
     { keys: ['p'], caps: ['P'], label: 'panorama' },
   ],
   initial: { readout: 'SOL 214 · 0 M · 0 SAMPLES · 0 FRAMES', state: 'READY · ARM STOWED', pressed: {} },
-  viewBox: '-89.88677271346657 -104 179.77354542693314 159.7',
+  viewBox: '-76.37677641442932 -104 152.75355282885863 151.9',
   progress: false,
 } as const satisfies MiniatureMeta

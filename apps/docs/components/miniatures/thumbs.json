@@ -99,6 +99,10 @@
     "light": "/thumbs/miniatures/mainframe.webp?v=a9dad35ab4",
     "dark": "/thumbs/miniatures/mainframe.dark.webp?v=3a13d1d1e3"
   },
+  "mars-rover": {
+    "light": "/thumbs/miniatures/mars-rover.webp?v=4b99510909",
+    "dark": "/thumbs/miniatures/mars-rover.dark.webp?v=fd0a869758"
+  },
   "mechanical-keyboard": {
     "light": "/thumbs/miniatures/mechanical-keyboard.webp?v=13d394c226",
     "dark": "/thumbs/miniatures/mechanical-keyboard.dark.webp?v=d9089a8d4b"
