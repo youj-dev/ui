@@ -55,17 +55,19 @@ const{document,window,matchMedia,requestAnimationFrame,kit}=env;
 Part                          x      y      z      w      d      h
 feet (4)                   4/56   4/38      0   r2.6      –      3
 base (painted)                0      0      3     60     42     17   kernel drawer, thermometer, HEAT and LAMP rockers
-deck                        1.6    1.6     20   56.8   38.8      –   the popcorn heaps up to 21 deep, mounded under the kettle
-posts (4)                0/57.6 0/39.6     20    2.4    2.4     46   glass between them: back, left, right and the front
-door (front, left half)  hinge 29 42.2 (on the mullion): 27.4 wide, z 21.2–68.6, swings out to 72°
-kettle               rim c 30 21 53.5: r 10, 9.5 deep, two lids on a hinge bar; tips forward 56° to dump
-shaft                        30     21  53.5–66   r .8   from the stirrer motor on the roof
-heat lamp                    11     31     62   hood r 4.4, bulb
-butter nozzle, kernel chute  47/34  13/24  62–66
-roof (painted)             −0.8   −0.8     66   61.6   43.6    6.5   brand plate on the header
-motor · kernel jar · pump  30/13/49 21/12/10 72.5  r4.8/3.6/2.8  –  3.6/8.8/9.1
-box (on the counter)          4     47      0      8      6   12.5   striped, heaped
-spill (on the counter)      9–29  43–52     0      –      –      5 */
+deck                        1.6    1.6     20   56.8   38.8      –   the popcorn heaps up to 14.5 deep, mounded under the kettle
+posts (4)                0/57.6 0/39.6     20    2.4    2.4     50   glass between them: back, left, right and the front
+door (front, left half)  hinge 29 42.2 (on the mullion): 27.4 wide, z 21.6–68.6, swings out to 72°
+kettle               rim c 30 27 46.5: r 9, 9 deep, two lids on a hinge bar running front to back; tips forward 56°
+shaft                        30     27  46.5–70   r .8   from the stirrer motor on the roof
+heat lamp                    11     35  55–58   hood r 4.2, bulb, hung from the roof
+butter nozzle, kernel chute  48/37  32/32  58–70
+roof (painted)             −0.8   −0.8     70   61.6   43.6    6.5   chrome band round the header
+motor · kernel jar · pump  30/13/49 27/12/12 76.5  r4.8/3.8/2.8  –  3.6/8.8/9.2
+marquee (on the roof)         7   38.6   76.5     46    4.2    7.4   bulbs round a cream face, the brand
+box (on the counter)          3     47      0      9      7     14   striped, heaped
+spill (on the counter)      9–29  43–52     0      –      –      5
+The far panes, heap and kettle are drawn inside the glass; the near panes, posts and door over them; the roof last. */
 const svg=document.getElementById('machine'),draw=document.getElementById('drawing');let root=draw;
 const{P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,box,cylinder,slits,frame}=kit(()=>root);
 // Figure helpers: vectors, oriented planes, tubes on any axis (the bank vault's), hulls and lumpy outlines.
@@ -158,7 +160,7 @@ const spillN=el('path',{class:'corn spill'});
 const BX=el('g',{});into(BX);
 {const f=group(FRONT(3,54,14));rect(f,0,0,9,14,.4,'face card');rect(f,0,0,9,14,0,'stripes');const s=group(SIDE(12,54,14));rect(s,0,0,7,14,.4,'face side card');rect(s,0,0,7,14,0,'stripes');rect(group(TOP(3,47,14)),0,0,9,7,.3,'face kin');}
 const boxHeap=el('path',{class:'corn'});into(draw);
-// The door: a framed pane on its hinge at the front left. A click on it scoops a box.
+// The door: the front's left pane in its frame, hinged on the mullion; it swings out to the left. A click on it scoops a box.
 const doorG=ctl(el('g',{}),'Cabinet door: scoop a box of popcorn (S)');
 el('path',{d:'M0,0H27.4V47H0ZM2.2,2.2V44.8H25.2V2.2Z','fill-rule':'evenodd',class:'face paint'},doorG);rect(doorG,2.2,2.2,23,42.6,0,'film');
 el('path',{d:'M5,42L15,4',class:'shine','stroke-width':1.3},doorG);el('path',{d:'M9.5,43L19,9',class:'shine dim','stroke-width':.7},doorG);
@@ -192,10 +194,10 @@ const MQ=group(FRONT(7,42.85,83.9));rect(MQ,2.4,1.9,41.2,3.6,.9,'face enamel');t
 const BULBS=Array.from({length:24},(_,i)=>{const c=i>>1,row=i&1;return{n:circle(MQ,1.5+c*3.9,row?6.4:1,.85,'bulb-b'),k:row?23-c:c};});let chased=null;
 frame([[-.8,-.8,0,61.6,43.6,86],[20.5,42,21,8.5,26,47.6],[3,43,0,25,11.5,15]],10);
 
-// State. The kettle heats (Space) and pops its charge of kernels: slow first pops, a crackling middle, a tail; the corn
-// lifts the lids and tumbles out onto the heap, and an empty kettle tips to dump the rest. N drops a new batch, B
-// drizzles butter, S or the door scoops a box. Past full it overflows: the door bursts open and popcorn spills onto the
-// counter. As a progress indicator the heap follows the progress; done pops it to the brim and over.
+// State. The kettle heats (on its own, or Space switches it) and pops its charge of kernels: slow first pops, a crackling
+// middle, a tail; the corn lifts the lids and tumbles out onto the heap, and an empty kettle tips to dump the rest. N drops
+// a new batch, B drizzles butter, S or the door scoops a box. Past full it overflows: the door bursts open and popcorn
+// spills onto the counter. As a progress indicator the heap follows the progress; done pops it to the brim and over.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement');
 let heat=false,started=false,temp=22,charge=BATCH,bp=0,acc=0,gap=1,pops=0,fill=.55,kv=.32,lidA=.63,kick=0,tilt=0,dumpT=-1,reloadT=-1,serving=false,mode='auto',target=null,finish=0;
 let butter=0,butterT=-1e9,pourT=-1e9,door=0,scoopT=-1,scoopTook=false,boxFill=1,boxA=1,spill=0,spillT=-1,spillAcc=0,rimAcc=0,note='',noteT=0,last=0,lastUI=-1,rate=0,outKey='',pileKey='',kettleKey='',boxKey='';

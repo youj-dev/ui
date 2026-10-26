@@ -66,7 +66,7 @@ What the shadow-root environment does for the figures that need more than the de
 - **weather-station**: its wind setting is an `<input type=range>` in the caption (`getElementById('wind')`, `'windSetting'`) and its `max-width` block styles it; make the wind a part (a dial on the station) or keys only. Its `box` differs (kept automatically).
 - **mixing-desk**: a tuned glow filter; handled (`sharedDefs: false`).
 - **telescope**: frames itself; handled.
-- **packaging-line**, **repair-bench**: set `window.figure` like the hourglass, so they're progress indicators (`progress: true`, `MiniatureProgressHandle`); test `setProgress`/`done` as `hourglass.test.tsx` does.
+- **packaging-line**, **repair-bench**, **popcorn-machine**: set `window.figure` like the hourglass, so they're progress indicators (`progress: true`, `MiniatureProgressHandle`); test `setProgress`/`done` as `hourglass.test.tsx` does.
 - **home-router**, **nas**, **network-switch**, **sbc-cluster**, **tape-library**, **workstation**: the `<svg>` starts with a class (`svgClass`, carried over).
 - **greenhouse**, **lighthouse**, **nixie-clock**, **weather-station** (and the server cabinet) put night or lights-out modes on `document.documentElement`, and **stage-synth** a CSS variable: they land on `.yjm-root`, and its `:root.night` CSS follows. Pass `stage` in stories so the room goes dark with them.
 - **instant-camera**, **microscope**, **mixing-desk**, **robot-arm**, **telescope**: read `document.activeElement`; the env answers with the focused element inside the shadow root.
