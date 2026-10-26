@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { setupViteAlias } from '../src/alias'
 import { Project } from '../src/project'
-import { add, addCommand, addPlan, packageEntry } from '../src/add'
+import { add, addCommand, addPlan, packageEntry, unwired } from '../src/add'
 import { wirePackageStyles } from '../src/wiring'
 import { addCssImports, addTagAttributes, addVitePlugin, wrapElement, wrapTagContents } from '../src/codemods'
 import { MOTION_RANGE, PRESET_MOTION, registryTemplate, sourcePackageOf, THEMES, VERSION } from '../src/constants'
@@ -368,6 +368,68 @@ describe('doctor', () => {
     const checks = doctor(root, {})
     expect(checks.filter((c) => c.level !== 'ok')).toEqual([])
     expect(checks.map((c) => c.message)).toContain("app/globals.css imports Tailwind, then Youj's tokens")
+  })
+
+  it('passes a registry app on the Pages Router, whose stylesheet imports the copied sheets from beside it', async () => {
+    const root = fixture('next-pages')
+    await init({ cwd: root, yes: true, mode: 'registry' }, fakeRunner(root), silentUi(), {})
+    expect(read(root, 'src/styles/globals.css')).toContain('@import "./youj.css";')
+    const checks = doctor(root, {})
+    expect(checks.filter((c) => c.level !== 'ok')).toEqual([])
+    expect(checks.map((c) => c.message)).toContain("src/styles/globals.css imports Tailwind, then Youj's tokens")
+    expect(unwired(new Project(root))).toBeNull()
+  })
+
+  it('still flags a stylesheet that imports neither of the copied sheets, and one that imports ui.css before youj.css', async () => {
+    const root = fixture('next-pages')
+    await init({ cwd: root, yes: true, mode: 'registry' }, fakeRunner(root), silentUi(), {})
+    const css = read(root, 'src/styles/globals.css')
+    write(root, 'src/styles/globals.css', css.replace('@import "./youj.css";\n', ''))
+    expect(doctor(root, {}).filter((c) => c.level === 'error').map((c) => c.message)).toContain("src/styles/globals.css doesn't import the copied youj.css")
+    expect(unwired(new Project(root))).toContain("src/styles/globals.css doesn't import the copied youj.css")
+    write(root, 'src/styles/globals.css', css.replace('@import "./youj.css";\n@import "./ui.css";', '@import "./ui.css";\n@import "./youj.css";'))
+    expect(doctor(root, {}).filter((c) => c.level === 'error').map((c) => c.message)).toContain('The Youj imports in src/styles/globals.css are out of order')
+  })
+
+  it('looks for YoujProvider in code, not in a comment that mentions it', async () => {
+    const root = fixture('next-app')
+    await init({ cwd: root, yes: true }, fakeRunner(root), silentUi(), {})
+    write(root, 'app/providers.tsx', "'use client'\nimport { YoujProvider } from '@youj/core'\nexport function Providers({ children }) {\n  return <YoujProvider>{children}</YoujProvider>\n}\n")
+    write(root, 'lib/theme.ts', '// Pass it to <YoujProvider theme={theme}>.\nexport const theme = {}\n')
+    write(root, 'app/layout.tsx', 'import { theme } from "@/lib/theme";\nimport { Providers } from "./providers";\n\n// <YoujProvider> lives in Providers\nexport default function Layout({ children }) {\n  return <html><body><Providers>{children}</Providers></body></html>\n}\n')
+    expect(doctor(root, {}).map((c) => c.message)).toContain('YoujProvider in app/providers.tsx')
+  })
+
+  describe('a setup that stopped partway', () => {
+    const unfinished = (checks: ReturnType<typeof doctor>) => checks.find((c) => c.message.includes('sets up neither YoujProvider nor the theme'))
+
+    it('is flagged: the stylesheet imports Youj, and the layout was never edited', async () => {
+      const root = fixture('next-app')
+      const layout = read(root, 'app/layout.tsx')
+      await init({ cwd: root, yes: true }, fakeRunner(root), silentUi(), {})
+      write(root, 'app/layout.tsx', layout)
+      expect(unfinished(doctor(root, {}))).toMatchObject({ level: 'warn', message: expect.stringContaining('app/globals.css imports Youj\'s styles, but app/layout.tsx sets up neither'), fix: expect.stringContaining('npx @youj/cli init finishes it') })
+    })
+
+    it('is not guessed at in a setup init finished, on any framework or mode', async () => {
+      for (const name of ['next-app', 'next-pages', 'vite', 'react-router', 'astro']) {
+        for (const mode of ['package', 'registry'] as const) {
+          const root = fixture(name)
+          await init({ cwd: root, yes: true, mode }, fakeRunner(root), silentUi(), {})
+          expect(unfinished(doctor(root, {})), `${name} ${mode}`).toBeUndefined()
+        }
+      }
+    })
+
+    it('is not guessed at where the app sets the theme itself', async () => {
+      const root = fixture('next-app')
+      const layout = read(root, 'app/layout.tsx')
+      await init({ cwd: root, yes: true }, fakeRunner(root), silentUi(), {})
+      write(root, 'app/layout.tsx', layout)
+      expect(unfinished(doctor(root, {}))).toBeDefined()
+      write(root, 'app/layout.tsx', layout.replace('<html', '<html data-theme="dark"'))
+      expect(unfinished(doctor(root, {}))).toBeUndefined()
+    })
   })
 
   it("flags a package's stylesheet that's missing or before the tokens", async () => {

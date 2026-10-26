@@ -86,8 +86,8 @@ afterAll(() => {
   for (const dir of temp.splice(0)) rmSync(dir, { recursive: true, force: true })
 })
 
-function youj(root: string, args: string[], scenario = 'full') {
-  const result = spawnSync(process.execPath, [cli, ...args, '--cwd', root], {
+function youj(root: string, args: string[], scenario = 'full', cwdFlag = '--cwd') {
+  const result = spawnSync(process.execPath, [cli, ...args, cwdFlag, root], {
     stdio: ['ignore', 'pipe', 'pipe'],
     encoding: 'utf8',
     env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, FAKE_SHADCN: scenario, NO_COLOR: '1', YOUJ_REGISTRY_URL: `${pathToFileURL(registry).href}/{name}.json` },
@@ -142,6 +142,100 @@ describe('youj without a terminal', () => {
     expect(status).toBe(1)
     expect(output).toContain('exited with')
     expect(output).not.toMatch(/\n\s+at /)
+  })
+
+  describe('an option it does not take', () => {
+    it('stops init before it writes anything: --dryrun is not a dry run', () => {
+      const root = fixture('next-app')
+      const layout = read(root, 'app/layout.tsx')
+      const { status, output } = youj(root, ['init', '--yes', '--dryrun'])
+      expect(status).toBe(1)
+      expect(output).toContain('Unknown option --dryrun: did you mean --dry-run?')
+      expect(read(root, 'app/layout.tsx')).toBe(layout)
+      expect(existsSync(join(root, 'components.json'))).toBe(false)
+      // Spelled right, it previews and writes nothing.
+      const preview = youj(root, ['init', '--yes', '--dry-run'])
+      expect(preview.status).toBe(0)
+      expect(read(root, 'app/layout.tsx')).toBe(layout)
+    })
+
+    it('stops add on a misspelled option instead of handing it to shadcn, or ignoring it', () => {
+      const root = fixture('shadcn')
+      expect(youj(root, ['init', '--mode', 'registry']).status).toBe(0)
+      const dialog = read(root, 'components/ui/dialog.tsx')
+      const { status, output } = youj(root, ['add', 'alert-dialog', '--overwite'])
+      expect(status).toBe(1)
+      expect(output).toContain('Unknown option --overwite: did you mean --overwrite?')
+      expect(read(root, 'components/ui/dialog.tsx')).toBe(dialog)
+    })
+
+    it('says so for an option another command takes, without a guess', () => {
+      const { status, output } = youj(fixture('next-app'), ['doctor', '--theme', 'brutal'])
+      expect(status).toBe(1)
+      expect(output).toContain('Unknown option --theme.')
+      expect(output).toContain('npx @youj/cli doctor --help lists the options.')
+    })
+
+    it('still lets add pass shadcn its own options, and takes -c for --cwd', () => {
+      const root = fixture('shadcn')
+      expect(youj(root, ['init', '--mode', 'registry']).status).toBe(0)
+      const replaced = youj(root, ['add', 'alert-dialog', '-o', '--silent'], 'full', '-c')
+      expect(replaced.output).not.toContain('Unknown option')
+      expect(replaced.status).toBe(0)
+      expect(read(root, 'components/ui/dialog.tsx')).toContain('dialogPopupClass')
+    })
+
+    it('needs --cwd to name a folder that is there', () => {
+      const missing = youj(join(tmpdir(), 'youj-no-such-folder'), ['add', 'button'])
+      expect(missing.status).toBe(1)
+      expect(missing.output).toMatch(/--cwd names .*youj-no-such-folder, which isn't a folder/)
+      expect(missing.output).not.toContain('ENOENT')
+      const bare = spawnSync(process.execPath, [cli, 'add', 'button', '--cwd'], { stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8', env: { ...process.env, NO_COLOR: '1' } })
+      expect(bare.status).toBe(1)
+      expect(bare.stdout + bare.stderr).toContain('--cwd takes a folder')
+    })
+  })
+
+  describe('add, where there is no app to add to', () => {
+    it('refuses a folder without a package.json, as the other commands do, and writes nothing', () => {
+      const root = tmp('youj-empty-')
+      const { status, output } = youj(root, ['add', 'button'])
+      expect(status).toBe(1)
+      expect(output).toContain('No package.json in')
+      expect(output).toContain('(or pass --cwd)')
+      expect(readdirSync(root)).toEqual([])
+    })
+
+    it('points a workspace root at its app with --cwd, and writes nothing', () => {
+      const root = tmp('youj-workspace-')
+      mkdirSync(join(root, 'apps/web'), { recursive: true })
+      mkdirSync(join(root, 'packages/ui'), { recursive: true })
+      writeFileSync(join(root, 'package.json'), JSON.stringify({ name: 'repo', private: true, workspaces: ['apps/*', 'packages/*'] }))
+      writeFileSync(join(root, 'apps/web/package.json'), JSON.stringify({ name: 'web', dependencies: { next: '16.0.0', react: '19.2.0' } }))
+      writeFileSync(join(root, 'packages/ui/package.json'), JSON.stringify({ name: 'ui', dependencies: { clsx: '2.0.0' } }))
+      for (const command of [['add', 'button'], ['init']]) {
+        const { status, output } = youj(root, command)
+        expect(status, command.join(' ')).toBe(1)
+        expect(output).toContain('is the root of a workspace, not an app')
+        expect(output).toContain(`npx @youj/cli ${command.join(' ')} --cwd apps/web`)
+        expect(output).not.toContain('Couldn’t tell which framework')
+      }
+      expect(readdirSync(root).sort()).toEqual(['apps', 'package.json', 'packages'])
+      // From the app itself it is not a workspace root, whatever the repo around it is.
+      expect(youj(join(root, 'apps/web'), ['add', 'button'], 'full').output).not.toContain('workspace')
+    })
+
+    it('refuses React 18 before it copies anything', () => {
+      const root = fixture('next-app')
+      const pkg = JSON.parse(read(root, 'package.json'))
+      writeFileSync(join(root, 'package.json'), JSON.stringify({ ...pkg, dependencies: { ...pkg.dependencies, react: '18.3.1', 'react-dom': '18.3.1' } }))
+      for (const flags of [[], ['--dry-run']]) {
+        const { status, output } = youj(root, ['add', 'button', ...flags])
+        expect(status, flags.join(' ')).toBe(1)
+        expect(output).toContain('React 18.3.1: Youj needs React 19. Upgrade React first.')
+      }
+      expect(readdirSync(root).sort()).toEqual(['app', 'package.json', 'pnpm-lock.yaml', 'postcss.config.mjs', 'tsconfig.json'])
+    })
   })
 
   it('init in a Vite app ends with the hint for Vite, not next-themes', () => {

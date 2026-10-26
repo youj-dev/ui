@@ -241,6 +241,25 @@ describe('doctor in a shadcn app', () => {
     expect(error?.fix).toBe("Replace it with Youj's: npx @youj/cli add dialog --overwrite")
   })
 
+  it('names the registry item that holds a file, not the file: an icon is icon-<name>', async () => {
+    const root = fixture('shadcn')
+    await init({ cwd: root, yes: true, mode: 'registry' }, shadcn(root).runner, silentUi(), {})
+    write(root, 'components/ui/account-menu.tsx', "// youj\nimport { type ColorMode } from '@/components/youj/icons/settings'\nexport const Menu = 1\n")
+    write(root, 'components/youj/icons/settings.tsx', 'export const mine = 1\n')
+    expect(doctor(root, {}).find((c) => c.level === 'error')?.fix).toBe("Replace it with Youj's: npx @youj/cli add icon-settings --overwrite")
+  })
+
+  it('points at the importer, not the icon, when a file add copied lacks a name an import of it takes', async () => {
+    const root = fixture('shadcn')
+    await init({ cwd: root, yes: true, mode: 'registry' }, shadcn(root).runner, silentUi(), {})
+    write(root, 'components/ui/account-menu.tsx', "// youj\nimport { type ColorMode } from '@/components/youj/icons/settings'\nexport const Menu = 1\n")
+    write(root, 'components/youj/icons/settings.tsx', 'export const SettingsIcon = 1\n')
+    write(root, 'youj.json', JSON.stringify({ items: { 'account-menu': { version: '0.1.0', files: { 'components/ui/account-menu.tsx': 'x' } }, 'icon-settings': { version: '0.1.0', files: { 'components/youj/icons/settings.tsx': 'x' } } } }))
+    const error = doctor(root, {}).find((c) => c.level === 'error')
+    expect(error?.message).toContain('components/youj/icons/settings.tsx: account-menu.tsx imports ColorMode')
+    expect(error?.fix).toBe('Put its import back where it was (an older add pointed it at a file of the same name): npx @youj/cli add account-menu')
+  })
+
   it('warns on shadcn’s color names in a copied Youj file, and not on roles', async () => {
     const root = fixture('shadcn')
     await init({ cwd: root, yes: true, mode: 'registry' }, shadcn(root).runner, silentUi(), {})

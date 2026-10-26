@@ -114,6 +114,10 @@ describe('installInfo', () => {
     expect(installInfo('lottie-player', () => ['LottiePlayer']).packageCommand).toBe('pnpm add @youj/motion @lottiefiles/dotlottie-react@^0.19.16')
   })
 
+  it('imports toast with the Toaster: a function has no props for the extraction to find', () => {
+    expect(installInfo('toast', () => ['PromiseOptions', 'Toaster', 'ToastOptions']).packageImport).toBe("import { Toaster, toast } from '@youj/react'")
+  })
+
   it('offers a block only as copy-in, importing its real export from the path the CLI writes', () => {
     const info = installInfo('marketing-cta-banner', () => [])
     expect(info.packageCommand).toBeUndefined()

@@ -2,7 +2,7 @@
 
 export const waveformScrubberLabels = {
   waveformSeek: 'Seek',
-  waveformPosition: (time, total, chapter) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`,
+  waveformPosition: (time, total, chapter?) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`,
   waveformClipStart: 'Clip start',
   waveformClipEnd: 'Clip end',
 } satisfies { waveformSeek: string; waveformPosition: (time: string, total: string, chapter?: string) => string; waveformClipStart: string; waveformClipEnd: string }

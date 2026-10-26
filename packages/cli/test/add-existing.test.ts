@@ -6,6 +6,7 @@ import { setupViteAlias } from '../src/alias'
 import { add } from '../src/add'
 import { otherOutput } from '../src/copy'
 import { Project } from '../src/project'
+import { hashOf, inspect } from '../src/stamp'
 import { format, type Command, type Runner } from '../src/run'
 import { silentUi } from '../src/ui'
 import { fixture, read, write } from './helpers'
@@ -102,6 +103,62 @@ describe('add, over files that are already there', () => {
     await add(root, ['app-customers'], ['--yes'], runner, ui, {})
     expect(read(root, 'src/blocks/app/customers.tsx')).toBe(repaired)
     expect(ui.log.join('\n')).not.toContain('warn:')
+  })
+
+  describe('an import shadcn misrouted by name', () => {
+    const wanted = "import { type ColorMode } from '@/lib/youj/settings'\nexport const Menu = (mode: ColorMode) => mode\n"
+    const misrouted = wanted.replace('@/lib/youj/settings', '@/components/youj/icons/settings')
+
+    /** frame-account-card needs account-menu, which imports the core's settings; the same run copies an icon named settings. */
+    function registry() {
+      const dir = mkdtempSync(join(tmpdir(), 'youj-registry-'))
+      const item = (name: string, path: string, content: string, dependencies: string[] = []) =>
+        writeFileSync(join(dir, `${name}.json`), JSON.stringify({ name, registryDependencies: dependencies, files: [{ path, type: 'registry:ui', content }] }))
+      item('frame-account-card', 'src/blocks/frame/account-card.tsx', 'export const Card = 1\n', ['account-menu', 'icon-settings'])
+      item('account-menu', 'src/components/ui/account-menu.tsx', wanted)
+      item('icon-settings', 'src/components/youj/icons/settings.tsx', 'export const SettingsIcon = 1\n')
+      return { YOUJ_REGISTRY_URL: `file://${dir}/{name}.json` }
+    }
+    const written = (menu: string) => ({ 'src/blocks/frame/account-card.tsx': 'export const Card = 1\n', 'src/components/ui/account-menu.tsx': menu, 'src/components/youj/icons/settings.tsx': 'export const SettingsIcon = 1\n' })
+
+    it('is put back in a dependency of the item asked for, which no item of the run names', async () => {
+      const root = app()
+      const { runner } = shadcn(root, written(misrouted))
+      await add(root, ['frame-account-card'], [], runner, silentUi(), registry())
+      expect(read(root, 'src/components/ui/account-menu.tsx')).toBe(wanted)
+    })
+
+    it('is put back in a copy an earlier run left, where the import leads to a file without the name', async () => {
+      const root = app()
+      write(root, 'src/components/ui/account-menu.tsx', misrouted)
+      write(root, 'youj.json', JSON.stringify({ items: { 'account-menu': { version: '0.1.0', files: { 'src/components/ui/account-menu.tsx': hashOf(misrouted) } } } }))
+      const { runner } = shadcn(root, written(misrouted))
+      const ui = silentUi()
+      await add(root, ['frame-account-card'], [], runner, ui, registry())
+      expect(read(root, 'src/components/ui/account-menu.tsx')).toBe(wanted)
+      expect(ui.log.join('\n')).toContain('src/components/ui/account-menu.tsx')
+      // Recorded as add left it, so doctor doesn't call it an edit of yours.
+      expect(inspect(new Project(root), '0.1.0').edited).toEqual([])
+    })
+
+    it('is left alone in a copy that was there already, where the import works', async () => {
+      const root = app()
+      const elsewhere = misrouted.replace('{ type ColorMode }', '{ type ColorMode, SettingsIcon }')
+      write(root, 'src/components/ui/account-menu.tsx', elsewhere)
+      write(root, 'src/components/youj/icons/settings.tsx', 'export type ColorMode = string\nexport const SettingsIcon = 1\n')
+      const { runner } = shadcn(root, written(elsewhere))
+      await add(root, ['frame-account-card'], [], runner, silentUi(), registry())
+      expect(read(root, 'src/components/ui/account-menu.tsx')).toBe(elsewhere)
+    })
+
+    it('leaves a file of yours that add kept as it is', async () => {
+      const root = app()
+      const mine = "import { type ColorMode } from '@/components/youj/icons/settings'\nexport const Menu = (mode: ColorMode) => mode // mine\n"
+      write(root, 'src/components/ui/account-menu.tsx', mine)
+      const { runner } = shadcn(root, written(misrouted))
+      await add(root, ['frame-account-card'], [], runner, silentUi(), registry()).catch(() => undefined)
+      expect(read(root, 'src/components/ui/account-menu.tsx')).toBe(mine)
+    })
   })
 
   it('keeps a file you changed, and says so at the end', async () => {

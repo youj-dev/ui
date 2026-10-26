@@ -5,7 +5,7 @@ export const chatToolApprovalLabels = {
   failed: 'Failed',
   chatToolRunning: 'Running',
   chatToolDuration: (ms) => (ms < 1000 ? `${Math.round(ms)}ms` : `${(ms / 1000).toFixed(1)}s`),
-  chatToolFailed: (tool, error) => `${tool} failed${error ? `: ${error}` : ''}`,
+  chatToolFailed: (tool, error?) => `${tool} failed${error ? `: ${error}` : ''}`,
   chatToolArguments: 'Arguments',
   cancel: 'Cancel',
   save: 'Save',

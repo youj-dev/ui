@@ -1,7 +1,9 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { chmodSync, existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { init, type InitOptions } from '../src/init'
+import { Project } from '../src/project'
+import type { Command, Runner } from '../src/run'
 import { themeScriptCode } from '../../core/src/lib/youj/theme-script'
 import { silentUi, CliError } from '../src/ui'
 import { fakeRunner, fixture, read, write } from './helpers'
@@ -185,6 +187,49 @@ describe('init, package mode', () => {
   })
 })
 
+describe.skipIf(process.getuid?.() === 0)('init, when a file it edits is read-only', () => {
+  it('stops before it asks or installs anything, naming the file in one line', async () => {
+    const root = fixture('next-app')
+    const runner = fakeRunner(root)
+    const css = read(root, 'app/globals.css')
+    chmodSync(join(root, 'app/layout.tsx'), 0o444)
+    const run = init({ cwd: root, yes: false, mode: 'package' }, runner, { ...silentUi(), select: async () => { throw new Error('asked') } }, {})
+    await expect(run).rejects.toBeInstanceOf(CliError)
+    await expect(run).rejects.toThrow("Can't write app/layout.tsx: it is read-only, or its folder is. Make it writable, then run again. Nothing was installed or changed.")
+    expect(runner.commands).toEqual([])
+    expect(read(root, 'app/globals.css')).toBe(css)
+  })
+
+  it('says a write that fails after the check in one line, not as a stack', () => {
+    const root = fixture('next-app')
+    chmodSync(join(root, 'app/layout.tsx'), 0o444)
+    const project = new Project(root)
+    const failure = (() => {
+      try {
+        project.restore('app/layout.tsx', 'export {}\n')
+      } catch (error) {
+        return error
+      }
+    })()
+    expect(failure).toBeInstanceOf(CliError)
+    expect((failure as Error).message).toBe("Couldn't write app/layout.tsx: permission denied. Make it writable, then run again.")
+  })
+
+  it('writes none of a batch when one of its files cannot be written', () => {
+    const root = fixture('next-app')
+    chmodSync(join(root, 'app/layout.tsx'), 0o444)
+    const project = new Project(root)
+    const layout = read(root, 'app/layout.tsx')
+    project.write('app/globals.css', '@import "tailwindcss";\n')
+    project.write('app/layout.tsx', `${layout}\n// edited\n`)
+    project.write('lib/new.ts', 'export {}\n')
+    expect(() => project.commit()).toThrow(/^Can't write app\/layout\.tsx: it is read-only/)
+    expect(existsSync(join(root, 'lib/new.ts'))).toBe(false)
+    expect(read(root, 'app/globals.css')).not.toBe('@import "tailwindcss";\n')
+    expect(read(root, 'app/layout.tsx')).toBe(layout)
+  })
+})
+
 describe('init, registry mode', () => {
   it('writes components.json, copies the core and imports its tokens; a re-run changes nothing', async () => {
     const { root, runner, result, files } = await setup('next-app', { mode: 'registry', theme: 'brutal' })
@@ -208,6 +253,46 @@ describe('init, registry mode', () => {
     const json = JSON.parse(read(root, 'components.json'))
     expect(json.style).toBe('new-york')
     expect(json.registries).toEqual({ '@acme': 'https://acme.dev/r/{name}.json', '@youj': 'http://localhost:6199/r/{name}.json' })
+  })
+
+  describe('when the core does not arrive', () => {
+    /** The package manager works; shadcn, which copies the core, doesn't. */
+    const noShadcn = (root: string) => {
+      const base = fakeRunner(root)
+      return (async (command: Command, cwd: string, options?: { inherit?: boolean; capture?: boolean }) => {
+        if (command.args.some((a) => a.startsWith('shadcn@'))) throw new Error('network is down')
+        return base(command, cwd, options)
+      }) as Runner
+    }
+
+    it('leaves no components.json: the app is not set up from the registry', async () => {
+      const root = fixture('next-app')
+      await expect(init({ cwd: root, yes: true, mode: 'registry' }, noShadcn(root), silentUi(), {})).rejects.toThrow(/Copying the core failed/)
+      expect(existsSync(join(root, 'components.json'))).toBe(false)
+    })
+
+    it('puts back the components.json the app had', async () => {
+      const root = fixture('next-app')
+      const own = JSON.stringify({ style: 'new-york', registries: { '@acme': 'https://acme.dev/r/{name}.json' } }, null, 2) + '\n'
+      write(root, 'components.json', own)
+      await expect(init({ cwd: root, yes: true, mode: 'registry' }, noShadcn(root), silentUi(), {})).rejects.toBeInstanceOf(CliError)
+      expect(read(root, 'components.json')).toBe(own)
+    })
+
+    it('names the registry it could not reach, and leaves no components.json', async () => {
+      vi.stubGlobal('fetch', () => Promise.reject(new TypeError('fetch failed')))
+      const root = fixture('next-app')
+      await expect(init({ cwd: root, yes: true, mode: 'registry' }, fakeRunner(root), silentUi(), { YOUJ_REGISTRY_URL: 'http://localhost:9/r' })).rejects.toThrow(/Couldn't reach the registry for youj-core \(http:\/\/localhost:9\/r\/youj-core\.json\)/)
+      expect(existsSync(join(root, 'components.json'))).toBe(false)
+    })
+
+    it('heals on a run once the registry answers', async () => {
+      const root = fixture('next-app')
+      await expect(init({ cwd: root, yes: true, mode: 'registry' }, noShadcn(root), silentUi(), {})).rejects.toThrow()
+      const result = await init({ cwd: root, yes: true, mode: 'registry' }, fakeRunner(root), silentUi(), {})
+      expect(result.mode).toBe('registry')
+      expect(JSON.parse(read(root, 'components.json')).registries).toHaveProperty('@youj')
+    })
   })
 
   it('imports the preset stylesheet where the theme is an <html> attribute', async () => {

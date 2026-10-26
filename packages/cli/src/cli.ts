@@ -1,9 +1,12 @@
 import * as p from '@clack/prompts'
+import { statSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { add, expandItemAliases } from './add'
 import { MOTIONS, PACKAGES, QUALITIES, REGISTRY_LATEST_ENV, THEMES, VERSION, type Mode, type Motion, type Quality, type ThemeId } from './constants'
 import { create } from './create'
 import { doctor, typecheck } from './doctor'
+import { checkOptions } from './flags'
 import { init } from './init'
 import { CLIENTS, mcp, MCP_CLIENTS, type McpResult } from './mcp'
 import { format, run } from './run'
@@ -42,7 +45,8 @@ const COMMAND_HELP: Record<string, string> = {
     --diff[=file]                 show shadcn's diff of what would change (registry apps)
     --view[=file]                 show the items' files as the registry has them (registry apps)
     --yes, -y                      don't ask before replacing files of yours
-                                   other options go to shadcn as they are`,
+                                   other options go to shadcn as they are
+                                   (shadcn's own only: any other stops the run, naming the nearest)`,
   doctor: `  ${bold('npx @youj/cli doctor')}            check the setup and print fixes
     --strict                       fail on what's to look at too, and typecheck the app (tsc)`,
   mcp: `  ${bold('npx @youj/cli mcp')}               add the Youj MCP server to your AI editor's config
@@ -53,6 +57,7 @@ const COMMAND_HELP: Record<string, string> = {
 }
 
 const GLOBAL_HELP = `  --cwd <dir>                      the app's folder (default: here)
+  -c <dir>                         the same as --cwd
   --latest                         init, create, add: copy items from the registry's latest alias
                                    (/r/<name>.json) instead of this CLI's version (/r/v${VERSION}/<name>.json)
 
@@ -75,7 +80,7 @@ async function main(argv: string[]) {
       'motion-personality': { type: 'string' },
       quality: { type: 'string' },
       look: { type: 'string' },
-      cwd: { type: 'string' },
+      cwd: { type: 'string', short: 'c' },
       'dry-run': { type: 'boolean' },
       overwrite: { type: 'boolean' },
       'allow-low-contrast': { type: 'boolean' },
@@ -91,6 +96,10 @@ async function main(argv: string[]) {
   const cwd = typeof values.cwd === 'string' ? values.cwd : process.cwd()
   if (values.version) return console.log(VERSION)
   if (values.help || !command) return console.log(helpFor(command))
+  // A misspelled option must stop the run (`--dryrun` is no preview), and --cwd must name a folder that is there.
+  checkOptions(argv, command)
+  if (values.cwd === true) throw new CliError('--cwd takes a folder: --cwd apps/web')
+  if (typeof values.cwd === 'string' && !statSync(resolve(cwd), { throwIfNoEntry: false })?.isDirectory()) throw new CliError(`--cwd names ${resolve(cwd)}, which isn't a folder.`)
   // Every registry fetch reads the template from the environment (constants.ts), so the flag is set there once.
   if (values.latest) process.env[REGISTRY_LATEST_ENV] = '1'
 
@@ -181,7 +190,7 @@ async function main(argv: string[]) {
     const args = argv.slice(argv.indexOf('add') + 1)
     for (let i = 0; i < args.length; i++) {
       const arg = args[i]!
-      if (arg === '--cwd') i++
+      if (arg === '--cwd' || arg === '-c') i++
       else if (arg.startsWith('--cwd=') || arg === '--latest') continue
       else if (arg === '--path' || arg === '-p') passthrough.push(arg, args[++i] ?? '')
       else if (arg.startsWith('-')) passthrough.push(arg)

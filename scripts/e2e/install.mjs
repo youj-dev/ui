@@ -43,8 +43,6 @@ const KNOWN = {
   // Under create-next-app's cacheComponents, a Client Component that reads the clock while prerendering stops
   // `next build`; the server rendering guide says to wrap those in Suspense (`youj create` does).
   prerender: /unstable value `(new Date\(\)|Date\.now\(\))`/,
-  // From source, components typed by the open YoujLabels stub (registry/stubs/labels-types.ts) don't typecheck.
-  registryTypes: /\(\.\.\.args: any\[\]\) => string|This expression is not callable|Expected \d+ arguments, but got \d+|is not assignable to type 'YoujLabels'/,
 }
 const PACKAGES = ['core', 'motion', 'loaders', 'sound', 'icons', 'illustrations', 'miniatures', 'ui', 'cli', 'mcp']
 const CREATE_LINK = 'https://www.youj.dev/create?sidebar=rail-panel&screens=analytics-overview,billing'
@@ -285,17 +283,7 @@ async function registryApp() {
   await step('registry', 'tsc -b', async () => {
     const { code, output } = await run('npx', ['tsc', '-b'], dir, env)
     writeFileSync(join(logs, 'registry-tsc.log'), output)
-    if (code === 0) return
-    // Each error with the lines that elaborate it, where the union type often is.
-    const errors = []
-    for (const line of output.split('\n')) {
-      if (/error TS/.test(line)) errors.push(line)
-      else if (errors.length && /^\s/.test(line)) errors[errors.length - 1] += `\n${line}`
-    }
-    const other = errors.filter((e) => !KNOWN.registryTypes.test(e))
-    if (other.length || !errors.length) throw new Error(other.slice(0, 20).join('\n') || output.slice(-2000))
-    const files = new Set(errors.map((l) => l.split('(')[0]))
-    return { known: `${errors.length} label-typing errors in ${files.size} files (the open YoujLabels stub)` }
+    if (code !== 0) throw new Error(output.split('\n').filter((line) => /error TS/.test(line)).slice(0, 20).join('\n') || output.slice(-2000))
   })
   // Every copied module, loaded at once: one that throws while it loads, or doesn't resolve, fails here.
   writeFileSync(join(dir, 'src/e2e-all.ts'), `const modules = import.meta.glob(['./components/**/*.{ts,tsx}', './blocks/**/*.{ts,tsx}', './hooks/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'], { eager: true })\nconsole.info('modules', Object.keys(modules).length)\n`)

@@ -418,7 +418,7 @@ export const chatThoughtFor: YoujLabels['chatThoughtFor'] = (seconds) =>
 export const chatToolQueued: YoujLabels['chatToolQueued'] = 'Queued'
 export const chatToolRunning: YoujLabels['chatToolRunning'] = 'Running'
 export const chatToolDuration: YoujLabels['chatToolDuration'] = (ms) => (ms < 1000 ? `${Math.round(ms)}ms` : `${(ms / 1000).toFixed(1)}s`)
-export const chatToolFailed: YoujLabels['chatToolFailed'] = (tool, error) => `${tool} failed${error ? `: ${error}` : ''}`
+export const chatToolFailed: YoujLabels['chatToolFailed'] = (tool, error?) => `${tool} failed${error ? `: ${error}` : ''}`
 export const chatToolArguments: YoujLabels['chatToolArguments'] = 'Arguments'
 export const chatToolResult: YoujLabels['chatToolResult'] = 'Result'
 export const chatToolError: YoujLabels['chatToolError'] = 'Error'
@@ -480,7 +480,7 @@ export const kanbanRoleBoard: YoujLabels['kanbanRoleBoard'] = 'board'
 export const kanbanRoleCard: YoujLabels['kanbanRoleCard'] = 'draggable card'
 export const kanbanInstructions: YoujLabels['kanbanInstructions'] = 'Press Space to pick up a card. While it is lifted, use the arrow keys to move it, Space to drop it, or Escape to cancel. Press Enter to open it.'
 export const kanbanLane: YoujLabels['kanbanLane'] = (lane) => `${lane} lane`
-export const kanbanPlace: YoujLabels['kanbanPlace'] = (column, lane, position, count, overLimit) =>
+export const kanbanPlace: YoujLabels['kanbanPlace'] = (column, lane, position, count, overLimit?) =>
     `${column}${lane ? `, ${lane} lane` : ''}, position ${position} of ${count}.${overLimit !== undefined ? ` Over the limit of ${overLimit}.` : ''}`
 export const kanbanPickedUp: YoujLabels['kanbanPickedUp'] = (card, place) => `Picked up ${card}. ${place}`
 export const kanbanPickedUpKeyboard: YoujLabels['kanbanPickedUpKeyboard'] = (card, place) => `Picked up ${card}. ${place} Use the arrow keys to move it, Space to drop it, Escape to cancel.`
@@ -489,7 +489,7 @@ export const kanbanCancelled: YoujLabels['kanbanCancelled'] = (card, place) => `
 export const kanbanMoveFailed: YoujLabels['kanbanMoveFailed'] = (card, column) => `Couldn't move ${card}. It's back in ${column}.`
 export const kanbanExpand: YoujLabels['kanbanExpand'] = (column) => `Expand ${column}`
 export const kanbanCollapse: YoujLabels['kanbanCollapse'] = (column) => `Collapse ${column}`
-export const kanbanCardCount: YoujLabels['kanbanCardCount'] = (count, limit, over) =>
+export const kanbanCardCount: YoujLabels['kanbanCardCount'] = (count, limit?, over?) =>
     limit === undefined ? `${count} cards` : `${count} of ${limit} cards${over ? ', over the limit' : ''}`
 export const kanbanNoCards: YoujLabels['kanbanNoCards'] = 'No cards'
 export const kanbanAddCard: YoujLabels['kanbanAddCard'] = 'Add card'
@@ -536,7 +536,7 @@ export const fileUploaded: YoujLabels['fileUploaded'] = (name) => `${name} uploa
 export const fileUploadedTile: YoujLabels['fileUploadedTile'] = (name) => `${name}, uploaded`
 export const fileUploadFailed: YoujLabels['fileUploadFailed'] = 'Upload failed'
 export const fileFailedToUpload: YoujLabels['fileFailedToUpload'] = (name, error) => `${name} failed to upload: ${error}`
-export const fileUnsupported: YoujLabels['fileUnsupported'] = (name, types) => `${name} isn’t a supported file type${types ? ` (${types})` : ''}.`
+export const fileUnsupported: YoujLabels['fileUnsupported'] = (name, types?) => `${name} isn’t a supported file type${types ? ` (${types})` : ''}.`
 export const fileTooLarge: YoujLabels['fileTooLarge'] = (name, size, limit) => `${name} is ${size}; the limit is ${limit}.`
 export const fileDuplicate: YoujLabels['fileDuplicate'] = (name) => `${name} is already added.`
 export const fileTooMany: YoujLabels['fileTooMany'] = (name, max) => `${name} wasn’t added: ${max} file${max === 1 ? '' : 's'} at most.`
@@ -665,7 +665,7 @@ export const slotGridCell: YoujLabels['slotGridCell'] = (day, time, status) => `
 export const slotGridDays: YoujLabels['slotGridDays'] = 'Days'
 export const slotGridOpenCount: YoujLabels['slotGridOpenCount'] = (count) => `${count} open`
 export const waveformSeek: YoujLabels['waveformSeek'] = 'Seek'
-export const waveformPosition: YoujLabels['waveformPosition'] = (time, total, chapter) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`
+export const waveformPosition: YoujLabels['waveformPosition'] = (time, total, chapter?) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`
 export const waveformClipStart: YoujLabels['waveformClipStart'] = 'Clip start'
 export const waveformClipEnd: YoujLabels['waveformClipEnd'] = 'Clip end'
 
@@ -733,7 +733,7 @@ export const intervalCooldown: YoujLabels['intervalCooldown'] = 'Cool-down'
 export const intervalRound: YoujLabels['intervalRound'] = 'Round'
 export const intervalRoundOf: YoujLabels['intervalRoundOf'] = (round, rounds) => `Round ${round} of ${rounds}`
 export const intervalLeft: YoujLabels['intervalLeft'] = (time) => `${time} left`
-export const intervalStarted: YoujLabels['intervalStarted'] = (phase, time, next) => `${phase}, ${time}.${next ? ` Next: ${next}.` : ''}`
+export const intervalStarted: YoujLabels['intervalStarted'] = (phase, time, next?) => `${phase}, ${time}.${next ? ` Next: ${next}.` : ''}`
 export const intervalFinished: YoujLabels['intervalFinished'] = 'Workout complete'
 export const intervalNext: YoujLabels['intervalNext'] = 'Next'
 export const seatMap: YoujLabels['seatMap'] = 'Seat map'
@@ -806,7 +806,7 @@ export const play: YoujLabels['play'] = 'Play'
 export const pause: YoujLabels['pause'] = 'Pause'
 export const previousTrack: YoujLabels['previousTrack'] = 'Previous track'
 export const nextTrack: YoujLabels['nextTrack'] = 'Next track'
-export const gradientSliderValue: YoujLabels['gradientSliderValue'] = (value, zone) => (zone ? `${value}, ${zone}` : value)
+export const gradientSliderValue: YoujLabels['gradientSliderValue'] = (value, zone?) => (zone ? `${value}, ${zone}` : value)
 
 export const zoomIn: YoujLabels['zoomIn'] = 'Zoom in'
 export const zoomOut: YoujLabels['zoomOut'] = 'Zoom out'
@@ -819,7 +819,7 @@ export const flowSucceeded: YoujLabels['flowSucceeded'] = 'Succeeded'
 export const flowFailed: YoujLabels['flowFailed'] = 'Failed'
 export const flowRetried: YoujLabels['flowRetried'] = 'Retried'
 export const flowSkipped: YoujLabels['flowSkipped'] = 'Skipped'
-export const flowGraphNode: YoujLabels['flowGraphNode'] = (name, status, detail) => `${name}, ${status}${detail ? `, ${detail}` : ''}`
+export const flowGraphNode: YoujLabels['flowGraphNode'] = (name, status, detail?) => `${name}, ${status}${detail ? `, ${detail}` : ''}`
 export const flowGraphAfter: YoujLabels['flowGraphAfter'] = (names) => `After ${names}`
 export const flowGraphThen: YoujLabels['flowGraphThen'] = (names) => `Then ${names}`
 export const flowGraphAttempts: YoujLabels['flowGraphAttempts'] = (count) => `${count} ${count === 1 ? 'attempt' : 'attempts'}`
@@ -1001,7 +1001,7 @@ export const whiteboardPan: YoujLabels['whiteboardPan'] = 'Pan'
 export const whiteboardNudge: YoujLabels['whiteboardNudge'] = 'Nudge the selection'
 export const whiteboardSelectAll: YoujLabels['whiteboardSelectAll'] = 'Select all'
 export const whiteboardComments: YoujLabels['whiteboardComments'] = 'Comments'
-export const whiteboardPin: YoujLabels['whiteboardPin'] = (index, author) => (author ? `Comment ${index} by ${author}` : `Comment ${index}`)
+export const whiteboardPin: YoujLabels['whiteboardPin'] = (index, author?) => (author ? `Comment ${index} by ${author}` : `Comment ${index}`)
 export const whiteboardResolve: YoujLabels['whiteboardResolve'] = 'Resolve'
 export const whiteboardReopen: YoujLabels['whiteboardReopen'] = 'Reopen'
 export const whiteboardResolved: YoujLabels['whiteboardResolved'] = 'Resolved'

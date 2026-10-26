@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, posix, resolve } from 'node:path'
 import { brokenImports, describeBroken, importsOf, isYoujSource, resolveImport } from './collisions'
-import { dropShadcnLeftovers, hasCssImport, isShadcnStylesheet, shadcnClassesIn, shadcnColorsIn } from './codemods'
+import { cssImportAt, dropShadcnLeftovers, hasCssImport, isShadcnStylesheet, shadcnClassesIn, shadcnColorsIn } from './codemods'
 import { baseUiSupported, BASE_UI_INSTALL, BASE_UI_RANGE, KIT_COPY_IN, MOTION_INSTALL, MOTION_RANGE, packageStyles, PACKAGES, REGISTRY_NAMESPACE, VERSION } from './constants'
 import {
   allDeps,
@@ -19,7 +19,7 @@ import {
   type PackageJson,
 } from './detect'
 import { aliasProblems, pathsOf } from './alias'
-import { aliasBase } from './copy-in'
+import { aliasBase, codeOnly } from './copy-in'
 import { installedExports, moduleKey } from './exports'
 import { Project } from './project'
 import { inspect, MANIFEST, readManifest } from './stamp'
@@ -142,13 +142,23 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
   const main = roots.find((f) => f === sheet?.path) ?? roots[0]
   if (roots.length > 1) warn(`Tailwind is imported in ${roots.length} stylesheets (${roots.join(', ')}). Each is its own Tailwind root`, `Import Youj in the one your app loads (${main}).`)
   const youjSpecs = usesPackage ? Object.values(PACKAGES).map((name) => `${name}/styles.css`) : []
-  const importsYouj = (css: string) => youjSpecs.some((s) => hasCssImport(css, s)) || /@import\s+['"][^'"]*styles\/(youj|ui)\.css['"]/.test(css)
-  const elsewhere = sheets.filter((f) => !roots.includes(f) && importsYouj(readCss(f)))
+  // The copied tokens and bridge sheets, as the stylesheet imports them: ../styles/youj.css, ./youj.css beside it, an alias.
+  const copiedSheet = (name: 'youj' | 'ui') => registryCss?.replace(/youj\.css$/, `${name}.css`)
+  const importOfCopied = (css: string, from: string, name: 'youj' | 'ui') => {
+    const target = copiedSheet(name)
+    const at = target ? cssImportAt(css, from, target) : -1
+    return at >= 0 ? at : css.search(new RegExp(`@import\\s+['"][^'"]*styles\\/${name}\\.css['"]`))
+  }
+  const importsYouj = (css: string, from: string) => youjSpecs.some((s) => hasCssImport(css, s)) || importOfCopied(css, from, 'youj') >= 0 || importOfCopied(css, from, 'ui') >= 0
+  // Whether the stylesheet Tailwind compiles imports Youj's: init writes those lines together with the provider, so one without the other is a setup that stopped partway.
+  let stylesImported = false
+  const elsewhere = sheets.filter((f) => !roots.includes(f) && importsYouj(readCss(f), f))
   for (const f of elsewhere)
     error(`${f} imports Youj's styles without Tailwind. They only work compiled in the same file as @import 'tailwindcss'`, `Move the import into ${main ?? 'your global stylesheet'}, right after Tailwind's.`)
   if (!main) error('No stylesheet imports Tailwind', `Add @import 'tailwindcss'; to ${sheet?.path ?? 'your global stylesheet'}.`)
   else {
     const css = readCss(main)
+    stylesImported = importsYouj(css, main)
     const twAt = css.search(TAILWIND_IMPORT)
     const importAt = (spec: string) => css.search(new RegExp(`@import\\s+['"]${spec.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')}['"]`))
     if (usesPackage) {
@@ -166,8 +176,8 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
       if (reactAt >= 0 && importAt(`${PACKAGES.icons}/styles.css`) >= 0) warn(`${main} imports both ${PACKAGES.icons}/styles.css and ${PACKAGES.react}/styles.css`, `Remove the ${PACKAGES.icons} line: ${PACKAGES.react}/styles.css imports it.`)
     }
     if (usesRegistry && !usesPackage) {
-      const tokens = css.search(/@import\s+['"][^'"]*styles\/youj\.css['"]/)
-      const ui = css.search(/@import\s+['"][^'"]*styles\/ui\.css['"]/)
+      const tokens = importOfCopied(css, main, 'youj')
+      const ui = importOfCopied(css, main, 'ui')
       const uiCopied = project.walk('.', (n) => n === 'ui.css').some((f) => f.endsWith('styles/ui.css'))
       if (tokens < 0) error(`${main} doesn't import the copied youj.css`, `Add @import '<path to>/styles/youj.css'; right after @import 'tailwindcss';`)
       else if (uiCopied && ui < 0) error(`${main} doesn't import the copied ui.css`, 'Add @import \'<path to>/styles/ui.css\'; right after youj.css.')
@@ -217,11 +227,23 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
         `npx @youj/cli add ${named.map(([f]) => f.slice(f.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')).slice(0, 4).join(' ')} --overwrite copies the current versions, or rename the classes (the "Coming from shadcn/ui" guide lists them).`,
       )
     const broken = brokenImports(project, copied.filter((f) => !youj.includes(f)), youj)
-    if (broken.length)
+    if (broken.length) {
+      // A file add copied itself (youj.json) that lacks a name its importers take isn't the one to replace: an older add pointed their import at it
+      // by name, and add puts the import back.
+      const recorded = Object.values(readManifest(project).items).flatMap((entry) => Object.keys(entry.files))
+      const misrouted = broken.filter((b) => !b.foreign && recorded.includes(b.file))
+      const replace = [...new Set(broken.filter((b) => !misrouted.includes(b)).map((b) => itemOf(project, b.file)))]
+      const repoint = [...new Set(misrouted.flatMap((b) => b.importers).map((file) => itemOf(project, file)))]
       error(
         `Youj's copied components import ${broken.length === 1 ? 'a file' : `${broken.length} files`} that can't stand in for Youj's, so the app won't typecheck:\n${describeBroken(broken)}`,
-        `Replace ${broken.length === 1 ? 'it' : 'them'} with Youj's: npx @youj/cli add ${broken.map((b) => b.file.slice(b.file.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')).join(' ')} --overwrite`,
+        [
+          replace.length ? `Replace ${replace.length === 1 ? 'it' : 'them'} with Youj's: npx @youj/cli add ${replace.join(' ')} --overwrite` : '',
+          repoint.length ? `Put ${repoint.length === 1 ? 'its' : 'their'} import back where it was (an older add pointed it at a file of the same name): npx @youj/cli add ${repoint.join(' ')}` : '',
+        ]
+          .filter(Boolean)
+          .join('. '),
       )
+    }
   }
 
   // What the copies say about themselves (youj.json, written by add): edited ones, and ones from another version.
@@ -236,7 +258,15 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
 
   // Provider (optional)
   const withProvider = entry && findProvider(project, entry)
+  // The document, or the root, with no provider, no theme script, no theme attribute: init's edit of it never happened (a layout it couldn't write, a run cut short).
+  const themed = (file: string | null | undefined) => Boolean(file && /ThemeScript|themeProps\(|localStorage\.getItem\(k\)|\sdata-(?:yj-)?theme=/.test(project.read(file) ?? ''))
+  const unfinished = entry && framework !== 'astro' && stylesImported && !deps['next-themes'] && !themed(entry.document) && !themed(entry.root) && [entry.document, entry.root].some((file) => file && project.exists(file))
   if (withProvider) ok(`YoujProvider in ${withProvider}`)
+  else if (unfinished)
+    warn(
+      `${main} imports Youj's styles, but ${entry.document ?? entry.root} sets up neither YoujProvider nor the theme. An init that stopped partway leaves an app like this`,
+      'npx @youj/cli init finishes it, and keeps what is there.',
+    )
   else checks.push({ level: 'ok', message: 'No YoujProvider (optional: components run at normal speed and follow the OS reduced-motion setting)' })
 
   // A right-to-left page language without `dir` on <html>: the document lays out left to right until the provider mounts.
@@ -250,6 +280,14 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
   }
 
   return checks
+}
+
+/** The registry item that copies `file`: the one youj.json records it under, else by where it lands (an icon is icon-<name>, the rest go by name). */
+function itemOf(project: Project, file: string): string {
+  const recorded = Object.entries(readManifest(project).items).find(([, entry]) => file in entry.files)
+  if (recorded) return recorded[0]
+  const name = file.slice(file.lastIndexOf('/') + 1).replace(/\.[jt]sx?$/, '')
+  return /(^|\/)components\/youj\/icons\//.test(file) ? `icon-${name}` : name
 }
 
 /**
@@ -266,7 +304,7 @@ export function findProvider(project: Project, entry: { root: string | null; doc
       if (seen.has(file)) continue
       seen.add(file)
       const source = project.read(file) ?? ''
-      if (/<YoujProvider\b/.test(source)) return file
+      if (/<YoujProvider\b/.test(codeOnly(source))) return file
       for (const { spec } of importsOf(source)) {
         const target = resolveImport(project, file, spec, base)
         if (target && !seen.has(target) && seen.size + next.length < 60) next.push(target)

@@ -204,6 +204,9 @@ export function sourceExports(code: string): string[] {
   return [...names]
 }
 
+/** Items whose import isn't what the props extraction finds: it documents the capitalized exports, so a function the component is called through (`toast`) is named here. */
+const IMPORTS: Record<string, string> = { toast: 'Toaster, toast' }
+
 /**
  * Commands and imports for an item, from the registry fragments. `exportsOf`
  * names the components a source file exports; `imports` overrides them, for a
@@ -217,7 +220,7 @@ export function installInfo(name: string, exportsOf: (path: string) => string[],
   // A folder item's main file is the one named after it (kanban/kanban.tsx).
   const files = item.files ?? []
   const main = files.find((f) => f.path.endsWith(`/${name}.tsx`)) ?? files[0]
-  let exports = imports ? [imports] : main ? exportsOf(main.path) : []
+  let exports = imports ? [imports] : IMPORTS[name] ? [IMPORTS[name]] : main ? exportsOf(main.path) : []
   const source = main && item.dir ? join(item.dir, main.path) : undefined
   if (!exports.length && source && existsSync(source)) exports = sourceExports(readFileSync(source, 'utf8'))
   const registryCommand = `npx @youj/cli add ${name}`

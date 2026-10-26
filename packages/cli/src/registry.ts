@@ -104,8 +104,8 @@ export async function loadRegistryItem(ref: string, env: NodeJS.ProcessEnv = pro
   }
 }
 
-/** The edit distance between two names, for `didYouMean`. */
-function distance(a: string, b: string): number {
+/** The edit distance between two names, for `didYouMean` and the options a typo is near. */
+export function distance(a: string, b: string): number {
   let prev = Array.from({ length: b.length + 1 }, (_, i) => i)
   for (let i = 1; i <= a.length; i++) {
     const row = [i]

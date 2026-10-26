@@ -6,7 +6,7 @@ export const chatToolCallLabels = {
   chatToolQueued: 'Queued',
   chatToolRunning: 'Running',
   chatToolDuration: (ms) => (ms < 1000 ? `${Math.round(ms)}ms` : `${(ms / 1000).toFixed(1)}s`),
-  chatToolFailed: (tool, error) => `${tool} failed${error ? `: ${error}` : ''}`,
+  chatToolFailed: (tool, error?) => `${tool} failed${error ? `: ${error}` : ''}`,
   chatToolArguments: 'Arguments',
   chatToolResult: 'Result',
   chatToolError: 'Error',
