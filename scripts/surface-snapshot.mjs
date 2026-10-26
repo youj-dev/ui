@@ -9,10 +9,11 @@
 // A diff here is the review prompt: a removed or renamed name breaks users'
 // selectors and overrides, so it is a breaking change (see docs guides/styling-hooks).
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { STANDARD } from './check-surface.mjs'
+import { readTextIfExists } from './read-text.mjs'
 
 /** The non-private custom properties a stylesheet declares, sorted. */
 export function declaredVariables(css) {
@@ -31,7 +32,7 @@ export function usedAttributes(text) {
   return { own, standard }
 }
 
-const NOT_SHIPPED = /(^|\/)(node_modules|dist|\.next|public|fixtures|__fixtures__|test)\/|\.(test|stories|ssr-cases)\.(tsx?|css)$/
+const NOT_SHIPPED = /(?:(^|\/)(node_modules|dist|\.next|public|fixtures|__fixtures__|test)\/|\.(test|stories|ssr-cases)\.(tsx?|css)$)/
 
 function shippedFiles(root, ext) {
   return execFileSync('git', ['ls-files', '-co', '--exclude-standard', '-z', 'packages'], { cwd: root, encoding: 'utf8', maxBuffer: 1 << 28 })
@@ -60,7 +61,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const root = join(import.meta.dirname, '..')
   const file = join(root, 'api', 'youj-surface.md')
   const text = snapshotSurface(root)
-  const current = existsSync(file) ? readFileSync(file, 'utf8') : null
+  const current = readTextIfExists(file)
   if (process.argv.includes('--check')) {
     if (current !== text) {
       const a = new Set((current ?? '').split('\n'))

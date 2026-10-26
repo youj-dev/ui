@@ -8,10 +8,11 @@
 // each file may have at most its count in scaling-baseline.json; after
 // removing some, `node scripts/check-tokens.mjs --update-scaling-baseline`
 // lowers the baseline (it never raises one).
-import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fixedSizeAllowed, scalingViolations } from './scaling-sizes.mjs'
 import { ownVariant } from './codemods/own-variant.mjs'
+import { readTextIfExists } from '../../../scripts/read-text.mjs'
 
 const MAP = JSON.parse(readFileSync(new URL('../../../scripts/codemods/token-map.json', import.meta.url), 'utf8'))
 const COLOR_UTILITY = 'bg|text|border(?:-[xytrblse])?|ring-offset|inset-ring|ring|outline|divide|fill|stroke|from|via|to|decoration|placeholder|caret|shadow'
@@ -63,9 +64,10 @@ const RAW_COLOR_ALLOWED = new Set([
 
 const files = []
 const walk = (dir) => {
-  for (const name of readdirSync(dir)) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const { name } = entry
     const p = join(dir, name)
-    if (statSync(p).isDirectory()) walk(p)
+    if (entry.isDirectory()) walk(p)
     else if (/\.(tsx?|css)$/.test(name) && !/\.(stories|test)\.tsx?$/.test(name)) files.push(p)
   }
 }
@@ -78,7 +80,8 @@ for (const root of ROOTS) if (existsSync(root)) walk(root)
 const FULL_MOTION = /import\s*(?:type\s*)?\{[^}]*(?<![\w$.])motion(?![\w$])[^}]*\}\s*from\s*'motion\/react'/
 
 const BASELINE_FILE = new URL('./scaling-baseline.json', import.meta.url).pathname
-const baseline = existsSync(BASELINE_FILE) ? JSON.parse(readFileSync(BASELINE_FILE, 'utf8')) : {}
+const baselineText = readTextIfExists(BASELINE_FILE)
+const baseline = baselineText === null ? {} : JSON.parse(baselineText)
 /** Per file (relative to src), the scaling violations found. */
 const scaling = new Map()
 
@@ -114,7 +117,7 @@ for (const [rel, found] of scaling) {
   scalingTotal += found.length
   const allowed = baseline[rel] ?? 0
   // Without a baseline file, the update seeds one from today's counts.
-  lowered[rel] = existsSync(BASELINE_FILE) ? Math.min(found.length, allowed) : found.length
+  lowered[rel] = baselineText !== null ? Math.min(found.length, allowed) : found.length
   if (found.length > allowed) {
     failures++
     console.error(`src/${rel}  ${found.length} size(s) that don't follow the UI scale, ${allowed} allowed (scaling-baseline.json):`)
@@ -134,7 +137,8 @@ if (process.argv.includes('--update-scaling-baseline')) {
 // className again. Each file may have at most its count in own-important-baseline.json; it only goes down.
 const OWN_IMPORTANT = /\bown:[^\s'"`]*!(?=[\s'"`])/g
 const OWN_BASELINE_FILE = new URL('./own-important-baseline.json', import.meta.url).pathname
-const ownBaseline = existsSync(OWN_BASELINE_FILE) ? JSON.parse(readFileSync(OWN_BASELINE_FILE, 'utf8')) : {}
+const ownBaselineText = readTextIfExists(OWN_BASELINE_FILE)
+const ownBaseline = ownBaselineText === null ? {} : JSON.parse(ownBaselineText)
 const ownImportant = {}
 for (const file of files) {
   if (!/\.tsx?$/.test(file)) continue

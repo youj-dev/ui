@@ -18,6 +18,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import ts from 'typescript'
+import { readTextIfExists } from './read-text.mjs'
 
 const check = process.argv.includes('--check')
 const packages = join(import.meta.dirname, '../packages')
@@ -26,7 +27,7 @@ const lib = join(core, 'src/lib/youj')
 const stale = []
 
 const write = (path, content) => {
-  if (existsSync(path) && readFileSync(path, 'utf8') === content) return
+  if (readTextIfExists(path) === content) return
   stale.push(path.slice(core.length - 'packages/core'.length + 0))
   if (!check) {
     mkdirSync(join(path, '..'), { recursive: true })
