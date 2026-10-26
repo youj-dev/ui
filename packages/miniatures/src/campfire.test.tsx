@@ -89,16 +89,20 @@ describe('Campfire and tent', () => {
   })
 
   it('L dims the lantern and lights it again; a click on the tent does the same', async () => {
-    const { run, snap, inside } = await play(['l'])
+    const { run, snap, inside, svg } = await play(['l'])
     const tent = inside.querySelector('[aria-label="Tent: light or dim the lantern (L)"]')!
     expect(snap().state).toBe('LANTERN DIMMED')
     expect(tent).toHaveAttribute('aria-pressed', 'false')
+    expect(opacities(svg(), '.glow-in, .lamp-halo, .fabric')).toEqual([0, 0, 0, 0])
+    expect(svg().querySelector('.globe')).not.toHaveClass('lit')
     await run(2000)
     expect(snap().state).toBe('MARSHMALLOW RAW · LANTERN OFF')
     act(() => void tent.dispatchEvent(new MouseEvent('click')))
     await run(100)
     expect(snap().state).toBe('LANTERN LIT')
     expect(tent).toHaveAttribute('aria-pressed', 'true')
+    expect(opacities(svg(), '.glow-in')).toEqual([1])
+    expect(svg().querySelector('.globe')).toHaveClass('lit')
   })
 
   it('T holds the marshmallow to the fire: it toasts golden, then brown, then burns; T takes it back', async () => {

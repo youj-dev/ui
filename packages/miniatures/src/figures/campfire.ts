@@ -58,7 +58,7 @@ flames, front stones), seat, stick, smoke, sparks; then the controls. */
 const svg=document.getElementById('machine'),root=document.getElementById('drawing');
 const{C,S,P,set,SIDE,el,group,rect,circle,line,text,poly,cylinder}=kit(()=>root);
 // Figure helpers: vectors and oriented planes, smooth curves through drawing points, round parts on any axis, flame tongues.
-const{cos,sin,PI,hypot,atan2,min,max,exp,round}=Math,RAD=PI/180,clamp=(v,a=0,b=1)=>max(a,min(b,v)),f2=v=>(+v).toFixed(2),pt=q=>`${f2(q[0])},${f2(q[1])}`;
+const{cos,sin,PI,hypot,atan2,min,max,exp,round,abs}=Math,RAD=PI/180,clamp=(v,a=0,b=1)=>max(a,min(b,v)),f2=v=>(+v).toFixed(2),pt=q=>`${f2(q[0])},${f2(q[1])}`;
 const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),mul=(a,s)=>a.map(v=>v*s),dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],unit=a=>mul(a,1/(hypot(...a)||1)),VIEW=[1,1,1];
 const plane=(o,U,V)=>`matrix(${[...P(...U),...P(...V),...P(...o)].map(v=>+v.toFixed(3)).join(' ')})`,iso=(x,y,z,r)=>{const c=P(x,y,z);return{cx:f2(c[0]),cy:f2(c[1]),rx:f2(r*1.2247),ry:f2(r*.7071)};};
 function axes(n){const U=unit(Math.abs(n[2])>.9?cross(n,[1,0,0]):cross([0,0,1],n));let V=cross(n,U);const a=P(...U),b=P(...V);if(a[0]*b[1]-a[1]*b[0]<0)V=mul(V,-1);return[U,V];}
@@ -182,7 +182,7 @@ if(red)for(const s of sparks){if(s.life>0||s.n._o!=='0'){s.life=0;op(s.n,0);}}
 else{spawn=min(4,spawn+dt*max(0,(q-.12)*10))+burst;burst=0;for(const s of sparks){if(s.life<=0&&spawn>=1){spawn-=1;s.max=s.life=1+rnd()*1.4;s.x=FB[0]+(rnd()-.5)*9;s.y=FB[1]-rnd()*Hf*.35;s.vx=(rnd()-.5)*8+3;s.vy=-(16+rnd()*20)*(.7+.4*min(1,q));}
 if(s.life>0){s.life-=dt;s.vy*=exp(-dt*.5);s.x+=(s.vx+4*sin(t*2.6+s.ph))*dt;s.y+=s.vy*dt;const k=clamp(s.life/s.max);set(s.n,'cx',f2(s.x));set(s.n,'cy',f2(s.y));set(s.n,'r',f2(.45+.75*k));op(s.n,s.life>0?k**.6*(.65+.35*sin(t*31+s.ph)):0);}}spawn=min(spawn,4);}
 const smk=.45+.55*(1-min(1,q));if(!red||key!==paint.smoke){paint.smoke=key;puffs.forEach((p,i)=>{if(!red)p.p=(p.p+dt/6.5)%1;const k=red?(i+1)/6:p.p;set(p.n,'cx',f2(FB[0]+2+k*20+sin(k*5+i)*1.6));set(p.n,'cy',f2(FB[1]-Hf*.8-k*38));set(p.n,'r',f2(1.6+k*5));op(p.n,sin(k*PI)*.3*smk);});}
-const lf=lan*(red?1:1+.035*sin(t*8.3)+.025*sin(t*21.7)),lk=red?`${lan}${dk}`:'';if(!red||lk!==drawnLan){drawnLan=lk;op(glowIn,lf);op(lanHalo,lf*(dk?.9:.55));op(wick,lf);set(globe,'class',lan>.5?'globe lit':'globe');op(fabG,lf*(dk?.78:.18));op(fabS,lf*(dk?.66:.14));op(spill,lf*(dk?.85:.3));}
+lan=red?+lanOn:lan+(+lanOn-lan)*(1-exp(-dt/.16));if(abs(lan-+lanOn)<.002)lan=+lanOn;const lf=lan*(red?1:1+.035*sin(t*8.3)+.025*sin(t*21.7)),lk=red?`${lan}${dk}`:'';if(!red||lk!==drawnLan){drawnLan=lk;op(glowIn,lf);op(lanHalo,lf*(dk?.9:.55));op(wick,lf);set(globe,'class',lan>.5?'globe lit':'globe');op(fabG,lf*(dk?.78:.18));op(fabS,lf*(dk?.66:.14));op(spill,lf*(dk?.85:.3));}
 const sk=f2(psi);if(sk!==drawnStick){drawnStick=sk;drawStick();}
 const[fill,cap]=mallowShade(red,dk),sh=fill+cap;if(sh!==shade){shade=sh;mallB.style.fill=fill;mallCap.style.fill=cap;}
 if(onFire){const m=drawStick.m;set(mallFlame,'d',tongue(m[0],m[1]+.8,1.9,(red?7:7*(1+.18*sin(t*9)+.1*sin(t*17)))+2*toast,.6,.5,t*3));op(mallFlame,1);}else op(mallFlame,0);}
