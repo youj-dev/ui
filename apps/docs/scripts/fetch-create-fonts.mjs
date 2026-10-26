@@ -23,19 +23,30 @@ const FAMILIES = [
   ['space-mono', 'Space Mono', 'wght@400;700'],
 ]
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
+const FONT_HOST = 'https://fonts.gstatic.com/'
 const out = new URL('../public/fonts/create/', import.meta.url).pathname
 mkdirSync(out, { recursive: true })
 
+/** GET that fails on any status but 200, so an error page is never written as a stylesheet or a font. */
+async function get(url, init) {
+  const response = await fetch(url, init)
+  if (!response.ok) throw new Error(`${url}: ${response.status}`)
+  return response
+}
+
 for (const [id, name, axes] of FAMILIES) {
-  const css = await (await fetch(`https://fonts.googleapis.com/css2?family=${name.replace(/ /g, '+')}:${axes}&display=swap`, { headers: { 'user-agent': UA } })).text()
+  const css = await (await get(`https://fonts.googleapis.com/css2?family=${name.replace(/ /g, '+')}:${axes}&display=swap`, { headers: { 'user-agent': UA } })).text()
   const blocks = [...css.matchAll(/\/\* ([\w-]+) \*\/\s*(@font-face \{[^}]*\})/g)].filter((m) => m[1] === 'latin')
   if (!blocks.length) throw new Error(`${id}: no latin face`)
   let n = 0
   const faces = []
   for (const [, , block] of blocks) {
     const url = block.match(/url\((https:[^)]+)\)/)[1]
+    if (!url.startsWith(FONT_HOST)) throw new Error(`${id}: ${url} is not on ${FONT_HOST}`)
     const file = `${id}-${++n}.woff2`
-    writeFileSync(out + file, Buffer.from(await (await fetch(url)).arrayBuffer()))
+    const font = Buffer.from(await (await get(url)).arrayBuffer())
+    if (font.subarray(0, 4).toString('latin1') !== 'wOF2') throw new Error(`${id}: ${url} is not a WOFF2 file`)
+    writeFileSync(out + file, font)
     faces.push(block.replace(url, `/fonts/create/${file}`))
   }
   writeFileSync(`${out}${id}.css`, faces.join('\n') + '\n')
