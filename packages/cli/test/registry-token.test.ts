@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { fetchRegistryItem } from '../src/add'
 import { loadRegistryItem } from '../src/registry'
@@ -17,6 +20,24 @@ describe('YOUJ_REGISTRY_TOKEN', () => {
     await fetchRegistryItem('button', {})
     const headers = fetch.mock.calls.map((call) => (call as unknown as [string, RequestInit])[1].headers)
     expect(headers).toEqual([{ Authorization: 'Bearer tok-123' }, {}])
+  })
+
+  it('sends the token only to the registry in use: a dependency URL read from a local registry file gets none', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'youj-registry-'))
+    try {
+      const dependency = 'https://other.test/r/extra.json'
+      writeFileSync(join(dir, 'page.json'), JSON.stringify({ name: 'page', registryDependencies: [dependency, 'http://127.0.0.1:9/r/local.json'] }))
+      const fetch = vi.fn(async () => Response.json({ name: 'extra', files: [] }))
+      vi.stubGlobal('fetch', fetch)
+      const env = { ...TOKEN, YOUJ_REGISTRY_URL: `file://${dir}/{name}.json` }
+      const item = await loadRegistryItem('page', env)
+      for (const dep of item.registryDependencies ?? []) await loadRegistryItem(dep, env)
+      const calls = fetch.mock.calls as unknown as [string, RequestInit][]
+      expect(calls.map(([url]) => url)).toEqual([dependency, 'http://127.0.0.1:9/r/local.json'])
+      expect(calls.map(([, init]) => init.headers)).toEqual([{}, {}])
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 
   it('makes init write the registry with an env-backed header, never the token itself', async () => {

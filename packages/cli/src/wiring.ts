@@ -89,7 +89,26 @@ export function wireSound(cwd: string, fromPackage: boolean): { changes: Change[
   return { changes: project.commit() }
 }
 
-const isClientFile = (source: string) => /^\s*(?:\/\*[\s\S]*?\*\/\s*|\/\/[^\n]*\n\s*)*(['"])use client\1/.test(source)
+/**
+ * Whether the file opens with a 'use client' directive, after any comments. Walks the leading comments instead of
+ * matching them with one pattern: nested lazy repeats backtrack exponentially on a file with many comments and no directive.
+ */
+export function isClientFile(source: string): boolean {
+  let at = 0
+  for (;;) {
+    while (at < source.length && /\s/.test(source[at]!)) at++
+    if (source.startsWith('/*', at)) {
+      const close = source.indexOf('*/', at + 2)
+      if (close < 0) return false
+      at = close + 2
+    } else if (source.startsWith('//', at)) {
+      const end = source.indexOf('\n', at)
+      if (end < 0) return false
+      at = end + 1
+    } else break
+  }
+  return /^(['"])use client\1/.test(source.slice(at, at + 12))
+}
 
 /** App Router: `providers.tsx` ('use client') holds YoujProvider with the pack, and the layout uses it. */
 function wireSoundThroughClientFile(project: Project, layout: string, source: string, from: string, manual: string): { changes: Change[]; manual?: string } {
