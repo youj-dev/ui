@@ -136,6 +136,18 @@ describe('ClawMachine', () => {
     expect(snap().state).toBe('NO PRIZE AT THE DOOR')
   })
 
+  it('hovering over the glass starts nothing; a click there spends a credit and drops the claw', async () => {
+    const { snap, inside, run } = await play()
+    const glass = inside.querySelector('.steer')!
+    act(() => void glass.dispatchEvent(new Event('pointermove', { bubbles: true })))
+    await run(300)
+    expect(snap()).toEqual(clawMachine.initial)
+    act(() => void glass.dispatchEvent(new MouseEvent('click', { bubbles: true })))
+    await run(100)
+    expect(snap().readout).toBe('CREDITS 2 · TIMER 15 · WON 0')
+    expect(snap().state).toBe('DROPPING THE CLAW')
+  })
+
   it('in full motion it takes its time: the claw drops, closes, lifts and carries home', async () => {
     const { snap, run, press } = await play(OVER_PANDA, 4000, 'never')
     press([' '])
@@ -146,6 +158,36 @@ describe('ClawMachine', () => {
     await run(5500)
     expect(snap().readout).toBe('CREDITS 2 · TIMER 15 · WON 1')
     expect(snap().state).toBe('PRIZE AT THE DOOR · P TAKES IT')
+  })
+
+  it('keeps a fixed number of drawing nodes through every interaction, in full and in reduced motion', async () => {
+    for (const motion of ['never', 'always'] as const) {
+      const { inside, press, run, unmount } = await play([], 300, motion)
+      const count = () => inside.querySelectorAll('*').length
+      const click = (selector: string) => act(() => void inside.querySelector(selector)!.dispatchEvent(new MouseEvent('click', { bubbles: true })))
+      const nodes = count()
+      press(['c', 'c'])
+      await run(600)
+      press(OVER_PANDA)
+      await run(3500)
+      press([' '])
+      await run(9000)
+      press(['p'])
+      await run(2500)
+      press(['ArrowLeft', 'ArrowDown'])
+      await run(1500)
+      click('[aria-label^="Drop button"]')
+      await run(9000)
+      press(OVER_PANDA.filter((_, i) => i !== 0))
+      await run(3500)
+      click('.steer')
+      await run(9000)
+      click('[aria-label^="Coin slot"]')
+      click('[aria-label^="Prize door"]')
+      await run(14000)
+      expect(count(), motion).toBe(nodes)
+      unmount()
+    }
   })
 
   it('left alone in full motion it plays itself, free and silent, until a key takes over', async () => {

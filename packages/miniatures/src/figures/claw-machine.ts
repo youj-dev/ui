@@ -12,7 +12,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .back{fill:var(--back)}.side.back{fill:var(--back-side)}.bed{fill:var(--bed)}.deco{fill:#fff;opacity:.8;stroke:none}.lamp-glow{fill:url(#lampG);opacity:var(--glow);pointer-events:none}
 .acrylic{fill:#fff;fill-opacity:var(--acryl);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.rim{fill:none;stroke:#fff;stroke-width:.9;stroke-linecap:round;opacity:.85}.sticker{fill:var(--accent);font-size:2.6px;font-weight:700;letter-spacing:.5px;text-anchor:middle}
 .pane{fill:#fff;opacity:var(--pane);pointer-events:none}.streak{fill:#fff;opacity:var(--streak);pointer-events:none}.edge{fill:none;stroke:#fff;stroke-width:.9;opacity:.75;pointer-events:none}.steer{cursor:crosshair}
-.stripe{fill:var(--accent);stroke:none}.stripe2{fill:var(--amber);stroke:none}.side-brand{fill:var(--ink);font-size:8px;font-weight:700;letter-spacing:3px;text-anchor:middle;opacity:.85}
+.stripe{fill:var(--accent);stroke:none}.stripe2{fill:var(--amber);stroke:none}.plate-t{fill:var(--ink);font-size:3.6px;font-weight:600;letter-spacing:.9px;text-anchor:middle}.tiny{font-size:1.9px;letter-spacing:.4px;fill:var(--muted)}
 .sign{fill:url(#signG)}.marq{font-size:8.4px;font-weight:700;letter-spacing:1.6px;text-anchor:middle}.m1{fill:var(--accent)}.m2{fill:var(--pink)}.m3{fill:var(--amber)}.m4{fill:var(--teal)}.crest-x{fill:var(--side);stroke:none}.ray{opacity:.22;stroke:none}
 .bulb .core{fill:var(--off);stroke:var(--line);stroke-width:.4;vector-effect:non-scaling-stroke}.bulb .halo{fill:url(#bulbG);opacity:0}.bulb.on .core{fill:var(--bulb);stroke:none}.bulb.on .halo{opacity:1}
 .star-lit{fill:var(--bulb);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.star-halo{fill:url(#bulbG)}
@@ -23,7 +23,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .flap{fill:#1d1d1c;fill-opacity:.42;stroke:var(--line);stroke-width:.7;vector-effect:non-scaling-stroke}.flap-t{fill:#fff;opacity:.78;font-size:2.5px;font-weight:700;letter-spacing:1px;text-anchor:middle}
 .cable{fill:none;stroke:var(--line);stroke-width:.75;vector-effect:non-scaling-stroke}.fo{fill:none;stroke:var(--line);stroke-width:3.1;stroke-linecap:round;stroke-linejoin:round}.fi{fill:none;stroke:var(--chrome-top);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.tip{fill:var(--rubber)}.claw-shadow{fill:var(--shadow);opacity:.2;filter:url(#soft)}
 .pf{fill:var(--c);stroke:var(--line);stroke-width:.75;vector-effect:non-scaling-stroke;stroke-linejoin:round}.pd{fill:var(--patch)}.pb{fill:var(--l)}.pl{fill:var(--l)}.pe{fill:var(--eye)}.ph{fill:#fff}.pn{fill:var(--nose)}.pk{fill:var(--cheek);opacity:.5}.pm{fill:none;stroke:var(--eye);stroke-width:.55;stroke-linecap:round;stroke-linejoin:round}
-/* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.5);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
+/* dark v2: night studio */:root{--stage-ink:var(--ink);--stage-muted:var(--muted)}.stage-contact,.stage-pool{display:none}@media(prefers-color-scheme:dark){.stage-floor,.stage-pool{fill:url(#stage-floor-fill);stroke:none;opacity:1;filter:none;transform:scale(1.15);transform-box:fill-box;transform-origin:center}.stage-pool{display:inline}.stage-contact{display:inline;fill:url(#stage-contact-fill);stroke:none;opacity:1;filter:none;transform:scale(.9);transform-box:fill-box;transform-origin:center}}`
 
 const defs = `<radialGradient id="ball" cx=".5" cy=".5" r=".55" fx=".36" fy=".3"><stop offset="0" stop-color="#ff9b8c"/><stop offset=".55" stop-color="#e5392b"/><stop offset="1" stop-color="#9e2216"/></radialGradient>
 <radialGradient id="bulbG"><stop offset="0" style="stop-color:var(--bulb)" stop-opacity=".95"/><stop offset=".42" style="stop-color:var(--bulb)" stop-opacity=".38"/><stop offset="1" style="stop-color:var(--bulb)" stop-opacity="0"/></radialGradient>
@@ -72,10 +72,10 @@ const ctl=(g,label)=>{for(const[k,v]of Object.entries({class:'control',role:'but
 const star=(u,v,r1,r2,n=5)=>{let d='';for(let i=0;i<2*n;i++){const a=i*PI/n-PI/2,r=i%2?r2:r1;d+=(i?'L':'M')+f2(u+cos(a)*r)+','+f2(v+sin(a)*r);}return d+'Z';},spark=(g,u,v,r,c='deco')=>el('path',{d:star(u,v,r,r*.42,4),class:c},g);
 const W=80,D=72,ZC=70,FL=73,ZT=160,ZH=163,HZ=24,CZ=150,HOME=[15,58],STEP=5,BX=[12,68],BY=[12,62],ZH0=128,OPEN=.62,REST=.2,SHUT=-.08,GRIP=.14,TIMER=15,IDLE=9000,G=520;
 // Ground: one soft shadow (light), the lit floor and its contact (dark).
-const sh=P(40,44,0);for(const c of['shadow stage-floor','stage-contact'])el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+3),rx:90,ry:40,class:c});
+const sh=P(40,36,0);for(const c of['shadow stage-floor','stage-contact'])el('ellipse',{cx:f2(sh[0]),cy:f2(sh[1]+3),rx:70,ry:31,class:c});
 // Plinth and cabinet: stripes, brand and vents down the side; the prize door and the coin door in front.
 box(3,3,0,74,66,5,1.2,'base');box(0,0,5,W,D,ZC-5,2,'');
-const CS=group(SIDE(W+.05,D,ZC));rect(CS,3,6,66,3.6,1.8,'stripe');rect(CS,3,11.4,66,1,.5,'stripe2');text(CS,36,33,'LARKWELL','side-brand');text(CS,36,39.6,'PRIZE CRANE · CR–3','etch center');slits(CS,46,51,19,6,9,true);for(const[u,v]of[[3,3],[69,3],[3,61],[69,61]])pin(CS,u,v);
+const CS=group(SIDE(W+.05,D,ZC));rect(CS,3,6,66,3.6,1.8,'stripe');rect(CS,3,11.4,66,1,.5,'stripe2');{const g=group('translate(9 22)',CS);rect(g,0,0,28,10,1.6,'face chrome');rect(g,1.2,1.2,25.6,7.6,1,'detail');text(g,14,5.4,'LARKWELL','plate-t');text(g,14,8,'CR–3','plate-t tiny');}slits(CS,46,51,19,6,9,true);for(const[u,v]of[[3,3],[69,3],[3,61],[69,61]])pin(CS,u,v);
 const CF=group(FRONT(0,D+.05,ZC));rect(CF,2,58.4,76,4.6,1,'face base');
 const bayG=el('g',{'clip-path':'url(#bayClip)'});rect(group(FRONT(6,63,34),bayG),0,0,26,26,0,'face void');rect(group(TOP(6,63,8.02),bayG),0,0,26,9,0,'face top recess');rect(group(SIDE(6.02,D,34),bayG),0,0,9,26,0,'face side recess');
 const DR=group(FRONT(6,D+.06,34));el('path',{d:'M-2.4,-2.4H28.4V28.4H-2.4ZM0,0V26H26V0Z','fill-rule':'evenodd',class:'face chrome'},DR);
@@ -166,7 +166,7 @@ el('rect',{x:-400,y:-400,width:f2(400+P(61,D,0)[0]),height:800},el('clipPath',{i
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement'),say=m=>{announcement.textContent=m;};
 let credits=3,won=0,timer=TIMER,phase='idle',pt0=performance.now(),last=pt0,gx=HOME[0],gy=HOME[1],vx=0,vy=0,tx=gx,ty=gy,ox=0,oy=0,wox=0,woy=0,cx=gx,cy=gy,zh=ZH0,z0=ZH0,th=REST,tht=REST,phi=.5;
-let held=null,weak=false,slipAt=9,prog=0,grab=null,dist0=1,dropHere=false,demoPlay=false,lastIn=pt0-IDLE+2600,holdT=0,beep=99,note='',noteUntil=0,winT=-1e9,bay=null,btnDown=0,btnH=-1,coinT=0,slotT=-1e9,flapKick=-1e9,flapOpen=-1e9,flapA=-1,jx=0,jy=0,jKey='',clawKey='',roam=0,outKey='',lit='',ledKey='',headK=0,shK=0;
+let held=null,weak=false,slipAt=9,prog=0,grab=null,dist0=1,dropHere=false,demoPlay=false,lastIn=pt0-IDLE+2600,holdT=0,beep=99,note='',noteUntil=0,winT=-1e9,bay=null,btnDown=0,btnH=-1,coinT=0,slotT=-1e9,flapKick=-1e9,flapOpen=-1e9,flapA=-1,jx=0,jy=0,jKey='',clawKey='',outKey='',lit='',ledKey='',headK=0,shK=0;
 const keys={ArrowLeft:0,ArrowRight:0,ArrowUp:0,ArrowDown:0},DIR={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]},demo={on:false,step:0,t:0,aim:null};
 let ac=null,nb=null;
 function audio(){try{if(!ac){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;ac=new A();}if(ac.state==='suspended')ac.resume().catch(()=>{});}catch(_){ac=null;}return ac;}
@@ -188,7 +188,7 @@ for(const q of pile)q.z=restZ(q.x,q.y,q.r,q);
 // Play: a credit buys a timed turn; the arrows step the gantry (and keep it going while held), Space drops.
 function deny(){notice('INSERT COIN · C ADDS A CREDIT');slotT=performance.now();tone(196,.16,.025,'square');say('No credits: press C for a coin.');}
 function begin(isDemo){if(phase==='play')return true;if(phase!=='idle'){notice('WAIT FOR THE CLAW',1000);return false;}if(!isDemo){if(credits<1){deny();return false;}credits--;}
-demoPlay=!!isDemo;timer=TIMER;beep=99;roam=0;dropHere=false;go('play');if(!isDemo){tone(523,.08,.02,'square');tone(784,.1,.02,'square',.08);say(`Game on: ${TIMER} seconds. Steer, then press Space to drop.`);}return true;}
+demoPlay=!!isDemo;timer=TIMER;beep=99;dropHere=false;go('play');if(!isDemo){tone(523,.08,.02,'square');tone(784,.1,.02,'square',.08);say(`Game on: ${TIMER} seconds. Steer, then press Space to drop.`);}return true;}
 function arrow(k){if(phase==='idle'&&!begin())return;if(phase!=='play'){notice('WAIT FOR THE CLAW',1000);return;}keys[k]=1;holdT=0;const[a,b]=DIR[k];tx=clamp(tx+a*STEP,...BX);ty=clamp(ty+b*STEP,...BY);if(reduced.matches){gx=tx;gy=ty;}hiss(.06,.008,700,.9);}
 function dropBtn(){btnDown=performance.now()+150;hiss(.025,.02,3200,2);if(phase==='idle'&&!begin())return;if(phase==='play')startDrop();}
 function startDrop(){dropHere=false;go('settle');tone(260,1.1,.012,'sawtooth',0,130);say('Dropping the claw.');}
@@ -301,8 +301,8 @@ else s=held?(weak?`BARELY HOLDING THE ${held.name}`:`GOT THE ${held.name}`):'RET
 if(demo.on)s=`DEMO · ${s}`;if(r+s!==outKey){outKey=r+s;readout.textContent=r;stateLabel.textContent=s;}}
 function tick(now){const dt=min(.05,max(0,(now-last)/1000)),red=reduced.matches;last=now;
 demoStep(now,red);steer(dt,red);sequence(now,dt,red);hang(now,dt,red);for(const q of pile)step(q,now,dt,red);render(now,red);ui(now);requestAnimationFrame(tick);}
-// Input: arrows (held, they keep going), Space, C and P; the button, the coin slot and the prize door; the pointer
-// over the glass steers once it has moved a little, and a click there drops the claw where it points.
+// Input: arrows (held, they keep going), Space, C and P; the button, the coin slot and the prize door. A click on the
+// glass starts a play and drops the claw where it points; while a play is under way the pointer over the glass steers.
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key;
 if(DIR[k]){e.preventDefault();if(!e.repeat){user();arrow(k);}return;}if(e.repeat)return;
 if(k===' '){e.preventDefault();user();dropBtn();}else if(k==='c'||k==='C'){e.preventDefault();user();coin();}else if(k==='p'||k==='P'){e.preventDefault();user();take();}});
@@ -310,10 +310,7 @@ document.addEventListener('keyup',e=>{if(DIR[e.key])keys[e.key]=0;});
 window.addEventListener('blur',()=>{for(const k in keys)keys[k]=0;});
 bind(btn,()=>{user();dropBtn();});bind(coinCtl,()=>{user();coin();});bind(door,()=>{user();take();});
 const floorAt=e=>{const m=svg.getScreenCTM?.();if(!m)return null;const q=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse()),a=q.x/C,b=(q.y+92)/S;return[clamp((a+b)/2,...BX),clamp((b-a)/2,...BY)];};
-let lastPt=null;
-glassHit.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const p=floorAt(e);if(!p)return;if(lastPt)roam+=hypot(p[0]-lastPt[0],p[1]-lastPt[1]);lastPt=p;
-if(phase==='idle'){if(roam<12||credits<1)return;user();if(!begin())return;}else if(phase!=='play')return;else user();tx=p[0];ty=p[1];});
-glassHit.addEventListener('pointerleave',()=>{lastPt=null;});
+glassHit.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||phase!=='play')return;const p=floorAt(e);if(!p)return;user();tx=p[0];ty=p[1];});
 glassHit.addEventListener('click',e=>{const p=floorAt(e);user();if(phase==='idle'&&!begin())return;if(phase!=='play')return;if(p){tx=p[0];ty=p[1];}dropHere=true;hiss(.025,.02,3200,2);});
 render(performance.now(),reduced.matches);ui(performance.now());requestAnimationFrame(tick);
 }
