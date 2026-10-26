@@ -136,7 +136,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -167,6 +167,8 @@ const pipeOrgan: { description; id; initial; keys; label; maker; model; name; pr
 const quantumFridge: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const receiptPrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
+const reelToReel: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 function relight(hex: string, role: MaterialRole): string;
 
@@ -939,6 +941,23 @@ interface MiniatureReceiptPrinterProps extends MiniatureProps {
 }
 
 const receiptPrinter: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/reel-to-reel
+
+```ts
+function MiniatureReelToReel(props: MiniatureReelToReelProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; done?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; progress?: number | null; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureReelToReelHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureReelToReelHandle = MiniatureProgressHandle<MiniatureReelToReelKey>;
+
+type MiniatureReelToReelKey = MiniatureKeyOf<typeof reelToReel>;
+
+interface MiniatureReelToReelProps extends MiniatureProgressProps {
+    ref?: Ref<MiniatureReelToReelHandle>;
+}
+
+const reelToReel: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/repair-bench

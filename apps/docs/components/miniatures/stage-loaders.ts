@@ -47,6 +47,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'pipe-organ': () => import('@youj/miniatures/pipe-organ'),
   'quantum-fridge': () => import('@youj/miniatures/quantum-fridge'),
   'receipt-printer': () => import('@youj/miniatures/receipt-printer'),
+  'reel-to-reel': () => import('@youj/miniatures/reel-to-reel'),
   'repair-bench': () => import('@youj/miniatures/repair-bench'),
   'retro-fridge': () => import('@youj/miniatures/retro-fridge'),
   'robot-arm': () => import('@youj/miniatures/robot-arm'),

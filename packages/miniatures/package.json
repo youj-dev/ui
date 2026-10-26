@@ -74,6 +74,7 @@
     "./pipe-organ": "./src/pipe-organ.tsx",
     "./quantum-fridge": "./src/quantum-fridge.tsx",
     "./receipt-printer": "./src/receipt-printer.tsx",
+    "./reel-to-reel": "./src/reel-to-reel.tsx",
     "./repair-bench": "./src/repair-bench.tsx",
     "./retro-fridge": "./src/retro-fridge.tsx",
     "./robot-arm": "./src/robot-arm.tsx",
@@ -279,6 +280,10 @@
       "./receipt-printer": {
         "types": "./dist/receipt-printer.d.ts",
         "default": "./dist/receipt-printer.js"
+      },
+      "./reel-to-reel": {
+        "types": "./dist/reel-to-reel.d.ts",
+        "default": "./dist/reel-to-reel.js"
       },
       "./repair-bench": {
         "types": "./dist/repair-bench.d.ts",

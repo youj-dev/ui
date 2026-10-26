@@ -167,6 +167,10 @@
     "light": "/thumbs/miniatures/receipt-printer.webp?v=b9fdf43908",
     "dark": "/thumbs/miniatures/receipt-printer.dark.webp?v=d9184ed721"
   },
+  "reel-to-reel": {
+    "light": "/thumbs/miniatures/reel-to-reel.webp?v=0196b861bf",
+    "dark": "/thumbs/miniatures/reel-to-reel.dark.webp?v=2f6bcdbfa6"
+  },
   "repair-bench": {
     "light": "/thumbs/miniatures/repair-bench.webp?v=8fc185bbbe",
     "dark": "/thumbs/miniatures/repair-bench.dark.webp?v=3549cd756e"
