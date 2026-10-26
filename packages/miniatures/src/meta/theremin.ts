@@ -9,7 +9,7 @@ export const theremin = {
   study: '085',
   spec: 'E–7 / HETERODYNE · PITCH ROD · VOLUME LOOP · C3–C6',
   label: 'Theremin, ODALIN E–7',
-  description: 'A walnut theremin on tapered legs: a chrome pitch rod on a ceramic insulator, a volume loop at its side, a speaker behind a cloth grille with brass bars, a small round scope, a vibrato knob and an air button. Your pointer is the hand: its distance from the rod sets the pitch and its height above the loop the volume. Soft rings gather round the rod and rise from the loop as you play, and the scope draws the wave. The arrow keys nudge the pitch by a semitone and the volume by a step, Space holds a note, V changes the vibrato and M plays a short original air by itself.',
+  description: 'A walnut theremin on tapered legs: a chrome pitch rod on a ceramic insulator, a volume loop at its side, a speaker behind a cloth grille with brass bars, a small round scope, a vibrato knob and an air button. Your pointer is the hand: its distance from the rod sets the pitch and its height above the loop the volume. Soft rings gather around the rod and rise from the loop as you play, and the scope draws the wave. The arrow keys nudge the pitch by a semitone and the volume by a step, Space holds a note, V changes the vibrato and M plays a short original air by itself.',
   keys: [
     { keys: ['ArrowLeft', 'ArrowRight'], caps: ['←', '→'], label: 'pitch' },
     { keys: ['ArrowUp', 'ArrowDown'], caps: ['↑', '↓'], label: 'volume' },

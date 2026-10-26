@@ -14,7 +14,7 @@ const css = `:root{color-scheme:light dark;--bg:#f4f3ef;--ink:#323232;--muted:#8
 .scr{fill:var(--screen);stroke:var(--line);stroke-width:.6;vector-effect:non-scaling-stroke}.grid{fill:none;stroke:var(--grid);stroke-width:.28;opacity:.55}.trace{fill:none;stroke:var(--phosphor);stroke-width:.55;stroke-linejoin:round;stroke-linecap:round}.trace-soft{stroke-width:1.7;opacity:.28;filter:url(#soft)}.scr-glow{fill:var(--phosphor);opacity:.06;stroke:none}.glint{fill:none;stroke:#fff;stroke-width:.7;stroke-linecap:round;opacity:.16}
 .su,.sm,.shine{fill:none;stroke-linecap:round;stroke-linejoin:round}.su{stroke:var(--line)}.sm{stroke:var(--chrome)}.shine{stroke:#fff;opacity:.6}.spec{fill:#fff;opacity:.7;stroke:none}
 .lamp{fill:var(--off);stroke:none}.lamp.g{fill:var(--ok);filter:url(#glow)}.lamp.w{fill:var(--warm);filter:url(#glow)}.knobmark{fill:none;stroke:var(--line);stroke-width:.75;stroke-linecap:round}
-.ring{fill:url(#ringG);stroke:none}.hring{fill:none;stroke:var(--field);stroke-width:.75;vector-effect:non-scaling-stroke}.fline{fill:none;stroke:var(--field);stroke-width:.7;stroke-dasharray:1.4 1.6;stroke-linecap:round;vector-effect:non-scaling-stroke}.link{stroke-dasharray:.6 2}.hand{fill:var(--field);stroke:none}.handhalo{fill:url(#haloG);stroke:none}
+.ring{fill:url(#ringG);stroke:none}.hring{fill:none;stroke:var(--field);stroke-width:.75;vector-effect:non-scaling-stroke}.fline{fill:none;stroke:var(--field);stroke-width:.7;stroke-dasharray:1.4 1.6;stroke-linecap:round;vector-effect:non-scaling-stroke}.link{stroke-dasharray:.6 2}.hand{fill:var(--field);stroke:none}.tag{fill:var(--field);font:600 3.4px ui-monospace,monospace;letter-spacing:.3px;stroke:none}.handhalo{fill:url(#haloG);stroke:none}
 .rotor{transition:transform .26s cubic-bezier(.2,.8,.3,1)}.press{transition:transform .12s}.press.down{transform:translate(.7px,-.4px)}
 .control{cursor:pointer;outline:none}.hit{fill:transparent;stroke:none}.focus-ring{fill:none;stroke:var(--accent);stroke-width:1.3;vector-effect:non-scaling-stroke;opacity:0;pointer-events:none}.control:focus-visible .focus-ring{opacity:1}
 @media(prefers-reduced-motion:reduce){.rotor,.press{transition:none}}
@@ -34,8 +34,8 @@ apron                         4      4     32    124     44      4   brass
 cabinet                       0      0     36    132     52     36   walnut; grille, plate, scope, vibrato knob, air button, lamp
 lid                          -2     -2     72    136     56      4   grain, brass inlay under it
 pitch rod                    12     14     76    r 1.1     –     93   brass disc, ceramic insulator, collar, chrome rod, ball tip
-volume loop                 132     14   66.5   oval 20 × 13 round x 166, on a ceramic insulator in a brass plate
-field              rings round the rod at the hand's height, rings rising from the loop to it, the hand between them
+volume loop                 132     14   66.5   oval 20 × 13 around x 166, on a ceramic insulator in a brass plate
+field              rings around the rod at the hand's height, rings rising from the loop to it, the hand between them
 The hand lives in the plane y 14, near the player: its distance from the rod sets the pitch, its height above the loop the volume.
 Painter order: shadow, legs, apron, cabinet, lid, front and side details, antenna, loop, field, hand, controls. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');const drawing=root;
@@ -50,7 +50,7 @@ function lit(n,c,base='lamp'){if(n._c!==c){n._c=c;set(n,'class',base+(c?' '+c:''
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 function button(g,attrs){for(const[k,v]of Object.entries({class:'control',role:'button',tabindex:'0',...attrs}))set(g,k,v);return g;}
 const ROD=12,PY=14,RZ=168.6,LZ=66.5,LX=166;
-// Floor: the house ground shadow, a soft oval projected on the floor round the legs (sized so the dark pool stays in the frame).
+// Floor: the house ground shadow, a soft oval projected on the floor around the legs (sized so the dark pool stays in the frame).
 const floor=[];for(let i=0;i<48;i++){const t=i/48*Math.PI*2;floor.push(P(66+76*Math.cos(t),26+30*Math.sin(t),0).map(f2).join(','));}
 for(const c of['shadow stage-floor','stage-contact'])el('path',{d:'M'+floor.join('L')+'Z',class:c});
 // Legs: tapered walnut, splayed a little, on brass ferrules; then the brass apron, the cabinet and its lid.
@@ -75,15 +75,16 @@ circle(fr,123.4,12.8,2.3,'face brass');const lamp=circle(fr,123.4,12.8,1.35,'lam
 slits(el('g',{class:'vent'},sd),6,12,15,17,5,false);rect(sd,31.4,1,13.2,9.6,1.2,'face brass');for(const[u,v]of[[33.2,2.8],[42.8,2.8],[33.2,8.8],[42.8,8.8]])screw(sd,u,v);
 cylinder(132.2,PY,LZ,2.7,4.3,'x','ceramic');
 // The pitch antenna on the lid: brass disc, ceramic insulator, brass collar, the chrome rod and its ball.
-cylinder(ROD,PY,76,5,1.4,'z','brass');post(P(ROD,PY,77.4),P(ROD,PY,84.6),3.1,2.6,'ceramic');post(P(ROD,PY,84.6),P(ROD,PY,86.8),2.15,2.15,'brass');post(P(ROD,PY,86.8),P(ROD,PY,RZ),1.15,1,'chrome');
+cylinder(ROD,PY,76,5,1.4,'z','brass');post(P(ROD,PY,77.4),P(ROD,PY,84.6),3.1,2.6,'ceramic');for(const[z,r]of[[79.8,2.95],[82.2,2.78]]){const c=P(ROD,PY,z),w=r*RX;el('path',{d:`M${f2(c[0]-w)},${f2(c[1])}A${f2(w)},${f2(r*RY)} 0 0 0 ${f2(c[0]+w)},${f2(c[1])}`,class:'detail'});}
+post(P(ROD,PY,84.6),P(ROD,PY,86.8),2.15,2.15,'brass');post(P(ROD,PY,86.8),P(ROD,PY,RZ),1.15,1,'chrome');const r0=P(ROD,PY,88),r1=P(ROD,PY,RZ-1);el('path',{d:`M${f2(r0[0]-.4)},${f2(r0[1])}V${f2(r1[1])}`,class:'shine','stroke-width':.4});
 const tip=P(ROD,PY,RZ+1.5);circle(root,tip[0],tip[1],1.9,'face top chrome');circle(root,tip[0]-.6,tip[1]-.6,.55,'spec');
 // The volume loop: a chrome tube bent into an oval, both ends in the insulator.
 const loop=[[136.4,PY-2.4,LZ],[143,PY-3.4,LZ]];for(let a=-160;a<=160;a+=16){const t=a*Math.PI/180;loop.push([LX+20*Math.cos(t),PY+13*Math.sin(t),LZ]);}loop.push([143,PY+3.4,LZ],[136.4,PY+2.4,LZ]);
 const ld=smooth(loop);el('path',{d:ld,class:'su','stroke-width':3.2});el('path',{d:ld,class:'sm','stroke-width':2.4});el('path',{d:ld,class:'shine','stroke-width':.5});
-// The field: soft rings round the rod at the hand's height, rings rising from the loop to it, the line from the rod to the hand.
+// The field: soft rings around the rod at the hand's height, rings rising from the loop to it, the line from the rod to the hand.
 const rings=[0,1,2,3].map(()=>el('ellipse',{class:'ring'})),cols=[0,1,2,3].map(()=>el('ellipse',{class:'ring'}));
 const level=el('ellipse',{class:'hring'}),fline=el('path',{class:'fline'}),link=el('path',{class:'fline link'});
-const halo=el('circle',{r:8,class:'handhalo'}),hand=el('circle',{r:1.6,class:'hand'}),handRing=el('circle',{r:3.1,class:'hring'});
+const halo=el('circle',{r:8,class:'handhalo'}),hand=el('circle',{r:1.6,class:'hand'}),handRing=el('circle',{r:3.1,class:'hring'}),tag=text(drawing,0,0,'A4','tag');tag._t='A4';
 // Controls on top: the rod plays a note, the knob steps the vibrato, the button plays the air.
 const rodBtn=button(el('g',{}),{'aria-label':'Play a note (Space)'}),rb=P(ROD,PY,76),rt=P(ROD,PY,RZ+4);
 el('rect',{x:f2(rb[0]-6.5),y:f2(rt[1]-1),width:13,height:f2(rb[1]-rt[1]+4),rx:6.5,class:'hit'},rodBtn);el('rect',{x:f2(rb[0]-7.5),y:f2(rt[1]-2),width:15,height:f2(rb[1]-rt[1]+6),rx:7.5,class:'focus-ring'},rodBtn);
@@ -137,7 +138,7 @@ rings.forEach((n,i)=>{const t=(i+pp)/4,r=4+(RM-4)*t;set(n,'cx',f2(rc[0]));set(n,
 cols.forEach((n,j)=>{const t=(j+pv)/4,c=P(LX,PY,LZ+(zh-LZ)*t),r=11.5-5*t;set(n,'cx',f2(c[0]));set(n,'cy',f2(c[1]));set(n,'rx',f2(r*RX));set(n,'ry',f2(r*RY));set(n,'opacity',f2(glow*.95*Math.sin(Math.PI*t)));});
 const lc=P(LX,PY,zh);set(level,'cx',f2(lc[0]));set(level,'cy',f2(lc[1]));set(level,'rx',f2(7.5*RX));set(level,'ry',f2(7.5*RY));set(level,'opacity',f2(clamp(glow*1.5)));
 set(fline,'d',`M${f2(rc[0])},${f2(rc[1])}L${f2(H[0])},${f2(H[1])}`);set(fline,'opacity',f2(clamp(glow*1.6)));set(link,'d',`M${f2(H[0])},${f2(H[1])}L${f2(lc[0]-7.5*RX)},${f2(lc[1])}`);set(link,'opacity',f2(clamp(glow*.9)));
-for(const n of[halo,hand,handRing]){set(n,'cx',f2(H[0]));set(n,'cy',f2(H[1]));}set(halo,'opacity',f2(glow*.7));set(hand,'opacity',f2(clamp(.35+glow)));set(handRing,'opacity',f2(clamp(glow*1.4)));
+for(const n of[halo,hand,handRing]){set(n,'cx',f2(H[0]));set(n,'cy',f2(H[1]));}set(halo,'opacity',f2(glow*.7));const nn=nameOf(s);if(tag._t!==nn){tag._t=nn;tag.textContent=nn;}set(tag,'x',f2(H[0]+(side<0?-11.5:4.4)));set(tag,'y',f2(H[1]-3.6));set(tag,'opacity',f2(clamp(.4+glow)));set(hand,'opacity',f2(clamp(.35+glow)));set(handRing,'opacity',f2(clamp(glow*1.4)));
 const cyc=1.2+3.4*k,a=on?.9+4.2*v/100:.75,ph=red?0:tsec*3,vw=on&&!red?VIB[vi].w*.05*Math.sin(tsec*5.6*Math.PI*2):0;let d='';
 for(let i=0;i<=40;i++){const x=-7.6+15.2*i/40;d+=(i?'L':'M')+f2(x)+','+f2(-a*Math.sin(Math.PI*2*cyc*(1+vw)*i/40+ph));}set(trace,'d',d);set(traceSoft,'d',d);set(trace,'opacity',on?'1':'.55');
 const ck=on&&!red?f2(1+.05*v/100*(.5+.5*Math.sin(tsec*5.6*Math.PI*2))):'1.00';if(ck!==coneK){coneK=ck;set(cone,'transform',`translate(33.1 17.2) scale(${ck})`);}
