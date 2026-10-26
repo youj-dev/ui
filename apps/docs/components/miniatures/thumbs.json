@@ -87,6 +87,10 @@
     "light": "/thumbs/miniatures/instant-camera.webp?v=032e9dd2ed",
     "dark": "/thumbs/miniatures/instant-camera.dark.webp?v=3090cd7493"
   },
+  "lava-lamp": {
+    "light": "/thumbs/miniatures/lava-lamp.webp?v=8075d627c0",
+    "dark": "/thumbs/miniatures/lava-lamp.dark.webp?v=69e0cc2c6a"
+  },
   "letterpress": {
     "light": "/thumbs/miniatures/letterpress.webp?v=c5dc48c3fe",
     "dark": "/thumbs/miniatures/letterpress.dark.webp?v=2492519b01"

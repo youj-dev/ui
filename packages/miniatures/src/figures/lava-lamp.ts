@@ -93,7 +93,7 @@ circle(g,4.6,1.8,.7,'pip');rect(g,-4.6,-1.2,10.6,6,1.6,'focus-ring');rect(g,-5,-
 // The globe: the glass, the water (shaded round, lit from below), the wax, its surface, the shade when it's off,
 // reflections and the outline. A control: a click or Enter nudges the flow.
 const glassG=el('g',{class:'control rock',role:'button',tabindex:'0','aria-label':'Glass: nudge the flow (Enter)'});into(glassG);
-const gOut=solid(rGlass,48,128,40),gIn=solid(rIn,48,124,38);
+const gOut=solid(rGlass,50,128,40),gIn=solid(rIn,50,124,38);
 el('path',{d:gOut,class:'pane'});el('path',{d:gIn,class:'liquid'});el('path',{d:gIn,class:'round'});el('path',{d:gIn,class:'bulb'});
 const waxGlow=el('path',{class:'wax-glow'}),wax=el('path',{class:'wax'});
 const BL=[{r:7.8,k:.4},{r:6.4,k:1.9},{r:5.4,k:1.1},{r:4,k:.7},{r:4.2,k:1.5},{r:5,k:.5},{r:4.6,k:.9}];
@@ -104,7 +104,7 @@ el('path',{d:streak(-.66,-.46,53,118),class:'streak'});el('path',{d:streak(-.4,-
 el('path',{d:gOut,class:'outline'});el('path',{d:solid(z=>rGlass(z)+1.5,47,129,40),class:'focus-ring'});
 into(draw);into(el('g',{class:'rock'}));
 // The collar over the foot of the globe, then the cap.
-el('path',{d:band(14,45.5,50),class:'face metal'});el('path',{d:rim(rGlass(50)+.15,14,50),class:'face top metal'});
+el('path',{d:band(14,45.5,50),class:'face metal'});el('path',{d:rim(rGlass(50)-.45,14,50),class:'face top metal'});
 el('path',{d:band(9.4,126,129.6),class:'face metal'});el('path',{d:rim(9,9.4,129.6),class:'face top metal'});
 el('path',{d:solid(rCap,129.5,143.5,12),class:'face metal'});disc(4.3,143.5,'face top metal');disc(2.2,143.5,'detail');
 into(draw);
@@ -112,9 +112,13 @@ set(svg,'viewBox','-54 -153 108 183');
 const ROCK=[...svg.querySelectorAll('.rock')];
 // The wax field, on a grid over the globe's inside (x across, h up from the glass's foot at z 48): the walls fade it
 // out, so every contour closes inside the glass.
-const g=1.2,X0=-24,H0=-10,NX=41,NY=73,TH=.42,F=new Float32Array(NX*NY),WALL=new Float32Array(NX*NY),r0=rGlass(48)-1.2,HT=72;
-for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){const x=X0+i*g,h=H0+j*g,wi=h>=0?K*(rGlass(48+h)-1.2):K*r0*Math.sqrt(Math.max(0,1-(h/(Q*r0))**2)),hb=Math.abs(x)<K*r0?-Q*r0*Math.sqrt(1-(x/(K*r0))**2):0;
-WALL[j*NX+i]=sm((wi-Math.abs(x))/2.2)*sm((h-hb)/1.6)*sm((73-h)/3);}
+const g=1.2,X0=-24,H0=-10,NX=41,NY=73,TH=.42,F=new Float32Array(NX*NY),WALL=new Float32Array(NX*NY),HT=72;
+// The inside of the glass as drawn: its half-width at each height of the drawing, from the outline's envelope (where
+// the glass flares, that's well below the widest point of each circle). The floor runs behind the collar's lip.
+const SIL=[];for(let z=48;z<=124.01;z+=.25){const a=turn(rIn,z,48,124),r=rIn(z);SIL.push([K*r*Math.cos(a),z-48-Q*r*Math.sin(a)]);}
+const Wi=h=>{let i=1;while(i<SIL.length-1&&SIL[i][1]<h)i++;const[a,b]=SIL[i-1],[c,e]=SIL[i];return a+(c-a)*clamp((h-b)/(e-b))-.9;};
+for(let j=0;j<NY;j++){const h=H0+j*g,wi=Wi(h);for(let i=0;i<NX;i++){const x=X0+i*g,hb=.6-Q*13.6*Math.sqrt(Math.max(0,1-(x/(K*13.6))**2));
+WALL[j*NX+i]=sm((wi-Math.abs(x))/2.2)*sm((h-hb)/1.6)*sm((73-h)/3);}}
 function blob(cx,ch,ax,ay,w){const RX=2*ax,RY=2*ay,i0=Math.max(0,Math.ceil((cx-RX-X0)/g)),i1=Math.min(NX-1,Math.floor((cx+RX-X0)/g)),j0=Math.max(0,Math.ceil((ch-RY-H0)/g)),j1=Math.min(NY-1,Math.floor((ch+RY-H0)/g));
 for(let j=j0;j<=j1;j++){const dy=(H0+j*g-ch)/RY,d2=dy*dy;if(d2>=1)continue;for(let i=i0;i<=i1;i++){const dx=(X0+i*g-cx)/RX,q=dx*dx+d2;if(q<1){const u=1-q;F[j*NX+i]+=w*u*u*u;}}}}
 // Marching squares: edges are numbered (across, then up); each crossing links to its neighbours, and the loops are
@@ -146,7 +150,6 @@ const POSES=[[[-3,60,.9,0,0,.2],[5,35,1.35,-.1,-1,1.1],[-2,12,1.3,0,-1.1,1.1],[-
 [[0,29,1.3,0,-1,1.1],[-7,57,1.1,0,1,.3],[6,64,.95,0,0,.25],[11,46,1.2,0,1,.3],[-9,10,1.2,0,-1.1,1],[5,3,.9,0,0,.7],[-3,2,.9,0,0,.6]]];
 const COLD=[[-2,5,.8,0,0,0],[6,3.5,.85,0,0,0],[1,7,.8,0,0,0],[-9,2,.9,0,0,0],[10,1.5,.9,0,0,0],[4,1,.9,0,0,0],[-6,1,.9,0,0,0]];
 function place(pose){BL.forEach((b,i)=>{const[x,h,s,tx,th,T]=pose[i];Object.assign(b,{x,h,sy:s,sx:1/Math.sqrt(s),tx:tx*b.r,th:th*b.r,T,vx:0,vh:0,ph:h,p:i*1.7+.4});});}
-const Wi=h=>K*(rGlass(48+clamp(h,0,76))-1.2);
 let on=true,heat=1,pi=0,pose=0,stirT=-1e9,note='',noteT=0,last=0,time=0,wa=0,wv=0,outKey='',drawn='',bloopT=0;
 function physics(dt){const melt=on?sm((heat-.3)/.55):sm((heat-.02)/.3),stirred=performance.now()-stirT<2600?sm((heat-.18)/.3):0,mv=Math.max(melt,stirred);
 for(const b of BL){const hot=1.18-1.32*sm((b.h-6)/(HT-26)),k=(.04+.22*b.k*(1-sm(b.h/14))+.3*sm((b.h-HT+24)/18))*6/b.r;b.T+=(heat*hot-b.T)*Math.min(1,k*dt);
