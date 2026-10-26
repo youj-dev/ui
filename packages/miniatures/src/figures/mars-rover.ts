@@ -111,7 +111,7 @@ const HEAD=el('g',{}),headBox=fbox(HEAD,'',[9,16.6,8],1.4),headFront=headBox.F[0
 for(const u of[4.1,12.5]){circle(headFront,u,4.1,2.9,'face recess');circle(headFront,u,4.1,2.1,'lensg');el('path',{d:`M${f2(u-1.5)},${f2(4.7)}A1.6,1.6 0 0 0 ${f2(u-.2)},${f2(5.8)}`,class:'coat'},headFront);circle(headFront,u-.7,3.4,.45,'spec');}
 circle(headFront,8.3,4.8,1.1,'lensg');const headLamp=lamp(headFront,8.3,1.9,.6);
 btube([12,11,40.5],[12,11,45.6],1.1,'metal');
-{const nd=unit([-.35,.45,.82]),[U,V]=axes(nd),dg=bface([12,11,47.4],U,V);circle(dg,0,0,6.2,'face top metal');circle(dg,0,0,4.2,'detail');circle(dg,0,0,1.3,'face base');el('path',{d:'M-5.9,0L0,0M5.9,0L0,0',class:'detail'},dg);}
+{const nd=unit([-.35,.45,.82]),[U,V]=axes(nd);circle(bface(sub([12,11,47.4],mul(nd,.9)),U,V),0,0,6.2,'face side metal');const dg=bface([12,11,47.4],U,V);circle(dg,0,0,6.2,'face top metal');circle(dg,0,0,4.9,'face metal');circle(dg,0,0,1.2,'face base');}
 bwire([-28.6,19.4,40.5],[-28.6,19.4,64],'detail');const whipTip=circle(BODY,0,0,.9,'face base');
 // The arm: shoulder turret, pitch joint, upper arm, elbow, forearm, wrist and the turret with its coring drill.
 root=ARM;
@@ -124,7 +124,7 @@ const puffs=[...Array(6)].map(()=>el('circle',{r:2,class:'puff'},fx)),flash=el('
 const hBtn=button(el('g',{}),{'aria-label':'Take a panorama (P)'}),hHit=el('circle',{r:13,class:'hit'},hBtn),hRing=el('circle',{r:14,class:'focus-ring'},hBtn);
 const aq=P(28,0,24),aBtn=button(el('g',{}),{'aria-label':'Sample the nearest rock (Space)'});el('circle',{cx:f2(aq[0]),cy:f2(aq[1]),r:13,class:'hit'},aBtn);el('circle',{cx:f2(aq[0]),cy:f2(aq[1]),r:14,class:'focus-ring'},aBtn);
 // Rocks: low faceted stones, made once around their own center and moved by translation; a cored one shows its hole.
-const ROCKS=[[45,4,5.4,4.4],[44,27,4.2,3.4],[-31,28,5,4.4],[-44,-22,5,4],[6,46,4.6,3.4],[-30,40,3.8,2.8],[28,-40,5.4,4.2],[-12,-46,4.2,3.2]].map(([x,y,r,h])=>{
+const ROCKS=[[45,4,5.4,4.4],[44,27,4.2,3.4],[-31,28.6,5.6,5.8],[-44,-22,5,4],[6,46,4.6,3.4],[-30,40,3.8,2.8],[28,-40,5.4,4.2],[-12,-46,4.2,3.2]].map(([x,y,r,h])=>{
 const g=el('g',{},scene),n=7,a0=rnd()*PI,base=[],tp=[];for(let i=0;i<n;i++){const a=a0+i/n*2*PI+(rnd()-.5)*.5,k=r*(.8+rnd()*.3);base.push([k*cos(a),k*sin(a)*.9,0]);const kt=k*(.38+rnd()*.26);tp.push([kt*cos(a)+r*.1,kt*sin(a)*.9-r*.08,h*(.8+rnd()*.32)]);}
 const faces=[];for(let i=0;i<n;i++){const b0=base[i],b1=base[(i+1)%n],t1=tp[(i+1)%n],t0=tp[i],nn=unit(cross(sub(b1,b0),sub(t0,b0)));if(dot(nn,VW)>0)faces.push({d:pth([b0,b1,t1,t0],true),z:dot(add(b0,b1),VW),c:shade(nn)});}
 faces.sort((p,q)=>p.z-q.z).forEach(f=>el('path',{d:f.d,class:'face rock '+f.c},g));el('path',{d:pth(tp,true),class:'face top rock'},g);el('path',{d:pth([tp[0],tp[3]]),class:'detail',opacity:.5},g);
