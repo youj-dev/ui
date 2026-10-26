@@ -39,8 +39,8 @@ Motion: the belt runs at 16 units/s times its speed; the plates ride it. A plate
 slides out of the kitchen window onto the back run. Plates are drawn once and re-posed; nothing is added after the first
 frame. */
 const svg=document.getElementById('machine'),draw=document.getElementById('drawing');let root=draw;
-const{P,set,FRONT,SIDE,el,group,rect,circle,line,text,box}=kit(()=>root);
-const{cos,sin,PI,max,min,round,hypot,atan2}=Math,C30=Math.sqrt(3)/2,f2=v=>(+v).toFixed(2),clamp=(v,a=0,b=1)=>max(a,min(b,v)),ease=t=>t*t*(3-2*t),into=g=>root=g;
+const{C,P,set,FRONT,SIDE,el,group,rect,circle,line,text,box}=kit(()=>root);
+const{cos,sin,PI,max,min,round,hypot,atan2}=Math,f2=v=>(+v).toFixed(2),clamp=(v,a=0,b=1)=>max(a,min(b,v)),ease=t=>t*t*(3-2*t),into=g=>root=g;
 const H=30,RB=21.5,RI=10,RO=33,RM=36.5,ZT=30,ZB=28,A=PI*RB,LOOP=4*H+2*A,PR=9,PH=1.9,GAP=26,V0=16,SEAT=H,DROP=3*H+A,REACH=70,NS=40;
 // Plan shapes and their projections: a stadium round the belt's ends, a rounded rectangle, world points to paths.
 const xy=p=>P(...p).map(f2).join(','),pd=(pts,close=true)=>'M'+pts.map(xy).join('L')+(close?'Z':''),at=(o,z)=>o.map(([x,y])=>[x,y,z]);
@@ -94,7 +94,7 @@ const ctl=(g,label)=>{for(const[k,v]of Object.entries({class:'control',role:'but
 const L={floor:draw,hutch:draw,body:draw},layer=k=>L[k]=el('g',{},draw);
 // Floor: the house ground shadow, a flat ellipse traced in floor points (so the dark stage's pool, at 1.5×, fades
 // out above the caption), and its contact copy.
-into(L.floor);{const fl=(X,Y)=>{const u=X/C30;return[(u+2*Y)/2,(2*Y-u)/2,0];},o=Array.from({length:48},(_,i)=>fl(78*cos(i*PI/24),8+34*sin(i*PI/24)));el('path',{d:pd(o),class:'shadow stage-floor'});el('path',{d:pd(o),class:'stage-contact'});}
+into(L.floor);{const fl=(X,Y)=>{const u=X/C;return[(u+2*Y)/2,(2*Y-u)/2,0];},o=Array.from({length:48},(_,i)=>fl(78*cos(i*PI/24),8+34*sin(i*PI/24)));el('path',{d:pd(o),class:'shadow stage-floor'});el('path',{d:pd(o),class:'stage-contact'});}
 // The kitchen hutch behind the counter: its walls, the lit window under a noren (its middle panel sways as a plate
 // comes out under it), the sign board, the roof, a lantern.
 into(L.hutch);let sway;
