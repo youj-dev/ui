@@ -22,7 +22,7 @@ const defs = `<filter id="pool" x="-25%" y="-90%" width="150%" height="280%"><fe
 <filter id="kb" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6"/></filter>`
 
 function draw(env: FigureEnv): void {
-const{document,window,matchMedia,requestAnimationFrame,cancelAnimationFrame,setTimeout,clearTimeout,setInterval,clearInterval,addEventListener,removeEventListener,kit}=env;
+const{document,window,matchMedia,requestAnimationFrame,setTimeout,clearTimeout,addEventListener,kit}=env;
 /* TORVIK K–75 mechanical keyboard on a desk mat. World: x lower-right; y lower-left (the keys face +y); z up. 1 unit = 2.5 mm; a key is 7.6 (19.05 mm).
 Part x y z w d h
 desk mat (felt, stitched hem, woven tag) −18 −24 0 168 94 1
@@ -36,7 +36,7 @@ keys ×82 on six rows (the F-row 0.25 apart; heights 3.1–3.6 by row; travel 1.
 knob: collar + knurled aluminum 122 8.6 10.6 r3.7 – 5.5
 Legends, the caps-lock LED, lights and engravings share their parent face. */
 const svg=document.getElementById('machine');let root=document.getElementById('drawing');
-const{NS,C,S,OX,OY,P,matrix,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,wire,box,ellipse,cylinder,slits,screw,frame}=kit(()=>root);
+const{C,S,P,set,TOP,FRONT,SIDE,el,group,rect,circle,line,text,poly,box,cylinder,frame}=kit(()=>root);
 // Figure helpers: planes parallel to the sloped top, faces rounded in the drawing, smooth cords, colors.
 const draw=root,dfs=svg.querySelector('defs'),into=g=>root=g,f2=v=>(+v).toFixed(2),clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),D2R=Math.PI/180;
 const U=7.6,GP=.5,TR=1.7,ZM=1,W=130,D=56.5,HB=10.5,HF=7,K=(HB-HF)/D,X0=4.2,Y0=4.8,WD=3.4,zt=y=>ZM+HB-K*y;
