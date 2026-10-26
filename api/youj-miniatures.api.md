@@ -124,6 +124,8 @@ const hourglass: { description; id; initial; keys; label; maker; model; name; pr
 
 const instantCamera: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
+const lavaLamp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+
 const letterpress: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
 const lighthouse: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
@@ -136,7 +138,7 @@ const metronome: { description; id; initial; keys; label; maker; model; name; pr
 
 const microscope: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
-const miniatures: readonly [68 items]
+const miniatures: readonly [69 items]
 
 const mixingDesk: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 
@@ -599,6 +601,23 @@ interface MiniatureInstantCameraProps extends MiniatureProps {
 }
 
 const instantCamera: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
+```
+
+## @youj/miniatures/lava-lamp
+
+```ts
+function MiniatureLavaLamp(props: MiniatureLavaLampProps): React.JSX.Element;
+  props: { aria-label?: string; autoPlay?: boolean; interactive?: boolean; keyboard?: MiniatureKeyboard; mode?: MiniatureMode; onStateChange?: (snapshot: MiniatureSnapshot) => void; reducedMotion?: MiniatureReducedMotion; ref?: Ref<MiniatureLavaLampHandle>; size?: number | string; sound?: boolean; stage?: boolean }
+
+type MiniatureLavaLampHandle = MiniatureHandle<MiniatureLavaLampKey>;
+
+type MiniatureLavaLampKey = MiniatureKeyOf<typeof lavaLamp>;
+
+interface MiniatureLavaLampProps extends MiniatureProps {
+    ref?: Ref<MiniatureLavaLampHandle>;
+}
+
+const lavaLamp: { description; id; initial; keys; label; maker; model; name; progress; spec; study; viewBox }
 ```
 
 ## @youj/miniatures/letterpress

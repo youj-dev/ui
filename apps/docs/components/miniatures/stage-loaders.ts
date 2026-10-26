@@ -27,6 +27,7 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'home-router': () => import('@youj/miniatures/home-router'),
   hourglass: () => import('@youj/miniatures/hourglass'),
   'instant-camera': () => import('@youj/miniatures/instant-camera'),
+  'lava-lamp': () => import('@youj/miniatures/lava-lamp'),
   letterpress: () => import('@youj/miniatures/letterpress'),
   lighthouse: () => import('@youj/miniatures/lighthouse'),
   mainframe: () => import('@youj/miniatures/mainframe'),
