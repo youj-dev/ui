@@ -72,5 +72,6 @@ export const LOADERS: Record<MiniatureId, () => Promise<Record<string, unknown>>
   'vinyl-jukebox': () => import('@youj/miniatures/vinyl-jukebox'),
   'washing-machine': () => import('@youj/miniatures/washing-machine'),
   'weather-station': () => import('@youj/miniatures/weather-station'),
+  'wind-turbine': () => import('@youj/miniatures/wind-turbine'),
   workstation: () => import('@youj/miniatures/workstation'),
 }

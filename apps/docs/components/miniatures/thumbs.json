@@ -267,6 +267,10 @@
     "light": "/thumbs/miniatures/weather-station.webp?v=720eeff40e",
     "dark": "/thumbs/miniatures/weather-station.dark.webp?v=71987b556f"
   },
+  "wind-turbine": {
+    "light": "/thumbs/miniatures/wind-turbine.webp?v=e5971c6c2e",
+    "dark": "/thumbs/miniatures/wind-turbine.dark.webp?v=59dc9db173"
+  },
   "workstation": {
     "light": "/thumbs/miniatures/workstation.webp?v=1def4ab489",
     "dark": "/thumbs/miniatures/workstation.dark.webp?v=6220baa6fb"
