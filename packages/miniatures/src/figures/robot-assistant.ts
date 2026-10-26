@@ -140,7 +140,7 @@ bind(hiBtn,hi);
 document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.defaultPrevented)return;const k=e.key;if((k===' '||k==='Enter')&&e.target.closest&&e.target.closest('[role=button]'))return;
 if(k==='Enter'){e.preventDefault();if(!e.repeat)ask();}else if(k==='Backspace'){e.preventDefault();erase();}else if(/^[1-4]$/.test(k)){e.preventDefault();if(!e.repeat)mood(+k);}else if(k.length===1&&!e.repeat){e.preventDefault();typeKey(k);}});
 function local(e){const m=svg.getScreenCTM?.();if(!m)return null;const det=m.a*m.d-m.b*m.c;if(!det)return null;const x=e.clientX-m.e,y=e.clientY-m.f;return[(m.d*x-m.c*y)/det,(-m.b*x+m.a*y)/det];}
-svg.addEventListener('pointermove',e=>{ptr=local(e);});svg.addEventListener('pointerdown',e=>{ptr=local(e);});svg.addEventListener('pointerleave',()=>{ptr=null;});
+svg.addEventListener('pointerenter',()=>kick(0,-36));svg.addEventListener('pointermove',e=>{ptr=local(e);});svg.addEventListener('pointerdown',e=>{ptr=local(e);});svg.addEventListener('pointerleave',()=>{ptr=null;});
 // The pose a state asks for at time t (seconds into it): head turn, nod and tilt (degrees), arms (out and forward), gaze.
 function target(t,red){const w=red?0:sin(t*PI*2*1.7),gz=pose.key||[0,3.2];
 switch(st){
