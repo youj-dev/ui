@@ -45,6 +45,7 @@
     "./drone-dock": "./src/drone-dock.tsx",
     "./drum-machine": "./src/drum-machine.tsx",
     "./espresso": "./src/espresso.tsx",
+    "./excavator": "./src/excavator.tsx",
     "./film-projector": "./src/film-projector.tsx",
     "./firewall-appliance": "./src/firewall-appliance.tsx",
     "./greenhouse": "./src/greenhouse.tsx",
@@ -162,6 +163,10 @@
       "./espresso": {
         "types": "./dist/espresso.d.ts",
         "default": "./dist/espresso.js"
+      },
+      "./excavator": {
+        "types": "./dist/excavator.d.ts",
+        "default": "./dist/excavator.js"
       },
       "./film-projector": {
         "types": "./dist/film-projector.d.ts",
