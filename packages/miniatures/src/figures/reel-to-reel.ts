@@ -55,8 +55,9 @@ const pt=(c,y,a,r)=>Q(c.u+r*cos(a),c.v+r*sin(a),y);
 const arc=(r,large,sweep,p)=>`A${f2(r*AX)},${f2(r*BX)} 60 ${large} ${sweep} ${q2(p)}`;
 const ell=(c,y,r)=>`M${q2(pt(c,y,0,r))}${arc(r,0,1,pt(c,y,PI,r))}${arc(r,0,1,pt(c,y,2*PI,r))}Z`;
 const cyl=(c,y0,y1,r,s=1)=>`M${q2(pt(c,y1,1.25*PI,r))}L${q2(pt(c,y0,1.25*PI,r))}${arc(r,0,1,pt(c,y0,.25*PI,r))}L${q2(pt(c,y1,.25*PI,r))}${arc(r,0,s,pt(c,y1,1.25*PI,r))}Z`;
-function windows(c,y,ph){let d='';const w=4.6,r1=20.6,r2=35,i1=Math.asin(w/r1),i2=Math.asin(w/r2);for(let k=0;k<3;k++){const a=ph+k*2*PI/3,b=a+2*PI/3;
-d+=`M${q2(pt(c,y,a+i1,r1))}L${q2(pt(c,y,a+i2,r2))}${arc(r2,0,1,pt(c,y,b-i2,r2))}L${q2(pt(c,y,b-i1,r1))}${arc(r1,0,0,pt(c,y,a+i1,r1))}Z`;}return d;}
+/* The reel's three windows at angle ph: between spokes of a constant width, from r 20.6 to 35, their corners filleted. */
+function windows(c,y,ph){let d='';const w=4.6,r1=20.6,r2=35,f=2.4,as=r=>Math.asin(w/r),P_=(r,a)=>q2(pt(c,y,a,r));for(let k=0;k<3;k++){const a=ph+k*2*PI/3,b=a+2*PI/3,A=r=>a+as(r),B=r=>b-as(r);
+d+=`M${P_(r1+f,A(r1+f))}L${P_(r2-f,A(r2-f))}Q${P_(r2,A(r2))} ${P_(r2,A(r2)+f/r2)}${arc(r2,0,1,pt(c,y,B(r2)-f/r2,r2))}Q${P_(r2,B(r2))} ${P_(r2-f,B(r2-f))}L${P_(r1+f,B(r1+f))}Q${P_(r1,B(r1))} ${P_(r1,B(r1)-f/r1)}${arc(r1,0,0,pt(c,y,A(r1)+f/r1,r1))}Q${P_(r1,A(r1))} ${P_(r1+f,A(r1+f))}Z`;}return d;}
 const sector=(c,y,r0,r1,a0,a1)=>`M${q2(pt(c,y,a0,r0))}L${q2(pt(c,y,a0,r1))}${arc(r1,0,1,pt(c,y,a1,r1))}L${q2(pt(c,y,a1,r0))}${arc(r0,0,0,pt(c,y,a0,r0))}Z`;
 function lit(n,c,b){if(n._c!==c){n._c=c;set(n,'class',b+(c?' '+c:''));}}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
