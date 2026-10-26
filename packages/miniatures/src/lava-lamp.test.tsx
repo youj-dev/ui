@@ -62,12 +62,11 @@ describe('Lava lamp', () => {
     expect(snap()).toEqual(lavaLamp.initial)
   })
 
-  it('holds still with reduced motion: no flow and no flicker', async () => {
-    const { wax, run, svg } = await play()
-    const before = wax()
+  it('holds still with reduced motion: no flow, no glint or glow changing, nothing rocking', async () => {
+    const { run, svg } = await play()
+    const before = svg().outerHTML
     await run(3000)
-    expect(wax()).toBe(before)
-    expect(svg().querySelector('g')!.innerHTML).toContain('wax')
+    expect(svg().outerHTML).toBe(before)
   })
 
   it('Space switches it off and on; with reduced motion it jumps between cold and flowing', async () => {
