@@ -97,7 +97,7 @@ el('path',{d:'M0,-10.2V-11.7M-2.5,-5.2C-2.5,-10.4 2.5,-10.4 2.5,-5.2',class:'wir
 const globe=el('path',{d:'M-2.1,-4.4C-3.3,-3 -3.3,1.6 -2.1,3L2.1,3C3.3,1.6 3.3,-3 2.1,-4.4Z',class:'globe'},LG);const wick=el('path',{d:tongue(0,1.6,.9,4,.2,.15,0),class:'tongue c'},LG);
 el('path',{d:'M-1.2,-4.4C-1.9,-1.6 -1.9,.4 -1.2,3M1.2,-4.4C1.9,-1.6 1.9,.4 1.2,3',class:'wire'},LG);
 el('path',{d:'M-3.2,3V5.4Q0,7.1 3.2,5.4V3Q0,4.4 -3.2,3Z',class:'face enamel'},LG);el('path',{d:'M-3.2,3Q0,1.6 3.2,3Q0,4.4 -3.2,3Z',class:'face top enamel'},LG);
-const GB2=group(SIDE(X1,YF,0));for(const d of['M6.3,-.5C6.5,-9.2 10.8,-18.2 16.1,-24.2','M29.7,-.5C29.5,-9.2 25.2,-18.2 19.9,-24.2']){el('path',{d,class:'roll-u','stroke-width':3.8},GB2);el('path',{d,class:'roll','stroke-width':2.5},GB2);}
+const GB2=group(SIDE(X1,YF,0));for(const d of['M6.3,-.5C6.5,-9.2 10.8,-18.2 16.1,-24.2','M29.7,-.5C29.5,-9.2 25.2,-18.2 19.9,-24.2']){el('path',{d,class:'roll-u','stroke-width':3.1},GB2);el('path',{d,class:'roll','stroke-width':2.6},GB2);}
 for(const u of[5.7,26.7])rect(GB2,u,-11.8,3.6,1.4,.5,'face rust');
 const gableD=poly([[X1,YF,0],[X1,YB,0],[X1,YC,H]],true),fabG=el('path',{d:gableD,class:'fabric'});
 el('path',{d:poly([[X1,YC,H],[X1+4,YC,H],[X1+1,YB,0],[X1,YB,0]],true),class:'face under'});
