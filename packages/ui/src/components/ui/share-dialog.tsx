@@ -395,6 +395,8 @@ function RecipientField({
           id={listId}
           role="listbox"
           aria-label={labels.shareDialogSuggestions}
+          // A scrolling box is a Tab stop in Chrome. Focus stays in the field (aria-activedescendant), so Tab must go past the list, not into it: leaving the field closes the list under the focus it just took.
+          tabIndex={-1}
           className="absolute inset-x-0 top-full z-10 mt-1 max-h-56 overflow-y-auto yj-scrollbar rounded-md border border-line bg-overlay own:p-1 shadow-lg"
         >
           {matches.map((s, index) => (

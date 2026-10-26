@@ -1,11 +1,13 @@
 import { aliasProblems, setupAlias } from './alias'
 import { packageStyles, PACKAGES, REGISTRY_NAMESPACE, VERSION, withCorePeer } from './constants'
+import { exportedNames, importsOf, resolveImport } from './collisions'
 import { allDeps, detectFramework, detectPackageManager, type PackageJson } from './detect'
 import { installedExports } from './exports'
 import { NOTICE_PATH, writeNotice } from './notice'
-import { planCopyIn, writeCopyIn } from './copy-in'
+import { aliasBase, appPath, fileTarget, planCopyIn, writeCopyIn } from './copy-in'
+import type { CopyOutcome } from './copy'
 import { Project } from './project'
-import { fetchRegistryItem } from './registry'
+import type { RegistryItem } from './registry'
 import { format, installCommand, type Runner } from './run'
 import { stamp } from './stamp'
 import { CliError, type Ui } from './ui'
@@ -103,31 +105,52 @@ export async function copyIn(root: string, items: string[], options: { preview: 
 const SPECIFIER = /(\bfrom\s*|\bimport\s*\(?\s*)(['"])(@\/[^'"]+)\2/g
 const last = (specifier: string) => specifier.slice(specifier.lastIndexOf('/') + 1)
 
+/** The `@/` specifiers a file imports from nowhere, or from a file that lacks a name it takes. */
+function astrayImports(project: Project, file: string, content: string, base: string): Set<string> {
+  const astray = new Set<string>()
+  for (const { spec, names } of importsOf(content)) {
+    if (!spec.startsWith('@/')) continue
+    const target = resolveImport(project, file, spec, base)
+    const exported = target ? exportedNames(project.read(target) ?? '') : null
+    if (!target || (exported && names.some((name) => !exported.has(name)))) astray.add(spec)
+  }
+  return astray
+}
+
 /**
  * Puts back the imports shadcn misroutes. Adding items, it points an `@/`
  * import at the first file it's adding whose name matches the import's last
  * segment: a block's `@/blocks/app/profile/data` becomes another block's
- * `@/blocks/frame/shell/data`, and `@/components/ui/data-table` (a folder)
- * its `data-table.tsx`. For each added item's files, an import that differs
- * from the registry's only that way goes back to the registry's. Returns the
+ * `@/blocks/frame/shell/data`, `@/components/ui/data-table` (a folder) its
+ * `data-table.tsx`, and a component's `@/lib/youj/settings` the settings
+ * icon's `@/components/youj/icons/settings`. In the files of `items` (the ones
+ * added and the Youj items they depend on), an import that differs from the
+ * registry's only that way goes back to the registry's: in a file this run
+ * wrote, always; in one shadcn left in place (copied by an earlier, misrouting
+ * run, and not edited since), where the import leads nowhere. Returns the
  * files it fixed.
  */
-export async function repairImports(project: Project, base: string, items: string[], env: NodeJS.ProcessEnv = process.env): Promise<string[]> {
+export function repairImports(project: Project, items: Map<string, RegistryItem>, outcome: Pick<CopyOutcome, 'created' | 'updated' | 'conflicts'>): string[] {
   const fixed: string[] = []
-  const jsons = await Promise.all(items.map((item) => fetchRegistryItem(item, env)))
-  for (const file of jsons.flatMap((json) => json?.files ?? [])) {
-    const path = file.target && `${base}${file.target}`
-    const installed = path ? project.read(path) : null
-    if (!path || !file.content || installed === null) continue
-    const want = [...file.content.matchAll(SPECIFIER)].map((m) => m[3]!)
-    let i = 0
-    const repaired = installed.replace(SPECIFIER, (whole, lead: string, quote: string, got: string) => {
-      const wanted = want[i++]
-      return wanted && wanted !== got && last(wanted) === last(got) ? `${lead}${quote}${wanted}${quote}` : whole
-    })
-    if (i === want.length && repaired !== installed) {
-      project.write(path, repaired)
-      fixed.push(path)
+  const base = aliasBase(project)
+  const wrote = new Set([...outcome.created, ...outcome.updated])
+  const yours = new Set(outcome.conflicts)
+  for (const json of items.values()) {
+    for (const file of json.files ?? []) {
+      const path = appPath(fileTarget(file), base)
+      const installed = yours.has(path) ? null : project.read(path)
+      if (!file.content || installed === null) continue
+      const want = [...file.content.matchAll(SPECIFIER)].map((m) => m[3]!)
+      const astray = wrote.has(path) ? null : astrayImports(project, path, installed, base)
+      let i = 0
+      const repaired = installed.replace(SPECIFIER, (whole, lead: string, quote: string, got: string) => {
+        const wanted = want[i++]
+        return wanted && wanted !== got && last(wanted) === last(got) && (!astray || astray.has(got)) ? `${lead}${quote}${wanted}${quote}` : whole
+      })
+      if (i === want.length && repaired !== installed) {
+        project.write(path, repaired)
+        fixed.push(path)
+      }
     }
   }
   return fixed

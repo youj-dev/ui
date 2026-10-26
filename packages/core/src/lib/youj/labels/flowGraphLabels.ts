@@ -9,7 +9,7 @@ export const flowGraphLabels = {
   flowFailed: 'Failed',
   flowRetried: 'Retried',
   flowSkipped: 'Skipped',
-  flowGraphNode: (name, status, detail) => `${name}, ${status}${detail ? `, ${detail}` : ''}`,
+  flowGraphNode: (name, status, detail?) => `${name}, ${status}${detail ? `, ${detail}` : ''}`,
   flowGraphAfter: (names) => `After ${names}`,
   flowGraphThen: (names) => `Then ${names}`,
   flowGraphAttempts: (count) => `${count} ${count === 1 ? 'attempt' : 'attempts'}`,

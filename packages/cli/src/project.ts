@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
+import { accessSync, constants, existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { CliError } from './ui'
 
@@ -73,7 +73,28 @@ export class Project {
   /** Puts a file back to `content` on disk, past anything staged. */
   restore(path: string, content: string): void {
     this.staged.delete(path)
-    writeFileSync(this.writable(path), content)
+    writing(path, () => writeFileSync(this.writable(path), content))
+  }
+
+  /**
+   * Stops with one line, writing nothing, when any of these (those that exist, or whose folder does) can't be written to.
+   * Run before anything is installed: a package manager that has run can't be taken back.
+   */
+  assertWritable(paths: (string | null | undefined)[], then = ''): void {
+    const blocked = [...new Set(paths.filter((path): path is string => Boolean(path)))].filter((path) => !this.canWrite(path))
+    if (blocked.length) throw readOnly(blocked, then)
+  }
+
+  /** Whether a file, or the folder a new one goes in, can be written. */
+  private canWrite(path: string): boolean {
+    let target = this.abs(path)
+    while (!existsSync(target) && dirname(target) !== target) target = dirname(target)
+    try {
+      accessSync(target, constants.W_OK)
+      return true
+    } catch {
+      return false
+    }
   }
 
   /** The first path that exists. */
@@ -107,12 +128,16 @@ export class Project {
     return [...this.staged.values()]
   }
 
+  /** Writes the staged edits. A file that can't be written stops it before any is: one line naming them, not half the edits. */
   commit(): Change[] {
     const changes = this.pending
+    this.assertWritable(changes.map((change) => change.path))
     for (const change of changes) {
       const full = this.writable(change.path)
-      mkdirSync(dirname(full), { recursive: true })
-      writeFileSync(full, change.after)
+      writing(change.path, () => {
+        mkdirSync(dirname(full), { recursive: true })
+        writeFileSync(full, change.after)
+      })
     }
     this.committed.push(...changes)
     this.staged.clear()
@@ -132,4 +157,23 @@ export class Project {
 export function importPath(from: string, to: string): string {
   const rel = relative(dirname(from), to).split(sep).join('/')
   return rel.startsWith('.') ? rel : `./${rel}`
+}
+
+const readOnly = (paths: string[], then: string) => {
+  const one = paths.length === 1
+  return new CliError(
+    `Can't write ${paths.slice(0, 4).join(', ')}${paths.length > 4 ? ` and ${paths.length - 4} more` : ''}: ${one ? 'it is' : 'they are'} read-only, or ${one ? 'its' : 'their'} folder is. Make ${one ? 'it' : 'them'} writable, then run again.${then ? ` ${then}` : ''}`,
+  )
+}
+
+/** Runs a write, saying a failure in one line (permission denied, a full disk) instead of as a stack. */
+function writing(path: string, write: () => void): void {
+  try {
+    write()
+  } catch (error) {
+    const { code } = error as NodeJS.ErrnoException
+    if (code === 'EACCES' || code === 'EPERM' || code === 'EROFS') throw new CliError(`Couldn't write ${path}: ${code === 'EROFS' ? 'the file system is read-only' : 'permission denied'}. Make it writable, then run again.`)
+    if (code === 'ENOSPC') throw new CliError(`Couldn't write ${path}: the disk is full.`)
+    throw error
+  }
 }

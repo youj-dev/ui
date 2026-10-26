@@ -10,7 +10,7 @@ export const trackTimelineLabels = {
   trackTimelineMute: (track) => `Mute ${track}`,
   trackTimelineSolo: (track) => `Solo ${track}`,
   trackTimelinePlayhead: 'Playhead',
-  waveformPosition: (time, total, chapter) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`,
+  waveformPosition: (time, total, chapter?) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`,
   zoomIn: 'Zoom in',
   zoomOut: 'Zoom out',
   zoomToFit: 'Fit to view',

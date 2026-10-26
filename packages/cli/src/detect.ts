@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { posix } from 'node:path'
 import type { Project } from './project'
@@ -22,6 +22,7 @@ export interface PackageJson {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
   packageManager?: string
+  workspaces?: string[] | { packages?: string[] }
 }
 
 export function allDeps(pkg: PackageJson | null): Record<string, string> {
@@ -66,6 +67,37 @@ export function detectFramework(project: Project): Framework | null {
   }
   if (deps.vite && deps.react) return 'vite'
   return null
+}
+
+/**
+ * The apps of a workspace when this folder is its root (pnpm-workspace.yaml, or "workspaces" in package.json): the packages
+ * that use React in its `dir/*` entries, relative to the root. Null for a folder that isn't a workspace root.
+ */
+export function workspaceApps(project: Project): string[] | null {
+  const field = project.json<PackageJson>('package.json')?.workspaces
+  const pnpm = project.read('pnpm-workspace.yaml')
+  if (!pnpm && !field) return null
+  const listed = [...(pnpm ?? '').matchAll(/^[ \t]*-[ \t]*['"]?([^'"#\n]+?)['"]?[ \t]*(?:#.*)?$/gm)].map((m) => m[1]!)
+  const globs = [...listed, ...(Array.isArray(field) ? field : (field?.packages ?? []))]
+  const folders = (dir: string) => {
+    try {
+      return readdirSync(project.abs(dir), { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== 'node_modules' && !e.name.startsWith('.')).map((e) => `${dir}/${e.name}`)
+    } catch {
+      return []
+    }
+  }
+  return globs
+    .filter((glob) => !glob.startsWith('!') && /[/*]/.test(glob))
+    .flatMap((glob) => (/\/\*+$/.test(glob) ? folders(glob.replace(/\/\*+$/, '')) : [glob.replace(/^\.\//, '')]))
+    .filter((dir) => allDeps(project.json<PackageJson>(`${dir}/package.json`)).react)
+    .sort()
+}
+
+/** What to say when a command that sets up an app is run at the root of a workspace: run it on an app, with --cwd. Null for any other folder. */
+export function workspaceRootMessage(project: Project, command: string): string | null {
+  const apps = workspaceApps(project)
+  if (!apps) return null
+  return `${project.root} is the root of a workspace, not an app. Run this on an app with --cwd: npx @youj/cli ${command} --cwd ${apps[0] ?? 'apps/web'}${apps.length > 1 ? ` (the apps here: ${apps.join(', ')})` : ''}`
 }
 
 const LOCKFILES: [string, PackageManager][] = [

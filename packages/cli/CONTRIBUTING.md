@@ -18,12 +18,13 @@ What typically drifts here. The root [Principles](../../CONTRIBUTING.md#principl
 ```
 src/cli.ts           argument parsing, the help text and dispatch; one file per command beside it (init.ts, add.ts, create.ts, doctor.ts, mcp.ts)
 src/codemods.ts      the file edits `init` makes
+src/flags.ts         the options each command takes; any other stops the run (`test/flags.test.ts` holds it to the help text)
 test/                tests per command; test/fixtures/ has a starter app per framework
 ```
 
 ## Adding a command or an edit
 
-- **A command:** add its file in `src/`, dispatch it and write its help text in `src/cli.ts`, and test it in `test/`.
+- **A command, or an option:** add its file in `src/`, dispatch it and write its help text in `src/cli.ts`, list its options in `src/flags.ts` (a flag that isn't listed stops the run as a typo), and test it in `test/`. Run `pnpm api:update` after: the help text is the CLI's committed contract.
 - **A file edit `init` makes:** add it to `src/codemods.ts` as a careful string edit anchored on one landmark, and snapshot it through the fixtures (see "Working on it").
 
 ## The registry it talks to

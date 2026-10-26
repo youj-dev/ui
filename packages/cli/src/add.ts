@@ -9,12 +9,13 @@ import { aliasProblems } from './alias'
 import { appPath, fileTarget, aliasBase } from './copy-in'
 import { NOTICE_PATH, writeNotice } from './notice'
 import { KIT_COPY_IN, packageStyles, PACKAGES, REGISTRY_NAMESPACE, registryTemplate, sourcePackageOf, THEMES, VERSION, withCorePeer, type Mode, type ThemeId } from './constants'
-import { allDeps, detectEntry, detectFramework, detectPackageManager, detectStylesheet, type PackageJson } from './detect'
+import { allDeps, detectEntry, detectFramework, detectPackageManager, detectStylesheet, unsupportedReact, versionOrRange, workspaceRootMessage, type PackageJson } from './detect'
+import { cssImportAt } from './codemods'
 import { findRegistryFiles } from './init-files'
 import { copyIn, isFlag, plural, PREVIEW_FLAGS, repairImports } from './add-copy-in'
 import { SOUND, switchOn, wireLook, wirePackageStyles, wireSound, wireThemeSheet } from './wiring'
 import { Project } from './project'
-import { fetchRegistryItem, localRegistry, needsLocalRegistry } from './registry'
+import { fetchRegistryItem, localRegistry, needsLocalRegistry, type RegistryItem } from './registry'
 import { dlxCommand, format, installCommand, SHADCN, type Command, type Runner } from './run'
 import { LOOKS, type YoujLook } from './look'
 import { CliError, type Ui } from './ui'
@@ -191,12 +192,26 @@ export function planCommands(plan: AddPlan): Command[] {
 }
 
 /**
+ * `add` works on an app: a folder with a package.json that isn't only the root of a workspace, on a React Youj
+ * supports. The same refusals init gives, before anything is installed or copied.
+ */
+function assertApp(project: Project, items: string[]) {
+  if (!project.json<PackageJson>('package.json')) throw new CliError(`No package.json in ${project.root}. Run this in your app's folder (or pass --cwd).`)
+  const workspace = !detectFramework(project) && workspaceRootMessage(project, ['add', ...items.slice(0, 3)].join(' '))
+  if (workspace) throw new CliError(workspace)
+  const react = versionOrRange(project, 'react')
+  const reactProblem = react && unsupportedReact(react)
+  if (reactProblem) throw new CliError(`${reactProblem}. Upgrade React first.`)
+}
+
+/**
  * `interactive`: a person at a terminal, who can be asked before files of
  * theirs that Youj's code needs are replaced. Otherwise `add` stops with exit
  * code 1 and the command that replaces them.
  */
 export async function add(cwd: string, items: string[], flags: string[], runner: Runner, ui: Ui, env: NodeJS.ProcessEnv = process.env, interactive = false): Promise<AddPlan> {
   const root = resolve(cwd)
+  assertApp(new Project(root), items)
   // shadcn asks before replacing a file, and `--yes` doesn't stop it. We run it never asking
   // (--yes --overwrite) and settle files that were there ourselves: see copy.ts.
   const preview = flags.some((f) => isFlag(f, ...PREVIEW_FLAGS))
@@ -269,16 +284,19 @@ export async function add(cwd: string, items: string[], flags: string[], runner:
     await local?.dispose()
   }
   if (preview) return plan
-  if (plan.copy) {
+  // The items and every Youj item they depend on, read once for the repair below and for the record at the end.
+  const resolved = outcome && plan.copy ? await withDependencies(registryNames(items, plan, true), env) : undefined
+  if (outcome && resolved) {
     // The registry spells its imports so shadcn can't misroute them; this puts
-    // back any it still did (a registry built before that, or a namesake from
-    // another registry added in the same run).
-    const copied = items
-      .filter((item) => !plan.fromPackage.some((p) => p.item === item) && !(item === SOUND.item && plan.sound))
-      .map((item) => item.replace(new RegExp(`^${REGISTRY_NAMESPACE}/`), ''))
-      .filter((item) => !/^https?:\/\//.test(item) && !item.startsWith('@'))
+    // back any it still did (a registry built before that, or a namesake in the
+    // same run) in the files of the items and their dependencies.
     const project = new Project(root)
-    if (copied.length && (await repairImports(project, project.exists('src') ? 'src/' : '', copied, env)).length) ui.changes(project.commit())
+    const repaired = repairImports(project, resolved, outcome)
+    if (repaired.length) {
+      ui.changes(project.commit())
+      // Repaired, it's the registry's file again: recorded as add left it.
+      outcome.youj.push(...repaired.filter((file) => !outcome.youj.includes(file)))
+    }
   }
   // A copied look's stylesheet is imported right after ui.css.
   for (const item of plan.copy ? items : []) {
@@ -302,7 +320,7 @@ export async function add(cwd: string, items: string[], flags: string[], runner:
     if (wired.manual) ui.warn(wired.manual)
   }
   if (outcome?.conflicts.length) await settleConflicts(root, items, outcome, ui, interactive)
-  if (outcome && plan.copy) await stampCopies(new Project(root), registryNames(items, plan, true), outcome, env)
+  if (outcome && resolved) await stampCopies(new Project(root), resolved, outcome)
   const used = await importLines(new Project(root), registryNames(items, plan, Boolean(plan.copy)), env)
   if (used.length) ui.note('Use it', used.join('\n'))
   if (plan.copy) {
@@ -313,11 +331,11 @@ export async function add(cwd: string, items: string[], flags: string[], runner:
 }
 
 /** Records which item each file `add` left in place came from (stamp.ts), bar the ones of yours it kept. */
-async function stampCopies(project: Project, items: string[], outcome: CopyOutcome, env: NodeJS.ProcessEnv) {
+async function stampCopies(project: Project, resolved: Map<string, RegistryItem>, outcome: CopyOutcome) {
   const base = aliasBase(project)
   const kept = new Set(outcome.conflicts.filter((f) => essence(project.read(f) ?? '') !== essence(outcome.incoming.get(f) ?? '')))
   const copied: { item: string; path: string }[] = []
-  for (const [ref, item] of await withDependencies(items, env))
+  for (const [ref, item] of resolved)
     for (const file of item.files ?? []) {
       const path = appPath(fileTarget(file), base)
       if (outcome.youj.includes(path) && !kept.has(path)) copied.push({ item: item.name ?? ref, path })
@@ -365,7 +383,7 @@ export function unwired(project: Project): string | null {
   const entry = detectEntry(project, framework)
   const sheet = detectStylesheet(project, framework, entry)
   const css = (project.read(sheet.path) ?? '').replace(/\/\*[\s\S]*?\*\//g, '')
-  if (/@import\s+['"][^'"]*styles\/youj\.css['"]/.test(css)) return null
+  if (cssImportAt(css, sheet.path, core.youjCss) >= 0 || /@import\s+['"][^'"]*styles\/youj\.css['"]/.test(css)) return null
   const provider = framework === 'astro' || findProvider(project, entry) !== null
   return `Youj isn't wired into this app yet: ${sheet.path} doesn't import the copied youj.css and ui.css, so the items have none of Youj's tokens${
     provider ? '' : ', and nothing renders YoujProvider'

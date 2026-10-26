@@ -8,7 +8,7 @@ export const kanbanLabels = {
   kanbanRoleCard: 'draggable card',
   kanbanInstructions: 'Press Space to pick up a card. While it is lifted, use the arrow keys to move it, Space to drop it, or Escape to cancel. Press Enter to open it.',
   kanbanLane: (lane) => `${lane} lane`,
-  kanbanPlace: (column, lane, position, count, overLimit) =>
+  kanbanPlace: (column, lane, position, count, overLimit?) =>
     `${column}${lane ? `, ${lane} lane` : ''}, position ${position} of ${count}.${overLimit !== undefined ? ` Over the limit of ${overLimit}.` : ''}`,
   kanbanPickedUp: (card, place) => `Picked up ${card}. ${place}`,
   kanbanPickedUpKeyboard: (card, place) => `Picked up ${card}. ${place} Use the arrow keys to move it, Space to drop it, Escape to cancel.`,
@@ -17,7 +17,7 @@ export const kanbanLabels = {
   kanbanMoveFailed: (card, column) => `Couldn't move ${card}. It's back in ${column}.`,
   kanbanExpand: (column) => `Expand ${column}`,
   kanbanCollapse: (column) => `Collapse ${column}`,
-  kanbanCardCount: (count, limit, over) =>
+  kanbanCardCount: (count, limit?, over?) =>
     limit === undefined ? `${count} cards` : `${count} of ${limit} cards${over ? ', over the limit' : ''}`,
   kanbanNoCards: 'No cards',
   kanbanAddCard: 'Add card',

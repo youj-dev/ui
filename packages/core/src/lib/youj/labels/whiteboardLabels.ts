@@ -57,7 +57,7 @@ export const whiteboardLabels = {
   whiteboardNudge: 'Nudge the selection',
   whiteboardSelectAll: 'Select all',
   whiteboardComments: 'Comments',
-  whiteboardPin: (index, author) => (author ? `Comment ${index} by ${author}` : `Comment ${index}`),
+  whiteboardPin: (index, author?) => (author ? `Comment ${index} by ${author}` : `Comment ${index}`),
   whiteboardResolve: 'Resolve',
   whiteboardReopen: 'Reopen',
   whiteboardResolved: 'Resolved',

@@ -85,6 +85,19 @@ describe('ShareDialog', () => {
     expect(field()).toHaveFocus()
   })
 
+  test('Tab leaves the open suggestions for the next control: the list is no Tab stop to land on and lose', async () => {
+    const user = userEvent.setup()
+    renderShare()
+    await user.click(field())
+    await user.keyboard('{ArrowDown}')
+    // Chrome makes a scrolling box a Tab stop. Focus would go to the list, which closes as the field blurs, and fall to <body>.
+    expect(screen.getByRole('listbox', { name: 'Suggestions' })).toHaveAttribute('tabindex', '-1')
+    await user.tab()
+    expect(document.body).not.toHaveFocus()
+    expect(screen.getByRole('combobox', { name: 'Role' })).toHaveFocus()
+    expect(screen.queryByRole('listbox', { name: 'Suggestions' })).not.toBeInTheDocument()
+  })
+
   test('Escape closes the suggestions before it closes the dialog; Backspace takes the last chip back', async () => {
     const user = userEvent.setup()
     const onOpenChange = vi.fn()

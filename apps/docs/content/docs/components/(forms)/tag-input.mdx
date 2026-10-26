@@ -49,6 +49,7 @@ Each address is checked by `validate` as it's added, so a typo stays in the fiel
 Use a tag input for values people make up: repository topics, allowed email domains, keywords, recipients. Nothing is chosen from a list. For values from a known list, use a [Multi-select](/docs/components/multi-select), which searches and groups them.
 
 ```tsx
+import { useState } from 'react'
 import { Field, FieldLabel, TagInput } from '@youj/react'
 
 export function TopicsField() {

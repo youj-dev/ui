@@ -9,7 +9,7 @@ export const segmentedRingLabels = {
   intervalRound: 'Round',
   intervalRoundOf: (round, rounds) => `Round ${round} of ${rounds}`,
   intervalLeft: (time) => `${time} left`,
-  intervalStarted: (phase, time, next) => `${phase}, ${time}.${next ? ` Next: ${next}.` : ''}`,
+  intervalStarted: (phase, time, next?) => `${phase}, ${time}.${next ? ` Next: ${next}.` : ''}`,
   intervalFinished: 'Workout complete',
   intervalNext: 'Next',
 } satisfies { intervalTimer: string; intervalWork: string; intervalRest: string; intervalWarmup: string; intervalCooldown: string; intervalRound: string; intervalRoundOf: (round: number, rounds: number) => string; intervalLeft: (time: string) => string; intervalStarted: (phase: string, time: string, next?: string) => string; intervalFinished: string; intervalNext: string }

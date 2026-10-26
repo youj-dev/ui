@@ -7,6 +7,7 @@
  * AST printer (recast, magicast) would add megabytes to `npx` and reformat
  * code it doesn't own. */
 
+import { posix } from 'node:path'
 import { THEMES } from './constants'
 import { TAILWIND_IMPORT } from './versions'
 
@@ -17,6 +18,16 @@ const importRe = (spec: string) => new RegExp(`^[ \\t]*@import\\s+(['"])${spec.r
 
 export function hasCssImport(css: string, spec: string): boolean {
   return importRe(spec).test(css)
+}
+
+/**
+ * Where `css`, the stylesheet `from`, imports the project file `target`, whatever way the import is spelled:
+ * `../styles/youj.css` from app/globals.css and `./youj.css` from styles/globals.css reach the same file.
+ * -1 when it doesn't.
+ */
+export function cssImportAt(css: string, from: string, target: string): number {
+  for (const m of css.matchAll(/@import\s+['"]([^'"]+)['"]/g)) if (posix.normalize(posix.join(posix.dirname(from), m[1]!)) === target) return m.index!
+  return -1
 }
 
 /**

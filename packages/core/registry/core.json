@@ -201,9 +201,8 @@
         "type": "registry:lib"
       },
       {
-        "path": "registry/stubs/labels-types.ts",
-        "type": "registry:lib",
-        "target": "lib/youj/labels-types.ts"
+        "path": "src/lib/youj/labels-types.ts",
+        "type": "registry:lib"
       },
       {
         "path": "registry/stubs/use-component-labels.ts",

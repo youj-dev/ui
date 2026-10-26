@@ -33,13 +33,17 @@ describe('registry stubs', () => {
       for (const [, specifier] of read(path).matchAll(/from '(\.\/[^']+)'/g)) {
         const target = find(`src/lib/youj/${specifier.slice(2)}`)
         expect(target, `${path} imports ${specifier}`).toBeDefined()
-        // The labels types and the theme check are stubs or items of their own.
-        expect(shipped.has(target) || /\/(labels-types|theme\/check)\.ts$/.test(target), `${path} imports ${specifier}, which youj-core doesn't ship`).toBe(true)
+        // The theme check is a stand-in of its own.
+        expect(shipped.has(target) || /\/theme\/check\.ts$/.test(target), `${path} imports ${specifier}, which youj-core doesn't ship`).toBe(true)
       }
     }
   })
 
-  test('the copied dictionary type is open, since a copy carries only its components\' keys', () => {
-    expect(read('registry/stubs/labels-types.ts')).toContain('[key: string]: string | ((...args: any[]) => string)')
+  test("the copied dictionary type is the package's own, so useLabels() reads each key as typed there", () => {
+    const core = JSON.parse(read('registry/core.json')).find((item) => item.name === 'youj-core')
+    const types = core.files.find((file) => file.path.endsWith('labels-types.ts'))
+    expect(types.path).toBe('src/lib/youj/labels-types.ts')
+    expect(types.target).toBeUndefined()
+    expect(read(types.path)).not.toMatch(/\[key: string\]/)
   })
 })

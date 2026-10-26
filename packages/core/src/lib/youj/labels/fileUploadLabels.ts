@@ -10,7 +10,7 @@ export const fileUploadLabels = {
   fileUploadedTile: (name) => `${name}, uploaded`,
   fileUploadFailed: 'Upload failed',
   fileFailedToUpload: (name, error) => `${name} failed to upload: ${error}`,
-  fileUnsupported: (name, types) => `${name} isn’t a supported file type${types ? ` (${types})` : ''}.`,
+  fileUnsupported: (name, types?) => `${name} isn’t a supported file type${types ? ` (${types})` : ''}.`,
   fileTooLarge: (name, size, limit) => `${name} is ${size}; the limit is ${limit}.`,
   fileDuplicate: (name) => `${name} is already added.`,
   fileTooMany: (name, max) => `${name} wasn’t added: ${max} file${max === 1 ? '' : 's'} at most.`,

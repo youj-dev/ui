@@ -6,5 +6,5 @@ export const capsulePlayerLabels = {
   previousTrack: 'Previous track',
   nextTrack: 'Next track',
   waveformSeek: 'Seek',
-  waveformPosition: (time, total, chapter) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`,
+  waveformPosition: (time, total, chapter?) => `${time} of ${total}${chapter ? `, ${chapter}` : ''}`,
 } satisfies { play: string; pause: string; previousTrack: string; nextTrack: string; waveformSeek: string; waveformPosition: (time: string, total: string, chapter?: string) => string }

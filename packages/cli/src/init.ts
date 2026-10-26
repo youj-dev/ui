@@ -1,3 +1,4 @@
+import { rmSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { aliasProblems, setupViteAlias } from './alias'
 import {
@@ -21,6 +22,7 @@ import {
   tailwindWiring,
   unsupportedReact,
   versionOrRange,
+  workspaceRootMessage,
   type Framework,
   type PackageJson,
   type PackageManager,
@@ -90,6 +92,8 @@ export async function init(options: InitOptions, runner: Runner, ui: Ui, env: No
   const pkg = project.json<PackageJson>('package.json')
   if (!pkg) throw new CliError(`No package.json in ${project.root}. Run this in your app's folder (or pass --cwd).`)
   const framework = detectFramework(project)
+  const workspace = framework ? null : workspaceRootMessage(project, 'init')
+  if (workspace) throw new CliError(workspace)
   if (!framework)
     throw new CliError('Couldn’t tell which framework this app uses. Youj’s CLI sets up Next.js, Vite + React, React Router v7 and Astro + React; for anything else, follow the Manual steps on the Installation page.')
   const pm = detectPackageManager(project.root, env)
@@ -101,9 +105,12 @@ export async function init(options: InitOptions, runner: Runner, ui: Ui, env: No
 
   ui.info(`${FRAMEWORK_NAMES[framework]} · ${pm} · ${tailwind === 'v4' ? 'Tailwind v4' : tailwind === 'v3' ? 'Tailwind v3 (Youj needs v4)' : 'no Tailwind yet'}`)
 
+  // The files init edits in every setup, writable before anything is asked or installed: an install can't be taken back, and a layout that can't be edited leaves the app half set up.
+  const entry = detectEntry(project, framework)
+  if (!options.dryRun) project.assertWritable([entry.root, entry.document, entry.styles, detectStylesheet(project, framework, entry).path, 'components.json'].filter((path) => path && project.exists(path)), 'Nothing was installed or changed.')
+
   const choices = await choose(project, options, ui)
   const { mode } = choices
-  const entry = detectEntry(project, framework)
   const commands: Command[] = []
   const manual: string[] = []
   // The look to set up: the one chosen, unless the default would take the app's own away.
@@ -158,6 +165,14 @@ export async function init(options: InitOptions, runner: Runner, ui: Ui, env: No
   }
 
   if (!options.dryRun) project.commit()
+  // components.json maps the registry, which add, create and doctor take for a finished setup: a step that fails
+  // before the core is in puts it back as it was (gone, or without the mapping).
+  const mapped = project.committed.find((c) => c.path === 'components.json')
+  const unmap = (error: unknown): never => {
+    if (mapped?.before === null) rmSync(project.abs(mapped.path), { force: true })
+    else if (mapped) project.restore(mapped.path, mapped.before)
+    throw error
+  }
 
   // Youj's classes are roles. A shadcn app, or a stylesheet that still reads shadcn's variables (create-next-app's starter is dropped first), gets
   // the compat sheet that maps them: the package's in package mode, the youj-shadcn-compat item copied in on the registry.
@@ -167,7 +182,7 @@ export async function init(options: InitOptions, runner: Runner, ui: Ui, env: No
 
   // 4. Dependencies
   const deps = allDeps(pkg)
-  if (devInstalls.length) await exec(installCommand(pm, devInstalls, true), 'Installing Tailwind CSS', 'Installed Tailwind CSS')
+  if (devInstalls.length) await exec(installCommand(pm, devInstalls, true), 'Installing Tailwind CSS', 'Installed Tailwind CSS').catch(unmap)
   if (mode === 'package') {
     const wanted = [
       [PACKAGES.react, `${PACKAGES.react}@^${VERSION}`],
@@ -194,7 +209,7 @@ export async function init(options: InitOptions, runner: Runner, ui: Ui, env: No
       ...(copyTheme ? [themeItem] : []),
     ]
     const sheets = [...(lookItem && styleSheet ? [styleSheet] : []), ...(copyCompat ? [compatSheet] : []), ...(copyTheme ? [themeSheet] : [])]
-    if (items.length) await copyCore(project, pm, items, sheets, Boolean(options.dryRun), commands, runner, ui, env)
+    if (items.length) await copyCore(project, pm, items, sheets, Boolean(options.dryRun), commands, runner, ui, env).catch(unmap)
   }
 
   // 5. Styles and provider
@@ -285,11 +300,11 @@ async function copyCore(project: Project, pm: PackageManager, items: string[], s
   const said = otherOutput(output)
   if (outcome.conflicts.length)
     throw new CliError(
-      `Files of your own are where Youj's core goes, so init stopped before pointing your stylesheet and layout at it:\n${outcome.conflicts.map((f) => `  ${f}`).join('\n')}\nMove or rename them, then run npx @youj/cli init --mode registry again. (components.json and the @/ alias are set up already.)`,
+      `Files of your own are where Youj's core goes, so init stopped before pointing your stylesheet and layout at it:\n${outcome.conflicts.map((f) => `  ${f}`).join('\n')}\nMove or rename them, then run npx @youj/cli init --mode registry again. (The @/ alias is set up already.)`,
     )
   if (missing.length)
     throw new CliError(
-      `The core didn't copy completely (missing: ${missing.join(', ')}), so init stopped before pointing your stylesheet and layout at it.${said.length ? `\nshadcn said:\n${said.map((l) => `  ${l}`).join('\n')}` : ''}\nFix that, then run npx @youj/cli init --mode registry again. (components.json and the @/ alias are set up already.)`,
+      `The core didn't copy completely (missing: ${missing.join(', ')}), so init stopped before pointing your stylesheet and layout at it.${said.length ? `\nshadcn said:\n${said.map((l) => `  ${l}`).join('\n')}` : ''}\nFix that, then run npx @youj/cli init --mode registry again. (The @/ alias is set up already.)`,
     )
 }
 
