@@ -44,8 +44,9 @@ export async function startRegistry(tarballs) {
     const pkg = packages.get(path.slice(1))
     if (pkg) return void res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(packument(pkg)))
     try {
-      // The pathname always starts with "/", so concatenating keeps the host; the origin check proves it.
-      const target = new URL(`${UPSTREAM}${pathname}${search}`)
+      // The slash after the host is part of the constant, so nothing in the request can change the host; the origin
+      // check proves it.
+      const target = new URL(`https://registry.npmjs.org/${pathname.slice(1)}${search}`)
       if (target.origin !== UPSTREAM) throw new Error(`refusing to proxy to ${target.origin}`)
       const headers = { accept: req.headers.accept ?? 'application/json' }
       const upstream = await fetch(target, { headers, redirect: 'follow' })
