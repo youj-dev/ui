@@ -14,7 +14,7 @@ import { DEFAULT_PRESET, themes } from '../../core/src/lib/youj/theme/themes'
 import { add, addPlan, planCommands } from './add'
 import { addTagAttributes, pointAtTheme } from './codemods'
 import { MODES, PACKAGES, REGISTRY_NAMESPACE, THEMES, type Mode } from './constants'
-import { allDeps, detectEntry, detectFramework, detectPackageManager, type Entry, type Framework, type PackageJson } from './detect'
+import { allDeps, detectEntry, detectFramework, detectPackageManager, workspaceRootMessage, type Entry, type Framework, type PackageJson } from './detect'
 import { FONTSOURCE_RANGE, fontsourcePackages, loadFonts } from './fonts'
 import { init, mergeChanges } from './init'
 import { importFontsource } from './init-edits'
@@ -145,11 +145,14 @@ export async function create(options: CreateOptions, runner: Runner, ui: Ui, env
     theme = { ...theme, allowLowContrast: true }
   }
   const root = resolve(options.cwd)
+  const target = new Project(root)
+  const workspace = !detectFramework(target) && workspaceRootMessage(target, `create '${options.link}'`)
+  if (workspace) throw new CliError(workspace)
   const commands: Command[] = []
   const manual: string[] = []
 
   // 1. Youj itself
-  let mode = setupMode(new Project(root))
+  let mode = setupMode(target)
   // A fresh setup gets the look from init; an app that has Youj gets it below.
   const fresh = !mode
   const initial: Change[] = []
