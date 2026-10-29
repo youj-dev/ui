@@ -137,3 +137,49 @@ test('runProbe resolves with the medians of its samples', async () => {
   await vi.advanceTimersByTimeAsync(100)
   expect(await result).toEqual({ work: 3, frame: expect.any(Number) })
 })
+
+test('a probe still waiting for idle is dropped when the last component unmounts, and scheduled again for the next', async () => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame'] })
+  let now = 0
+  vi.spyOn(performance, 'now').mockImplementation(() => (now += 1))
+  const frames = vi.spyOn(globalThis, 'requestAnimationFrame')
+  render(<Tier />).unmount()
+  expect(vi.getTimerCount()).toBe(0)
+  await vi.advanceTimersByTimeAsync(1000)
+  expect(frames).not.toHaveBeenCalled()
+  render(<Tier />)
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(1000)
+  })
+  expect(frames).toHaveBeenCalled()
+  expect(sessionStorage.getItem('youj:quality')).toBe('high')
+})
+
+test('a probe that fires with no frame clock (the page is gone) measures nothing and leaves the next one free to run', async () => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame'] })
+  const rejected = vi.fn()
+  process.on('unhandledRejection', rejected)
+  try {
+    const frameClock = globalThis.requestAnimationFrame
+    vi.stubGlobal('requestAnimationFrame', undefined)
+    const unsubscribe = subscribeAutoTier(() => {})
+    await vi.advanceTimersByTimeAsync(1000)
+    await new Promise((resolve) => setImmediate(resolve))
+    expect(rejected).not.toHaveBeenCalled()
+    expect(sessionStorage.getItem('youj:quality')).toBeNull()
+    expect(getAutoTier()).toBe('high')
+    unsubscribe()
+
+    // The attempt left no "already probing" mark behind: with a clock again, the next subscriber probes.
+    vi.stubGlobal('requestAnimationFrame', frameClock)
+    let now = 0
+    vi.spyOn(performance, 'now').mockImplementation(() => (now += 1))
+    const again = subscribeAutoTier(() => {})
+    await vi.advanceTimersByTimeAsync(1000)
+    again()
+    expect(sessionStorage.getItem('youj:quality')).toBe('high')
+  } finally {
+    process.off('unhandledRejection', rejected)
+    vi.unstubAllGlobals()
+  }
+})
