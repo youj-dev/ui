@@ -200,6 +200,7 @@ The pagination state and its methods still exist (the parts that read them keep 
 The kit has the editor, not the save. Give a column `meta.editor` (`text`, `number` or `select`) and, if it needs one, `meta.validate`; keep which cell is being edited in state; and render `DataTableCellEditor` in that cell (its `TableCell` needs `position: relative`, since the editor lies over it). Its `onCommit` hands you the parsed value: return a reason to keep the editor open with it, or `null` to accept, then save the value however your app saves.
 
 ```tsx
+import { useState } from 'react'
 import { DataTableCellEditor } from '@youj/react/data-table'
 
 const [editing, setEditing] = useState<{ rowId: string; columnId: string } | null>(null)

@@ -24,6 +24,7 @@ A morning-run habit shown as a half-year grid of days, with a check for today.
 Use a calendar heatmap for anything done day by day, where the run matters as much as the total: a habit, a practice, a daily check-in. Each week is a column and each weekday a row, with the newest week at the inline end. A done dot is lit in the tone, stronger the more got done; a missed day is a recessed well; a day a freeze token covered is hatched and keeps the run alive; days still to come are empty rings. `StreakSummary` sits over it with the current run and how far it is to the next milestone, and `StreakCheck` is the "Mark done" button for a header or a list row. The [Streaks block](/docs/blocks/calendars-and-schedules) puts all three together. For a count per day without a run to keep, use a [Chart](/docs/components/chart); for one bounded value, a [Segmented Meter](/docs/components/segmented-meter).
 
 ```tsx
+import { useState } from 'react'
 import { StreakCheck, CalendarHeatmap, StreakSummary, streakStats, type StreakDay } from '@youj/react'
 
 const [days, setDays] = useState<StreakDay[]>([

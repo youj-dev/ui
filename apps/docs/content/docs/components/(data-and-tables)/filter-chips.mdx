@@ -26,6 +26,7 @@ Chips are keyed by their field (the text before the colon), so when a control ch
 Use filter chips where filters also read as text: a log search, an order list, an issue tracker. Each filter is a chip like `priority:in(p1,p2)`, people who think in queries can type them, and the chips can mirror controls elsewhere on the page. For free-form values that aren't a query (topics, email domains), use a [Tag Input](/docs/components/tag-input).
 
 ```tsx
+import { useState } from 'react'
 import { Field, FieldLabel, FilterChips } from '@youj/react'
 
 export function IssueSearch() {
