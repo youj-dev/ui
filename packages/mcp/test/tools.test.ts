@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
+import { miniatures } from '../../miniatures/src/index'
 import { Catalog } from '../src/catalog'
 import { loadCatalog, loadIndex } from '../src/data'
 import { stem } from '../src/search'
@@ -242,7 +243,7 @@ describe('blocks', () => {
   })
 
   it('indexes the miniatures as their own kind, npm only', () => {
-    expect(catalog.index.miniatures).toHaveLength(73)
+    expect(catalog.index.miniatures).toHaveLength(miniatures.length)
     const turntable = catalog.index.miniatures.find((m) => m.id === 'turntable')!
     expect(turntable).toMatchObject({ title: 'Record turntable', component: 'MiniatureTurntable', registry: 'miniature-turntable' })
     expect(catalog.index.miniatures.find((m) => m.id === '3d-printer')!.component).toBe('MiniatureThreeDPrinter')
