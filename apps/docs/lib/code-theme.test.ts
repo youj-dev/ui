@@ -1,4 +1,5 @@
 import { highlightHast } from 'fumadocs-core/highlight'
+import { vi } from 'vitest'
 import { codeHighlight, TOKEN_CLASS } from '@/lib/code-theme'
 import { highlightHtml } from '@/lib/code-files'
 
@@ -10,6 +11,17 @@ export function Demo() {
 }`
 
 describe('code highlighting', () => {
+  it('keeps every token when a busy machine takes over 500 ms between tokenizer steps', async () => {
+    const expected = await highlightHtml(SOURCE)
+    let now = Date.now()
+    const clock = vi.spyOn(Date, 'now').mockImplementation(() => (now += 501))
+    try {
+      expect(await highlightHtml(SOURCE)).toBe(expected)
+    } finally {
+      clock.mockRestore()
+    }
+  })
+
   it('colors tokens by class: no inline styles, no per-theme variables, and the text exactly as written', async () => {
     const html = await highlightHtml(SOURCE)
     expect(html).not.toMatch(/style=|--shiki/)
