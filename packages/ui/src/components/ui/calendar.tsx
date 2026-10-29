@@ -218,16 +218,20 @@ function useDateLocale(explicit?: Locale): Locale {
 
 /* The provider's calendar labels, only where they're translated: untouched,
  * react-day-picker keeps its own, including those of its locales
- * (`react-day-picker/locale`). */
+ * (`react-day-picker/locale`). The day buttons are always ours: their name
+ * has to hold the number they show, and date-fns' full style spells it as an
+ * English ordinal ("8th"), which isn't the "8" on the button. */
 function useDayPickerLabels(): Partial<Labels> {
   const labels = useComponentLabels(calendarLabels)
   const own: Partial<Labels> = {}
   if (labels.nextMonth !== calendarLabels.nextMonth) own.labelNext = () => labels.nextMonth
   if (labels.previousMonth !== calendarLabels.previousMonth) own.labelPrevious = () => labels.previousMonth
-  if (labels.calendarDay !== calendarLabels.calendarDay) {
-    own.labelDayButton = (date, modifiers, options, dateLib) =>
-      labels.calendarDay((dateLib ?? new DateLib(options)).format(date, 'PPPP'), !!modifiers.today, !!modifiers.selected)
-  }
+  own.labelDayButton = (date, modifiers, options, dateLib) =>
+    labels.calendarDay(
+      (dateLib ?? new DateLib(options)).format(date, 'PPPP').replace(/\b(\d+)(?:st|nd|rd|th)\b/, '$1'),
+      !!modifiers.today,
+      !!modifiers.selected,
+    )
   return own
 }
 

@@ -73,7 +73,7 @@ function SlotList({ day, slots, services, copy, level: Heading, picked, onPick, 
                 data-picked={picked === c.id || undefined}
                 disabled={full || c.mine}
                 onClick={() => onPick(c.id)}
-                aria-label={`${start}, ${service.name}, ${copy.with(service.host.name)}, ${places}`}
+                aria-label={`${start}, ${service.minutes} ${copy.minutes}, ${service.name}, ${copy.with(service.host.name)}, ${places}`}
                 className={cn(
                   'group/slot grid w-full grid-cols-[--spacing(15)_minmax(0,1fr)_auto] items-center gap-x-4 rounded-lg px-3 py-3 text-start focus-ring',
                   'transition-colors yj-duration-fast ease-standard hover:bg-hover',
@@ -81,18 +81,18 @@ function SlotList({ day, slots, services, copy, level: Heading, picked, onPick, 
                 )}
               >
                 <span className={cn('flex flex-col', full && 'opacity-50')}>
-                  <span className="text-ui-lg leading-tight font-medium text-fg tabular-nums">{start}</span>
+                  <span className="text-ui-lg leading-tight font-medium text-fg tabular-nums">{start}</span>{' '}
                   <span className="text-ui-xs text-fg-muted tabular-nums [unicode-bidi:plaintext]">
                     {service.minutes} {copy.minutes}
                   </span>
-                </span>
+                </span>{' '}
                 <span className={cn('flex min-w-0 items-center gap-3', full && 'opacity-50')}>
                   <span aria-hidden className={cn('h-8 w-0.5 shrink-0 rounded-full opacity-80', TONES[index % TONES.length])} />
                   <span className="flex min-w-0 flex-col">
-                    <span className="truncate text-ui font-medium text-fg">{service.name}</span>
+                    <span className="truncate text-ui font-medium text-fg">{service.name}</span>{' '}
                     <span className="truncate text-ui-sm text-fg-muted">{copy.with(service.host.name)}</span>
                   </span>
-                </span>
+                </span>{' '}
                 <span
                   className={cn(
                     'flex items-center gap-1.5 text-ui-sm whitespace-nowrap',

@@ -39,13 +39,16 @@ function EventMark({ event, className }: { event: MonthAgendaEvent; className?: 
   const color = toneColor(event.tone ?? 'neutral', 'var(--color-fg-muted)')
   if (!event.mark)
     return (
+      // The letter is drawn, not text: it's a mark, not part of the day button's label.
       <span
         aria-hidden
-        className={cn('grid shrink-0 place-items-center rounded-full text-ui-xs leading-none font-semibold text-on-accent', className)}
+        data-yj-initials={event.name.slice(0, 1).toUpperCase()}
+        className={cn(
+          'grid shrink-0 place-items-center rounded-full text-ui-xs leading-none font-semibold text-on-accent before:content-[attr(data-yj-initials)]',
+          className,
+        )}
         style={{ background: color }}
-      >
-        {event.name.slice(0, 1).toUpperCase()}
-      </span>
+      />
     )
   return (
     <svg aria-hidden viewBox="0 0 16 16" className={cn('shrink-0', className)} style={{ color }}>
