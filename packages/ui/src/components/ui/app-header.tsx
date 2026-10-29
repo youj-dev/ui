@@ -158,9 +158,10 @@ function AppHeaderSearch({ placeholder, shortcut = 'k', className, ...props }: A
       <SearchIcon size={16} strokeWidth={1.75} />
       <span className="own:max-md:sr-only">{placeholder ?? labels.searchPlaceholder}</span>
       {shortcut && (
-        <KbdGroup className="ms-auto max-md:hidden">
-          <Kbd>{apple ? '⌘' : labels.ctrlKey}</Kbd>
-          <Kbd>{shortcut.toUpperCase()}</Kbd>
+        // The keys are drawn, not text: `aria-keyshortcuts` carries them, and the button stays named "Search" (its visible words).
+        <KbdGroup aria-hidden className="ms-auto max-md:hidden">
+          <Kbd data-yj-key={apple ? '⌘' : labels.ctrlKey} className="before:content-[attr(data-yj-key)]" />
+          <Kbd data-yj-key={shortcut.toUpperCase()} className="before:content-[attr(data-yj-key)]" />
         </KbdGroup>
       )}
     </Button>

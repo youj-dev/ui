@@ -14,7 +14,9 @@ describe('AccountMenu', () => {
     const u = userEvent.setup()
     render(<AccountMenu user={user} onSignOut={() => {}} />)
     const trigger = screen.getByRole('button', { name: 'Account: Ada Lovelace' })
-    expect(trigger).toHaveTextContent('AL')
+    // The initials stand for a picture: drawn, not text, so they aren't read out or counted as the button's label.
+    expect(trigger).not.toHaveTextContent('AL')
+    expect(trigger.querySelector('[data-yj-initials]')).toHaveAttribute('data-yj-initials', 'AL')
     await u.click(trigger)
     const menu = await screen.findByRole('menu')
     expect(menu).toHaveTextContent('ada@northwind.dev')

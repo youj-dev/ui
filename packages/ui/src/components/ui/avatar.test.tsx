@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { Avatar, AvatarFallback, AvatarImage, avatarColor } from './avatar'
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage, avatarColor } from './avatar'
 
 describe('Avatar', () => {
   test('shows the fallback until an image has loaded', () => {
@@ -34,6 +34,31 @@ describe('Avatar', () => {
     expect(a!.className).toContain(`[--ui--avatar-color:var(--color-${color})]`)
     expect(b!.className).toBe(a!.className)
     expect(screen.getByText('JO').className).not.toContain('--ui--avatar-color')
+  })
+
+  test('a decorative avatar draws its initials instead of writing them; an announced one writes them', () => {
+    render(
+      <>
+        <Avatar aria-hidden>
+          <AvatarFallback>AL</AvatarFallback>
+        </Avatar>
+        <AvatarGroup aria-hidden>
+          <Avatar>
+            <AvatarFallback>MK</AvatarFallback>
+          </Avatar>
+        </AvatarGroup>
+        <Avatar>
+          <AvatarFallback>JO</AvatarFallback>
+        </Avatar>
+      </>,
+    )
+    // Generated content isn't text: nothing to read, and nothing for a label-in-name check to compare against.
+    expect(screen.queryByText('AL')).not.toBeInTheDocument()
+    expect(screen.queryByText('MK')).not.toBeInTheDocument()
+    expect(document.querySelectorAll('[data-yj-initials]')).toHaveLength(2)
+    expect(document.querySelector('[data-yj-initials="AL"]')).toBeInTheDocument()
+    expect(document.querySelector('[data-yj-initials="MK"]')).toBeInTheDocument()
+    expect(screen.getByText('JO')).not.toHaveAttribute('data-yj-initials')
   })
 
   test('different seeds spread across the palette', () => {

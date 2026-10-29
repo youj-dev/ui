@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { useLabels } from '@youj/core'
 import { ChevronsUpDownIcon, KeyboardIcon, LifeBuoyIcon, SettingsIcon, UserIcon } from '@youj/icons'
 import { AccountMenu } from '../../components/ui/account-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar'
@@ -69,8 +70,9 @@ function FrameAccountCard({ user, onSignOut = () => {}, onSelect, copy, children
   const compact = useFrameCompact()
   const rail = useFrameRail()
   const { isMobile } = useSidebar()
+  const labels = useLabels()
   const avatar = (
-    <Avatar className="size-8 rounded-md after:rounded-md">
+    <Avatar aria-hidden className="size-8 rounded-md after:rounded-md">
       {user.avatar && <AvatarImage src={user.avatar} alt="" className="rounded-md" />}
       <AvatarFallback className="rounded-md bg-accent-subtle text-accent-text">{initials(user.name)}</AvatarFallback>
     </Avatar>
@@ -87,6 +89,8 @@ function FrameAccountCard({ user, onSignOut = () => {}, onSelect, copy, children
             <SidebarMenuButton
               size="lg"
               tooltip={user.name}
+              // The menu's name, plus the email when it shows (a name has to hold the visible text).
+              aria-label={rail ? labels.accountMenu(user.name) : `${labels.accountMenu(user.name)}, ${user.email}`}
               data-yj-trigger=""
               className={cn(
                 // A key inside the tray: the concentric corner, ink on the wash when pointed at or open.
@@ -98,7 +102,7 @@ function FrameAccountCard({ user, onSignOut = () => {}, onSelect, copy, children
               {avatar}
               {!rail && (
                 <span className="flex min-w-0 flex-1 flex-col leading-tight">
-                  <span className="truncate text-ui font-medium text-fg">{user.name}</span>
+                  <span className="truncate text-ui font-medium text-fg">{user.name}</span>{' '}
                   <span className="truncate text-ui-sm text-fg-muted">{user.email}</span>
                 </span>
               )}
