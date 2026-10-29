@@ -127,7 +127,10 @@ export function FrameTree({ nav, query, isOpen, onOpenChange, here, idBase, curr
   const focus = (id: string | undefined) => {
     if (!id) return
     setFocusId(id)
-    root.current?.querySelector<HTMLElement>(`[data-yj-tree-item="${id.replace(/"/g, '\\"')}"]`)?.focus()
+    // Matched by comparing the id, not by building a selector from it: an id may hold quotes, backslashes or brackets.
+    Array.from(root.current?.querySelectorAll<HTMLElement>('[data-yj-tree-item]') ?? [])
+      .find((row) => row.dataset.yjTreeItem === id)
+      ?.focus()
   }
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {

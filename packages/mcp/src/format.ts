@@ -25,7 +25,8 @@ const STABILITY_NOTE: Record<Stability, string> = {
 /** "Stability: alpha (…)", linking the policy. */
 export const stabilityLine = (stability: Stability, site: string) => `Stability: **${stability}** (${STABILITY_NOTE[stability]}; ${site}/docs/versioning#stability-labels).`
 
-const cell = (text: string) => text.replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ')
+/** A table cell's text: each pipe escaped, and the backslashes before it doubled so they can't escape the escape (`\|` would end the cell). */
+const cell = (text: string) => text.replace(/(\\*)\|/g, '$1$1\\|').replace(/\s*\n\s*/g, ' ')
 
 export function propsTable(doc: ComponentDoc): string {
   const out: string[] = []

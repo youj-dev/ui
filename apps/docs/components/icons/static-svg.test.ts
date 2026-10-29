@@ -103,6 +103,17 @@ describe('writing SVG and JSX', () => {
     expect(jsx).not.toMatch(/stroke-width|stroke-linecap/)
   })
 
+  it('writes style values that read back as given: backslashes, quotes and line breaks escaped', () => {
+    const values = ["a'b", 'ends with a backslash\\', 'C:\\dir\\file', "x\\' + (globalThis.__pwned = 1) + \\'", "x'; globalThis.__pwned = 1; '", 'one\ntwo\r\nthree\u2028four']
+    for (const value of values) {
+      const attrs = { style: `font-family:${value}` }
+      const jsx = svgJsx([['g', attrs, []]])
+      const literal = /style=\{\{ (.*) \}\}/s.exec(jsx)![1]!
+      expect(new Function(`return ({ ${literal} })`)()).toEqual(reactProps(attrs).style)
+    }
+    expect((globalThis as Record<string, unknown>).__pwned).toBeUndefined()
+  })
+
   it('turns attributes into React props', () => {
     expect(reactProps({ 'stroke-dasharray': '0.25 1', pathLength: '1', class: 'x', style: 'transform-origin:50% 50%' })).toEqual({
       strokeDasharray: '0.25 1',
