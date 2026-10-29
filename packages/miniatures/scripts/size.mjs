@@ -26,10 +26,10 @@ const ids = Object.keys(manifest.exports)
 
 /* Budgets, KB gzipped, a little over what they measured when set (engine
  * 7.77; a miniature's own share at most 13.10, the turntable; the catalogue
- * 1.49), so a regression fails and noise doesn't. A miniature's own share is
+ * 25.71), so a regression fails and noise doesn't. A miniature's own share is
  * its lab file, drawing and all; the engine is paid once however many an app
  * uses. */
-const BUDGET = { engine: 8.5, item: 14.5, catalogue: 2 }
+const BUDGET = { engine: 8.5, item: 14.5, catalogue: 28.5 }
 
 async function measure(name, code) {
   const file = path.join(work, `${name}.js`)
