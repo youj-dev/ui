@@ -543,7 +543,7 @@ export function HierarchyChart<T extends HierarchyNode = HierarchyNode>({
                   const state: HierarchyNodeState = { depth: n.depth, selected: selected === id, onPath: path.has(id), branch, open: n.open, descendants: n.descendants }
                   const from = n.parent ? layout.nodes.get(n.parent) : undefined
                   const start = from ? place(from) : p
-                  const description = [node.role, typeof node.badge === 'string' || typeof node.badge === 'number' ? node.badge : null, branch && !n.open ? labels.hierarchyChartHidden(n.descendants) : null].filter(Boolean).join(', ')
+                  const description = [node.role, typeof node.badge === 'string' || typeof node.badge === 'number' ? node.badge : null, branch && !n.open ? `+${n.descendants}, ${labels.hierarchyChartHidden(n.descendants)}` : null].filter(Boolean).join(', ')
                   return (
                     <m.li
                       key={id}

@@ -9,8 +9,8 @@ import { cn } from '../../../lib/utils'
 import { Toggle } from '../../../components/ui/toggle'
 import { useRoadmap } from './context'
 
-/* The upvote: a Toggle (aria-pressed) named for the request, so its name
- * never changes with the count. Voting fills it with the accent, the arrow
+/* The upvote: a Toggle (aria-pressed) named for the request and the count it
+ * shows. Voting fills it with the accent, the arrow
  * lifts and lands on the settle spring, and the count rolls up a digit;
  * un-voting drains the fill and rolls it back. Every change starts from where
  * the last one is, so rapid toggling never jumps. The block announces the new
@@ -33,7 +33,7 @@ export function VoteButton({
   className?: string
 }) {
   const k = useYouj()
-  const { copy } = useRoadmap()
+  const { copy, locale } = useRoadmap()
   const arrow = useRef<HTMLSpanElement>(null)
 
   const toggle = (next: boolean) => {
@@ -52,7 +52,8 @@ export function VoteButton({
       variant="outline"
       pressed={voted}
       onPressedChange={toggle}
-      aria-label={copy.upvote(title)}
+      // The request, then the count it shows.
+      aria-label={`${copy.upvote(title)}, ${count.toLocaleString(locale)}`}
       data-slot="vote-button"
       // shape: stacked, a vote counter is the arrow over the count, taller than a control
       className={cn(

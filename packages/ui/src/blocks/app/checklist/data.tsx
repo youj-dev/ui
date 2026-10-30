@@ -41,7 +41,7 @@ export const DEFAULT_COPY = {
   minimize: 'Minimize',
   pill: 'Get started',
   pillCount: (count: number, total: number) => `${count} of ${total}`,
-  openPill: (count: number, total: number) => `Open getting started, ${count} of ${total} done`,
+  openPill: (_count: number, _total: number) => 'Open the checklist',
   done: 'Done',
   /** Read after a done step's title. */
   doneSr: ' (done)',

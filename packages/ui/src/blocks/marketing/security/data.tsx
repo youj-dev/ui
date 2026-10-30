@@ -145,8 +145,6 @@ export const DEFAULT_COPY = {
   policies: 'Policies and documents',
   /** "Updated Sep 12, 2026". */
   updated: (date: string) => `Updated ${date}`,
-  /** A document link's accessible name: "Security whitepaper (PDF)". */
-  open: (title: string, kind: string) => `${title} (${kind})`,
   failed: 'That didn’t send. Try again.',
 }
 export type MarketingSecurityCopy = typeof DEFAULT_COPY

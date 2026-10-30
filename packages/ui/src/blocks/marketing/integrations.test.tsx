@@ -7,7 +7,7 @@ import { MarketingIntegrations, type Integration } from './integrations'
 
 const reduced = (ui: React.ReactNode) => render(<YoujProvider reducedMotion="always">{ui}</YoujProvider>)
 const TITLE = 'Plugs into the tools your team already uses'
-const card = (name: string) => screen.getByRole('button', { name: `${name}: details` })
+const card = (name: string) => screen.getByRole('button', { name: new RegExp(`\\b${name} `) })
 
 describe('Integrations', () => {
   test('is a labelled section; every integration is a card with its status, and a live connection shows its health', () => {
@@ -29,8 +29,8 @@ describe('Integrations', () => {
     await user.type(screen.getByRole('searchbox', { name: 'Search integrations' }), 'sso')
     expect(onQueryChange).toHaveBeenLastCalledWith('sso')
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('2 integrations'))
-    expect(screen.getByRole('button', { name: 'Okta: details' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'GitHub: details' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /\bOkta / })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /\bGitHub / })).not.toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Clear search' }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('12 integrations'))
   })
@@ -41,7 +41,7 @@ describe('Integrations', () => {
     expect(screen.getByText('Nothing matches “zzz”')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Request an integration' })).toHaveAttribute('href', '#request')
     await user.click(screen.getAllByRole('button', { name: 'Clear search' })[1]!)
-    await waitFor(() => expect(screen.getByRole('button', { name: 'GitHub: details' })).toBeInTheDocument())
+    await waitFor(() => expect(screen.getByRole('button', { name: /\bGitHub / })).toBeInTheDocument())
   })
 
   test('categories filter the grid, with Connected as its own list; counts follow the search', async () => {
@@ -55,8 +55,8 @@ describe('Integrations', () => {
     expect(onCategoryChange).toHaveBeenCalledWith('Monitoring')
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('2 integrations'))
     await user.click(within(nav).getByRole('button', { name: /^Connected/ }))
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Datadog: details' })).not.toBeInTheDocument())
-    expect(screen.getByRole('button', { name: 'GitHub: details' })).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('button', { name: /\bDatadog / })).not.toBeInTheDocument())
+    expect(screen.getByRole('button', { name: /\bGitHub / })).toBeInTheDocument()
   })
 
   test('a connected card opens its detail: account, who connected it, last sync, health and history', async () => {
@@ -144,7 +144,7 @@ describe('Integrations', () => {
 
   test('loading shows skeletons; headingLevel and rest props apply; embedded drops page chrome and a theme scopes it', () => {
     const { unmount } = reduced(<MarketingIntegrations loading />)
-    expect(screen.queryByRole('button', { name: /details/ })).not.toBeInTheDocument()
+    expect(screen.queryAllByRole('button', { name: /^(Connected|Available) / })).toHaveLength(0)
     expect(screen.getByRole('status')).toHaveTextContent('Loading integrations')
     unmount()
     reduced(<MarketingIntegrations embedded theme={brutal} headingLevel={3} id="hub" />)

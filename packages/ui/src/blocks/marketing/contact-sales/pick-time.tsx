@@ -110,7 +110,8 @@ export function PickTime({ heading: Heading, regions, region, slots, value, onRe
           >
             {days.map((day) => (
               <ToggleGroupItem key={day.key} value={day.key} disabled={day.open === 0} aria-label={copy.dayLabel(format.day.format(day.date), day.open, format.plural.select(day.open))} className="h-auto min-w-0 flex-col gap-1 px-0 py-2">
-                <span className={cn('text-ui-xs text-fg-muted', VOICE)}>{format.weekday.format(day.date)}</span>
+                {/* The short weekday is drawn, not text: the key's name spells the day out. */}
+                <span data-yj-initials={format.weekday.format(day.date)} className={cn('text-ui-xs text-fg-muted before:content-[attr(data-yj-initials)]', VOICE)} />
                 <span className="text-ui-lg leading-none font-semibold text-fg tabular-nums">{format.date.format(day.date)}</span>
                 {/* How full the day is: a dot per time, filled while it's open. */}
                 <span aria-hidden className="flex h-1.5 items-center gap-0.5">

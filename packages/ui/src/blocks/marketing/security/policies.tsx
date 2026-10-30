@@ -17,18 +17,17 @@ export function Policies({ policies, locale, copy, Link }: { policies: SecurityP
         <li key={policy.id}>
           <Link
             href={policy.href}
-            aria-label={copy.open(policy.title, policy.kind)}
             className="group/policy flex items-center gap-4 p-4 transition-colors yj-duration-fast ease-standard first:rounded-t-2xl last:rounded-b-2xl hover:bg-hover focus-ring sm:px-5"
           >
             <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-lg bg-band text-fg-muted">
               <FileTextIcon size={18} />
             </span>
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span className="text-ui font-medium text-fg">{policy.title}</span>
+              <span className="text-ui font-medium text-fg">{policy.title}</span>{' '}
               <span className="text-pretty text-ui-sm text-fg-muted">{policy.description}</span>
-            </span>
+            </span>{' '}
             <span className="flex shrink-0 flex-col items-end gap-1.5 max-sm:hidden">
-              <Badge variant="outline">{policy.kind}</Badge>
+              <Badge variant="outline">{policy.kind}</Badge>{' '}
               <span className="text-ui-xs text-fg-muted">{copy.updated(date.format(policy.updated))}</span>
             </span>
             <ArrowUpRightIcon size={16} aria-hidden className="shrink-0 text-fg-muted transition-transform yj-duration-fast ease-standard group-hover/policy:translate-x-0.5 group-hover/policy:-translate-y-0.5 rtl:-scale-x-100" />

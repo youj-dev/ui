@@ -13,6 +13,9 @@ import { Sheet, SheetBody, SheetContent, SheetDescription, SheetFooter, SheetHea
 import { cn } from '../../lib/utils'
 import { colorName, formatPrice, Money, MoneyContext, ProductMedia, productById, useMoneyFormat, type Product } from './product-card'
 
+/** The button's name, led by the word it shows when the name doesn't already hold it. */
+const named = (name: string, shown: string) => (name.toLowerCase().includes(shown.toLowerCase()) ? name : `${shown}, ${name}`)
+
 /* The cart as a floating Sheet from the inline end, inset from the window and raised over a blurred page, as
  * tall as its lines (up to the window, then the lines scroll), so it reads as a bag set down beside the shop
  * rather than a wall. The trigger carries the item count. The header holds
@@ -229,7 +232,7 @@ function CartDrawer({
                           max={maxQuantity}
                           className="w-26"
                         />
-                        <Button variant="ghost" size="sm" aria-label={copy.remove(line.product.name)} onClick={() => remove(line)} data-yj-trigger="" className="-me-2 text-fg-muted">
+                        <Button variant="ghost" size="sm" aria-label={named(copy.remove(line.product.name), copy.removeLabel)} onClick={() => remove(line)} data-yj-trigger="" className="-me-2 text-fg-muted">
                           {copy.removeLabel}
                         </Button>
                       </div>

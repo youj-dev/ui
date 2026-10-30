@@ -31,7 +31,7 @@ describe('onboarding checklist block', () => {
     const user = userEvent.setup()
     reduced(<Checklist defaultCompleted={['workspace', 'repo', 'deploy']} />)
     await user.click(screen.getByRole('button', { name: 'Minimize' }))
-    const pill = screen.getByRole('button', { name: 'Open getting started, 3 of 5 done' })
+    const pill = screen.getByRole('button', { name: 'Get started 3 of 5, Open the checklist' })
     await user.click(pill)
     expect(screen.getByRole('heading', { name: 'Get started with Fern' })).toBeInTheDocument()
   })

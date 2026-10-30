@@ -414,9 +414,12 @@ function SlotGrid({
                       data-slot="slot-grid-day-key"
                       className="relative z-10 own:flex min-w-0 flex-col items-center gap-1 rounded-[calc(var(--radius-xl)-2px)] own:px-1 own:pt-2 own:pb-2.5 outline-none focus-ring"
                     >
-                      <span data-slot="slot-grid-day" className={cn('own:text-ui-xs own:text-fg-muted', VOICE)}>
-                        {weekday('narrow').format(t)}
-                      </span>
+                      {/* The weekday's letter is drawn, not text: the key's name spells the day out. */}
+                      <span
+                        data-slot="slot-grid-day"
+                        data-yj-initials={weekday('narrow').format(t)}
+                        className={cn('own:text-ui-xs own:text-fg-muted before:content-[attr(data-yj-initials)]', VOICE)}
+                      />
                       <span data-slot="slot-grid-date" className="own:text-ui-lg own:leading-none own:font-medium own:text-fg own:tabular-nums">
                         {dayNum.format(t)}
                       </span>

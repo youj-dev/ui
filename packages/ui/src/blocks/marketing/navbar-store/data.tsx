@@ -157,7 +157,7 @@ export const DEFAULT_COPY = {
   noResults: 'Nothing matches. Try another word.',
   account: 'Account',
   /** The bag link's name, given how many items are in it. */
-  bag: (count: number) => `Bag (${count})`,
+  bag: (count: number) => `Bag, ${count}`,
   menu: 'Menu',
   openMenu: 'Open menu',
   closeMenu: 'Close menu',

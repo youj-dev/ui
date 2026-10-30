@@ -51,7 +51,7 @@ describe('HierarchyChart', () => {
     const cto = item('Jonas')
     expect(cto).toHaveAttribute('aria-expanded', 'false')
     expect(cto.querySelector('[data-slot=hierarchy-chart-toggle]')).toHaveTextContent('+3')
-    expect(cto).toHaveAccessibleName('Jonas, CTO, Hiring, 3 hidden below')
+    expect(cto).toHaveAccessibleName('Jonas, CTO, Hiring, +3, 3 hidden below')
     expect(item('David')).toHaveAccessibleName('David, CFO')
   })
 

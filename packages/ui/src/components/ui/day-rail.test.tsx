@@ -33,7 +33,7 @@ describe('DayRail', () => {
     expect(screen.getByRole('tablist', { name: 'Itinerary' })).toBeInTheDocument()
     const tabs = screen.getAllByRole('tab')
     expect(tabs).toHaveLength(3)
-    expect(tabs[0]).toHaveAccessibleName('Day 1, Wed 30 Sept')
+    expect(tabs[0]).toHaveAccessibleName('Day 1 30 Wed, September')
     expect(tabs[1]).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Plans for day 2')
   })

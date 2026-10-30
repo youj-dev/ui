@@ -44,7 +44,7 @@ describe('NavbarStore', () => {
     expect(within(nav).getByRole('link', { name: 'Brewing' })).toHaveAttribute('aria-current', 'page')
     expect(within(banner).getByRole('link', { name: 'Fernhill' })).toHaveAttribute('href', '/')
     expect(within(banner).getByRole('link', { name: 'Account' })).toHaveAttribute('href', '#account')
-    expect(within(banner).getByRole('link', { name: 'Bag (3)' })).toHaveAttribute('href', '/bag')
+    expect(within(banner).getByRole('link', { name: 'Bag, 3' })).toHaveAttribute('href', '/bag')
   })
 
   test('a department opens its columns and collection tiles', async () => {

@@ -604,6 +604,9 @@ interface StreakCheckProps extends Omit<TogglePrimitive.Props, 'children'> {
 }
 
 /** "Mark done" as a pill that morphs into a drawn check and "Done" (aria-pressed). */
+/** The button's name, led by the word it shows when the name doesn't already hold it. */
+const named = (name: string, shown: string) => (name.toLowerCase().includes(shown.toLowerCase()) ? name : `${shown}, ${name}`)
+
 function StreakCheck({ size = 'sm', label, doneLabel, sound = true, pressed, onPressedChange, className, ...props }: StreakCheckProps) {
   const k = useYouj()
   const cue = useSoundCue()
@@ -630,7 +633,7 @@ function StreakCheck({ size = 'sm', label, doneLabel, sound = true, pressed, onP
         data-size={size}
         data-streak-check=""
         data-reduced-motion={k.reduced || undefined}
-        aria-label={props['aria-label'] ?? label ?? labels.streakMarkDone}
+        aria-label={named(props['aria-label'] ?? label ?? labels.streakMarkDone, on ? (doneLabel ?? labels.streakDone) : (label ?? labels.streakMarkDone))}
         className={cn(
           buttonVariants({ variant: on ? 'ghost' : 'secondary', size }),
           'overflow-hidden',

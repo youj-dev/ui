@@ -222,7 +222,7 @@ function TimerCard({ intervals: initial, items, entries: logged, elapsed: start,
                   {clock(resting ? left : 0)}
                 </p>
                 <div className="flex gap-2">
-                  <Button variant="secondary" size="sm" aria-label={copy.addRestLabel} onClick={() => w.extend(15)}>
+                  <Button variant="secondary" size="sm" aria-label={`${copy.addRest}, ${copy.addRestLabel}`} onClick={() => w.extend(15)}>
                     {copy.addRest}
                   </Button>
                   <Button variant="secondary" size="sm" onClick={w.skip}>
