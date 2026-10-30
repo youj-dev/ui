@@ -129,7 +129,7 @@ function MorphCard({
     <button
       type="button"
       aria-pressed={active}
-      aria-label={`${Icon.meta.name}: ${active ? to : from}`}
+      aria-label={`${Icon.meta.name}: ${from} ↔ ${to}`}
       onClick={onToggle}
       className={cn(
         'group flex flex-col items-center gap-5 rounded-2xl border bg-surface px-4 pt-8 pb-5 transition-colors duration-(--yj-duration-fast) ease-standard outline-none focus-visible:ring-2 focus-visible:ring-accent',
@@ -138,7 +138,7 @@ function MorphCard({
     >
       <Icon size={size} strokeWidth={strokeWidth} active={active} />
       <span className="flex flex-col items-center gap-1">
-        {showName && <span className="font-mono text-[11px] text-fg-muted">{Icon.meta.name}</span>}
+        {showName && <span className="font-mono text-[11px] text-fg-muted">{Icon.meta.name}</span>}{' '}
         <span className="flex flex-wrap items-center justify-center gap-x-1.5 font-mono text-[11px]">
           <span className={cn('whitespace-nowrap', active ? 'text-fg-muted' : 'text-fg')}>{from}</span>
           <span className="text-fg-muted" aria-hidden>
