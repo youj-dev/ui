@@ -155,10 +155,10 @@ for(const p of ft){const d=`M${Q(p[0],p[1],181.4)}C${Q(p[0],p[1],187)} ${Q(lm.A[
 for(const o of[-1.6,0,1.6])tube(`M${Q(lm.A[0],lm.A[1]+o,lm.A[2])}C${Q(lm.c1[0],lm.c1[1]+o,lm.c1[2])} ${Q(lm.c2[0],lm.c2[1]+o,lm.c2[2])} ${Q(lm.B[0],lm.B[1]+o,lm.B[2])}`,o?'cx':'rb',1.4);
 box(114,-38,112,16,10,1.5,1,'dk');box(120,-33,113.5,4,4,9,1,'dk');
 const MN=el('g',{class:'control',role:'button',tabindex:'0'});into(MN);box(94,-29,121,56,3.5,30,1.6,'dk');
-const ms=group(FRONT(94,-25.5,151));rect(ms,2.4,2.4,51.2,25.2,1.2,'halo-s');rect(ms,2,2,52,26,1.2,'face screen');text(ms,4,5.6,'QELVA LAB · DR–5','scr');const mHead=text(ms,52,5.6,'','scr end');
+const ms=group(FRONT(94,-25.5,151),MN.parentNode,{'pointer-events':'none'}),msc=group(FRONT(94,-25.5,151),MN);rect(ms,2.4,2.4,51.2,25.2,1.2,'halo-s');rect(ms,2,2,52,26,1.2,'face screen');text(ms,4,5.6,'QELVA LAB · DR–5','scr');const mHead=text(ms,52,5.6,'','scr end');
 for(let k=0;k<=4;k++)line(ms,4,8+k*4.25,27,8+k*4.25,'grid');line(ms,4,8,4,25,'grid');const traces=ST.map(()=>el('path',{class:'trace'},ms));
 line(ms,30,16.5,52,16.5,'grid');line(ms,41,8,41,25,'grid');circle(ms,36.4,19.6,3.4,'blob');circle(ms,46.4,12.4,3.4,'blob');const shots=el('g',{},ms),tally=text(ms,52,24.6,'','scr end');
-rect(ms,0,0,56,30,2,'focus-ring');rect(ms,0,0,56,30,0,'hit');
+rect(msc,0,0,56,30,2,'focus-ring');rect(msc,0,0,56,30,0,'hit');
 into(draw);
 const PL=el('g',{}),scratch=el('path',{},defs),inG=document.getElementById('inG');
 frame([[-72,-72,0,144,144,213],[-100,-40,120,10,10,90],[94,-40,0,56,36,152],[-42,92,0,40,36,120]],14);
@@ -197,8 +197,8 @@ function piPulse(){audio();if(busy)return;if(!cold()){warn('TOO WARM FOR A π-PU
 busy=true;noteT=0;flick(rfL);tone(1800,.1,.008,'triangle');comet(PATH.dr,'pdr',900,()=>{prep^=1;flashQ('--drive');busy=false;note=`π-PULSE · QUBIT |${prep}⟩`;noteT=now+1800;say(prep?'Pi pulse: qubit in state one.':'Pi pulse: qubit back in state zero.');lastUI=-1;});lastUI=-1;}
 function result(){busy=false;const m=prep^(Math.random()<.05?1:0);counts[m]++;const c=m?[46.4,12.4]:[36.4,19.6],a=Math.random()*6.28,r=Math.random()*2.6;
 circle(shots,c[0]+Math.cos(a)*r,c[1]+Math.sin(a)*r,.5,'shot').style.fill=m?'var(--drive)':'var(--accent)';if(shots.childNodes.length>40)shots.firstChild.remove();flick(digL);tone(m?880:660,.14,.01);note=`MEASURED |${m}⟩ · ${counts[0]+counts[1]} SHOTS`;noteT=now+2200;say(`Measured state ${m}.`);lastUI=-1;}
-function sync(){set(CO,'aria-label',`${canT?'Lower':'Raise'} the vacuum can (O)`);set(CO,'aria-pressed',!!canT);set(hk.o,'aria-pressed',!!canT);set(hk.c,'aria-pressed',dir>0||p>=1);
-set(TP,'aria-label',dir>0||p>=1?'Warm up (W)':'Cool down (C)');set(MN,'aria-label','Send a readout pulse (Space)');lastUI=-1;}
+function sync(){set(CO,'aria-label',`QELVA · OVC · 10⁻⁶ mbar: ${canT?'lower':'raise'} the vacuum can (O)`);set(CO,'aria-pressed',!!canT);set(hk.o,'aria-pressed',!!canT);set(hk.c,'aria-pressed',dir>0||p>=1);
+set(TP,'aria-label','QELVA · DR–5 · 300 K: '+(dir>0||p>=1?'warm up (W)':'cool down (C)'));set(MN,'aria-label','Send a readout pulse (Space)');lastUI=-1;}
 function stateText(){if(now<noteT)return note;if(busy)return'PULSE IN FLIGHT';
 if(canT===1&&canH<1)return'CAN RISING FROM THE PIT';if(canT===1&&!sealed)return'SEALING · 20 BOLTS';if(canT===0&&sealed)return'VENTING · UNBOLTING';if(canT===0&&canH>0)return'CAN LOWERING INTO THE PIT';
 if(dir>0){const k=Math.max(0,WIN.findIndex(w=>sm(clamp((p-w[0])/(w[1]-w[0])))<.98));return p<.42?`PULSE TUBE · ${ST[k].n} STAGE`:p<.56?'CONDENSING MIXTURE':`CIRCULATING · ${ST[k].n}`;}

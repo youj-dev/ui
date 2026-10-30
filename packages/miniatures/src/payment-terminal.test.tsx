@@ -23,7 +23,7 @@ describe('PaymentTerminal', () => {
   }
   const screen = (inside: ShadowRoot) => [...inside.querySelectorAll<SVGGElement>('[data-yj-screen]')].find((g) => g.style.opacity === '1')?.getAttribute('data-yj-screen')
   const printedRows = (inside: ShadowRoot) => inside.querySelectorAll('.receipt > g > g[visibility=visible]')
-  const card = (inside: ShadowRoot) => inside.querySelector('[aria-label^="Payment card"]')!
+  const card = (inside: ShadowRoot) => inside.querySelector('[aria-label*="payment card"]')!
   /** The display's status tag: SALE, or a red DECLINE TEST while a decline is armed. */
   const tag = (inside: ShadowRoot) => {
     const t = [...inside.querySelectorAll('text.si.l')].find((n) => /SALE|DECLINE/.test(n.textContent ?? ''))!
@@ -37,7 +37,7 @@ describe('PaymentTerminal', () => {
     expect(screen(inside)).toBe('ready')
     expect(inside.querySelector('[data-yj-screen=ready]')?.textContent).toContain('$24.80')
     expect(printedRows(inside)).toHaveLength(0)
-    expect(card(inside)).toHaveAttribute('aria-label', 'Payment card: tap it on the pad (T)')
+    expect(card(inside)).toHaveAttribute('aria-label', 'DEBIT •••• 0428 06/29: payment card, tap it on the pad (T)')
   })
 
   it('T pays contactless: the four read lights, an approval code and the receipt printed', async () => {
@@ -91,7 +91,7 @@ describe('PaymentTerminal', () => {
     const { snap, inside, handle, run } = await play(['i'])
     expect(snap()).toMatchObject({ readout: '$24.80 · PIN ––––', state: 'CHIP · ENTER PIN' })
     expect(screen(inside)).toBe('pin')
-    expect(card(inside)).toHaveAttribute('aria-label', 'Payment card: remove it from the slot (I)')
+    expect(card(inside)).toHaveAttribute('aria-label', 'DEBIT •••• 0428 06/29: payment card, remove it from the slot (I)')
     for (const k of ['1', '2', '3'] as const) act(() => handle().press(k))
     await run(100)
     expect(snap().readout).toBe('$24.80 · PIN •••–')
@@ -109,7 +109,7 @@ describe('PaymentTerminal', () => {
     expect(inside.querySelectorAll('.dot.on')).toHaveLength(0)
     await run(1000)
     expect(snap().state).toBe('APPROVED')
-    expect(card(inside)).toHaveAttribute('aria-label', 'Payment card: tap it on the pad (T)')
+    expect(card(inside)).toHaveAttribute('aria-label', 'DEBIT •••• 0428 06/29: payment card, tap it on the pad (T)')
     await run(700)
     expect(snap().state).toBe('PAID · TAKE RECEIPT')
   })
@@ -166,7 +166,7 @@ describe('PaymentTerminal', () => {
   it('Esc during the PIN cancels the sale and gives the card back; I takes it back out too', async () => {
     const { snap, inside, handle, run } = await play(['i', '1', 'Escape'])
     expect(snap().state).toBe('CANCELED')
-    expect(card(inside)).toHaveAttribute('aria-label', 'Payment card: tap it on the pad (T)')
+    expect(card(inside)).toHaveAttribute('aria-label', 'DEBIT •••• 0428 06/29: payment card, tap it on the pad (T)')
     await run(1400)
     expect(snap().state).toBe('READY · TAP OR INSERT')
     act(() => handle().press('i'))

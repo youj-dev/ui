@@ -66,7 +66,7 @@ const LX=70,LZ=37;
 const shp=P(84,34,0);el('ellipse',{cx:shp[0],cy:shp[1]+5,rx:132,ry:42,class:'shadow stage-floor'});el('ellipse',{cx:shp[0],cy:shp[1]+5,rx:132,ry:42,class:'stage-contact'});
 const HX=140.5,HY=-4.5,PW=80,PH=54,PT=4,PZ=64;
 const flipG=button(el('g'),'Vari-angle screen: flip it in or out (F)');
-const panel=el('g',{},flipG),scrG=el('g',{},flipG);
+const panel=el('g',{},flipG),ringG=el('g',{},flipG),scrG=el('g',{'pointer-events':'none'});
 rect(scrG,0,0,PW,PH,3,'face lens');rect(scrG,3.4,2.4,73.2,49.2,1.6,'face recess');
 const SC=group('translate(4 3)',scrG);rect(SC,0,0,72,48,.8,'face glass').style.fill='#0b0c0e';
 const IMG=el('g',{'clip-path':'url(#dclip)'},SC),LIVE=el('g',{},IMG);
@@ -100,7 +100,7 @@ const ptr=el('path',{d:'M-1,-1.4 H1 L0,0Z',fill:'#fff'},HUD);const hLeft=text(HU
 const splash=text(SC,36,26,'AVOCET','hud center');splash.style.cssText='font-size:4.4px;letter-spacing:1.4px;opacity:0';
 const flash=el('rect',{width:72,height:48,fill:'#fff',opacity:0},SC),curtain=el('rect',{width:72,height:0,fill:'#050505'},SC);
 el('path',{d:'M44,0 H58 L36,48 H22Z',class:'sheen'},SC);
-rect(scrG,-1.6,-1.6,PW+3.2,PH+3.2,4,'focus-ring');
+rect(ringG,-1.6,-1.6,PW+3.2,PH+3.2,4,'focus-ring');rect(ringG,0,0,PW,PH,3,'hit');
 function drawFlip(a){
 const r=a*Math.PI/180,c=Math.cos(r),s=Math.sin(r),U=[-c,-s,0],N=[s,-c,0];
 const pt=(u,v,t)=>[HX+U[0]*u-N[0]*t,HY+U[1]*u-N[1]*t,PZ-v],F=(q,cls)=>el('path',{d:poly(q,true),class:'face '+cls},panel);
@@ -110,7 +110,7 @@ if(-c-s>0)F([pt(PW,0,0),pt(PW,0,PT),pt(PW,PH,PT),pt(PW,PH,0)],'side lens');
 if(c+s>0)F([pt(0,0,0),pt(0,0,PT),pt(0,PH,PT),pt(0,PH,0)],'side lens');
 if(disp)F([pt(0,0,PT),pt(PW,0,PT),pt(PW,PH,PT),pt(0,PH,PT)],'lens');
 F([pt(0,0,0),pt(PW,0,0),pt(PW,0,PT),pt(0,0,PT)],'top lens');
-scrG.style.display=disp?'':'none';if(disp)set(scrG,'transform',plane(pt(0,0,0),U,[0,0,-1]));
+scrG.style.display=disp?'':'none';if(disp)set(scrG,'transform',plane(pt(0,0,0),U,[0,0,-1]));ringG.style.display=disp?'':'none';if(disp)set(ringG,'transform',plane(pt(0,0,0),U,[0,0,-1]));
 }
 for(const z of[54,14])cylinder(HX,HY,z,2.3,6,'z','lens');
 // Body: base plate, leatherette band, side ports, strap lug.
@@ -139,11 +139,11 @@ box(63,7,104,18,16,1.4,.6,'base');box(63,7,105.4,1.8,16,1.4,.3,'chrome');box(79.
 {const s=group(TOP(63,7,105.4));for(const v of[5,8,11])circle(s,9,v,.55,'face chrome');}
 // Dials: chrome cylinders with knurled sides and engraved numbers that turn to the index.
 function dial(x,y,z,r,h,labels,step,rn,fs,lock,n,name,orange=''){
-const g=button(el('g'),name);into(g);
+const g=button(el('g'),`${name}: ${labels.filter(t=>t&&t!=='|').join(' ')}`);into(g);
 const c=cylinder(x,y,z,r,h,'z','chrome'),kn=el('path',{class:'knurl'},g),f=c.face;
 circle(f,0,0,r-1.3,'detail');const rot=group('',f);
 labels.forEach((t,i)=>{if(!t)return;const a=i*step,q=a*Math.PI/180,R=t==='|'?rn+1:rn,tg=group(`translate(${f2(R*Math.sin(q))} ${f2(R*Math.cos(q))}) rotate(${-a})`,rot);
-if(t==='|'){line(tg,0,-.4,0,.5);return;}const k=text(tg,0,fs*.36,t,'eng center'+(orange.includes(t)?' org':''));k.style.fontSize=fs+'px';});
+if(t==='|'){line(tg,0,-.4,0,.5);return;}const k=text(tg,0,fs*.36,t,'eng center'+(orange.includes(t)?' org':''));k.style.fontSize=fs+'px';rot.append(' ');});
 if(lock){const b=cylinder(x,y,z+h,lock,1.4,'z','chrome');circle(b.face,0,0,lock-1,'detail');}
 circle(f,0,0,r+1.8,'focus-ring');into(draw);
 const D={g,rot,kn,x,y,z,r,h,n,step,a:0,to:0,off:0,dir:1};upd(D);return D;}
@@ -170,14 +170,14 @@ const fr=group(FRONT(0,40,68));circle(fr,114,10,3,'face chrome');const lamp=circ
 cylinder(110,40,30,3.4,1.6,'y','chrome');for(const x of[109,117.5])cylinder(x,40,15,2.2,1.3,'y','lens');
 // Lens: mount ring, aperture ring, fixed barrel, distance ring, focus grip, front barrel and glass.
 cylinder(LX,40,LZ,31.5,1.5,'y','chrome');
-const apG=button(el('g'),'Aperture ring (A)');into(apG);cylinder(LX,41.5,LZ,31,11,'y','chrome');
-const apK=el('path',{class:'knurl'},apG),apN=AP.map(v=>{const n=text(apG,0,.62,String(v),'eng center');return n;});
+const apG=button(el('g'),'Aperture ring: '+AP.join(' ')+' (A)');into(apG);cylinder(LX,41.5,LZ,31,11,'y','chrome');
+const apK=el('path',{class:'knurl'},apG),apN=AP.map(v=>{const n=text(apG,0,.62,String(v),'eng center');apG.append(' ');return n;});
 into(draw);
 const fb=cylinder(LX,52.5,LZ,29.6,3,'y','lens');wire([[LX,52.9,LZ+29.62],[LX,55.1,LZ+29.62]],'idx');
 for(const k of[-1,1])wire([[LX+29.62*Math.cos(Math.PI/2+k*.16),54.2,LZ+29.62*Math.sin(Math.PI/2+k*.16)],[LX+29.62*Math.cos(Math.PI/2+k*.16),55.1,LZ+29.62*Math.sin(Math.PI/2+k*.16)]],'idx');
-const fcG=button(el('g'),'Focus ring: rack focus (Left and Right arrows)');into(fcG);
+const fcG=button(el('g'),'Focus ring: ∞ 5 3 2 1.5 1 .7 .5 .3, rack focus (Left and Right arrows)');into(fcG);
 cylinder(LX,55.5,LZ,30.6,6,'y','lens');const DS=[['∞',0],['5',.2],['3',1/3],['2',.5],['1.5',2/3],['1',1],['.7',1/.7],['.5',2],['.3',1/.3]];
-const dsN=DS.map(([t])=>text(fcG,0,.7,t,'wht center'));
+const dsN=DS.map(([t])=>{const n=text(fcG,0,.7,t,'wht center');fcG.append(' ');return n;});
 cylinder(LX,61.5,LZ,31.6,14,'y','lens');const fcK=el('path',{class:'rib'},fcG);
 into(draw);
 const fx=cylinder(LX,75.5,LZ,29.6,6,'y','lens').face;

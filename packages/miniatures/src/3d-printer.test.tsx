@@ -23,7 +23,7 @@ describe('ThreeDPrinter', () => {
     expect(inside.getElementById('bed')).toHaveAttribute('transform', 'translate(0 0)')
     expect(inside.querySelectorAll('[data-layer][display=inline]')).toHaveLength(0)
     expect(inside.getElementById('printControl')).toHaveAttribute('aria-pressed', 'false')
-    expect(inside.getElementById('printControl')?.textContent).toContain('READY')
+    expect(inside.getElementById('printScreen')?.textContent).toContain('READY')
     expect(svg()).not.toHaveClass('powered', 'printing', 'lights')
   })
 
@@ -124,7 +124,7 @@ describe('ThreeDPrinter', () => {
     act(() => handle().press('d'))
     expect(handle().getSnapshot().state).toBe('STANDBY · 150% SPEED')
     expect(speed).toHaveAttribute('aria-pressed', 'true')
-    expect(speed.querySelector('text')).toHaveTextContent('150%')
+    expect(inside.getElementById('speedLabel')?.querySelector('text')).toHaveTextContent('150%')
     expect(speed.querySelector('g')).toHaveAttribute('transform', 'rotate(50)')
     act(() => handle().press(' '))
     await run(3500)
@@ -134,7 +134,7 @@ describe('ThreeDPrinter', () => {
     act(() => handle().press('d'))
     expect(handle().getSnapshot().state).toMatch(/ · 100% SPEED$/)
     expect(speed).toHaveAttribute('aria-pressed', 'false')
-    expect(speed.querySelector('text')).toHaveTextContent('100%')
+    expect(inside.getElementById('speedLabel')?.querySelector('text')).toHaveTextContent('100%')
     expect(speed.querySelector('g')).toHaveAttribute('transform', 'rotate(-40)')
   })
 

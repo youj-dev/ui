@@ -205,9 +205,10 @@ const pod=group(FRONT(173,242.3,81));rect(pod,3,3,80,42,3,'face');
 for(const[x,y]of[[5,5],[81,5],[5,43],[81,43]])screw(pod,x,y);
 const printControl=group(FRONT(179,243,75),root,{id:'printControl',class:'control screen-control',role:'button',tabindex:'0','aria-label':'Print or pause vase (Space)','aria-pressed':'false'});
 rect(printControl,-3,-3,54,37,4,'focus-ring');rect(printControl,0,0,48,31,3,'face recess');rect(printControl,2,2,44,27,2,'face screen');
-const screenProgress=text(printControl,6,13,'000%','screen-text lit');
-const screenTemp=text(printControl,42,10,'23°','screen-small lit');set(screenTemp,'text-anchor','end');
-const screenState=text(printControl,6,19,'READY','screen-small lit');
+const screenFace=group(FRONT(179,243,75),root,{id:'printScreen','pointer-events':'none'});
+const screenProgress=text(screenFace,6,13,'000%','screen-text lit');
+const screenTemp=text(screenFace,42,10,'23°','screen-small lit');set(screenTemp,'text-anchor','end');
+const screenState=text(screenFace,6,19,'READY','screen-small lit');
 rect(printControl,6,23,36,2.6,1,'screen-track');const progressBar=rect(printControl,6,23,0,2.6,1,'screen-bar');
 text(group(FRONT(185,242.7,38)),0,0,'BUILD / PLA','etch micro');
 cylinder(246.5,243,61.5,10.5,5,'y','chrome');
@@ -215,7 +216,7 @@ const speedControl=group(FRONT(246.5,248.2,61.5),root,{id:'speedControl',class:'
 circle(speedControl,0,0,18,'hit');circle(speedControl,0,0,14,'focus-ring');circle(speedControl,0,0,10,'face top button-face');circle(speedControl,0,0,7.5,'detail');
 for(let i=0;i<16;i++){const a=i*Math.PI/8;line(speedControl,8.6*Math.cos(a),8.6*Math.sin(a),9.4*Math.cos(a),9.4*Math.sin(a));}
 const dialMark=group('rotate(-40)',speedControl);line(dialMark,0,-4,0,-7,'detail');circle(dialMark,0,-7,1,'accent');
-const speedText=text(speedControl,0,19,'100%','etch center');
+const speedText=text(group(FRONT(246.5,248.2,61.5),root,{id:'speedLabel','pointer-events':'none'}),0,19,'100%','etch center');
 function baseButton(x,id,label){
 const g=group(FRONT(x,229,30),root,{id,class:'control',role:'button',tabindex:'0','aria-label':label,'aria-pressed':'false'});
 rect(g,-5,-6,32,28,4,'hit');rect(g,-2,-2,26,20,4,'focus-ring');rect(g,0,0,22,16,3,'face recess button-face');return g;

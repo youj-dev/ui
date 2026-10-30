@@ -102,11 +102,11 @@ const doorG=el('g',{});
 const backB=el('path',{class:'face side door'},doorG),boltFar=el('g',{},doorG),bandB=el('path',{class:'face side door'},doorG),boltG=el('g',{},doorG);
 const BOLTS=[...Array(16)].map((_,k)=>{const a=(k+.5)*22.5*RAD;return{d:[cos(a),sin(a)],t:tube(boltG,'chrome')};});
 const flangeB=el('path',{class:'face side door'},doorG),frontG=el('g',{},doorG);
-const front=ctl(el('g',{},frontG),'Vault door: open or close it (Space)');
+const front=ctl(el('g',{},frontG),'Vault door, dial 0 20 40 60 80: open or close it (Space)');
 circle(front,0,0,66,'face door');el('path',{d:ring(62.4,66),'fill-rule':'evenodd',class:'face top door'},front);circle(front,0,0,62.4,'detail');for(const r of[57,49,40])circle(front,0,0,r,'ring');
 for(const a of[-135,45]){const a0=(a-10)*RAD,a1=(a+10)*RAD,q=(r,t)=>`${f2(r*cos(t))},${f2(r*sin(t))}`;el('path',{d:`M${q(14,a0)}L${q(62,a0)}A62,62 0 0 1 ${q(62,a1)}L${q(14,a1)}A14,14 0 0 0 ${q(14,a0)}Z`,class:'sheen'},front);}
 const dialG=group('translate(40 -40)',front);circle(dialG,0,0,9.4,'face chrome');circle(dialG,0,0,8.6,'detail');const dialRot=el('g',{},dialG);circle(dialRot,0,0,7.6,'face rubber');
-for(let n=0;n<100;n+=2){const a=-n*3.6*RAD,r0=n%10?6.9:6.4;line(dialRot,f2(r0*sin(a)),f2(-r0*cos(a)),f2(7.4*sin(a)),f2(-7.4*cos(a)),'tick');if(n%20===0)text(group(`rotate(${-n*3.6})`,dialRot),0,-4.9,String(n),'num');}
+for(let n=0;n<100;n+=2){const a=-n*3.6*RAD,r0=n%10?6.9:6.4;line(dialRot,f2(r0*sin(a)),f2(-r0*cos(a)),f2(7.4*sin(a)),f2(-7.4*cos(a)),'tick');if(n%20===0){text(group(`rotate(${-n*3.6})`,dialRot),0,-4.9,String(n),'num');dialRot.append(' ');}}
 el('path',{d:'M-.9,-9.1L.9,-9.1L0,-7.7Z',fill:'var(--ink)'},dialG);
 const knobB=el('path',{class:'face rubber'},doorG),knobC=el('g',{},doorG);circle(knobC,0,0,4,'face top rubber');const knobR=el('g',{},knobC);for(let i=0;i<16;i++){const a=i*22.5*RAD;line(knobR,f2(3.3*sin(a)),f2(-3.3*cos(a)),f2(3.9*sin(a)),f2(-3.9*cos(a)),'tick');}line(knobR,0,-.6,0,-3,'tick');
 const wheelG=ctl(el('g',{class:'wheel'},doorG),'Wheel: turn it to open or close the door (Space)');

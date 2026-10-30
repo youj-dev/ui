@@ -122,9 +122,9 @@ for(let i=0;i<8;i++)line(roof,93+i*2,96.5,93+i*2,102.5);
 for(const[x,y]of[[10,10],[140,10],[140,110]]){circle(roof,x,y,2.4,'face recess');circle(roof,x,y,1,'face top');}
 const fr=group(FRONT(0,120,204));
 text(fr,8,10.4,'NORDLYS','label brand');slits(fr,48,5,30,6,10);rect(fr,6,16,138,166,1.5,'detail');
-const lc=group('',fr,{class:'control',role:'button',tabindex:'0'});
-rect(lc,82,2.4,60,11.2,3,'focus-ring');rect(lc,84,3.4,56,9.2,2,'face recess');rect(lc,86,4.6,52,6.8,1.5,'halo-s');rect(lc,86,4.6,52,6.8,1.5,'face glass');
-const oA=text(lc,88,9.6,'','scr'),oB=text(lc,136,9.6,'','scr end'),oSeg=[0,1,2,3].map(i=>led(lc,103+i*4.4,8,.9,3.4));
+const lcv=group('',fr),lc=group('',fr,{class:'control',role:'button',tabindex:'0'});
+rect(lc,82,2.4,60,11.2,3,'focus-ring');set(rect(lc,82,2.4,60,11.2,3,'hit'),'fill','transparent');rect(lcv,84,3.4,56,9.2,2,'face recess');rect(lcv,86,4.6,52,6.8,1.5,'halo-s');rect(lcv,86,4.6,52,6.8,1.5,'face glass');
+const oA=text(lcv,88,9.6,'','scr'),oB=text(lcv,136,9.6,'','scr end'),oSeg=[0,1,2,3].map(i=>led(lcv,103+i*4.4,8,.9,3.4));
 // Interior, clipped to the door opening; equipment sits 6 behind the frame.
 const cp=el('clipPath',{id:'open'},defs);
 el('polygon',{points:[[6,120,188],[144,120,188],[144,120,22],[6,120,22]].map(p=>P(...p)).join(' ')},cp);
@@ -160,8 +160,8 @@ else if(k==='edge'){slits(g,21,1.3,46,4.4,17);rect(g,70,1.4,24,4.2,1,'face top')
 else if(k==='bays'){for(let r=0;r<2;r++)for(let c=0;c<7;c++){const x=21+c*10.5,y=1.2+r*6.9;rect(g,x,y,9.9,6.3,.9,'face recess');line(g,x+2,y+3.15,x+7.9,y+3.15);}}
 else if(k==='bezel'){rect(g,20.6,1,73.6,13,3,'face top');rect(g,24,2.6,66.8,9.8,2,'face recess');slits(g,26,3.6,63,7.8,24);}
 else{
-rect(g,1.4,7.6,16.4,7.4,1.4,'face recess');rect(g,2.2,8.4,14.8,5.8,.9,'halo-s');rect(g,2.2,8.4,14.8,5.8,.9,'face glass');s.tx=text(g,9.6,12.7,'','scr center');
-text(g,9.6,18.4,'GX–8','etch center');slits(g,2,19.8,15.6,3.4,6);s.rot=[];s.blr=[];
+rect(g,1.4,7.6,16.4,7.4,1.4,'face recess');rect(g,2.2,8.4,14.8,5.8,.9,'halo-s');rect(g,2.2,8.4,14.8,5.8,.9,'face glass');const gt=group(FRONT(20,114,s.z+h),undefined,{'pointer-events':'none'});s.tx=text(gt,9.6,12.7,'','scr center');
+text(gt,9.6,18.4,'GX–8','etch center');slits(g,2,19.8,15.6,3.4,6);s.rot=[];s.blr=[];
 for(let j=0;j<3;j++){
 const f=group(`translate(${34+j*24} 12)`,g);circle(f,0,0,10.8,'face recess');const r=group('',f);
 for(let b=0;b<7;b++)el('path',{d:'M0,-2.4C3.4,-3.6 6,-5.6 4.4,-9.4C2,-9 .3,-6 0,-2.4Z',class:'blade',transform:`rotate(${b*360/7})`},r);

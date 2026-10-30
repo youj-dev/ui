@@ -20,7 +20,7 @@ describe('CoffeeGrinder', () => {
     expect(svg()).toHaveClass('ready')
     expect(svg()).not.toHaveClass('grinding', 'dosing', 'lit')
     expect(inside.getElementById('refillControl')).toHaveAttribute('aria-label', 'Refill hopper. 180 of 220 grams remaining.')
-    expect(inside.getElementById('cupControl')).toHaveAttribute('aria-label', 'Empty catch cup. 0.0 grams collected.')
+    expect(inside.getElementById('cupControl')).toHaveAttribute('aria-label', 'Empty catch cup, marks 40 20. 0.0 grams collected.')
     expect(inside.getElementById('doseControl')).toHaveAttribute('aria-disabled', 'false')
     expect(inside.querySelector('.coffee')!.parentElement).toHaveAttribute('opacity', '0')
     await run(1000)
@@ -123,7 +123,7 @@ describe('CoffeeGrinder', () => {
     expect(dose).toHaveAttribute('aria-pressed', 'false')
     expect(dose).toHaveAttribute('aria-disabled', 'false')
     expect(inside.getElementById('refillControl')).toHaveAttribute('aria-label', 'Refill hopper. 162 of 220 grams remaining.')
-    expect(inside.getElementById('cupControl')).toHaveAttribute('aria-label', 'Empty catch cup. 18.0 grams collected.')
+    expect(inside.getElementById('cupControl')).toHaveAttribute('aria-label', 'Empty catch cup, marks 40 20. 18.0 grams collected.')
 
     act(() => handle().press('d'))
     await run(4200)

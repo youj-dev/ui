@@ -35,7 +35,7 @@ describe('QuantumFridge', () => {
       state: 'CAN OPEN · O TO SEAL',
       pressed: { o: false, c: false },
     })
-    expect(inside.querySelector('[aria-label="Raise the vacuum can (O)"]')).toHaveAttribute('aria-pressed', 'false')
+    expect(inside.querySelector('[aria-label="QELVA · OVC · 10⁻⁶ mbar: raise the vacuum can (O)"]')).toHaveAttribute('aria-pressed', 'false')
     expect(inside.querySelector('.qb')).toHaveStyle({ fill: 'var(--off)' })
     expect(inside.querySelectorAll('.shot')).toHaveLength(0)
     expect(inside.querySelector('.flow')).not.toHaveClass('on')
@@ -45,12 +45,12 @@ describe('QuantumFridge', () => {
   it('O raises and seals the can, pumps it out, then lowers it back into the pit', async () => {
     const run = useFrames()
     const { handle, inside } = mount(MiniatureQuantumFridge, { reducedMotion: 'always' })
-    const can = inside.querySelector('[aria-label="Raise the vacuum can (O)"]')!
+    const can = inside.querySelector('[aria-label="QELVA · OVC · 10⁻⁶ mbar: raise the vacuum can (O)"]')!
     const open = can.querySelector('.hole')!.getAttribute('d')
     act(() => handle().press('o'))
     await run(200)
     expect(handle().getSnapshot()).toMatchObject({ readout: room, state: 'PUMPING THE CAN', pressed: { o: true, c: false } })
-    expect(can).toHaveAttribute('aria-label', 'Lower the vacuum can (O)')
+    expect(can).toHaveAttribute('aria-label', 'QELVA · OVC · 10⁻⁶ mbar: lower the vacuum can (O)')
     expect(can).toHaveAttribute('aria-pressed', 'true')
     expect(can.querySelector('.hole')!.getAttribute('d')).not.toBe(open)
     await run(3200)
@@ -58,7 +58,7 @@ describe('QuantumFridge', () => {
     act(() => handle().press('o'))
     await run(200)
     expect(handle().getSnapshot()).toMatchObject({ readout: room, state: 'CAN OPEN · O TO SEAL', pressed: { o: false } })
-    expect(can).toHaveAttribute('aria-label', 'Raise the vacuum can (O)')
+    expect(can).toHaveAttribute('aria-label', 'QELVA · OVC · 10⁻⁶ mbar: raise the vacuum can (O)')
     expect(can.querySelector('.hole')).toHaveAttribute('d', open)
   })
 
@@ -75,7 +75,7 @@ describe('QuantumFridge', () => {
   it('C cools all five stages to base temperature and enables the qubit', async () => {
     const { handle, inside } = await atBase()
     expect(handle().getSnapshot()).toMatchObject({ readout: base, state: 'BASE TEMPERATURE · QUBIT |0⟩', pressed: { o: true, c: true } })
-    expect(inside.querySelector('[aria-label="Warm up (W)"]')).toBeTruthy()
+    expect(inside.querySelector('[aria-label="QELVA · DR–5 · 300 K: warm up (W)"]')).toBeTruthy()
     expect(inside.querySelector('.flow')).toHaveClass('on')
     expect(inside.querySelector('.qb')).toHaveStyle({ fill: 'var(--accent)', filter: 'url(#glow)' })
     const halos = [...inside.querySelectorAll<SVGElement>('.halo')]
@@ -96,7 +96,7 @@ describe('QuantumFridge', () => {
     expect(inside.querySelector('.flow')).not.toHaveClass('on')
     expect(inside.querySelector('.qb')).toHaveStyle({ fill: 'var(--off)' })
     expect(inside.querySelector<SVGElement>('.qb')!.style.filter).toBe('')
-    expect(inside.querySelector('[aria-label="Cool down (C)"]')).toBeTruthy()
+    expect(inside.querySelector('[aria-label="QELVA · DR–5 · 300 K: cool down (C)"]')).toBeTruthy()
     act(() => handle().press('o'))
     await run(200)
     expect(handle().getSnapshot()).toMatchObject({ readout: room, state: 'CAN OPEN · O TO SEAL', pressed: { o: false, c: false } })
