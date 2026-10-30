@@ -48,4 +48,25 @@ describe('MoneyOverview', () => {
     expect(row).toHaveTextContent('Omar Haddad')
     expect(row).toHaveTextContent('Transfer')
   })
+
+  test('closing the send drawer, then leaving the page, leaves none of its own timers to run after it', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+      // Timers still set after the page goes away, with the drawer opened and then either closed or left open.
+      const leftOver = async (close: boolean) => {
+        const { unmount } = reduced(<MoneyOverview />)
+        await user.click(screen.getAllByRole('button', { name: /Send/ })[0]!)
+        await screen.findByRole('dialog', { name: 'Send money' })
+        if (close) await user.keyboard('{Escape}')
+        unmount()
+        const count = vi.getTimerCount()
+        vi.clearAllTimers()
+        return count
+      }
+      expect(await leftOver(true)).toBe(await leftOver(false))
+    } finally {
+      vi.useRealTimers()
+    }
+  })
 })
