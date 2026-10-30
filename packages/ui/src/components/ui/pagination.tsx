@@ -85,8 +85,9 @@ function PaginationLink({ className, isActive, disabled, size = 'icon', href, on
   )
 }
 
-/** The link's name, led by the word it shows when the name doesn't already hold it. */
-const named = (name: string, shown: string) => (name.toLowerCase().includes(shown.toLowerCase()) ? name : `${shown}, ${name}`)
+/** The link's name, led by the word it shows when the name doesn't already hold that word (not a longer form of it: Arabic "التالي" is not in "التالية"). */
+const named = (name: string, shown: string) =>
+  new RegExp(`(?<![\\p{L}\\p{N}])${shown.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu').test(name) ? name : `${shown}, ${name}`
 
 function PaginationPrevious({ className, text, ...props }: PaginationLinkProps & { text?: string }) {
   const labels = useComponentLabels(paginationLabels)

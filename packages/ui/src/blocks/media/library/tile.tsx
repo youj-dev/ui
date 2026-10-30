@@ -123,7 +123,7 @@ export function Tile({ asset, id, view, position, focused, copy, onPress, onOpen
           </span>
         )}
         {uploading && <Upload progress={asset.progress!} copy={copy} />}
-      </span>
+      </span>{' '}
       {view === 'grid' && !uploading && (
         <>
           <span
