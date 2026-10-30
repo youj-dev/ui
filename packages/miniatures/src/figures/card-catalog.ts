@@ -88,7 +88,7 @@ const cp=el('clipPath',{id:`ap${i}`},defsEl);el('path',{d:poly([[xo,AP,zb],[xo+3
 const parts=g=>({back:el('path',{class:'face in'},g),floor:el('path',{class:'face top in'},g),lw:el('path',{class:'face side in'},g),lwt:el('path',{class:'face top wood'},g),pack:el('g',{},g),rw:el('path',{class:'face side wood'},g),rwt:el('path',{class:'face top wood'},g)});
 d.inner=el('g',{'clip-path':`url(#ap${i})`,class:'inside',display:'none'},draw);d.I=parts(d.inner);
 d.outer=el('g',{},draw);d.cast=el('path',{class:'cast'},group(FRONT(xo+1.6,AP+.05,zb),d.outer));d.box=el('g',{display:'none'},d.outer);d.O=parts(d.box);d.O.back.remove();
-d.panel=el('g',{class:'control drawer shut',role:'button',tabindex:'0','aria-label':`Drawer ${i+1}, ${spoken(label)}: open`,'aria-expanded':'false'},d.outer);
+d.panel=el('g',{class:'control drawer shut',role:'button',tabindex:'0','aria-label':`Drawer ${i+1}, ${label}: open`,'aria-expanded':'false'},d.outer);
 into(d.panel);
 rect(group(SIDE(xo+32.4,AP,zb+20.4)),0,0,2,19.8,.5,'face side wood edge');rect(group(TOP(xo+.6,AP-2,zb+20.4)),0,0,31.8,2,.5,'face top wood edge');
 const F=group(FRONT(xo+.6,AP,zb+20.4)),cx=15.9;
@@ -138,11 +138,11 @@ function letter(L){const now=performance.now(),q=cur>=0&&query&&now-lastKey<TYPE
 function find(q){
 query=q;const di=drawerOf(q[0]),d=drawers[di];
 if(cur!==di){const was=cur>=0?drawers[cur]:null;if(was)shut(was);cur=di;build(d);d.live=true;d.mode='open';d.wait=performance.now()+(was&&was.x>2&&!reduced.matches?160:0);d.tock=false;
-set(d.panel,'aria-expanded','true');set(d.panel,'aria-label',`Drawer ${d.i+1}, ${spoken(d.label)}: close`);say(`Drawer ${d.i+1}, ${spoken(d.label)}, opening.`);}
+set(d.panel,'aria-expanded','true');set(d.panel,'aria-label',`Drawer ${d.i+1}, ${d.label}: close`);say(`Drawer ${d.i+1}, ${spoken(d.label)}, opening.`);}
 d.pend=seek(d,q);clean(d);
 }
 function clean(d){d.res=null;d.ghost=false;d.outTo=0;d.panel.classList.remove('miss');}
-function shut(d){if(d.x>2)sfx.slide();d.mode='close';d.pend=null;clean(d);d.liftTo=0;set(d.panel,'aria-expanded','false');set(d.panel,'aria-label',`Drawer ${d.i+1}, ${spoken(d.label)}: open`);}
+function shut(d){if(d.x>2)sfx.slide();d.mode='close';d.pend=null;clean(d);d.liftTo=0;set(d.panel,'aria-expanded','false');set(d.panel,'aria-label',`Drawer ${d.i+1}, ${d.label}: open`);}
 function closeAll(){if(cur<0){flash('ALL CLOSED · TYPE A LETTER');return;}const d=drawers[cur];shut(d);cur=-1;query='';say(`Drawer ${d.i+1} closed.`);}
 function erase(){if(!query){flash('NOTHING TO ERASE');return;}const q=query.slice(0,-1);if(!q)closeAll();else{lastKey=performance.now();find(q);}}
 function browse(dir){

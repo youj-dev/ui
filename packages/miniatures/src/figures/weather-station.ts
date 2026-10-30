@@ -185,7 +185,7 @@ const dialControl=control(FRONT(89,128.3,109),'dialControl','Increase wind; Shif
 circle(dialControl,0,0,8,'face top chrome button-face');circle(dialControl,0,0,5.5,'detail');
 for(let i=0;i<12;i++){const a=i*Math.PI/6;line(dialControl,f2(Math.cos(a)*6.7),f2(Math.sin(a)*6.7),f2(Math.cos(a)*7.6),f2(Math.sin(a)*7.6));}
 const dialMark=line(dialControl,0,-3,0,-6,'detail');circle(dialControl,0,0,14,'hit');circle(dialControl,0,0,14,'focus-ring');text(dialControl,0,15,'WIND','etch micro center');
-const dayControl=control(FRONT(134,128,109),'dayControl','Switch day and night (D)');
+const dayControl=control(FRONT(134,128,109),'dayControl','SOLAR: switch day and night (D)');
 cylinder(134,123,109,7.5,5,'y','chrome');root.appendChild(dayControl);
 circle(dayControl,0,0,7.5,'face recess button-face');
 const sunIcon=el('g',{},dayControl);circle(sunIcon,0,0,2.1,'detail');

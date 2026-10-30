@@ -16,7 +16,7 @@ describe('ModelTrain', () => {
   const speed = (readout: string) => Number(readout.match(/^(\d+) KM\/H/)?.[1] ?? Number.NaN)
   const arms = (inside: ShadowRoot) => [...new Set([...inside.querySelectorAll('.boom-r')].map((n) => n.parentElement!))]
   const lit = (inside: ShadowRoot) => inside.querySelectorAll('.xl.on').length
-  const loco = (inside: ShadowRoot) => inside.querySelector('[aria-label^="Train"]')!.querySelector('.livery')!.closest('[aria-label^="Train"] > g')!
+  const loco = (inside: ShadowRoot) => inside.querySelector('[aria-label^="ESKER train"]')!.querySelector('.livery')!.closest('[aria-label^="ESKER train"] > g')!
   const puffs = (inside: ShadowRoot) => [...inside.querySelectorAll('.puff')].filter((n) => Number(n.getAttribute('opacity')) > 0).length
   const said = (inside: ShadowRoot) => inside.querySelector('[role=status]')!.textContent
 
@@ -263,8 +263,8 @@ describe('ModelTrain', () => {
     await run(800)
     expect(inside.querySelector('.arm')!.parentElement!.getAttribute('transform')).toBe('rotate(0.00)')
     click('Signal')
-    click('Throttle')
-    click('Train')
+    click('Throttle run')
+    click('ESKER train')
     await run(1500)
     expect(handle().getSnapshot().state).toBe('RUNNING · THROTTLE 4/5')
   })
