@@ -23,7 +23,7 @@ describe('AvatarStack', () => {
   test('shows `max` avatars and counts the rest', () => {
     render(<AvatarStack users={users} max={3} label="Collaborators" />)
     expect(avatars()).toHaveLength(3)
-    expect(screen.getByRole('button', { name: 'Show all 6 collaborators' })).toHaveTextContent('+3')
+    expect(screen.getByRole('button', { name: 'Show all 6 collaborators, +3' })).toHaveTextContent('+3')
   })
 
   test('one over max shows the face instead of "+1"', () => {
@@ -39,7 +39,7 @@ describe('AvatarStack', () => {
         <AvatarStack users={users} max={2} label="Collaborators" />
       </YoujProvider>,
     )
-    const trigger = screen.getByRole('button', { name: 'Show all 6 collaborators' })
+    const trigger = screen.getByRole('button', { name: 'Show all 6 collaborators, +4' })
     await user.click(trigger)
     const dialog = await screen.findByRole('dialog')
     const rows = within(dialog).getAllByRole('listitem')

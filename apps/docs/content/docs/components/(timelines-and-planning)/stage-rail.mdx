@@ -118,7 +118,7 @@ The cells change in place with no stagger, the running cell and dot hold still, 
 ### Accessibility
 
 - It's a toggle group named by `label` (default "Pipeline stages"): one tab stop, arrow keys move between stages (mirrored in RTL), Home and End jump, and Enter or Space picks. The picked stage has `aria-pressed="true"`; pressing it again keeps it picked.
-- Each stage is named with its state and duration: "Test, Running, 42 seconds". The cells are hidden from assistive tech.
+- Each stage is named with its state and duration, as shown and then in words: "Test, Running, 42s, 42 seconds". The cells are hidden from assistive tech.
 - A stage that changes state is announced politely: "Test, Passed".
 - The state is always a word as well as a color and a dot shape.
 

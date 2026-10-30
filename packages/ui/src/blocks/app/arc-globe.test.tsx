@@ -86,8 +86,8 @@ describe('ArcGlobe', () => {
     const user = userEvent.setup()
     reduced(<ArcGlobe live={false} />)
     const before = screen.getByRole('button', { name: /North America/ }).textContent
-    await user.click(screen.getByRole('button', { name: 'Last 24 hours' }))
-    expect(screen.getByRole('button', { name: 'Last 24 hours' })).toHaveAttribute('aria-pressed', 'true')
+    await user.click(screen.getByRole('button', { name: /Last 24 hours/ }))
+    expect(screen.getByRole('button', { name: /Last 24 hours/ })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('button', { name: /North America/ }).textContent).not.toBe(before)
     expect(said()).toMatch(/^Last 24 hours: [\d.]+K visitors$/)
   })
@@ -226,9 +226,9 @@ describe('ArcGlobe', () => {
         .map((b) => b.textContent?.split(/[\d$]/)[0]),
     ).toEqual(['Hubs', 'Spokes'])
     expect(screen.getByRole('button', { name: /Hubs/ })).toHaveTextContent('$')
-    expect(screen.getByRole('button', { name: 'This month' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: /This month/ })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.queryByText('Delay rate')).not.toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Today' }))
+    await user.click(screen.getByRole('button', { name: /Today/ }))
     expect(screen.getByText('Delay rate')).toBeInTheDocument()
     expect(said()).toMatch(/^Today: \$/)
     await user.click(screen.getByRole('combobox', { name: 'Site' }))

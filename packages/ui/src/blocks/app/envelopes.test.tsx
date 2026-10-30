@@ -13,7 +13,7 @@ describe('Envelopes card', () => {
     expect(screen.getByText('Safe to spend today')).toBeInTheDocument()
     // What's left across the envelopes ($329.95) over three days.
     expect(document.querySelector('[data-slot=envelopes-safe]')).toHaveTextContent('$109.98')
-    expect(envelope('eating')).toHaveAccessibleName('Eating out, $32 over')
+    expect(envelope('eating')).toHaveAccessibleName('−$32 Eating out, $32 over')
     const recent = screen.getByRole('list', { name: 'Recent' })
     expect(recent.children).toHaveLength(5)
     expect(recent).toHaveTextContent('Corner Market')
@@ -25,8 +25,8 @@ describe('Envelopes card', () => {
     envelope('fun').focus()
     // Picking up aims at the next envelope; Enter drops it there.
     await user.keyboard(' {Enter}')
-    expect(envelope('fun')).toHaveAccessibleName('Fun, $79 left of $150')
-    expect(envelope('transport')).toHaveAccessibleName('Transport, $27 left of $130')
+    expect(envelope('fun')).toHaveAccessibleName('$79 Fun, $79 left of $150')
+    expect(envelope('transport')).toHaveAccessibleName('$27 Transport, $27 left of $130')
   })
 
   test('Cover overspending moves the shortfall from the fullest envelope, and Add expense logs one', async () => {
@@ -58,7 +58,7 @@ describe('Envelopes card', () => {
         onAdd={onAdd}
       />,
     )
-    expect(envelope('web')).toHaveAccessibleName('Web app, 30h left of 40h')
+    expect(envelope('web')).toHaveAccessibleName('30h Web app, 30h left of 40h')
     expect(screen.getByText('Move 4h at a time')).toBeInTheDocument()
     expect(screen.getAllByTestId('web-icon').length).toBeGreaterThan(0)
     // 45h left over two days.

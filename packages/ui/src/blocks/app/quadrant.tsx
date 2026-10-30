@@ -213,7 +213,7 @@ function Quadrant({
         {counts(thresholds).map(([g, n]) => (
           <Toggle key={g} variant="outline" size="sm" pressed={group === g} onPressedChange={(on) => pickGroup(on ? g : null)} aria-label={copy.chip(copy.groups[g], count.format(n))} className="gap-2 px-2.5">
             <span aria-hidden className="size-2 rounded-full" style={{ backgroundColor: TONES[g] }} />
-            <span aria-hidden className="text-fg">{copy.groups[g]}</span>
+            <span aria-hidden className="text-fg">{copy.groups[g]}</span>{' '}
             <Counter aria-hidden value={n} from={n} mode="roll" locale={copy.locale} inView={false} className="text-fg-muted tabular-nums" />
           </Toggle>
         ))}

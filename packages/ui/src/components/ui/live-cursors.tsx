@@ -577,7 +577,7 @@ function PresenceAvatars({ users, max = 5, size = 'default', following: followin
         {shown.map((user, index) => {
           const pressed = following === user.id
           const avatar = (
-            <Avatar size={size} className="bg-canvas own:ring-2 ring-(--ui--live-cursor) ring-offset-1 ring-offset-canvas">
+            <Avatar aria-hidden size={size} className="bg-canvas own:ring-2 ring-(--ui--live-cursor) ring-offset-1 ring-offset-canvas">
               {user.src && <AvatarImage src={user.src} alt="" />}
               <AvatarFallback>{initials(user.name)}</AvatarFallback>
             </Avatar>

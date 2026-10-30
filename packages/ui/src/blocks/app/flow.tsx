@@ -275,7 +275,7 @@ function Flow({
           <CardAction>
             <SegmentedControl variant="pill" size="sm" aria-label={copy.range} value={range} onValueChange={pickRange}>
               {ranges.map((r) => (
-                <SegmentedControlItem key={r.id} value={r.id} aria-label={r.name ?? r.label} className="px-2.5">
+                <SegmentedControlItem key={r.id} value={r.id} aria-label={r.name ? `${r.label}, ${r.name}` : r.label} className="px-2.5">
                   {r.label}
                 </SegmentedControlItem>
               ))}

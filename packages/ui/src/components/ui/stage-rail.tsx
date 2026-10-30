@@ -143,8 +143,8 @@ function Duration({ ms, locale }: { ms: number; locale: string }) {
   )
 }
 
-const spokenDuration = (ms: number, locale: string) =>
-  durationParts(ms, locale, 'long')
+const durationText = (ms: number, locale: string, display: 'narrow' | 'long') =>
+  durationParts(ms, locale, display)
     .map((parts) => parts.map((p) => p.value).join(''))
     .join(' ')
 
@@ -233,7 +233,8 @@ function StageRail({
             const progress = progressOf(stage, elapsed)
             const lit = shown ? (stage.status === 'running' && progress > 0 ? Math.max(1, Math.floor(progress * segments)) : Math.round(progress * segments)) : 0
             const word = words[stage.status]
-            const spoken = elapsed !== null ? spokenDuration(elapsed, locale) : ''
+            // What the stage shows ("1m 26s") first, so its name holds the visible text, then the same in words.
+            const spoken = elapsed !== null ? `${durationText(elapsed, locale, 'narrow')}, ${durationText(elapsed, locale, 'long')}` : ''
             return (
               <TogglePrimitive
                 key={stage.id}
@@ -263,7 +264,7 @@ function StageRail({
                   <span data-slot="stage-rail-label" className={cn('min-w-0 flex-1 truncate own:text-ui-sm own:text-fg', VOICE)}>
                     {stage.name}
                   </span>
-                </span>
+                </span>{' '}
                 <span aria-hidden data-slot="stage-rail-track" className="own:flex h-2 gap-0.5">
                   {Array.from({ length: segments }, (_, i) => {
                     const on = i < lit
@@ -292,12 +293,12 @@ function StageRail({
                       </span>
                     )
                   })}
-                </span>
+                </span>{' '}
                 {/* On a narrow stage the duration wraps under the state rather than cutting it short. */}
                 <span aria-hidden data-slot="stage-rail-footer" className="own:flex min-w-0 flex-wrap items-baseline gap-x-2">
                   <span data-slot="stage-rail-status" className={cn('own:text-ui-sm whitespace-nowrap', WORD[stage.status])}>
                     {word}
-                  </span>
+                  </span>{' '}
                   <span
                     data-slot="stage-rail-value"
                     className={cn('own:ms-auto own:font-mono own:text-ui-sm whitespace-nowrap own:text-fg own:tabular-nums', elapsed === null && 'own:text-fg-subtle')}

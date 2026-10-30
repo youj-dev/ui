@@ -88,7 +88,7 @@ describe('Flow block', () => {
     reduced(<Flow onRangeChange={onRangeChange} />)
     const room = document.querySelector<HTMLElement>('[data-slot=flow-chart]')!.parentElement!
     const height = room.style.height
-    await user.click(screen.getByRole('button', { name: 'last 7 days' }))
+    await user.click(screen.getByRole('button', { name: /last 7 days/ }))
     expect(onRangeChange).toHaveBeenCalledWith('7d')
     expect(screen.getByText(`last 7 days: ${number.format(total(DEMO['7d']))} trials`, { selector: '[role=status]' })).toBeInTheDocument()
     expect(node('social')).toHaveTextContent(number.format(through(DEMO['7d'], 'social')))
@@ -147,8 +147,8 @@ describe('Flow block', () => {
       )
       // The first range is the one shown first.
       expect(screen.getByText('Spending · fiscal year 2025')).toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: 'last 7 days' })).toBeNull()
-      await user.click(screen.getByRole('button', { name: 'fiscal year 2026' }))
+      expect(screen.queryByRole('button', { name: /last 7 days/ })).toBeNull()
+      await user.click(screen.getByRole('button', { name: /fiscal year 2026/ }))
       expect(onRangeChange).toHaveBeenCalledWith('fy26')
       expect(screen.getByText('Spending · fiscal year 2026')).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: 'View data' }))
@@ -160,7 +160,7 @@ describe('Flow block', () => {
       const onSelectedChange = vi.fn()
       reduced(<Flow stages={['In', 'Out']} nodes={own} paths={paths} locale="de-DE" copy={{ title: 'Fluss', count: (v) => `${v} Leute` }} selected={null} onSelectedChange={onSelectedChange} />)
       expect(screen.getByRole('heading', { level: 2, name: 'Fluss' })).toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: 'last 7 days' })).toBeNull()
+      expect(screen.queryByRole('button', { name: /last 7 days/ })).toBeNull()
       // Intl sets "60 %" with a narrow space.
       const name = (el: HTMLElement) => el.getAttribute('aria-label')!.replace(/\s/g, ' ')
       expect(name(node('b'))).toBe('Beta, In: 60 Leute, 60 % of all. Went on to Lost 40 (66,7 %), Kept 20 (33,3 %).')
