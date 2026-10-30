@@ -233,7 +233,7 @@ function StageRail({
             const progress = progressOf(stage, elapsed)
             const lit = shown ? (stage.status === 'running' && progress > 0 ? Math.max(1, Math.floor(progress * segments)) : Math.round(progress * segments)) : 0
             const word = words[stage.status]
-            // What the stage shows ("1m 26s") first, so its name holds the visible text, then the same in words.
+            // What the stage shows (its duration, short) first, so its name holds the visible text, then the same in words.
             const spoken = elapsed !== null ? `${durationText(elapsed, locale, 'narrow')}, ${durationText(elapsed, locale, 'long')}` : ''
             return (
               <TogglePrimitive
