@@ -168,7 +168,8 @@ function Chart({ stages, layout, tones, lit, pinned, onNode, onPath, onPin, figu
                   type="button"
                   data-yj-node={node.id}
                   aria-pressed={pinned === node.id}
-                  aria-label={label(node.id)}
+                  // What the bar shows (name, figure), then its sentence.
+                  aria-label={`${node.label} ${figure(box.value)}, ${label(node.id)}`}
                   tabIndex={cursor === node.id ? 0 : -1}
                   className={cn(
                     'absolute top-0 flex min-h-6 items-center gap-2 rounded-sm text-ui-xs outline-hidden focus-ring',
@@ -201,7 +202,7 @@ function Chart({ stages, layout, tones, lit, pinned, onNode, onPath, onPin, figu
                   <span
                     className={cn('flex min-w-0 items-baseline gap-1.5 whitespace-nowrap', side === 'middle' && 'rounded-xs bg-surface px-1 py-0.5', side === 'start' ? 'max-w-[calc(var(--lg)-var(--spacing)*4)]' : side === 'end' && 'max-w-[calc(var(--rg)-var(--spacing)*4)]')}
                   >
-                    <span className="truncate font-medium text-fg">{node.label}</span>
+                    <span className="truncate font-medium text-fg">{node.label}</span>{' '}
                     <span className="shrink-0 text-fg-muted tabular-nums">{figure(box.value)}</span>
                   </span>
                 </button>

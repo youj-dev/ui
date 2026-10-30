@@ -6,6 +6,9 @@ import { CardAction, CardDescription, CardHeader, CardTitle } from '../../../com
 import { cn } from '../../../lib/utils'
 import type { ArcGlobeCopy } from './data'
 
+/** The button's name, led by the word it shows when the name doesn't already hold it. */
+const named = (name: string, shown: string) => (name.toLowerCase().includes(shown.toLowerCase()) ? name : `${shown}, ${name}`)
+
 /* The title (with the Demo data badge on the demo), how many places, and the
  * Live toggle. */
 
@@ -38,7 +41,7 @@ export function Head({ Title, titleId, copy, count, marker, live, onLive }: Head
           variant="secondary"
           size="xs"
           aria-pressed={live}
-          aria-label={live ? copy.pause : copy.resume}
+          aria-label={named(live ? copy.pause : copy.resume, live ? copy.live : copy.paused)}
           onClick={onLive}
           className="gap-2 font-mono text-ui-sm"
         >

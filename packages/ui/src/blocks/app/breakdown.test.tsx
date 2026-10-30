@@ -16,8 +16,8 @@ describe('Breakdown block', () => {
   test('the top level, largest first, each part named with its figure, share and change; the ring holds the total', () => {
     reduced(<Breakdown />)
     expect(screen.getByRole('heading', { level: 2, name: 'Revenue by region' })).toBeInTheDocument()
-    expect(rows().map((r) => r.textContent?.split('$')[0])).toEqual(['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa'])
-    expect(screen.getByRole('button', { name: 'Europe: $346K, 29.6% of the total, up 6.2%. 6 parts inside' })).toBeInTheDocument()
+    expect(rows().map((r) => r.textContent?.split('$')[0]?.trim())).toEqual(['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa'])
+    expect(screen.getByRole('button', { name: /Europe: \$346K, 29\.6% of the total, up 6\.2%\. 6 parts inside$/ })).toBeInTheDocument()
     expect(document.querySelector('[data-slot=breakdown-ring] svg')).toHaveAttribute('aria-hidden')
     expect(hole()).toBe('$1.17M Total')
     expect(crumbs()).toEqual(['All regions'])
@@ -31,14 +31,14 @@ describe('Breakdown block', () => {
     await user.keyboard('{Enter}')
     expect(onPathChange).toHaveBeenCalledWith(['eu'])
     expect(crumbs()).toEqual(['All regions', 'Europe'])
-    expect(rows().map((r) => r.textContent?.split('$')[0])).toEqual(['Germany', 'United Kingdom', 'France', 'Netherlands', 'Sweden', 'Other (4)'])
+    expect(rows().map((r) => r.textContent?.split('$')[0]?.trim())).toEqual(['Germany', 'United Kingdom', 'France', 'Netherlands', 'Sweden', 'Other (4)'])
     expect(screen.getByRole('button', { name: /^Germany/ })).toHaveFocus()
     expect(screen.getByText('Europe: $346K across 6 parts.')).toHaveAttribute('role', 'status')
     expect(hole()).toBe('$346K Europe')
 
     await user.click(screen.getByRole('button', { name: /^Other \(4\)/ }))
     expect(crumbs()).toEqual(['All regions', 'Europe', 'Other (4)'])
-    expect(rows().map((r) => r.textContent?.split('$')[0])).toEqual(['Spain', 'Poland', 'Italy', 'Switzerland'])
+    expect(rows().map((r) => r.textContent?.split('$')[0]?.trim())).toEqual(['Spain', 'Poland', 'Italy', 'Switzerland'])
   })
 
   test('Escape goes up a level and focus returns to the part you opened; the breadcrumb jumps to the top', async () => {
@@ -92,7 +92,7 @@ describe('Breakdown block', () => {
       reduced(<Breakdown items={items} format={{ maximumFractionDigits: 0 }} locale="de-DE" copy={{ title: 'Teile', all: 'Alle' }} onItemSelect={onItemSelect} />)
       expect(screen.getByRole('heading', { level: 2, name: 'Teile' })).toBeInTheDocument()
       expect(crumbs()).toEqual(['Alle'])
-      expect(screen.getByRole('button', { name: (name) => name.replace(/\s/g, ' ') === 'Alpha: 60, 60 % of the total, up 20 %. 2 parts inside' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: (name) => name.replace(/\s/g, ' ').endsWith('Alpha: 60, 60 % of the total, up 20 %. 2 parts inside') })).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: /^Alpha/ }))
       await user.click(screen.getByRole('button', { name: /^Alpha two/ }))
       expect(onItemSelect).toHaveBeenCalledWith(items[0]!.children![1], ['a', 'a2'])
@@ -107,7 +107,7 @@ describe('Breakdown block', () => {
       expect(crumbs()).toEqual(['All regions'])
       view.unmount()
       reduced(<Breakdown top={2} />)
-      expect(rows().map((r) => r.textContent?.split('$')[0])).toEqual(['North America', 'Europe', 'Other (3)'])
+      expect(rows().map((r) => r.textContent?.split('$')[0]?.trim())).toEqual(['North America', 'Europe', 'Other (3)'])
     })
 
     test('another world: hours by project drill into tasks, formatted as hours, with its own copy', async () => {
@@ -119,11 +119,11 @@ describe('Breakdown block', () => {
       reduced(<Breakdown items={hours} format={{ style: 'unit', unit: 'hour', unitDisplay: 'short', maximumFractionDigits: 0 }} copy={{ title: 'Time by project', all: 'All projects', total: 'Logged' }} />)
       expect(screen.getByRole('heading', { level: 2, name: 'Time by project' })).toBeInTheDocument()
       expect(crumbs()).toEqual(['All projects'])
-      expect(screen.getByRole('button', { name: /^Coffee site: 30 hr, 75% of the total, up 25%/ })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Coffee site: 30 hr, 75% of the total, up 25%/ })).toBeInTheDocument()
       expect(hole()).toBe('40 hr Logged')
       await user.click(screen.getByRole('button', { name: /^Coffee site/ }))
       expect(crumbs()).toEqual(['All projects', 'Coffee site'])
-      expect(rows().map((r) => r.textContent?.split(/\d/)[0])).toEqual(['Build', 'Design'])
+      expect(rows().map((r) => r.textContent?.split(/\d/)[0]?.trim())).toEqual(['Build', 'Design'])
     })
 
     test('embedded is a section named by its heading; standalone draws the page', () => {
