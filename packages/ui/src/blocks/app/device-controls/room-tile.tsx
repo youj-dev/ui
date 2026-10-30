@@ -41,7 +41,7 @@ function RoomTile({ room, selected, onSelect, onLights, copy }: RoomTileProps) {
       <button
         type="button"
         aria-pressed={selected}
-        aria-label={copy.showRoom(room.name)}
+        aria-label={copy.showRoom(`${room.name} ${copy.temperature} ${one.format(room.temperature)}° ${copy.humidity} ${pct.format(room.humidity / 100)}`)}
         onClick={onSelect}
         className="focus-ring relative flex flex-col gap-4 rounded-xl p-4 text-start"
       >
@@ -52,17 +52,17 @@ function RoomTile({ room, selected, onSelect, onLights, copy }: RoomTileProps) {
             aria-hidden
             className={cn('shrink-0 transition-colors yj-duration-base ease-standard', room.lights ? 'text-warning' : 'text-fg-subtle')}
           />
-        </span>
+        </span>{' '}
         <span className="grid grid-cols-2 gap-3">
           <span className="flex flex-col gap-1">
-            <Eyebrow>{copy.temperature}</Eyebrow>
+            <Eyebrow>{copy.temperature}</Eyebrow>{' '}
             <span className="font-mono text-2xl leading-none font-medium tracking-tight text-fg tabular-nums">
               {one.format(room.temperature)}
               <span className="text-fg-muted">°</span>
             </span>
-          </span>
+          </span>{' '}
           <span className="flex flex-col gap-1">
-            <Eyebrow>{copy.humidity}</Eyebrow>
+            <Eyebrow>{copy.humidity}</Eyebrow>{' '}
             <span className="flex items-center gap-1.5 font-mono text-2xl leading-none font-medium tracking-tight text-fg tabular-nums">
               <DropletIcon size={12} aria-hidden className="text-chart-5" />
               <span>

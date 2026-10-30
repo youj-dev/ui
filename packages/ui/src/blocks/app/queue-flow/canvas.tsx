@@ -219,7 +219,7 @@ export function FlowCanvas({ nodes, routes, state, selected, onSelect, figure, c
                   data-health={health}
                   aria-pressed={on}
                   aria-controls={controls}
-                  aria-label={`${node.label}, ${copy.kinds[node.kind]}, ${copy.health[health]}, ${figure(node)}`}
+                  aria-label={`${node.label}, ${copy.kinds[node.kind]}, ${figure(node)}, ${copy.health[health]}`}
                   tabIndex={on ? 0 : -1}
                   onClick={() => onSelect(node.id)}
                   onFocus={() => onSelect(node.id)}
@@ -239,9 +239,9 @@ export function FlowCanvas({ nodes, routes, state, selected, onSelect, figure, c
                       aria-hidden
                       className={cn('ms-auto size-1.5 shrink-0 rounded-full transition-colors yj-duration-slow ease-standard @max-[36rem]/flow:hidden', DOT[health])}
                     />
-                  </span>
+                  </span>{' '}
                   <span className="flex min-w-0 items-baseline justify-between gap-2 text-ui-xs text-fg-muted">
-                    <span className={cn('truncate', VOICE, '@max-[36rem]/flow:hidden')}>{copy.kinds[node.kind]}</span>
+                    <span className={cn('truncate', VOICE, '@max-[36rem]/flow:hidden')}>{copy.kinds[node.kind]}</span>{' '}
                     <span className="flex items-center gap-1.5 font-mono text-fg tabular-nums">
                       {/* On a narrow canvas the health dot moves down beside the figure, so the name gets the whole line. */}
                       <span

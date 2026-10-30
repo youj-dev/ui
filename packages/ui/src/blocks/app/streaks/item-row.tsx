@@ -24,6 +24,7 @@ export function ItemRow({ item, today, selected, copy, onSelect, onToggle }: Ite
   const stats = streakStats(item.days, today)
   // A run that yesterday broke, still there to save.
   const held = stats.current ? 0 : streakStats(item.days, yesterdayOf(today)).current
+  const progress = stats.current ? copy.streak(stats.current) : held ? copy.held(held) : copy.noStreak
   return (
     <m.li
       layout="position"
@@ -43,7 +44,7 @@ export function ItemRow({ item, today, selected, copy, onSelect, onToggle }: Ite
       <button
         type="button"
         aria-pressed={selected}
-        aria-label={copy.show(item.name)}
+        aria-label={copy.show(`${item.name} ${progress}`)}
         onClick={onSelect}
         className="focus-ring -m-1 flex min-w-0 items-center gap-3 rounded-lg p-1 text-start"
       >
@@ -51,10 +52,8 @@ export function ItemRow({ item, today, selected, copy, onSelect, onToggle }: Ite
           {item.icon}
         </span>
         <span className="flex min-w-0 flex-col">
-          <span className="truncate text-ui-lg text-fg">{item.name}</span>
-          <span className={cn('truncate font-mono text-ui-sm tabular-nums', held ? 'text-warning-text' : 'text-fg-muted')}>
-            {stats.current ? copy.streak(stats.current) : held ? copy.held(held) : copy.noStreak}
-          </span>
+          <span className="truncate text-ui-lg text-fg">{item.name}</span>{' '}
+          <span className={cn('truncate font-mono text-ui-sm tabular-nums', held ? 'text-warning-text' : 'text-fg-muted')}>{progress}</span>
         </span>
       </button>
       <CalendarHeatmap

@@ -49,12 +49,12 @@ describe('Staged rollout block', () => {
   test('picking an item or an environment steers the ruler', async () => {
     const user = userEvent.setup()
     reduced(<StagedRollout />)
-    await user.click(screen.getByRole('button', { name: 'Semantic search, show its rollout' }))
-    expect(screen.getByRole('button', { name: 'Semantic search, show its rollout' })).toHaveAttribute('aria-pressed', 'true')
+    await user.click(screen.getByRole('button', { name: /^Semantic search [\w-]+, show its rollout$/ }))
+    expect(screen.getByRole('button', { name: /^Semantic search [\w-]+, show its rollout$/ })).toHaveAttribute('aria-pressed', 'true')
     expect(ruler()).toHaveAttribute('aria-valuetext', '50%')
     await user.click(screen.getByRole('button', { name: 'Staging' }))
     expect(ruler()).toHaveAttribute('aria-valuetext', 'GA at 100%')
-    const row = screen.getByRole('button', { name: 'Semantic search, show its rollout' }).closest('li')!
+    const row = screen.getByRole('button', { name: /^Semantic search [\w-]+, show its rollout$/ }).closest('li')!
     expect(within(row).getByText('stg')).toBeInTheDocument()
   })
 
@@ -101,7 +101,7 @@ describe('Staged rollout block', () => {
     expect(ruler()).toHaveAttribute('aria-valuetext', '50%')
     await user.click(screen.getByRole('button', { name: 'EU' }))
     expect(ruler()).toHaveAttribute('aria-valuetext', '25%')
-    const row = screen.getByRole('button', { name: 'Monthly at $19, show its rollout' }).closest('li')!
+    const row = screen.getByRole('button', { name: /^Monthly at \$19 [\w-]+, show its rollout$/ }).closest('li')!
     expect(within(row).getByText('eu-w')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Stop test' }))
     expect(screen.getByRole('button', { name: 'Resume at 25%' })).toBeInTheDocument()

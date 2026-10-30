@@ -14,7 +14,7 @@ describe('Device controls card', () => {
     dial.focus()
     await user.keyboard('{ArrowUp}')
     expect(dial).toHaveAttribute('aria-valuenow', '22')
-    await user.click(screen.getByRole('button', { name: 'Show Bedroom on the thermostat' }))
+    await user.click(screen.getByRole('button', { name: /^Show Bedroom .* on the thermostat$/ }))
     expect(screen.getByRole('slider', { name: 'Bedroom target temperature' })).toHaveAttribute('aria-valuenow', '19')
     expect(screen.getByText('2 lights on')).toBeInTheDocument()
     await user.click(screen.getByRole('switch', { name: 'Lights in Bedroom' }))

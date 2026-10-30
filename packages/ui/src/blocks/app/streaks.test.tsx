@@ -21,9 +21,9 @@ describe('Streaks block', () => {
   test('Mark done marks today in the list and the grid, and the head counts it', async () => {
     const user = userEvent.setup()
     reduced(<Streaks />)
-    await user.click(screen.getByRole('button', { name: 'Mark Morning run done' }))
+    await user.click(screen.getByRole('button', { name: 'Mark done: Morning run' }))
     expect(screen.getByText('3 of 4 done today')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Mark Morning run done' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'Mark done: Morning run' })).toHaveAttribute('aria-pressed', 'true')
     expect(document.querySelector('[data-slot=calendar-heatmap][data-size=default] [data-today]')).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByText('Done today')).toBeInTheDocument()
   })
@@ -51,8 +51,8 @@ describe('Streaks block', () => {
     reduced(<Streaks embedded />)
     expect(screen.getByRole('heading', { level: 2, name: 'Habits' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Show all 4' }))
-    await user.click(screen.getByRole('button', { name: 'Show Meditate' }))
-    expect(screen.getByRole('button', { name: 'Show Meditate' })).toHaveAttribute('aria-pressed', 'true')
+    await user.click(screen.getByRole('button', { name: /^Show Meditate / }))
+    expect(screen.getByRole('button', { name: /^Show Meditate / })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('group', { name: 'Meditate, Last 26 weeks' })).toBeInTheDocument()
   })
 
@@ -79,7 +79,7 @@ describe('Streaks block', () => {
     await user.click(screen.getByRole('button', { name: 'Mark Billing on target' }))
     expect(screen.getByText('1 of 2 teams on target')).toBeInTheDocument()
     // Another item's run, picked from the list.
-    await user.click(screen.getByRole('button', { name: 'Show Technical' }))
+    await user.click(screen.getByRole('button', { name: /^Show Technical / }))
     expect(screen.getByRole('group', { name: 'Technical, Last 26 weeks' })).toBeInTheDocument()
   })
 

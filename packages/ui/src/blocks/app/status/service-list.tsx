@@ -51,7 +51,7 @@ function ServiceList({ services, selected, onSelect, levelOf, percent, target, c
               type="button"
               aria-pressed={on}
               aria-controls={controls}
-              aria-label={`${service.name}, ${status.label}, ${percent(average)}`}
+              aria-label={`${service.name} ${percent(average)}, ${status.label}`}
               onClick={() => onSelect(on ? null : service.id)}
               data-status={status.id}
               className={cn(
@@ -62,7 +62,7 @@ function ServiceList({ services, selected, onSelect, levelOf, percent, target, c
               )}
             >
               <span aria-hidden className={cn('size-2 rounded-full', DOT[status.tone])} />
-              <span className="truncate font-mono text-ui-lg text-fg">{service.name}</span>
+              <span className="truncate font-mono text-ui-lg text-fg">{service.name}</span>{' '}
               <HistoryStrip
                 days={service.days}
                 target={target}
@@ -70,7 +70,7 @@ function ServiceList({ services, selected, onSelect, levelOf, percent, target, c
                 size="sm"
                 interactive={false}
                 className="col-span-full row-start-2 @min-[32rem]/services:col-span-1 @min-[32rem]/services:col-start-3 @min-[32rem]/services:row-start-1"
-              />
+              />{' '}
               <span
                 className={cn(
                   'col-start-3 row-start-1 text-end font-mono text-ui tabular-nums @min-[32rem]/services:col-start-4',

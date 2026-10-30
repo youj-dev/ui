@@ -154,7 +154,7 @@ export function Chip({
             <span className="flex min-w-0 flex-col">
               <span dir="auto" className="truncate text-ui-sm font-medium text-fg">
                 {file.name}
-              </span>
+              </span>{' '}
               <span className={cn('truncate text-ui-xs tabular-nums', file.status === 'error' ? 'text-danger-text' : 'text-fg-muted')}>
                 {file.status === 'error' ? copy.retryShort : formatBytes(file.size, copy.locale)}
               </span>

@@ -64,9 +64,9 @@ describe('HubMap', () => {
     const lanes = within(detail()).getAllByRole('button')
     // Busiest first: out to Leipzig, in from Anchorage, out to São Paulo.
     expect(lanes.map((b) => b.getAttribute('aria-label'))).toEqual([
-      'to LEJ, 11.8K/h, Transit 11h',
-      'from ANC, 8.6K/h, Transit 6h',
-      'to GRU, 3.9K/h, Transit 13h',
+      'LEJ 11.8K/h 11h, to LEJ, Transit',
+      'ANC 8.6K/h 6h, from ANC, Transit',
+      'GRU 3.9K/h 13h, to GRU, Transit',
     ])
     await user.click(lanes[0]!)
     expect(screen.getByRole('radio', { name: /^LEJ/ })).toBeChecked()
@@ -197,7 +197,7 @@ describe('HubMap', () => {
     expect(screen.getByRole('radio', { checked: true })).toHaveAccessibleName('BOM, Mumbai, Down, 400 Gbps, 31% on time')
     expect(screen.getByText('1 of 2')).toBeInTheDocument()
     expect(within(detail()).getByText('Down')).toBeInTheDocument()
-    expect(within(detail()).getAllByRole('button')[0]).toHaveAccessibleName('from IAD, 90 Gbps, Transit 118 ms')
+    expect(within(detail()).getAllByRole('button')[0]).toHaveAccessibleName('IAD 90 Gbps 118 ms, from IAD, Transit')
     expect(map()).toHaveTextContent('IAD1.2K')
     await user.click(screen.getByRole('button', { name: 'Errors' }))
     expect(map()).toHaveTextContent('BOM3.8K')

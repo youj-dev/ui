@@ -55,11 +55,11 @@ function ItemList({ items, selected, environments, environment, stopped, stages,
             <button
               type="button"
               aria-pressed={on}
-              aria-label={copy.select(item.name)}
+              aria-label={copy.select(`${item.name} ${item.key}`)}
               onClick={() => onSelect(item.key)}
               className="flex min-w-0 flex-col items-start gap-0.5 text-start outline-none after:absolute after:inset-0 after:rounded-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-focus"
             >
-              <span className={cn('max-w-full truncate text-ui font-medium', dead ? 'text-danger-text' : 'text-fg')}>{item.name}</span>
+              <span className={cn('max-w-full truncate text-ui font-medium', dead ? 'text-danger-text' : 'text-fg')}>{item.name}</span>{' '}
               <span className="max-w-full truncate font-mono text-ui-xs text-fg-muted">{item.key}</span>
             </button>
             <span className="col-start-2 row-start-1 text-ui text-fg tabular-nums sm:col-start-4 sm:text-end">{percent(share)}</span>

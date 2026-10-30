@@ -118,15 +118,16 @@ export function HubDetail({ hub, status, thresholds, lanes, history, diverted, c
                 <button
                   type="button"
                   onClick={() => onSelect(peer)}
-                  aria-label={`${out ? copy.outbound(peer) : copy.inbound(peer)}, ${format.compact(lane.volume)}${copy.unit}, ${copy.duration} ${format.hours(lane.time)}`}
+                  // The lane as shown (airport, volume, time), then its direction and what the time is.
+                  aria-label={`${peer} ${format.compact(lane.volume)}${copy.unit} ${format.hours(lane.time)}, ${out ? copy.outbound(peer) : copy.inbound(peer)}, ${copy.duration}`}
                   className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto_--spacing(13)] items-center gap-2 rounded-[min(var(--radius-md),8px)] px-2 py-1.5 text-start focus-ring transition-[background-color] yj-duration-fast ease-standard hover:bg-hover"
                 >
                   <Arrow size={13} aria-hidden className={cn('rtl:-scale-x-100', out ? 'text-accent' : 'text-fg-muted')} />
-                  <span className="truncate font-mono text-ui text-fg">{peer}</span>
+                  <span className="truncate font-mono text-ui text-fg">{peer}</span>{' '}
                   <span className="font-mono text-ui-sm text-fg-muted tabular-nums">
                     {format.compact(lane.volume)}
                     {copy.unit}
-                  </span>
+                  </span>{' '}
                   <span className="text-end font-mono text-ui-sm text-fg-muted tabular-nums">{format.hours(lane.time)}</span>
                 </button>
               </li>

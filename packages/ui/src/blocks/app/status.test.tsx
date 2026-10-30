@@ -24,12 +24,12 @@ describe('Status card block', () => {
     expect(within(strip).getAllByRole('listitem')).toHaveLength(90)
     const rows = screen.getAllByRole('button', { pressed: false })
     expect(rows.map((b) => b.getAttribute('aria-label'))).toEqual([
-      'api-gateway, Operational, 99.98%',
-      'web-app, Operational, 99.99%',
-      'webhooks, Operational, 99.83%',
-      'auth, Operational, 99.98%',
-      'search, Operational, 99.97%',
-      'storage, Operational, 99.96%',
+      'api-gateway 99.98%, Operational',
+      'web-app 99.99%, Operational',
+      'webhooks 99.83%, Operational',
+      'auth 99.98%, Operational',
+      'search 99.97%, Operational',
+      'storage 99.96%, Operational',
     ])
     const minis = container.querySelectorAll('button [data-slot=history-strip]')
     expect(minis).toHaveLength(6)
@@ -42,8 +42,8 @@ describe('Status card block', () => {
   test('pressing a service puts it on the day strip and the figure; its chip goes back to all of them', async () => {
     const user = userEvent.setup()
     reduced(<StatusCard />)
-    await user.click(screen.getByRole('button', { name: 'webhooks, Operational, 99.83%' }))
-    expect(screen.getByRole('button', { name: 'webhooks, Operational, 99.83%' })).toHaveAttribute('aria-pressed', 'true')
+    await user.click(screen.getByRole('button', { name: 'webhooks 99.83%, Operational' }))
+    expect(screen.getByRole('button', { name: 'webhooks 99.83%, Operational' })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('group', { name: 'Daily uptime, webhooks' })).toBeInTheDocument()
     // Webhooks spent more than the window's error budget.
     expect(screen.getByRole('meter', { name: 'Error budget left' })).toHaveAttribute('aria-valuetext', '0 min')
@@ -56,7 +56,7 @@ describe('Status card block', () => {
     reduced(<StatusCard services={SERVICES_INCIDENT} />)
     expect(screen.getByText('Partial outage')).toBeInTheDocument()
     expect(screen.getByText('1 affected today')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /^storage, Outage,/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^storage [0-9.]+%, Outage$/ })).toBeInTheDocument()
     expect(screen.getByText('Incident ongoing · storage')).toBeInTheDocument()
   })
 
@@ -89,7 +89,7 @@ describe('Status card block', () => {
   test('your services drive the figures, the rows and "days ago", counted from `today`', () => {
     reduced(<StatusCard services={mine} today="2027-01-12" copy={{ subtitle: (n) => `${n} systems` }} />)
     expect(screen.getByText('2 systems')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { pressed: false }).map((b) => b.getAttribute('aria-label')?.split(',')[0])).toEqual(['postgres-main', 'edge-cdn'])
+    expect(screen.getAllByRole('button', { pressed: false }).map((b) => b.getAttribute('aria-label')?.split(' ')[0])).toEqual(['postgres-main', 'edge-cdn'])
     expect(within(screen.getByRole('group', { name: 'Daily uptime, all services' })).getAllByRole('listitem')).toHaveLength(7)
     // The incident was on Jan 7, five days before the 12th.
     expect(screen.getByText('Last incident 5 days ago · postgres-main')).toBeInTheDocument()
@@ -164,8 +164,8 @@ describe('Status card block', () => {
     ]
     const lines: StatusService[] = [week('red', 'Red line'), { ...week('tram', 'Old Town tram'), status: 'suspended' }]
     reduced(<StatusCard services={lines} statuses={statuses} />)
-    expect(screen.getByRole('button', { name: /^Red line, On time,/ })).toHaveAttribute('data-status', 'on-time')
-    expect(screen.getByRole('button', { name: /^Old Town tram, Suspended,/ })).toHaveAttribute('data-status', 'suspended')
+    expect(screen.getByRole('button', { name: /^Red line [0-9.]+%, On time$/ })).toHaveAttribute('data-status', 'on-time')
+    expect(screen.getByRole('button', { name: /^Old Town tram [0-9.]+%, Suspended$/ })).toHaveAttribute('data-status', 'suspended')
     expect(screen.getByText('1 affected today')).toBeInTheDocument()
     expect(screen.getByText('Partial outage')).toBeInTheDocument()
     expect(screen.queryByText('Operational')).not.toBeInTheDocument()
@@ -174,7 +174,7 @@ describe('Status card block', () => {
   test('format.uptime writes the figure, the target and the rows', () => {
     reduced(<StatusCard services={mine} format={{ uptime: (n) => `${Math.round(n * 1000) / 10} pts` }} />)
     expect(screen.getAllByText('99.9 pts').length).toBeGreaterThan(0)
-    expect(screen.getByRole('button', { name: /^edge-cdn, Operational, 100 pts$/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^edge-cdn 100 pts, Operational$/ })).toBeInTheDocument()
   })
 
   test('the legend’s bands stay distinct when the target is at or under the critical line', () => {
