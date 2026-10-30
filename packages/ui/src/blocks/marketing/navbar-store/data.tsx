@@ -148,7 +148,7 @@ export const DEFAULT_COPY = {
   /** The region menu's button, given the region and its currency. */
   region: (label: string, currency: string) => `${label} ${currency}, change region`,
   regionTitle: 'Ship to',
-  searchLabel: 'Search the store',
+  searchLabel: 'Search products in the store',
   searchPlaceholder: 'Search products…',
   popular: 'Popular',
   products: 'Products',

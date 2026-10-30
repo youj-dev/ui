@@ -23,7 +23,8 @@ const ORG: HierarchyNode = {
 }
 
 const reduced = (ui: React.ReactNode) => render(<YoujProvider reducedMotion="always">{ui}</YoujProvider>)
-const item = (name: string) => screen.getByRole('treeitem', { name })
+// A node's name starts with its person's name, then what the card shows (role, badge).
+const item = (name: string) => screen.getByRole('treeitem', { name: new RegExp(`^${name}\\b`) })
 const names = () => screen.queryAllByRole('treeitem').map((el) => el.getAttribute('data-yj-node'))
 const key = (k: string) => fireEvent.keyDown(document.activeElement!, { key: k })
 
@@ -50,8 +51,8 @@ describe('HierarchyChart', () => {
     const cto = item('Jonas')
     expect(cto).toHaveAttribute('aria-expanded', 'false')
     expect(cto.querySelector('[data-slot=hierarchy-chart-toggle]')).toHaveTextContent('+3')
-    expect(cto).toHaveAccessibleDescription('CTO, Hiring, 3 hidden below')
-    expect(item('David')).toHaveAccessibleDescription('CFO')
+    expect(cto).toHaveAccessibleName('Jonas, CTO, Hiring, 3 hidden below')
+    expect(item('David')).toHaveAccessibleName('David, CFO')
   })
 
   test('the chip closes and opens a branch and reports the open branches', async () => {

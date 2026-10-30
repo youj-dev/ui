@@ -43,13 +43,13 @@ export function HierarchyNodeCard({ node }: { node: HierarchyNode }) {
       <span className="own:flex min-w-0 flex-1 flex-col gap-0.5">
         <span data-slot="hierarchy-chart-name" className="truncate own:text-ui own:font-medium own:leading-tight own:text-fg">
           {node.name}
-        </span>
+        </span>{' '}
         {node.role && (
           <span data-slot="hierarchy-chart-role" className="truncate own:text-ui-sm own:leading-tight own:text-fg-muted">
             {node.role}
           </span>
         )}
-      </span>
+      </span>{' '}
       {node.badge !== undefined && node.badge !== null && (
         <Badge variant="outline" className="absolute -top-2.5 end-3 own:bg-surface">
           {node.badge}

@@ -144,7 +144,8 @@ function AppHeaderSearch({ placeholder, shortcut = 'k', className, ...props }: A
   return (
     <Button
       variant="outline"
-      aria-label={labels.search}
+      // Named "Search" unless it shows other words: then those.
+      aria-label={placeholder ?? labels.search}
       aria-keyshortcuts={shortcut ? `${apple ? 'Meta' : 'Control'}+${shortcut.toUpperCase()}` : undefined}
       data-slot="app-header-search"
       // shape: on a phone the search field folds into an icon button, so its outline goes with it
