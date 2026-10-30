@@ -106,7 +106,8 @@ export const DEFAULT_COPY = {
   calendars: 'Calendars',
   /** Under the title: the dates and the week's number. */
   range: (dates: string, week: number) => `${dates} · Week ${week}`,
-  eventLabel: (title: string, day: string, start: string, end: string, calendar: string) => `${title}, ${day}, ${start} to ${end}, ${calendar}`,
+  /** Said after an event's own words, which name it on the button: the day and the calendar. */
+  eventContext: (day: string, calendar: string) => `${day}, ${calendar}`,
   calendar: 'Calendar',
   where: 'Where',
   with: 'With',

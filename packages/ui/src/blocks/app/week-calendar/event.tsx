@@ -41,13 +41,14 @@ export function EventButton({ event, day, ctx, side = 'bottom', className, style
         render={
           <button
             type="button"
-            aria-label={copy.eventLabel(event.title, day.name, clock(event.start), clock(event.end), calendar.name)}
             className={cn('focus-ring', className)}
             style={style}
           />
         }
       >
         {children}
+        {/* The button is named by what it shows; the day and the calendar follow. */}
+        <span className="sr-only">, {copy.eventContext(day.name, calendar.name)}</span>
       </PopoverTrigger>
       <PopoverContent side={side} align="start" className="w-72">
         <PopoverHeader>

@@ -121,7 +121,8 @@ export function Chip({
       <m.button
         ref={button}
         type="button"
-        aria-label={[file.name, formatBytes(file.size, copy.locale), state].filter(Boolean).join(', ')}
+        // What the chip shows after its name (the size, or Retry on a failure), then the rest.
+        aria-label={[file.name, file.status === 'error' ? copy.retryShort : formatBytes(file.size, copy.locale), file.status === 'error' ? formatBytes(file.size, copy.locale) : null, state].filter(Boolean).join(', ')}
         aria-describedby={keysId}
         onClick={() => {
           if (dropped.current) return void (dropped.current = false)

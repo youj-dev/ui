@@ -84,7 +84,9 @@ interface Team extends HierarchyNode {
   mission: string
   children?: Team[]
 }
-const TEAMS: Team = {
+// The chart names a node by its name, role and badge: the card shows the mission and the headcount, so those are the role and the badge.
+const named = (team: Team): Team => ({ ...team, role: team.mission, badge: team.people, children: team.children?.map(named) })
+const TEAMS: Team = named({
   id: 'product',
   name: 'Product',
   mission: 'Everything customers touch',
@@ -124,7 +126,7 @@ const TEAMS: Team = {
       ],
     },
   ],
-}
+})
 
 const FIRST = ['Ada', 'Ben', 'Chloé', 'Dmitri', 'Eun-ji', 'Farah', 'Gabriel', 'Hiro', 'Ivy', 'Jamal', 'Kirsten', 'Luis', 'Mina', 'Nils', 'Oona', 'Pavel', 'Quinn', 'Rosa', 'Sven', 'Tariq', 'Uma', 'Victor', 'Wen', 'Ximena', 'Yusuf', 'Zoe']
 const LAST = ['Abara', 'Berg', 'Castro', 'Dahl', 'Eze', 'Fischer', 'Gupta', 'Holm', 'Ito', 'Jansen', 'Kowalski', 'Larsen', 'Moreau', 'Nakamura', 'Ortiz', 'Park', 'Quist', 'Reyes', 'Silva', 'Tan', 'Ueda', 'Vance', 'Weiss', 'Yilmaz', 'Zhou']
@@ -203,9 +205,9 @@ export const TeamOfTeams: Story = {
         renderNode={(team, state) => (
           <span className="flex min-w-0 flex-1 items-center gap-3">
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span className="truncate font-medium text-fg text-ui leading-tight">{team.name}</span>
+              <span className="truncate font-medium text-fg text-ui leading-tight">{team.name}</span>{' '}
               <span className="truncate text-fg-muted text-ui-sm leading-tight">{team.mission}</span>
-            </span>
+            </span>{' '}
             <Badge variant={state.depth === 0 ? 'default' : 'secondary'} className="shrink-0 tabular-nums">
               {team.people}
             </Badge>

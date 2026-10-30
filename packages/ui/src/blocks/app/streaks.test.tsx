@@ -76,7 +76,7 @@ describe('Streaks block', () => {
     expect(screen.getByText('First reply within 15 minutes')).toBeInTheDocument()
     expect(screen.getByRole('list', { name: 'Teams' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Add team' })).toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Mark Billing on target' }))
+    await user.click(screen.getByRole('button', { name: 'Mark done, Mark Billing on target' }))
     expect(screen.getByText('1 of 2 teams on target')).toBeInTheDocument()
     // Another item's run, picked from the list.
     await user.click(screen.getByRole('button', { name: /^Show Technical / }))
