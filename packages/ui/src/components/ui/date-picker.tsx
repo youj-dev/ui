@@ -148,6 +148,8 @@ function DatePicker({
   const sheet = useSheetPresentation(presentation)
   const locale = useDateLocale(localeProp)
   const [value, setValue] = useControllableState(valueProp, defaultValue)
+  // What the ghost button shows: the date, or the placeholder.
+  const shown = value ? format(value, 'PP', { locale }) : (placeholder ?? labels.chooseDate)
   const [open, setOpen] = useState(false)
   const [text, setText] = useState(() => (value ? formatDate(value, locale) : ''))
   const [invalid, setInvalid] = useState(false)
@@ -230,12 +232,12 @@ function DatePicker({
             data-variant="ghost"
             data-size={size}
             data-placeholder={value ? undefined : ''}
-            // The name says what the date is for, then the date: "Due date, Sep 27, 2026".
-            aria-label={value ? `${ariaLabel ?? labels.chooseDate}, ${format(value, 'PP', { locale })}` : (ariaLabel ?? labels.chooseDate)}
+            // The name says what the date is for, then what the button shows: "Due date, Sep 27, 2026", "Due date, No due date".
+            aria-label={shown === (ariaLabel ?? labels.chooseDate) ? shown : `${ariaLabel ?? labels.chooseDate}, ${shown}`}
             className={cn(selectTriggerClass, selectGhostTriggerClass, 'own:justify-start own:tabular-nums', className)}
           >
             <CalendarIcon size={16} strokeWidth={1.75} className="own:text-fg-muted" />
-            <span className="truncate">{value ? format(value, 'PP', { locale }) : (placeholder ?? labels.chooseDate)}</span>
+            <span className="truncate">{shown}</span>
           </PopoverTrigger>
           {name && <input type="hidden" name={name} value={value ? format(value, 'yyyy-MM-dd') : ''} />}
         </>

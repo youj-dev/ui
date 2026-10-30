@@ -86,7 +86,8 @@ export function Tile({ asset, id, view, position, focused, copy, onPress, onOpen
       role="option"
       aria-selected={selected}
       aria-disabled={uploading || undefined}
-      aria-label={[asset.name, details, selected && copy.selectedAs(position + 1)].filter(Boolean).join(', ')}
+      // The tile as shown (its number, name and details, in the view's order), then which pick it is.
+      aria-label={`${(view === 'grid' ? [selected && position + 1, asset.name, details] : [asset.name, details, selected && position + 1]).filter(Boolean).join(' ')}${selected ? `, ${copy.selectedAs(position + 1)}` : ''}`}
       tabIndex={focused ? 0 : -1}
       data-slot="media-library-item"
       onClick={uploading ? undefined : onPress}
@@ -144,12 +145,13 @@ export function Tile({ asset, id, view, position, focused, copy, onPress, onOpen
           </span>
         </>
       )}
+      {' '}
       <span className={cn('flex min-w-0 flex-col', view === 'list' && 'flex-1')}>
         <span dir="auto" className="truncate text-ui-sm font-medium text-fg">
           {asset.name}
-        </span>
+        </span>{' '}
         <span className="truncate text-ui-xs text-fg-muted tabular-nums">{details}</span>
-      </span>
+      </span>{' '}
       {view === 'list' && (
         <span
           aria-hidden

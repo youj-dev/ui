@@ -177,7 +177,7 @@ describe('the ghost variant', () => {
 
   test('with no date it shows the placeholder, muted', () => {
     render(<DatePicker variant="ghost" aria-label="Due date" placeholder="No due date" />)
-    const trigger = screen.getByRole('button', { name: 'Due date' })
+    const trigger = screen.getByRole('button', { name: 'Due date, No due date' })
     expect(trigger).toHaveTextContent('No due date')
     expect(trigger).toHaveAttribute('data-placeholder')
   })

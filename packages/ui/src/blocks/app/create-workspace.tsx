@@ -173,7 +173,7 @@ function CreateWorkspace({ theme, copy: copyProp, checkSlug = demoCheckSlug, onC
                 size={56}
                 src={logo?.url}
                 name={name || copy.namePlaceholder}
-                fallback={<span className="text-ui-lg font-semibold">{initials(name || copy.namePlaceholder)}</span>}
+                fallback={<span data-yj-initials={initials(name || copy.namePlaceholder)} className="text-ui-lg font-semibold before:content-[attr(data-yj-initials)]" />}
                 onSave={(file) => setLogo({ file, url: URL.createObjectURL(file) })}
                 onRemove={() => setLogo(undefined)}
               />

@@ -7,7 +7,7 @@ import { BrandKit, CourseMaterials } from './library.stories'
 const reduced = (ui: React.ReactNode) => render(<YoujProvider reducedMotion="always">{ui}</YoujProvider>)
 const box = () => screen.getByRole('listbox', { name: 'Media' })
 const options = () => within(box()).getAllByRole('option')
-const option = (name: string) => within(box()).getByRole('option', { name: (accessible) => accessible.startsWith(name) })
+const option = (name: string) => within(box()).getByRole('option', { name: (accessible) => accessible.replace(/^\d+ /, '').startsWith(name) })
 const footer = () => document.querySelector('footer')!
 
 describe('Media library block', () => {
@@ -63,7 +63,7 @@ describe('Media library block', () => {
     const user = userEvent.setup()
     reduced(<MediaLibrary />)
     await user.type(screen.getByRole('searchbox', { name: 'Search by name or description' }), 'side')
-    expect(options().map((o) => o.getAttribute('aria-label')!.split(',')[0])).toEqual([
+    expect(options().map((o) => o.getAttribute('aria-label')!.split(' ')[0])).toEqual([
       'ridge-kettle-sage-side.webp',
       'ridge-kettle-rose-side.webp',
       'ridge-kettle-sky-side.webp',
@@ -77,7 +77,7 @@ describe('Media library block', () => {
     await user.click(screen.getByRole('button', { name: 'Video' }))
     expect(options()).toHaveLength(2)
     await user.click(screen.getByRole('button', { name: 'All' }))
-    await user.click(screen.getByRole('button', { name: /^Tableware/ }))
+    await user.click(screen.getByRole('button', { name: /^(?:\d+ )?Tableware/ }))
     expect(options()).toHaveLength(3)
     await user.click(screen.getByRole('button', { name: 'All media' }))
     expect(options()).toHaveLength(15)
@@ -110,7 +110,7 @@ describe('Media library block', () => {
       return new Promise<object>((resolve) => (finish = resolve))
     })
     reduced(<MediaLibrary defaultSelection={[]} onUpload={onUpload} onSelectionChange={onSelectionChange} />)
-    fireEvent.click(screen.getByRole('button', { name: /^Kettles/ }))
+    fireEvent.click(screen.getByRole('button', { name: /^(?:\d+ )?Kettles/ }))
     fireEvent.change(document.querySelector<HTMLInputElement>('input[type=file]')!, {
       target: { files: [new File(['x'], 'new-kettle.png', { type: 'image/png' })] },
     })

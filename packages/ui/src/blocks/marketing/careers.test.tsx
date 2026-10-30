@@ -38,7 +38,7 @@ describe('Careers', () => {
     expect(screen.getByRole('region', { name: 'Come build it with us' })).toBeInTheDocument()
     expect(within(screen.getByRole('list', { name: 'What you get' })).getAllByRole('listitem')).toHaveLength(4)
     expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual(['Roastery', 'Wholesale'])
-    expect(screen.getByRole('link', { name: 'Roaster, Leeds, Full-time' })).toHaveAttribute('href', '/jobs/roaster')
+    expect(screen.getByRole('link', { name: /^Roaster.*Leeds.*Full-time/ })).toHaveAttribute('href', '/jobs/roaster')
     expect(screen.getByText('3 open roles')).toHaveAttribute('role', 'status')
   })
 
@@ -106,7 +106,7 @@ describe('Careers', () => {
         id="jobs"
       />,
     )
-    expect(screen.getByRole('link', { name: 'Roaster, Leeds, Full-time' })).toHaveAttribute('data-router')
+    expect(screen.getByRole('link', { name: /^Roaster.*Leeds.*Full-time/ })).toHaveAttribute('data-router')
     expect(screen.getByRole('link', { name: /Write to us/ })).toHaveAttribute('href', '/jobs/open')
     const section = screen.getByRole('region', { name: 'Roast with us' })
     expect(section).toHaveAttribute('id', 'jobs')

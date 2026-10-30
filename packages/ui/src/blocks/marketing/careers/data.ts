@@ -144,8 +144,6 @@ export const DEFAULT_COPY = {
   /** How many roles the filters leave. */
   count: (n: number) => `${n} open ${plural(n, 'role', 'roles')}`,
   new: 'New',
-  /** A role's link: "Security engineer, London, Full-time". */
-  roleLabel: (title: string, location: string, type?: string) => [title, location, type].filter(Boolean).join(', '),
   emptyTitle: 'No roles match',
   emptyDescription: 'Try another team or place, or write to us anyway: we read every letter.',
   clearFilters: 'Clear filters',

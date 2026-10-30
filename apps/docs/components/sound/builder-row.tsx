@@ -243,7 +243,7 @@ function FileSlot({ label, upload, onChoose, buttonRef }: { label: string; uploa
       ) : (
         <p className="text-ui-sm text-fg-muted">{reading ? `Reading ${upload.name}…` : 'Your own file, or drop one on this cue'}</p>
       )}
-      <Button ref={buttonRef} size="sm" variant="outline" sound={false} disabled={reading} onClick={onChoose} className="gap-1.5" aria-label={`Add your own ${label} file`}>
+      <Button ref={buttonRef} size="sm" variant="outline" sound={false} disabled={reading} onClick={onChoose} className="gap-1.5" aria-label={`${upload?.status === 'error' ? 'Try another' : 'Add a file'}: your own ${label} file`}>
         <UploadIcon size={14} />
         {upload?.status === 'error' ? 'Try another' : 'Add a file'}
       </Button>

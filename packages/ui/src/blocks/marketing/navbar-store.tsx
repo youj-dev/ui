@@ -226,7 +226,7 @@ function NavbarStore({
           {mark}
         </Link>
         <div className="flex items-center justify-end gap-1">
-          <AppHeaderSearch placeholder={copy.searchPlaceholder} aria-label={copy.searchLabel} shortcut={false} onClick={() => setSearching(true)} className="md:w-44 lg:w-56" />
+          <AppHeaderSearch placeholder={copy.searchPlaceholder} aria-label={copy.searchLabel.toLowerCase().includes(copy.searchPlaceholder.replace(/…$/, '').toLowerCase()) ? copy.searchLabel : `${copy.searchPlaceholder} ${copy.searchLabel}`} shortcut={false} onClick={() => setSearching(true)} className="md:w-44 lg:w-56" />
           {accountHref && (
             <Link href={accountHref} aria-label={copy.account} className={buttonVariants({ variant: 'ghost', size: 'icon', className: 'max-md:hidden' })}>
               <UserIcon size={18} strokeWidth={1.75} />

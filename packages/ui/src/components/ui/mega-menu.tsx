@@ -83,9 +83,8 @@ function MegaMenuLink({ className, icon, title, description, closeOnClick = true
       <NavigationMenuLink
         data-slot="mega-menu-link"
         data-yj-trigger=""
-        // Named by the title; the description is read after it.
-        aria-labelledby={`${id}-title`}
-        aria-describedby={description ? `${id}-description` : undefined}
+        // Named by what it shows: the title, then the description.
+        aria-labelledby={description ? `${id}-title ${id}-description` : `${id}-title`}
         closeOnClick={closeOnClick}
         className={cn('group/mega-link min-w-0 flex-1', className)}
         {...props}
@@ -104,7 +103,7 @@ function MegaMenuLink({ className, icon, title, description, closeOnClick = true
         <span className="own:flex min-w-0 flex-col gap-0.5 break-words">
           <span id={`${id}-title`} className="own:font-medium own:text-fg">
             {title}
-          </span>
+          </span>{' '}
           {description && (
             <span id={`${id}-description`} className="own:text-ui-sm own:text-fg-muted">
               {description}

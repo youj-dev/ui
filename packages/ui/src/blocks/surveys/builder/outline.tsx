@@ -90,8 +90,8 @@ export function Outline({ builder, copy, onOpen, className }: OutlineProps) {
                 >
                   <span aria-hidden className="w-4 shrink-0 text-end font-mono text-ui-xs text-fg-subtle tabular-nums">
                     {index + 1}
-                  </span>
-                  <KindChip kind={kind} size="sm" />
+                  </span>{' '}
+                  <KindChip kind={kind} size="sm" />{' '}
                   <span className="min-w-0 flex-1 truncate">{title}</span>
                   {logic && <GitBranchIcon size={13} aria-hidden className="shrink-0 text-accent-text" />}
                 </button>

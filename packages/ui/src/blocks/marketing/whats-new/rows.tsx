@@ -47,7 +47,7 @@ export function Row({ entry, date, ago, copy, Link, headingLevel }: RowProps) {
               type="button"
               aria-expanded={open}
               aria-controls={id}
-              aria-label={copy.more(entry.title)}
+              aria-label={`${copy.moreLabel}, ${copy.more(entry.title)}`}
               onClick={() => setOpen((o) => !o)}
               className="group/more inline-flex items-center gap-1 rounded-sm text-ui font-medium text-fg focus-ring"
             >
