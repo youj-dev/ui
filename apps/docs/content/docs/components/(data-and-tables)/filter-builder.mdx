@@ -46,6 +46,7 @@ The summary always shows the applied filter, not the draft. "Show as chips" show
 Use a Filter Builder where people need to ask real questions of a list: analysts slicing a table, admins finding CRM records, support reading logs. For a few independent filters, use the [Data Table](/docs/components/data-table) toolbar; to type a query as text, use [Filter Chips](/docs/components/filter-chips).
 
 ```tsx
+import { useState } from 'react'
 import { FilterBuilder, matchFilter, type FilterField, type FilterGroup } from '@youj/react'
 
 const fields: FilterField[] = [

@@ -132,6 +132,8 @@ function sameColour(a: Span, b: Span) {
 
 /** How every highlight on the site is made: the one theme, its colors as classes. */
 export const codeHighlight = {
+  // These build-time snippets must finish: Shiki's 500 ms per-line cutoff silently drops tokens on a busy machine.
+  tokenizeTimeLimit: 0,
   themes: { light: youjCodeTheme },
   defaultColor: false as const,
   transformers: [codeClasses],

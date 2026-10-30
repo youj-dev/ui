@@ -82,7 +82,7 @@ async function main(argv: string[]) {
       look: { type: 'string' },
       cwd: { type: 'string', short: 'c' },
       'dry-run': { type: 'boolean' },
-      overwrite: { type: 'boolean' },
+      overwrite: { type: 'boolean', short: 'o' },
       'allow-low-contrast': { type: 'boolean' },
       client: { type: 'string', multiple: true },
       print: { type: 'boolean' },

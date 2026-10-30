@@ -16,6 +16,7 @@ import {
   unsupportedReact,
   versionMajor,
   versionOrRange,
+  workspaceRootMessage,
   type PackageJson,
 } from './detect'
 import { aliasProblems, pathsOf } from './alias'
@@ -36,6 +37,8 @@ export function doctor(cwd: string, env: NodeJS.ProcessEnv = process.env): Check
   const project = new Project(resolve(cwd))
   const pkg = project.json<PackageJson>('package.json')
   if (!pkg) return [{ level: 'error', message: `No package.json in ${project.root}`, fix: 'Run doctor in your app’s folder (or pass --cwd).' }]
+  const workspace = !detectFramework(project) && workspaceRootMessage(project, 'doctor')
+  if (workspace) return [{ level: 'error', message: workspace }]
   const checks: Check[] = []
   const ok = (message: string) => checks.push({ level: 'ok', message })
   const warn = (message: string, fix?: string) => checks.push({ level: 'warn', message, fix })

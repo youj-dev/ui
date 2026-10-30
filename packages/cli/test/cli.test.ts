@@ -128,6 +128,25 @@ describe('youj without a terminal', () => {
     expect(read(root, 'components/ui/dialog.tsx')).toContain('dialogPopupClass')
   })
 
+  it.each(['--overwrite', '-o'])('create %s previews replacing an existing theme and shell', (flag) => {
+    const root = fixture('next-app')
+    mkdirSync(join(root, 'lib'), { recursive: true })
+    mkdirSync(join(root, 'components'), { recursive: true })
+    writeFileSync(join(root, 'lib/theme.ts'), '// My theme\n')
+    writeFileSync(join(root, 'components/app-shell.tsx'), '// My shell\n')
+    const link = 'https://www.youj.dev/create?preset=basalt'
+    const kept = youj(root, ['create', link, '--dry-run'])
+    expect(kept.status).toBe(0)
+    expect(kept.output).toContain('Pass --overwrite to replace it.')
+    const replaced = youj(root, ['create', link, flag, '--dry-run'])
+    expect(replaced.status, replaced.output).toBe(0)
+    expect(replaced.output).not.toContain('Pass --overwrite to replace it.')
+    expect(replaced.output).toContain('lib/theme.ts')
+    expect(replaced.output).toContain('components/app-shell.tsx')
+    expect(read(root, 'lib/theme.ts')).toBe('// My theme\n')
+    expect(read(root, 'components/app-shell.tsx')).toBe('// My shell\n')
+  })
+
   it('add --help lists the options add takes, and only add\'s command', () => {
     const { status, output } = youj(fixture('shadcn'), ['add', '--help'])
     expect(status).toBe(0)
@@ -196,7 +215,7 @@ describe('youj without a terminal', () => {
     })
   })
 
-  describe('add, where there is no app to add to', () => {
+  describe('where there is no app', () => {
     it('refuses a folder without a package.json, as the other commands do, and writes nothing', () => {
       const root = tmp('youj-empty-')
       const { status, output } = youj(root, ['add', 'button'])
@@ -213,12 +232,13 @@ describe('youj without a terminal', () => {
       writeFileSync(join(root, 'package.json'), JSON.stringify({ name: 'repo', private: true, workspaces: ['apps/*', 'packages/*'] }))
       writeFileSync(join(root, 'apps/web/package.json'), JSON.stringify({ name: 'web', dependencies: { next: '16.0.0', react: '19.2.0' } }))
       writeFileSync(join(root, 'packages/ui/package.json'), JSON.stringify({ name: 'ui', dependencies: { clsx: '2.0.0' } }))
-      for (const command of [['add', 'button'], ['init']]) {
+      for (const command of [['add', 'button'], ['init'], ['create', 'https://www.youj.dev/create?preset=basalt'], ['doctor']]) {
         const { status, output } = youj(root, command)
         expect(status, command.join(' ')).toBe(1)
         expect(output).toContain('is the root of a workspace, not an app')
-        expect(output).toContain(`npx @youj/cli ${command.join(' ')} --cwd apps/web`)
+        expect(output).toContain(`npx @youj/cli ${command[0] === 'create' ? `create '${command[1]}'` : command.join(' ')} --cwd apps/web`)
         expect(output).not.toContain('Couldn’t tell which framework')
+        expect(output).not.toMatch(/React isn’t installed|react@\^19|react-dom@\^19/)
       }
       expect(readdirSync(root).sort()).toEqual(['apps', 'package.json', 'packages'])
       // From the app itself it is not a workspace root, whatever the repo around it is.
