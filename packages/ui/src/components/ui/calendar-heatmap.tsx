@@ -633,7 +633,6 @@ function StreakCheck({ size = 'sm', label, doneLabel, sound = true, pressed, onP
         data-size={size}
         data-streak-check=""
         data-reduced-motion={k.reduced || undefined}
-        aria-label={named(props['aria-label'] ?? label ?? labels.streakMarkDone, on ? (doneLabel ?? labels.streakDone) : (label ?? labels.streakMarkDone))}
         className={cn(
           buttonVariants({ variant: on ? 'ghost' : 'secondary', size }),
           'overflow-hidden',
@@ -641,6 +640,8 @@ function StreakCheck({ size = 'sm', label, doneLabel, sound = true, pressed, onP
           className,
         )}
         {...props}
+        // After the spread: the name holds the word the button shows, whatever name the caller gave it.
+        aria-label={named(props['aria-label'] ?? label ?? labels.streakMarkDone, on ? (doneLabel ?? labels.streakDone) : (label ?? labels.streakMarkDone))}
       >
         <MorphLabel value={on ? 'done' : 'todo'}>
           {on ? (

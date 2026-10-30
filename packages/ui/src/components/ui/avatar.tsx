@@ -83,7 +83,6 @@ const colorVar: Record<(typeof CHART_COLORS)[number], string> = {
 function AvatarFallback({
   className,
   colorSeed,
-  children,
   ...props
 }: AvatarPrimitive.Fallback.Props & {
   /** Tints the fallback with one of the theme's chart colours, picked from this seed (a user id or email), so each person keeps their colour wherever they appear. */
@@ -91,7 +90,7 @@ function AvatarFallback({
 }) {
   const decorative = useContext(DecorativeContext) || hidden(props['aria-hidden'])
   // Initials of a decorative avatar are drawn, not text.
-  const drawn = decorative && typeof children === 'string' ? children : undefined
+  const drawn = decorative && typeof props.children === 'string' ? props.children : undefined
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
@@ -105,7 +104,8 @@ function AvatarFallback({
       )}
       {...props}
     >
-      {drawn === undefined ? children : undefined}
+      {/* Children win over the spread: a decorative avatar's initials aren't written back as text. */}
+      {drawn === undefined ? props.children : undefined}
     </AvatarPrimitive.Fallback>
   )
 }
