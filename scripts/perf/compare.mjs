@@ -7,9 +7,10 @@
 //
 // Budgets are kept per environment (OS, arch, CPU model): a CI runner is only
 // compared with a CI baseline, never with a laptop's.
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readTextIfExists } from '../read-text.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const argv = process.argv.slice(2)
@@ -36,7 +37,8 @@ export const METRICS = {
 
 const current = JSON.parse(readFileSync(resultsPath, 'utf8'))
 const env = current.meta.environment
-const budgets = existsSync(baselinePath) ? JSON.parse(readFileSync(baselinePath, 'utf8')) : {}
+const budgetsText = readTextIfExists(baselinePath)
+const budgets = budgetsText === null ? {} : JSON.parse(budgetsText)
 
 if (flag('update')) {
   budgets[env] = {

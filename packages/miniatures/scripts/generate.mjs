@@ -10,9 +10,10 @@
 //
 // The figure (src/figures), story and test are written by hand, and so are the
 // components in HAND_WRITTEN (they do more than render the figure).
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { readTextIfExists } from '../../../scripts/read-text.mjs'
 
 const pkg = join(import.meta.dirname, '..')
 const check = process.argv.includes('--check')
@@ -37,7 +38,7 @@ for (const id of ids) {
 
 const write = (path, text) => {
   const file = join(pkg, path)
-  if ((existsSync(file) ? readFileSync(file, 'utf8') : null) === text) return
+  if (readTextIfExists(file) === text) return
   if (check) stale.push(path)
   else writeFileSync(file, text)
 }

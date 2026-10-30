@@ -22,6 +22,8 @@ const write = (path, text) => {
   mkdirSync(dirname(path), { recursive: true })
   writeFileSync(path, text)
 }
+/** A string literal for generated code: JSON, with `<` and the line separators escaped so it also holds inside a script tag. */
+const lit = (value) => JSON.stringify(value).replace(/[<\u2028\u2029]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`)
 const json = (path) => JSON.parse(readFileSync(path, 'utf8'))
 const chunk = (list, n) => Array.from({ length: Math.ceil(list.length / n) }, (_, i) => list.slice(i * n, i * n + n))
 
@@ -64,14 +66,14 @@ export function writePages({ appDir, kind, blocks }) {
   chunk(examples, 45).forEach((keys, i) => {
     const id = `examples-${String(i).padStart(2, '0')}`
     groups.push(id)
-    write(join(e2e, `groups/${id}.tsx`), `'use client'\nimport { examples } from '../examples'\nimport type { Item } from '../harness'\n\nexport const items: Item[] = ${JSON.stringify(keys)}.map((id) => ({ id, C: examples[id]! }))\n`)
+    write(join(e2e, `groups/${id}.tsx`), `'use client'\nimport { examples } from '../examples'\nimport type { Item } from '../harness'\n\nexport const items: Item[] = ${lit(keys)}.map((id) => ({ id, C: examples[id]! }))\n`)
   })
 
   // Blocks, from their own module. Frame parts render inside the frame (`npx @youj/cli create` covers them).
   chunk(blocks.filter((b) => !b.name.startsWith('frame-')), 25).forEach((list, i) => {
     const id = `blocks-${String(i).padStart(2, '0')}`
     groups.push(id)
-    const items = list.map((b) => `  { id: ${JSON.stringify(b.name)}, C: lazy(() => import(${JSON.stringify(b.spec)}).then((m) => ({ default: m.${b.fn} as ComponentType }))) },`)
+    const items = list.map((b) => `  { id: ${lit(b.name)}, C: lazy(() => import(${lit(b.spec)}).then((m) => ({ default: m.${b.fn} as ComponentType }))) },`)
     write(join(e2e, `groups/${id}.tsx`), `'use client'\nimport { lazy, type ComponentType } from 'react'\nimport type { Item } from '../harness'\n\nexport const items: Item[] = [\n${items.join('\n')}\n]\n`)
   })
 
@@ -84,7 +86,7 @@ export function writePages({ appDir, kind, blocks }) {
   })
   write(
     join(e2e, 'groups/builder.tsx'),
-    `'use client'\nimport type { Item } from '../harness'\n${builder.map((b, i) => `import { ${b.fn} as S${i} } from '../builder/${b.file}'`).join('\n')}\n\nexport const items: Item[] = [\n${builder.map((b, i) => `  { id: ${JSON.stringify(b.fn + '-' + i)}, C: S${i} },`).join('\n')}\n]\n`,
+    `'use client'\nimport type { Item } from '../harness'\n${builder.map((b, i) => `import { ${b.fn} as S${i} } from '../builder/${b.file}'`).join('\n')}\n\nexport const items: Item[] = [\n${builder.map((b, i) => `  { id: ${lit(b.fn + '-' + i)}, C: S${i} },`).join('\n')}\n]\n`,
   )
 
   // Every icon and scene, by its export, with no props.
@@ -105,7 +107,7 @@ export function writePages({ appDir, kind, blocks }) {
     chunk(entries, 80).forEach((list, i) => {
       const gid = `${id}-${i}`
       groups.push(gid)
-      const items = list.map((e) => `  { id: ${JSON.stringify(pkg + e.slice(1))}, C: lazy(() => import(${JSON.stringify(pkg + e.slice(1))}).then(pick)) },`)
+      const items = list.map((e) => `  { id: ${lit(pkg + e.slice(1))}, C: lazy(() => import(${lit(pkg + e.slice(1))}).then(pick)) },`)
       write(
         join(e2e, `groups/${gid}.tsx`),
         `'use client'\nimport { createElement, lazy, type ComponentType } from 'react'\nimport type { Item } from '../harness'\n\nconst pick = (m: Record<string, unknown>) => {\n  const C = Object.entries(m).find(([k, v]) => k.startsWith('${prefix}') && typeof v === 'function')?.[1] as ComponentType<Record<string, unknown>> | undefined\n  if (!C) throw new Error('no ${prefix}* export')\n  return { default: () => createElement(C, ${props}) }\n}\n\nexport const items: Item[] = [\n${items.join('\n')}\n]\n`,
@@ -183,7 +185,7 @@ export function Harness({ items, only = typeof window === 'undefined' ? null : n
   } else {
     write(
       join(e2e, 'routes.tsx'),
-      `import { lazy } from 'react'\nimport type { Item } from './harness'\n\nconst routes: Record<string, () => Promise<{ items: Item[] }>> = {\n${groups.map((id) => `  ${JSON.stringify(id)}: () => import('./groups/${id}'),`).join('\n')}\n}\n\nexport const E2E = lazy(async () => {\n  const { Harness } = await import('./harness')\n  const { items } = await routes[window.location.pathname.split('/')[2]!]!()\n  return { default: () => <Harness items={items} /> }\n})\n`,
+      `import { lazy } from 'react'\nimport type { Item } from './harness'\n\nconst routes: Record<string, () => Promise<{ items: Item[] }>> = {\n${groups.map((id) => `  ${lit(id)}: () => import('./groups/${id}'),`).join('\n')}\n}\n\nexport const E2E = lazy(async () => {\n  const { Harness } = await import('./harness')\n  const { items } = await routes[window.location.pathname.split('/')[2]!]!()\n  return { default: () => <Harness items={items} /> }\n})\n`,
     )
     const main = join(src, 'main.tsx')
     const source = readFileSync(main, 'utf8')
@@ -206,11 +208,11 @@ export function writeStaticPages(appDir, blocks) {
   const entries = []
   examples.forEach((key, i) => {
     imports.push(`import E${i} from '@/e2e/examples/${key}'`)
-    entries.push(`  ${JSON.stringify(`ex~${key.replace('/', '~')}`)}: E${i},`)
+    entries.push(`  ${lit(`ex~${key.replace('/', '~')}`)}: E${i},`)
   })
   blocks.forEach((b, i) => {
     imports.push(`import { ${b.fn} as B${i} } from '${b.spec}'`)
-    entries.push(`  ${JSON.stringify(`bl~${b.name}`)}: B${i} as unknown as ComponentType,`)
+    entries.push(`  ${lit(`bl~${b.name}`)}: B${i} as unknown as ComponentType,`)
   })
   write(
     join(appDir, 'e2e/static-items.tsx'),

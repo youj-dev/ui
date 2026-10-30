@@ -49,7 +49,7 @@ describe.each(builds)('a clean build (%s, %s)', (_, style, command, opts) => {
 
   test('logs every page’s node count', () => {
     const pages = [...new Set(env.pages.filter((p) => p.getPluginData(KEY).startsWith('page:')).map((p) => p.name))]
-    for (const name of pages) expect(log).toMatch(new RegExp(`${name.replace(/[&]/g, '\\&')}: \\d+ nodes`))
+    for (const name of pages) expect(log).toMatch(new RegExp(`${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}: \\d+ nodes`))
   })
 
   test('a second run is just as whole', async () => {

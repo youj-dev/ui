@@ -147,8 +147,10 @@ test('the top-level mode is a default: a stored choice (ThemeToggle, setThemeMod
 
 describe('ModeScript', () => {
   const run = (markup: string) => {
-    const code = markup.match(/<script[^>]*>([\s\S]*)<\/script>/)![1]!
-    new Function(code)()
+    // Parsed, not matched: the DOM hands back the script's text the way a browser would read it (jsdom does not run it).
+    const host = document.createElement('div')
+    host.innerHTML = markup
+    new Function(host.querySelector('script')!.textContent!)()
   }
 
   test('sets data-theme and color-scheme before paint: a fixed mode as given, `system` from the OS', () => {

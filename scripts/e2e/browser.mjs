@@ -3,7 +3,7 @@
 // with console or page errors is loaded again item by item (?only=<id>) to say which item logged them.
 
 // Noise that isn't the kit's: the starter's Google Fonts (offline runs), the favicon, WebGL driver notes.
-const IGNORE = [/favicon\.ico/, /fonts\.(googleapis|gstatic)\.com/, /GL Driver Message|GPU stall/]
+const IGNORE = [/favicon\.ico/, /(?:^|[^\w.-])fonts\.(googleapis|gstatic)\.com(?![\w-])/, /GL Driver Message|GPU stall/]
 
 async function visit(browser, url, settle) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })

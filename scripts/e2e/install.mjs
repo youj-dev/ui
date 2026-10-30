@@ -21,10 +21,10 @@
 //
 // Exits 1 on a failure that isn't in KNOWN below, each of which names the reason it's accepted.
 import { spawn } from 'node:child_process'
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { tmpdir } from 'node:os'
-import { extname, join } from 'node:path'
+import { extname, isAbsolute, join, relative, sep } from 'node:path'
 import { parseArgs, stripVTControlCharacters } from 'node:util'
 import { checkPages, loadPage } from './browser.mjs'
 import { startRegistry } from './npm-registry.mjs'
@@ -97,11 +97,25 @@ const MIME = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/j
 // `overlay` serves one folder from elsewhere: /r from the registry this run built.
 function serve(dir, overlay = {}) {
   const server = createServer((req, res) => {
-    const path = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+    let path
+    try {
+      path = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+    } catch {
+      return void res.writeHead(400).end()
+    }
     const [prefix, from] = Object.entries(overlay).find(([p]) => path.startsWith(`${p}/`)) ?? ['', dir]
     const file = join(from, path.slice(prefix.length))
-    if (!file.startsWith(from) || !existsSync(file) || !statSync(file).isFile()) return void res.writeHead(404).end()
-    res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream' }).end(readFileSync(file))
+    // Inside the folder: "/../sibling/x" would pass a bare startsWith(from) when the sibling's name begins with the folder's.
+    const inside = relative(from, file)
+    if (inside === '..' || inside.startsWith(`..${sep}`) || isAbsolute(inside)) return void res.writeHead(404).end()
+    // Read, then handle the miss (a missing file, or a folder): nothing to go stale between a check and the read.
+    let body
+    try {
+      body = readFileSync(file)
+    } catch {
+      return void res.writeHead(404).end()
+    }
+    res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream' }).end(body)
   })
   return new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve({ server, origin: `http://127.0.0.1:${server.address().port}` })))
 }

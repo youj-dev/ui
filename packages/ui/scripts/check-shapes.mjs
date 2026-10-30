@@ -15,7 +15,7 @@
 //
 //   node scripts/check-shapes.mjs [ui|docs]          the check (exit 1 on a violation); both when neither is named
 //   node scripts/check-shapes.mjs [ui|docs] --report every hit, allowed ones too, as JSON
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
 const REPO = new URL('../../..', import.meta.url).pathname
@@ -300,9 +300,10 @@ function matchBrace(text) {
 }
 
 function walk(dir, out) {
-  for (const name of readdirSync(dir)) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const { name } = entry
     const p = join(dir, name)
-    if (statSync(p).isDirectory()) {
+    if (entry.isDirectory()) {
       if (name !== 'node_modules') walk(p, out)
     } else if (/\.tsx?$/.test(name) && !/\.(stories|test|spec)\.tsx?$/.test(name)) out.push(p)
   }
@@ -311,7 +312,14 @@ function walk(dir, out) {
 
 function readImport(file, spec) {
   const base = join(REPO, file, '..', spec)
-  for (const p of [`${base}.ts`, `${base}.tsx`, join(base, 'index.ts'), join(base, 'data.ts')]) if (existsSync(p) && statSync(p).isFile()) return readFileSync(p, 'utf8')
+  for (const p of [`${base}.ts`, `${base}.tsx`, join(base, 'index.ts'), join(base, 'data.ts')]) {
+    try {
+      return readFileSync(p, 'utf8')
+    } catch (error) {
+      // Missing, or a folder of that name: try the next candidate.
+      if (error.code !== 'ENOENT' && error.code !== 'EISDIR' && error.code !== 'ENOTDIR') throw error
+    }
+  }
   return null
 }
 

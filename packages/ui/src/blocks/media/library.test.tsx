@@ -7,7 +7,7 @@ import { BrandKit, CourseMaterials } from './library.stories'
 const reduced = (ui: React.ReactNode) => render(<YoujProvider reducedMotion="always">{ui}</YoujProvider>)
 const box = () => screen.getByRole('listbox', { name: 'Media' })
 const options = () => within(box()).getAllByRole('option')
-const option = (name: string) => within(box()).getByRole('option', { name: new RegExp(`^${name.replace(/\./g, '\\.')}`) })
+const option = (name: string) => within(box()).getByRole('option', { name: (accessible) => accessible.startsWith(name) })
 const footer = () => document.querySelector('footer')!
 
 describe('Media library block', () => {

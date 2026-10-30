@@ -30,14 +30,26 @@ export async function startRegistry(tarballs) {
     time: { [manifest.version]: new Date().toISOString() },
   })
   const server = createServer(async (req, res) => {
-    const path = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+    // Only origin-form targets ("/path?query"); "@host/x" or "//host/x" must never pick the upstream host.
+    if (!req.url?.startsWith('/')) return void res.writeHead(400).end('bad request target')
+    const { pathname, search } = new URL(req.url, 'http://x')
+    let path
+    try {
+      path = decodeURIComponent(pathname)
+    } catch {
+      return void res.writeHead(400).end('bad request target')
+    }
     const own = [...packages.values()].find((p) => path === `/-/${p.file}`)
     if (own) return void res.writeHead(200, { 'content-type': 'application/octet-stream' }).end(own.data)
     const pkg = packages.get(path.slice(1))
     if (pkg) return void res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(packument(pkg)))
     try {
+      // The slash after the host is part of the constant, so nothing in the request can change the host; the origin
+      // check proves it.
+      const target = new URL(`https://registry.npmjs.org/${pathname.slice(1)}${search}`)
+      if (target.origin !== UPSTREAM) throw new Error(`refusing to proxy to ${target.origin}`)
       const headers = { accept: req.headers.accept ?? 'application/json' }
-      const upstream = await fetch(`${UPSTREAM}${req.url}`, { headers, redirect: 'follow' })
+      const upstream = await fetch(target, { headers, redirect: 'follow' })
       const body = Buffer.from(await upstream.arrayBuffer())
       res.writeHead(upstream.status, { 'content-type': upstream.headers.get('content-type') ?? 'application/octet-stream' }).end(body)
     } catch (error) {
