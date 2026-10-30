@@ -43,7 +43,7 @@ describe('In-app survey widget', () => {
     reduced(<SurveyWidget defaultValue={{ score: 3 }} />)
     expect(question()).toHaveTextContent('What would make the biggest difference?')
     await user.click(screen.getByRole('button', { name: 'Minimize survey' }))
-    const pill = await screen.findByRole('button', { name: 'Open survey, question 2 of 2' })
+    const pill = await screen.findByRole('button', { name: 'Quick question, Open survey, question 2 of 2' })
     await user.click(pill)
     await waitFor(() => expect(question()).toHaveTextContent('What would make the biggest difference?'))
   })
