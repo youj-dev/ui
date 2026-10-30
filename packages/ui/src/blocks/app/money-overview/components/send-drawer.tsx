@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocale, useYouj } from '@youj/core'
 import { Reveal } from '@youj/motion'
 import { CheckCircleIcon } from '@youj/icons'
@@ -30,12 +30,20 @@ export function SendDrawer({ open, onOpenChange, balance, onSend }: { open: bool
   const [payee, setPayee] = useState('nia')
   const [amount, setAmount] = useState<number | null>(null)
   const [note, setNote] = useState('')
+  // The reset after closing and the step to "done" each wait a beat; one that is still waiting when the drawer goes
+  // away is cancelled, so nothing runs after it.
+  const pending = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(pending.current), [])
+  const later = (run: () => void, ms: number) => {
+    clearTimeout(pending.current)
+    pending.current = setTimeout(run, ms)
+  }
   const who = PAYEES.find((p) => p.id === payee)!
   const valid = !!amount && amount > 0 && amount <= balance
   const close = (next: boolean) => {
     onOpenChange(next)
     if (!next)
-      setTimeout(() => {
+      later(() => {
         setStep('form')
         setAmount(null)
         setNote('')
@@ -138,7 +146,7 @@ export function SendDrawer({ open, onOpenChange, balance, onSend }: { open: bool
                 pendingLabel="Sending…"
                 successLabel="Sent"
                 onAction={() => onSend(who.name, amount ?? 0, note)}
-                onActionStateChange={(state) => state === 'success' && setTimeout(() => setStep('done'), k.ms('slow'))}
+                onActionStateChange={(state) => state === 'success' && later(() => setStep('done'), k.ms('slow'))}
               >
                 Send {fmt(locale).format(amount ?? 0)}
               </AsyncButton>
