@@ -266,7 +266,8 @@ function AllocationMeter({ envelopes, onMove, step = 10, segments = 16, format, 
               data-source={isSource || undefined}
               data-target={isTarget || undefined}
               tabIndex={e.id === tabStop ? 0 : -1}
-              aria-label={`${e.name}, ${over ? labels.envelopeOver(money.format(-left)) : labels.envelopeOf(money.format(left), money.format(capacity))}${e.rollover ? `, ${labels.envelopeRollover(money.format(e.rollover))}` : ''}`}
+              // The figure and name as shown, then the sentence.
+              aria-label={`${over ? `−${money.format(-left)}` : money.format(left)} ${e.name}, ${over ? labels.envelopeOver(money.format(-left)) : labels.envelopeOf(money.format(left), money.format(capacity))}${e.rollover ? `, ${labels.envelopeRollover(money.format(e.rollover))}` : ''}`}
               onFocus={() => setFocused(e.id)}
               onPointerEnter={() => setPointed(e.id)}
               onPointerLeave={() => setPointed(undefined)}
@@ -328,7 +329,7 @@ function AllocationMeter({ envelopes, onMove, step = 10, segments = 16, format, 
                   />
                 ))}
               </span>
-              {/* A column too narrow for its name shows the icon alone (the button's label still names it) rather than a letter and an ellipsis. */}
+              {/* A column too narrow for its name shows the icon alone (the button's label still names it) rather than a letter and an ellipsis. */}{' '}
               <span data-slot="allocation-meter-label" className={cn('@container own:flex w-full min-w-0 items-center justify-center gap-1.5 own:text-ui-xs own:text-fg-muted', VOICE)}>
                 {e.icon && (
                   <span aria-hidden className="shrink-0 own:text-(--envelope-tone) [&_svg]:size-3.5">

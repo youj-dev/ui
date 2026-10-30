@@ -24,10 +24,10 @@ describe('Flow block', () => {
     const referral = through(paths, 'referral')
     const pro = total(paths.filter((p) => p.steps[0] === 'referral' && p.steps[1] === 'pro'))
     expect(node('referral')).toHaveAccessibleName(
-      new RegExp(`^Referral, Source: ${number.format(referral)} trials, ${percent.format(referral / total(paths))} of all\\. Went on to Pro ${number.format(pro)} \\(${percent.format(pro / referral)}\\), `),
+      new RegExp(`, Referral, Source: ${number.format(referral)} trials, ${percent.format(referral / total(paths))} of all\\. Went on to Pro ${number.format(pro)} \\(${percent.format(pro / referral)}\\), `),
     )
     // The last stage says where its people came from.
-    expect(node('paid')).toHaveAccessibleName(/^Paid, Outcome: [\d,]+ trials, [\d.]+% of all\. Came from Search [\d,]+ \([\d.]+%\), /)
+    expect(node('paid')).toHaveAccessibleName(/, Paid, Outcome: [\d,]+ trials, [\d.]+% of all\. Came from Search [\d,]+ \([\d.]+%\), /)
     expect(screen.getByRole('figure', { name: 'Trial flow' })).toHaveAccessibleDescription(
       new RegExp(`^${number.format(total(paths))} trials from 5 sources\\. Paid [\\d.]+%, Still trialing [\\d.]+%, Cancelled [\\d.]+%\\.$`),
     )
@@ -88,7 +88,7 @@ describe('Flow block', () => {
     reduced(<Flow onRangeChange={onRangeChange} />)
     const room = document.querySelector<HTMLElement>('[data-slot=flow-chart]')!.parentElement!
     const height = room.style.height
-    await user.click(screen.getByRole('button', { name: 'last 7 days' }))
+    await user.click(screen.getByRole('button', { name: /last 7 days/ }))
     expect(onRangeChange).toHaveBeenCalledWith('7d')
     expect(screen.getByText(`last 7 days: ${number.format(total(DEMO['7d']))} trials`, { selector: '[role=status]' })).toBeInTheDocument()
     expect(node('social')).toHaveTextContent(number.format(through(DEMO['7d'], 'social')))
@@ -147,8 +147,8 @@ describe('Flow block', () => {
       )
       // The first range is the one shown first.
       expect(screen.getByText('Spending · fiscal year 2025')).toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: 'last 7 days' })).toBeNull()
-      await user.click(screen.getByRole('button', { name: 'fiscal year 2026' }))
+      expect(screen.queryByRole('button', { name: /last 7 days/ })).toBeNull()
+      await user.click(screen.getByRole('button', { name: /fiscal year 2026/ }))
       expect(onRangeChange).toHaveBeenCalledWith('fy26')
       expect(screen.getByText('Spending · fiscal year 2026')).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: 'View data' }))
@@ -160,11 +160,11 @@ describe('Flow block', () => {
       const onSelectedChange = vi.fn()
       reduced(<Flow stages={['In', 'Out']} nodes={own} paths={paths} locale="de-DE" copy={{ title: 'Fluss', count: (v) => `${v} Leute` }} selected={null} onSelectedChange={onSelectedChange} />)
       expect(screen.getByRole('heading', { level: 2, name: 'Fluss' })).toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: 'last 7 days' })).toBeNull()
+      expect(screen.queryByRole('button', { name: /last 7 days/ })).toBeNull()
       // Intl sets "60 %" with a narrow space.
       const name = (el: HTMLElement) => el.getAttribute('aria-label')!.replace(/\s/g, ' ')
-      expect(name(node('b'))).toBe('Beta, In: 60 Leute, 60 % of all. Went on to Lost 40 (66,7 %), Kept 20 (33,3 %).')
-      expect(name(node('x'))).toBe('Kept, Out: 50 Leute, 50 % of all. Came from Alpha 30 (60 %), Beta 20 (40 %).')
+      expect(name(node('b'))).toMatch(/^Beta 60, Beta, In: 60 Leute, 60 % of all\. Went on to Lost 40 \(66,7 %\), Kept 20 \(33,3 %\)\.$/)
+      expect(name(node('x'))).toMatch(/^Kept 50, Kept, Out: 50 Leute, 50 % of all\. Came from Alpha 30 \(60 %\), Beta 20 \(40 %\)\.$/)
       await user.click(node('a'))
       expect(onSelectedChange).toHaveBeenCalledWith('a')
       expect(node('a')).toHaveAttribute('aria-pressed', 'false')

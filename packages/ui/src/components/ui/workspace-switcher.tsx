@@ -94,7 +94,10 @@ function WorkspaceSwitcher({
       <PopoverTrigger
         data-slot="workspace-switcher-trigger"
         data-compact={compact || undefined}
-        aria-label={current ? labels.workspaceSwitch(current.name) : labels.workspaceChoose}
+        // The name carries the detail it shows (a text detail), so the label holds the visible text.
+        aria-label={
+          current ? labels.workspaceSwitch(typeof current.detail === 'string' ? `${current.name}, ${current.detail}` : current.name) : labels.workspaceChoose
+        }
         className={cn(
           'group/workspace-trigger flex h-control-lg min-w-0 items-center gap-2 own:rounded-md own:px-1.5 text-start text-ui text-fg focus-ring',
           'transition-[background-color] yj-duration-fast ease-standard hover:bg-hover own:data-popup-open:bg-hover',
@@ -105,7 +108,7 @@ function WorkspaceSwitcher({
       >
         {current && <WorkspaceLogo workspace={current} />}
         <span className={cn('own:flex min-w-0 flex-1 flex-col own:leading-tight', compact && 'sr-only')}>
-          <span className="truncate own:font-medium">{current?.name ?? labels.workspaceChoose}</span>
+          <span className="truncate own:font-medium">{current?.name ?? labels.workspaceChoose}</span>{' '}
           {current?.detail && <span className="truncate own:text-ui-sm own:text-fg-muted">{current.detail}</span>}
         </span>
         {!compact && <ChevronsUpDownIcon active={open} size={14} strokeWidth={1.75} className="shrink-0 own:text-fg-muted" />}

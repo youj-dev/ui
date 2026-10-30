@@ -89,8 +89,8 @@ if(i===1||i===3){const cx=i===1?61:119;colons.push(bulb(cx,40.5),bulb(cx,52.5));
 // Front: nameplate, 12/24 toggle, brass buttons.
 const fp=group(FRONT(0,64,24));
 rect(fp,70,8,60,9,1.8,'face brass');rect(fp,71.4,9.4,57.2,6.2,1.2,'detail');text(fp,100,14.1,'CATHODA','label brand center dark-ink');
-const togG=el('g',{class:'control',role:'button',tabindex:'0','aria-label':'12 or 24 hour toggle (H)','aria-pressed':'false'});into(togG);
-const tp=group(FRONT(160,64,20),togG);rect(tp,0,0,12,12,2,'face brass');rect(tp,4,3,4,6,2,'face recess');text(tp,6,-1.6,'24','etch micro center');text(tp,6,15.8,'12','etch micro center');rect(tp,-1.4,-1.4,14.8,14.8,2.6,'focus-ring');
+const togG=el('g',{class:'control',role:'button',tabindex:'0','aria-label':'24/12 hour toggle (H)','aria-pressed':'false'});into(togG);
+const tp=group(FRONT(160,64,20),togG);rect(tp,0,0,12,12,2,'face brass');rect(tp,4,3,4,6,2,'face recess');text(tp,6,-1.6,'24','etch micro center');tp.append(' ');text(tp,6,15.8,'12','etch micro center');rect(tp,-1.4,-1.4,14.8,14.8,2.6,'focus-ring');
 const lever=[el('path',{class:'arm-u'},togG),el('path',{class:'arm'},togG)],lTip=el('circle',{r:1.5,class:'face top brass'},togG);into(draw);
 const BTN=[['SET','s','Set button: set hours then minutes (S)'],['+','u','Plus button: adjust the selected field (Up arrow)'],['DIM','d','Dim button: day, dim, night (D)']].map(([n,k,l],i)=>{
 const g=el('g',{class:'control',role:'button',tabindex:'0','aria-label':l});into(g);const x=186+i*12;

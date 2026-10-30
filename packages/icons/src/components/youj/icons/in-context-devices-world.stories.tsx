@@ -200,7 +200,7 @@ function DevicesDemo() {
                     <p className="truncate text-xs text-fg-muted">{link === 'on' ? detail : link === 'pairing' ? 'Pairing…' : 'Not connected'}</p>
                   </div>
                   <Button
-                    aria-label={`${link === 'on' ? 'Disconnect' : 'Connect'} ${name}`}
+                    aria-label={link === 'on' ? `Connected: disconnect ${name}` : link === 'pairing' ? `Connecting: ${name}` : `Connect ${name}`}
                     aria-busy={link === 'pairing'}
                     onClick={() => toggleLink(id)}
                     className={cn('h-8 min-w-[124px] justify-center px-2.5 text-xs', link === 'on' && 'text-accent')}
@@ -631,7 +631,7 @@ function LaunchDemo() {
             </IconButton>
           </div>
 
-          <Button variant="ghost" className={cn('h-8 px-2.5 text-xs', earned && 'text-fg')} aria-label={`Launch checklist, ${done.filter(Boolean).length} of ${TASKS.length} done`}>
+          <Button variant="ghost" className={cn('h-8 px-2.5 text-xs', earned && 'text-fg')} aria-label={`Launch checklist, ${done.filter(Boolean).length}/${TASKS.length} done`}>
             <TrophyIcon size={16} active={earned} className={earned ? 'text-success' : undefined} />
             <span className="font-mono tabular-nums">
               {done.filter(Boolean).length}/{TASKS.length}

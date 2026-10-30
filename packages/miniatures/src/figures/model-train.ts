@@ -114,14 +114,14 @@ const pv=group(FRONT(x+(out?1.8:.2),y+2.1,9.5)),arm=el('g',{},pv);for(let i=0;i<
 into(draw);return{g:g0,arm,L,H,s:out?1:-1};}
 // The fascia: the brand plate, the throttle knob with its notches and the run lamp.
 {const g=group(FRONT(0,D+.02,0));rect(g,8,1.8,42,5.4,1,'face brass');rect(g,8.7,2.5,40.6,4,.6,'detail');text(g,11.4,5.7,'ESKER','plate');text(g,33,5.5,'L–87 · H0','etch micro');}
-const knobG=ctl(el('g',{}),'Throttle: open it a notch (Up arrow)'),KF=group(FRONT(0,D+.02,0),knobG);rect(KF,104,1.1,44,6.8,1.2,'face panel');
+const knobG=ctl(el('g',{}),'Throttle run: open it a notch (Up arrow)'),KF=group(FRONT(0,D+.02,0),knobG);rect(KF,104,1.1,44,6.8,1.2,'face panel');
 for(let i=0;i<6;i++){const a=(-120+i*48)*RAD;line(KF,136+2.7*sin(a),4.5-2.7*cos(a),136+3.3*sin(a),4.5-3.3*cos(a),'tick');}
-circle(KF,136,4.5,2.2,'face knob');const knobP=line(KF,136,4.5,136,2.6,'ptr');circle(KF,136,4.5,4,'focus-ring');text(KF,119.5,5.2,'THROTTLE','etch micro').style.fontSize='1.8px';
+circle(KF,136,4.5,2.2,'face knob');const knobP=line(KF,136,4.5,136,2.6,'ptr');circle(KF,136,4.5,4,'focus-ring');text(KF,119.5,5.2,'THROTTLE','etch micro').style.fontSize='1.8px';KF.append(' ');
 const runL=circle(KF,108.4,4.5,1,'run');text(KF,110.4,5.2,'RUN','etch micro').style.fontSize='1.8px';
 // Rails over everything on the ground, flangeways across the deck; then the train's layer (sorted), the front, the steam.
 for(const o of[-3.8,3.8])el('path',{d:ring(o,2.5),class:'rail'});for(const o of[-3.8,3.8])el('path',{d:ring(o,3.2),class:'railtop'});
 for(const o of[-2.6,2.6])el('path',{d:ring(o,1.64,XS0,XS1,false),class:'flange'});
-const trainG=ctl(el('g',{}),'Train: depart, or stop at the next station (Space)');
+const trainG=ctl(el('g',{}),'ESKER train: depart, or stop at the next station (Space)');
 const XB=[barrier(44.5,58,false),barrier(25,101,true)];trainG.appendChild(XB[0].g);set(XB[0].g,'class','ghost');
 const puffL=el('g',{});
 frame([[0,0,-BH,W,D,BH],[134,6,0,14,14,29],[100,5,0,4,4,40],[20,20,0,.1,.1,30]],10);

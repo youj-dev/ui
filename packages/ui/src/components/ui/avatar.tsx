@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentProps } from 'react'
+import { createContext, useContext, type ComponentProps } from 'react'
 import { Avatar as AvatarPrimitive } from '@base-ui/react/avatar'
 import { useYouj } from '@youj/core/lib/youj/provider'
 import { cn } from '../../lib/utils'
@@ -8,7 +8,15 @@ import { cn } from '../../lib/utils'
 /* Base UI shows the fallback until the image has actually loaded (and keeps
  * it if the image fails), so there is never a broken-image frame. The image
  * then fades in over the muted disc on the base token instead of popping. A
- * hairline inner edge keeps light photos from bleeding into the page. */
+ * hairline inner edge keeps light photos from bleeding into the page.
+ *
+ * A decorative avatar (aria-hidden: the name sits beside it or on its control)
+ * draws its initials as generated content, not text: they stand for the
+ * picture, so they aren't read out or counted in the control's visible label. */
+
+const DecorativeContext = createContext(false)
+
+const hidden = (value: unknown) => value === true || value === 'true'
 
 function Avatar({
   className,
@@ -18,19 +26,22 @@ function Avatar({
   size?: 'sm' | 'default' | 'lg'
 }) {
   const k = useYouj()
+  const decorative = useContext(DecorativeContext) || hidden(props['aria-hidden'])
   return (
-    <AvatarPrimitive.Root
-      data-slot="avatar"
-      data-size={size}
-      data-reduced-motion={k.reduced || undefined}
-      className={cn(
-        'group/avatar relative isolate flex size-8 shrink-0 rounded-full bg-band select-none',
-        'own:after:pointer-events-none own:after:absolute own:after:inset-0 own:after:rounded-full own:after:border own:after:border-line-subtle',
-        'data-[size=lg]:size-10 data-[size=sm]:size-6',
-        className,
-      )}
-      {...props}
-    />
+    <DecorativeContext.Provider value={decorative}>
+      <AvatarPrimitive.Root
+        data-slot="avatar"
+        data-size={size}
+        data-reduced-motion={k.reduced || undefined}
+        className={cn(
+          'group/avatar relative isolate flex size-8 shrink-0 rounded-full bg-band select-none',
+          'own:after:pointer-events-none own:after:absolute own:after:inset-0 own:after:rounded-full own:after:border own:after:border-line-subtle',
+          'data-[size=lg]:size-10 data-[size=sm]:size-6',
+          className,
+        )}
+        {...props}
+      />
+    </DecorativeContext.Provider>
   )
 }
 
@@ -77,17 +88,25 @@ function AvatarFallback({
   /** Tints the fallback with one of the theme's chart colours, picked from this seed (a user id or email), so each person keeps their colour wherever they appear. */
   colorSeed?: string
 }) {
+  const decorative = useContext(DecorativeContext) || hidden(props['aria-hidden'])
+  // Initials of a decorative avatar are drawn, not text.
+  const drawn = decorative && typeof props.children === 'string' ? props.children : undefined
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
+      data-yj-initials={drawn}
       className={cn(
         'own:flex size-full items-center justify-center rounded-full bg-band own:text-ui-sm own:font-medium own:text-fg-muted own:uppercase',
         'own:group-data-[size=sm]/avatar:text-ui-xs own:group-data-[size=lg]/avatar:text-ui',
+        drawn !== undefined && 'own:before:content-[attr(data-yj-initials)]',
         colorSeed !== undefined && [colorClass, colorVar[avatarColor(colorSeed)]],
         className,
       )}
       {...props}
-    />
+    >
+      {/* Children win over the spread: a decorative avatar's initials aren't written back as text. */}
+      {drawn === undefined ? props.children : undefined}
+    </AvatarPrimitive.Fallback>
   )
 }
 
@@ -107,18 +126,21 @@ function AvatarBadge({ className, ...props }: ComponentProps<'span'>) {
 }
 
 function AvatarGroup({ className, ...props }: ComponentProps<'div'>) {
+  const decorative = useContext(DecorativeContext) || hidden(props['aria-hidden'])
   return (
-    <div
-      data-slot="avatar-group"
-      className={cn(
-        'group/avatar-group own:flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-canvas',
-        // The muted fill is ink at low alpha: over the page, overlapping initials would show through. The same tint, on an opaque base.
-        '*:data-[slot=avatar]:[background:linear-gradient(var(--color-band),var(--color-band)),var(--color-canvas)]',
-        '*:data-[slot=avatar-group-count]:[background:linear-gradient(var(--color-band),var(--color-band)),var(--color-canvas)]',
-        className,
-      )}
-      {...props}
-    />
+    <DecorativeContext.Provider value={decorative}>
+      <div
+        data-slot="avatar-group"
+        className={cn(
+          'group/avatar-group own:flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-canvas',
+          // The muted fill is ink at low alpha: over the page, overlapping initials would show through. The same tint, on an opaque base.
+          '*:data-[slot=avatar]:[background:linear-gradient(var(--color-band),var(--color-band)),var(--color-canvas)]',
+          '*:data-[slot=avatar-group-count]:[background:linear-gradient(var(--color-band),var(--color-band)),var(--color-canvas)]',
+          className,
+        )}
+        {...props}
+      />
+    </DecorativeContext.Provider>
   )
 }
 

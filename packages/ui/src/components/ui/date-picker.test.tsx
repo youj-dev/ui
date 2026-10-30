@@ -83,7 +83,7 @@ describe('DatePicker', () => {
     render(<Controlled />)
     await user.click(screen.getByRole('button', { name: 'Choose date' }))
     const grid = await screen.findByRole('grid', { name: 'September 2026' })
-    await waitFor(() => expect(document.activeElement).toHaveAccessibleName(/September 27th, 2026/))
+    await waitFor(() => expect(document.activeElement).toHaveAccessibleName(/September 27, 2026/))
     expect(grid).toBeInTheDocument()
     await user.keyboard('{ArrowRight}{Enter}')
     await waitFor(() => expect(screen.queryByRole('grid')).not.toBeInTheDocument())
@@ -97,7 +97,7 @@ describe('DatePicker', () => {
     await user.click(field())
     await user.keyboard('{ArrowDown}')
     expect(await screen.findByRole('grid')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /September 26th, 2026/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /September 26, 2026/ })).toBeDisabled()
     await user.keyboard('{Escape}')
     await waitFor(() => expect(field()).toHaveFocus())
   })
@@ -125,9 +125,9 @@ describe('DatePicker on touch', () => {
     expect(sheet.querySelector('[data-slot=sheet-handle]')).not.toBeNull()
     expect(screen.getByRole('grid')).toBeInTheDocument()
     // Days are 44px on touch (Calendar's touch: size).
-    expect(screen.getByRole('button', { name: /September 14th, 2026/ })).toHaveClass('touch:size-11')
+    expect(screen.getByRole('button', { name: /September 14, 2026/ })).toHaveClass('touch:size-11')
 
-    await user.click(screen.getByRole('button', { name: /September 14th, 2026/ }))
+    await user.click(screen.getByRole('button', { name: /September 14, 2026/ }))
     expect(onValueChange).toHaveBeenLastCalledWith(new Date(2026, 8, 14))
     expect(field()).toHaveValue('09/14/2026')
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
@@ -177,7 +177,7 @@ describe('the ghost variant', () => {
 
   test('with no date it shows the placeholder, muted', () => {
     render(<DatePicker variant="ghost" aria-label="Due date" placeholder="No due date" />)
-    const trigger = screen.getByRole('button', { name: 'Due date' })
+    const trigger = screen.getByRole('button', { name: 'Due date, No due date' })
     expect(trigger).toHaveTextContent('No due date')
     expect(trigger).toHaveAttribute('data-placeholder')
   })

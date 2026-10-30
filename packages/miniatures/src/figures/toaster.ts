@@ -135,17 +135,18 @@ const grip=group(FRONT(158,163.2,119),leverControl);rect(grip,2,2,30,9,3,'face r
 line(grip,9,6,25,6);line(grip,10,8,24,8);rect(grip,-4,-5,42,28,5,'hit');rect(grip,-3,-3,40,19,5,'focus-ring');
 const bezel=cylinder(67,140.5,70,22,7,'y','base').face;circle(bezel,0,0,20,'face metal');circle(bezel,0,0,18.5,'face recess');
 const dialControl=group(FRONT(67,148,70),root,{id:'dialControl',class:'control',role:'button',tabindex:'0','aria-label':'Browning level 3 of 6. Click to turn; use keys 1 to 6.'});
+const dialText=group(FRONT(67,148,70),root,{'pointer-events':'none'});
 circle(dialControl,0,0,21,'timer-track');const timerRing=circle(dialControl,0,0,21,'timer-ring');
 set(timerRing,'stroke-dasharray',2*Math.PI*21);set(timerRing,'stroke-dashoffset',2*Math.PI*21);
 for(let i=1;i<=6;i++){
 const a=(-130+(i-1)*52)*Math.PI/180;
 line(dialControl,Math.sin(a)*23.5,-Math.cos(a)*23.5,Math.sin(a)*25.5,-Math.cos(a)*25.5);
-text(dialControl,Math.sin(a)*29,-Math.cos(a)*29+1.2,i,'etch micro center');
+text(dialText,Math.sin(a)*29,-Math.cos(a)*29+1.2,i,'etch micro center');
 }
 circle(dialControl,0,0,17,'face top button-face');circle(dialControl,0,0,13.5,'detail');
 for(let i=0;i<24;i++){const a=i*Math.PI/12;line(dialControl,15*Math.cos(a),15*Math.sin(a),16.2*Math.cos(a),16.2*Math.sin(a));}
 const dialMark=group('rotate(-26)',dialControl);line(dialMark,0,-8.5,0,-12.2,'dial-mark');
-const dialNumber=text(dialControl,0,3.2,'3','dial-number');circle(dialControl,0,0,32,'hit');circle(dialControl,0,0,33,'focus-ring');
+const dialNumber=text(dialText,0,3.2,'3','dial-number');circle(dialControl,0,0,32,'hit');circle(dialControl,0,0,33,'focus-ring');
 text(group(FRONT(67,141,32)),0,0,'BROWNING','etch center');
 function button(x,id,label,icon){
 cylinder(x,141.5,77,12,4.5,'y','base');

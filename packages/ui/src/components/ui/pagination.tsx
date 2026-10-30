@@ -85,10 +85,14 @@ function PaginationLink({ className, isActive, disabled, size = 'icon', href, on
   )
 }
 
+/** The link's name, led by the word it shows when the name doesn't already hold that word (not a longer form of it: Arabic "التالي" is not in "التالية"). */
+const named = (name: string, shown: string) =>
+  new RegExp(`(?<![\\p{L}\\p{N}])${shown.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu').test(name) ? name : `${shown}, ${name}`
+
 function PaginationPrevious({ className, text, ...props }: PaginationLinkProps & { text?: string }) {
   const labels = useComponentLabels(paginationLabels)
   return (
-    <PaginationLink aria-label={labels.goToPreviousPage} size="default" className={cn('group/pagination-edge own:ps-2', className)} {...props}>
+    <PaginationLink aria-label={named(labels.goToPreviousPage, text ?? labels.previous)} size="default" className={cn('group/pagination-edge own:ps-2', className)} {...props}>
       <ChevronLeftIcon
         trigger="none"
         className="transition-transform yj-duration-fast ease-standard group-hover/pagination-edge:-translate-x-0.5 rtl:-scale-x-100 rtl:group-hover/pagination-edge:translate-x-0.5"
@@ -101,7 +105,7 @@ function PaginationPrevious({ className, text, ...props }: PaginationLinkProps &
 function PaginationNext({ className, text, ...props }: PaginationLinkProps & { text?: string }) {
   const labels = useComponentLabels(paginationLabels)
   return (
-    <PaginationLink aria-label={labels.goToNextPage} size="default" className={cn('group/pagination-edge own:pe-2', className)} {...props}>
+    <PaginationLink aria-label={named(labels.goToNextPage, text ?? labels.next)} size="default" className={cn('group/pagination-edge own:pe-2', className)} {...props}>
       <span className="own:hidden own:sm:block">{text ?? labels.next}</span>
       <ChevronRightIcon
         trigger="none"

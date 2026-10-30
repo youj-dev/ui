@@ -145,7 +145,7 @@ function FrameAccountStatus({
         'data-popup-open:[--frame-status-cut:color-mix(in_oklab,var(--color-fg)_6%,var(--color-canvas))]',
       )}
     >
-      <Avatar size="sm" className="size-[calc(var(--spacing-control)-var(--spacing)*2)]">
+      <Avatar aria-hidden size="sm" className="size-[calc(var(--spacing-control)-var(--spacing)*2)]">
         {user.avatar && <AvatarImage src={user.avatar} alt="" />}
         {/* Centred on the part of the disc the dot leaves clear. */}
         <AvatarFallback className="bg-accent-subtle pe-0.5 pb-0.5 text-accent-text">{initials(user.name)}</AvatarFallback>

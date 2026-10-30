@@ -32,7 +32,9 @@ describe('PropertyList', () => {
     const terms = within(list).getAllByRole('term')
     const values = within(list).getAllByRole('definition')
     expect(terms.map((t) => t.textContent)).toEqual(['Owner', 'Deal'])
-    expect(values[0]).toHaveTextContent('NHNoor Haddad')
+    // The avatar is decorative: its initials are drawn, so the value reads as the name.
+    expect(values[0]).toHaveTextContent('Noor Haddad')
+    expect(values[0]!.querySelector('[data-yj-initials]')).toHaveAttribute('data-yj-initials', 'NH')
     expect(values[1]).toHaveTextContent('Inference platform expansion')
     expect(screen.getByTestId('icon').parentElement).toHaveAttribute('aria-hidden', 'true')
   })

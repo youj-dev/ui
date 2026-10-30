@@ -27,7 +27,7 @@ describe('ReceiptPrinter', () => {
     expect(inside.querySelector('.scr')?.textContent).toBe('TAP CARD')
     expect(receipt(inside)).toHaveAttribute('aria-disabled', 'true')
     expect(visibleRows(inside)).toHaveLength(0)
-    expect(inside.querySelector('[aria-label="Open the cash drawer (D)"]')).toHaveAttribute('aria-pressed', 'false')
+    expect(inside.querySelector('[aria-label="VELLUN: open the cash drawer (D)"]')).toHaveAttribute('aria-pressed', 'false')
   })
 
   it('C approves the payment and queues the receipt for printing', async () => {
@@ -154,21 +154,21 @@ describe('ReceiptPrinter', () => {
     const run = useFrames()
     const { handle, inside } = mount(MiniatureReceiptPrinter, { reducedMotion: 'always' })
     await run(100)
-    const drawer = inside.querySelector('[aria-label="Open the cash drawer (D)"]')!
+    const drawer = inside.querySelector('[aria-label="VELLUN: open the cash drawer (D)"]')!
     const closedPose = drawer.getAttribute('transform')
     act(() => handle().press('d'))
     await run(200)
     expect(handle().getSnapshot().pressed.d).toBe(true)
     expect(handle().getSnapshot().state).toBe('READY · DRAWER OPEN')
     expect(drawer).toHaveAttribute('aria-pressed', 'true')
-    expect(drawer).toHaveAttribute('aria-label', 'Close the cash drawer (D)')
+    expect(drawer).toHaveAttribute('aria-label', 'VELLUN: close the cash drawer (D)')
     expect(drawer.getAttribute('transform')).not.toBe(closedPose)
     act(() => handle().press('d'))
     await run(200)
     expect(handle().getSnapshot().pressed.d).toBe(false)
     expect(handle().getSnapshot().state).toBe('READY · DRAWER CLOSED')
     expect(drawer).toHaveAttribute('aria-pressed', 'false')
-    expect(drawer).toHaveAttribute('aria-label', 'Open the cash drawer (D)')
+    expect(drawer).toHaveAttribute('aria-label', 'VELLUN: open the cash drawer (D)')
     expect(drawer).toHaveAttribute('transform', closedPose)
   })
 })

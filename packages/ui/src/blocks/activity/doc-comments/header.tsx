@@ -56,7 +56,8 @@ export function DocHeader({
             <Toggle
               variant="outline"
               size="sm"
-              aria-label={copy.showResolved}
+              // The count it shows is part of its name.
+              aria-label={`${copy.showResolved}, ${resolved}`}
               pressed={showResolved}
               onPressedChange={onShowResolvedChange}
               className="gap-1 px-2 tabular-nums"

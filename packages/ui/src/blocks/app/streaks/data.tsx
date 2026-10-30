@@ -103,7 +103,7 @@ export const DEFAULT_COPY = {
   noStreak: 'No streak yet',
   showAll: (count: number) => `Show all ${count}`,
   showFewer: 'Show fewer',
-  markDone: (name: string) => `Mark ${name} done`,
+  markDone: (name: string) => `Mark done: ${name}`,
   show: (name: string) => `Show ${name}`,
   resets: 'Resets at midnight',
   newItem: 'New habit',

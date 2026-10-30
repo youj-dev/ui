@@ -191,7 +191,7 @@ function AccountMenu(args: Story['args']) {
       <DropdownMenuTrigger
         render={<Button variant="ghost" className="h-auto gap-2 py-1 ps-1 pe-2" aria-label="Ada Lovelace, account menu" />}
       >
-        <Avatar size="sm">
+        <Avatar aria-hidden size="sm">
           <AvatarFallback>AL</AvatarFallback>
         </Avatar>
         <span className="text-ui font-medium text-fg">Ada Lovelace</span>

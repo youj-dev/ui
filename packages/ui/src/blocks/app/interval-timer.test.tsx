@@ -24,7 +24,7 @@ describe('IntervalTimer', () => {
     expect(summary()).toMatch(/^Round 3 of 8\. Work/)
     await user.click(screen.getByRole('button', { name: 'Skip to the next interval' }))
     expect(summary()).toMatch(/^Round 3 of 8\. Rest, 0:20 left/)
-    expect(screen.getByRole('button', { name: 'Add 15 seconds of rest' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '+15 s, Add 15 seconds of rest' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Log set' }))
     expect(screen.getByText('Set 3')).toBeInTheDocument()
     expect(screen.getAllByRole('status').map((s) => s.textContent)).toContain('Logged Push-ups: 15 × BW')

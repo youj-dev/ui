@@ -21,7 +21,7 @@ import type { MarketingNavbarAccountLink, MarketingNavbarCopy, MarketingNavbarUs
 
 export function UserAvatar({ user, size }: { user: MarketingNavbarUser; size?: 'sm' | 'default' | 'lg' }) {
   return (
-    <Avatar size={size}>
+    <Avatar aria-hidden size={size}>
       {user.avatar && <AvatarImage src={user.avatar} alt="" />}
       <AvatarFallback>{initials(user.name)}</AvatarFallback>
     </Avatar>

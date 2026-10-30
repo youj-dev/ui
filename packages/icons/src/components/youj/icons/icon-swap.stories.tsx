@@ -192,7 +192,7 @@ function Matrix({ auto }: { auto: boolean }) {
                   key={t.id}
                   type="button"
                   aria-pressed={pressed}
-                  aria-label={`${t.id}: swap every pair`}
+                  aria-label={`${t.id}, ${t.note}: swap every pair`}
                   onClick={() => toggleRow(row)}
                   className={cn(
                     'group grid w-full grid-cols-[132px_repeat(11,minmax(0,1fr))] items-center border-b border-line px-2 py-3.5 text-left last:border-b-0 hover:bg-hover',
@@ -201,7 +201,7 @@ function Matrix({ auto }: { auto: boolean }) {
                   )}
                 >
                   <span className="pl-2">
-                    <span className="block font-mono text-xs text-fg">{t.id}</span>
+                    <span className="block font-mono text-xs text-fg">{t.id}</span>{' '}
                     <span className="mt-0.5 block text-[11px] leading-tight text-fg-muted">{t.note}</span>
                   </span>
                   {PAIRS.map((p, col) => (
@@ -453,6 +453,8 @@ function Reader() {
       <footer className="flex items-center gap-1 border-t border-line px-3 py-2">
         <button
           {...like.buttonProps}
+          // The count it shows is part of its name.
+          aria-label={`${like.buttonProps['aria-label']}, ${like.active ? 129 : 128}`}
           className={cn('inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm hover:bg-hover', ease, focusRing, like.active ? 'text-danger' : 'text-fg-muted')}
         >
           <IconSwap {...like.iconProps} from={Heart} to={HeartFilled} transition="pop" size={16} />

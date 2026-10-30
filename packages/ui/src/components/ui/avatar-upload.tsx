@@ -165,7 +165,7 @@ function AvatarUpload({
               'data-dragging:outline-2 data-dragging:outline-offset-2 data-dragging:outline-accent data-dragging:outline-dashed',
             )}
           >
-            <Avatar className="size-full">
+            <Avatar aria-hidden className="size-full">
               {shown && <AvatarImage src={shown} alt={name ? labels.avatarPhotoOf(name) : labels.avatarProfilePhoto} />}
               <AvatarFallback className="own:text-ui-lg">{fallback}</AvatarFallback>
             </Avatar>

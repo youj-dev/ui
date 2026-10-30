@@ -52,26 +52,25 @@ export function IntegrationCard({ integration, status, health, onOpen, copy }: I
     <button
       type="button"
       onClick={onOpen}
-      aria-label={copy.details(integration.name)}
       className="group/card flex h-full w-full flex-col gap-4 rounded-2xl border border-line bg-surface p-4 text-start transition-[border-color,box-shadow] yj-duration-fast ease-standard hover:border-line-control hover:shadow-md focus-ring"
     >
       <span className="flex items-start justify-between gap-3">
         <Mark integration={integration} />
         <StatusBadge status={status} copy={copy} />
-      </span>
+      </span>{' '}
       <span className="flex flex-1 flex-col gap-1">
         <span className="flex items-center gap-2 text-ui-lg font-semibold text-fg">
-          {integration.name}
+          {integration.name}{' '}
           {integration.popular && status !== 'connected' && (
             <Badge variant="secondary" className="font-normal">
               {copy.popular}
             </Badge>
           )}
-        </span>
+        </span>{' '}
         <span className="text-pretty text-ui text-fg-muted">{integration.description}</span>
-      </span>
+      </span>{' '}
       <span className="flex items-center justify-between gap-3 text-ui-sm text-fg-muted">
-        <span>{integration.category}</span>
+        <span>{integration.category}</span>{' '}
         {health ? (
           <span className="inline-flex items-center gap-1.5">
             <span aria-hidden className={cn('size-1.5 rounded-full', HEALTH_DOT[health])} />

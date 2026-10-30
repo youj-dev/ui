@@ -58,9 +58,9 @@ box(6,55,14,90,5,3,1,'metal');
 // Cartridge slots (tapes 1–5 left column, 6–10 right, top to bottom) and two drives.
 const slots=[];
 for(let i=0;i<10;i++){
-const x0=COLX[i<5?0:1],z0=rowZ(4-i%5),g=group(FRONT(x0,YW,z0+5.4),root,{class:'control slot',role:'button',tabindex:'0','aria-label':`Load tape ${i+1} (${(i+1)%10})`});
+const x0=COLX[i<5?0:1],z0=rowZ(4-i%5),g=group(FRONT(x0,YW,z0+5.4),root,{class:'control slot',role:'button',tabindex:'0','aria-label':`AR${String(i+1).padStart(4,'0')}L9 ${i+1}: load tape ${i+1} (${(i+1)%10})`});
 rect(g,-1.2,-1.2,28.4,7.8,1,'face cav');const f=group('',g,{class:'tface'});cart(f,i+1);
-text(g,-3.4,4.2,String(i+1),'etch micro center');rect(g,-4.6,-1.6,32,8.6,0,'hit');rect(g,-1.8,-1.8,29.6,9,1.4,'focus-ring');
+g.append(' ');text(g,-3.4,4.2,String(i+1),'etch micro center');rect(g,-4.6,-1.6,32,8.6,0,'hit');rect(g,-1.8,-1.8,29.6,9,1.4,'focus-ring');
 slots.push({i,x0,z0,g,gx:x0+13,where:'slot'});
 }
 const drives=[];

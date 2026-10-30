@@ -178,12 +178,12 @@ if(f.seam||f.front){line(fg,3,2,f.w-3,2,'seam');line(fg,3,f.h-2,f.w-3,f.h-2,'sea
 if(f.front){text(fg,LW/2,17,'Vela','brand center');for(const u of[34,110]){rect(fg,u-4.5,LZ-6.4,9,5,1,'face chrome');line(fg,u-2.6,LZ-3.9,u+2.6,LZ-3.9);}}
 if(f.lid){rect(fg,6,6,LW-12,LD-12,4,'seam');for(const u of[55,89])rect(fg,u-3,60,6,10,1.4,'face chrome');}
 if(f.fl){const k=group(`matrix(1 0 0 -1 0 ${IH})`,fg);
-rect(k,10,10,44,28,1.4,'face card');text(k,32,19.5,'VELA 9','plate center').style.fontSize='4px';for(let i=0;i<4;i++)line(k,16,25+i*3.2,i===3?38:48,25+i*3.2);
-circle(k,82,27,11,'face rb2');circle(k,82,27,9.3,'face top chrome');circle(k,82,27,7.6,'detail');text(k,82,26.6,'VELA','plate center');text(k,82,30.2,'RIBBON','plate center').style.fontSize='1.7px';
+rect(k,10,10,44,28,1.4,'face card');text(k,32,19.5,'VELA 9','plate center').style.fontSize='4px';k.append(' ');for(let i=0;i<4;i++)line(k,16,25+i*3.2,i===3?38:48,25+i*3.2);
+circle(k,82,27,11,'face rb2');circle(k,82,27,9.3,'face top chrome');circle(k,82,27,7.6,'detail');text(k,82,26.6,'VELA','plate center');k.append(' ');text(k,82,30.2,'RIBBON','plate center').style.fontSize='1.7px';
 rect(k,26,44,5,32,2.5,'face rub');rect(k,24.6,75,7.8,11,1.4,'face felt');for(let i=1;i<4;i++)line(k,24.6+i*1.95,75.6,24.6+i*1.95,85.4);rect(k,44,48,3.4,30,1.2,'face card');rect(k,43.6,44.6,4.2,4,1,'face rb2');
 rect(k,4,58,LW-2*LT-8,7,1,'face side tol');line(k,6,59.4,LW-2*LT-6,59.4,'seam');line(k,6,63.6,LW-2*LT-6,63.6,'seam');}}
 if(R([0,0,1])[2]>.2){const h=[[59,LD/2,LZ],[61,LD/2,LZ+6],[83,LD/2,LZ+6],[85,LD/2,LZ]].map(pt);el('path',{d:poly(h),class:'cu','stroke-width':4.6},g);el('path',{d:poly(h),class:'cb','stroke-width':3.4},g);}}
-for(const g of[lidBack,topLid]){button(g,'Case lid: put on or lift off (Esc)');bind(g,()=>lid());}
+for(const g of[lidBack,topLid]){button(g,'VELA 9 VELA RIBBON: case lid, put on or lift off (Esc)');bind(g,()=>lid());}
 // State: the letter on the sheet, carriage, ribbon, spools, lid and the idle demo. Strikes drive typebars, keys, the vibrator and escapement.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement'),hk={};

@@ -132,7 +132,7 @@ function EffectCard({ spec, intensity, direction }: { spec: Spec; intensity?: Yo
         <YoujIcon icon={icon} effect={effect} trigger="hover" intensity={intensity} direction={direction} size={36} />
       </span>
       <span className="text-center">
-        <span className="block font-mono text-xs text-fg">{effect}</span>
+        <span className="block font-mono text-xs text-fg">{effect}</span>{' '}
         <span className="mt-1 block text-[11px] leading-snug text-fg-muted">{note}</span>
       </span>
     </button>
@@ -348,7 +348,7 @@ function ReleasePanel() {
           <button
             type="button"
             aria-pressed={liked}
-            aria-label="Like release"
+            aria-label={`Like release, ${liked ? 13 : 12}`}
             onClick={() => {
               setLiked((v) => !v)
               if (!liked) flashBeat()

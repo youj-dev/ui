@@ -111,7 +111,7 @@ function AccountMenu({
             className,
           )}
         >
-          <Avatar>
+          <Avatar aria-hidden>
             {user.avatar && <AvatarImage src={user.avatar} alt="" />}
             <AvatarFallback>{initials(user.name)}</AvatarFallback>
           </Avatar>

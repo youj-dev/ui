@@ -60,16 +60,19 @@ function Pins({ labels, pins, positions, open, onOpenChange, readOnly, content, 
             <PopoverTrigger
               data-slot="whiteboard-pin"
               data-yj-resolved={pin.resolved || undefined}
+              // The author's initials are drawn, not text: the label names the author.
+              data-yj-initials={!pin.resolved && pin.author ? initials(pin.author) : undefined}
               aria-label={pin.resolved ? `${name}, ${labels.whiteboardResolved}` : name}
               className={cn(
                 // youj-allow: physical side, the pin's tail points at its spot on the board
                 'pointer-events-auto absolute top-0 left-0 own:flex size-7 -translate-y-full items-center justify-center own:rounded-full own:rounded-bl-none border-2 own:border-surface own:text-ui-xs own:font-semibold own:shadow-sm focus-ring',
                 'transition-[scale] yj-duration-fast ease-standard hover:scale-110 data-[popup-open]:scale-110 reduced:transition-none',
                 pin.resolved ? 'own:bg-band own:text-fg-muted' : 'own:bg-accent own:text-on-accent',
+                'before:content-[attr(data-yj-initials)]',
               )}
               style={{ left: at[0], top: at[1] }}
             >
-              {pin.resolved ? <CheckIcon className="size-3.5" /> : pin.author ? initials(pin.author) : index + 1}
+              {pin.resolved ? <CheckIcon className="size-3.5" /> : pin.author ? null : index + 1}
             </PopoverTrigger>
             {content ? (
               // The app's thread brings its own header: the pin's Resolve and Delete go into it, so there is one.

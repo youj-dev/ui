@@ -189,10 +189,11 @@ export function Rail({ item, stages, view, selected, onSelect, copy, time, figur
                 aria-pressed={i === selected}
                 aria-controls={controls}
                 aria-current={i === view.at ? 'step' : undefined}
+                // What it shows (the stage, the time of its scan) first, then its state and the scan's figure.
                 aria-label={[
                   stageOf(stages, stage.id).label,
-                  copy.states[state],
                   reached ? time(i) : null,
+                  copy.states[state],
                   state === 'done' && attempts > 1 ? copy.tries(attempts) : null,
                   reached ? figure(i) : null,
                 ]
@@ -220,7 +221,7 @@ export function Rail({ item, stages, view, selected, onSelect, copy, time, figur
                   )}
                 >
                   {stageOf(stages, stage.id).label}
-                </span>
+                </span>{' '}
                 <span
                   aria-hidden
                   className={cn(

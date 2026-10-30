@@ -211,16 +211,18 @@ function Itinerary({
                   key={d}
                   value={d}
                   data-yj-today={d === today || undefined}
-                  aria-label={[copy.plans(d + 1), dateLong.format(t, home), d === today && copy.today, place && (flies ? copy.travelTo(place) : place)].filter(Boolean).join(', ')}
+                  // What the tab shows (Today, the day, the place) first, then the plan and the date in full.
+                  aria-label={`${[d === today && copy.today, dayNum.format(t, home), place].filter(Boolean).join(' ')}, ${[copy.plans(d + 1), dateLong.format(t, home), flies && place && copy.travelTo(place)].filter(Boolean).join(', ')}`}
                   className="h-auto min-w-11 flex-1 flex-col items-stretch justify-start gap-1 px-2 py-2 text-start sm:px-2.5"
                 >
                   <span className="flex items-center gap-1.5 text-ui-xs text-fg-muted">
                     {/* Narrow, the dot alone says today: the word won't fit a column. */}
-                    <span className={cn(d === today && 'sm:hidden')}>{weekday.format(t, home)}</span>
+                    {/* The weekday's short form is drawn, not text: the name spells the day out. */}
+                    <span data-yj-initials={weekday.format(t, home)} className={cn("before:content-[attr(data-yj-initials)]", d === today && 'sm:hidden')} />
                     {d === today && <span className="hidden sm:inline">{copy.today}</span>}
                     {d === today && <span className="size-1.5 rounded-full bg-accent" />}
-                  </span>
-                  <span className="font-mono text-xl leading-none text-fg tabular-nums">{dayNum.format(t, home)}</span>
+                  </span>{' '}
+                  <span className="font-mono text-xl leading-none text-fg tabular-nums">{dayNum.format(t, home)}</span>{' '}
                   <span className="flex h-4 min-w-0 items-center gap-1.5 text-ui-xs font-normal text-fg-muted">
                     {flies ? <PlaneIcon size={11} className="shrink-0 rtl:-scale-x-100" /> : <span className={cn('size-1.5 shrink-0 rounded-full', DOT[toneOf(at)])} />}
                     <span className="hidden truncate sm:inline">{place}</span>

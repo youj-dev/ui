@@ -121,7 +121,7 @@ describe('Attachments block', () => {
     fireEvent.change(picker(), { target: { files: [png('log.png')] } })
     await waitFor(() => expect(calls).toHaveLength(1))
     await act(async () => calls[0]!.reject(new Error('Quota exceeded')))
-    expect(chip(/^log\.png/)).toHaveAccessibleName('log.png, 1 byte, didn’t upload: Quota exceeded')
+    expect(chip(/^log\.png/)).toHaveAccessibleName('log.png, Retry, 1 byte, didn’t upload: Quota exceeded')
     field().focus()
     await user.keyboard('{Control>}{Enter}{/Control}')
     expect(await screen.findByText('1 file didn’t upload. Retry or remove it to send.')).toBeInTheDocument()

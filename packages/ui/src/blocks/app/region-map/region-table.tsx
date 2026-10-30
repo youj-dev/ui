@@ -65,7 +65,7 @@ function RegionTable({ regions, threshold, rate, reading, total, active, pinned,
                 <button
                   type="button"
                   aria-pressed={pinned === region.id}
-                  aria-label={copy.showOnMap(region.city)}
+                  aria-label={copy.showOnMap(`${region.id} ${region.city}`)}
                   onFocus={() => onHover(region.id)}
                   onBlur={() => onHover(null)}
                   onClick={() => onPin(region.id)}
@@ -79,7 +79,7 @@ function RegionTable({ regions, threshold, rate, reading, total, active, pinned,
                       (on || pinned === region.id) && 'shadow-[0_0_0_3px_color-mix(in_oklab,var(--color-accent)_24%,transparent)]',
                     )}
                   />
-                  <span className={cn('w-8 shrink-0 font-mono text-ui', slow ? 'text-warning-text' : 'text-fg')}>{region.id}</span>
+                  <span className={cn('w-8 shrink-0 font-mono text-ui', slow ? 'text-warning-text' : 'text-fg')}>{region.id}</span>{' '}
                   <span className="truncate text-ui text-fg-muted">{region.city}</span>
                 </button>
               </TableCell>

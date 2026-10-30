@@ -64,7 +64,7 @@ export const Playground: Story = {
           {...args}
           items={edit}
           onSelect={(item) => setPicked(item.label)}
-          aria-label="Selection"
+          aria-label={`Selection. ${hint}`}
           className="grid h-80 w-full max-w-xl place-items-center rounded-xl border border-dashed border-line-strong bg-surface"
         >
           <Picked value={picked} hint={hint} />
@@ -101,7 +101,7 @@ export const CanvasTools: Story = {
           items={tools}
           onSelect={setTool}
           label="Tools"
-          aria-label="Canvas. Press and hold, or press Enter, to pick a tool."
+          aria-label="Canvas. Press and hold anywhere on the canvas, or press Enter, to pick a tool."
           className="relative flex-1 bg-well"
         >
           <div className="pointer-events-none absolute inset-0 m-auto h-40 w-64 rounded-lg border border-line bg-surface shadow-sm" aria-hidden />
@@ -189,7 +189,7 @@ export const ReducedMotion: Story = {
             items={tools}
             onSelect={(item) => setPicked(item.label)}
             label="Tools"
-            aria-label="Tools"
+            aria-label="Tools. Click anywhere in the box"
             className="grid h-72 w-full max-w-lg place-items-center rounded-xl border border-dashed border-line-strong bg-surface"
           >
             <Picked value={picked} hint="Click anywhere in the box" />

@@ -132,7 +132,7 @@ screw(group(SIDE(94.2,126,100)),3,3);
 const cupLight=el('g',{class:'cuplight'});
 const ca=P(72,124,89),cb=P(88,116,89),cl=P(80-27*Math.SQRT1_2,142+27*Math.SQRT1_2,72),cr=P(80+27*Math.SQRT1_2,142-27*Math.SQRT1_2,72);
 el('path',{d:`M${ca}L${cb}L${cr}L${cl}Z`,class:'cone'},cupLight);
-const cupControl=control('cupControl','Empty the catch cup.');cupControl.classList.add('cup-motion');
+const cupControl=control('cupControl','Empty the catch cup, marks 40 20.');cupControl.classList.add('cup-motion');
 adopt(cylinder(80,142,25,20,3,'z','base').g,cupControl);
 const cupShape=vessel(80,142,28,27,72,27);set(document.getElementById('cupMask'),'d',vessel(80,142,30,24,70,24));
 screenPath(cupShape,'face glass-shell',cupControl);
@@ -146,7 +146,7 @@ const rim=group(TOP(80,142,72.4),cupControl);
 el('path',{d:'M27,0 A27,27 0 1 1 -27,0 A27,27 0 1 1 27,0 Z M24,0 A24,24 0 1 1 -24,0 A24,24 0 1 1 24,0 Z',class:'face top','fill-rule':'evenodd'},rim);
 adopt(ellipse(80,142,72.7,24,'z','detail'),cupControl);
 const marks=group(FRONT(73,168,60),cupControl);
-for(let i=0;i<4;i++){line(marks,0,i*7,4,i*7);if(i%2===0)text(marks,6,i*7+1,i===0?'40':'20','etch micro');}
+for(let i=0;i<4;i++){line(marks,0,i*7,4,i*7);if(i%2===0){text(marks,6,i*7+1,i===0?'40':'20','etch micro');marks.append(' ');}}
 wire([[61,149,35],[60,151,59]],'reflection',cupControl);
 adopt(ellipse(80,142,73,30,'z','focus-ring'),cupControl);screenPath(cupShape,'hit',cupControl);
 const flow=el('g',{'aria-hidden':'true',opacity:0});const particles=[];
@@ -171,7 +171,7 @@ readout.textContent=`${String(size).padStart(2,'0')} / 12 · ${grounds.toFixed(1
 stateLabel.textContent=run?(run.mode==='dose'?`DOSING · ${Math.min(18,grounds-run.start).toFixed(1)} / 18 G`:'GRINDING · SPACE TO STOP'):now<noticeUntil?notice:grounds>=40?'CUP FULL · CLICK TO EMPTY':hopper<=0?'HOPPER EMPTY · CLICK LID':'READY · 18 G DOSE';
 svg.classList.toggle('grinding',!!run);svg.classList.toggle('ready',!run&&hopper>0&&grounds<40);svg.classList.toggle('dosing',!!run&&run.mode==='dose');svg.classList.toggle('lit',!!run||now<lightUntil);
 const disabled=!!run||hopper<=0||grounds>22||now<cupUntil||now<lidUntil;set(doseControl,'aria-disabled',disabled);set(doseControl,'aria-pressed',!!run&&run.mode==='dose');
-set(lid,'aria-label',`Refill hopper. ${Math.round(hopper)} of 220 grams remaining.`);set(cupControl,'aria-label',`Empty catch cup. ${grounds.toFixed(1)} grams collected.`);
+set(lid,'aria-label',`Refill hopper. ${Math.round(hopper)} of 220 grams remaining.`);set(cupControl,'aria-label',`Empty catch cup, marks 40 20. ${grounds.toFixed(1)} grams collected.`);
 const secs=run?(now-runT0)/1000:lastSecs;
 dG.textContent=(run&&run.mode==='dose'?Math.min(18,grounds-run.start):grounds).toFixed(1);
 dT.textContent=run||lastSecs?secs.toFixed(1)+' s':'18 g';

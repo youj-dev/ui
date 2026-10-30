@@ -57,19 +57,18 @@ export function RoleRow({ role, terms, fresh, copy, Link }: RoleRowProps) {
     <Link
       href={role.href}
       onClick={role.onClick}
-      aria-label={copy.roleLabel(role.title, role.location, role.type)}
       className="group/role -mx-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 rounded-lg px-3 py-3.5 transition-colors yj-duration-fast ease-standard hover:bg-hover focus-ring md:grid-cols-[minmax(0,2.2fr)_minmax(0,1.3fr)_minmax(0,0.8fr)_minmax(0,0.9fr)_auto]"
     >
       <span className="flex min-w-0 items-center gap-2">
         <span className="truncate text-ui-lg font-medium text-fg">
           <Marked text={role.title} terms={terms} />
-        </span>
+        </span>{' '}
         {fresh && (
           <Badge variant="outline" className="shrink-0">
             {copy.new}
           </Badge>
         )}
-      </span>
+      </span>{' '}
       <ArrowRightIcon
         size={16}
         aria-hidden
@@ -81,8 +80,8 @@ export function RoleRow({ role, terms, fresh, copy, Link }: RoleRowProps) {
           <span className="truncate">
             <Marked text={role.location} terms={terms} />
           </span>
-        </span>
-        {role.type && <span className="md:col-start-3 md:row-start-1">{role.type}</span>}
+        </span>{' '}
+        {role.type && <span className="md:col-start-3 md:row-start-1">{role.type}</span>}{' '}
         {role.salary && <span className="font-mono text-ui-sm tabular-nums md:col-start-4 md:row-start-1 md:text-end">{role.salary}</span>}
       </span>
     </Link>

@@ -122,7 +122,7 @@ function DayRail({
   const todayIndex = now !== null && now >= t0 && now < t0 + span ? Math.floor((now - t0) / DAY) : undefined
 
   const dayLong = localFormat(locale, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
-  const dayName = localFormat(locale, { weekday: 'short', day: 'numeric', month: 'short' })
+  const month = localFormat(locale, { month: 'long' })
   const weekday = localFormat(locale, { weekday: 'short' })
   const dayNum = localFormat(locale, { day: 'numeric' })
   const hours = numberFormat(locale, { style: 'unit', unit: 'hour', unitDisplay: 'narrow', signDisplay: 'always' })
@@ -165,7 +165,8 @@ function DayRail({
                     value={d}
                     data-slot="day-rail-day"
                     data-today={today || undefined}
-                    aria-label={`${labels.itineraryDay(d + 1)}, ${dayName(t, home)}`}
+                    // The day as it shows (Day 1, 30, Wed), then the month.
+                    aria-label={`${labels.itineraryDay(d + 1)} ${dayNum(t, home)} ${weekday(t, home)}, ${month(t, home)}`}
                     className={cn(
                       'group/day focus-ring relative own:flex min-w-0 flex-col items-start gap-0.5 rounded-lg px-2 py-1.5 own:text-start transition-[background-color,color] yj-duration-fast ease-standard',
                       'own:text-fg-muted hover:bg-hover hover:text-fg data-active:bg-selected data-active:text-fg',
@@ -174,9 +175,9 @@ function DayRail({
                     <span data-slot="day-rail-label" className={cn('own:flex items-center gap-1.5 own:text-ui-xs', VOICE)}>
                       {labels.itineraryDay(d + 1)}
                       {today && <span aria-hidden className="size-1.5 rounded-full bg-accent" />}
-                    </span>
+                    </span>{' '}
                     <span data-slot="day-rail-value" className="own:flex items-baseline gap-1.5 own:font-mono own:text-ui own:tabular-nums">
-                      <span className="own:text-fg">{dayNum(t, home)}</span>
+                      <span className="own:text-fg">{dayNum(t, home)}</span>{' '}
                       <span className="own:text-ui-sm">{weekday(t, home)}</span>
                     </span>
                     <span aria-hidden className="absolute inset-x-2 -bottom-px h-0.5 origin-center scale-x-0 rounded-full bg-fg transition-transform yj-duration-fast ease-standard group-data-active/day:scale-x-100" />

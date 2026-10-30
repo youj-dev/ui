@@ -54,7 +54,7 @@ describe('WhatsNew', () => {
   test('a row’s details open and close from its disclosure, named for the change', async () => {
     const user = userEvent.setup()
     reduced(<WhatsNew />)
-    const toggle = screen.getByRole('button', { name: 'More about Purge the cache in every region in under a second' })
+    const toggle = screen.getByRole('button', { name: 'Details, More about Purge the cache in every region in under a second' })
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
     expect(screen.queryByText('Purge by tag, path or whole deployment')).not.toBeInTheDocument()
     await user.click(toggle)

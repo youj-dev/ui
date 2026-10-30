@@ -78,11 +78,11 @@ function bind(g,fn){g.addEventListener('click',()=>{fn();g.blur?.();});g.addEven
 const keyLabels=['1','2','3','4','5','6','7','8','9','CLR','0','OK'];
 keyLabels.forEach((value,i)=>{
 const x=1+i%3*32,y=43+Math.floor(i/3)*18;
-const g=group(`translate(${x} ${y})`,screen,{class:'control',role:'button',tabindex:'0','aria-label':value==='OK'?'Open locker or collect parcel (Enter)':value==='CLR'?'Clear code or close door (Escape)':`Code digit ${value}`,id:`key-${value.toLowerCase()}`});
+const g=group(`translate(${x} ${y})`,screen,{class:'control',role:'button',tabindex:'0','aria-label':value==='OK'?'OK: open locker or collect parcel (Enter)':value==='CLR'?'CLR: clear code or close door (Escape)':`Code digit ${value}`,id:`key-${value.toLowerCase()}`});
 rect(g,2,1.5,28,15,2,'kbtn');rect(g,.5,.5,31,17,3,'focus-ring');text(g,16,11,value,'key');rect(g,0,0,32,18,0,'hit');
 bind(g,()=>{if(value==='OK')submit();else if(value==='CLR')escape();else digit(value);g.classList.add('pressed');setTimeout(()=>g.classList.remove('pressed'),140);});controls.push(g);
 });
-const scanner=el('g',{class:'control',role:'button',tabindex:'0','aria-label':'Scan a demo pickup barcode',id:'scanner'});
+const scanner=el('g',{class:'control',role:'button',tabindex:'0','aria-label':'Scan pickup barcode (demo)',id:'scanner'});
 scanner.appendChild(box(40,82,63,55,10,27,4,'base'));
 const lens=group(FRONT(45,93,84),scanner);rect(lens,0,0,45,16,3,'face recess');rect(lens,3,3,39,10,2,'face glass');
 for(let i=0;i<18;i++)rect(lens,6+i*1.85,5,i%3===0?1.2:.55,6,0,'barcode');

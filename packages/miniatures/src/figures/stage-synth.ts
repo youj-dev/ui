@@ -62,7 +62,7 @@ function button(g,label){set(g,'class','control');set(g,'role','button');set(g,'
 function bind(g,fn){g.addEventListener('click',()=>fn());g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 function led(g,x,y,w,h,c,s=0,b='lc'){const n=rect(g,x-w/2,y-h/2,w,h,Math.min(w,h)/2,b);n.c=c;n.s=s;n.b=b;n.k='';return n;}
 function lit(n,v){const c=v?`${n.b} on ${n.c}${n.s&&n.s!==sec+1?' dim':''}`:n.b;if(n.k!==c){n.k=c;set(n,'class',c);}}
-function pbtn(x,y,w,d,label,name,fn,c,s){const g=button(el('g'),name);into(g);box(x,y,22,w,d,1,.6,'cap');const t=group(TOP(x,y,23));
+function pbtn(x,y,w,d,label,name,fn,c,s){const g=button(el('g'),label?`${label}: ${name}`:name);into(g);box(x,y,22,w,d,1,.6,'cap');const t=group(TOP(x,y,23));
 const l=c?led(t,label?1.3:w/2,d/2,1.2,.6,c,s):null;if(label){const n=text(t,c?(w+2)/2:w/2,d/2+.47,label,'pr center');n.style.fontSize='1.15px';}
 rect(t,-.7,-.7,w+1.4,d+1.4,1,'focus-ring');into(draw);bind(g,fn);return{g,l};}
 function ring(x,y,R,n,c,s){const L=[];for(let i=0;i<n;i++){const a=(-135+270*i/(n-1))*Math.PI/180;L.push(led(LR,x+R*Math.sin(a),y-R*Math.cos(a),.8,.8,c,s));}return L;}

@@ -73,7 +73,7 @@ function List({ focus, hovered, onHover, onOpen, onUp, onSelect, figure, copy }:
             >
               <Row
                 {...(Row === 'button' ? { type: 'button' as const, onClick: () => (opens ? onOpen(node) : onSelect?.(node)) } : {})}
-                aria-label={Row === 'button' ? name : undefined}
+                aria-label={Row === 'button' ? `${node.label} ${figure(node.value)} ${percent.format(share)}${change !== undefined ? ` ${percent.format(Math.abs(change))}` : ''}, ${name}` : undefined}
                 data-yj-key={node.key}
                 data-yj-lit={hovered === node.key || undefined}
                 className={cn(
@@ -97,10 +97,10 @@ function List({ focus, hovered, onHover, onOpen, onUp, onSelect, figure, copy }:
                   )}
                 />
                 <span aria-hidden className="relative size-2.5 rounded-xs bg-(--tone)" />
-                <span className="relative truncate text-fg">{node.label}</span>
-                <span className="relative font-medium text-fg tabular-nums">{figure(node.value)}</span>
+                <span className="relative truncate text-fg">{node.label}</span>{' '}
+                <span className="relative font-medium text-fg tabular-nums">{figure(node.value)}</span>{' '}
                 <span className="relative flex flex-col items-end text-ui-xs leading-tight">
-                  <span className="text-fg-muted tabular-nums">{percent.format(share)}</span>
+                  <span className="text-fg-muted tabular-nums">{percent.format(share)}</span>{' '}
                   {change !== undefined && <StatDelta value={change} locale={copy.locale} className="text-ui-xs" />}
                 </span>
                 <span

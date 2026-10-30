@@ -99,11 +99,11 @@ const og=group('',st);rect(og,20,18,52,74,.5,'face top');const ogp=group('',og,{
 for(let i=0;i<=12;i++)line(st,17+i*10.5,13.6,17+i*10.5,i%2?14.4:15,'detail');el('path',{d:'M17,15L22,15L17,20Z',class:'face recess'},st);
 rect(st,5,18,8,124,1,'face bed');rect(st,5,18,8,124,1,'pane');
 // The lid: the document feeder, turned about its back hinge; redrawn as it lifts.
-const lidG=button(el('g',{}),{'aria-label':'Lift the scanner lid (L)','aria-pressed':'false'});let padGlow=null;
+const lidG=button(el('g',{}),{'aria-label':'QUIRE ORIGINALS: lift the scanner lid (L)','aria-pressed':'false'});let padGlow=null;
 function drawLid(a){lidG.replaceChildren();into(lidG);const c=Math.cos(a),s=Math.sin(a),O=[0,4,264],U=[1,0,0],V=[0,c,s],N=[0,-s,c],up=c>s,at=(u,v,n)=>add(O,add(mul(U,u),add(mul(V,v),mul(N,n)))),nV=mul(V,-1),nN=mul(N,-1);
 const blk=(u,v,n,w,d,h,r,cls,under)=>{const R=group(plane(at(u+w,v+d,n+h),nV,nN));rect(R,0,0,d,h,r,'face side '+cls);const F=group(plane(at(u,v+d,n+h),U,nN));rect(F,0,0,w,h,r,'face '+cls);let T=null;if(up||under){T=group(plane(at(u,v,up?n+h:n),U,V));rect(T,0,0,w,d,r,'face '+(up?'top ':'')+cls);}return{R,F,T};};
 const topper=()=>{const h=blk(2,6,16,34,136,8,4,'');if(h.T){rect(h.T,6,10,22,116,3,'detail');rect(h.T,14,56,6,24,3,'face recess');}const t=blk(40,12,16,104,124,2.4,1.5,'cab');if(t.T){for(const v of[22,102])rect(t.T,30,v,44,3,1.5,'face lever');text(t.T,52,62,'ORIGINALS','etch micro center');}};
-const body=()=>{const b=blk(2,0,0,146,148,16,3,'',true);rect(b.F,38,5.4,104,4.2,1.6,'face void');rect(b.F,64,12,26,2,1,'face recess');text(b.F,8,10,'QUIRE','etch micro');rect(b.F,-2,-2,150,20,3,'focus-ring');
+const body=()=>{const b=blk(2,0,0,146,148,16,3,'',true);rect(b.F,38,5.4,104,4.2,1.6,'face void');rect(b.F,64,12,26,2,1,'face recess');text(b.F,8,10,'QUIRE','etch micro');b.F.append(' ');rect(b.F,-2,-2,150,20,3,'focus-ring');
 if(!up){rect(b.T,16,12,124,126,2,'face pad');padGlow=rect(b.T,0,6,18,136,8,'padglow');}else padGlow=null;};
 if(up){body();topper();}else{topper();body();}into(draw);}
 const leak=el('ellipse',{rx:10,ry:3.6,class:'leak'});
@@ -112,25 +112,25 @@ const AL=28*RAD,PU=[1,0,0],PV=[0,Math.cos(AL),-Math.sin(AL)],PN=[0,Math.sin(AL),
 box(26,156,240,24,16,12,2,'');
 rect(group(plane(pa(66,40),mul(PV,-1),nPN)),0,0,40,5,1.6,'face side');rect(group(plane(pa(0,40),PU,nPN)),0,0,66,5,1.6,'face');
 const pnl=group(plane(PO,PU,PV));rect(pnl,0,0,66,40,3.6,'face top');
-const scr=button(group('',pnl),{'aria-label':'Print a report (P)'});rect(scr,3.8,3.8,46.4,32.4,2.6,'face recess');rect(scr,5.6,5.6,42.8,28.8,2,'halo');const disp=group('',scr);rect(disp,4.8,4.8,44.4,30.4,2,'face screen');
+const scrV=group('',pnl,{id:'printScreen'}),scr=button(group('',pnl),{'aria-label':'Print a report (P)'});rect(scrV,3.8,3.8,46.4,32.4,2.6,'face recess');rect(scrV,5.6,5.6,42.8,28.8,2,'halo');const disp=group('',scrV);rect(disp,4.8,4.8,44.4,30.4,2,'face screen');
 text(disp,7,9.4,'QUIRE MF–45','scr t');text(disp,47,9.4,'09:30','scr t e');line(disp,7,11,47,11,'strk');
 const sTitle=text(disp,7,18.6,'READY','scr big'),sSub=text(disp,7,23.6,'TRAY 1 · A4 · 45 PPM','scr');line(disp,7,29.4,47,29.4,'strk');const sBar=line(disp,7,29.4,7,29.4,'sbar');
-const tiles=group('',disp);['COPY','SCAN','PRINT'].forEach((s,i)=>{rect(tiles,7+i*13.7,26.4,12.3,6.4,1.2,'tile');text(tiles,13.15+i*13.7,30.4,s,'scr t c');});rect(scr,1.8,1.8,50.4,36.4,3.6,'focus-ring');
+const tiles=group('',disp);['COPY','SCAN','PRINT'].forEach((s,i)=>{rect(tiles,7+i*13.7,26.4,12.3,6.4,1.2,'tile');text(tiles,13.15+i*13.7,30.4,s,'scr t c');});set(rect(scr,3.8,3.8,46.4,32.4,2.6,'hit'),'fill','transparent');rect(scr,1.8,1.8,50.4,36.4,3.6,'focus-ring');
 const startB=button(group('',pnl),{'aria-label':'Copy the original on the glass (C)'});circle(startB,58.4,12.6,5.4,'face recess');const sRing=circle(startB,58.4,12.6,4.4,'ring');circle(startB,58.4,12.6,3.5,'face top');el('path',{d:'M57.2,11V14.2L59.9,12.6Z',class:'detail'},startB);circle(startB,58.4,12.6,7.2,'focus-ring');
 text(pnl,58.4,20.4,'START','etch micro center');circle(pnl,58.4,26,3.2,'face recess');circle(pnl,58.4,26,2.4,'face stopk');
 const pl1=lamp(pnl,55.6,34.2,.9),pl2=lamp(pnl,61.2,34.2,.9);
 // Side door: a 3-deep panel swung about its hinge at y 58; outer face (grip, jam lamp) or inner face (transfer roller, levers).
-const doorG=button(el('g',{}),{'aria-label':'Open the side door and clear the paper path (D)'});let doorLamp=null;
+const doorG=button(el('g',{}),{'aria-label':'JAM PAPER PATH: open the side door and clear the paper path (D)'});let doorLamp=null;
 function drawDoor(th){doorG.replaceChildren();into(doorG);const c=Math.cos(th),s=Math.sin(th),U=[s,c,0],N=[c,-s,0],H=[150,58,178],Z=[0,0,-1],FR=add(H,mul(U,88)),IN=add(H,mul(N,-3));
-if(th<Math.PI/4){const g=group(plane(FR,mul(U,-1),Z));rect(g,0,0,88,66,2.4,'face side');rect(g,4,4,80,58,2,'detail');rect(g,3,22,4.6,20,2.3,'face recess');doorLamp=lamp(g,12,9,1.1);text(g,16,10,'JAM','etch micro');text(g,44,60,'PAPER PATH','etch micro center');rect(g,-2,-2,92,70,3,'focus-ring');}
+if(th<Math.PI/4){const g=group(plane(FR,mul(U,-1),Z));rect(g,0,0,88,66,2.4,'face side');rect(g,4,4,80,58,2,'detail');rect(g,3,22,4.6,20,2.3,'face recess');doorLamp=lamp(g,12,9,1.1);text(g,16,10,'JAM','etch micro');g.append(' ');text(g,44,60,'PAPER PATH','etch micro center');rect(g,-2,-2,92,70,3,'focus-ring');}
 else{const g=group(plane(IN,U,Z));rect(g,0,0,88,66,2.4,'face in');rect(g,10,24,68,6,3,'face rubber');for(let u=8;u<84;u+=7)line(g,u,36,u,60,'rib');rect(g,36,8,16,5,2,'face lever');rect(g,6,44,5,14,2,'face lever');rect(g,-2,-2,92,70,3,'focus-ring');doorLamp=null;}
 rect(group(plane(FR,mul(N,-1),Z)),0,0,3,66,1,'face');rect(group(plane(IN,U,N)),0,0,88,3,1,'face top');into(draw);}
 // Paper drawers, lowest first: a front plate (grip, level gauge, size, number) and, pulled out, the tray, its guides and ream.
 const TRAYS=[{z:77,size:'A4',w:74,d:52,lvl:3},{z:45,size:'A4',w:74,d:52,lvl:4},{z:13,size:'A3',w:105,d:74,lvl:2}];
 const DR=TRAYS.map((T,i)=>({...T,i,open:false,t:0,v:0,last:-1}));
-for(const D of[...DR].reverse()){D.body=el('g',{});D.plate=button(el('g',{}),{'aria-label':`Pull out paper drawer ${D.i+1} (${D.i+1})`,'aria-pressed':'false'});into(D.plate);box(3,158,D.z,144,5,28,2.4,'cab');
+for(const D of[...DR].reverse()){D.body=el('g',{});D.plate=button(el('g',{}),{'aria-label':`Pull out paper drawer ${D.size} ${D.i+1} (${D.i+1})`,'aria-pressed':'false'});into(D.plate);box(3,158,D.z,144,5,28,2.4,'cab');
 const pf=group(FRONT(3,163,D.z+28));rect(pf,46,3,52,5,2.5,'face recess');line(pf,48,3.4,96,3.4);rect(pf,9,9,13,11,1.6,'face recess');[0,1,2,3].forEach(k=>rect(pf,10.5+k*2.85,10.4,2,8.2,.6,k<D.lvl?'gauge on':'gauge'));
-rect(pf,26,9.6,15,9.8,1.4,'face top');text(pf,33.5,16.4,D.size,'label center');circle(pf,132,14.6,4.6,'detail');text(pf,132,16.2,String(D.i+1),'label center');rect(pf,-2,-2,148,32,4,'focus-ring');into(draw);}
+rect(pf,26,9.6,15,9.8,1.4,'face top');text(pf,33.5,16.4,D.size,'label center');pf.append(' ');circle(pf,132,14.6,4.6,'detail');text(pf,132,16.2,String(D.i+1),'label center');rect(pf,-2,-2,148,32,4,'focus-ring');into(draw);}
 function drawTray(D){const t=D.t,g=D.body;g.replaceChildren();if(t<1.5)return;into(g);const zb=D.z,zf=zb+2.5,zt=zb+25,y1=158+t,len=y1-160,r0=150-D.d,rx=75-D.w/2,a=Math.max(160,r0+t),b=150+t,gm=Math.max(160,r0+t+D.d/2-7);
 rect(group(SIDE(8,y1,zt)),0,0,len,zt-zf,0,'face side in');rect(group(TOP(8,160,zf)),0,0,134,len,0,'face top in');
 box(rx-4.5,gm,zf,2,14,13,.6,'lever');if(r0+t-4>=160)box(rx+D.w/2-9,r0+t-4,zf,18,2.4,13,.6,'lever');
@@ -175,8 +175,8 @@ const src=()=>DR[0].open?2:1,blocked=()=>doorSeq||DR[0].open&&DR[1].open,goal=()
 function queue(j){j.done=0;if(j.kind==='r'){rJobs++;j.jamAt=rJobs%3?-1:2;}jobs.push(j);say(cur||jobs.length>1?`${j.kind==='r'?'Report':'Copy'} queued.`:j.kind==='r'?'Printing a six-page report.':'Copying the original on the glass.');lastUI=0;}
 function printKey(){audio();queue({kind:'r',total:6,name:NAME.r});}
 function copyKey(){audio();queue({kind:'c',total:1,name:NAME.c});}
-function lidKey(){audio();lidOpen=!lidOpen;lidSwept=false;set(lidG,'aria-pressed',lidOpen);set(lidG,'aria-label',`${lidOpen?'Lower':'Lift'} the scanner lid (L)`);noise(.22,.014,700,.8);say(lidOpen?'Lid lifted: the light bar sweeps under the glass.':'Lid lowered.');lastUI=0;}
-function drawer(i){audio();const D=DR[i];D.open=!D.open;set(D.plate,'aria-pressed',D.open);set(D.plate,'aria-label',`${D.open?'Push in':'Pull out'} paper drawer ${i+1} (${i+1})`);if(D.open)noise(.3,.02,480,.6);say(D.open?`Drawer ${i+1} pulled out: a ream of ${D.size} paper.`:`Drawer ${i+1} pushed in.`);lastUI=0;}
+function lidKey(){audio();lidOpen=!lidOpen;lidSwept=false;set(lidG,'aria-pressed',lidOpen);set(lidG,'aria-label',`QUIRE ORIGINALS: ${lidOpen?'lower':'lift'} the scanner lid (L)`);noise(.22,.014,700,.8);say(lidOpen?'Lid lifted: the light bar sweeps under the glass.':'Lid lowered.');lastUI=0;}
+function drawer(i){audio();const D=DR[i];D.open=!D.open;set(D.plate,'aria-pressed',D.open);set(D.plate,'aria-label',`${D.open?'Push in':'Pull out'} paper drawer ${D.size} ${i+1} (${i+1})`);if(D.open)noise(.3,.02,480,.6);say(D.open?`Drawer ${i+1} pulled out: a ream of ${D.size} paper.`:`Drawer ${i+1} pushed in.`);lastUI=0;}
 function doorKey(){audio();if(doorSeq)return;doorSeq={t0:performance.now(),jam};tone(jam?520:420,.05,.015);say(jam?'Side door open. The jammed sheet comes out and goes in the bin.':'Side door open: the paper path is clear.');if(reduced.matches)endDoor();lastUI=0;}
 function endDoor(){const J=doorSeq&&doorSeq.jam;doorSeq=null;if(J){jam=false;jamG.style.display='none';recess.appendChild(jamG);if(binN<BALLS.length)BALLS[binN++].style.display='';notice='JAM CLEARED · READY';noticeT=performance.now()+1500;tone(880,.07,.02);tone(1175,.09,.02,'sine',.09);say('Jam cleared. Ready, and the job carries on.');}lastUI=0;}
 function scanStart(now){sweep={t0:now};tone(220,.9,.006,'sawtooth');}

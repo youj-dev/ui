@@ -130,7 +130,7 @@ export function WeekView({ days, events, ctx, hours, today, now, label, classNam
                     past(event) && '*:opacity-90',
                   )}
                 >
-                  <span className="truncate text-ui-sm font-medium text-fg">{event.title}</span>
+                  <span className="truncate text-ui-sm font-medium text-fg">{event.title}</span>{' '}
                   {!short && (
                     <span className="flex min-w-0 items-center gap-1.5">
                       <span className="min-w-0 flex-1 truncate text-ui-xs text-fg-muted tabular-nums">

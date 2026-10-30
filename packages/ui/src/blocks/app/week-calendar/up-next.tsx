@@ -47,9 +47,9 @@ export function UpNext({ day, events, ctx, now, heading: Heading }: UpNextProps)
                   className="flex w-full flex-col gap-1 rounded-md px-2 py-1.5 text-start transition-colors yj-duration-fast ease-standard hover:bg-band"
                 >
                   <span className="flex items-baseline justify-between gap-2">
-                    <span className="truncate text-ui-sm font-medium text-fg">{event.title}</span>
+                    <span className="truncate text-ui-sm font-medium text-fg">{event.title}</span>{' '}
                     <span className={cn('shrink-0 text-ui-xs tabular-nums', live ? 'font-medium text-danger-text' : 'text-fg-muted')}>{live ? copy.now : copy.startsIn(event.start - now)}</span>
-                  </span>
+                  </span>{' '}
                   <span className="flex items-center justify-between gap-2">
                     <span className="truncate text-ui-xs text-fg-muted tabular-nums">
                       {clock(event.start)} – {clock(event.end)}

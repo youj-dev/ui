@@ -107,17 +107,18 @@ export function HomeView({ online, recents, unread, ongoing, titleId, startRef, 
                     <button
                       type="button"
                       onClick={() => onOpen(recent)}
-                      aria-label={`${recent.title}. ${recent.preview}${count ? `. ${copy.unreadCount(count)}` : ''}`}
+                      // The row as shown (title, time, preview), then the unread count.
+                      aria-label={`${recent.title} ${recent.when}. ${recent.preview}${count ? `. ${copy.unreadCount(count)}` : ''}`}
                       className="focus-ring flex w-full items-center gap-3 rounded-lg px-2 py-2 text-start transition-colors yj-duration-fast ease-standard hover:bg-hover"
                     >
                       {agent ? <PersonAvatar agent={agent} className="size-8" /> : <BotAvatar className="size-8" />}
                       <span className="flex min-w-0 flex-1 flex-col">
                         <span className="flex items-baseline gap-2">
-                          <span className={cn('truncate text-ui text-fg', count > 0 && 'font-semibold')}>{recent.title}</span>
+                          <span className={cn('truncate text-ui text-fg', count > 0 && 'font-semibold')}>{recent.title}</span>{' '}
                           <span className="ms-auto shrink-0 text-ui-xs text-fg-muted tabular-nums">{recent.when}</span>
-                        </span>
+                        </span>{' '}
                         <span className="flex items-center gap-2">
-                          <span className="truncate text-ui-sm text-fg-muted">{recent.preview}</span>
+                          <span className="truncate text-ui-sm text-fg-muted">{recent.preview}</span>{' '}
                           {count > 0 && (
                             <span className="ms-auto grid h-4 min-w-4 shrink-0 place-items-center rounded-full bg-danger px-1 text-ui-xs font-semibold text-on-accent tabular-nums">
                               {count}

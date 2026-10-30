@@ -72,7 +72,7 @@ describe('Security', () => {
   test('each policy is one link named with its format, dated in the locale, through linkComponent', () => {
     const RouterLink = forwardRef<HTMLAnchorElement, React.ComponentProps<'a'>>((props, ref) => <a ref={ref} data-router="" {...props} />)
     reduced(<MarketingSecurity linkComponent={RouterLink} locale="de-DE" />)
-    const link = screen.getByRole('link', { name: 'Security whitepaper (PDF)' })
+    const link = screen.getByRole('link', { name: /^Security whitepaper / })
     expect(link).toHaveAttribute('href', '#whitepaper')
     expect(link).toHaveAttribute('data-router')
     expect(link).toHaveTextContent('Updated 12.08.2026')

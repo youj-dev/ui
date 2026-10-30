@@ -145,8 +145,7 @@ function ImageAccordion({
             data-slot="image-accordion-panel"
             data-state={isOpen ? 'active' : 'inactive'}
             aria-current={isOpen || undefined}
-            aria-labelledby={titleId}
-            aria-describedby={item.description ? lineId : undefined}
+            aria-labelledby={item.description ? `${titleId} ${lineId}` : titleId}
             tabIndex={item.id === (focused ?? active) ? 0 : -1}
             onFocus={() => {
               setFocused(item.id)
@@ -190,7 +189,7 @@ function ImageAccordion({
             >
               <span id={titleId} data-slot="image-accordion-title" className="own:text-ui-sm own:font-medium">
                 {item.title}
-              </span>
+              </span>{' '}
               {item.description && (
                 <span id={lineId} data-slot="image-accordion-description" className="own:text-ui-xs own:text-fg-muted">
                   {item.description}

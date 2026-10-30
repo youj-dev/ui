@@ -25,7 +25,7 @@ describe('WeekCalendar with your data', () => {
     wrap(<WeekCalendar events={events} calendars={calendars} now={now} defaultView="agenda" />)
     expect(screen.getByText('15 – 19 Mar 2027 · Week 11')).toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: /, Monday 15 March|, Tuesday 16 March/ })).toHaveLength(2)
-    expect(screen.getByRole('button', { name: 'Mr Okoro, Tuesday 16 March, 09:00 to 09:30, Appointments' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Mr Okoro.*, Tuesday 16 March, Appointments$/ })).toBeInTheDocument()
     expect(within(screen.getByRole('list', { name: 'Calendars' })).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Appointments', 'Admin'])
   })
 
@@ -48,13 +48,13 @@ describe('WeekCalendar with your data', () => {
     const onSelect = vi.fn()
     const onDateChange = vi.fn()
     wrap(<WeekCalendar events={events} calendars={calendars} now={now} onSelect={onSelect} onDateChange={onDateChange} copy={{ where: 'Room' }} defaultView="agenda" />)
-    await user.click(screen.getByRole('button', { name: /^Mr Okoro/ }))
+    await user.click(screen.getByRole('button', { name: /Mr Okoro/ }))
     expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ id: 'okoro' }))
     expect(await screen.findByRole('dialog')).toHaveTextContent('RoomRoom 2')
     await user.keyboard('{Escape}')
     await user.click(screen.getByRole('button', { name: 'Next week' }))
     expect(onDateChange).toHaveBeenCalledWith('2027-03-22')
-    expect(screen.getAllByRole('button', { name: /, (Monday|Tuesday|Wednesday|Thursday|Friday) \d+ March, \d\d:\d\d to/ }).map((b) => b.getAttribute('aria-label'))).toEqual(['Huddle, Monday 22 March, 08:00 to 08:30, Admin'])
+    expect(screen.getAllByRole('button', { name: /Huddle.*, Monday 22 March, Admin$/ })).toHaveLength(1)
   })
 
   test('a controlled date and view only change when the app passes new ones', async () => {

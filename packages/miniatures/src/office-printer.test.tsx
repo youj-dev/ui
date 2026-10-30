@@ -14,9 +14,9 @@ describe('OfficePrinter', () => {
   })
 
   const pages = (inside: ShadowRoot) => inside.querySelectorAll('.page')
-  const panel = (inside: ShadowRoot) => inside.querySelector('[aria-label="Print a report (P)"]')!
+  const screen = (inside: ShadowRoot) => inside.getElementById('printScreen')!
   const lid = (inside: ShadowRoot) => inside.querySelector('[aria-label$="the scanner lid (L)"]')!
-  const drawer = (inside: ShadowRoot, n: number) => inside.querySelector(`[aria-label$="paper drawer ${n} (${n})"]`)!
+  const drawer = (inside: ShadowRoot, n: number) => inside.querySelector(`[aria-label*="paper drawer"][aria-label$=" ${n} (${n})"]`)!
   const binned = (inside: ShadowRoot) => [...inside.querySelectorAll('[clip-path="url(#binClip)"] > g')].filter((g) => (g as SVGElement).style.display !== 'none')
 
   it('starts ready, with its counter, the lid down, an empty output tray and its drawers in', async () => {
@@ -24,10 +24,10 @@ describe('OfficePrinter', () => {
     const { handle, inside } = mount(MiniatureOfficePrinter)
     await run(100)
     expect(handle().getSnapshot()).toMatchObject({ readout: 'READY · COUNTER 04816', state: 'READY · LID CLOSED', pressed: {} })
-    expect(panel(inside).textContent).toContain('READY')
+    expect(screen(inside).textContent).toContain('READY')
     expect(pages(inside)).toHaveLength(0)
     expect(lid(inside)).toHaveAttribute('aria-pressed', 'false')
-    for (const n of [1, 2, 3]) expect(drawer(inside, n)).toHaveAttribute('aria-label', `Pull out paper drawer ${n} (${n})`)
+    for (const n of [1, 2, 3]) expect(drawer(inside, n)).toHaveAttribute('aria-label', `Pull out paper drawer ${n === 3 ? 'A3' : 'A4'} ${n} (${n})`)
     expect(binned(inside)).toHaveLength(2)
   })
 
@@ -39,7 +39,7 @@ describe('OfficePrinter', () => {
     expect(pages(inside)).toHaveLength(6)
     expect(handle().getSnapshot().readout).toBe('READY · COUNTER 04822')
     expect(handle().getSnapshot().state).toBe('DONE · 06 PAGES · REPORT')
-    expect(panel(inside).textContent).toContain('DONE')
+    expect(screen(inside).textContent).toContain('DONE')
   })
 
   it('feeds the pages one by one while the exit rollers turn, then comes to rest', async () => {
@@ -55,7 +55,7 @@ describe('OfficePrinter', () => {
     expect(handle().getSnapshot().readout).toBe('PAGE 00/06 · COUNTER 04816')
     expect(pages(inside)).toHaveLength(1)
     expect(tread.getAttribute('y1')).not.toBe(rest)
-    expect(panel(inside).textContent).toContain('PRINTING')
+    expect(screen(inside).textContent).toContain('PRINTING')
     await run(2400)
     expect(handle().getSnapshot().readout).toMatch(/^PAGE 0[23]\/06 · COUNTER 0481[89]$/)
     await run(5000)
@@ -104,7 +104,7 @@ describe('OfficePrinter', () => {
     act(() => handle().press('l'))
     await run(1400)
     expect(lid(inside)).toHaveAttribute('aria-pressed', 'true')
-    expect(lid(inside)).toHaveAttribute('aria-label', 'Lower the scanner lid (L)')
+    expect(lid(inside)).toHaveAttribute('aria-label', 'QUIRE ORIGINALS: lower the scanner lid (L)')
     expect(lid(inside).innerHTML).not.toBe(closed)
     expect(handle().getSnapshot().state).toBe('SCANNING · LID OPEN')
     await run(1500)
@@ -127,7 +127,7 @@ describe('OfficePrinter', () => {
     await run(1200)
     expect(handle().getSnapshot().state).toBe('DRAWER 3 OUT · A3 REAM')
     expect(plate).toHaveAttribute('aria-pressed', 'true')
-    expect(plate).toHaveAttribute('aria-label', 'Push in paper drawer 3 (3)')
+    expect(plate).toHaveAttribute('aria-label', 'Push in paper drawer A3 3 (3)')
     expect(plate.getAttribute('transform')).not.toBe(shut)
     expect(inside.querySelectorAll('.ream').length).toBeGreaterThan(0)
     act(() => handle().press('3'))
@@ -159,7 +159,7 @@ describe('OfficePrinter', () => {
     expect(handle().getSnapshot().state).toBe('PAPER JAM · OPEN SIDE DOOR · D')
     expect(handle().getSnapshot().readout).toBe('PAGE 02/06 · COUNTER 04830')
     expect(pages(inside)).toHaveLength(2)
-    expect(panel(inside).textContent).toContain('PAPER JAM')
+    expect(screen(inside).textContent).toContain('PAPER JAM')
     expect(binned(inside)).toHaveLength(2)
     act(() => handle().press('d'))
     await run(100)
@@ -174,7 +174,7 @@ describe('OfficePrinter', () => {
   it('D swings the side door open on the paper path and shuts it again', async () => {
     const run = useFrames()
     const { handle, inside } = mount(MiniatureOfficePrinter, { reducedMotion: 'never' })
-    const door = inside.querySelector('[aria-label^="Open the side door"]')!
+    const door = inside.querySelector('[aria-label*="open the side door"]')!
     const shut = door.innerHTML
     act(() => handle().press('d'))
     await run(600)

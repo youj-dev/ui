@@ -80,7 +80,7 @@ for(const c of['cbu','detail'])wire([[178,131.2,112],[184,134,116],[209,134,110]
 rect(hc,7,7,24,15,2,'face recess');el('rect',{x:9,y:9,width:20,height:11,rx:1.4,class:'lcdh'},hc);rect(hc,8.4,8.4,21.2,12.2,1.4,'face screen');lcd1=text(hc,19,14.4,'MOON','lcd');lcd2=text(hc,19,18.6,'MANUAL','lcd s');text(hc,19,5.4,'ORVANE','etch micro center');
 function key(id,x,y,label,glyph,w=7,h=6){const g=el('g',{class:'control key',role:'button',tabindex:'0','aria-label':label},hc);rect(g,x-w/2,y-h/2,w,h,1.6,'face top kf');if(glyph.startsWith('M'))el('path',{d:glyph,class:'ki',transform:`translate(${x} ${y})`},g);else text(g,x,y+1.2,glyph,'kl');rect(g,x-w/2-1.2,y-h/2-1.2,w+2.4,h+2.4,2,'focus-ring');rect(g,x-w/2-1.6,y-h/2-1.6,w+3.2,h+3.2,0,'hit');keys[id]=g;return g;}
 key('up',19,30,'Slew declination up (↑)','M-1.8,.9L0,-.9L1.8,.9');key('left',10.5,37,'Slew right ascension left (←)','M.9,-1.8L-.9,0L.9,1.8');key('right',27.5,37,'Slew right ascension right (→)','M-.9,-1.8L.9,0L-.9,1.8');key('down',19,44,'Slew declination down (↓)','M-1.8,-.9L0,.9L1.8,-.9');
-['MOON','SATURN','JUPITER'].forEach((n,i)=>key('t'+i,9+i*10,54,`Go to the ${n.toLowerCase()} (${i+1})`,String(i+1),8));key('track',13,64,'Toggle sidereal tracking (T)','TRK',12);key('red',26,64,'Red night light (L)','RED',10);trackLed=lamp(hc,19,71,.9);
+['MOON','SATURN','JUPITER'].forEach((n,i)=>key('t'+i,9+i*10,54,`${i+1}: go to the ${n.toLowerCase()} (${i+1})`,String(i+1),8));key('track',13,64,'TRK: toggle sidereal tracking (T)','TRK',12);key('red',26,64,'Red night light (L)','RED',10);trackLed=lamp(hc,19,71,.9);
 // Mount head (sorted with the moving parts): RA housing, setting circle, latitude scale, RA motor.
 const A=[0,-.6,.8],V=[145,126,207];let raLed,cableEnd;
 stat(470,()=>{const b0=[145,150,171];tube(root,b0,V,16,'');for(const t of[.22,.78])tube(root,add(b0,mul(sub(V,b0),t-.03)),add(b0,mul(sub(V,b0),t+.03)),16.6,'dk');
@@ -88,7 +88,7 @@ box(113,128,172,26,25,26,4,'');const mf=group(FRONT(113,153,198));rect(mf,3,3,20
 const lat=group(SIDE(161.2,150,190));circle(lat,0,0,10,'face top');circle(lat,0,0,7.4,'face dk');for(let i=0;i<7;i++){const t=(-95+i*25)*RAD;line(lat,8*Math.cos(t),8*Math.sin(t),9.6*Math.cos(t),9.6*Math.sin(t));}line(lat,0,0,4,-5,'mark');screw(lat,0,0);cableEnd=[126,154,184];});
 const cab=[cableEnd,[130,168,166],[150,172,138],[182,152,118],[205,136,108]];stat(520,()=>{for(const c of['cbu','cbl'])wire(cab,c);for(let i=0;i<8;i++){const p=add([150,172,138],mul([32,-20,-20],i/8)),f=group(FRONT(...p));el('path',{d:'M-2.4,-1.6Q-3.6,1.6 0,2.2Q3.6,2.8 2.2,0',class:'cbl',style:'stroke-width:1.4'},f);}});
 // Moving assembly: DEC housing, counterweight, saddle, rings, tube, shield, focuser, diagonal, finder.
-const M={dec:part(),shaft:part(),cw:part(),saddle:part(),tube:part('Cycle the target by clicking the telescope (1–3)'),rings:[part(),part()],shield:part(),rear:part(),knob:part('Rack the focuser (F)'),diag:part(),finder:part(),brk:[part(),part()]};
+const M={dec:part(),shaft:part(),cw:part(),saddle:part(),tube:part('ORVANE R–80 · F/6.3: cycle the target by clicking the telescope (1–3)'),rings:[part(),part()],shield:part(),rear:part(),knob:part('Rack the focuser (F)'),diag:part(),finder:part(),brk:[part(),part()]};
 let ra=-78,dec=26,selected=0,tracking=false,focus=.55,slew=null,red=false,last=0,lastDraw=-1,manualAt=0,sky=0,flash='',flashT=0,pressed={};
 function pose(){const d=rotate([1,0,0],A,ra),a=rotate(rotate([0,.8,.6],A,ra),d,dec),u=unit(cross(d,a));return{d,a,u,T:add(add(V,mul(d,-28)),mul(u,43))};}
 function assemble(){const{d,a,u,T}=pose(),q=(l,b=0,h=0)=>add(T,add(mul(a,l),add(mul(d,b),mul(u,h)))),F=(1-focus)*8;
@@ -96,7 +96,7 @@ upd(M.dec,add(V,mul(d,-10)),g=>{tube(g,add(V,mul(d,-34)),add(V,mul(d,15)),12,'')
 upd(M.shaft,add(V,mul(d,45)),g=>{tube(g,add(V,mul(d,12)),add(V,mul(d,78)),2.6,'metal');tube(g,add(V,mul(d,78)),add(V,mul(d,82)),5,'rubber');});
 upd(M.cw,add(V,mul(d,58)),g=>{const c=tube(g,add(V,mul(d,49)),add(V,mul(d,67)),17,'dk');circle(c,0,0,13,'detail');circle(c,0,0,3.4,'face recess');const lk=add(add(V,mul(d,58)),mul(u,17));tube(g,lk,add(lk,mul(u,6)),3,'metal');});
 upd(M.saddle,q(0,0,-28),g=>{tube(g,add(V,mul(d,-28)),q(0,0,-29),7,'dk');obox(g,q(0,0,-28),a,d,u,84,12,5,'dk');});
-upd(M.tube,T,g=>{tube(g,q(-86),q(81),22,'');for(const l of[-60,62])band(g,q(l),q(l+1.6),22.2,'dk');const s=unit(sub(VIEW,mul(a,dot(VIEW,a)))),tw=P(...a)[0]>=0?a:mul(a,-1);let w2=unit(cross(tw,s));if(P(...w2)[1]<0)w2=mul(w2,-1);const tg=group(plane(add(add(add(q(-10),mul(s,22.2)),mul(tw,-16)),mul(w2,-1.5)),tw,w2),g);text(tg,0,0,'ORVANE','label brand');text(tg,.4,5.6,'R–80 · F/6.3','etch micro');});
+upd(M.tube,T,g=>{tube(g,q(-86),q(81),22,'');for(const l of[-60,62])band(g,q(l),q(l+1.6),22.2,'dk');const s=unit(sub(VIEW,mul(a,dot(VIEW,a)))),tw=P(...a)[0]>=0?a:mul(a,-1);let w2=unit(cross(tw,s));if(P(...w2)[1]<0)w2=mul(w2,-1);const tg=group(plane(add(add(add(q(-10),mul(s,22.2)),mul(tw,-16)),mul(w2,-1.5)),tw,w2),g);text(tg,0,0,'ORVANE','label brand');tg.append(' ');text(tg,.4,5.6,'R–80 · F/6.3','etch micro');});
 M.rings.forEach((r,i)=>{const l=[-34,36][i];upd(r,T,g=>{band(g,q(l-3.5),q(l+3.5),24,'dk');const b=add(q(l),mul(u,23.6));tube(g,b,add(b,mul(u,4.4)),2.6,'metal');});});
 upd(M.shield,T,g=>{tube(g,q(80),q(85),23.4,'metal',0,false);const c=tube(g,q(84),q(117),24.6,'dk',0,true);if(c.front){circle(c,0,0,22.4,'face recess');circle(c,0,0,19,'face lens');el('path',{d:'M-11,-9Q-1,-17 9,-10L-8,6Z',class:'refl'},c);circle(c,0,0,15,'detail');}});
 upd(M.rear,q(-95-F/2),g=>{tube(g,q(-93),q(-86),16,'dk');tube(g,q(-108-F),q(-93),7.4,'metal');const r=q(-112-F);tube(g,q(-109-F),r,9,'dk');tube(g,r,add(r,mul(u,13)),7,'dk');const e=add(r,mul(u,13));tube(g,e,add(e,mul(u,9)),7.8,'metal');const cup=tube(g,add(e,mul(u,9)),add(e,mul(u,15)),8.6,'rubber');if(cup.front)circle(cup,0,0,5,'face lens');});
@@ -124,7 +124,7 @@ for(const[y,h]of[[-15,3],[-7,5],[2,4],[10,3]])el('path',{d:`M-24,${y}Q0,${y+3.4}
 for(const[x,y,r]of[[-38,1,1.1],[33,-3,1.3],[44,-5,.9],[-48,2,1]])circle(jupiter,x,y,r,'moon');
 const ret=el('g',{class:'retg'},field);for(const[x1,y1,x2,y2]of[[-50,0,-36,0],[36,0,50,0],[0,-50,0,-36],[0,36,0,50],[-3,0,3,0],[0,-3,0,3]])line(ret,x1,y1,x2,y2,'ret');circle(ret,0,0,33,'ret');
 circle(field,0,0,56,'vig');
-text(eye,0,-71,'EYEPIECE · 25 MM · 20×','otext');const eyeLabel=text(eye,0,77,'01 · MOON','otext'),focusRead=text(eye,0,84,'FOCUS 55%','otext');
+const eyeText=group(`translate(${IX} ${IY})`,root,{'pointer-events':'none'});text(eyeText,0,-71,'EYEPIECE · 25 MM · 20×','otext');const eyeLabel=text(eyeText,0,77,'01 · MOON','otext'),focusRead=text(eyeText,0,84,'FOCUS 55%','otext');
 // State: slews, tracking, focus and the red light; audio only after a gesture.
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const readout=document.getElementById('readout'),stateLabel=document.getElementById('state'),announcement=document.getElementById('announcement'),hk={};

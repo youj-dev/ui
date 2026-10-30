@@ -490,7 +490,7 @@ export function ComposerToolbar({ model, onModelChange }: { model: string; onMod
         <GlobeIcon {...ICON} />
         <span className="max-sm:hidden">Search</span>
       </Toggle>
-      <Toggle size="sm" pressed={reason} onPressedChange={setReason} aria-label="Think before answering">
+      <Toggle size="sm" pressed={reason} onPressedChange={setReason} aria-label="Reason: think before answering">
         <LightbulbIcon {...ICON} />
         <span className="max-sm:hidden">Reason</span>
       </Toggle>

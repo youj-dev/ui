@@ -120,8 +120,8 @@ describe('built-in labels', () => {
       </German>,
     )
     expect(screen.getByRole('navigation', { name: 'Seitennavigation' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Zur vorherigen Seite' })).toHaveTextContent('Zurück')
-    expect(screen.getByRole('link', { name: 'Zur nächsten Seite' })).toHaveTextContent('Weiter')
+    expect(screen.getByRole('link', { name: 'Zurück, Zur vorherigen Seite' })).toHaveTextContent('Zurück')
+    expect(screen.getByRole('link', { name: 'Weiter, Zur nächsten Seite' })).toHaveTextContent('Weiter')
   })
 
   it('translates the carousel controls', () => {
@@ -156,8 +156,8 @@ describe('built-in labels', () => {
         </YoujProvider>
       </German>,
     )
-    expect(screen.getByRole('link', { name: 'Zur nächsten Seite' })).toHaveTextContent('Suivant')
-    expect(screen.getByRole('link', { name: 'Zur vorherigen Seite' })).toHaveTextContent('Zurück')
+    expect(screen.getByRole('link', { name: 'Suivant, Zur nächsten Seite' })).toHaveTextContent('Suivant')
+    expect(screen.getByRole('link', { name: 'Zurück, Zur vorherigen Seite' })).toHaveTextContent('Zurück')
   })
 
   it('stays English without a provider', () => {

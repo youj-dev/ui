@@ -35,7 +35,7 @@ export function RegionMenu({
         render={<Button variant="ghost" size="xs" aria-label={copy.region(shown.label, shown.currency)} className={cn('gap-1.5 text-fg-muted', className)} />}
       >
         <GlobeIcon size={14} />
-        {shown.label}
+        {shown.label}{' '}
         <span className="text-fg-subtle tabular-nums">{shown.currency}</span>
         <ChevronDownIcon size={12} className="text-fg-subtle" />
       </DropdownMenuTrigger>

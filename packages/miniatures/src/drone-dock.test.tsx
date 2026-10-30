@@ -24,7 +24,7 @@ describe('DroneDock', () => {
     expect(handle().getSnapshot().state).toBe('CHARGING')
     expect(drone(inside)).toHaveAttribute('transform', 'translate(0.00 0.00)')
     expect(inside.querySelector('[aria-label="Charge the drone (C)"]')).toHaveAttribute('aria-pressed', 'true')
-    expect(inside.querySelector('[aria-label="Take off or land (T)"]')).toHaveAttribute('aria-pressed', 'false')
+    expect(inside.querySelector('[aria-label="T/O: take off or land (T)"]')).toHaveAttribute('aria-pressed', 'false')
     for (const rail of rails(inside)) expect(Number(rail.style.opacity)).toBeGreaterThan(0)
     for (const blur of inside.querySelectorAll<SVGElement>('.blur')) expect(Number(blur.style.opacity)).toBe(0)
   })
@@ -42,7 +42,7 @@ describe('DroneDock', () => {
     expect(drone(inside)).toHaveAttribute('transform', 'translate(0.00 -80.00)')
     expect(leftBar).toHaveAttribute('transform', 'translate(0.00 0.00)')
     expect(rightBar).toHaveAttribute('transform', 'translate(0.00 0.00)')
-    expect(inside.querySelector('[aria-label="Take off or land (T)"]')).toHaveAttribute('aria-pressed', 'true')
+    expect(inside.querySelector('[aria-label="T/O: take off or land (T)"]')).toHaveAttribute('aria-pressed', 'true')
     for (const rail of rails(inside)) expect(rail.style.opacity).toBe('0')
     for (const blur of inside.querySelectorAll<SVGElement>('.blur')) expect(blur.style.opacity).toBe('0.22')
 

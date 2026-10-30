@@ -72,9 +72,9 @@ const bx=6+16.4*i,g=el('g',{class:'control sled',role:'button',tabindex:'0','ari
 const topG=group(TOP(bx+1,108,75),g),topR=rect(topG,0,0,13,0,1,'face top base'),ridges=[3,6.5,10].map(u=>line(topG,u,2,u,2));
 const sideG=group('',g),sideR=rect(sideG,0,0,0,56,1,'face side metal');
 const cp=el('clipPath',{id:`clip${i}`},svg.querySelector('defs')),cpR=rect(cp,0,0,0,56,0,'');
-const lab=group('',sideG,{'clip-path':`url(#clip${i})`});
-rect(lab,5,8,40,38,1.6,'face paper');text(lab,25,15.4,'HALCYON','label center dark-ink');text(lab,25,25.6,'8 TB','label brand center dark-ink');text(lab,25,30.6,'NAS 7200 RPM · SATA 6 Gb/s','etch micro center');
-for(let k=0;k<22;k++)rect(lab,10+k*1.38,34,k%3?.5:.9,6,0,'face dark-ink');text(lab,25,43.6,`S/N HN8T-${4071+i*13}`,'etch micro center');
+const lab=group('',sideG,{'clip-path':`url(#clip${i})`}),labT=group('',g.parentNode,{'clip-path':`url(#clip${i})`,'pointer-events':'none'});
+rect(lab,5,8,40,38,1.6,'face paper');text(labT,25,15.4,'HALCYON','label center dark-ink');text(labT,25,25.6,'8 TB','label brand center dark-ink');text(labT,25,30.6,'NAS 7200 RPM · SATA 6 Gb/s','etch micro center');
+for(let k=0;k<22;k++)rect(lab,10+k*1.38,34,k%3?.5:.9,6,0,'face dark-ink');text(labT,25,43.6,`S/N HN8T-${4071+i*13}`,'etch micro center');
 for(const v of[3,50])rect(lab,47,v,10,3,1,'face recess');
 const railT=rect(sideG,0,0,0,3.4,.5,'face base'),railB=rect(sideG,0,52.6,0,3.4,.5,'face base');
 const plate=into(group('',g),()=>{box(bx,108,14,15,3,66,2.4,'');});
@@ -84,7 +84,7 @@ rect(pf,3,8,9,15,4,'face recess');rect(pf,4.4,9.6,6.2,11.8,3,'face base grip');
 for(let v=28;v<52;v+=3)rect(pf,3.5,v,8,1.1,.5,'face recess');
 rect(pf,4,55.4,7,4.6,1.2,'face top');rect(pf,5.4,56.6,4.2,2.2,.6,'tab');text(pf,7.5,64.2,String(i+1),'etch micro center');
 rect(pf,0,0,15,66,0,'hit');rect(pf,-1.2,-1.2,17.4,68.4,3,'focus-ring');
-sleds.push({i,bx,g,topR,ridges,sideG,sideR,cpR,railT,railB,plate,led,st:'ok',s:0,from:0,to:0,t0:0});
+sleds.push({i,bx,g,topR,ridges,sideG,labT,sideR,cpR,railT,railB,plate,led,st:'ok',s:0,from:0,to:0,t0:0});
 }
 frame([[0,0,0,86,104,104],[2,104,6,82,4,96],[6,108,14,64,49,66]],24);
 // State: power, hot-swap sleds, RAID 5 health and rebuild, transfers.
@@ -100,7 +100,7 @@ function lamp(n,c){if(n._c!==c){n._c=c;set(n,'class','lamp'+(c?' '+c:''));}}
 const ease=t=>t<=0?0:t>=1?1:t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 function place(d){
 const s=d.s,bx=d.bx;
-set(d.topR,'height',s);for(const n of d.ridges)set(n,'y2',Math.max(2,s-3));set(d.sideG,'transform',SIDE(bx+14,108+s,75));for(const n of[d.sideR,d.cpR,d.railT,d.railB])set(n,'width',s);
+set(d.topR,'height',s);for(const n of d.ridges)set(n,'y2',Math.max(2,s-3));set(d.sideG,'transform',SIDE(bx+14,108+s,75));set(d.labT,'transform',SIDE(bx+14,108+s,75));for(const n of[d.sideR,d.cpR,d.railT,d.railB])set(n,'width',s);
 set(d.plate,'transform',`translate(${(-s*C).toFixed(2)} ${(s*S).toFixed(2)})`);
 }
 function swap(i){

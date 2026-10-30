@@ -144,7 +144,6 @@ export function HierarchyChart<T extends HierarchyNode = HierarchyNode>({
   const cue = useSoundCue()
   const rtl = useDirection() === 'rtl'
   const hintId = useId()
-  const baseId = useId()
   const roots = useMemo(() => (Array.isArray(nodes) ? (nodes as readonly T[]) : [nodes as T]), [nodes])
   const index = useMemo(() => indexNodes(roots), [roots])
   const [expandedList, setExpandedList] = useControllableState(expandedProp, defaultExpanded ?? [...index.values()].filter((e) => e.node.children?.length).map((e) => e.node.id))
@@ -544,8 +543,7 @@ export function HierarchyChart<T extends HierarchyNode = HierarchyNode>({
                   const state: HierarchyNodeState = { depth: n.depth, selected: selected === id, onPath: path.has(id), branch, open: n.open, descendants: n.descendants }
                   const from = n.parent ? layout.nodes.get(n.parent) : undefined
                   const start = from ? place(from) : p
-                  const descId = `${baseId}-${id}`
-                  const description = [node.role, typeof node.badge === 'string' || typeof node.badge === 'number' ? node.badge : null, branch && !n.open ? labels.hierarchyChartHidden(n.descendants) : null].filter(Boolean).join(', ')
+                  const description = [node.role, typeof node.badge === 'string' || typeof node.badge === 'number' ? node.badge : null, branch && !n.open ? `+${n.descendants}, ${labels.hierarchyChartHidden(n.descendants)}` : null].filter(Boolean).join(', ')
                   return (
                     <m.li
                       key={id}
@@ -564,8 +562,8 @@ export function HierarchyChart<T extends HierarchyNode = HierarchyNode>({
                       aria-posinset={n.pos}
                       aria-expanded={branch ? n.open : undefined}
                       aria-selected={state.selected}
-                      aria-label={node.name}
-                      aria-describedby={description ? descId : undefined}
+                      // The name holds what the card shows (name, role, badge) in order, then what is folded away.
+                      aria-label={description ? `${node.name}, ${description}` : node.name}
                       tabIndex={tabStop === id ? 0 : -1}
                       custom={ctx}
                       initial={{ x: start.x, y: start.y, opacity: 0, scale: 0.92 }}
@@ -594,11 +592,6 @@ export function HierarchyChart<T extends HierarchyNode = HierarchyNode>({
                       style={{ width: n.width, height: n.height }}
                     >
                       {renderNode ? renderNode(node, state) : <HierarchyNodeCard node={node} />}
-                      {description && (
-                        <span id={descId} className="sr-only">
-                          {description}
-                        </span>
-                      )}
                       {branch && (
                         <span
                           aria-hidden

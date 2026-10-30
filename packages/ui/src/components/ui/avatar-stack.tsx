@@ -124,7 +124,7 @@ function AvatarStack({ users, max = 4, size = 'default', label, className, ...pr
         {hidden > 0 && (
           <Popover>
             <PopoverTrigger
-              aria-label={labels.avatarStackShowAll(users.length, label)}
+              aria-label={`${labels.avatarStackShowAll(users.length, label)}, +${hidden}`}
               // An opaque base under the count's translucent fill, so the avatar it overlaps doesn't show through.
               className={cn(fan, 'group/count own:rounded-full own:bg-canvas focus-ring')}
               style={{ '--i': shown.length } as CSSProperties}

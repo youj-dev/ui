@@ -28,7 +28,7 @@ export function Controls({ periods, period, sites, site, copy, onPeriod, onSite 
         }}
       >
         {periods.map((p) => (
-          <SegmentedControlItem key={p.id} value={p.id} aria-label={p.name ?? p.label} className="px-2.5 font-mono text-ui-sm">
+          <SegmentedControlItem key={p.id} value={p.id} aria-label={p.name ? `${p.label}, ${p.name}` : p.label} className="px-2.5 font-mono text-ui-sm">
             {p.label}
           </SegmentedControlItem>
         ))}

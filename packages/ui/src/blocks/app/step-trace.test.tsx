@@ -30,7 +30,7 @@ describe('StepTrace block', () => {
     expect(figure('Steps')).toBe('8/11')
     expect(figure('Elapsed')).toBe('18.6s')
     expect(within(screen.getByRole('group', { name: 'Steps of the run' })).getAllByRole('button').filter((b) => b.getAttribute('data-slot') === 'flow-graph-node')).toHaveLength(11)
-    const draft = step(/^notes\.draft, Running/)
+    const draft = step(/^notes\.draft, .*Running/)
     expect(draft).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('heading', { level: 3, name: 'notes.draft' })).toBeInTheDocument()
     expect(screen.getByText(/Saved views/)).toBeInTheDocument()
@@ -40,7 +40,7 @@ describe('StepTrace block', () => {
   test('opening a failed step shows its error; the close button puts the detail away', async () => {
     const user = userEvent.setup()
     reduced(<StepTrace live={false} />)
-    await user.click(step(/^screenshots\.fetch, Failed, 404/))
+    await user.click(step(/^screenshots\.fetch, .*404, Failed/))
     expect(screen.getByRole('heading', { level: 3, name: 'screenshots.fetch' })).toBeInTheDocument()
     expect(screen.getByRole('note')).toHaveTextContent('404: no preview deployment for PR 2291')
     await user.click(screen.getByRole('button', { name: 'Close step' }))
@@ -59,7 +59,7 @@ describe('StepTrace block', () => {
       expect(figure('Steps')).toBe('11/11')
       expect(screen.getAllByText('Completed').length).toBeGreaterThan(0)
       expect(screen.getAllByRole('status').map((s) => s.textContent)).toContain('Run complete, 1 step failed')
-      expect(step(/^notes\.publish, Succeeded/)).toBeInTheDocument()
+      expect(step(/^notes\.publish, .*Succeeded/)).toBeInTheDocument()
       expect(approve).toBeEnabled()
       fireEvent.click(approve)
       await act(async () => vi.advanceTimersByTime(2000))
@@ -77,7 +77,7 @@ describe('StepTrace block', () => {
     await user.click(screen.getByRole('button', { name: 'Replay' }))
     // The translation is left out by the settings, so it's settled from the start.
     expect(figure('Steps')).toBe('1/11')
-    expect(step(/^plan, Running/)).toBeInTheDocument()
+    expect(step(/^plan, .*Running/)).toBeInTheDocument()
   })
 
   test('embedded, it is a section named by an h2 with the open step under an h3', () => {
@@ -117,8 +117,8 @@ describe('StepTrace block', () => {
 
     test('your kinds label the steps in the graph and in the detail', () => {
       reduced(<StepTrace steps={steps} kinds={kinds} run={run} defaultOpen="spin" />)
-      expect(step(/^centrifuge, Succeeded/)).toBeInTheDocument()
-      expect(step(/^intake, Succeeded/)).toBeInTheDocument()
+      expect(step(/^centrifuge, .*Succeeded/)).toBeInTheDocument()
+      expect(step(/^intake, .*Succeeded/)).toBeInTheDocument()
       expect(screen.getAllByText('Instrument').length).toBeGreaterThan(1)
       expect(screen.getByText('Serum panel · S-2291')).toBeInTheDocument()
       expect(screen.getByText('Assay line 3 · Lab B')).toBeInTheDocument()

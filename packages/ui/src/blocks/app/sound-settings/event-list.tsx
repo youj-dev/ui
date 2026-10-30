@@ -16,6 +16,9 @@ import { EVENTS, type EventInfo, type SoundEvent, type SoundSettingsCopy } from 
  * silent themselves. A row that's off dims its words, and can still be
  * heard, so you can decide. */
 
+/** The button's name, led by the word it shows when the name doesn't already hold it. */
+const named = (name: string, shown: string) => (name.toLowerCase().includes(shown.toLowerCase()) ? name : `${shown}, ${name}`)
+
 const ICONS: Record<SoundEvent, ComponentType<{ size?: number }>> = {
   tap: MousePointerIcon,
   toggle: ToggleIcon,
@@ -82,7 +85,7 @@ export function EventList({ events, onToggle, disabled, playing, onPlay, copy }:
               size="sm"
               sound={false}
               disabled={disabled}
-              aria-label={copy.playEvent(copy.events[event.id].name)}
+              aria-label={named(copy.playEvent(copy.events[event.id].name), copy.play)}
               data-playing={playing === event.id || undefined}
               onClick={() => onPlay(event)}
               className="shrink-0 text-fg-muted data-playing:text-fg"

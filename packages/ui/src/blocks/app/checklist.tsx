@@ -161,12 +161,13 @@ function ChecklistContent({
                 <motion.button
                   layout="position"
                   type="button"
-                  aria-label={copy.openPill(count, STEPS.length)}
+                  // The pill's words as shown, then what it opens.
+                  aria-label={`${copy.pill} ${copy.pillCount(count, STEPS.length)}, ${copy.openPill(count, STEPS.length)}`}
                   onClick={() => setMinimized(false)}
                   className="focus-ring flex items-center gap-2.5 rounded-full py-1.5 ps-1.5 pe-4 text-ui font-medium"
                 >
                   <ProgressRing value={progress} size={28} />
-                  {copy.pill}
+                  {copy.pill}{' '}
                   <span className="text-fg-muted tabular-nums">{copy.pillCount(count, STEPS.length)}</span>
                 </motion.button>
               ) : (

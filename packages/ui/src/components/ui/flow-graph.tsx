@@ -398,6 +398,9 @@ function FlowEdgePath({ d, state, active, live }: { d: string; state: string; ac
   )
 }
 
+/** The attempts as the node shows them (×2): a language with a dual form says "twice" without the digit, so it gets one. */
+const attemptsText = (words: string, count: number) => (words.includes(String(count)) ? words : `×${count} ${words}`)
+
 interface FlowNodeViewProps {
   node: FlowNode
   box: FlowLayoutNode
@@ -487,7 +490,7 @@ function FlowNodeView({ node, box, left, orientation, rtl, open, tabbable, live,
           <span data-slot="flow-graph-node-name" dir="ltr" className={cn('min-w-0 truncate own:font-mono own:text-ui own:leading-tight', node.status === 'queued' || node.status === 'skipped' ? 'own:text-fg-muted' : 'own:text-fg')}>
             {node.label}
           </span>
-        </span>
+        </span>{' '}
         <span className="own:flex min-w-0 items-center gap-1.5 ps-4 own:text-ui-xs own:leading-none own:text-fg-muted">
           {node.kind && (
             <span data-slot="flow-graph-node-kind" className="shrink-0 own:font-(family-name:--yj-label-font) own:tracking-(--yj-label-tracking) own:[text-transform:var(--yj-label-case)]">
@@ -786,7 +789,13 @@ function FlowGraph({
                   open={open === id}
                   tabbable={tabbable === id}
                   live={live}
-                  name={labels.flowGraphNode(node.label, word, node.meta)}
+                  // What the step shows (label, kind, meta, attempts) in reading order, then its state.
+                  name={labels.flowGraphNode(
+                    [node.label, node.kind, node.meta, node.status === 'retried' && node.attempts !== undefined && node.attempts > 1 ? attemptsText(labels.flowGraphAttempts(node.attempts), node.attempts) : undefined]
+                      .filter(Boolean)
+                      .join(', '),
+                    word,
+                  )}
                   describedBy={descId}
                   controls={controls}
                   onOpen={() => toggle(id)}

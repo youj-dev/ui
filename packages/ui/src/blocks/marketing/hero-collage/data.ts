@@ -34,7 +34,7 @@ export const DEFAULT_COPY = {
   pause: 'Pause the tour',
   play: 'Play the tour',
   /** Names a stage's button: "Stage 2 of 4: Build". */
-  stageName: (index: number, count: number, label: string) => `Stage ${index} of ${count}: ${label}`,
+  stageName: (index: number, count: number, label: string) => `${index} ${label}, stage ${index} of ${count}`,
   /** Names the build card's progress bar. */
   buildProgress: 'Build progress',
   /** Titles the canary card and names its slider. */

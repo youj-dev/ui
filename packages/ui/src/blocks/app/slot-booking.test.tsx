@@ -90,7 +90,7 @@ const schedule = (day: number): SlotBookingSlot[] =>
       ? [{ id: 'p9', service: 'private', start: on(2, 9), left: 1, capacity: 1 }]
       : []
 const calendar = (props: Partial<React.ComponentProps<typeof SlotBooking>> = {}) => reduced(<SlotBooking schedule={schedule} from={from} {...props} />)
-const reformer = '07:00, Reformer, with Lena Moser, 3 places left'
+const reformer = '07:00, 50 min, Reformer, with Lena Moser, 3 places left'
 
 describe('SlotBooking, calendar (default)', () => {
   test('opens on the first open day: its classes in words, a full one out of reach', () => {
@@ -100,7 +100,7 @@ describe('SlotBooking, calendar (default)', () => {
     expect(screen.getByRole('heading', { level: 3, name: 'Thursday October 1' })).toBeInTheDocument()
     const list = screen.getByRole('list', { name: 'Classes on Thursday, October 1' })
     expect(within(list).getByRole('button', { name: reformer })).toBeEnabled()
-    expect(within(list).getByRole('button', { name: '10:00, Mat flow, with Jonas Berg, Full' })).toBeDisabled()
+    expect(within(list).getByRole('button', { name: '10:00, 45 min, Mat flow, with Jonas Berg, Full' })).toBeDisabled()
     expect(screen.getByRole('grid')).toBeInTheDocument()
   })
 
@@ -129,7 +129,7 @@ describe('SlotBooking, calendar (default)', () => {
     expect(booked).toEqual(['reformer:r7'])
     expect(screen.getAllByRole('status').map((s) => s.textContent)).toContain('Booked for Thursday, October 1 at 07:00')
     await user.click(screen.getByRole('button', { name: 'Book another' }))
-    expect(screen.getByRole('button', { name: '07:00, Reformer, with Lena Moser, You’re in' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: '07:00, 50 min, Reformer, with Lena Moser, You’re in' })).toBeDisabled()
   })
 
   test('a class filter narrows the day, and offers the next day that has one', async () => {
@@ -139,14 +139,14 @@ describe('SlotBooking, calendar (default)', () => {
     expect(screen.getByText('No Private classes this day.')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Next one: Sat, Oct 3' }))
     expect(screen.getByRole('heading', { level: 3, name: 'Saturday October 3' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '09:00, Private, with Aiko Tanaka, 1 place left' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: '09:00, 55 min, Private, with Aiko Tanaka, 1 place left' })).toBeEnabled()
   })
 
   test('picking a day on the calendar shows its classes; days without any are disabled', async () => {
     const user = userEvent.setup()
     calendar()
-    expect(screen.getByRole('button', { name: /October 2nd/ })).toBeDisabled()
-    await user.click(screen.getByRole('button', { name: /October 3rd/ }))
+    expect(screen.getByRole('button', { name: /October 2,/ })).toBeDisabled()
+    await user.click(screen.getByRole('button', { name: /October 3,/ }))
     expect(screen.getByRole('heading', { level: 3, name: 'Saturday October 3' })).toBeInTheDocument()
   })
 
@@ -160,7 +160,7 @@ describe('SlotBooking, calendar (default)', () => {
 describe('SlotBooking, your services', () => {
   const tutor: SlotBookingService = { id: 'algebra', name: 'Algebra', minutes: 50, capacity: 1, host: { name: 'Priya Raman', role: 'Math tutor', initials: 'PR' } }
   const lessons = (day: number): SlotBookingSlot[] => (day === from ? [{ id: 'a1', service: 'algebra', start: on(0, 16), left: 1, capacity: 1 }] : [])
-  const row = '16:00, Algebra, with Priya Raman, 1 place left'
+  const row = '16:00, 50 min, Algebra, with Priya Raman, 1 place left'
 
   test('a service with no price shows none, and Book carries no amount', async () => {
     const user = userEvent.setup()

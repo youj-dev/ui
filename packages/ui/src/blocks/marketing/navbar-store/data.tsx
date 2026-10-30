@@ -148,7 +148,7 @@ export const DEFAULT_COPY = {
   /** The region menu's button, given the region and its currency. */
   region: (label: string, currency: string) => `${label} ${currency}, change region`,
   regionTitle: 'Ship to',
-  searchLabel: 'Search the store',
+  searchLabel: 'Search products in the store',
   searchPlaceholder: 'Search products…',
   popular: 'Popular',
   products: 'Products',
@@ -157,7 +157,7 @@ export const DEFAULT_COPY = {
   noResults: 'Nothing matches. Try another word.',
   account: 'Account',
   /** The bag link's name, given how many items are in it. */
-  bag: (count: number) => `Bag (${count})`,
+  bag: (count: number) => `Bag, ${count}`,
   menu: 'Menu',
   openMenu: 'Open menu',
   closeMenu: 'Close menu',

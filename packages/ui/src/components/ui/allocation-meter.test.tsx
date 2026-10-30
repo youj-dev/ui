@@ -30,8 +30,8 @@ describe('AllocationMeter', () => {
   test('names each envelope by what it has left of what, and draws rollover and overspend', () => {
     reduced(<AllocationMeter envelopes={ENVELOPES} />)
     expect(screen.getByRole('group', { name: 'Envelopes' })).toBeInTheDocument()
-    expect(envelope('food')).toHaveAccessibleName('Groceries, $140 left of $440, $40 rolled over')
-    expect(envelope('out')).toHaveAccessibleName('Eating out, $30 over')
+    expect(envelope('food')).toHaveAccessibleName('$140 Groceries, $140 left of $440, $40 rolled over')
+    expect(envelope('out')).toHaveAccessibleName('−$30 Eating out, $30 over')
     expect(envelope('out')).toHaveAttribute('data-state', 'over')
     // 140 of 440 over 16 cells lights 5; the top cells are the rollover's.
     expect(envelope('food').querySelectorAll('[data-slot=allocation-meter-cell][data-state=on]')).toHaveLength(5)
@@ -58,8 +58,8 @@ describe('AllocationMeter', () => {
     await user.keyboard('{Enter}')
     expect(moves).toEqual([['fun', 'food', 20]])
     expect(screen.getByRole('status')).toHaveTextContent('Moved $20 from Fun to Groceries')
-    expect(envelope('fun')).toHaveAccessibleName('Fun, $40 left of $80')
-    expect(envelope('food')).toHaveAccessibleName('Groceries, $160 left of $460, $40 rolled over')
+    expect(envelope('fun')).toHaveAccessibleName('$40 Fun, $40 left of $80')
+    expect(envelope('food')).toHaveAccessibleName('$160 Groceries, $160 left of $460, $40 rolled over')
   })
 
   test('Escape puts the money back without a move', async () => {

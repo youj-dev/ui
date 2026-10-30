@@ -79,7 +79,7 @@ const CS=group(SIDE(W+.05,D,ZC));rect(CS,3,6,66,3.6,1.8,'stripe');rect(CS,3,11.4
 const CF=group(FRONT(0,D+.05,ZC));rect(CF,2,58.4,76,4.6,1,'face base');
 const bayG=el('g',{'clip-path':'url(#bayClip)'});rect(group(FRONT(6,63,34),bayG),0,0,26,26,0,'face void');rect(group(TOP(6,63,8.02),bayG),0,0,26,9,0,'face top recess');rect(group(SIDE(6.02,D,34),bayG),0,0,9,26,0,'face side recess');
 const DR=group(FRONT(6,D+.06,34));el('path',{d:'M-2.4,-2.4H28.4V28.4H-2.4ZM0,0V26H26V0Z','fill-rule':'evenodd',class:'face chrome'},DR);
-const door=ctl(el('g',{}),'Prize door: take the prize (P)'),flap=el('g',{},door);rect(flap,0,0,26,26,1.2,'flap');rect(flap,8,19.6,10,2,1,'face chrome');text(flap,20.6,3.6,'PUSH','flap-t');
+const door=ctl(el('g',{}),'PUSH: prize door, take the prize (P)'),flap=el('g',{},door);rect(flap,0,0,26,26,1.2,'flap');rect(flap,8,19.6,10,2,1,'face chrome');text(flap,20.6,3.6,'PUSH','flap-t');
 {const g=group(FRONT(6,D+.07,34),door);rect(g,-3.4,-3.4,32.8,32.8,2,'focus-ring');rect(g,-2.4,-2.4,30.8,30.8,0,'hit');}
 const outG=el('g',{});
 const CD=group(FRONT(50,D+.05,36));rect(CD,0,0,22,26,1.6,'face metal');rect(CD,1.4,1.4,19.2,23.2,1.1,'detail');const slotLit=rect(CD,7.6,3.4,6.8,9.2,1.4,'slot-lit');rect(CD,10.2,4.6,1.6,6.8,.6,'face void');text(CD,11,16.8,'1 PLAY','etch center');rect(CD,8,19.4,6,2.8,1,'face top metal');for(const[u,v]of[[3,3],[19,3],[3,23],[19,23]])pin(CD,u,v,.6);

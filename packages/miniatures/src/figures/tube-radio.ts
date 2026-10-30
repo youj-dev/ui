@@ -186,7 +186,7 @@ const power=()=>press(on?0:lastBand+1);
 function doSeek(){audio();if(!on){power();}const st=BANDS[band].st.map(s=>s[0]);let n=st.find(p=>p>f+.02);if(n===undefined)n=st[0];seek=n;locked=-1;lastUI=0;}
 function volume(d){audio();vol=clamp(vol+d,0,10);say(`Volume ${vol}.`);lastUI=0;}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
-KEYS.forEach(k=>{bind(k.g,()=>press(k.i));set(k.g,'aria-label',k.i?`${['Long','Medium','Short','FM'][k.i-1]} wave key (${k.i})`:'Off key (O)');});
+KEYS.forEach(k=>{bind(k.g,()=>press(k.i));set(k.g,'aria-label',k.i?`${['LW','MW','SW','FM'][k.i-1]}: ${['long','medium','short','FM'][k.i-1]} wave key (${k.i})`:'OFF: off key (O)');});
 bind(VOL.g,()=>volume(vol>=10?-10:2));bind(TUNE.g,doSeek);
 document.querySelectorAll('.hint [data-k]').forEach(b=>b.addEventListener('click',()=>b.dataset.k==='o'?power():doSeek()));
 document.addEventListener('keydown',e=>{

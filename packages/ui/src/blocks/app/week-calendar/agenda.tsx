@@ -82,10 +82,10 @@ function AgendaDay({ day, ctx, loading, heading: Heading, today, past, events }:
               >
                 <span className="w-24 shrink-0 text-ui-sm text-fg-muted tabular-nums">
                   {clock(event.start)} – {clock(event.end)}
-                </span>
+                </span>{' '}
                 <span aria-hidden className={cn('h-8 w-0.5 shrink-0 rounded-full', TONES[sourceOf(ctx, event).tone].dot)} />
                 <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="truncate text-ui font-medium text-fg">{event.title}</span>
+                  <span className="truncate text-ui font-medium text-fg">{event.title}</span>{' '}
                   <span className="truncate text-ui-sm text-fg-muted">
                     {[sourceOf(ctx, event).name, event.location].filter(Boolean).join(' · ')}
                   </span>

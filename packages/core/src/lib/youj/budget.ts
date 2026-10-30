@@ -145,20 +145,49 @@ function set(next: QualityTier) {
   listeners.forEach((listener) => listener())
 }
 
+// What stops the probe before it measures: its idle timer, or its wait for the page's load.
+let cancelPending: (() => void) | null = null
+
 function probe() {
   if (probing || decided) return
   probing = true
-  const start = () =>
+  const start = () => {
+    cancelPending = null
+    // No frame clock means no page to measure (a torn-down test environment, a detached frame): the tier stays as it was.
+    if (typeof requestAnimationFrame !== 'function') {
+      probing = false
+      return
+    }
     runProbe().then((result) => {
       probing = false
       const next = tierFromProbe(result)
       writeCache(next)
       set(next)
     })
+  }
   // After load and a quiet moment, so the probe times the device rather than the page's own start-up.
-  const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(start, { timeout: 2000 }) : setTimeout(start, 200))
+  const idle = () => {
+    if ('requestIdleCallback' in window) {
+      const id = requestIdleCallback(start, { timeout: 2000 })
+      cancelPending = () => cancelIdleCallback(id)
+    } else {
+      const id = setTimeout(start, 200)
+      cancelPending = () => clearTimeout(id)
+    }
+  }
   if (document.readyState === 'complete') idle()
-  else window.addEventListener('load', idle, { once: true })
+  else {
+    window.addEventListener('load', idle, { once: true })
+    cancelPending = () => window.removeEventListener('load', idle)
+  }
+}
+
+/** Drops a probe that hasn't begun measuring, so nothing fires once the last subscriber is gone; the next subscriber schedules it again. */
+function cancelProbe() {
+  if (!cancelPending) return
+  cancelPending()
+  cancelPending = null
+  probing = false
 }
 
 export function getAutoTier(): QualityTier {
@@ -179,11 +208,13 @@ export function subscribeAutoTier(listener: () => void): () => void {
   probe()
   return () => {
     listeners.delete(listener)
+    if (listeners.size === 0) cancelProbe()
   }
 }
 
 /** Test seam: forget the resolved tier so the next read re-detects. */
 export function resetAutoTier() {
+  cancelProbe()
   tier = null
   decided = false
   probing = false

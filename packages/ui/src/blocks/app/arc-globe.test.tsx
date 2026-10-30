@@ -55,7 +55,7 @@ describe('ArcGlobe', () => {
     ])
     expect(regions.every((b) => b.getAttribute('aria-pressed') === 'false')).toBe(true)
     expect(countries()).toHaveLength(6)
-    expect(countries()[0]).toHaveAccessibleName(/^United States, \d+(\.\d)?% of visitors$/)
+    expect(countries()[0]).toHaveAccessibleName(/^01 US United States \S+ \S+, \d+(\.\d)?% of visitors$/)
   })
 
   test('a region brings its countries forward and narrows the list to them', async () => {
@@ -74,7 +74,7 @@ describe('ArcGlobe', () => {
   test('pressing a country pins it and says its figures; pressing again lets go', async () => {
     const user = userEvent.setup()
     reduced(<ArcGlobe live={false} />)
-    const japan = screen.getByRole('button', { name: /^Japan/ })
+    const japan = screen.getByRole('button', { name: /^\d+ JP Japan / })
     await user.click(japan)
     expect(japan).toHaveAttribute('aria-pressed', 'true')
     expect(said()).toMatch(/^Japan: [\d.]+K visitors, [\d.]+% of traffic$/)
@@ -86,8 +86,8 @@ describe('ArcGlobe', () => {
     const user = userEvent.setup()
     reduced(<ArcGlobe live={false} />)
     const before = screen.getByRole('button', { name: /North America/ }).textContent
-    await user.click(screen.getByRole('button', { name: 'Last 24 hours' }))
-    expect(screen.getByRole('button', { name: 'Last 24 hours' })).toHaveAttribute('aria-pressed', 'true')
+    await user.click(screen.getByRole('button', { name: /Last 24 hours/ }))
+    expect(screen.getByRole('button', { name: /Last 24 hours/ })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('button', { name: /North America/ }).textContent).not.toBe(before)
     expect(said()).toMatch(/^Last 24 hours: [\d.]+K visitors$/)
   })
@@ -136,7 +136,7 @@ describe('ArcGlobe', () => {
       const pause = screen.getByRole('button', { name: 'Pause live visitors' })
       expect(pause).toHaveAttribute('aria-pressed', 'true')
       fireEvent.click(pause)
-      expect(screen.getByRole('button', { name: 'Resume live visitors' })).toHaveAttribute('aria-pressed', 'false')
+      expect(screen.getByRole('button', { name: 'Paused, Resume live visitors' })).toHaveAttribute('aria-pressed', 'false')
       expect(said()).toContain('Live visitors paused')
       // Visits already in the air still land; nothing new is placed.
       act(() => vi.advanceTimersByTime(5000))
@@ -226,9 +226,9 @@ describe('ArcGlobe', () => {
         .map((b) => b.textContent?.split(/[\d$]/)[0]),
     ).toEqual(['Hubs', 'Spokes'])
     expect(screen.getByRole('button', { name: /Hubs/ })).toHaveTextContent('$')
-    expect(screen.getByRole('button', { name: 'This month' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: /This month/ })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.queryByText('Delay rate')).not.toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Today' }))
+    await user.click(screen.getByRole('button', { name: /Today/ }))
     expect(screen.getByText('Delay rate')).toBeInTheDocument()
     expect(said()).toMatch(/^Today: \$/)
     await user.click(screen.getByRole('combobox', { name: 'Site' }))

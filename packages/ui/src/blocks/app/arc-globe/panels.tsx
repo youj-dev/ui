@@ -115,6 +115,7 @@ export function PlaceList({
   onPin: (id: string) => void
 }) {
   const headingId = useId()
+  const counts = useMemo(() => numberFormat(format.locale, format.compact), [format.locale, format.compact])
   return (
     <section aria-labelledby={headingId} className="flex min-w-0 flex-col gap-1">
       <Eyebrow id={headingId} render={<h3 />} className="px-2">
@@ -126,7 +127,8 @@ export function PlaceList({
             <button
               type="button"
               aria-pressed={pinned === row.place.id}
-              aria-label={`${row.place.name}, ${copy.share(format.percent(row.share))}`}
+              // The row as shown (rank, code, place, figure, change), then its share.
+              aria-label={`${String(i + 1).padStart(2, '0')} ${row.place.id} ${row.place.name} ${counts.format(row.volume)} ${format.signed(row.change)}, ${copy.share(format.percent(row.share))}`}
               data-active={active === row.place.id || undefined}
               onPointerEnter={() => onPreview(row.place.id)}
               onFocus={() => onPreview(row.place.id)}
@@ -134,14 +136,14 @@ export function PlaceList({
               onClick={() => onPin(row.place.id)}
               className={cn(ROW, 'grid-cols-[--spacing(5)_--spacing(8)_minmax(0,1fr)_auto_--spacing(14)]')}
             >
-              <span className="font-mono text-ui-xs text-fg-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+              <span className="font-mono text-ui-xs text-fg-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>{' '}
               <span className="rounded-sm border border-line px-1 text-center font-mono text-ui-xs tracking-wider text-fg-muted group-aria-pressed/row:border-accent group-aria-pressed/row:text-accent-text">
                 {row.place.id}
-              </span>
-              <span className="truncate">{row.place.name}</span>
+              </span>{' '}
+              <span className="truncate">{row.place.name}</span>{' '}
               <span className="font-mono tabular-nums">
                 <Counter value={row.volume} format={format.compact} locale={format.locale} inView={false} duration="slow" ease="standard" />
-              </span>
+              </span>{' '}
               <span className="text-end">
                 <Change value={row.change} format={format} />
               </span>

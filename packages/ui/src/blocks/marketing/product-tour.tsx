@@ -138,7 +138,12 @@ function ProductTour({
                   <TabsTrigger
                     key={step.id}
                     value={step.id}
-                    aria-label={copy.stepName(i + 1, steps.length, step.title, finished)}
+                    // Wide, the tab shows its number, title and (picked) description: the name starts with those, then says where it stands.
+                    aria-label={
+                      wide
+                        ? `${[finished ? null : i + 1, step.title, step.id === value ? step.description : null].filter(Boolean).join(' ')}, ${copy.stepName(i + 1, steps.length, step.title, finished)}`
+                        : copy.stepName(i + 1, steps.length, step.title, finished)
+                    }
                     className={cn(wide ? 'h-auto w-full flex-col items-stretch gap-1.5 py-3 ps-4 pe-3 text-start whitespace-normal' : 'flex-1')}
                   >
                     <span className="flex items-center gap-2.5">
@@ -150,9 +155,9 @@ function ProductTour({
                         )}
                       >
                         {finished ? <CheckIcon size={12} strokeWidth={3} /> : i + 1}
-                      </span>
+                      </span>{' '}
                       {wide && step.title}
-                    </span>
+                    </span>{' '}
                     {wide && step.id === value && <span className="font-sans text-ui-sm font-normal tracking-normal text-fg-muted normal-case">{step.description}</span>}
                   </TabsTrigger>
                 )

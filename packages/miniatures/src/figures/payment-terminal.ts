@@ -142,11 +142,11 @@ return shown;}
 let live=mkStrip(paperG);
 // Card: edge and face, posed by an origin and two axes; its shadow on the counter.
 const CW=101,CH=64,CT=1.4,YAW=-.24;
-const cardG=button(el('g',{}),{'aria-label':'Payment card: tap it on the pad (T)'}),cardE=el('g',{},cardG),cardT=el('g',{},cardG);
+const cardG=button(el('g',{}),{'aria-label':'DEBIT •••• 0428 06/29: payment card, tap it on the pad (T)'}),cardE=el('g',{},cardG),cardT=el('g',{},cardG);
 rect(cardE,0,0,CW,CH,4,'card-e');rect(cardT,0,0,CW,CH,4,'card');el('path',{d:'M60,0H97Q101,0 101,4V60Q101,64 97,64H44C64,50 70,22 60,0Z',class:'card2'},cardT);
 rect(cardT,12,22,13,10,2,'chip');line(cardT,16.3,22,16.3,32,'chipl');line(cardT,20.6,22,20.6,32,'chipl');line(cardT,12,27,25,27,'chipl');
 el('path',{d:'M30,24.4a3,3 0 0 1 0,5.2M32.4,23a5.2,5.2 0 0 1 0,8M34.8,21.6a7.4,7.4 0 0 1 0,10.8',class:'cs'},cardT);
-text(cardT,12,13,'DEBIT','ct');text(cardT,12,50,'•••• 0428','ct s');text(cardT,89,50,'06/29','ct s e');
+text(cardT,12,13,'DEBIT','ct');cardT.append(' ');text(cardT,12,50,'•••• 0428','ct s');cardT.append(' ');text(cardT,89,50,'06/29','ct s e');
 el('path',{d:'M79,8.6l4,4l-4,4M84.4,8.6l4,4l-4,4',class:'cs'},cardT);el('path',{d:'M36,0H50L26,64H12Z',class:'sheen'},cardT);rect(cardT,-2,-2,CW+4,CH+4,5,'focus-ring');
 const cardShadow=el('rect',{x:0,y:0,width:CW,height:CH,rx:5,class:'cshadow',opacity:.16},cardShadowG);
 const frontCard=el('g',{});frontCard.appendChild(cardG);
@@ -235,7 +235,7 @@ if(phase==='approved'){set(okMark,'stroke-dashoffset',f2(18*(1-(red?1:ease((el2-
 set(halo,'class',phase==='approved'||phase==='thanks'?'halo ok':phase==='declined'?'halo no':'halo');const tag=decline?'DECLINE TEST':'SALE';if(saleT.textContent!==tag){saleT.textContent=tag;set(saleT,'class','si s l '+(decline?'no':'d'));}
 const amt=money(entry!==null?+entry:cents);for(const t of[amtR,amtG,amtU,amtP,amtV])if(t.textContent!==amt)t.textContent=amt;const ae=money(+(entry||0));if(amtA.textContent!==ae)amtA.textContent=ae;
 pinDots.forEach((d,i)=>set(d,'visibility',i<pin.length?'visible':'hidden'));const av='AUTH '+(auth||'——');if(authV.textContent!==av)authV.textContent=av;
-const hold=phase==='read'&&lights>=4?'CARD READ':'HOLD CARD';if(holdT.textContent!==hold)holdT.textContent=hold;set(cardG,'aria-label',inSlot?'Payment card: remove it from the slot (I)':'Payment card: tap it on the pad (T)');
+const hold=phase==='read'&&lights>=4?'CARD READ':'HOLD CARD';if(holdT.textContent!==hold)holdT.textContent=hold;set(cardG,'aria-label',inSlot?'DEBIT •••• 0428 06/29: payment card, remove it from the slot (I)':'DEBIT •••• 0428 06/29: payment card, tap it on the pad (T)');
 const wv=reading&&!red;waves.forEach((w,i)=>{if(!wv){w.style.opacity=reading?(.5-i*.12).toFixed(2):0;if(reading)set(w,'d',arcs(34+i*12));return;}const p=((now-t0)/700+i/3)%1;set(w,'d',arcs(24+p*48));w.style.opacity=f2((1-p)*.85);});
 nfcGlow.style.opacity=reading?(red?.35:f2(.25+.2*Math.sin(now/90))):0;
 lit(chg,'g');chg.style.opacity=red?1:f2(.55+.45*breath);

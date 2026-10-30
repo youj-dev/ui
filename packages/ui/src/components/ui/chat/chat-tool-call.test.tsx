@@ -7,10 +7,10 @@ import { ChatToolCall } from './chat-tool-call'
 const reduced = { wrapper: ({ children }: { children: React.ReactNode }) => <YoujProvider reducedMotion="always">{children}</YoujProvider> }
 
 describe('ChatToolCall', () => {
-  test('one line at rest, named by the tool and its status; opening shows the arguments and the result', async () => {
+  test('one line at rest, named by the tool, its arguments and its status; opening shows the arguments and the result', async () => {
     const user = userEvent.setup()
     render(<ChatToolCall name="get_deployments" args={{ project: 'orion', limit: 3 }} status="success" duration={1400} result={{ id: 'dpl_1', state: 'READY' }} />, reduced)
-    const trigger = screen.getByRole('button', { name: 'get_deployments: Done · 1.4s' })
+    const trigger = screen.getByRole('button', { name: 'get_deployments project: orion, limit: 3: Done · 1.4s' })
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
     expect(trigger).toHaveTextContent('project: orion, limit: 3')
     // A preview of the result while folded.

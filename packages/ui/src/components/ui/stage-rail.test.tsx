@@ -23,8 +23,8 @@ describe('StageRail', () => {
   test('is a named group of stages, each spoken with its state and duration', () => {
     reduced(<StageRail stages={STAGES} />)
     expect(screen.getByRole('group', { name: 'Pipeline stages' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Build, Passed, 1 minute 12 seconds' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Test, Running, 30 seconds' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Build, Passed, 1m 12s, 1 minute 12 seconds' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Test, Running, 30s, 30 seconds' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Deploy, Queued' })).toBeInTheDocument()
   })
 
@@ -47,7 +47,7 @@ describe('StageRail', () => {
   test('ticks a running stage’s duration and fills its cells as time passes', () => {
     reduced(<StageRail stages={STAGES} segments={10} />)
     act(() => vi.advanceTimersByTime(12_000))
-    expect(screen.getByRole('button', { name: 'Test, Running, 42 seconds' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Test, Running, 42s, 42 seconds' })).toBeInTheDocument()
     expect(lit('Test')).toBe(7)
   })
 
@@ -98,7 +98,7 @@ describe('StageRail', () => {
       </YoujProvider>,
     )
     expect(screen.getByRole('group', { name: 'Pipeline-Phasen' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /^Build, Bestanden, 1 Minute 12 Sekunden$/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^Build, Bestanden, 1 Min\. 12 Sek\., 1 Minute 12 Sekunden$/ })).toBeInTheDocument()
   })
 
   test('reduced motion changes cells in place: no stagger, no breathing', () => {

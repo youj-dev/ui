@@ -255,8 +255,6 @@ export const DEFAULT_COPY = {
   status: { connected: 'Connected', available: 'Available', beta: 'Beta', soon: 'Coming soon' },
   health: { healthy: 'Healthy', degraded: 'Degraded', error: 'Needs attention' },
   popular: 'Popular',
-  /** A card's button name: "GitHub: details". */
-  details: (name: string) => `${name}: details`,
   /** The empty state, with the search text in it. */
   noResultsTitle: (query: string) => (query ? `Nothing matches “${query}”` : 'Nothing in this category yet'),
   noResultsDescription: 'Try a shorter word, or tell us which tool is missing.',

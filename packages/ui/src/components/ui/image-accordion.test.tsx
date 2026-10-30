@@ -19,10 +19,11 @@ const view = (props: Partial<ImageAccordionProps> = {}) =>
     </YoujProvider>,
   )
 
-const panel = (name: string) => screen.getByRole('button', { name })
+// A panel's name is its title, then the line it shows with it.
+const panel = (name: string) => screen.getByRole('button', { name: new RegExp(`^${name}\\b`) })
 
 describe('ImageAccordion', () => {
-  test('is a named group of panels with the first open, each named by its title and described by its line', () => {
+  test('is a named group of panels with the first open, each named by its title and its line', () => {
     view()
     const group = screen.getByRole('group', { name: 'Gallery' })
     expect(group).toHaveAttribute('data-slot', 'image-accordion')
@@ -31,7 +32,7 @@ describe('ImageAccordion', () => {
     expect(panel('Dunes')).toHaveAttribute('aria-current', 'true')
     expect(panel('Dunes')).toHaveAttribute('data-state', 'active')
     expect(panel('Reef')).toHaveAttribute('data-state', 'inactive')
-    expect(panel('Dunes')).toHaveAccessibleDescription('Wind-cut ridges at dusk')
+    expect(panel('Dunes')).toHaveAccessibleName('Dunes Wind-cut ridges at dusk')
     expect(panel('Pines')).not.toHaveAttribute('aria-describedby')
     expect(screen.getByRole('img', { name: 'Dunes at dusk' })).toHaveAttribute('src', '/dunes.jpg')
     expect(screen.getByTestId('reef-media')).toBeInTheDocument()

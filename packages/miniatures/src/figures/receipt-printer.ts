@@ -93,7 +93,7 @@ rect(cs,180,17,9,7,1.2,'face void');rect(cs,181.6,18.6,5.8,3.8,.6,'face recess')
 const ctop=group(TOP(0,0,50));rect(ctop,0,0,260,200,3,'face top st');rect(ctop,6,6,248,188,2,'detail');for(const[u,v]of[[11,11],[249,11],[11,189],[249,189]])pin(ctop,u,v,1);
 el('path',{d:'M3,0H257Q260,0 260,3V41Q260,44 257,44H3Q0,44 0,41V3Q0,0 3,0ZM2,2V42H258V2Z','fill-rule':'evenodd',class:'face st',transform:FRONT(0,200,50)});
 // Drawer front: moves with the tray.
-const drw=into(button(el('g',{}),{'aria-label':'Open the cash drawer (D)','aria-pressed':'false'}));
+const drw=into(button(el('g',{}),{'aria-label':'VELLUN: open the cash drawer (D)','aria-pressed':'false'}));
 box(2,200,8,256,6,40,2.5,'st');
 const df=group(FRONT(2,206,48));panel(df,8,5,206,25,1.6,'st');
 rect(df,77,8,68,2.2,1.1,'face void');rect(df,16,13,26,8,1.4,'face metal');text(df,29,18.3,'VELLUN','etch micro center');
@@ -154,20 +154,20 @@ const TL=Math.hypot(98,30),TV=[0,98/TL,-30/TL],TN=[0,30/TL,98/TL];
 el('path',{d:poly([[240,36,56],[240,134,56],[240,134,70],[240,36,100]],true),class:'face side'});
 const tfr=group(FRONT(172,134,70));rect(tfr,0,0,68,14,2.5,'face');rect(tfr,14,8.6,40,2.4,1.2,'face void');
 rect(tfr,20,2.2,28,4,2,'face recess');const RL=[0,1,2,3].map(i=>lamp(tfr,25+i*6,4.2,1.1));
-const term=button(el('g',{transform:plane([172,36,100],[1,0,0],TV)}),{'aria-label':'Tap the payment card (C)'});
-rect(term,0,0,68,TL,5,'face top');text(term,7,7.4,'VELLUN','etch micro');
-el('path',{d:'M54,4.4a2.4,2.4 0 0 1 0,3.6M56,3.4a3.8,3.8 0 0 1 0,5.6M58,2.4a5.2,5.2 0 0 1 0,7.6',class:'detail'},term);
-const scr=el('g',{},term);rect(scr,6,11,56,38,3,'face recess');rect(scr,10,15,48,30,2,'halo');rect(scr,8,13,52,34,2,'face screen');const tapGlow=rect(term,4,9,60,42,6,'halo');tapGlow.style.opacity=0;
+const termV=el('g',{transform:plane([172,36,100],[1,0,0],TV)}),term=button(el('g',{transform:plane([172,36,100],[1,0,0],TV)}),{'aria-label':'Tap the payment card (C)'});
+rect(termV,0,0,68,TL,5,'face top');text(termV,7,7.4,'VELLUN','etch micro');
+el('path',{d:'M54,4.4a2.4,2.4 0 0 1 0,3.6M56,3.4a3.8,3.8 0 0 1 0,5.6M58,2.4a5.2,5.2 0 0 1 0,7.6',class:'detail'},termV);
+const scr=el('g',{},termV);rect(scr,6,11,56,38,3,'face recess');rect(scr,10,15,48,30,2,'halo');rect(scr,8,13,52,34,2,'face screen');const tapGlow=rect(termV,4,9,60,42,6,'halo');tapGlow.style.opacity=0;
 const sTop=text(scr,34,20.4,'TAP CARD','scr'),sAmt=text(scr,34,31,'€18.40','scr big');
 const sIcon=el('path',{d:'M31,38.2a3,3 0 0 1 0,4.4M33.4,36.8a5,5 0 0 1 0,7.2M35.8,35.4a7,7 0 0 1 0,10',class:'scrl'},scr),sOk=el('path',{d:'M30.6,40.8l2.6,2.6l5.4,-5.6',class:'scrl',visibility:'hidden'},scr);
-for(let i=0;i<12;i++){const u=10+(i%3)*17,v=54+Math.floor(i/3)*9;rect(term,u,v,14,7,1.6,'face key');text(term,u+7,v+5,'123456789*0#'[i],'kl');}
-['kr','ky','kg'].forEach((c,i)=>rect(term,10+i*17,91,14,7,1.6,'face '+c));rect(term,-2,-2,72,TL+4,6,'focus-ring');
+for(let i=0;i<12;i++){const u=10+(i%3)*17,v=54+Math.floor(i/3)*9;rect(termV,u,v,14,7,1.6,'face key');text(termV,u+7,v+5,'123456789*0#'[i],'kl');}
+['kr','ky','kg'].forEach((c,i)=>rect(termV,10+i*17,91,14,7,1.6,'face '+c));set(rect(term,0,0,68,TL,5,'hit'),'fill','transparent');rect(term,-2,-2,72,TL+4,6,'focus-ring');
 box(168,148,50,78,44,3,2,'st');rect(group(TOP(168,148,53)),4,3,70,38,2,'face recess');
-const card=button(el('g',{}),{'aria-label':'Tap the payment card (C)'}),cardE=el('g',{},card),cardT=el('g',{},card);
+const card=button(el('g',{}),{'aria-label':'VELLUN •••• 0428 06/29: tap the payment card (C)'}),cardE=el('g',{},card),cardT=el('g',{},card);
 rect(cardE,0,0,62,40,3,'card-e');rect(cardT,0,0,62,40,3,'card');el('path',{d:'M30,0H46L22,40H6Z',class:'sheen'},cardT);
 rect(cardT,8,13,10,8,1.6,'face chip');line(cardT,11.4,13,11.4,21);line(cardT,14.6,13,14.6,21);line(cardT,8,17,18,17);
 el('path',{d:'M23,15a2.6,2.6 0 0 1 0,4M25,14a4,4 0 0 1 0,6M27,13a5.4,5.4 0 0 1 0,8',class:'cs'},cardT);
-text(cardT,8,8.4,'VELLUN','ct');text(cardT,8,32,'•••• 0428','ct s');text(cardT,54,32,'06/29','ct s end');rect(cardT,-2,-2,66,44,4,'focus-ring');
+text(cardT,8,8.4,'VELLUN','ct');cardT.append(' ');text(cardT,8,32,'•••• 0428','ct s');cardT.append(' ');text(cardT,54,32,'06/29','ct s end');rect(cardT,-2,-2,66,44,4,'focus-ring');
 const fallG=el('g',{});
 frame([[0,0,0,260,200,50],[2,200,8,256,86,40],[16,24,50,124,128,100],[42,88,146,72,46,54],[274,56,0,94,112,1]],14);
 // State: payment, printing, tearing and the drawer; audio only after a gesture.
@@ -199,7 +199,7 @@ if(L<=LREST+1){hint('PRINT FIRST · P',true);say('Print a receipt with P first.'
 notice='';const k=torn++%3,F={s:live,L,t0:performance.now(),...fallTo(k)};if(slots[k])slots[k].s.g.remove();slots[k]=F;
 fallG.appendChild(live.g);live=mkStrip(paperG);L=LREST;lastL=-1;set(F.s.shd,'transform',plane([F.F0[0],F.F0[1],0],F.U,F.V));set(F.s.shd,'width',PW);set(F.s.shd,'height',F.L);
 noise(.18,.035,3400,.7);say('Receipt torn off. It drops onto the counter.');falls.push(F);if(reduced.matches){fallFrame(F,1);falls.pop();}lastUI=0;}
-function drawer(){audio();open=!open;set(drw,'aria-pressed',open);set(drw,'aria-label',(open?'Close':'Open')+' the cash drawer (D)');set(keys.d,'aria-pressed',open);
+function drawer(){audio();open=!open;set(drw,'aria-pressed',open);set(drw,'aria-label','VELLUN: '+(open?'close':'open')+' the cash drawer (D)');set(keys.d,'aria-pressed',open);
 if(open){kickAt=performance.now()+(reduced.matches?0:240);pulse(kick,240);tone(90,.05,.03,'square');say('Kick pulse sent. The cash drawer springs open.');}else{kickAt=-1;say('Cash drawer closing.');}lastUI=0;}
 function bind(g,fn){g.addEventListener('click',fn);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 const act={c:payCard,p:print,t:tear,d:drawer},keys={};

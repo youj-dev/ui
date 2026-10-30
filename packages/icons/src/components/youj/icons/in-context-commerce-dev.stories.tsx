@@ -485,8 +485,8 @@ function PullRequestsDemo() {
                 Merge queue
               </a>
             </nav>
-            <Button variant="secondary" className="ml-auto h-8 gap-2 pr-1.5 text-fg-muted" aria-label="Search, command K">
-              Search
+            <Button variant="secondary" className="ml-auto h-8 gap-2 pr-1.5 text-fg-muted" aria-label="Search K, shortcut command K">
+              Search{' '}
               <kbd className="inline-flex h-5 items-center gap-0.5 rounded border border-line bg-canvas px-1 font-mono text-[11px] text-fg-muted">
                 <CommandIcon size={11} strokeWidth={2} />K
               </kbd>
@@ -903,7 +903,7 @@ function DashboardDemo() {
                           variant="ghost"
                           className="ml-auto h-7 px-2 text-xs"
                           aria-pressed={done}
-                          aria-label={done ? `Mark ${o.id} in transit` : `Mark ${o.id} delivered`}
+                          aria-label={done ? `Undo: mark ${o.id} in transit` : `Mark delivered: order ${o.id}`}
                           onClick={() => setDelivered((d) => ({ ...d, [o.id]: !done }))}
                         >
                           {done ? 'Undo' : 'Mark delivered'}

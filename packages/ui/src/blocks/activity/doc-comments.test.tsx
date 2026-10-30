@@ -154,7 +154,7 @@ describe('Doc comments block', () => {
   test('Show resolved brings resolved threads back', async () => {
     const user = userEvent.setup()
     setup()
-    await user.click(screen.getByRole('button', { name: 'Show resolved' }))
+    await user.click(screen.getByRole('button', { name: /^Show resolved/ }))
     expect(mark('import a manifest')).toHaveAttribute('data-yj-resolved')
     expect(within(screen.getByRole('list', { name: 'Comments' })).getAllByRole('group', { name: /^Comment on/ })).toHaveLength(3)
   })
@@ -213,7 +213,7 @@ describe('Doc comments block', () => {
 
   test('copy rewrites the strings; the demo is marked and its viewers show', () => {
     const { unmount } = setup({ copy: { showResolved: 'Include resolved', counts: (open: number) => `${open} to do` } })
-    expect(screen.getByRole('button', { name: 'Include resolved' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^Include resolved/ })).toBeInTheDocument()
     expect(screen.getByText('2 to do')).toBeInTheDocument()
     unmount()
     reduced(<DocComments />)

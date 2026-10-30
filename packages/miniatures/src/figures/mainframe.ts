@@ -52,7 +52,7 @@ function button(g,label){set(g,'class','control');set(g,'role','button');set(g,'
 function bind(g,fn){g.addEventListener('click',()=>fn());g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();if(!e.repeat)fn();}});}
 function lamp(g,x,y,r,c,b='lp'){const n=circle(g,x,y,r,b+' '+c);n.b=b+' '+c;n.k='';return n;}
 function lit(n,v){const c=v?n.b+' on':n.b;if(n.k!==c){n.k=c;set(n,'class',c);if(n.t)set(n.t,'class',v?'sx on':'sx');}}
-function pbtn(X,Y,Z,u,v,w,h,c,t,name,fn){const g=name?button(el('g'),name):el('g');into(g);box(X+u,Y,Z-v-h,w,1.4,h,.5,'');const f=group(FRONT(X+u,Y+1.4,Z-v));
+function pbtn(X,Y,Z,u,v,w,h,c,t,name,fn){const g=name?button(el('g'),t?`${t}: ${name}`:name):el('g');into(g);box(X+u,Y,Z-v-h,w,1.4,h,.5,'');const f=group(FRONT(X+u,Y+1.4,Z-v));
 const n=rect(f,.5,.5,w-1,h-1,.4,'pb '+c);n.b='pb '+c;n.k='';if(t)text(f,w/2,h/2+.55,t,'bl');if(name){rect(f,-1.2,-1.2,w+2.4,h+2.4,1,'focus-ring');bind(g,fn);}into(draw);return n;}
 function cabinet(x,y,w,d,h){box(x+1,y+1,14,w-2,d-2,3,.6,'base');box(x,y,17,w,d,h-3,1.4,'');box(x-1,y-1,14+h,w+2,d+2,3,1,'');}
 function shade(x,y,w,d){const r=rect(group(TOP(x-3,y-2,14)),0,0,w+7,d+6,4,'shadow');r.style.filter='url(#bloom)';r.style.opacity=.13;}

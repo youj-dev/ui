@@ -97,6 +97,7 @@ function ChatToolCall({ name, args, status, result, error, duration, defaultOpen
   }
   const morph = useMorphRoot('9999px')
   const label = status === 'success' && duration !== undefined ? `${STATUS_LABEL.success} · ${labels.chatToolDuration(duration)}` : STATUS_LABEL[status]
+  const summary = summarise(args)
   // Only a finished call has something to show.
   const output = status === 'error' ? error : status === 'success' && result !== undefined ? asText(result) : undefined
 
@@ -123,16 +124,17 @@ function ChatToolCall({ name, args, status, result, error, duration, defaultOpen
       >
         <Collapsible open={open} onOpenChange={setOpen}>
           <CollapsibleTrigger
-            aria-label={`${name}: ${label}`}
+            // The call as shown (name, arguments, then the state).
+            aria-label={`${summary ? `${name} ${summary}` : name}: ${label}`}
             className={cn(
               '@container/tool own:flex own:min-h-10 own:w-full own:min-w-0 own:items-center own:gap-2.5 own:rounded-[calc(var(--radius-xl)-1px)] own:px-3 own:py-2 own:text-start focus-ring',
               'transition-colors yj-duration-fast ease-standard own:hover:bg-hover',
             )}
           >
             <StatusMark status={status} />
-            <span className="min-w-0 truncate own:font-mono own:text-ui own:font-medium own:text-fg">{name}</span>
+            <span className="min-w-0 truncate own:font-mono own:text-ui own:font-medium own:text-fg">{name}</span>{' '}
             {/* Narrow (under 20rem), the arguments would be a letter and an ellipsis: the name and status keep the row. */}
-            <span className="min-w-0 flex-1 truncate own:font-mono own:text-ui-sm own:text-fg-muted own:@max-xs/tool:hidden">{summarise(args)}</span>
+            <span className="min-w-0 flex-1 truncate own:font-mono own:text-ui-sm own:text-fg-muted own:@max-xs/tool:hidden">{summary}</span>{' '}
             <Badge variant={BADGE[status]} render={<m.span {...morph} />} className="own:ms-auto own:shrink-0 own:tabular-nums">
               <MorphLabel value={label} contentClassName="own:gap-1">
                 {label}

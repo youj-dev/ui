@@ -161,7 +161,7 @@ function SurveyWidget({
               key="pill"
               type="button"
               layoutId={layoutId}
-              aria-label={copy.expand(Math.max(1, flow.index), flow.total + flow.pending)}
+              aria-label={`${survey.title}, ${copy.expand(Math.max(1, flow.index), flow.total + flow.pending)}`}
               onClick={() => setMinimized(false)}
               className="pointer-events-auto m-4 flex h-control-lg items-center gap-2.5 rounded-full border border-line bg-overlay ps-2 pe-3.5 text-ui font-medium text-fg shadow-lg focus-ring sm:m-0"
               data-yj-tone="overlay"
@@ -170,13 +170,18 @@ function SurveyWidget({
               exit={{ opacity: 0, transition: k.tween('instant', 'exit') }}
               transition={k.spring('smooth')}
             >
-              <span aria-hidden className="grid size-7 place-items-center rounded-full bg-accent text-ui-xs font-bold text-on-accent">
-                {brand.name.charAt(0)}
-              </span>
+              {/* The brand's initial and the position are drawn, not written, so the pill's name is what it shows. */}
+              <span
+                aria-hidden
+                data-yj-initials={brand.name.charAt(0)}
+                className="grid size-7 place-items-center rounded-full bg-accent text-ui-xs font-bold text-on-accent before:content-[attr(data-yj-initials)]"
+              />
               <span>{survey.title}</span>
-              <span aria-hidden className="font-mono text-ui-sm text-fg-muted tabular-nums">
-                {copy.position(Math.max(1, flow.index), flow.total + flow.pending)}
-              </span>
+              <span
+                aria-hidden
+                data-yj-initials={copy.position(Math.max(1, flow.index), flow.total + flow.pending)}
+                className="font-mono text-ui-sm text-fg-muted tabular-nums before:content-[attr(data-yj-initials)]"
+              />
               <ChevronUpIcon size={14} aria-hidden className="text-fg-muted" />
             </m.button>
           )}

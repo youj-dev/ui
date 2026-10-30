@@ -30,7 +30,7 @@ function initials(name: string) {
 
 export function PersonAvatar({ agent, className }: { agent: SupportAgent; className?: string }) {
   return (
-    <Avatar className={cn('size-7', className)}>
+    <Avatar aria-hidden className={cn('size-7', className)}>
       <AvatarFallback className={cn('font-semibold', TINT[agent.id])}>{initials(agent.name)}</AvatarFallback>
     </Avatar>
   )
@@ -38,7 +38,7 @@ export function PersonAvatar({ agent, className }: { agent: SupportAgent; classN
 
 export function UserAvatar() {
   return (
-    <Avatar className="size-7">
+    <Avatar aria-hidden className="size-7">
       <AvatarFallback>{initials(useSupportChat().user.name)}</AvatarFallback>
     </Avatar>
   )

@@ -68,11 +68,11 @@ describe('QueueFlow', () => {
   test('the lens sets each step’s figure: volume, reply time or spam', async () => {
     const user = userEvent.setup()
     reduced(<QueueFlow />)
-    expect(node(/^Chat, Channel/).getAttribute('aria-label')).toMatch(/\/h$/)
+    expect(node(/^Chat, Channel/).getAttribute('aria-label')).toMatch(/\/h, [A-Za-z ]+$/)
     await user.click(screen.getByRole('button', { name: 'Reply time' }))
-    expect(node(/^Chat, Channel/).getAttribute('aria-label')).toMatch(/\d min$/)
+    expect(node(/^Chat, Channel/).getAttribute('aria-label')).toMatch(/\d min, [A-Za-z ]+$/)
     await user.click(screen.getByRole('button', { name: 'Spam' }))
-    expect(node(/^Spam, Filter/).getAttribute('aria-label')).toMatch(/, 38$/)
+    expect(node(/^Spam, Filter/).getAttribute('aria-label')).toMatch(/, 38, [A-Za-z ]+$/)
   })
 
   test('a new reading lands every beat; pause holds it and says so', () => {
@@ -229,7 +229,7 @@ describe('QueueFlow', () => {
       const { container } = reduced(<QueueFlow nodes={nodes} routes={routes} />)
       expect(within(screen.getByRole('group', { name: 'Support steps' })).getAllByRole('button')).toHaveLength(4)
       expect(screen.getByTestId('dock-icon')).toBeInTheDocument()
-      expect(node(/^Chute, Filter/).getAttribute('aria-label')).toMatch(/\/h$/)
+      expect(node(/^Chute, Filter/).getAttribute('aria-label')).toMatch(/\/h, [A-Za-z ]+$/)
       expect(screen.getByRole('group', { name: 'Spam held' })).toHaveTextContent('12')
       expect(inspector(container)).toHaveTextContent('trucks north')
     })
@@ -248,11 +248,11 @@ describe('QueueFlow', () => {
         />,
       )
       expect(screen.queryByRole('button', { name: 'Volume' })).toBeNull()
-      expect(node(/^Dock, Channel/).getAttribute('aria-label')).toMatch(/\d min$/)
+      expect(node(/^Dock, Channel/).getAttribute('aria-label')).toMatch(/\d min, [A-Za-z ]+$/)
       await user.click(screen.getByRole('button', { name: 'Parcels' }))
-      expect(node(/^Dock, Channel/).getAttribute('aria-label')).toMatch(/\/h$/)
+      expect(node(/^Dock, Channel/).getAttribute('aria-label')).toMatch(/\/h, [A-Za-z ]+$/)
       await user.click(screen.getByRole('button', { name: 'Rejects' }))
-      expect(node(/^Chute, Filter/).getAttribute('aria-label')).toMatch(/, 12$/)
+      expect(node(/^Chute, Filter/).getAttribute('aria-label')).toMatch(/, 12, [A-Za-z ]+$/)
     })
 
     test('your formatters write the figures, and the target sets the meter', () => {
@@ -260,7 +260,7 @@ describe('QueueFlow', () => {
       expect(screen.getByRole('group', { name: 'First reply p95' })).toHaveTextContent(/\d+ mins/)
       expect(screen.getByRole('group', { name: 'First reply p95' })).toHaveTextContent('of the 90 mins target')
       expect(screen.getByRole('group', { name: 'Spam held' })).toHaveTextContent('12 pcs')
-      expect(node(/^Dock, Channel/).getAttribute('aria-label')).toMatch(/pcs\/h$/)
+      expect(node(/^Dock, Channel/).getAttribute('aria-label')).toMatch(/pcs\/h, [A-Za-z ]+$/)
     })
   })
 })

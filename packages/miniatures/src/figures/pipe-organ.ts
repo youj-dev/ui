@@ -171,7 +171,7 @@ box(116,50,0,24,14,11,1.8,'base');
 const BF=group(FRONT(116,64,11));circle(BF,7,5.5,4.3,'face recess');
 const fanG=group('translate(7 5.5)',BF);for(let i=0;i<5;i++)el('path',{d:'M0,0 Q1.2,-2.2 3.6,-1.7 Q3.4,.2 0,0Z',class:'blade',transform:`rotate(${i*72})`},fanG);
 for(const r of[1.6,2.9,4.1])circle(BF,7,5.5,r,'detail');line(BF,2.9,5.5,11.1,5.5);line(BF,7,1.4,7,9.6);circle(BF,7,5.5,.8,'face top');
-const sw=button(group(FRONT(131.5,64.1,9),root,{id:'blower'}),{'aria-label':'Blower (B)','aria-pressed':'false'});
+const sw=button(group(FRONT(131.5,64.1,9),root,{id:'blower'}),{'aria-label':'0 / I: blower (B)','aria-pressed':'false'});
 rect(sw,-1.6,-1.6,9.2,9.6,2,'focus-ring');rect(sw,-2.5,-2.5,11,11.4,0,'hit');rect(sw,0,0,6,6.4,1.4,'face recess');
 const rock=rect(sw,.8,.8,4.4,2.6,.8,'face top button-face');text(sw,3,8.6,'0 / I','etch micro center');
 const BL=group(FRONT(116,64.1,11));circle(BL,22,2.6,.9,'led');pin(BL,1.6,1.6,.55);pin(BL,22.4,9.4,.55);

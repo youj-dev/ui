@@ -78,15 +78,16 @@ function FindingList({ findings, severities, now, locale, copy, onOpen }: Findin
             <button
               type="button"
               onClick={() => onOpen?.(f)}
-              aria-label={`${severity?.label ?? f.severity}: ${copy.openFinding(f.title, f.asset, age(f.openedAt, 'long'))}`}
+              // The row as shown (severity tag, title, asset, age), then the sentence.
+              aria-label={`${severity?.short ?? severity?.label ?? f.severity} ${f.title} ${f.asset} ${age(f.openedAt)}, ${severity?.label ?? f.severity}: ${copy.openFinding(f.title, f.asset, age(f.openedAt, 'long'))}`}
               className="@container/finding flex h-10 w-full min-w-0 items-center gap-2.5 rounded-md px-2 text-start text-ui outline-none hover:bg-hover focus-ring"
             >
               <Badge variant={BADGE[severity?.tone ?? 'subtle']} size="sm" className="w-12 shrink-0 justify-center">
                 {severity?.short ?? severity?.label ?? f.severity}
-              </Badge>
-              <span className="min-w-0 flex-1 truncate text-fg">{f.title}</span>
+              </Badge>{' '}
+              <span className="min-w-0 flex-1 truncate text-fg">{f.title}</span>{' '}
               {/* youj-allow: fixed size, a container query can't read the scale */}
-              <span className="max-w-32 shrink truncate font-mono text-ui-sm text-fg-muted @max-[22rem]/finding:hidden">{f.asset}</span>
+              <span className="max-w-32 shrink truncate font-mono text-ui-sm text-fg-muted @max-[22rem]/finding:hidden">{f.asset}</span>{' '}
               <span className="w-9 shrink-0 text-end font-mono text-ui-sm text-fg-muted tabular-nums">{age(f.openedAt)}</span>
             </button>
           </li>
