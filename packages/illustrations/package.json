@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@youj/core": "workspace:*",
-    "motion": "^13.4.4"
+    "motion": "^14.9.0"
   },
   "peerDependencies": {
     "@youj/core": "workspace:*",
