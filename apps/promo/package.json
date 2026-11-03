@@ -30,7 +30,7 @@
     "remotion": "4.0.538"
   },
   "devDependencies": {
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^6.0.2",
     "@tailwindcss/webpack": "4.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",

@@ -125,7 +125,7 @@
   },
   "devDependencies": {
     "@base-ui/react": "~1.9.0",
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^6.0.2",
     "@youj/core": "workspace:*",
     "@youj/illustrations": "workspace:*",
     "@youj/miniatures": "workspace:*",
