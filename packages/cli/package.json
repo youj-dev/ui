@@ -46,6 +46,6 @@
     "verify": "pnpm typecheck && pnpm build && pnpm test"
   },
   "dependencies": {
-    "@clack/prompts": "^1.8.1"
+    "@clack/prompts": "^1.9.0"
   }
 }
