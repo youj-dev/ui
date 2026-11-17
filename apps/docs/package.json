@@ -55,7 +55,7 @@
     "fumadocs-ui": "16.17.8",
     "lucide-react": "^1.48.0",
     "motion": "^13.4.4",
-    "next": "16.4.3",
+    "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-hook-form": "^7.89.0",
