@@ -1344,6 +1344,17 @@
       "inlineConfirmPrompt",
       "cancel"
     ],
+    "inlineEditLabels": [
+      "inlineEditTrigger",
+      "inlineEditHint",
+      "inlineEditHintMultiline",
+      "empty",
+      "save",
+      "cancel",
+      "saving",
+      "saved",
+      "saveFailed"
+    ],
     "sessionTimeoutLabels": [
       "sessionTimeoutTitle",
       "sessionTimeoutWarning",

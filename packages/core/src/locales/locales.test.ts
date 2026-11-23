@@ -347,6 +347,7 @@ const args: { [K in FunctionKey]: (n: number) => Parameters<YoujLabels[K]> } = {
   shareDialogRemoved: (_n) => ['Ada'],
   shareDialogRoleChanged: (_n) => ['Ada', 'Editor'],
   shareDialogAccessChanged: (_n) => ['Restricted'],
+  inlineEditTrigger: (_n) => ['Ada', 'Owner'],
   sessionTimeoutWarning: (n) => [`${n}:42`],
   filterRuleN: (n) => [n],
   filterGroupN: (n) => [n],

@@ -11,6 +11,7 @@
     "signature-pad",
     "file-upload",
     "avatar-upload",
-    "multi-language-input"
+    "multi-language-input",
+    "inline-edit"
   ]
 }

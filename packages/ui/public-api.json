@@ -86,6 +86,7 @@
   "image-compare": {"public":["ImageCompare","ImageCompareImage","ImageCompareProps","ImageCompareSide"],"internal":[]},
   "import-mapper": {"public":["DuplicatePolicy","ImportContext","ImportField","ImportFieldType","ImportMapper","ImportMapperCopy","ImportMapperProps","ImportResult","ImportRow"],"internal":[]},
   "inline-confirm": {"public":["InlineConfirm","InlineConfirmProps"],"internal":[]},
+  "inline-edit": {"public":["InlineEdit","InlineEditProps"],"internal":[]},
   "input": {"public":["Input"],"internal":["fieldControlClass"]},
   "input-group": {"public":["InputGroup","InputGroupAddon","InputGroupButton","InputGroupInput","InputGroupText","InputGroupTextarea"],"internal":["inputGroupControlClass"]},
   "input-otp": {"public":["InputOTP","InputOTPProps","InputOTPResend","InputOTPResendProps","OTPMode","OTPStatus","useCountdown","useOTPVerification"],"internal":[]},

@@ -1329,6 +1329,9 @@ interface YoujLabels {
     slideToConfirmHint: string;
     confirmed: string;
     inlineConfirmPrompt: string;
+    inlineEditTrigger: (text: string, label: string) => string;
+    inlineEditHint: string;
+    inlineEditHintMultiline: string;
     sessionTimeoutTitle: string;
     sessionTimeoutWarning: (time: string) => string;
     sessionTimeoutReason: string;
@@ -2015,6 +2018,8 @@ const imageCompareLabels: { imageCompare; imageCompareAfter; imageCompareBefore;
 const importMapperLabels: { back; continue; done; importMapperAllGood; importMapperBlank; importMapperBlocked; importMapperCheck; importMapperCheckWhy; importMapperChoose; importMapperColumn; importMapperCountsAnnounce; importMapperDescription; importMapperDoneAnnounce; importMapperDropHint; importMapperDropTitle; importMapperDuplicatesFound; importMapperEditCell; importMapperEmptyFile; importMapperErrorDate; importMapperErrorEmail; importMapperErrorNumber; importMapperErrorReport; importMapperErrorRequired; importMapperFailed; importMapperFileMeta; importMapperImport; importMapperImportAnother; importMapperImported; i…
 
 const inlineConfirmLabels: { cancel; inlineConfirmPrompt }
+
+const inlineEditLabels: { cancel; empty; inlineEditHint; inlineEditHintMultiline; inlineEditTrigger; save; saveFailed; saved; saving }
 
 const inputOtpLabels: { codeInvalid; codeVerified; resendCode; resendIn; sendFailed; sending; sent; verifyingCode }
 

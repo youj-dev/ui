@@ -2092,6 +2092,30 @@ interface InlineConfirmProps extends Omit<ComponentProps<'div'>, 'children' | 'o
     sound?: boolean;
 }
 
+function InlineEdit({ label, value: valueProp, defaultValue = '', onValueChange, onSave, validate, placeholder, multiline = false, actions, saveOnBlur = true, editing: editingProp, defaultEditing = false, onEditingChange, pendingLabel, successLabel, errorLabel, disabled = false, sound = true, className, onKeyDown, onBlur, ...props }: InlineEditProps): JSX.Element;
+  props: { actions?: boolean; defaultEditing?: boolean; defaultValue?: string; disabled?: boolean; editing?: boolean; errorLabel?: string | ((error: unknown) => string); label: string; multiline?: boolean; onEditingChange?: (editing: boolean) => void; onSave?: (value: string) => unknown; onValueChange?: (value: string) => void; pendingLabel?: string; placeholder?: string; saveOnBlur?: boolean; sound?: boolean; successLabel?: string; validate?: (value: string) => string | null | undefined | void; value?: string }
+
+interface InlineEditProps extends Omit<ComponentProps<'div'>, 'children' | 'defaultValue' | 'onChange' | 'onError'> {
+    label: string;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?: (value: string) => void;
+    onSave?: (value: string) => unknown;
+    validate?: (value: string) => string | null | undefined | void;
+    placeholder?: string;
+    multiline?: boolean;
+    actions?: boolean;
+    saveOnBlur?: boolean;
+    editing?: boolean;
+    defaultEditing?: boolean;
+    onEditingChange?: (editing: boolean) => void;
+    pendingLabel?: string;
+    successLabel?: string;
+    errorLabel?: string | ((error: unknown) => string);
+    disabled?: boolean;
+    sound?: boolean;
+}
+
 function Input({ className, type, required, ...props }: InputPrimitive.Props): JSX.Element;
 
 function InputGroup({ className, ...props }: ComponentProps<'div'>): JSX.Element;

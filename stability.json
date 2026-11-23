@@ -46,6 +46,7 @@
     "presentation": "experimental",
     "voice-orb": "experimental",
     "audio-recorder": "experimental",
+    "inline-edit": "experimental",
     "reveal": "alpha",
     "text-split": "alpha",
     "scramble-text": "alpha",

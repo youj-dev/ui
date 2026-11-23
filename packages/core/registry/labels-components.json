@@ -1608,6 +1608,18 @@
     ]
   },
   {
+    "name": "youj-labels-inline-edit",
+    "type": "registry:lib",
+    "title": "inlineEdit labels",
+    "description": "The English strings of inlineEdit (inlineEditTrigger, inlineEditHint, inlineEditHintMultiline, empty, save, cancel, saving, saved, saveFailed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/inlineEditLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
     "name": "youj-labels-session-timeout",
     "type": "registry:lib",
     "title": "sessionTimeout labels",

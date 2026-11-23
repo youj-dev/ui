@@ -1,9 +1,9 @@
 {
   "ceiling": {
-    "components": 0,
+    "components": 1,
     "blocks": 249
   },
-  "components": [],
+  "components": ["inline-edit"],
   "blocks": [
     "activity/comment-thread",
     "activity/doc-comments",

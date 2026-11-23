@@ -1,0 +1,139 @@
+---
+title: Inline Edit
+description: "Text that edits in place: press it and the same words sit in a field at the same spot, then save with Enter or by leaving."
+---
+
+<ComponentStories>
+<Story id="demo" label="Project settings">
+
+<ComponentPreview name="inline-edit/demo" height={300} />
+
+A project's settings, edited where they're read: a name, a description and an address.
+
+Press a value and it becomes a field in its place. The preview and the field share their box (height, padding, corner and type), so the text doesn't move: only the frame appears around it. A click puts the caret where it landed, and the keyboard selects the whole text. Enter saves, Escape cancels, and leaving the field saves too.
+
+The address is checked twice: `validate` refuses a draft before it's saved, and `onSave` can reject while it saves. Try clearing the name, or changing the address to "apollo".
+
+</Story>
+
+<Story id="multiline" label="Multi-line">
+
+<ComponentPreview name="inline-edit/multiline" height={220} />
+
+Release notes that keep their line breaks.
+
+With `multiline` the field is a textarea that grows with its text. Enter starts a new line, Ctrl or Command with Enter saves, and Save and Cancel sit in the field's frame. A one-line field truncates its preview; a multi-line one shows every line.
+
+</Story>
+
+<Story id="failure" label="Async failure">
+
+<ComponentPreview name="inline-edit/failure" height={200} />
+
+Renaming a workspace to an address that's taken.
+
+`onSave` can return a promise. While it runs, the field stays open and read-only with a spinner at its end. When it resolves, the field closes and a check draws after the new text. When it rejects or throws, the draft stays in the field with the error's message under it, so it can be fixed and saved again. `errorLabel` replaces the message.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="inline-edit" noImport />
+
+Use an Inline Edit for a value that is read far more often than it's changed, where a form or a dialog would be heavier than the change: a project's name, a card's title, a description in a details panel. For several values that change together, use a form with a [Field](/docs/components/field) for each and one submit button.
+
+```tsx
+'use client'
+
+import { InlineEdit } from '@youj/react'
+
+export function ProjectName({ project }: { project: Project }) {
+  return (
+    <InlineEdit
+      label="Project name"
+      defaultValue={project.name}
+      validate={(name) => (name.trim() ? null : 'A project needs a name.')}
+      onSave={(name) => renameProject(project.id, name)}
+    />
+  )
+}
+```
+
+`label` names the field, and the preview after the text it shows ("Apollo, edit Project name"). `value` is the saved value: `onValueChange` fires once a change is saved, never while it's typed. `onSave` isn't called when nothing changed.
+
+`saveOnBlur={false}` makes leaving the field cancel instead of save. `editing` and `onEditingChange` control whether the field is open, and `defaultEditing` opens it focused on the first render, for an item that was just created and needs a name.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="label, value, onSave, validate, multiline, saveOnBlur, editing…">
+
+### Props
+
+<PropsTable name="InlineEdit" />
+
+#### Data attributes
+
+The root carries `data-state` (`preview` or `editing`), `data-status` (`pending` while it saves, `success` while the check shows), `data-invalid` while a draft is refused and `data-disabled`. The preview is named `inline-edit-preview` in `data-slot`, its text `inline-edit-text`, and the reason under the field `inline-edit-error`. The field is an [Input Group](/docs/components/input-group).
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Swap, refusal, reason, saved check · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Open and close', note: 'the preview and the field swap in place, so the text holds still' },
+    { moment: 'Refused', note: 'the frame shakes a decaying 4, 3 and 2px', duration: 'slow', ease: 'standard' },
+    { moment: 'Reason', note: 'grows in under the field (Collapse)', duration: 'base', ease: 'standard' },
+    { moment: 'Saved', note: 'a check draws on after the text', duration: 'slow', ease: 'enter' },
+    { moment: 'Check hold', note: 'before the check goes', duration: 'deliberate', value: '× 3' },
+  ]}
+  reduced="No shake: the reason appears at once and the check is drawn finished. The swap is the same."
+/>
+
+#### Reduced motion
+
+A refused draft doesn't shake, and its reason appears in one frame. The check after a save shows finished. Nothing else moves, so the rest is the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, names, announcements">
+
+### Accessibility
+
+- The preview is a button named by the text it shows, then what pressing it does: "Apollo, edit Project name". Click, Enter, Space or F2 opens the field and moves focus into it.
+- The field is named by `label` and described by how to finish it ("Enter to save. Escape to cancel."). A multi-line field says Ctrl or Command with Enter.
+- Escape cancels here and doesn't reach a dialog or menu around it. Enter, Escape, Save and Cancel return focus to the preview; leaving the field leaves focus where it went.
+- A refused draft sets `aria-invalid` on the field, which is described by the reason, a `role="alert"` message read out at once. The draft stays until it's fixed or cancelled, even if focus leaves.
+- While `onSave` runs the field is read-only and `aria-busy`, and Enter and Escape wait for it. "Saving…" and "Saved" are announced politely.
+- Enter never saves in the middle of an IME composition (Japanese, Chinese or Korean input).
+- With sound on, a save that resolves plays `success` and a refusal plays `error`. `sound={false}` keeps it silent.
+
+</ReferenceRow>
