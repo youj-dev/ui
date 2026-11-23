@@ -142,7 +142,7 @@ All packages move to the same new version, each package gets its `CHANGELOG.md` 
   pnpm -F @youj/figma cover:docs   # only if verify says the docs' cover images are stale (the kit's counts moved)
   ```
 
-  `packages/figma/test/parity-baseline.json` lists what the kit doesn't draw yet, and it only shrinks: its `ceiling` totals go up only when a maintainer raises them. A new block needs no Figma work to release while the blocks ceiling has room. The kit draws every component (the components ceiling is 0), so a new component is drawn in its pull request, or a maintainer raises the ceiling and lists it. When a release draws one, remove it from the list; when it changes a drawn component's variants, update the drawing (`packages/figma/src/plugin/components`) to the same values.
+  `packages/figma/test/parity-baseline.json` lists what the kit doesn't draw yet, and it only shrinks: its `ceiling` totals go up only when a maintainer raises them. A new block needs no Figma work to release while the blocks ceiling has room. The kit draws every component, so a new component is drawn in its pull request, or a maintainer raises the components ceiling by one and lists it to be drawn later. When a release draws one, remove it from the list; when it changes a drawn component's variants, update the drawing (`packages/figma/src/plugin/components`) to the same values.
 
 ## 6. Publish
 
