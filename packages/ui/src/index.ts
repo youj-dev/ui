@@ -78,6 +78,7 @@ export { HoverCard, HoverCardContent, type HoverCardContentProps, HoverCardTrigg
 export { ImageAccordion, type ImageAccordionItem, type ImageAccordionProps } from './components/ui/image-accordion'
 export { ImageCompare, type ImageCompareImage, type ImageCompareProps, type ImageCompareSide } from './components/ui/image-compare'
 export { InlineConfirm, type InlineConfirmProps } from './components/ui/inline-confirm'
+export { InlineEdit, type InlineEditProps } from './components/ui/inline-edit'
 export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText, InputGroupTextarea } from './components/ui/input-group'
 export { InputOTP, type InputOTPProps, InputOTPResend, type InputOTPResendProps, type OTPMode, type OTPStatus, useCountdown, useOTPVerification } from './components/ui/input-otp'
 export { Input } from './components/ui/input'

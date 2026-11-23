@@ -1075,6 +1075,9 @@ export const slideToConfirm: YoujLabels['slideToConfirm'] = 'Slide to confirm'
 export const slideToConfirmHint: YoujLabels['slideToConfirmHint'] = 'Use the arrow keys or End to reach the end, then press Enter.'
 export const confirmed: YoujLabels['confirmed'] = 'Confirmed'
 export const inlineConfirmPrompt: YoujLabels['inlineConfirmPrompt'] = 'Are you sure?'
+export const inlineEditTrigger: YoujLabels['inlineEditTrigger'] = (text, label) => `${text}, edit ${label}`
+export const inlineEditHint: YoujLabels['inlineEditHint'] = 'Enter to save. Escape to cancel.'
+export const inlineEditHintMultiline: YoujLabels['inlineEditHintMultiline'] = 'Control or Command and Enter to save. Escape to cancel.'
 export const sessionTimeoutTitle: YoujLabels['sessionTimeoutTitle'] = 'You\'re about to be signed out'
 export const sessionTimeoutWarning: YoujLabels['sessionTimeoutWarning'] = (time) => `You'll be signed out in ${time}.`
 export const sessionTimeoutReason: YoujLabels['sessionTimeoutReason'] = 'We do this to keep your information safe, because you have not done anything for a while.'

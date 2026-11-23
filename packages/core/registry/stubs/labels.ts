@@ -134,6 +134,7 @@ import { whiteboardLabels } from './labels/whiteboardLabels'
 import { voiceOrbLabels } from './labels/voiceOrbLabels'
 import { worldClockLabels } from './labels/worldClockLabels'
 import { inlineConfirmLabels } from './labels/inlineConfirmLabels'
+import { inlineEditLabels } from './labels/inlineEditLabels'
 import { sessionTimeoutLabels } from './labels/sessionTimeoutLabels'
 import { filterBuilderLabels } from './labels/filterBuilderLabels'
 import { importMapperLabels } from './labels/importMapperLabels'
@@ -295,6 +296,7 @@ export const defaultLabels: YoujLabels = {
   ...voiceOrbLabels,
   ...worldClockLabels,
   ...inlineConfirmLabels,
+  ...inlineEditLabels,
   ...sessionTimeoutLabels,
   ...filterBuilderLabels,
   ...importMapperLabels,

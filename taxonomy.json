@@ -173,6 +173,7 @@
     "date-picker": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },
     "date-range-picker": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },
     "file-upload": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },
+    "inline-edit": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },
     "multi-language-input": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },
     "multi-select": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },
     "signature-pad": { "level": "component", "complexity": "composite", "category": "pickers-and-inputs" },

@@ -1472,6 +1472,12 @@ export interface YoujLabels {
   confirmed: string
   /** Inline Confirm's question, shown beside its Cancel and confirm buttons and announced as it opens. */
   inlineConfirmPrompt: string
+  /** Names the text an Inline Edit shows, then what pressing it does: "Apollo, edit Project name". */
+  inlineEditTrigger: (text: string, label: string) => string
+  /** Read with an Inline Edit's field: how to finish on one line. */
+  inlineEditHint: string
+  /** Read with a multi-line Inline Edit's field, where Enter starts a new line: how to finish. */
+  inlineEditHintMultiline: string
   /** The title of the dialog that warns an inactive session is about to end. */
   sessionTimeoutTitle: string
   /** The warning line, with the time left ("1:42"; read as words when announced). */

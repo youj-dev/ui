@@ -2294,6 +2294,37 @@
     ]
   },
   {
+    "name": "inline-edit",
+    "type": "registry:ui",
+    "title": "Inline Edit",
+    "description": "Text that edits in place, for a name, a title or a description.",
+    "meta": {
+      "level": "component",
+      "complexity": "composite",
+      "category": "pickers-and-inputs"
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "async-feedback",
+      "collapse",
+      "icon-check",
+      "icon-x",
+      "input-group",
+      "spinner",
+      "use-controllable-state",
+      "youj-core",
+      "youj-labels-inline-edit",
+      "youj-presets",
+      "youj-ui-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/ui/inline-edit.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
     "name": "input-group",
     "type": "registry:ui",
     "title": "Input Group",
