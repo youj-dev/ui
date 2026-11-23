@@ -106,7 +106,7 @@ pnpm -F docs typecheck
 - Accessibility isn't optional: correct roles, full keyboard support, visible focus rings, and live-region announcements where state changes silently.
 - Inside a package, import with relative paths, never the `@/` alias, so the source works both as a package and as copied files.
 - A component that needs a reusable motion behavior takes it from `@youj/motion`. A component never animates on its own terms.
-- A new component starts from shadcn's source through the package's wrapper, `pnpm -F @youj/react ui:add <name>`, which rewrites it to Youj's conventions. [packages/ui/CONTRIBUTING.md](repo:file/packages/ui/CONTRIBUTING.md) lists the steps that finish it.
+- A new component is written in `packages/ui/src/components/ui/`, or starts from a shadcn item through the package's wrapper, `pnpm -F @youj/react ui:add <name>`, which rewrites it to Youj's conventions. [A new component, end to end](repo:file/packages/ui/CONTRIBUTING.md#a-new-component-end-to-end) lists every step, from the source to the changeset.
 - Don't add dependencies casually. Say in the pull request what you need and why; a heavy one becomes an optional peer with its own entry.
 
 ### Building a block

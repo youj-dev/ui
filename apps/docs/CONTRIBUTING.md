@@ -59,26 +59,91 @@ The docs are filed by what a reader is looking for, not by package: **Get starte
 
 ## Writing a component page
 
+Every component page has the same shape, so start from a short one (`components/(data-and-tables)/property-list.mdx`) rather than a blank file:
+
 ```mdx
 ---
-title: Reveal
-description: One sentence that says what it's for.
+title: Property List
+description: "One sentence that says what it's for."
 status: new # optional: see Badges above
 ---
 
-<ComponentPreview name="reveal/demo" />   {/* examples/reveal/demo.tsx */}
-<InstallTabs name="reveal" />             {/* a registry item name */}
-<MotionSpec rows={[{ moment: 'Enter', duration: 'slow', ease: 'enter' }]} reduced="Renders its final state." />
-<PropsTable name="Reveal" />              {/* an exported component or *Props interface */}
+<ComponentStories>
+
+<Story id="demo" label="Demo">
+
+<ComponentPreview name="property-list/demo" height={520} />   {/* examples/property-list/demo.tsx */}
+
+One line on what this story shows, then anything only it needs said.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="property-list" noImport />   {/* a registry item name */}
+
+When to use it and what to use instead, then a usage snippet that imports from `@youj/react`.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="stack, icon, label, onEdit (4)">
+
+### Props
+
+<PropsTable name="PropertyList" />   {/* an exported component or *Props interface */}
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Row enters · reduced motion">
+
+### Motion
+
+<MotionSpec rows={[{ moment: 'Row enters', duration: 'base', ease: 'enter' }]} reduced="Rows appear in place." />
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Description list, edit buttons">
+
+### Accessibility
+
+- Its roles, its keys, where focus goes and what it announces.
+
+</ReferenceRow>
 ```
 
 - **Examples** are plain client components in `examples/`, registered by path in `examples/index.tsx`. The preview's Code tab shows the file verbatim, so write it as app code. A test fails if a page uses an unregistered example or a file isn't registered.
-- **Stories (trial on Field):** `<ComponentStories>` puts a page's examples in one preview with a Story menu in its strip. Each `<Story id label>` holds its `<ComponentPreview>` as written (so `lib/basics.ts`, `scripts/stage-heights.ts`, the examples test and the Markdown export read it as on any page), then its description: a first line, and anything only that story needs said. The story is the hash (`#validation`), so old example anchors land on it. Nothing sits under the stage: inside `<ComponentStories>`, `<Examples label="Get started">` holds Installation & usage (`<InstallTabs noImport>`, as the usage code imports), Description (`<StoryDescription />`) and Code (`<StoryCode />`), the last two following the story on show. Parts, hooks and other prose-only sections go in Reference.
+- **Stories:** `<ComponentStories>` puts a page's examples in one preview with a Story menu in its strip. Each `<Story id label>` holds its `<ComponentPreview>` as written (so `lib/basics.ts`, `scripts/stage-heights.ts`, the examples test and the Markdown export read it as on any page), then its description: a first line, and anything only that story needs said. The story is the hash (`#validation`), so old example anchors land on it. Nothing sits under the stage: inside `<ComponentStories>`, `<Examples label="Get started" buttons>` holds Installation & usage (`<InstallTabs noImport>`, as the usage code imports), Description (`<StoryDescription />`) and Code (`<StoryCode />`), the last two following the story on show.
 - **Props** are extracted with the TypeScript compiler API: only props the package declares (inherited DOM and motion props become an "extends" note), aliases kept as written with their literal members expanded, and defaults read from destructuring, `@default`, or a trailing "Default x." sentence.
 - **Other blocks:** `<Callout type="note|tip|warning|danger">`, `<Steps>`/`<Step>` (start each step with a `###` heading so it lands in the TOC), `<Cards>`/`<Card href demo soon>` (`demo` names the picture for a page that has none, like a group), `<ComponentIndex />` (every component and motion piece, A to Z), `<ComingSoon name>`, `<TopicLoop topic>` (a part's loop from apps/promo, at the top of its overview, always followed by a short paragraph before the next picture or preview; `test/parity.test.ts` holds every page to it), and `<Snippet code="… {registry}/reveal.json" />` for code that needs this site's URL.
 - **`<PageArt art>`** opens every Get started and Guides page, straight under the title: a quiet band (184px, 152px on a phone) of the page's canvas in a hairline frame, with a faded isometric grid, drawn on the server. Inside it sit the page's registry scenes (`components/docs/page-art-scenes.tsx`, named in `lib/page-art.ts`). They assemble in view and float, and where one hands something on to the next, a dashed route carries a particle that runs only on screen. It's decorative, follows the site's theme and mode, and under reduced motion it's still from the first paint. Like a topic loop, text follows it. Theming and Styles open with their own picture instead, and `test/page-art.test.ts` holds every page to one or the other.
 
-- **Reference:** wrap a page's Motion, Props, Accessibility and Reduced motion sections in `<Reference>…</Reference>` (blank lines inside), so the page leads with the preview and usage. TOC links into it open it.
+- **Reference:** after the stories, `## Reference` holds one `<ReferenceRow title summary>` per section (blank lines inside), each a closed bar with a one-line summary, so the page leads with the preview and usage. Props, Motion (its `<MotionSpec>`, and a `#### Reduced motion` note where the spec's `reduced` line isn't enough) and Accessibility are on every component page; Styling, Touch, Performance, Labels and Keyboard rows follow where the component needs them, and parts, hooks and other prose-only sections get a row of their own. Put the row's `###` heading first in it: it lands in the TOC, and a TOC link into the row opens it.
 - **A new MDX block** fills the page's column. Don't give its root a width of its own: a picture, code or a table that's wider than the column scales or scrolls inside it.
 
 
