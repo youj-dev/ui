@@ -3291,6 +3291,42 @@
     ]
   },
   {
+    "name": "reaction-group",
+    "type": "registry:ui",
+    "title": "Reaction Group",
+    "description": "Emoji reactions under a comment, a message or a post: a pill per emoji with how many reacted, pressed when you’re one of them, and a button that offers emoji to react with.",
+    "meta": {
+      "level": "component",
+      "complexity": "composite",
+      "category": "actions"
+    },
+    "dependencies": [
+      "motion"
+    ],
+    "registryDependencies": [
+      "button",
+      "collapse",
+      "counter",
+      "icon-smile-plus",
+      "popover",
+      "presence-list",
+      "separator",
+      "tooltip",
+      "use-announcer",
+      "use-controllable-state",
+      "youj-core",
+      "youj-labels-reaction-group",
+      "youj-presets",
+      "youj-ui-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/ui/reaction-group.tsx",
+        "type": "registry:ui"
+      }
+    ]
+  },
+  {
     "name": "refill-meter",
     "type": "registry:ui",
     "title": "Refill Meter",

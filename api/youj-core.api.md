@@ -1496,6 +1496,19 @@ interface YoujLabels {
     liveCursorsFollow: (name: string) => string;
     liveCursorsFollowing: (name: string) => string;
     liveCursorsMore: (count: number) => string;
+    reactionGroupLabel: string;
+    reactionGroupAdd: string;
+    reactionGroupItem: (name: string, count: number) => string;
+    reactionGroupOthers: (count: number) => string;
+    reactionGroupFailed: string;
+    reactionGroupThumbsUp: string;
+    reactionGroupThumbsDown: string;
+    reactionGroupLaugh: string;
+    reactionGroupHooray: string;
+    reactionGroupConfused: string;
+    reactionGroupHeart: string;
+    reactionGroupRocket: string;
+    reactionGroupEyes: string;
     hierarchyChart: string;
     hierarchyChartHint: string;
     hierarchyChartHidden: (count: number) => string;
@@ -2073,6 +2086,8 @@ const radialGraphLabels: { noData; radialGraph; radialGraphHops; radialGraphItem
 const radialMenuLabels: { actions; radialMenuChosen; radialMenuHint }
 
 const ratingLabels: { noRating; notRated; ratedOutOf; ratingValue; stars }
+
+const reactionGroupLabels: { added; chatYou; reactionGroupAdd; reactionGroupConfused; reactionGroupEyes; reactionGroupFailed; reactionGroupHeart; reactionGroupHooray; reactionGroupItem; reactionGroupLabel; reactionGroupLaugh; reactionGroupOthers; reactionGroupRocket; reactionGroupThumbsDown; reactionGroupThumbsUp; removed }
 
 function readThemeMode(storageKey = THEME_STORAGE_KEY): ColorMode | undefined;
 

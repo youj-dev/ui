@@ -314,6 +314,8 @@ const args: { [K in FunctionKey]: (n: number) => Parameters<YoujLabels[K]> } = {
   liveCursorsFollow: (_n) => ['Ada'],
   liveCursorsFollowing: (_n) => ['Ada'],
   liveCursorsMore: (n) => [n],
+  reactionGroupItem: (n) => ['Thumbs up', n],
+  reactionGroupOthers: (n) => [n],
   tourStepOf: (n) => [n, 5],
   tourStepAnnounce: (n) => [n, 5, 'Ada'],
   hierarchyChartHidden: (n) => [n],

@@ -1801,6 +1801,26 @@ export interface YoujLabels {
   liveCursorsFollowing: (name: string) => string
   /** The name of the "+N" past the shown avatars. */
   liveCursorsMore: (count: number) => string
+  // ReactionGroup. Who reacted starts with the shared `chatYou`; its announcements are the shared `added` and `removed`.
+  /** The reactions' list name when the app gives none. */
+  reactionGroupLabel: string
+  /** The button that offers emoji to react with, and the panel it opens. */
+  reactionGroupAdd: string
+  /** A reaction's button: the emoji's name, then how many reacted ("Thumbs up, 3"). Its pressed state says whether you're one of them. */
+  reactionGroupItem: (name: string, count: number) => string
+  /** Ends the list of who reacted, past the names it shows: "You, Mara and 3 others". */
+  reactionGroupOthers: (count: number) => string
+  /** Shown under the reactions, and announced, when a reaction couldn't be saved and was put back. */
+  reactionGroupFailed: string
+  /** The default emoji's names (👍 👎 😄 🎉 😕 ❤️ 🚀 👀), spoken and shown in their tooltips. */
+  reactionGroupThumbsUp: string
+  reactionGroupThumbsDown: string
+  reactionGroupLaugh: string
+  reactionGroupHooray: string
+  reactionGroupConfused: string
+  reactionGroupHeart: string
+  reactionGroupRocket: string
+  reactionGroupEyes: string
   // HierarchyChart. Zooming and fitting use the shared zoomIn, zoomOut and zoomToFit.
   /** The chart's accessible name when the app gives none. */
   hierarchyChart: string

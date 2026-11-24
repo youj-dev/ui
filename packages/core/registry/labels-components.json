@@ -1716,6 +1716,18 @@
     ]
   },
   {
+    "name": "youj-labels-reaction-group",
+    "type": "registry:lib",
+    "title": "reactionGroup labels",
+    "description": "The English strings of reactionGroup (reactionGroupLabel, reactionGroupAdd, reactionGroupItem, reactionGroupOthers, reactionGroupFailed, reactionGroupThumbsUp, reactionGroupThumbsDown, reactionGroupLaugh, reactionGroupHooray, reactionGroupConfused, reactionGroupHeart, reactionGroupRocket, reactionGroupEyes, chatYou, added, removed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/reactionGroupLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
     "name": "youj-labels-hierarchy-chart",
     "type": "registry:lib",
     "title": "hierarchyChart labels",

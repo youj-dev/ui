@@ -1,0 +1,141 @@
+---
+title: Reaction Group
+description: "Emoji reactions under a comment, a message or a post: press one to add yours or take it away, or add another from the button at the end."
+---
+
+<ComponentStories>
+<Story id="demo" label="Under a comment">
+
+<ComponentPreview name="reaction-group/demo" height={260} />
+
+A comment's reactions, with names for who reacted.
+
+Each pill is an emoji and how many reacted with it, pressed when you're one of them. A press adds yours or takes it away at once: the count rolls, and turning one on pops its emoji. A reaction nobody holds any more leaves, and one added from the button at the end joins after the others. Hover or focus a pill, or hold it on touch, to see the emoji's name and who reacted: you first, then the names you give, then how many others.
+
+</Story>
+
+<Story id="chat" label="In a chat">
+
+<ComponentPreview name="reaction-group/chat" height={260} />
+
+Reactions under chat messages, where rows are dense.
+
+`size="sm"` makes the pills and the add button a step smaller. The panel the add button opens is the same at both sizes.
+
+</Story>
+
+<Story id="failure" label="Failure">
+
+<ComponentPreview name="reaction-group/failure" height={160} />
+
+A reaction that can't be saved, because the network is down.
+
+`onReact` can return a promise. The change shows at once, and while the promise runs the pill is busy and ignores presses. If it rejects (or `onReact` throws), the press is undone: the count goes back, the pill shakes, and "Couldn’t save your reaction" shows under the row until the next press. `errorLabel` replaces the message, or makes one from what was thrown.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="reaction-group" noImport />
+
+Use a Reaction Group under a comment, a message, a post or a document, wherever people answer something with an emoji rather than words. For a single like or star, use a [Toggle](/docs/components/toggle); for a rating, use [Rating](/docs/components/rating).
+
+```tsx
+'use client'
+
+import { ReactionGroup } from '@youj/react'
+
+export function CommentReactions({ comment }: { comment: Comment }) {
+  return (
+    <ReactionGroup
+      defaultValue={comment.reactions}
+      onReact={(emoji, reacted) => (reacted ? addReaction(comment.id, emoji) : removeReaction(comment.id, emoji))}
+    />
+  )
+}
+```
+
+Each reaction is `{ emoji, count, reacted, by }`. `count` includes you, and `reacted` says you're one of them. `by` names the others who reacted, for the tooltip and screen readers; a few names are enough, since the rest are counted from `count`. A reaction can carry its own `label` for an emoji the component has no name for.
+
+`value` and `onValueChange` make it controlled. `onValueChange` fires as each press changes the reactions, and again when a press that failed is undone. A press on a reaction's own pill and a pick from the panel both call `onReact(emoji, reacted)`.
+
+The add button offers 👍 👎 😄 🎉 😕 ❤️ 🚀 👀, named in the app's language. `choices` replaces them, each as a string or `{ emoji, label }`. For a full emoji picker, pass your own through `renderPicker`: it sits under the choices, and calling the `pick` it's given reacts and closes the panel. `disabled` shows the reactions and who made them, with no way to change them.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, onReact, choices, renderPicker, size, disabled…">
+
+### Props
+
+<PropsTable name="ReactionGroup" />
+
+#### ReactionGroupItem
+
+<PropsTable name="ReactionGroupItem" />
+
+#### Data attributes
+
+The root carries `data-size` and `data-disabled`. The list is `reaction-group-list` in `data-slot`, and each pill in it `reaction-group-item`, with its emoji in `data-yj-emoji` and `aria-pressed`, `aria-busy` and `aria-disabled` for its state; inside it, `reaction-group-emoji` and `reaction-group-count`. The add button is `reaction-group-add`, the panel it opens `reaction-group-panel` with its emoji in `reaction-group-choices` (each one `reaction-group-choice`), and the reason under the row `reaction-group-error`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Pop, count, join and leave, failure · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Reacted', note: 'the emoji pops from 1.5× (the one allowed overshoot)', spring: 'settle' },
+    { moment: 'Count', note: 'rolls to the new number (Counter)', spring: 'smooth' },
+    { moment: 'Join', note: 'a new pill fades in while the others make room (PresenceList)', duration: 'base', ease: 'enter' },
+    { moment: 'Leave', note: 'the pill fades where it stands, then the others close up', duration: 'fast', ease: 'exit' },
+    { moment: 'Failed', note: 'the pill shakes back a decaying 4, 3 and 2px', duration: 'slow', ease: 'standard' },
+    { moment: 'Reason', note: 'grows in under the row (Collapse)', duration: 'base', ease: 'standard' },
+  ]}
+  reduced="Counts change in place, pills come and go at once, nothing pops or shakes, and the reason appears at once."
+/>
+
+#### Reduced motion
+
+Nothing pops, rolls, glides or shakes: the count changes in place, a pill appears or goes in one frame, and the reason under the row appears at once. The colors still change with the pressed state.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, names, announcements">
+
+### Accessibility
+
+- The reactions are a list named "Reactions" (`label` renames it). Each pill is a toggle button named by its emoji's name and count ("Thumbs up, 3"), `aria-pressed` when it's yours, and described by who reacted ("You, Mara and 3 others"). The add button is the list's last item.
+- Pills and the add button are in the tab order, and Enter or Space presses them. When your press makes a pill leave, focus moves to the next pill, or the add button when none is left, and the removal is announced.
+- The panel is a dialog named "Add reaction". Focus moves to its first emoji; the arrow keys move between the emoji (a row at a time up and down, mirrored right to left), Home and End go to the ends, and Escape closes it. Each emoji is a toggle button named by its name, pressed when it's yours. A pick closes the panel, returns focus to the add button and is announced ("Added Rocket").
+- While `onReact` runs the pill is `aria-busy`. A failure is a `role="alert"` message under the row, read out at once.
+- `disabled` pills stay focusable and keep their names and descriptions, with `aria-disabled`, so who reacted can still be read.
+- With sound on, reacting plays `toggleOn`, taking yours away `toggleOff`, and a failure `error`. `sound={false}` keeps it silent.
+
+</ReferenceRow>

@@ -92,6 +92,7 @@
     "toggle-group": { "level": "component", "complexity": "simple", "category": "actions" },
     "toolbar": { "level": "component", "complexity": "simple", "category": "actions" },
     "action-island": { "level": "component", "complexity": "simple", "category": "actions" },
+    "reaction-group": { "level": "component", "complexity": "composite", "category": "actions" },
     "cursor-follower": { "level": "component", "complexity": "simple", "category": "effects" },
     "liquid-glass": { "level": "component", "complexity": "simple", "category": "effects" },
     "magnetic": { "level": "component", "complexity": "simple", "category": "effects" },

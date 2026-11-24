@@ -1037,6 +1037,19 @@ export const liveCursorsEditing: YoujLabels['liveCursorsEditing'] = 'Editing'
 export const liveCursorsFollow: YoujLabels['liveCursorsFollow'] = (name) => `Follow ${name}`
 export const liveCursorsFollowing: YoujLabels['liveCursorsFollowing'] = (name) => `Following ${name}`
 export const liveCursorsMore: YoujLabels['liveCursorsMore'] = (count) => `${count} more`
+export const reactionGroupLabel: YoujLabels['reactionGroupLabel'] = 'Reactions'
+export const reactionGroupAdd: YoujLabels['reactionGroupAdd'] = 'Add reaction'
+export const reactionGroupItem: YoujLabels['reactionGroupItem'] = (name, count) => `${name}, ${count.toLocaleString('en-US')}`
+export const reactionGroupOthers: YoujLabels['reactionGroupOthers'] = (count) => (count === 1 ? '1 other' : `${count.toLocaleString('en-US')} others`)
+export const reactionGroupFailed: YoujLabels['reactionGroupFailed'] = 'Couldn’t save your reaction'
+export const reactionGroupThumbsUp: YoujLabels['reactionGroupThumbsUp'] = 'Thumbs up'
+export const reactionGroupThumbsDown: YoujLabels['reactionGroupThumbsDown'] = 'Thumbs down'
+export const reactionGroupLaugh: YoujLabels['reactionGroupLaugh'] = 'Laugh'
+export const reactionGroupHooray: YoujLabels['reactionGroupHooray'] = 'Hooray'
+export const reactionGroupConfused: YoujLabels['reactionGroupConfused'] = 'Confused'
+export const reactionGroupHeart: YoujLabels['reactionGroupHeart'] = 'Heart'
+export const reactionGroupRocket: YoujLabels['reactionGroupRocket'] = 'Rocket'
+export const reactionGroupEyes: YoujLabels['reactionGroupEyes'] = 'Eyes'
 export const tourStepOf: YoujLabels['tourStepOf'] = (step, total) => `${step} of ${total}`
 export const tourStepAnnounce: YoujLabels['tourStepAnnounce'] = (step, total, title) => `Step ${step} of ${total}: ${title}`
 export const tourHint: YoujLabels['tourHint'] = 'Use the arrow keys to move between steps. Press Escape to end the tour.'

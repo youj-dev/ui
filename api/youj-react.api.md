@@ -3274,6 +3274,36 @@ interface RatingProps {
     'aria-describedby'?: string;
 }
 
+function ReactionGroup({ value: valueProp, defaultValue = NONE, onValueChange, onReact, choices = CHOICES, renderPicker, label, errorLabel, size = 'default', disabled = false, sound = true, className, ...props }: ReactionGroupProps): JSX.Element;
+  props: { choices?: readonly (string | ReactionGroupChoice)[]; defaultValue?: readonly ReactionGroupItem[]; disabled?: boolean; errorLabel?: string | ((error: unknown) => string); label?: string; onReact?: (emoji: string, reacted: boolean) => unknown; onValueChange?: (value: ReactionGroupItem[]) => void; renderPicker?: (pick: (emoji: string, label?: string) => void) => ReactNode; size?: Extract<Size, 'sm' | 'default'>; sound?: boolean; value?: readonly ReactionGroupItem[] }
+
+interface ReactionGroupChoice {
+    emoji: string;
+    label: string;
+}
+
+interface ReactionGroupItem {
+    emoji: string;
+    count: number;
+    reacted?: boolean;
+    by?: readonly string[];
+    label?: string;
+}
+
+interface ReactionGroupProps extends Omit<ComponentProps<'div'>, 'children' | 'defaultValue' | 'onToggle'> {
+    value?: readonly ReactionGroupItem[];
+    defaultValue?: readonly ReactionGroupItem[];
+    onValueChange?: (value: ReactionGroupItem[]) => void;
+    onReact?: (emoji: string, reacted: boolean) => unknown;
+    choices?: readonly (string | ReactionGroupChoice)[];
+    renderPicker?: (pick: (emoji: string, label?: string) => void) => ReactNode;
+    label?: string;
+    errorLabel?: string | ((error: unknown) => string);
+    size?: Extract<Size, 'sm' | 'default'>;
+    disabled?: boolean;
+    sound?: boolean;
+}
+
 function RefillMeter({ value, capacity, refillRate = 0, updatedAt, burst, segments, label, locale: localeProp, className, style, ...props }: RefillMeterProps): JSX.Element;
   props: { burst?: number; capacity: number; label?: ReactNode; locale?: string; refillRate?: number; segments?: number; updatedAt?: number; value: number }
 
