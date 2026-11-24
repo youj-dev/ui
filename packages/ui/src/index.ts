@@ -113,6 +113,7 @@ export { RadialGraph, type RadialGraphCenter, type RadialGraphNode, type RadialG
 export { RadialMenu, type RadialMenuItem, type RadialMenuProps, type RadialMenuTrigger } from './components/ui/radial-menu'
 export { RadioGroup, RadioGroupItem } from './components/ui/radio-group'
 export { Rating, type RatingIcon, type RatingProps } from './components/ui/rating'
+export { ReactionGroup, type ReactionGroupChoice, type ReactionGroupItem, type ReactionGroupProps } from './components/ui/reaction-group'
 export { RefillMeter, type RefillMeterProps } from './components/ui/refill-meter'
 export { type ResizableGroupHandle, ResizableHandle, type ResizableHandleProps, type ResizableLayout, ResizablePanel, ResizablePanelGroup, type ResizablePanelHandle, type ResizablePanelProps } from './components/ui/resizable'
 export { RolloutRuler, type RolloutRulerProps, type RolloutStage, type RolloutTone } from './components/ui/rollout-ruler'

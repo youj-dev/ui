@@ -143,6 +143,7 @@ import { slideToConfirmLabels } from './labels/slideToConfirmLabels'
 import { tourLabels } from './labels/tourLabels'
 import { audioRecorderLabels } from './labels/audioRecorderLabels'
 import { liveCursorsLabels } from './labels/liveCursorsLabels'
+import { reactionGroupLabels } from './labels/reactionGroupLabels'
 import { hierarchyChartLabels } from './labels/hierarchyChartLabels'
 import { radialMenuLabels } from './labels/radialMenuLabels'
 import { imageCompareLabels } from './labels/imageCompareLabels'
@@ -304,6 +305,7 @@ export const defaultLabels: YoujLabels = {
   ...tourLabels,
   ...audioRecorderLabels,
   ...liveCursorsLabels,
+  ...reactionGroupLabels,
   ...hierarchyChartLabels,
   ...radialMenuLabels,
   ...imageCompareLabels,

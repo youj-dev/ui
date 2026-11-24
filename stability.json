@@ -43,6 +43,7 @@
   },
   "items": {
     "tables-data-grid": "experimental",
+    "reaction-group": "experimental",
     "presentation": "experimental",
     "voice-orb": "experimental",
     "audio-recorder": "experimental",

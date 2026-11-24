@@ -1558,6 +1558,24 @@
       "liveCursorsFollowing",
       "liveCursorsMore"
     ],
+    "reactionGroupLabels": [
+      "reactionGroupLabel",
+      "reactionGroupAdd",
+      "reactionGroupItem",
+      "reactionGroupOthers",
+      "reactionGroupFailed",
+      "reactionGroupThumbsUp",
+      "reactionGroupThumbsDown",
+      "reactionGroupLaugh",
+      "reactionGroupHooray",
+      "reactionGroupConfused",
+      "reactionGroupHeart",
+      "reactionGroupRocket",
+      "reactionGroupEyes",
+      "chatYou",
+      "added",
+      "removed"
+    ],
     "hierarchyChartLabels": [
       "hierarchyChart",
       "hierarchyChartHint",

@@ -123,6 +123,7 @@
   "radial-menu": {"public":["RadialMenu","RadialMenuItem","RadialMenuProps","RadialMenuTrigger"],"internal":[]},
   "radio-group": {"public":["RadioGroup","RadioGroupItem"],"internal":[]},
   "rating": {"public":["Rating","RatingIcon","RatingProps"],"internal":[]},
+  "reaction-group": {"public":["ReactionGroup","ReactionGroupChoice","ReactionGroupItem","ReactionGroupProps"],"internal":[]},
   "refill-meter": {"public":["RefillMeter","RefillMeterProps"],"internal":[]},
   "resizable": {"public":["ResizableGroupHandle","ResizableHandle","ResizableHandleProps","ResizableLayout","ResizablePanel","ResizablePanelGroup","ResizablePanelHandle","ResizablePanelProps"],"internal":[]},
   "rollout-ruler": {"public":["RolloutRuler","RolloutRulerProps","RolloutStage","RolloutTone"],"internal":[]},
