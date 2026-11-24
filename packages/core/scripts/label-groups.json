@@ -820,6 +820,21 @@
       "treeRename",
       "treeRenamed"
     ],
+    "jsonViewerLabels": [
+      "jsonViewer",
+      "jsonViewerKeys",
+      "jsonViewerItems",
+      "jsonViewerRange",
+      "jsonViewerCharacters",
+      "jsonViewerCircular",
+      "jsonViewerCopyValue",
+      "jsonViewerCopyPath",
+      "jsonViewerCopyAll",
+      "jsonViewerExpandAll",
+      "jsonViewerCollapseAll",
+      "copied",
+      "copyFailed"
+    ],
     "asyncFeedbackLabels": [
       "working",
       "done",

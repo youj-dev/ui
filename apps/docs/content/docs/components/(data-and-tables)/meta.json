@@ -10,6 +10,7 @@
     "breakdown-list",
     "contribution-list",
     "tree-view",
+    "json-viewer",
     "sortable-list",
     "kanban",
     "import-mapper"

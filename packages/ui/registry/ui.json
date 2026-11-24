@@ -5665,6 +5665,50 @@
     ]
   },
   {
+    "name": "json-viewer",
+    "type": "registry:ui",
+    "title": "JSON Viewer",
+    "description": "A JSON value as a tree that opens and closes: keys and typed values in the code palette, objects and arrays counted (\"{4}\", \"[12]\"), long strings cut short until opened, and arrays of more than a hundred items opened a hundred at a time.",
+    "meta": {
+      "level": "component",
+      "complexity": "composite",
+      "category": "data-and-tables"
+    },
+    "dependencies": [],
+    "registryDependencies": [
+      "button",
+      "code-block",
+      "collapse",
+      "icon-chevron-right",
+      "icon-chevrons-up-down",
+      "icon-copy",
+      "icon-route",
+      "tooltip",
+      "use-announcer",
+      "youj-core",
+      "youj-labels-json-viewer",
+      "youj-presets",
+      "youj-ui-core"
+    ],
+    "files": [
+      {
+        "path": "src/components/ui/json-viewer/index.ts",
+        "type": "registry:ui",
+        "target": "components/ui/json-viewer/index.ts"
+      },
+      {
+        "path": "src/components/ui/json-viewer/json-viewer-model.ts",
+        "type": "registry:ui",
+        "target": "components/ui/json-viewer/json-viewer-model.ts"
+      },
+      {
+        "path": "src/components/ui/json-viewer/json-viewer.tsx",
+        "type": "registry:ui",
+        "target": "components/ui/json-viewer/json-viewer.tsx"
+      }
+    ]
+  },
+  {
     "name": "kanban",
     "type": "registry:ui",
     "title": "Kanban",

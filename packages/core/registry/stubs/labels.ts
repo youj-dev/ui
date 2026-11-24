@@ -79,6 +79,7 @@ import { dataTableViewsLabels } from './labels/dataTableViewsLabels'
 import { kanbanLabels } from './labels/kanbanLabels'
 import { multiLanguageInputProviderLabels } from './labels/multiLanguageInputProviderLabels'
 import { treeViewLabels } from './labels/treeViewLabels'
+import { jsonViewerLabels } from './labels/jsonViewerLabels'
 import { asyncFeedbackLabels } from './labels/asyncFeedbackLabels'
 import { scrollProgressLabels } from './labels/scrollProgressLabels'
 import { dockLabels } from './labels/dockLabels'
@@ -240,6 +241,7 @@ export const defaultLabels: YoujLabels = {
   ...kanbanLabels,
   ...multiLanguageInputProviderLabels,
   ...treeViewLabels,
+  ...jsonViewerLabels,
   ...asyncFeedbackLabels,
   ...scrollProgressLabels,
   ...dockLabels,

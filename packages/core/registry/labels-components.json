@@ -948,6 +948,18 @@
     ]
   },
   {
+    "name": "youj-labels-json-viewer",
+    "type": "registry:lib",
+    "title": "jsonViewer labels",
+    "description": "The English strings of jsonViewer (jsonViewer, jsonViewerKeys, jsonViewerItems, jsonViewerRange, jsonViewerCharacters, jsonViewerCircular, jsonViewerCopyValue, jsonViewerCopyPath, jsonViewerCopyAll, jsonViewerExpandAll, jsonViewerCollapseAll, copied, copyFailed), for useComponentLabels. Installed with the component that reads them.",
+    "files": [
+      {
+        "path": "src/lib/youj/labels/jsonViewerLabels.ts",
+        "type": "registry:lib"
+      }
+    ]
+  },
+  {
     "name": "youj-labels-async-feedback",
     "type": "registry:lib",
     "title": "asyncFeedback labels",

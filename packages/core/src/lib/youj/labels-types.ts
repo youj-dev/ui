@@ -676,6 +676,29 @@ export interface YoujLabels {
   treeRename: (name: string) => string
   treeRenamed: (name: string) => string
 
+  // JSON viewer. Copying reports through the shared `copied` and `copyFailed`.
+  /** The viewer's name in its header, and the tree's, when the app gives none. */
+  jsonViewer: string
+  /** Read out for an object's "{4}": how many keys it holds. */
+  jsonViewerKeys: (count: number) => string
+  /** Read out for an array's "[12]": how many items it holds. */
+  jsonViewerItems: (count: number) => string
+  /** Read out for a big array's range row, "[100 … 199]": the first and last index in it. */
+  jsonViewerRange: (from: number, to: number) => string
+  /** Shown on a long string's row while it's open onto its whole text: how long it is. */
+  jsonViewerCharacters: (count: number) => string
+  /** Shown in place of a value that holds itself, which would otherwise open forever. */
+  jsonViewerCircular: string
+  /** A row's button that copies its value. */
+  jsonViewerCopyValue: string
+  /** A row's button that copies its path (`request.headers["content-type"]`). */
+  jsonViewerCopyPath: string
+  /** The header's button that copies the whole value as JSON. */
+  jsonViewerCopyAll: string
+  /** The header's button that opens every object and array, and closes them all again. */
+  jsonViewerExpandAll: string
+  jsonViewerCollapseAll: string
+
   // Notification center
   notifications: string
   notificationsUnread: (count: number) => string

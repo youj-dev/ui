@@ -199,6 +199,7 @@
     "sortable-list": { "level": "component", "complexity": "composite", "category": "data-and-tables" },
     "progress-list": { "level": "component", "complexity": "composite", "category": "specialized" },
     "tree-view": { "level": "component", "complexity": "composite", "category": "data-and-tables" },
+    "json-viewer": { "level": "component", "complexity": "composite", "category": "data-and-tables" },
     "seat-map": { "level": "component", "complexity": "composite", "category": "timelines-and-planning" },
     "severity-timeline": { "level": "component", "complexity": "composite", "category": "timelines-and-planning" },
     "milestone-ruler": { "level": "component", "complexity": "composite", "category": "timelines-and-planning" },

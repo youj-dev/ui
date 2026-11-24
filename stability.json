@@ -44,6 +44,7 @@
   "items": {
     "tables-data-grid": "experimental",
     "presentation": "experimental",
+    "json-viewer": "experimental",
     "voice-orb": "experimental",
     "audio-recorder": "experimental",
     "reveal": "alpha",

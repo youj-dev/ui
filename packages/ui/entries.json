@@ -170,6 +170,7 @@
       "filter-builder",
       "hierarchy-chart",
       "import-mapper",
+      "json-viewer",
       "kanban",
       "multi-language-input",
       "tree-view",

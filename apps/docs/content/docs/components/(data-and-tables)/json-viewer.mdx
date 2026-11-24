@@ -1,0 +1,153 @@
+---
+title: JSON Viewer
+description: "Read a JSON payload as a tree that opens and closes, with typed values, counts, and a copy button for every value and path."
+---
+
+<ComponentStories>
+
+<Story id="demo" label="Event payload">
+
+<ComponentPreview name="json-viewer/demo" height={440} />
+
+A webhook event as a logs inspector shows it.
+
+The top level starts open and deeper objects closed, each with how much it holds: `{4}` keys, `[2]` items. Keys, strings, numbers, booleans and `null` take the code palette's colors, and a string longer than 80 characters is cut short until you open it. Hover or focus a row for its two buttons: one copies its value (a string as it is, an object or array as JSON), the other its path, such as `request.headers["content-type"]`. The header copies the whole value and opens or closes everything.
+
+</Story>
+
+<Story id="big-arrays" label="Big arrays">
+
+<ComponentPreview name="json-viewer/api-response" height={400} />
+
+An API response with 250 orders.
+
+An array of more than a hundred items opens onto ranges of a hundred, `[0 … 99]`, and each range onto its items. Longer ones open onto ranges of ten thousand first, so no row ever opens onto more than a hundred others. Rows are only read from the value when they first show, so a payload of any size costs only the rows on screen.
+
+</Story>
+
+<Story id="long-strings" label="Long strings">
+
+<ComponentPreview name="json-viewer/long-strings" height={300} />
+
+A token response with `collapseStringsAfter={40}`.
+
+A string longer than `collapseStringsAfter` ends in an ellipsis inside its quotes. Opened, the row says how many characters it holds, and the whole text shows under it as written, line breaks and all. `Infinity` shows every string whole.
+
+</Story>
+
+<Examples label="Get started" buttons>
+
+<Example id="installation-usage" label="Installation & usage">
+
+## Installation & usage
+
+<InstallTabs name="json-viewer" noImport />
+
+Use a JSON viewer for data people read and copy from rather than edit: an event in a logs inspector, a webhook delivery, an API response, a stored document or a config. For code to read with syntax highlighting, use a [Code Block](/docs/components/code-block). For a hierarchy people act on, such as files and folders, use a [Tree View](/docs/components/tree-view). For a short set of named fields, use a [Property List](/docs/components/property-list).
+
+```tsx
+'use client'
+
+import { JsonViewer } from '@youj/react'
+
+export function DeliveryPayload({ delivery }: { delivery: WebhookDelivery }) {
+  return (
+    <JsonViewer
+      label="Payload"
+      value={delivery.payload}
+      className="max-h-[480px]"
+      onCopyText={(text, { part }) => track('payload_copied', { part })}
+    />
+  )
+}
+```
+
+`value` takes anything `JSON.parse` returns, or a plain object or array. Values are shown as `JSON.stringify` reads them: a Date as its ISO string, a bigint as its digits. A value that holds itself shows "Circular reference" there instead of opening forever.
+
+`defaultExpandDepth` sets how deep objects and arrays start open: 1, the default, opens the ones at the top; 0 opens none; `Infinity` opens all. Rows opened or closed by hand stay that way when `value` changes, matched by their path. `label` names the viewer in its header and to screen readers. `onCopyText(text, { part, path })` hears every copy that succeeded, with `part` `"value"` or `"path"` and the row's path (`[]` for the header's).
+
+Give the viewer a height (`max-h-*` or `h-*`) and the tree scrolls under its header. Rows wrap long values rather than scrolling sideways. The tree reads left to right on any page, as code does.
+
+</Example>
+
+<Example id="description" label="Description">
+
+## Description
+
+<StoryDescription />
+
+</Example>
+
+<Example id="code" label="Code">
+
+## Code
+
+<StoryCode />
+
+</Example>
+
+</Examples>
+
+</ComponentStories>
+
+## Reference
+
+<ReferenceRow title="Props" summary="value, defaultExpandDepth, collapseStringsAfter, label, onCopyText…">
+
+### Props
+
+<PropsTable name="JsonViewer" />
+
+#### Data attributes
+
+The root is `json-viewer` in `data-slot`, with `data-reduced-motion`. Its header is `json-viewer-header`, holding `json-viewer-label` and the buttons `json-viewer-expand` and `json-viewer-copy-all`. The tree is `json-viewer-tree`, and each row's item `json-viewer-item`, with what it shows in `data-yj-kind` (`object`, `array`, `string`, `number`, `boolean`, `null`, `undefined`, `range` or `text`) and, on a value, its path as JavaScript reads it in `data-yj-path`. Inside an item, `json-viewer-row` holds `json-viewer-text` with `json-viewer-key`, `json-viewer-value` and `json-viewer-count`, and the row's buttons `json-viewer-actions` with `json-viewer-copy` and `json-viewer-copy-path`.
+
+</ReferenceRow>
+
+<ReferenceRow title="Motion" summary="Row opens, row closes, chevron, copied · reduced motion">
+
+### Motion
+
+<MotionSpec
+  rows={[
+    { moment: 'Row opens', note: 'height to auto and opacity (Collapse); closing mid-open reverses from where it is', duration: 'base', ease: 'standard' },
+    { moment: 'Row closes', note: 'height on `base`, opacity out on `fast`', duration: 'base', ease: 'standard' },
+    { moment: 'Chevron', note: 'turns a quarter as the row opens' },
+    { moment: 'Expand all', note: 'the two chevrons fold flat and turn inside out', value: 'the icon’s own choreography' },
+    { moment: 'Row buttons', note: 'fade in on hover or focus', duration: 'fast', ease: 'standard' },
+    { moment: 'Copied', note: 'a check is written on the copy icon, or the route icon traces its path', value: 'the icons’ own choreography' },
+    { moment: 'Back to rest', note: 'after a beat', value: '3 × deliberate' },
+    { moment: 'Row hover', note: 'background', duration: 'instant', ease: 'standard' },
+  ]}
+  reduced="Rows open and close at once, and the chevrons and copy icons switch to their new state without moving."
+/>
+
+#### Reduced motion
+
+Rows appear and disappear at once, with no height animation, and the chevrons and the copy icons show their new state without turning or drawing. Everything else, including the announcements, is the same.
+
+</ReferenceRow>
+
+<ReferenceRow title="Accessibility" summary="Keyboard, names, copying">
+
+### Accessibility
+
+- It's a `tree` named by `label` ("JSON" by default), with `aria-expanded` on every row that opens. A row is named by what it shows, with counts in words: `customer: 4 keys`, `tags: 2 items`, `code: "card_declined"`. A range reads `Items 0 to 99`, and an opened long string `message: 123 characters`, with its whole text in the row under it.
+- One Tab stop: the focused row carries `tabIndex={0}` and the rest `-1`. Its Copy value and Copy path buttons come next in the Tab order, so the keyboard reaches them without a pointer; other rows' buttons aren't in the page until hovered or focused.
+- A copy is announced politely as "Copied". A clipboard that refuses (no permission, an insecure page) is announced at once as "Couldn’t copy", and the button's tooltip says the same.
+- The tree reads left to right on a right-to-left page too, as code does, so <kbd>→</kbd> always opens. The header follows the page.
+- With sound on, the buttons play `tap` and a copy `success`, or `error` when the clipboard refuses. `sound={false}` keeps it silent.
+
+| Key | Does |
+| --- | --- |
+| <kbd>↑</kbd> <kbd>↓</kbd> | Move between visible rows. |
+| <kbd>→</kbd> | Opens a closed row, or moves into an open one. |
+| <kbd>←</kbd> | Closes an open row, or moves out to the row it's in. |
+| <kbd>Home</kbd> / <kbd>End</kbd> | The first or last visible row. |
+| <kbd>*</kbd> | Opens every row beside this one that opens. |
+| Typing | Jumps to the next row whose key starts with the letters typed. |
+| <kbd>Enter</kbd> | Opens or closes the row. |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>⌘</kbd>+<kbd>C</kbd> | Copies the row's value, unless you've selected text, which the browser copies. |
+| <kbd>Tab</kbd> | From a row, its Copy value and Copy path buttons, then out of the tree. |
+
+</ReferenceRow>

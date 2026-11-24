@@ -500,6 +500,17 @@ export const treeLoaded: YoujLabels['treeLoaded'] = (name) => `${name} loaded`
 export const treeLoadFailed: YoujLabels['treeLoadFailed'] = (name) => `Couldn't load ${name}`
 export const treeRename: YoujLabels['treeRename'] = (name) => `Rename ${name}`
 export const treeRenamed: YoujLabels['treeRenamed'] = (name) => `Renamed to ${name}`
+export const jsonViewer: YoujLabels['jsonViewer'] = 'JSON'
+export const jsonViewerKeys: YoujLabels['jsonViewerKeys'] = (count) => (count === 1 ? '1 key' : `${count.toLocaleString('en-US')} keys`)
+export const jsonViewerItems: YoujLabels['jsonViewerItems'] = (count) => (count === 1 ? '1 item' : `${count.toLocaleString('en-US')} items`)
+export const jsonViewerRange: YoujLabels['jsonViewerRange'] = (from, to) => `Items ${from.toLocaleString('en-US')} to ${to.toLocaleString('en-US')}`
+export const jsonViewerCharacters: YoujLabels['jsonViewerCharacters'] = (count) => (count === 1 ? '1 character' : `${count.toLocaleString('en-US')} characters`)
+export const jsonViewerCircular: YoujLabels['jsonViewerCircular'] = 'Circular reference'
+export const jsonViewerCopyValue: YoujLabels['jsonViewerCopyValue'] = 'Copy value'
+export const jsonViewerCopyPath: YoujLabels['jsonViewerCopyPath'] = 'Copy path'
+export const jsonViewerCopyAll: YoujLabels['jsonViewerCopyAll'] = 'Copy JSON'
+export const jsonViewerExpandAll: YoujLabels['jsonViewerExpandAll'] = 'Expand all'
+export const jsonViewerCollapseAll: YoujLabels['jsonViewerCollapseAll'] = 'Collapse all'
 export const notifications: YoujLabels['notifications'] = 'Notifications'
 export const notificationsUnread: YoujLabels['notificationsUnread'] = (count) => `Notifications, ${count} unread`
 export const notificationNew: YoujLabels['notificationNew'] = (text) => `New notification: ${text}`

@@ -854,6 +854,17 @@ interface YoujLabels {
     treeLoadFailed: (name: string) => string;
     treeRename: (name: string) => string;
     treeRenamed: (name: string) => string;
+    jsonViewer: string;
+    jsonViewerKeys: (count: number) => string;
+    jsonViewerItems: (count: number) => string;
+    jsonViewerRange: (from: number, to: number) => string;
+    jsonViewerCharacters: (count: number) => string;
+    jsonViewerCircular: string;
+    jsonViewerCopyValue: string;
+    jsonViewerCopyPath: string;
+    jsonViewerCopyAll: string;
+    jsonViewerExpandAll: string;
+    jsonViewerCollapseAll: string;
     notifications: string;
     notificationsUnread: (count: number) => string;
     notificationNew: (text: string) => string;
@@ -2021,6 +2032,8 @@ const inputOtpLabels: { codeInvalid; codeVerified; resendCode; resendIn; sendFai
 const inspectorLabels: { add; inspectorChangeType; inspectorCollapse; inspectorEnable; inspectorExpand; inspectorHide; inspectorShow; remove }
 
 const itemPagerLabels: { nextRecord; previousRecord; recordOf; records }
+
+const jsonViewerLabels: { copied; copyFailed; jsonViewer; jsonViewerCharacters; jsonViewerCircular; jsonViewerCollapseAll; jsonViewerCopyAll; jsonViewerCopyPath; jsonViewerCopyValue; jsonViewerExpandAll; jsonViewerItems; jsonViewerKeys; jsonViewerRange }
 
 const kanbanLabels: { add; cancel; kanbanAddCard; kanbanBoard; kanbanCancelled; kanbanCardCount; kanbanCardTitle; kanbanCollapse; kanbanDropped; kanbanExpand; kanbanInstructions; kanbanLane; kanbanMoveFailed; kanbanNewCard; kanbanNoCards; kanbanPickedUp; kanbanPickedUpKeyboard; kanbanPlace; kanbanRoleBoard; kanbanRoleCard; selected }
 

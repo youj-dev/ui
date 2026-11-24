@@ -2222,6 +2222,25 @@ interface ItineraryStop {
 
 type ItineraryTone = 'chart-1' | 'chart-2' | 'chart-3' | 'chart-4' | 'chart-5';
 
+type JsonPath = readonly (string | number)[];
+
+function JsonViewer({ value, defaultExpandDepth = 1, collapseStringsAfter = 80, label, onCopyText, sound = true, className, ...props }: JsonViewerProps): JSX.Element;
+  props: { collapseStringsAfter?: number; defaultExpandDepth?: number; label?: string; onCopyText?: (text: string, copied: JsonViewerCopy) => void; sound?: boolean; value: unknown }
+
+interface JsonViewerCopy {
+    part: 'value' | 'path';
+    path: JsonPath;
+}
+
+interface JsonViewerProps extends Omit<ComponentProps<'div'>, 'children'> {
+    value: unknown;
+    defaultExpandDepth?: number;
+    collapseStringsAfter?: number;
+    label?: string;
+    onCopyText?: (text: string, copied: JsonViewerCopy) => void;
+    sound?: boolean;
+}
+
 function Kanban<C extends KanbanCardData>({ columns, cards, lanes: allLanes, hideEmptyLanes, renderCard, onMove, onAddCard, onCardAction, selectedIds, cardMenu, collapsed: collapsedProp, defaultCollapsed = [], onCollapsedChange, fill, snap, className, 'aria-label': label, ...props }: KanbanProps<C>): JSX.Element;
   props: { cardMenu?: (card: C) => ReactNode; cards: C[]; collapsed?: string[]; columns: KanbanColumn[]; defaultCollapsed?: string[]; fill?: boolean; hideEmptyLanes?: boolean; lanes?: KanbanLane[]; onAddCard?: (place: { column: string; lane?: string }, title: string) => void; onCardAction?: (card: C, event: ReactMouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>) => void; onCollapsedChange?: (ids: string[]) => void; onMove?: (move: KanbanMove<C>, next: C[]) => unknown; renderCard: (card: C, state: { lifted: boolean; selected: boolean }) => ReactNode; selectedIds?: ReadonlyArray<string>; snap?: boolean }
 

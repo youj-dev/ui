@@ -91,6 +91,7 @@
   "input-otp": {"public":["InputOTP","InputOTPProps","InputOTPResend","InputOTPResendProps","OTPMode","OTPStatus","useCountdown","useOTPVerification"],"internal":[]},
   "inspector-panel": {"public":["InspectorPanel","InspectorPanelProps","InspectorPanelType","InspectorRow","InspectorRowProps"],"internal":[]},
   "item-pager": {"public":["ItemPager","ItemPagerProps"],"internal":[]},
+  "json-viewer": {"public":["JsonPath","JsonViewer","JsonViewerCopy","JsonViewerProps"],"internal":[]},
   "kanban": {"public":["Kanban","KanbanCardData","KanbanColumn","KanbanLane","KanbanMove","KanbanPlace","KanbanProps"],"internal":[]},
   "kbd": {"public":["Kbd","KbdGroup"],"internal":[]},
   "label": {"public":["Label","RequiredMark"],"internal":["labelClass"]},
