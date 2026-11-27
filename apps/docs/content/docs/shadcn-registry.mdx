@@ -40,7 +40,7 @@ The registry is served at two addresses:
 | `https://www.youj.dev/r/v<version>/{name}.json` | One release's items, unchanged after it ships. Their dependencies on other Youj items name the same version. `npx @youj/cli` reads its own version's, and `init --mode registry` writes this URL. |
 | `https://www.youj.dev/r/{name}.json` | The latest alias: whatever the newest release is. The shadcn registry directory lists this one, so `npx shadcn add @youj/<item>` without a namespace of your own uses it. |
 
-Items copied from the latest alias can change from one release to the next. Prefer the versioned URL in an app, and move it to a newer version when you upgrade, the same way you'd bump the packages. Each item's npm dependencies carry a range (`motion@^14`, `@base-ui/react@~1.8.0`: inside the ranges the packages support, Motion 13.4.4 or later and 14, Base UI 1.8 and 1.9), so a copy installs the versions its source was written for.
+Items copied from the latest alias can change from one release to the next. Prefer the versioned URL in an app, and move it to a newer version when you upgrade, the same way you'd bump the packages. Each item's npm dependencies carry a range (`motion@^14`, `@base-ui/react@~1.9.0`: inside the ranges the packages support, Motion 13.4.4 or later and 14, Base UI 1.8 and 1.9), so a copy installs the versions its source was written for.
 
 ## 3. Add items
 

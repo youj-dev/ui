@@ -7,7 +7,7 @@
  * (registry-archive.ts, RELEASING.md).
  *
  * Items' npm `dependencies` get the range the owning package declares
- * (`motion@^14`, `@base-ui/react@~1.8.0`), so a copy installs what the
+ * (`motion@^14`, `@base-ui/react@~1.9.0`), so a copy installs what the
  * source was written against rather than whatever major is current.
  *
  * A package joins by shipping scripts/build-registry.mjs that honours
